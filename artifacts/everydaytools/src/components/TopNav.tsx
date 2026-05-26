@@ -218,7 +218,15 @@ function MobileDrawer({ open, onClose, currentPath }: { open: boolean; onClose: 
       <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", zIndex: 200 }} />
       <div style={{ position: "fixed", top: 0, right: 0, bottom: 0, width: "min(300px, 88vw)", background: "var(--bg-surface)", zIndex: 201, overflowY: "auto", display: "flex", flexDirection: "column" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", borderBottom: "1px solid var(--border)" }}>
-          <span style={{ fontFamily: "var(--font-display)", fontSize: 18, color: "var(--text-primary)", fontWeight: 400 }}>EverydayTools</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <svg width="22" height="22" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect width="64" height="64" rx="11" fill="#1A1916"/>
+              <rect x="14" y="15" width="36" height="7" rx="2" fill="#1A6BFF"/>
+              <rect x="14" y="28" width="28" height="7" rx="2" fill="#F7F6F3"/>
+              <rect x="14" y="41" width="36" height="7" rx="2" fill="#F7F6F3"/>
+            </svg>
+            <span style={{ fontFamily: "var(--font-ui)", fontSize: 15, fontWeight: 500, color: "var(--text-primary)", letterSpacing: "-0.02em" }}>EverydayTools</span>
+          </div>
           <button onClick={onClose} aria-label="Close menu" style={{ background: "none", border: "none", cursor: "pointer", padding: 4, color: "var(--text-secondary)" }}>
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 3l12 12M15 3L3 15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>
           </button>
@@ -291,11 +299,14 @@ export default function TopNav() {
           style={{ maxWidth: "var(--content-wide)", margin: "0 auto", padding: "0 20px", height: 52, display: "flex", alignItems: "center", gap: 32 }}
         >
           {/* Logo */}
-          <Link href="/" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none", flexShrink: 0 }}>
-            <div style={{ width: 28, height: 28, background: "var(--accent)", color: "var(--accent-text)", borderRadius: 4, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-display)", fontSize: 15, fontWeight: 500, lineHeight: 1 }}>
-              E
-            </div>
-            <span style={{ fontFamily: "var(--font-display)", fontSize: 18, color: "var(--text-primary)", letterSpacing: "-0.03em", fontWeight: 400 }}>
+          <Link href="/" style={{ display: "flex", alignItems: "center", gap: 9, textDecoration: "none", flexShrink: 0 }}>
+            <svg width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect width="64" height="64" rx="11" fill="#1A1916"/>
+              <rect x="14" y="15" width="36" height="7" rx="2" fill="#1A6BFF"/>
+              <rect x="14" y="28" width="28" height="7" rx="2" fill="#F7F6F3"/>
+              <rect x="14" y="41" width="36" height="7" rx="2" fill="#F7F6F3"/>
+            </svg>
+            <span style={{ fontFamily: "var(--font-ui)", fontSize: 16, fontWeight: 500, color: "var(--text-primary)", letterSpacing: "-0.02em", lineHeight: 1 }}>
               EverydayTools
             </span>
           </Link>
