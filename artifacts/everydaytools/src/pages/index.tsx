@@ -1,37 +1,35 @@
 import { tools } from "../config/tools.config";
 import ToolCard from "../components/ToolCard";
 import AdSlot from "../components/AdSlot";
+import { useLocale } from "../contexts/locale-context";
 
-const CATEGORIES = [
-  { id: 'pdf',        title: 'PDF Tools',    cols: 3 },
-  { id: 'word',       title: 'Word & Docs',  cols: 3 },
-  { id: 'image',      title: 'Image Tools',  cols: 3 },
-  { id: 'privacy',    title: 'Privacy',      cols: 3 },
-  { id: 'calculators',title: 'Calculators',  cols: 3 },
-];
+const CATEGORY_IDS = ['pdf', 'word', 'image', 'privacy', 'calculators'] as const;
 
 export default function Home() {
+  const { t } = useLocale();
+
   return (
     <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '64px 20px 96px' }}>
       {/* Page header */}
       <div style={{ marginBottom: 64 }}>
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-5xl)', fontWeight: 300, letterSpacing: '-0.03em', color: 'var(--text-primary)', lineHeight: 1.1, margin: '0 0 16px' }}>
-          EverydayTools
+          {t.home.title}
         </h1>
         <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-base)', color: 'var(--text-secondary)', margin: 0, maxWidth: 480 }}>
-          Browser-based document, image, and utility tools. No uploads. No accounts.
+          {t.home.subtitle}
         </p>
       </div>
 
       {/* Tool grid by category */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 64 }}>
-        {CATEGORIES.map(cat => {
-          const items = tools.filter(t => t.category === cat.id);
+        {CATEGORY_IDS.map(catId => {
+          const items = tools.filter(tool => tool.category === catId);
           if (!items.length) return null;
+          const categoryLabel = t.home.categories[catId] ?? catId;
           return (
-            <section key={cat.id} id={cat.id} style={{ scrollMarginTop: 64 }}>
+            <section key={catId} id={catId} style={{ scrollMarginTop: 64 }}>
               <h2 style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-tertiary)', margin: '0 0 12px' }}>
-                {cat.title}
+                {categoryLabel}
               </h2>
               {/* Table-style grid: container provides top+left border, cells provide right+bottom */}
               <div style={{

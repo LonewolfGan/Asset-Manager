@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { lazy, Suspense } from "react";
 import TopNav from "@/components/TopNav";
 import NotFound from "@/pages/not-found";
+import { LocaleProvider } from "@/contexts/locale-context";
 
 const Home = lazy(() => import("@/pages/index"));
 
@@ -121,10 +122,12 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <Router />
-        </WouterRouter>
-        <Toaster />
+        <LocaleProvider>
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+            <Router />
+          </WouterRouter>
+          <Toaster />
+        </LocaleProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );
