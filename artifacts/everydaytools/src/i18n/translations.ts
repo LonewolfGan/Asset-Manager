@@ -9,6 +9,7 @@ export type Translations = {
     title: string;
     subtitle: string;
     categories: Record<string, string>;
+    toolCategory: Record<string, string>;
   };
   tools: Record<string, { title: string; description: string }>;
   ui: {
@@ -73,6 +74,13 @@ const EN: Translations = {
       image: "Image Tools",
       privacy: "Privacy",
       calculators: "Calculators",
+    },
+    toolCategory: {
+      pdf: "PDF",
+      word: "Document",
+      image: "Image",
+      privacy: "Privacy",
+      calculators: "Utility",
     },
   },
   tools: {
@@ -173,6 +181,13 @@ const FR: Translations = {
       image: "Outils Image",
       privacy: "Confidentialité",
       calculators: "Calculatrices",
+    },
+    toolCategory: {
+      pdf: "PDF",
+      word: "Document",
+      image: "Image",
+      privacy: "Confidentialité",
+      calculators: "Utilitaire",
     },
   },
   tools: {

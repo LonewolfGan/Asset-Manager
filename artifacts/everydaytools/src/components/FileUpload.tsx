@@ -66,8 +66,9 @@ export default function FileUpload({ accept, maxSizeMB, multiple = false, onFile
         onClick={() => inputRef.current?.click()}
         style={{
           border: `2px dashed ${dragActive ? 'var(--accent)' : 'var(--border-strong)'}`,
-          background: dragActive ? 'var(--bg-subtle)' : 'var(--bg-surface)',
-          padding: '36px 24px',
+          borderRadius: 8,
+          background: dragActive ? 'var(--bg-hover)' : 'var(--bg-surface)',
+          padding: '48px 24px',
           textAlign: 'center',
           cursor: 'pointer',
           transition: 'border-color 120ms ease, background 120ms ease',

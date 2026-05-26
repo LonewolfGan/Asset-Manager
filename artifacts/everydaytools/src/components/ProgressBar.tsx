@@ -13,8 +13,8 @@ export default function ProgressBar({ progress, label }: ProgressBarProps) {
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', color: 'var(--text-tertiary)' }}>{pct}%</span>
         </div>
       )}
-      <div style={{ width: '100%', height: 2, background: 'var(--bg-subtle)' }}>
-        <div style={{ height: '100%', width: `${pct}%`, background: 'var(--accent)', transition: 'width 80ms linear' }} />
+      <div role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100} style={{ width: '100%', height: 3, background: 'var(--bg-hover)', borderRadius: 2 }}>
+        <div style={{ height: '100%', width: `${pct}%`, background: 'var(--accent)', borderRadius: 2, transition: 'width 80ms linear' }} />
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { useState, useRef, useEffect } from "react";
 import { useTheme } from "@/hooks/use-theme";
-import { useLocale } from "@/contexts/locale-context";
+import { useLocale } from "@/hooks/use-locale";
 
 type NavEntry = { href: string } | null;
 type NavPair = [NavEntry, NavEntry];
@@ -141,10 +141,11 @@ function NavDropdown({
             left: 0,
             background: "var(--bg-elevated)",
             border: "1px solid var(--border)",
-            borderRadius: 4,
+            borderRadius: 8,
             minWidth: 340,
             padding: 8,
             zIndex: 100,
+            boxShadow: "0 8px 24px rgba(0,0,0,0.3)",
           }}
         >
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
