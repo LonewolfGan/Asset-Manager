@@ -1,0 +1,97 @@
+═══════════════════════════════════════════════
+NAVIGATION — MANDATORY STRUCTURE
+═══════════════════════════════════════════════
+
+The header nav uses grouped dropdown menus, not flat links.
+Each dropdown maps to a tool category and exposes ALL format pairs as direct links.
+
+Structure:
+  [Convert Documents ▾]
+    PDF to DOCX       | DOCX to PDF
+    PDF to EPUB       | EPUB to PDF
+    PDF to TXT        | PDF to HTML
+    DOCX to HTML      | HTML to DOCX
+    Markdown to PDF   | Markdown to DOCX
+    ODT to DOCX       | RTF to DOCX
+    ... (all pairs from the catalogue)
+
+  [Convert Images ▾]
+    PNG to JPEG       | JPEG to PNG
+    PNG to WEBP       | WEBP to PNG
+    PNG to AVIF       | JPEG to WEBP
+    HEIC to JPEG      | Any to ICO
+    ... (all pairs)
+
+  [Tools ▾]
+    Background Remover
+    Metadata Cleaner
+    Password Generator
+    Currency Converter
+    Unit Converter
+    Calculator
+
+  [EN / FR]  ← locale switcher, rightmost
+
+Dropdown behavior:
+  - Opens on hover (desktop), tap (mobile)
+  - Two-column grid layout inside the panel for format pairs
+  - Active tool highlighted with accent underline, not background fill
+  - Keyboard navigable (arrow keys, Escape closes)
+  - No mega-menu images, no descriptions, no icons — just clean text links
+  - Mobile: collapses to accordion in a slide-in drawer
+
+Do NOT use a flat nav with single links per tool category.
+Do NOT add a search bar in the nav unless explicitly asked.
+
+═══════════════════════════════════════════════
+AI-GENERATED AESTHETICS — EXPLICITLY FORBIDDEN
+═══════════════════════════════════════════════
+
+The following are hard bans. If any appear in your output, the output is rejected:
+
+Typography:
+  ✗ Inter, Roboto, Plus Jakarta Sans, Nunito, Outfit, Poppins, Space Grotesk
+  ✗ Any font pairing that appears in >1% of SaaS products
+
+Color:
+  ✗ Purple-to-blue gradients on white backgrounds
+  ✗ Glassmorphism (backdrop-filter: blur on cards)
+  ✗ "Soft UI" / neumorphism shadows
+  ✗ Gradient hero text (background-clip: text)
+  ✗ Any gradient used decoratively (gradients only on progress bars and functional elements)
+
+Layout & Components:
+  ✗ Rounded hero cards with colored icon blocks in a 3-column grid
+  ✗ "Feature section" with alternating image-left / text-right rows
+  ✗ Testimonial carousels or star ratings
+  ✗ Animated counting numbers ("10M+ files converted")
+  ✗ Any section that reads like a marketing landing page
+  ✗ CTA buttons with arrow icons (→) inside them
+  ✗ Badge chips like "Free", "New", "Beta" on tool cards
+
+Motion:
+  ✗ Floating animations (transform: translateY on a loop)
+  ✗ Particle backgrounds
+  ✗ Scroll-triggered fade-in on every section
+  ✗ Staggered card entrance animations on the homepage
+
+Copy:
+  ✗ Any sentence containing "powerful", "seamless", "effortless", "cutting-edge"
+  ✗ Any H1 that is a tagline instead of a tool name ("Convert anything, instantly")
+  ✗ Benefit bullets with bold lead-in ("Fast. Secure. Free.")
+  ✗ Questions as headings ("Why use EverydayTools Hub?")
+
+The homepage ToolGrid must look like a well-organized directory or reference index —
+not a product marketing page. Think: MDN Web Docs homepage, not a Webflow template.
+
+═══════════════════════════════════════════════
+NO UNSOLICITED SUGGESTIONS
+═══════════════════════════════════════════════
+
+Do NOT append offers, suggestions, or questions at the end of your output.
+Examples of forbidden endings:
+  ✗ "Next, I can add a PDF OCR tool..."
+  ✗ "Would you like me to implement...?"
+  ✗ "Let me know if you want..."
+
+Deliver exactly what was asked. Stop. Nothing more.

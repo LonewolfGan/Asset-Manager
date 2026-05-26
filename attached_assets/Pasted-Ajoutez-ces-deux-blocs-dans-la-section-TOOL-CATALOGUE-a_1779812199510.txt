@@ -1,0 +1,39 @@
+Ajoutez ces deux blocs dans la section TOOL CATALOGUE, après les convertisseurs d'images :
+
+PDF COMPRESSOR
+  Input: PDF (up to 50MB)
+  Compression levels:
+    - Screen (72 DPI, max compression)   → documents for screen reading
+    - Ebook (150 DPI, balanced)          → general sharing
+    - Prepress (300 DPI, light)          → print-quality retention
+  Implementation: pdf-lib (remove embedded thumbnails, compress streams,
+                  downsample images via canvas) + pdfjs-dist for rendering
+  Show: original size → compressed size → reduction percentage
+  Client-side only. No file leaves the browser.
+  Mandatory note: "Compression results depend on the original PDF content.
+  PDFs that are already optimized or contain mostly vector content
+  may see minimal size reduction."
+
+IMAGE COMPRESSOR
+  Input: JPEG, PNG, WEBP, AVIF (up to 20 files, 20MB each)
+  Controls:
+    - Quality slider 1–100 (per format, not global)
+    - Target file size mode (enter KB/MB, tool finds optimal quality automatically
+      via binary search on canvas.toBlob quality parameter)
+    - Resize option: scale by % or set max width/height (maintains aspect ratio)
+    - Strip metadata toggle (EXIF removal via piexifjs)
+  Output: side-by-side original vs compressed preview (canvas thumbnail),
+          original size / compressed size / reduction % per file,
+          individual download + "Download All as ZIP" (JSZip)
+  Implementation: Canvas API + canvas.toBlob() — fully client-side
+  Formats preserve type by default (JPEG stays JPEG);
+  user can optionally switch output format (links to Image Converter tool)
+
+Et ajoutez ces deux routes dans la section ARCHITECTURE :
+/app/[locale]/compress-pdf/page.tsx
+/app/[locale]/compress-image/page.tsx
+Et dans la nav dropdown [Tools ▾], ajoutez :
+    PDF Compressor
+    Image Compressor
+
+Note technique importante : pdf-lib seul ne fait pas de vraie compression d'images embarquées — précisez au modèle que pour les PDFs lourds en images, la méthode est : extraire chaque image via pdfjs-dist, la recompresser via Canvas, puis la réinjecter dans un nouveau PDF avec pdf-lib. C'est la seule approche 100% client-side honnête. Si le modèle utilise une autre approche, il faut qu'il le documente explicitement
