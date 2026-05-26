@@ -2,7 +2,6 @@ import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 
@@ -58,14 +57,6 @@ export default function PdfToEpub() {
     } finally { setIsProcessing(false); }
   };
 
-  const faqs = [
-    { q: "Can I read this EPUB on Kindle?", a: "Yes, you can send the generated EPUB directly to your Kindle device or app using Amazon's Send to Kindle feature." },
-    { q: "Is formatting preserved perfectly?", a: "This tool extracts text to create a flowable ebook. Complex layouts, columns, and images are not supported." },
-    { q: "Does it remove DRM from PDFs?", a: "No, this tool cannot bypass DRM protection or owner passwords on PDF files." },
-    { q: "What devices support EPUB?", a: "Almost all e-readers (Kobo, Nook), Apple Books, and mobile reading apps support the EPUB format." },
-    { q: "Why did EPUB generation fail?", a: "Browser memory limits can sometimes cause EPUB generation to fail for very large PDFs. Try the PDF to Text tool instead." }
-  ];
-
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'PDF Tools', 'PDF to EPUB']} />
@@ -81,7 +72,6 @@ export default function PdfToEpub() {
       {isProcessing && <ProgressBar progress={progress} label="Creating EPUB..." />}
       {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
       {result && <ResultPanel {...result} />}
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

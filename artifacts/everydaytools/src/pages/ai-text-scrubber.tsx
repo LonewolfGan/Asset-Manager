@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 
@@ -63,12 +62,6 @@ export default function AiTextScrubber() {
     URL.revokeObjectURL(url);
   };
 
-  const faqs = [
-    { q: "What are invisible characters?", a: "Zero-width characters can be embedded in text to invisibly track or watermark it. This tool finds and removes them." },
-    { q: "Does this bypass AI detectors?", a: "It removes common stylistic ticks that AI detectors look for, but it does not guarantee bypassing them completely." },
-    { q: "Are cryptographic watermarks removed?", a: "No, if watermarks are embedded via token sampling (like OpenAI's watermark), simple stylistic replacement may not remove them entirely." }
-  ];
-
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Privacy Tools', 'AI Text Scrubber']} />
@@ -126,8 +119,6 @@ export default function AiTextScrubber() {
       <p style={{ marginTop: 24, fontSize: 13, color: 'var(--muted)', textAlign: 'center', padding: '0 24px' }}>
         <strong>Disclaimer:</strong> This does not guarantee bypass of all AI detection methods, including cryptographic watermarking techniques.
       </p>
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

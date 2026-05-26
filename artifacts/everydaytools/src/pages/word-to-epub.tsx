@@ -2,7 +2,6 @@ import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import mammoth from 'mammoth';
@@ -48,14 +47,6 @@ export default function WordToEpub() {
     } finally { setIsProcessing(false); }
   };
 
-  const faqs = [
-    { q: "Is this compatible with e-readers?", a: "Yes, the generated EPUB works with Kobo, Nook, Apple Books, and can be sent to Kindle." },
-    { q: "Are images preserved?", a: "Yes, embedded images in the Word document are usually converted to base64 and included in the EPUB." },
-    { q: "How is the formatting handled?", a: "Basic text formatting (bold, italics, headings) is preserved, but complex page layouts are simplified for reading." },
-    { q: "Are chapters separated?", a: "Currently, the document is generated as a single continuous chapter." },
-    { q: "Why did the conversion fail?", a: "Extremely large documents with many images might exceed browser memory limits. Try compressing images first." }
-  ];
-
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Word Tools', 'Word to EPUB']} />
@@ -74,8 +65,6 @@ export default function WordToEpub() {
       {isProcessing && <ProgressBar progress={progress} label="Generating EPUB..." />}
       {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
       {result && <ResultPanel {...result} />}
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

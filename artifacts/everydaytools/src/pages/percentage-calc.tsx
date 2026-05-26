@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 
@@ -43,12 +42,6 @@ export default function PercentageCalc() {
         return "—";
     }
   };
-
-  const faqs = [
-    { q: "How is percentage change calculated?", a: "Percentage change is the difference between two values divided by the original value, multiplied by 100." },
-    { q: "What's the difference between markup and margin?", a: "Margin is based on sales price, while markup is based on cost. A 20% margin on a $100 cost means a selling price of $125." },
-    { q: "Is the data stored anywhere?", a: "No, all calculations are performed locally in your browser." }
-  ];
 
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
@@ -123,8 +116,6 @@ export default function PercentageCalc() {
         </div>
         
       </div>
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

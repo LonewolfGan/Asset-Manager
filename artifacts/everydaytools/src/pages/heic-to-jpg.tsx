@@ -2,7 +2,6 @@ import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 
@@ -40,14 +39,6 @@ export default function HeicToJpg() {
     } finally { setIsProcessing(false); }
   };
 
-  const faqs = [
-    { q: "What is HEIC?", a: "HEIC is Apple's high-efficiency image format used on modern iPhones." },
-    { q: "Why convert to JPG/PNG?", a: "Many websites and older operating systems do not support viewing HEIC files natively." },
-    { q: "Is quality lost during conversion?", a: "Slight quality loss occurs when converting to JPEG, but PNG conversion is practically lossless." },
-    { q: "Are Live Photos supported?", a: "Only the primary still image is extracted. Video components are ignored." },
-    { q: "Is EXIF metadata preserved?", a: "Yes, standard EXIF metadata like date and camera model is usually preserved." }
-  ];
-
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Image Tools', 'HEIC to JPG']} />
@@ -82,8 +73,6 @@ export default function HeicToJpg() {
       {isProcessing && <ProgressBar progress={progress} label="Converting image..." />}
       {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
       {result && <ResultPanel {...result} />}
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

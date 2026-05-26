@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 
@@ -92,13 +91,6 @@ export default function PasswordGenerator() {
     navigator.clipboard.writeText(text);
   };
 
-  const faqs = [
-    { q: "Is this secure?", a: "Yes, it uses crypto.getRandomValues() for cryptographically secure randomness, unlike Math.random()." },
-    { q: "What is entropy?", a: "Entropy measures password predictability in bits. Higher is better." },
-    { q: "Are passwords saved?", a: "Passwords remain in your browser's session storage until you close the tab. They are never sent to a server." },
-    { q: "What is a pronounceable password?", a: "It alternates consonants and vowels so the password is easier to read and remember." }
-  ];
-
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Calculators', 'Password Generator']} />
@@ -187,8 +179,6 @@ export default function PasswordGenerator() {
           </div>
         </div>
       )}
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

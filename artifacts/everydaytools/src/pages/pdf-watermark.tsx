@@ -2,7 +2,6 @@ import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import { PDFDocument, StandardFonts, rgb, degrees } from 'pdf-lib';
@@ -67,14 +66,6 @@ export default function PdfWatermark() {
     } finally { setIsProcessing(false); }
   };
 
-  const faqs = [
-    { q: "Can I use an image as a watermark?", a: "This tool currently only supports text watermarks. Image watermarks might be added in the future." },
-    { q: "Is the watermark permanent?", a: "The watermark is permanently drawn onto the pages. However, sophisticated tools could theoretically remove it, so it's not a cryptographic protection." },
-    { q: "Where is the text placed?", a: "It is placed diagonally across the center of each page." },
-    { q: "Does this affect the original file?", a: "No, a new copy is generated. Your original file remains untouched." },
-    { q: "Can I adjust the angle?", a: "The angle is fixed at 45 degrees for optimal page coverage." }
-  ];
-
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'PDF Tools', 'Watermark PDF']} />
@@ -124,8 +115,6 @@ export default function PdfWatermark() {
       {isProcessing && <ProgressBar progress={progress} label="Applying watermark..." />}
       {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
       {result && <ResultPanel {...result} />}
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

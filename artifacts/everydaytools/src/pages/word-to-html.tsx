@@ -2,7 +2,6 @@ import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import mammoth from 'mammoth';
@@ -33,14 +32,6 @@ export default function WordToHtml() {
       setError(e instanceof Error ? e.message : 'Conversion failed. Please try again.');
     } finally { setIsProcessing(false); }
   };
-
-  const faqs = [
-    { q: "Is CSS styling included?", a: "A basic stylesheet is injected for readability, but complex Word layouts (like multiple columns) are converted to clean, sequential HTML." },
-    { q: "Are images embedded?", a: "By default, images are converted to inline base64 data URIs so the HTML file remains a single document." },
-    { q: "Are tables supported?", a: "Yes, Word tables are converted to HTML <table> tags." },
-    { q: "What about headers and footers?", a: "Headers, footers, and page numbers are usually ignored to create continuous web content." },
-    { q: "Is it mobile responsive?", a: "The generated HTML is simple and naturally responsive on mobile devices." }
-  ];
 
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
@@ -75,8 +66,6 @@ export default function WordToHtml() {
           />
         </div>
       )}
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import { PDFDocument } from 'pdf-lib';
@@ -52,14 +51,6 @@ export default function PdfProtect() {
       setError(e instanceof Error ? e.message : 'Protection failed. Please try again.');
     } finally { setIsProcessing(false); }
   };
-
-  const faqs = [
-    { q: "What's the difference between User and Owner passwords?", a: "User Password is required to open the PDF. Owner Password is used to bypass restrictions (like printing/copying)." },
-    { q: "Is the encryption secure?", a: "It uses standard 128-bit encryption, which is compatible with almost all PDF readers." },
-    { q: "Can I remove the password later?", a: "Yes, if you remember the password, you can use our Unlock tool or any PDF editor to remove it." },
-    { q: "What if I forget the password?", a: "If you lose the password, the document cannot be recovered. Keep a backup copy." },
-    { q: "Is this done securely?", a: "Yes, encryption happens directly in your browser. Your password and document are never sent to a server." }
-  ];
 
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
@@ -113,8 +104,6 @@ export default function PdfProtect() {
       {isProcessing && <ProgressBar progress={progress} label="Encrypting PDF..." />}
       {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
       {result && <ResultPanel {...result} />}
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

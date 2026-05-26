@@ -2,7 +2,6 @@ import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import { PDFDocument } from 'pdf-lib';
@@ -105,14 +104,6 @@ export default function PdfSplit() {
     } finally { setIsProcessing(false); }
   };
 
-  const faqs = [
-    { q: "How do I format the page range?", a: "Use commas to separate parts and hyphens for ranges. Example: '1-3, 5, 8-10'." },
-    { q: "What happens if I extract every page?", a: "You will receive a ZIP file containing individual PDF files for each page of the document." },
-    { q: "Is the page numbering 1-based?", a: "Yes, the first page is page 1." },
-    { q: "What if I enter a page number that doesn't exist?", a: "Invalid or out-of-bounds pages are automatically ignored." },
-    { q: "Is the quality affected?", a: "No, splitting preserves the exact original quality of each page." }
-  ];
-
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'PDF Tools', 'Split PDF']} />
@@ -159,8 +150,6 @@ export default function PdfSplit() {
       {isProcessing && <ProgressBar progress={progress} label="Splitting PDF..." />}
       {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
       {result && <ResultPanel {...result} />}
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

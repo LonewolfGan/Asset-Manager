@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 
@@ -101,14 +100,6 @@ export default function ImageResize() {
     } finally { setIsProcessing(false); }
   };
 
-  const faqs = [
-    { q: "Is aspect ratio maintained?", a: "Yes, by default 'Lock Aspect Ratio' is enabled so the image doesn't stretch." },
-    { q: "Can I upscale images?", a: "Yes, you can increase dimensions, though it may result in pixelation." },
-    { q: "What's the max size?", a: "Most browsers support canvas sizes up to roughly 10,000 pixels." },
-    { q: "Is metadata preserved?", a: "No, drawing to a canvas removes EXIF metadata." },
-    { q: "Is processing secure?", a: "Yes, images are resized entirely in your browser." }
-  ];
-
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Image Tools', 'Resize Image']} />
@@ -172,8 +163,6 @@ export default function ImageResize() {
       {isProcessing && <ProgressBar progress={progress} label="Resizing..." />}
       {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
       {result && <ResultPanel {...result} />}
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 
@@ -52,14 +51,6 @@ export default function PdfToText() {
     }
   };
 
-  const faqs = [
-    { q: "Is my privacy protected?", a: "Yes. The PDF is processed entirely within your browser. No files are uploaded to any server." },
-    { q: "What is the maximum file size?", a: "You can upload files up to 50MB for reliable in-browser processing." },
-    { q: "Does it support multiple languages?", a: "Yes, standard text encoding handles most global languages included in the PDF." },
-    { q: "How accurate is the text extraction?", a: "It is highly accurate for text-based PDFs. Scanned image PDFs without OCR will not yield text." },
-    { q: "Is formatting preserved?", a: "This tool extracts plain text. For formatting preservation, try the PDF to Word tool instead." }
-  ];
-
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'PDF Tools', 'PDF to Text']} />
@@ -78,8 +69,6 @@ export default function PdfToText() {
       {isProcessing && <ProgressBar progress={progress} label="Extracting text..." />}
       {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
       {result && <ResultPanel {...result} />}
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

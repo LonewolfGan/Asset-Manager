@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
-import FAQSection from '@/components/FAQSection';
 
 type Mode = 'quality' | 'target';
 type ResizeMode = 'none' | 'percent' | 'dimensions';
@@ -238,14 +237,6 @@ export default function ImageCompress() {
   };
 
   const doneCount = files.filter((f) => f.status === 'done').length;
-
-  const faqs = [
-    { q: 'What formats are supported?', a: 'JPEG, PNG, WEBP, and AVIF. The output format matches the input format.' },
-    { q: 'How does target file size mode work?', a: 'The tool searches for the highest quality setting that produces a file at or below your target size using binary search. Results depend on image content.' },
-    { q: 'Does PNG compression reduce quality?', a: 'PNG is lossless — browsers ignore the quality parameter for PNG. To reduce PNG size, use the resize option or convert to JPEG using the Image Converter.' },
-    { q: 'What does strip metadata do?', a: 'Removes EXIF/XMP data from JPEG files (camera model, GPS coordinates, timestamps). For non-JPEG formats, metadata is stripped automatically by canvas rendering.' },
-    { q: 'Are files uploaded to a server?', a: 'No. All compression, resizing, and ZIP packaging happens locally in your browser.' },
-  ];
 
   return (
     <div style={{ maxWidth: 800, margin: '0 auto', padding: '24px 24px 80px' }}>
@@ -608,8 +599,6 @@ export default function ImageCompress() {
           )}
         </div>
       )}
-
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

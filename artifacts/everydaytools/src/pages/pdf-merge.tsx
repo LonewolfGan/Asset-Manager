@@ -2,7 +2,6 @@ import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import { PDFDocument } from 'pdf-lib';
@@ -44,14 +43,6 @@ export default function PdfMerge() {
     } finally { setIsProcessing(false); }
   };
 
-  const faqs = [
-    { q: "How many PDFs can I merge?", a: "You can merge up to 20 PDF files at once." },
-    { q: "Is the page order preserved?", a: "Yes, pages are merged in the exact order you uploaded the files." },
-    { q: "Will bookmarks be preserved?", a: "No, PDF bookmarks and outlines are stripped during the merge process." },
-    { q: "Are interactive form fields preserved?", a: "Form fields may lose their interactivity or get flattened during merging." },
-    { q: "Is there a file size limit?", a: "Yes, each file can be up to 50MB." }
-  ];
-
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'PDF Tools', 'Merge PDFs']} />
@@ -70,8 +61,6 @@ export default function PdfMerge() {
       {isProcessing && <ProgressBar progress={progress} label="Merging PDFs..." />}
       {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
       {result && <ResultPanel {...result} />}
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

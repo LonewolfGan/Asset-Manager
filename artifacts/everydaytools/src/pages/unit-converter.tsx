@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import FormatSelector from '@/components/FormatSelector';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import { UNIT_CATEGORIES } from '@/config/units.config';
@@ -77,12 +76,6 @@ export default function UnitConverter() {
 
   const unitOptions = category.units.map(u => ({ value: u.id, label: `${u.name} (${u.symbol})` }));
 
-  const faqs = [
-    { q: "How precise are the conversions?", a: "Conversions use standard high-precision factors and display up to 6 decimal places." },
-    { q: "What's the difference between Metric and Imperial?", a: "Metric (meters, kg) is standard globally, while Imperial (feet, pounds) is used primarily in the US and UK." },
-    { q: "How are temperatures converted?", a: "Temperatures use exact offset formulas rather than simple multiplication factors." }
-  ];
-
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Calculators', 'Unit Converter']} />
@@ -150,8 +143,6 @@ export default function UnitConverter() {
           </div>
         </div>
       )}
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

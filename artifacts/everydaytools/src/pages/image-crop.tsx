@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 
@@ -136,12 +135,6 @@ export default function ImageCrop() {
     setResult({ blob, filename: files[0].name.replace(/\.(png|jpe?g|webp)$/i, '_cropped.$1'), sizeAfter: blob.size, sizeBefore: files[0].size });
   };
 
-  const faqs = [
-    { q: "Is exact pixel selection possible?", a: "Currently, cropping is done visually via drag-and-drop. For exact pixels, use the Resize tool instead." },
-    { q: "Is quality lost?", a: "A negligible amount of re-compression occurs, but since no scaling happens, sharpness is maintained." },
-    { q: "What aspect ratios are supported?", a: "You can crop freely or constrain to 1:1 (Square), 4:3, 16:9, or 3:2." }
-  ];
-
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Image Tools', 'Crop Image']} />
@@ -188,8 +181,6 @@ export default function ImageCrop() {
       )}
       
       {result && <ResultPanel {...result} />}
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

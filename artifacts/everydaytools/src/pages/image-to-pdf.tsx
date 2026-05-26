@@ -2,7 +2,6 @@ import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import { PDFDocument } from 'pdf-lib';
@@ -52,14 +51,6 @@ export default function ImageToPdf() {
     } finally { setIsProcessing(false); }
   };
 
-  const faqs = [
-    { q: "Is the image quality preserved?", a: "Yes, images are embedded directly into the PDF without re-compression or quality loss." },
-    { q: "What formats are supported?", a: "JPEG and PNG images are fully supported." },
-    { q: "What is the page size?", a: "Each PDF page automatically matches the exact pixel dimensions of the image it contains." },
-    { q: "Can I reorder the images?", a: "Images are added in the order they appear in the file list." },
-    { q: "Is there a limit to how many images?", a: "We recommend keeping it under 20 images to prevent browser memory issues." }
-  ];
-
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Image Tools', 'Image to PDF']} />
@@ -78,8 +69,6 @@ export default function ImageToPdf() {
       {isProcessing && <ProgressBar progress={progress} label="Creating PDF..." />}
       {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
       {result && <ResultPanel {...result} />}
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

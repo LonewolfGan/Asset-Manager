@@ -2,7 +2,6 @@ import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 
@@ -33,14 +32,6 @@ export default function BackgroundRemover() {
       setError(e instanceof Error ? e.message : 'Conversion failed. Please try again.');
     } finally { setIsProcessing(false); setLoadingEngine(false); }
   };
-
-  const faqs = [
-    { q: "Is my image uploaded anywhere?", a: "No, processing happens entirely on your device." },
-    { q: "Why does it take long the first time?", a: "The AI model (~40MB) must be downloaded and cached in your browser." },
-    { q: "Does it work well with hair?", a: "Yes, the AI model is trained to handle complex edges like hair and fur." },
-    { q: "What happens if the background is complex?", a: "It usually works well, but highly cluttered backgrounds might have minor artifacts." },
-    { q: "Can I swap the AI model?", a: "Currently, this uses the default @imgly/background-removal model optimized for web." }
-  ];
 
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
@@ -81,8 +72,6 @@ export default function BackgroundRemover() {
           <ResultPanel {...result} />
         </div>
       )}
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

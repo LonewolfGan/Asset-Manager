@@ -2,7 +2,6 @@ import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import JSZip from 'jszip';
@@ -70,13 +69,6 @@ export default function PdfToImage() {
     } finally { setIsProcessing(false); }
   };
 
-  const faqs = [
-    { q: "Are all pages converted?", a: "Yes, every page is rendered to an image. If there are multiple pages, they are bundled into a ZIP file." },
-    { q: "What resolution are the images?", a: "You can select the scale. 2x corresponds to roughly 144 DPI (good for screens), while 3x is closer to print quality." },
-    { q: "Should I use PNG or JPEG?", a: "PNG is lossless and better for text and line art. JPEG creates smaller files and is better for photos." },
-    { q: "Are files uploaded to a server?", a: "No, all rendering happens securely inside your web browser." }
-  ];
-
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Image Tools', 'PDF to Image']} />
@@ -132,8 +124,6 @@ export default function PdfToImage() {
       {isProcessing && <ProgressBar progress={progress} label="Rendering pages..." />}
       {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
       {result && <ResultPanel {...result} />}
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

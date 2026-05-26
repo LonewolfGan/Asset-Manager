@@ -2,7 +2,6 @@ import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import { Document, Packer, Paragraph, TextRun } from 'docx';
@@ -56,14 +55,6 @@ export default function TxtToDocx() {
     } finally { setIsProcessing(false); }
   };
 
-  const faqs = [
-    { q: "How are line breaks handled?", a: "Every line break in the original text becomes a new paragraph in the Word document." },
-    { q: "Can I paste text directly?", a: "Yes, use the 'Paste Text' tab to quickly create a Word document from clipboard text." },
-    { q: "What encoding is used?", a: "Text files are read using standard UTF-8 encoding." },
-    { q: "Are custom fonts supported?", a: "The text uses the default font of Microsoft Word (usually Calibri)." },
-    { q: "Are files sent to a server?", a: "No, the DOCX is generated safely within your browser." }
-  ];
-
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Word Tools', 'Text to Word']} />
@@ -96,8 +87,6 @@ export default function TxtToDocx() {
       {isProcessing && <ProgressBar progress={progress} label="Generating Word document..." />}
       {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
       {result && <ResultPanel {...result} />}
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

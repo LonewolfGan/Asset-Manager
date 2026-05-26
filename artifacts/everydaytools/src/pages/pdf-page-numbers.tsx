@@ -2,7 +2,6 @@ import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import { PDFDocument, StandardFonts } from 'pdf-lib';
@@ -58,14 +57,6 @@ export default function PdfPageNumbers() {
     } finally { setIsProcessing(false); }
   };
 
-  const faqs = [
-    { q: "Where are the page numbers placed?", a: "They are placed at the bottom of the page, 30 pixels from the edge." },
-    { q: "Does it alter existing numbers?", a: "No, it overlays new numbers. If the document already has numbers, they might overlap." },
-    { q: "Can I use Roman numerals?", a: "Currently, this tool supports only Arabic numerals (1, 2, 3...)." },
-    { q: "Can I skip the first page?", a: "Not currently. The numbers will be applied to every page starting from the number you provide." },
-    { q: "Are custom fonts supported?", a: "We use standard Helvetica for reliability and small file size." }
-  ];
-
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'PDF Tools', 'Add Page Numbers']} />
@@ -107,8 +98,6 @@ export default function PdfPageNumbers() {
       {isProcessing && <ProgressBar progress={progress} label="Applying page numbers..." />}
       {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
       {result && <ResultPanel {...result} />}
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

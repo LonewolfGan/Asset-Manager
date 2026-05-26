@@ -2,7 +2,6 @@ import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
@@ -89,14 +88,6 @@ export default function TxtToPdf() {
     } finally { setIsProcessing(false); }
   };
 
-  const faqs = [
-    { q: "What font is used for the PDF?", a: "A standard monospace font (Courier) is used to preserve text alignment perfectly." },
-    { q: "Is line wrapping supported?", a: "Yes, long lines of text will automatically wrap to fit the PDF page width." },
-    { q: "Can I paste text instead of uploading?", a: "Yes, switch to the 'Paste Text' tab to insert text directly." },
-    { q: "What page size is generated?", a: "The tool generates standard A4-sized PDF pages." },
-    { q: "Are emojis supported?", a: "Standard fonts may not support all emojis, which might appear as blank boxes." }
-  ];
-
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Word Tools', 'Text to PDF']} />
@@ -129,8 +120,6 @@ export default function TxtToPdf() {
       {isProcessing && <ProgressBar progress={progress} label="Generating PDF..." />}
       {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
       {result && <ResultPanel {...result} />}
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

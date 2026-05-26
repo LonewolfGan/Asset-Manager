@@ -2,7 +2,6 @@ import { useState, useRef } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import { PDFDocument } from 'pdf-lib';
@@ -87,14 +86,6 @@ export default function HtmlToPdf() {
     } finally { setIsProcessing(false); }
   };
 
-  const faqs = [
-    { q: "Why doesn't it look exactly like my webpage?", a: "Complex CSS, external stylesheets, and JavaScript might not render perfectly in the browser-side converter." },
-    { q: "Are external images supported?", a: "Only if they do not have restrictive CORS policies. Otherwise, they might be omitted." },
-    { q: "Is the text selectable in the PDF?", a: "No, this tool renders the HTML visually into an image, which is then placed in the PDF." },
-    { q: "Can I paste HTML code directly?", a: "Yes, switch to the 'Paste HTML' tab." },
-    { q: "Is data sent to a server?", a: "No, the HTML is rendered securely in your browser." }
-  ];
-
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Word Tools', 'HTML to PDF']} />
@@ -129,8 +120,6 @@ export default function HtmlToPdf() {
       {isProcessing && <ProgressBar progress={progress} label="Rendering HTML..." />}
       {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
       {result && <ResultPanel {...result} />}
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 
@@ -45,14 +44,6 @@ export default function PdfToHtml() {
     } finally { setIsProcessing(false); }
   };
 
-  const faqs = [
-    { q: "Does it extract images?", a: "No, this tool only extracts text and wraps it in basic HTML paragraphs." },
-    { q: "Is the CSS styling preserved?", a: "Original styling is not preserved. We apply basic, clean typography styles for readability." },
-    { q: "Will the HTML work in any browser?", a: "Yes, the generated HTML uses standard tags that render properly in all modern web browsers." },
-    { q: "Are custom fonts embedded?", a: "No, it uses system default sans-serif fonts to keep the file size minimal." },
-    { q: "Are CSS classes used?", a: "We use minimal structural HTML without complex CSS classes for simplicity." }
-  ];
-
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'PDF Tools', 'PDF to HTML']} />
@@ -68,7 +59,6 @@ export default function PdfToHtml() {
       {isProcessing && <ProgressBar progress={progress} label="Converting to HTML..." />}
       {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
       {result && <ResultPanel {...result} />}
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

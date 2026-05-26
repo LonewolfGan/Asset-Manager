@@ -2,7 +2,6 @@ import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
@@ -82,14 +81,6 @@ export default function MarkdownToPdf() {
     } finally { setIsProcessing(false); }
   };
 
-  const faqs = [
-    { q: "Are images in Markdown supported?", a: "No, this simple converter strips out images and focuses on text content." },
-    { q: "Is GitHub Flavored Markdown supported?", a: "Basic Markdown is supported, but complex tables or custom extensions may not render correctly." },
-    { q: "Does it keep the formatting?", a: "It extracts the plain text from the formatted HTML, so bold/italic visual styles are lost in the PDF." },
-    { q: "Is code highlighting supported?", a: "Code blocks are included as plain text without syntax highlighting." },
-    { q: "Can I customize the font?", a: "Currently, it uses standard Helvetica to ensure compatibility and speed." }
-  ];
-
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Word Tools', 'Markdown to PDF']} />
@@ -108,8 +99,6 @@ export default function MarkdownToPdf() {
       {isProcessing && <ProgressBar progress={progress} label="Converting..." />}
       {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
       {result && <ResultPanel {...result} />}
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

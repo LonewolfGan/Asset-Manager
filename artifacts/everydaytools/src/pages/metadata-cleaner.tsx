@@ -2,7 +2,6 @@ import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import exifr from 'exifr';
@@ -136,13 +135,6 @@ export default function MetadataCleaner() {
     } finally { setIsProcessing(false); }
   };
 
-  const faqs = [
-    { q: "What metadata does this remove?", a: "It removes standard EXIF data from JPEGs, document properties (Author, Creator) from PDFs, and Core/App properties from Word documents." },
-    { q: "Does it remove AI fingerprints?", a: "No. This tool removes standard metadata fields. It does not guarantee removal of cryptographic fingerprints, steganographic data, or AI model watermarks embedded in pixel values." },
-    { q: "Can I clean other image formats?", a: "EXIF removal works best on JPEG. Other formats might not contain EXIF data or are handled differently." },
-    { q: "Is GPS location data removed?", a: "Yes, GPS coordinates embedded in EXIF tags of JPEGs are completely removed." }
-  ];
-
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Privacy Tools', 'Metadata Cleaner']} />
@@ -190,8 +182,6 @@ export default function MetadataCleaner() {
           </div>
         </div>
       )}
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

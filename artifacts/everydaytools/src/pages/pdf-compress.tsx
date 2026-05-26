@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ProgressBar from '@/components/ProgressBar';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 
@@ -106,14 +105,6 @@ export default function PdfCompress() {
   };
 
   const reduction = result ? Math.round((1 - result.sizeAfter / result.sizeBefore) * 100) : 0;
-
-  const faqs = [
-    { q: 'How does this compressor work?', a: 'Each PDF page is rendered at the target DPI using a PDF renderer, compressed as JPEG at the chosen quality, and rebuilt into a new PDF. This gives predictable results for image-heavy PDFs.' },
-    { q: 'Will text remain selectable?', a: 'No. This method re-renders pages as images. The output PDF will not have selectable text. Use Screen or Ebook for sharing; avoid Prepress if text selection matters.' },
-    { q: 'Which level should I use?', a: 'Screen for the smallest file when printing quality is irrelevant. Ebook for everyday document sharing. Prepress when you need near-original quality for printing.' },
-    { q: 'Are my files uploaded?', a: 'No. All rendering and compression happens locally inside your browser. Nothing is sent to any server.' },
-    { q: 'Will it work on encrypted PDFs?', a: 'No. Unlock password-protected PDFs first using the PDF Unlock tool.' },
-  ];
 
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
@@ -250,8 +241,6 @@ export default function PdfCompress() {
       >
         <strong>Note:</strong> Compression results depend on the original PDF content. PDFs that are already optimized or contain mostly vector content may see minimal size reduction. This tool re-renders pages as JPEG images — text will not be selectable in the output.
       </div>
-
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

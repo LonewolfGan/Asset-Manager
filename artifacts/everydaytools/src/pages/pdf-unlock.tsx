@@ -2,7 +2,6 @@ import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import { PDFDocument } from 'pdf-lib';
@@ -50,14 +49,6 @@ export default function PdfUnlock() {
     } finally { setIsProcessing(false); }
   };
 
-  const faqs = [
-    { q: "What can this tool unlock?", a: "It removes Owner Passwords which restrict printing, copying text, or modifying the document." },
-    { q: "Can it bypass User Passwords?", a: "No. If a PDF prompts for a password just to open it (User Password), this tool cannot bypass it. You must know the password." },
-    { q: "Is it legal to remove restrictions?", a: "You should only remove restrictions on documents you own or have permission to modify." },
-    { q: "Does unlocking alter the contents?", a: "No, the document contents remain exactly the same. Only the permission flags are removed." },
-    { q: "Are files uploaded to a server?", a: "No, the unlocking process happens entirely within your web browser." }
-  ];
-
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'PDF Tools', 'Unlock PDF']} />
@@ -80,8 +71,6 @@ export default function PdfUnlock() {
       {isProcessing && <ProgressBar progress={progress} label="Unlocking PDF..." />}
       {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
       {result && <ResultPanel {...result} />}
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import FormatSelector from '@/components/FormatSelector';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import { CURRENCIES, FALLBACK_RATES, FALLBACK_DATE } from '@/config/currencies.config';
@@ -88,12 +87,6 @@ export default function CurrencyConverter() {
 
   const currencyOptions = CURRENCIES.map(c => ({ value: c.code, label: `${c.code} - ${c.name}` }));
 
-  const faqs = [
-    { q: "How often are rates updated?", a: "Live rates are fetched every hour from an open exchange rate API." },
-    { q: "What happens if I'm offline?", a: "We provide a fallback snapshot of 50+ major currencies so you can still convert offline." },
-    { q: "How many currencies are supported?", a: "We support over 170 major global currencies." }
-  ];
-
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Calculators', 'Currency Converter']} />
@@ -158,8 +151,6 @@ export default function CurrencyConverter() {
           )}
         </div>
       </div>
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

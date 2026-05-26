@@ -2,7 +2,6 @@ import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import { PDFDocument, degrees } from 'pdf-lib';
@@ -40,14 +39,6 @@ export default function PdfRotate() {
       setError(e instanceof Error ? e.message : 'Rotation failed. Please try again.');
     } finally { setIsProcessing(false); }
   };
-
-  const faqs = [
-    { q: "Does this permanently rotate the PDF?", a: "Yes, the rotation is permanently applied to the generated file." },
-    { q: "Can I select specific pages?", a: "This tool currently applies rotation to all pages in the PDF." },
-    { q: "Does rotation degrade quality?", a: "No, rotation is a metadata change and does not affect text or image quality." },
-    { q: "What do the degrees mean?", a: "90° is clockwise, 180° is upside down, and 270° is counter-clockwise." },
-    { q: "Is my document uploaded anywhere?", a: "No, the rotation process happens locally on your device." }
-  ];
 
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
@@ -87,8 +78,6 @@ export default function PdfRotate() {
       {isProcessing && <ProgressBar progress={progress} label="Applying rotation..." />}
       {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
       {result && <ResultPanel {...result} />}
-      
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
-import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import { Document, Packer, Paragraph, TextRun } from 'docx';
@@ -57,14 +56,6 @@ export default function PdfToWord() {
     } finally { setIsProcessing(false); }
   };
 
-  const faqs = [
-    { q: "Is DOCX compatible with Microsoft Word?", a: "Yes, the generated DOCX file is fully compatible with Microsoft Word, Google Docs, and other word processors." },
-    { q: "Does this preserve the exact layout?", a: "This tool extracts text and converts it into paragraphs. Complex layouts, tables, and images are currently not preserved." },
-    { q: "Can I convert password-protected PDFs?", a: "If the PDF requires a password to open, you will need to unlock it first before converting." },
-    { q: "Are tables supported?", a: "Tables are extracted as plain text, so the column structure may not align perfectly." },
-    { q: "Is it safe and private?", a: "Yes, the conversion happens entirely within your browser. No files are uploaded to any server." }
-  ];
-
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'PDF Tools', 'PDF to Word']} />
@@ -80,7 +71,6 @@ export default function PdfToWord() {
       {isProcessing && <ProgressBar progress={progress} label="Converting to DOCX..." />}
       {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
       {result && <ResultPanel {...result} />}
-      <FAQSection faqs={faqs} />
       <AdSlot type="horizontal" />
     </div>
   );
