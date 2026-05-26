@@ -3,7 +3,42 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
-import type { ViteDevServer } from "vite";
+import type { ViteDevServer, Plugin } from "vite";
+
+const ORT_VERSION = "1.26.0";
+const ORT_CDN = `https://cdn.jsdelivr.net/npm/onnxruntime-web@${ORT_VERSION}/dist/`;
+
+function cdnWasmPlugin(): Plugin {
+  return {
+    name: "cdn-wasm",
+    apply: "build",
+    generateBundle(
+      _: unknown,
+      bundle: Record<string, { type: string; code?: string }>
+    ) {
+      const replacements = new Map<string, string>();
+
+      for (const key of Object.keys(bundle)) {
+        if (!key.endsWith(".wasm")) continue;
+        const basename = key.split("/").pop()!;
+        // Strip Rollup content hash: "ort-wasm-simd-threaded.asyncify-DcJj-9Dx.wasm"
+        // → "ort-wasm-simd-threaded.asyncify.wasm"
+        const cdnBasename = basename.replace(/-[A-Za-z0-9_-]{6,12}\.wasm$/, ".wasm");
+        replacements.set(basename, `${ORT_CDN}${cdnBasename}`);
+        delete bundle[key];
+      }
+
+      for (const chunk of Object.values(bundle)) {
+        if (chunk.type !== "chunk" || !chunk.code) continue;
+        for (const [from, to] of replacements) {
+          if (chunk.code.includes(from)) {
+            chunk.code = chunk.code.split(from).join(to);
+          }
+        }
+      }
+    },
+  };
+}
 
 const rawPort = process.env.PORT;
 
@@ -94,6 +129,7 @@ function seoSsrPlugin() {
 export default defineConfig({
   base: basePath,
   plugins: [
+    cdnWasmPlugin(),
     seoSsrPlugin(),
     react(),
     tailwindcss(),
