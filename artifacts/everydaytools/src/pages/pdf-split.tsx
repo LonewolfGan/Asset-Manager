@@ -91,10 +91,7 @@ export default function PdfSplit() {
           setProgress(Math.round(((i + 1) / rangesToExtract.length) * 80));
         }
         
-        const zipBlob = await zip.generateAsync({ type: "blob", 
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            type: "blob" 
-        }, (metadata) => {
+        const zipBlob = await zip.generateAsync({ type: "blob" }, (metadata) => {
             setProgress(80 + Math.round(metadata.percent * 0.2));
         });
         

@@ -4,6 +4,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { lazy, Suspense, useEffect } from "react";
 import TopNav from "@/components/TopNav";
+import Footer from "@/components/Footer";
+import CookieBanner from "@/components/CookieBanner";
 import NotFound from "@/pages/not-found";
 import { LocaleProvider } from "@/contexts/locale-context";
 import { HelmetProvider } from "react-helmet-async";
@@ -57,6 +59,10 @@ const PasswordGenerator = lazy(() => import("@/pages/password-generator"));
 const PercentageCalc = lazy(() => import("@/pages/percentage-calc"));
 const UnitConverter = lazy(() => import("@/pages/unit-converter"));
 const CurrencyConverter = lazy(() => import("@/pages/currency-converter"));
+
+// Legal
+const Privacy = lazy(() => import("@/pages/privacy"));
+const Terms = lazy(() => import("@/pages/terms"));
 
 const TOOL_COMPONENTS: Record<string, React.LazyExoticComponent<() => JSX.Element>> = {
   "pdf-to-word": PdfToWord,
@@ -116,9 +122,9 @@ function LocaleToolRoute({ params }: { params: { slug: string } }) {
 
 function Router() {
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg-base)', fontFamily: 'var(--font-ui)' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-base)', fontFamily: 'var(--font-ui)', display: 'flex', flexDirection: 'column' }}>
       <TopNav />
-      <main>
+      <main style={{ flex: 1 }}>
         <Suspense fallback={<PageLoader />}>
           <Switch>
             <Route path="/" component={Home} />
@@ -166,10 +172,15 @@ function Router() {
             <Route path="/percentage-calc" component={PercentageCalc} />
             <Route path="/unit-converter" component={UnitConverter} />
             <Route path="/currency-converter" component={CurrencyConverter} />
+            {/* Legal */}
+            <Route path="/privacy" component={Privacy} />
+            <Route path="/terms" component={Terms} />
             <Route component={NotFound} />
           </Switch>
         </Suspense>
       </main>
+      <Footer />
+      <CookieBanner />
     </div>
   );
 }

@@ -1,3 +1,4 @@
 - [Design System](design-system.md) — premium utility dark-theme design system; consult before every UI change
 - [App structure](app-structure.md) — pnpm monorepo, artifact at artifacts/everydaytools, workflow port 25203, wouter routing, lazy page loads
 - [Vite HMR context+hook split](vite-hmr-context-hook.md) — files exporting both a React component and a hook break Fast Refresh; split into two files.
+- [Production infra](production-infra.md) — vercel.json, consent system, AdSlot, Footer, CookieBanner, Privacy/Terms pages all wired; AdSense controlled by VITE_ADSENSE_PUBLISHER_ID env var.
