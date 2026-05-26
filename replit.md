@@ -1,44 +1,61 @@
-# [Project name]
+# EverydayTools Hub
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A client-side multi-tool utility web app for everyday digital tasks — file conversion, image processing, AI background removal, metadata cleaning, password generation, currency conversion, and unit/tip calculators. All file operations run entirely in the browser for maximum privacy.
 
 ## Run & Operate
 
+- `pnpm --filter @workspace/everydaytools run dev` — run the frontend (port assigned via workflow)
 - `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
 
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- Frontend: React + Vite, Tailwind CSS, wouter routing
+- API: Express 5 (minimal — currency proxy only if needed)
+- DB: Not used (all state is localStorage / in-memory)
+- Build: Vite (frontend), esbuild (API server)
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/everydaytools/src/` — frontend React app
+- `artifacts/everydaytools/src/services/` — client-side tool service modules
+- `artifacts/everydaytools/src/config/` — units config and format config
+- `artifacts/everydaytools/src/pages/` — one page per route
+- `artifacts/api-server/src/routes/` — API routes (health only currently)
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- All file processing is client-side only (Canvas API, pdfjs-dist, pdf-lib, mammoth, piexifjs, @imgly/background-removal) — no uploads to any server
+- localStorage used only for user preferences and currency rate cache (1h TTL); sensitive data (passwords, metadata) never persisted
+- @imgly/background-removal is dynamically imported on first use to avoid blocking initial load
+- pdfjs-dist web worker is configured via `new URL('pdfjs-dist/build/pdf.worker.mjs', import.meta.url).href` for Vite compatibility
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+EverydayTools Hub provides nine client-side tools:
+1. Document Converter (PDF↔TXT, DOCX→HTML/TXT, TXT→PDF)
+2. Image Converter (PNG/JPEG/WEBP/AVIF/BMP/GIF/TIFF/ICO/SVG, batch up to 20 files)
+3. AI Background Remover (@imgly/background-removal)
+4. Metadata Cleaner + AI Text Watermark Scrubber
+5. Password Generator (crypto.getRandomValues, entropy bits)
+6. Currency Converter (live rates cached 1h, static fallback)
+7. Unit Converter (config-driven graph, 10 categories)
+8. Tip & Percentage Calculator
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- Design: DM Serif Display / IBM Plex Sans / IBM Plex Mono fonts
+- Palette: warm off-white #F7F6F3, white #FFFFFF, near-black #1A1916, blue accent #1A6BFF
+- Zero emojis in UI
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- pdfjs-dist web worker must be set via import.meta.url, not a string path
+- @imgly/background-removal peer requires onnxruntime-web; version mismatch warning is expected
+- DOCX→PDF and ODT→PDF are explicitly NOT IMPLEMENTED (layout-engine dependent); they return a clean error
+- Currency rates use open.er-api.com (free, no API key) with localStorage TTL cache
 
 ## Pointers
 
