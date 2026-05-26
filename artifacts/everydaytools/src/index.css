@@ -45,18 +45,19 @@
 /* ─── DARK THEME (default) ─── */
 :root {
   /* Semantic color tokens */
-  --bg-base:        #0A0A0A;
-  --bg-surface:     #111111;
-  --bg-elevated:    #1A1A1A;
-  --bg-hover:       #1F1F1F;
+  --bg-base:        #111113;
+  --bg-surface:     #18181b;
+  --bg-elevated:    #222228;
+  --bg-hover:       #2a2a30;
   --bg-subtle:      var(--bg-hover);
-  --border:         #2A2A2A;
-  --border-strong:  #3A3A3A;
-  --text-primary:   #EDEDED;
-  --text-secondary: #888888;
-  --text-tertiary:  #555555;
+  --border:         #2e2e36;
+  --border-strong:  #3f3f4a;
+  --text-primary:   #f0f0f0;
+  --text-secondary: #8c8c9a;
+  --text-tertiary:  #52525e;
   --accent:         #E8FF47;
-  --accent-text:    #0A0A0A;
+  --accent-subtle:  rgba(232, 255, 71, 0.10);
+  --accent-text:    #0f0f0f;
   --danger:         #FF4444;
   --success:        #22C55E;
   --warning:        #F59E0B;
@@ -93,32 +94,32 @@
   --content-full:   1400px;
 
   /* Tailwind HSL slots (kept for Radix/shadcn compat) */
-  --background: 0 0% 4%;
-  --foreground: 0 0% 93%;
+  --background: 240 3% 7%;
+  --foreground: 0 0% 94%;
   --primary: 68 100% 64%;
-  --primary-foreground: 0 0% 4%;
-  --card: 0 0% 7%;
-  --card-foreground: 0 0% 93%;
-  --border-hsl: 0 0% 16%;
-  --input: 0 0% 16%;
-  --muted-tw: 0 0% 13%;
-  --muted-foreground: 0 0% 53%;
+  --primary-foreground: 240 3% 6%;
+  --card: 240 3% 10%;
+  --card-foreground: 0 0% 94%;
+  --border-hsl: 240 4% 18%;
+  --input: 240 4% 18%;
+  --muted-tw: 240 3% 14%;
+  --muted-foreground: 240 3% 55%;
   --accent-tw: 68 100% 64%;
-  --accent-foreground: 0 0% 4%;
-  --secondary: 0 0% 13%;
-  --secondary-foreground: 0 0% 93%;
+  --accent-foreground: 240 3% 6%;
+  --secondary: 240 3% 14%;
+  --secondary-foreground: 0 0% 94%;
   --destructive: 0 100% 63%;
   --destructive-foreground: 0 0% 100%;
   --ring: 68 100% 64%;
-  --popover: 0 0% 7%;
-  --popover-foreground: 0 0% 93%;
-  --sidebar: 0 0% 7%;
-  --sidebar-foreground: 0 0% 93%;
-  --sidebar-border: 0 0% 16%;
+  --popover: 240 3% 10%;
+  --popover-foreground: 0 0% 94%;
+  --sidebar: 240 3% 10%;
+  --sidebar-foreground: 0 0% 94%;
+  --sidebar-border: 240 4% 18%;
   --sidebar-primary: 68 100% 64%;
-  --sidebar-primary-foreground: 0 0% 4%;
-  --sidebar-accent: 0 0% 13%;
-  --sidebar-accent-foreground: 0 0% 93%;
+  --sidebar-primary-foreground: 240 3% 6%;
+  --sidebar-accent: 240 3% 14%;
+  --sidebar-accent-foreground: 0 0% 94%;
   --sidebar-ring: 68 100% 64%;
 }
 
@@ -134,7 +135,8 @@
   --text-primary:   #0A0A0A;
   --text-secondary: #666666;
   --text-tertiary:  #999999;
-  --accent:         #1A1A1A;
+  --accent:         #5a9200;
+  --accent-subtle:  rgba(90, 146, 0, 0.10);
   --accent-text:    #FFFFFF;
   --danger:         #CC2200;
   --success:        #15803D;

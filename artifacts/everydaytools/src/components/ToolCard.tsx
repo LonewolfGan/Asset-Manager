@@ -83,8 +83,8 @@ export default function ToolCard({ tool }: ToolCardProps) {
             <span key={fmt} style={{
               fontFamily: "var(--font-mono)",
               fontSize: "0.7rem",
-              color: "var(--text-secondary)",
-              background: "var(--bg-elevated)",
+              color: "var(--accent)",
+              background: "var(--accent-subtle)",
               borderRadius: 3,
               padding: "2px 6px",
             }}>
