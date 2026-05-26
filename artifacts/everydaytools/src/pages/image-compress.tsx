@@ -465,7 +465,7 @@ export default function ImageCompress() {
                   <img
                     src={entry.originalUrl}
                     alt="original"
-                    style={{ width: '100%', maxHeight: 120, objectFit: 'contain', display: 'block', background: '#f5f5f0' }}
+                    style={{ width: '100%', maxHeight: 120, objectFit: 'contain', display: 'block', background: 'var(--bg-elevated)' }}
                   />
                   <p style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 12, color: 'var(--muted)', margin: '6px 0 0' }}>
                     {formatBytes(entry.file.size)}
@@ -482,7 +482,7 @@ export default function ImageCompress() {
                       <img
                         src={entry.compressedUrl}
                         alt="compressed"
-                        style={{ width: '100%', maxHeight: 120, objectFit: 'contain', display: 'block', background: '#f5f5f0' }}
+                        style={{ width: '100%', maxHeight: 120, objectFit: 'contain', display: 'block', background: 'var(--bg-elevated)' }}
                       />
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 6 }}>
                         <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 12, color: 'var(--muted)' }}>
@@ -509,7 +509,7 @@ export default function ImageCompress() {
                       {entry.error}
                     </div>
                   ) : (
-                    <div style={{ height: 120, background: '#f5f5f0', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--muted)', fontSize: 13, fontFamily: 'IBM Plex Sans, sans-serif' }}>
+                    <div style={{ height: 120, background: 'var(--bg-elevated)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--muted)', fontSize: 13, fontFamily: 'IBM Plex Sans, sans-serif' }}>
                       —
                     </div>
                   )}
@@ -524,7 +524,7 @@ export default function ImageCompress() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  background: '#FAFAFA',
+                  background: 'var(--bg-elevated)',
                   gap: 8,
                 }}
               >

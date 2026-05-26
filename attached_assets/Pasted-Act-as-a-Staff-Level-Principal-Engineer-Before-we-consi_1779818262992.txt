@@ -1,0 +1,49 @@
+Act as a Staff-Level Principal Engineer. Before we consider the core development complete, you must rigorously audit the entire codebase and output your findings. 
+
+
+
+
+
+STEP 1: FUNCTIONAL & ARCHITECTURAL AUDIT
+
+Review every tool implemented in the catalogue. 
+
+- Are they fully functional?
+
+- Are the chosen libraries the absolute best, most performant, and reliable for a 100% free, client-side-first architecture? 
+
+- Are there any edge cases (like large files crashing the browser in the PDF/Image tools)?
+
+- Automatically fix any sub-optimal implementations, memory leaks, or UI bugs you find. If a tool fakes a result, replace it with a real implementation or clearly document its limitation.
+
+
+
+STEP 2: DESIGN & AESTHETIC VERIFICATION
+
+Check the UI against the strict design rules we established:
+
+- Is the palette using rich neutrals (Zinc/Slate) instead of pure black/grays?
+
+- Is the Lime Green accent strictly contained to functional elements (primary buttons, active states) and small data tags (like [HTML] → [PDF])?
+
+- Ensure absolutely NO accent colors are applied to card borders, large backgrounds, or decorative elements.
+
+- Verify perfect contrast and zero accessibility (a11y) violations. Fix them if found.
+
+
+
+STEP 3: THE MONETIZATION & LAUNCH ROADMAP
+
+Once the code is solid, I need a precise, technical action plan for the next steps. Output a detailed guide explaining:
+
+1. Ad Integration: We built semantic `<AdSlot>` containers. How exactly do I wire them up to a real ad network (AdSense, Ezoic, or Mediavine) in this Next.js 14 App Router setup? Where do the network scripts go without destroying page load performance or triggering hydration errors?
+
+2. Consent Management: What is the cleanest way to implement a GDPR/CCPA cookie banner that hooks into the ad providers?
+
+3. Analytics: Best practice for adding lightweight tracking (e.g., Plausible, PostHog, or GA4) to see which tools are used the most.
+
+4. Deployment: Final checklist for deploying this specific Next.js app (Vercel/Cloudflare), setting up the custom domain, and submitting the sitemap to Google.
+
+
+
+Provide technical, Next.js-specific answers. No generic fluff.

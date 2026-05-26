@@ -7,12 +7,16 @@ interface ResultPanelProps {
   sizeAfter: number;
   blob: Blob;
   textOutput?: string;
+  warning?: string;
 }
 
-export default function ResultPanel({ filename, sizeBefore, sizeAfter, blob, textOutput }: ResultPanelProps) {
+export default function ResultPanel({ filename, sizeBefore, sizeAfter, blob, textOutput, warning }: ResultPanelProps) {
   const [copied, setCopied] = useState(false);
 
-  const formatSize = (bytes: number) => (bytes / 1024 / 1024).toFixed(2) + ' MB';
+  const formatSize = (bytes: number) =>
+    bytes < 1024 * 1024
+      ? (bytes / 1024).toFixed(1) + ' KB'
+      : (bytes / 1024 / 1024).toFixed(2) + ' MB';
 
   const handleDownload = () => {
     const url = URL.createObjectURL(blob);
@@ -33,61 +37,195 @@ export default function ResultPanel({ filename, sizeBefore, sizeAfter, blob, tex
     }
   };
 
+  const reduction = sizeBefore && sizeAfter < sizeBefore
+    ? Math.round((1 - sizeAfter / sizeBefore) * 100)
+    : null;
+
   return (
-    <div className="bg-white border border-[var(--success)] rounded-[var(--radius)] p-6 mt-6 shadow-sm">
-      <div className="flex items-center gap-3 mb-4">
-        <CheckCircle2 className="w-6 h-6 text-[var(--success)]" />
-        <h3 className="text-xl font-medium text-[var(--text)]">Ready to download</h3>
+    <div style={{
+      marginTop: 24,
+      border: '1px solid var(--border)',
+      borderRadius: 8,
+      overflow: 'hidden',
+    }}>
+      {/* Header bar */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 10,
+        padding: '12px 16px',
+        background: 'var(--bg-elevated)',
+        borderBottom: '1px solid var(--border)',
+      }}>
+        <CheckCircle2 size={16} style={{ color: 'var(--success)', flexShrink: 0 }} />
+        <span style={{
+          fontFamily: 'var(--font-ui)',
+          fontSize: 'var(--text-sm)',
+          fontWeight: 500,
+          color: 'var(--text-primary)',
+        }}>
+          Ready to download
+        </span>
       </div>
-      
-      <div className="mb-6 p-4 bg-[var(--bg)] rounded-md">
-        <p className="font-medium text-[var(--text)] truncate mb-1">{filename}</p>
-        <div className="text-sm text-[var(--muted)] flex items-center gap-2">
+
+      {/* File info */}
+      <div style={{ padding: '12px 16px', background: 'var(--bg-surface)' }}>
+        <p style={{
+          fontFamily: 'var(--font-ui)',
+          fontSize: 'var(--text-sm)',
+          fontWeight: 500,
+          color: 'var(--text-primary)',
+          margin: '0 0 4px',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+        }}>
+          {filename}
+        </p>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          fontFamily: 'var(--font-mono)',
+          fontSize: 'var(--text-xs)',
+          color: 'var(--text-secondary)',
+        }}>
           {sizeBefore && (
             <>
-              <span className="line-through">{formatSize(sizeBefore)}</span>
+              <span style={{ textDecoration: 'line-through' }}>{formatSize(sizeBefore)}</span>
               <span>→</span>
             </>
           )}
-          <span className="font-medium text-[var(--text)]">{formatSize(sizeAfter)}</span>
-          {sizeBefore && sizeAfter < sizeBefore && (
-            <span className="text-[var(--success)] ml-2 text-xs bg-[var(--success)]/10 px-2 py-0.5 rounded-full">
-              -{Math.round((1 - sizeAfter / sizeBefore) * 100)}%
+          <span style={{ color: 'var(--text-primary)' }}>{formatSize(sizeAfter)}</span>
+          {reduction !== null && (
+            <span style={{
+              color: 'var(--success)',
+              background: 'rgba(34,197,94,0.10)',
+              borderRadius: 3,
+              padding: '1px 6px',
+            }}>
+              -{reduction}%
             </span>
           )}
         </div>
       </div>
 
-      <button 
-        onClick={handleDownload}
-        className="w-full md:w-auto px-6 py-3 bg-[var(--accent)] hover:bg-[var(--accent-dark)] text-white rounded-md font-medium flex items-center justify-center gap-2 transition-colors"
-      >
-        <Download className="w-5 h-5" />
-        Download File
-      </button>
+      {/* Warning note */}
+      {warning && (
+        <div style={{
+          padding: '10px 16px',
+          background: 'rgba(245, 158, 11, 0.08)',
+          borderTop: '1px solid var(--border)',
+          borderBottom: '1px solid var(--border)',
+          fontFamily: 'var(--font-ui)',
+          fontSize: 'var(--text-xs)',
+          color: 'var(--warning)',
+          lineHeight: 1.5,
+        }}>
+          {warning}
+        </div>
+      )}
 
+      {/* Download button */}
+      <div style={{ padding: '12px 16px', background: 'var(--bg-surface)' }}>
+        <button
+          onClick={handleDownload}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '9px 20px',
+            background: 'var(--accent)',
+            color: 'var(--accent-text)',
+            border: 'none',
+            borderRadius: 4,
+            fontFamily: 'var(--font-ui)',
+            fontSize: 'var(--text-sm)',
+            fontWeight: 500,
+            cursor: 'pointer',
+          }}
+        >
+          <Download size={14} />
+          Download {filename.split('.').pop()?.toUpperCase()}
+        </button>
+      </div>
+
+      {/* Text output preview */}
       {textOutput && (
-        <div className="mt-8 border-t border-[var(--border)] pt-6">
-          <div className="flex items-center justify-between mb-3">
-            <h4 className="font-medium text-[var(--text)]">Extracted Text</h4>
-            <div className="flex gap-2">
-              <button 
+        <div style={{
+          borderTop: '1px solid var(--border)',
+          background: 'var(--bg-surface)',
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '10px 16px',
+            borderBottom: '1px solid var(--border)',
+          }}>
+            <span style={{
+              fontFamily: 'var(--font-ui)',
+              fontSize: 'var(--text-xs)',
+              fontWeight: 600,
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              color: 'var(--text-tertiary)',
+            }}>
+              Extracted Text
+            </span>
+            <div style={{ display: 'flex', gap: 6 }}>
+              <button
                 onClick={handleCopy}
-                className="text-sm px-3 py-1.5 border border-[var(--border)] rounded hover:bg-[var(--bg)] flex items-center gap-1 transition-colors"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 5,
+                  padding: '4px 10px',
+                  background: 'none',
+                  border: '1px solid var(--border)',
+                  borderRadius: 3,
+                  fontFamily: 'var(--font-ui)',
+                  fontSize: 'var(--text-xs)',
+                  color: 'var(--text-secondary)',
+                  cursor: 'pointer',
+                }}
               >
-                <Copy className="w-4 h-4" />
-                {copied ? 'Copied!' : 'Copy all'}
+                <Copy size={11} />
+                {copied ? 'Copied' : 'Copy all'}
               </button>
-              <button 
+              <button
                 onClick={handleDownload}
-                className="text-sm px-3 py-1.5 border border-[var(--border)] rounded hover:bg-[var(--bg)] flex items-center gap-1 transition-colors"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 5,
+                  padding: '4px 10px',
+                  background: 'none',
+                  border: '1px solid var(--border)',
+                  borderRadius: 3,
+                  fontFamily: 'var(--font-ui)',
+                  fontSize: 'var(--text-xs)',
+                  color: 'var(--text-secondary)',
+                  cursor: 'pointer',
+                }}
               >
-                <Download className="w-4 h-4" />
-                Download .txt
+                <Download size={11} />
+                .txt
               </button>
             </div>
           </div>
-          <pre className="font-mono text-sm bg-[var(--bg)] p-4 rounded-md overflow-y-auto max-h-[400px] whitespace-pre-wrap border border-[var(--border)] text-[var(--text)]">
+          <pre style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 'var(--text-xs)',
+            color: 'var(--text-secondary)',
+            background: 'var(--bg-base)',
+            margin: 0,
+            padding: '12px 16px',
+            overflowY: 'auto',
+            maxHeight: 360,
+            whiteSpace: 'pre-wrap',
+            lineHeight: 1.6,
+          }}>
             {textOutput}
           </pre>
         </div>

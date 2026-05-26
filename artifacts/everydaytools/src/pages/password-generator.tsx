@@ -147,7 +147,7 @@ export default function PasswordGenerator() {
                 <option value={25}>25</option>
               </select>
             </div>
-            <button onClick={generate} style={{ flex: 2, padding: '10px', background: 'var(--accent)', color: '#fff', border: 'none', borderRadius: 'var(--radius)', fontWeight: 500, cursor: 'pointer' }}>
+            <button onClick={generate} style={{ flex: 2, padding: '10px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontWeight: 500, cursor: 'pointer' }}>
               Regenerate
             </button>
           </div>
