@@ -1,5 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { useState, useRef, useEffect } from "react";
+import { useTheme } from "@/hooks/use-theme";
 
 type NavLink = { label: string; href: string };
 type NavPair = [NavLink | null, NavLink | null];
@@ -47,25 +48,21 @@ const GROUPS: { id: string; label: string; pairs: NavPair[] }[] = [
 
 function useOutsideClick(ref: React.RefObject<HTMLElement | null>, handler: () => void) {
   useEffect(() => {
-    const listener = (e: MouseEvent | TouchEvent) => {
+    const fn = (e: MouseEvent | TouchEvent) => {
       if (!ref.current || ref.current.contains(e.target as Node)) return;
       handler();
     };
-    document.addEventListener("mousedown", listener);
-    document.addEventListener("touchstart", listener);
+    document.addEventListener("mousedown", fn);
+    document.addEventListener("touchstart", fn);
     return () => {
-      document.removeEventListener("mousedown", listener);
-      document.removeEventListener("touchstart", listener);
+      document.removeEventListener("mousedown", fn);
+      document.removeEventListener("touchstart", fn);
     };
   }, [ref, handler]);
 }
 
 function NavDropdown({
-  group,
-  isOpen,
-  onOpen,
-  onClose,
-  currentPath,
+  group, isOpen, onOpen, onClose, currentPath,
 }: {
   group: (typeof GROUPS)[number];
   isOpen: boolean;
@@ -79,49 +76,16 @@ function NavDropdown({
   const allLinks = group.pairs.flatMap((p) => p.filter(Boolean)) as NavLink[];
   const isActive = allLinks.some((l) => l.href === currentPath);
 
-  const clearLeave = () => {
-    if (leaveTimer.current) clearTimeout(leaveTimer.current);
-  };
-
-  const scheduleClose = () => {
-    clearLeave();
-    leaveTimer.current = setTimeout(onClose, 120);
-  };
-
-  useEffect(() => () => clearLeave(), []);
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Escape") {
-      onClose();
-      buttonRef.current?.focus();
-    }
-    if ((e.key === "Enter" || e.key === " ") && !isOpen) {
-      e.preventDefault();
-      onOpen();
-    }
-    if (e.key === "ArrowDown" && isOpen) {
-      e.preventDefault();
-      const links = panelRef.current?.querySelectorAll("a");
-      if (links?.length) (links[0] as HTMLAnchorElement).focus();
-    }
-  };
+  const clearLeave = () => { if (leaveTimer.current) clearTimeout(leaveTimer.current); };
+  const scheduleClose = () => { clearLeave(); leaveTimer.current = setTimeout(onClose, 130); };
+  useEffect(() => clearLeave, []);
 
   const handlePanelKeyDown = (e: React.KeyboardEvent) => {
     const links = Array.from(panelRef.current?.querySelectorAll("a") ?? []);
     const idx = links.indexOf(document.activeElement as HTMLAnchorElement);
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      (links[idx + 1] as HTMLAnchorElement | undefined)?.focus();
-    }
-    if (e.key === "ArrowUp") {
-      e.preventDefault();
-      if (idx === 0) buttonRef.current?.focus();
-      else (links[idx - 1] as HTMLAnchorElement | undefined)?.focus();
-    }
-    if (e.key === "Escape") {
-      onClose();
-      buttonRef.current?.focus();
-    }
+    if (e.key === "ArrowDown") { e.preventDefault(); (links[idx + 1] as HTMLAnchorElement | undefined)?.focus(); }
+    if (e.key === "ArrowUp") { e.preventDefault(); idx === 0 ? buttonRef.current?.focus() : (links[idx - 1] as HTMLAnchorElement | undefined)?.focus(); }
+    if (e.key === "Escape") { onClose(); buttonRef.current?.focus(); }
   };
 
   return (
@@ -134,37 +98,33 @@ function NavDropdown({
         ref={buttonRef}
         aria-haspopup="true"
         aria-expanded={isOpen}
-        onKeyDown={handleKeyDown}
         onClick={() => (isOpen ? onClose() : onOpen())}
+        onKeyDown={(e) => {
+          if (e.key === "Escape") { onClose(); buttonRef.current?.focus(); }
+          if ((e.key === "Enter" || e.key === " ") && !isOpen) { e.preventDefault(); onOpen(); }
+          if (e.key === "ArrowDown" && isOpen) { e.preventDefault(); const links = panelRef.current?.querySelectorAll("a"); if (links?.length) (links[0] as HTMLAnchorElement).focus(); }
+        }}
         style={{
           background: "none",
           border: "none",
+          borderBottom: isActive ? "2px solid var(--accent)" : "2px solid transparent",
           cursor: "pointer",
-          padding: "6px 2px",
-          fontFamily: "IBM Plex Sans, sans-serif",
-          fontSize: 14,
+          padding: "6px 0",
+          fontFamily: "var(--font-ui)",
+          fontSize: "var(--text-sm)",
           fontWeight: 500,
-          color: isActive ? "var(--accent)" : "var(--muted)",
+          color: isActive ? "var(--text-primary)" : "var(--text-secondary)",
           display: "flex",
           alignItems: "center",
-          gap: 4,
-          borderBottom: isActive ? "2px solid var(--accent)" : "2px solid transparent",
-          transition: "color 0.15s, border-color 0.15s",
+          gap: 5,
+          transition: "color 120ms ease, border-color 120ms ease",
         }}
+        onMouseEnter={(e) => { if (!isActive) (e.currentTarget as HTMLElement).style.color = "var(--text-primary)"; }}
+        onMouseLeave={(e) => { if (!isActive) (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)"; }}
       >
         {group.label}
-        <svg
-          width="10"
-          height="6"
-          viewBox="0 0 10 6"
-          fill="none"
-          style={{
-            transform: isOpen ? "rotate(180deg)" : "none",
-            transition: "transform 0.15s",
-            marginTop: 1,
-          }}
-        >
-          <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <svg width="9" height="5" viewBox="0 0 9 5" fill="none" style={{ transform: isOpen ? "rotate(180deg)" : "none", transition: "transform 120ms ease", flexShrink: 0 }}>
+          <path d="M1 1l3.5 3L8 1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
 
@@ -175,34 +135,21 @@ function NavDropdown({
           onKeyDown={handlePanelKeyDown}
           style={{
             position: "absolute",
-            top: "calc(100% + 8px)",
+            top: "calc(100% + 10px)",
             left: 0,
-            background: "var(--surface)",
+            background: "var(--bg-elevated)",
             border: "1px solid var(--border)",
-            borderRadius: "var(--radius)",
-            boxShadow: "var(--shadow-md)",
-            minWidth: 360,
-            padding: "8px 0",
+            borderRadius: 4,
+            minWidth: 340,
+            padding: 8,
             zIndex: 100,
+            opacity: 1,
           }}
         >
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: 0,
-            }}
-          >
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
             {group.pairs.map((pair, pi) =>
               pair[0] === null && pair[1] === null ? (
-                <div
-                  key={pi}
-                  style={{
-                    gridColumn: "1 / -1",
-                    borderTop: "1px solid var(--border)",
-                    margin: "4px 12px",
-                  }}
-                />
+                <div key={pi} style={{ gridColumn: "1 / -1", borderTop: "1px solid var(--border)", margin: "4px 0" }} />
               ) : (
                 pair.map((link, li) =>
                   link ? (
@@ -212,24 +159,27 @@ function NavDropdown({
                       role="menuitem"
                       onClick={onClose}
                       style={{
-                        display: "block",
-                        padding: "7px 16px",
-                        fontFamily: "IBM Plex Sans, sans-serif",
-                        fontSize: 13.5,
-                        color: currentPath === link.href ? "var(--accent)" : "var(--text)",
+                        display: "flex",
+                        alignItems: "center",
+                        height: 32,
+                        padding: "0 10px",
+                        fontFamily: "var(--font-ui)",
+                        fontSize: "var(--text-sm)",
+                        color: currentPath === link.href ? "var(--text-primary)" : "var(--text-secondary)",
                         textDecoration: "none",
-                        borderBottom: currentPath === link.href ? "1px solid var(--accent)" : "none",
+                        borderRadius: 4,
                         whiteSpace: "nowrap",
-                        transition: "background 0.1s, color 0.1s",
+                        transition: "background 120ms ease, color 120ms ease",
+                        fontWeight: currentPath === link.href ? 500 : 400,
+                        borderBottom: currentPath === link.href ? "1px solid var(--accent)" : "none",
                       }}
                       onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLElement).style.background = "#F0F4FF";
-                        (e.currentTarget as HTMLElement).style.color = "var(--accent)";
+                        (e.currentTarget as HTMLElement).style.background = "var(--bg-subtle)";
+                        (e.currentTarget as HTMLElement).style.color = "var(--text-primary)";
                       }}
                       onMouseLeave={(e) => {
                         (e.currentTarget as HTMLElement).style.background = "transparent";
-                        (e.currentTarget as HTMLElement).style.color =
-                          currentPath === link.href ? "var(--accent)" : "var(--text)";
+                        (e.currentTarget as HTMLElement).style.color = currentPath === link.href ? "var(--text-primary)" : "var(--text-secondary)";
                       }}
                     >
                       {link.label}
@@ -247,20 +197,12 @@ function NavDropdown({
   );
 }
 
-function MobileDrawer({
-  open,
-  onClose,
-  currentPath,
-}: {
-  open: boolean;
-  onClose: () => void;
-  currentPath: string;
-}) {
+function MobileDrawer({ open, onClose, currentPath }: { open: boolean; onClose: () => void; currentPath: string }) {
   const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
+  const { theme, toggle } = useTheme();
 
   useEffect(() => {
-    if (open) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "";
+    document.body.style.overflow = open ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
@@ -268,60 +210,16 @@ function MobileDrawer({
 
   return (
     <>
-      <div
-        onClick={onClose}
-        style={{
-          position: "fixed",
-          inset: 0,
-          background: "rgba(0,0,0,0.35)",
-          zIndex: 200,
-        }}
-      />
-      <div
-        style={{
-          position: "fixed",
-          top: 0,
-          right: 0,
-          bottom: 0,
-          width: "min(320px, 90vw)",
-          background: "var(--surface)",
-          zIndex: 201,
-          overflowY: "auto",
-          boxShadow: "-4px 0 24px rgba(0,0,0,0.12)",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            padding: "16px 20px",
-            borderBottom: "1px solid var(--border)",
-          }}
-        >
-          <span style={{ fontFamily: "DM Serif Display, serif", fontSize: 20, color: "var(--text)" }}>
-            EverydayTools
-          </span>
-          <button
-            onClick={onClose}
-            aria-label="Close menu"
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              padding: 4,
-              color: "var(--muted)",
-            }}
-          >
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M4 4l12 12M16 4L4 16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-            </svg>
+      <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", zIndex: 200 }} />
+      <div style={{ position: "fixed", top: 0, right: 0, bottom: 0, width: "min(300px, 88vw)", background: "var(--bg-surface)", zIndex: 201, overflowY: "auto", display: "flex", flexDirection: "column" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", borderBottom: "1px solid var(--border)" }}>
+          <span style={{ fontFamily: "var(--font-display)", fontSize: 18, color: "var(--text-primary)", fontWeight: 400 }}>EverydayTools</span>
+          <button onClick={onClose} aria-label="Close menu" style={{ background: "none", border: "none", cursor: "pointer", padding: 4, color: "var(--text-secondary)" }}>
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 3l12 12M15 3L3 15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>
           </button>
         </div>
 
-        <div style={{ flex: 1, padding: "8px 0" }}>
+        <div style={{ flex: 1 }}>
           {GROUPS.map((group) => {
             const allLinks = group.pairs.flatMap((p) => p.filter(Boolean)) as NavLink[];
             const isExpanded = expandedGroup === group.id;
@@ -329,50 +227,17 @@ function MobileDrawer({
               <div key={group.id} style={{ borderBottom: "1px solid var(--border)" }}>
                 <button
                   onClick={() => setExpandedGroup(isExpanded ? null : group.id)}
-                  style={{
-                    width: "100%",
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    padding: "14px 20px",
-                    fontFamily: "IBM Plex Sans, sans-serif",
-                    fontSize: 14,
-                    fontWeight: 600,
-                    color: "var(--text)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    textAlign: "left",
-                  }}
+                  style={{ width: "100%", background: "none", border: "none", cursor: "pointer", padding: "13px 20px", fontFamily: "var(--font-ui)", fontSize: "var(--text-sm)", fontWeight: 500, color: "var(--text-primary)", display: "flex", alignItems: "center", justifyContent: "space-between" }}
                 >
                   {group.label}
-                  <svg
-                    width="10"
-                    height="6"
-                    viewBox="0 0 10 6"
-                    fill="none"
-                    style={{ transform: isExpanded ? "rotate(180deg)" : "none", transition: "transform 0.15s" }}
-                  >
-                    <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <svg width="9" height="5" viewBox="0 0 9 5" fill="none" style={{ transform: isExpanded ? "rotate(180deg)" : "none", transition: "transform 120ms ease" }}>
+                    <path d="M1 1l3.5 3L8 1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </button>
                 {isExpanded && (
-                  <div style={{ paddingBottom: 8 }}>
+                  <div style={{ paddingBottom: 6 }}>
                     {allLinks.map((link) => (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        onClick={onClose}
-                        style={{
-                          display: "block",
-                          padding: "9px 28px",
-                          fontFamily: "IBM Plex Sans, sans-serif",
-                          fontSize: 13.5,
-                          color: currentPath === link.href ? "var(--accent)" : "var(--muted)",
-                          textDecoration: "none",
-                          fontWeight: currentPath === link.href ? 500 : 400,
-                        }}
-                      >
+                      <Link key={link.href} href={link.href} onClick={onClose} style={{ display: "block", padding: "8px 28px", fontFamily: "var(--font-ui)", fontSize: "var(--text-sm)", color: currentPath === link.href ? "var(--text-primary)" : "var(--text-secondary)", textDecoration: "none", fontWeight: currentPath === link.href ? 500 : 400 }}>
                         {link.label}
                       </Link>
                     ))}
@@ -381,24 +246,12 @@ function MobileDrawer({
               </div>
             );
           })}
+        </div>
 
-          <div style={{ padding: "16px 20px" }}>
-            <div
-              style={{
-                display: "flex",
-                gap: 8,
-                fontFamily: "IBM Plex Mono, monospace",
-                fontSize: 13,
-              }}
-            >
-              <button style={{ background: "var(--accent)", color: "#fff", border: "none", borderRadius: 4, padding: "5px 10px", cursor: "pointer", fontFamily: "inherit", fontSize: 13 }}>
-                EN
-              </button>
-              <button style={{ background: "none", color: "var(--muted)", border: "1px solid var(--border)", borderRadius: 4, padding: "5px 10px", cursor: "pointer", fontFamily: "inherit", fontSize: 13 }}>
-                FR
-              </button>
-            </div>
-          </div>
+        <div style={{ padding: "16px 20px", borderTop: "1px solid var(--border)", display: "flex", gap: 8 }}>
+          <button onClick={toggle} style={{ padding: "6px 12px", border: "1px solid var(--border-strong)", borderRadius: 4, background: "transparent", color: "var(--text-secondary)", fontFamily: "var(--font-ui)", fontSize: "var(--text-sm)", cursor: "pointer" }}>
+            {theme === 'dark' ? 'Light mode' : 'Dark mode'}
+          </button>
         </div>
       </div>
     </>
@@ -410,84 +263,31 @@ export default function TopNav() {
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
+  const { theme, toggle } = useTheme();
 
   useOutsideClick(navRef, () => setOpenGroup(null));
 
-  useEffect(() => {
-    setOpenGroup(null);
-    setMobileOpen(false);
-  }, [location]);
+  useEffect(() => { setOpenGroup(null); setMobileOpen(false); }, [location]);
 
   return (
     <>
-      <nav
-        style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 50,
-          background: "var(--surface)",
-          borderBottom: "1px solid var(--border)",
-          boxShadow: "0 1px 0 var(--border)",
-        }}
-      >
+      <nav style={{ position: "sticky", top: 0, zIndex: 50, background: "var(--bg-surface)", borderBottom: "1px solid var(--border)" }}>
         <div
           ref={navRef}
-          style={{
-            maxWidth: 1100,
-            margin: "0 auto",
-            padding: "0 20px",
-            height: 56,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 24,
-          }}
+          style={{ maxWidth: "var(--content-wide)", margin: "0 auto", padding: "0 20px", height: 52, display: "flex", alignItems: "center", gap: 32 }}
         >
-          <Link
-            href="/"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              textDecoration: "none",
-              flexShrink: 0,
-            }}
-          >
-            <div
-              style={{
-                width: 30,
-                height: 30,
-                background: "var(--accent)",
-                color: "#fff",
-                borderRadius: 6,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontFamily: "DM Serif Display, serif",
-                fontSize: 17,
-                fontWeight: 700,
-                lineHeight: 1,
-              }}
-            >
+          {/* Logo */}
+          <Link href="/" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none", flexShrink: 0 }}>
+            <div style={{ width: 28, height: 28, background: "var(--accent)", color: "var(--accent-text)", borderRadius: 4, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-display)", fontSize: 15, fontWeight: 500, lineHeight: 1 }}>
               E
             </div>
-            <span
-              style={{
-                fontFamily: "DM Serif Display, serif",
-                fontSize: 20,
-                color: "var(--text)",
-                letterSpacing: "-0.3px",
-              }}
-            >
+            <span style={{ fontFamily: "var(--font-display)", fontSize: 18, color: "var(--text-primary)", letterSpacing: "-0.03em", fontWeight: 400 }}>
               EverydayTools
             </span>
           </Link>
 
-          {/* Desktop */}
-          <div
-            className="hidden md:flex"
-            style={{ alignItems: "center", gap: 28, flex: 1 }}
-          >
+          {/* Desktop nav */}
+          <div className="hidden md:flex" style={{ alignItems: "center", gap: 24, flex: 1 }}>
             {GROUPS.map((group) => (
               <NavDropdown
                 key={group.id}
@@ -500,64 +300,46 @@ export default function TopNav() {
             ))}
           </div>
 
-          <div style={{ display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
-            {/* Locale switcher */}
-            <div
-              className="hidden md:flex"
-              style={{
-                alignItems: "center",
-                gap: 0,
-                border: "1px solid var(--border)",
-                borderRadius: 6,
-                overflow: "hidden",
-              }}
-            >
+          {/* Right actions */}
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: "auto" }}>
+            {/* Locale */}
+            <div className="hidden md:flex" style={{ alignItems: "center", border: "1px solid var(--border)", borderRadius: 4, overflow: "hidden" }}>
               {(["EN", "FR"] as const).map((lang, i) => (
-                <button
-                  key={lang}
-                  style={{
-                    background: lang === "EN" ? "var(--accent)" : "transparent",
-                    color: lang === "EN" ? "#fff" : "var(--muted)",
-                    border: "none",
-                    padding: "4px 10px",
-                    fontFamily: "IBM Plex Mono, monospace",
-                    fontSize: 12,
-                    fontWeight: 500,
-                    cursor: "pointer",
-                    borderLeft: i === 1 ? "1px solid var(--border)" : "none",
-                  }}
-                >
+                <button key={lang} style={{ background: lang === "EN" ? "var(--bg-subtle)" : "transparent", color: lang === "EN" ? "var(--text-primary)" : "var(--text-secondary)", border: "none", borderLeft: i === 1 ? "1px solid var(--border)" : "none", padding: "4px 10px", fontFamily: "var(--font-mono)", fontSize: 11, fontWeight: 500, cursor: "pointer", transition: "background 120ms ease" }}>
                   {lang}
                 </button>
               ))}
             </div>
 
-            {/* Mobile hamburger */}
+            {/* Theme toggle */}
             <button
-              className="flex md:hidden"
-              onClick={() => setMobileOpen(true)}
-              aria-label="Open menu"
-              style={{
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                padding: 6,
-                color: "var(--text)",
-              }}
+              onClick={toggle}
+              aria-label="Toggle theme"
+              className="hidden md:flex"
+              style={{ width: 32, height: 32, alignItems: "center", justifyContent: "center", background: "none", border: "1px solid var(--border)", borderRadius: 4, cursor: "pointer", color: "var(--text-secondary)", transition: "background 120ms ease, color 120ms ease" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--bg-subtle)"; (e.currentTarget as HTMLElement).style.color = "var(--text-primary)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "none"; (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)"; }}
             >
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                <path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-              </svg>
+              {theme === "dark" ? (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+                </svg>
+              ) : (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
+              )}
+            </button>
+
+            {/* Mobile hamburger */}
+            <button className="flex md:hidden" onClick={() => setMobileOpen(true)} aria-label="Open menu" style={{ background: "none", border: "1px solid var(--border)", borderRadius: 4, cursor: "pointer", padding: "6px", color: "var(--text-secondary)" }}>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 5h12M2 8h12M2 11h12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>
             </button>
           </div>
         </div>
       </nav>
 
-      <MobileDrawer
-        open={mobileOpen}
-        onClose={() => setMobileOpen(false)}
-        currentPath={location}
-      />
+      <MobileDrawer open={mobileOpen} onClose={() => setMobileOpen(false)} currentPath={location} />
     </>
   );
 }

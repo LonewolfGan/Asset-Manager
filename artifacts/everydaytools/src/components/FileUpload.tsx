@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Upload, X } from 'lucide-react';
+import { X } from 'lucide-react';
 
 interface FileUploadProps {
   accept: string[];
@@ -17,117 +17,91 @@ export default function FileUpload({ accept, maxSizeMB, multiple = false, onFile
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
-    } else if (e.type === "dragleave") {
-      setDragActive(false);
-    }
+    if (e.type === 'dragenter' || e.type === 'dragover') setDragActive(true);
+    else if (e.type === 'dragleave') setDragActive(false);
   };
 
   const validateAndSetFiles = (files: FileList | File[]) => {
     setError(null);
     const validFiles: File[] = [];
     const maxSizeBytes = maxSizeMB * 1024 * 1024;
-    
-    // Quick extensions check - not perfect but good for UI feedback
     const validExtensions = accept.map(a => a.toLowerCase().replace('.', ''));
     const allAccept = accept.includes('*/*');
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      if (file.size > maxSizeBytes) {
-        setError(`File ${file.name} exceeds ${maxSizeMB}MB limit.`);
-        return;
-      }
-      
+      if (file.size > maxSizeBytes) { setError(`${file.name} exceeds the ${maxSizeMB} MB limit.`); return; }
       if (!allAccept) {
         const ext = file.name.split('.').pop()?.toLowerCase() || '';
-        if (!validExtensions.includes(ext) && !accept.includes(file.type)) {
-          setError(`File ${file.name} format not accepted.`);
-          return;
-        }
+        if (!validExtensions.includes(ext) && !accept.includes(file.type)) { setError(`${file.name} — format not accepted.`); return; }
       }
-
       validFiles.push(file);
-      if (!multiple) break; // only take first file if not multiple
+      if (!multiple) break;
     }
 
-    if (validFiles.length > 0) {
-      setSelectedFiles(validFiles);
-      onFiles(validFiles);
-    }
+    if (validFiles.length > 0) { setSelectedFiles(validFiles); onFiles(validFiles); }
   };
 
   const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      validateAndSetFiles(e.dataTransfer.files);
-    }
+    e.preventDefault(); e.stopPropagation(); setDragActive(false);
+    if (e.dataTransfer.files?.[0]) validateAndSetFiles(e.dataTransfer.files);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    if (e.target.files && e.target.files[0]) {
-      validateAndSetFiles(e.target.files);
-    }
+    if (e.target.files?.[0]) validateAndSetFiles(e.target.files);
   };
 
   const removeFile = (index: number) => {
-    const newFiles = [...selectedFiles];
-    newFiles.splice(index, 1);
-    setSelectedFiles(newFiles);
-    onFiles(newFiles);
+    const next = [...selectedFiles]; next.splice(index, 1); setSelectedFiles(next); onFiles(next);
   };
 
   return (
-    <div className="w-full">
-      <div 
-        className={`border-2 border-dashed rounded-[var(--radius)] p-8 text-center transition-colors cursor-pointer
-          ${dragActive ? 'border-[var(--accent)] bg-[var(--accent)]/5' : 'border-[var(--border)] hover:border-[var(--muted)]'}
-        `}
+    <div style={{ width: '100%' }}>
+      <div
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
         onDragOver={handleDrag}
         onDrop={handleDrop}
         onClick={() => inputRef.current?.click()}
+        style={{
+          border: `2px dashed ${dragActive ? 'var(--accent)' : 'var(--border-strong)'}`,
+          background: dragActive ? 'var(--bg-subtle)' : 'var(--bg-surface)',
+          padding: '36px 24px',
+          textAlign: 'center',
+          cursor: 'pointer',
+          transition: 'border-color 120ms ease, background 120ms ease',
+        }}
       >
-        <input
-          ref={inputRef}
-          type="file"
-          className="hidden"
-          accept={accept.join(',')}
-          multiple={multiple}
-          onChange={handleChange}
-        />
-        <Upload className={`w-10 h-10 mx-auto mb-4 ${dragActive ? 'text-[var(--accent)]' : 'text-[var(--muted)]'}`} />
-        <p className="text-[var(--text)] font-medium text-lg mb-2">
-          Drop files here or click to browse
+        <input ref={inputRef} type="file" style={{ display: 'none' }} accept={accept.join(',')} multiple={multiple} onChange={handleChange} />
+        <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', margin: '0 0 4px' }}>
+          Drop file here or click to browse
         </p>
-        <p className="text-[var(--muted)] text-sm">
-          Accepted: {accept.join(', ')} • Max size: {maxSizeMB} MB per file
+        <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', margin: 0 }}>
+          {accept.join(', ')} · max {maxSizeMB} MB
         </p>
       </div>
 
       {error && (
-        <p className="text-[var(--danger)] text-sm mt-3 font-medium">{error}</p>
+        <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--danger)', marginTop: 8 }}>{error}</p>
       )}
 
       {selectedFiles.length > 0 && (
-        <div className="mt-4 space-y-2">
+        <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 4 }}>
           {selectedFiles.map((file, i) => (
-            <div key={i} className="flex items-center justify-between bg-white border border-[var(--border)] rounded-md p-3 shadow-sm">
-              <div className="flex flex-col truncate pr-4">
-                <span className="text-sm font-medium text-[var(--text)] truncate">{file.name}</span>
-                <span className="text-xs text-[var(--muted)]">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
+            <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--bg-surface)', border: '1px solid var(--border)', padding: '8px 12px', gap: 12 }}>
+              <div style={{ flex: 1, overflow: 'hidden' }}>
+                <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{file.name}</p>
+                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', margin: '2px 0 0' }}>{(file.size / 1024 / 1024).toFixed(2)} MB</p>
               </div>
-              <button 
+              <button
                 onClick={(e) => { e.stopPropagation(); removeFile(i); }}
-                className="p-1 text-[var(--muted)] hover:text-[var(--danger)] hover:bg-[var(--danger)]/10 rounded-full transition-colors flex-shrink-0"
                 aria-label="Remove file"
+                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: 'var(--text-tertiary)', display: 'flex', alignItems: 'center', flexShrink: 0, transition: 'color 120ms ease' }}
+                onMouseEnter={(e) => (e.currentTarget as HTMLElement).style.color = 'var(--danger)'}
+                onMouseLeave={(e) => (e.currentTarget as HTMLElement).style.color = 'var(--text-tertiary)'}
               >
-                <X className="w-4 h-4" />
+                <X size={14} />
               </button>
             </div>
           ))}

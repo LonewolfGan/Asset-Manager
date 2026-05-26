@@ -56,15 +56,15 @@ const queryClient = new QueryClient();
 
 function PageLoader() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 300, color: 'var(--muted)', fontFamily: 'IBM Plex Sans, sans-serif' }}>
-      Loading...
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 300, color: 'var(--text-tertiary)', fontFamily: 'var(--font-ui)' }}>
+      Loading…
     </div>
   );
 }
 
 function Router() {
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg)', fontFamily: 'IBM Plex Sans, sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-base)', fontFamily: 'var(--font-ui)' }}>
       <TopNav />
       <main>
         <Suspense fallback={<PageLoader />}>

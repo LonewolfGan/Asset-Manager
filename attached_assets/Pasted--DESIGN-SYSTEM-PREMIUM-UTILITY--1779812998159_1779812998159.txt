@@ -1,0 +1,219 @@
+═══════════════════════════════════════════════
+DESIGN SYSTEM — PREMIUM UTILITY
+═══════════════════════════════════════════════
+
+REFERENCE AESTHETIC (study these, do not copy):
+  - linear.app          → spacing discipline, micro-interactions, dark precision
+  - vercel.com/design   → typographic hierarchy, whitespace as a design element  
+  - stripe.com/docs     → information density done right, zero decoration
+  - rauno.me            → craft-level CSS details, subtle depth
+  - clerk.com           → clean auth UI, restrained color use
+
+The result should feel like an expensive, well-engineered product.
+Not a startup landing page. Not a tools aggregator. A tool people trust immediately.
+
+───────────────────────────────────────────────
+TYPOGRAPHY
+───────────────────────────────────────────────
+
+Import from Google Fonts:
+  Display (H1, H2):    "Fraunces" — optical-size variable font, ink-trap details,
+                        use wght 300–500, opsz 144 for large headings
+  UI / body:           "Geist" — clean, engineered, built for interfaces
+  Mono (passwords,     "Geist Mono" — consistent with UI font family
+  metadata, sizes):
+
+Font scale (rem, 1rem = 16px):
+  --text-xs:    0.75rem  / 1.0rem line-height
+  --text-sm:    0.875rem / 1.25rem
+  --text-base:  1rem     / 1.625rem
+  --text-lg:    1.125rem / 1.75rem
+  --text-xl:    1.25rem  / 1.75rem
+  --text-2xl:   1.5rem   / 2rem
+  --text-3xl:   2rem     / 2.5rem
+  --text-4xl:   2.75rem  / 3.25rem  ← H1 tool pages
+  --text-5xl:   3.75rem  / 1.1      ← H1 homepage only
+
+Letter spacing:
+  Headings (Fraunces): -0.03em
+  UI labels (all-caps, small): 0.08em
+  Body: 0
+
+───────────────────────────────────────────────
+COLOR SYSTEM
+───────────────────────────────────────────────
+
+Dark theme as default. Light theme togglable via [data-theme="light"].
+
+Dark (default):
+  --bg-base:        #0A0A0A   ← near-black, not pure black
+  --bg-surface:     #111111   ← card, panel backgrounds
+  --bg-elevated:    #1A1A1A   ← dropdowns, tooltips, modals
+  --bg-subtle:      #222222   ← hover states, inactive tabs
+  --border:         #2A2A2A   ← standard borders
+  --border-strong:  #3A3A3A   ← focused/active borders
+  --text-primary:   #EDEDED   ← main text
+  --text-secondary: #888888   ← labels, captions, hints
+  --text-tertiary:  #555555   ← placeholders, disabled
+  --accent:         #E8FF47   ← ONE accent color: sharp yellow-green
+                               used ONLY on: primary CTA bg, progress fill,
+                               active nav indicator, focus ring
+  --accent-text:    #0A0A0A   ← text ON accent backgrounds
+  --danger:         #FF4444
+  --success:        #22C55E
+  --warning:        #F59E0B
+
+Light:
+  --bg-base:        #FAFAFA
+  --bg-surface:     #FFFFFF
+  --bg-elevated:    #F4F4F4
+  --bg-subtle:      #EEEEEE
+  --border:         #E4E4E4
+  --border-strong:  #CCCCCC
+  --text-primary:   #0A0A0A
+  --text-secondary: #666666
+  --text-tertiary:  #999999
+  --accent:         #1A1A1A   ← accent inverts to near-black in light mode
+  --accent-text:    #FFFFFF
+
+ACCENT USAGE RULES (critical):
+  ✗ Never use accent as a text color on dark bg
+  ✗ Never use accent on more than ONE element per viewport
+  ✗ Never use accent for borders, dividers, or decorative elements
+  ✓ Primary button background only
+  ✓ Progress bar fill only
+  ✓ Current nav item indicator (2px bottom border, not background)
+  ✓ Focus ring (outline: 2px solid var(--accent))
+
+───────────────────────────────────────────────
+SPACING & LAYOUT
+───────────────────────────────────────────────
+
+Base unit: 4px. All spacing is multiples of 4.
+Common values: 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96, 128
+
+Page layout:
+  --content-narrow:  640px   ← tool area, forms
+  --content-mid:     800px   ← article, FAQ
+  --content-wide:    1100px  ← homepage grid, nav
+  --content-full:    1400px  ← max page width
+
+Section vertical rhythm: 80px between major sections on desktop, 48px mobile.
+No decorative horizontal rules. Sections breathe via spacing alone.
+
+Grid (homepage ToolGrid):
+  Desktop: 3 columns, 1px solid var(--border) grid lines (CSS grid with gap:0,
+           borders on cells) — like a table, not floating cards
+  Tablet:  2 columns
+  Mobile:  1 column
+
+Tool cards:
+  NO box-shadow
+  NO border-radius > 4px anywhere in the UI
+  NO floating/raised card effect
+  Border: 1px solid var(--border) on all sides (standard box, no asymmetric borders)
+  Hover: background shifts to var(--bg-subtle), border to var(--border-strong)
+  Transition: background 120ms ease, border-color 120ms ease — nothing else
+
+───────────────────────────────────────────────
+COMPONENT RULES
+───────────────────────────────────────────────
+
+Buttons:
+  Primary:   bg var(--accent), color var(--accent-text), no border, border-radius 4px,
+             padding 10px 20px, font-weight 500, font-size 0.875rem
+             Hover: opacity 0.88. Active: scale(0.98). NO other effects.
+  Secondary: bg transparent, border 1px solid var(--border-strong),
+             color var(--text-primary)
+             Hover: bg var(--bg-subtle)
+  Danger:    border 1px solid var(--danger), color var(--danger), bg transparent
+  NO gradient buttons. NO shadow on buttons. NO icon-inside-button arrows.
+
+Inputs:
+  bg var(--bg-surface), border 1px solid var(--border),
+  border-radius 4px, padding 10px 14px
+  Focus: border-color var(--accent), outline: 2px solid var(--accent) at 30% opacity
+  NO inner shadow. NO floating labels.
+
+File drop zone:
+  border: 2px dashed var(--border-strong)
+  bg: var(--bg-surface)
+  Drag-over state: border-color var(--accent), bg var(--bg-subtle)
+  NO colored background. NO icon animations.
+  Text: "Drop file here or click to browse" — nothing else
+
+Sliders:
+  Custom styled: track bg var(--bg-subtle), fill var(--accent),
+  thumb: 16px circle, bg var(--accent), no shadow
+  NO browser default appearance
+
+Progress bar:
+  Height: 2px (hairline) — not 8px chunky bars
+  bg var(--bg-subtle), fill var(--accent)
+  Animate width with transition: width 80ms linear
+
+Dropdowns / Selects:
+  Custom component. NO browser default select.
+  Panel: bg var(--bg-elevated), border var(--border), border-radius 4px
+  Items: 36px height, padding 0 12px, hover bg var(--bg-subtle)
+  Max-height 280px, overflow-y auto with custom scrollbar
+
+Scrollbar (webkit):
+  width: 6px, track: transparent, thumb: var(--border-strong), border-radius 3px
+
+Nav dropdown panel:
+  bg var(--bg-elevated)
+  border: 1px solid var(--border)
+  border-radius: 4px
+  padding: 8px
+  Two-column grid of links, each 32px tall
+  NO shadows. NO blur. NO animation except opacity 0→1 in 100ms.
+
+───────────────────────────────────────────────
+MOTION — MINIMAL AND PURPOSEFUL
+───────────────────────────────────────────────
+
+Allowed transitions (exhaustive list — nothing else):
+  - bg color / border-color:   120ms ease
+  - opacity (show/hide):       100ms ease
+  - transform scale (active):  80ms ease
+  - width (progress bar):      80ms linear
+  - max-height (accordion):    200ms ease
+
+HARD BANS on motion:
+  ✗ keyframe animations on any element that is not a loading spinner
+  ✗ translateY / translateX entrance animations
+  ✗ Staggered delays on lists or grids
+  ✗ Hover float effects (transform: translateY(-Xpx))
+  ✗ Pulse / glow / shimmer on non-skeleton elements
+  ✗ Page transition animations
+  ✗ Scroll-triggered animations of any kind
+  ✗ CSS animation: property on layout elements
+  ✗ One-side borders used as decorative accents (border-left: 3px solid accent)
+  ✗ Gradient backgrounds on any container
+  ✗ Text gradients (background-clip: text)
+
+Loading state: skeleton screens only.
+  Skeleton: bg var(--bg-subtle), border-radius 2px.
+  Animate with a single, subtle opacity pulse: 0.4→0.7, 1.2s ease infinite.
+  No shimmer sweep animation.
+
+───────────────────────────────────────────────
+WHAT "PREMIUM" MEANS HERE
+───────────────────────────────────────────────
+
+Premium is NOT:
+  - Gradients, glassmorphism, glows
+  - Oversized hero sections
+  - Animated numbers and stats
+  - Heavy drop shadows
+
+Premium IS:
+  - Every spacing value is intentional and consistent
+  - Typography scale has clear hierarchy at a glance
+  - The page feels quiet — decoration competes with content and loses
+  - Interactions are instant and predictable
+  - Error states are as well-designed as success states
+  - The tool works before the user reads any instructions
+  - Density is calibrated: not crowded, not empty
+  - The grid lines of the homepage feel like a publication, not a card deck

@@ -1,0 +1,2 @@
+- [Design System](design-system.md) — premium utility dark-theme design system; consult before every UI change
+- [App structure](app-structure.md) — pnpm monorepo, artifact at artifacts/everydaytools, workflow port 25203, wouter routing, lazy page loads

@@ -22,16 +22,15 @@ export default function AdSlot({ type, slotId = '' }: AdSlotProps) {
         width,
         minHeight: height,
         border: isDev ? '1px dashed var(--border)' : 'none',
-        background: isDev ? 'var(--bg)' : 'transparent',
+        background: 'transparent',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 'var(--radius)',
       }}
     >
       {isDev && (
-        <span style={{ fontSize: 11, color: 'var(--muted)', fontFamily: 'IBM Plex Mono, monospace' }}>
-          Ad slot — {type} ({width} × {height})
+        <span style={{ fontSize: 11, color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>
+          ad · {type} · {width} × {height}
         </span>
       )}
     </div>
