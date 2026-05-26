@@ -1,8 +1,8 @@
 {
   "framework": null,
   "installCommand": "pnpm install --frozen-lockfile",
-  "buildCommand": "rm -rf public && PORT=3000 BASE_PATH=/ pnpm --filter @workspace/everydaytools run build",
-  "outputDirectory": "public",
+  "buildCommand": "PORT=3000 BASE_PATH=/ pnpm --filter @workspace/everydaytools run build",
+  "outputDirectory": "artifacts/everydaytools/dist/public",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ],
