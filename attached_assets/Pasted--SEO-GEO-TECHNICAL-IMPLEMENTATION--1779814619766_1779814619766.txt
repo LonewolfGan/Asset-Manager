@@ -1,0 +1,384 @@
+═══════════════════════════════════════════════
+SEO & GEO — TECHNICAL IMPLEMENTATION
+═══════════════════════════════════════════════
+
+OBJECTIVE
+─────────
+Rank on page 1 for high-intent, low-competition queries in EN and FR.
+Target: "[format] to [format] converter free online", "compress pdf online free",
+"remove background free", "password generator", "unit converter", etc.
+Secondary: featured snippets, AI Overviews (SGE), and voice search answers.
+
+───────────────────────────────────────────────
+NEXT.JS METADATA — PER PAGE (generateMetadata())
+───────────────────────────────────────────────
+
+Every tool page exports generateMetadata() with ALL of the following:
+
+title:
+  Pattern: "{From} to {To} Converter — Free, Online, No Signup | EverydayTools Hub"
+  FR:      "Convertir {From} en {To} — Gratuit, En Ligne, Sans Inscription | EverydayTools Hub"
+  Max 60 chars. Keyword first. Brand last.
+
+description:
+  Pattern: "Convert {From} to {To} instantly in your browser.
+            No upload to servers. No account. Free forever."
+  FR equivalent. Max 155 chars. Benefit-first, no filler adjectives.
+
+keywords: array, 6–10 terms. Include:
+  - Primary: "{from} to {to} converter"
+  - Variants: "convert {from} to {to} online", "free {from} {to} converter"
+  - Long-tail: "how to convert {from} to {to} without software"
+  - FR equivalents if locale is FR
+
+canonical: absolute URL, locale-aware
+  "https://everydaytoolshub.com/{locale}/{tool-slug}"
+
+alternates.languages:
+  "en": "https://everydaytoolshub.com/en/{tool-slug}"
+  "fr": "https://everydaytoolshub.com/fr/{tool-slug}"
+  "x-default": "https://everydaytoolshub.com/en/{tool-slug}"
+
+openGraph:
+  title: same as <title>
+  description: same as meta description
+  url: canonical
+  siteName: "EverydayTools Hub"
+  locale: "en_US" or "fr_FR"
+  type: "website"
+  images: [{
+    url: "/og/{tool-slug}.png",  ← static OG image per tool, 1200×630
+    width: 1200, height: 630,
+    alt: "{Tool Name} — EverydayTools Hub"
+  }]
+
+twitter:
+  card: "summary_large_image"
+  title / description / images: same as OG
+
+robots:
+  index: true, follow: true
+  googleBot: { index: true, follow: true,
+               "max-image-preview": "large",
+               "max-snippet": -1,
+               "max-video-preview": -1 }
+
+───────────────────────────────────────────────
+STRUCTURED DATA — JSON-LD (per page, in <head>)
+───────────────────────────────────────────────
+
+Every tool page injects a <script type="application/ld+json"> block.
+Use next/script with strategy="beforeInteractive" for schema injection.
+
+1. SoftwareApplication (all tool pages)
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "{Tool Name}",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "{same as meta description}",
+  "url": "{canonical}",
+  "inLanguage": ["{locale}"],
+  "browserRequirements": "Requires JavaScript. Works offline after first load."
+}
+
+2. FAQPage (all tool pages, generated from FAQSection data)
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "{question text}",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{answer text, plain string, no HTML}"
+      }
+    }
+    // ... repeat for all 5–7 questions
+  ]
+}
+
+3. BreadcrumbList (all pages except homepage)
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1,
+      "name": "Home", "item": "https://everydaytoolshub.com/{locale}" },
+    { "@type": "ListItem", "position": 2,
+      "name": "{Tool Name}",
+      "item": "https://everydaytoolshub.com/{locale}/{tool-slug}" }
+  ]
+}
+
+4. WebSite + SiteLinksSearchBox (homepage only)
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "EverydayTools Hub",
+  "url": "https://everydaytoolshub.com",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://everydaytoolshub.com/en/search?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+
+5. HowTo (converter tools — triggers rich results in Google)
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to convert {From} to {To}",
+  "description": "{meta description}",
+  "totalTime": "PT10S",
+  "step": [
+    { "@type": "HowToStep", "position": 1,
+      "name": "Upload your file",
+      "text": "Click the upload area or drag your {From} file into the drop zone." },
+    { "@type": "HowToStep", "position": 2,
+      "name": "Select output format",
+      "text": "Choose {To} as the output format from the dropdown." },
+    { "@type": "HowToStep", "position": 3,
+      "name": "Download",
+      "text": "Click Convert. Your {To} file downloads automatically." }
+  ]
+}
+
+Schema data must be generated dynamically from tools.config.ts.
+Never hardcode schema in page files — maintain a generateSchema(tool, locale) utility
+in /lib/schema.ts that takes a tool config object and returns all applicable schemas.
+
+───────────────────────────────────────────────
+URL STRUCTURE
+───────────────────────────────────────────────
+
+Pattern: /{locale}/{verb}-{from}-to-{to}
+Examples:
+  /en/convert-pdf-to-docx
+  /fr/convertir-pdf-en-docx        ← FR slugs use French verbs
+  /en/compress-pdf
+  /fr/compresser-pdf
+  /en/remove-image-background
+  /fr/supprimer-fond-image
+
+Rules:
+  - All lowercase, hyphens only (no underscores, no camelCase)
+  - FR locale uses FR slugs, not EN slugs with /fr/ prefix
+  - No trailing slash
+  - Locale prefix always present (/en/, /fr/)
+  - Root / redirects to /{detected-locale}/ (Accept-Language header, fallback /en/)
+  - All redirect rules defined in next.config.js
+
+/en/search?q= route:
+  Simple client-side filter over tools.config.ts data
+  Renders matching tool cards. No server-side search needed.
+  Page exports generateMetadata() with noindex: true (avoid thin-content penalty)
+
+───────────────────────────────────────────────
+HREFLANG & LOCALE ROUTING
+───────────────────────────────────────────────
+
+In /app/[locale]/layout.tsx, inject in <head>:
+  <link rel="alternate" hreflang="en"
+        href="https://everydaytoolshub.com/en/{slug}" />
+  <link rel="alternate" hreflang="fr"
+        href="https://everydaytoolshub.com/fr/{slug-fr}" />
+  <link rel="alternate" hreflang="x-default"
+        href="https://everydaytoolshub.com/en/{slug}" />
+
+Note: hreflang must point to the FR slug, not the EN slug with /fr/ prefix.
+Build a slugMap in tools.config.ts:
+  { en: "convert-pdf-to-docx", fr: "convertir-pdf-en-docx" }
+
+In next.config.js, i18n block:
+  defaultLocale: "en"
+  locales: ["en", "fr"]
+  localeDetection: true
+
+───────────────────────────────────────────────
+SITEMAP & ROBOTS
+───────────────────────────────────────────────
+
+/app/sitemap.ts (Next.js App Router built-in):
+  Generates XML sitemap dynamically from tools.config.ts
+  Every tool × every locale = one URL entry
+  Each entry:
+    url: canonical
+    lastModified: build date (new Date())
+    changeFrequency: "monthly"
+    priority: homepage 1.0, tools 0.8, /search 0.0 (excluded)
+  Output: https://everydaytoolshub.com/sitemap.xml
+
+/app/robots.ts:
+  User-agent: *
+  Allow: /
+  Disallow: /api/
+  Sitemap: https://everydaytoolshub.com/sitemap.xml
+
+  Additionally allow Googlebot-Image, Bingbot, GPTBot, ClaudeBot, PerplexityBot
+  explicitly (these crawlers respect explicit allows for AI indexing):
+  User-agent: GPTBot
+  Allow: /
+  User-agent: ClaudeBot
+  Allow: /
+  User-agent: PerplexityBot
+  Allow: /
+  User-agent: Bytespider
+  Disallow: /
+
+───────────────────────────────────────────────
+ON-PAGE SEO — CONTENT RULES
+───────────────────────────────────────────────
+
+Every tool page <main> must contain, in order:
+
+1. <h1> — Tool name only. No tagline. Exact match to primary keyword.
+   Example: "PDF to DOCX Converter" / "Convertisseur PDF en DOCX"
+
+2. <p class="tool-description"> — One sentence. Primary keyword used naturally.
+   Benefit-first. Under 25 words.
+   Example: "Convert PDF files to editable Word documents instantly,
+   entirely in your browser — no uploads, no account required."
+
+3. Tool interface (the actual functional area)
+
+4. <section aria-label="How it works"> — 3 short steps, plain text.
+   This content feeds the HowTo schema and targets "how to" featured snippets.
+   DO NOT use a component with animations or icons — pure text + numbered list.
+
+5. <AdSlot />
+
+6. <section aria-label="About this tool"> — 150–200 word explanatory paragraph.
+   Must contain:
+   - Primary keyword in first sentence
+   - Secondary keyword variant in second paragraph
+   - Factual statements about the format/conversion (no fluff)
+   - One mention of "free", "no signup", "browser-based" naturally
+   This targets informational queries and provides crawlable text depth.
+   In FR locale: full translation, not auto-translate garbage.
+
+7. <AdSlot />
+
+8. <FAQSection> — 5–7 questions. Rules:
+   - Questions must match real search queries (use "how to", "can I", "is it safe")
+   - Answers: 40–80 words each, plain text, no markdown inside
+   - Last question always: "Is [Tool Name] free?" → Answer: Yes, always free, etc.
+   - FR: full translation, not placeholders
+
+Text density rule: minimum 300 words of crawlable text per tool page
+(excluding UI labels, buttons, and nav). This is enforced by the
+"How it works" + "About" + FAQ sections.
+
+Internal linking:
+  - Each tool page links to 2–3 related tools contextually in the "About" section
+  - Example: PDF to DOCX page links to PDF Compressor and DOCX to PDF
+  - Link text: the target tool's primary keyword, not "click here"
+  - Implement via tools.config.ts: each tool has a relatedTools: string[] field
+
+───────────────────────────────────────────────
+PERFORMANCE — CORE WEB VITALS (direct ranking factor)
+───────────────────────────────────────────────
+
+LCP target: < 1.5s. FID/INP target: < 100ms. CLS target: < 0.05.
+
+Font loading:
+  Google Fonts via <link rel="preconnect"> + display=swap.
+  Subset to latin + latin-ext only.
+  In _document or layout: preload the woff2 of the primary weight.
+
+Images:
+  All static assets via next/image with explicit width/height (prevents CLS).
+  OG images: static, pre-generated at build time (not dynamic routes).
+  No layout shift from ad slots: AdSlot containers have fixed min-height
+    (horizontal: min-height 90px, square: min-height 250px) even when empty.
+    This is critical — ad slots without reserved space cause CLS failures.
+
+WASM / heavy libs:
+  @imgly/background-removal, pdfjs-dist, heic2any:
+    → next/dynamic({ ssr: false, loading: () => <SkeletonLoader /> })
+    → loaded only on the page that needs them
+    → never in layout.tsx or _app
+
+Script loading:
+  No third-party scripts in <head> except Google Fonts preconnect.
+  Ad scripts (future): load with next/script strategy="lazyOnload"
+  No render-blocking resources.
+
+HTTP headers (next.config.js headers()):
+  Cache-Control: public, max-age=31536000, immutable → /_next/static/*
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400 → /sitemap.xml
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+───────────────────────────────────────────────
+GEO — INTERNATIONAL SIGNALS
+───────────────────────────────────────────────
+
+The site targets global English + French-speaking markets.
+French markets: France, Belgium, Switzerland, Canada (QC), Maghreb, West Africa.
+
+Locale detection (middleware.ts):
+  Read Accept-Language header.
+  If fr or fr-* → redirect to /fr/{slug-fr}
+  Default → /en/{slug-en}
+  User can override via nav switcher → store in cookie "NEXT_LOCALE",
+  cookie takes precedence over header on subsequent visits.
+
+FR content rules:
+  ALL user-facing strings must be real French — not machine-translated English.
+  Tone: neutral, professional, direct (not "vous" overly formal, not "tu" informal
+  — use "vous" for instructions, implied subject where possible).
+  FR FAQ questions must reflect actual FR search phrasing, not translated EN queries.
+  Example EN: "How do I convert PDF to Word?" 
+  Correct FR:  "Comment convertir un PDF en Word ?"
+  Wrong FR:    "Comment puis-je convertir PDF à Word ?" ← literal mistranslation
+
+hreflang validation:
+  After implementation, output a manifest of all hreflang pairs
+  in /public/hreflang-manifest.json for QA purposes.
+  Format: [{ "en": "/en/convert-pdf-to-docx", "fr": "/fr/convertir-pdf-en-docx" }]
+
+───────────────────────────────────────────────
+AI SEARCH ENGINES & GEO (GENERATIVE ENGINE OPTIMIZATION)
+───────────────────────────────────────────────
+
+Targets: Google AI Overviews (SGE), Perplexity, ChatGPT Search, Claude, Bing Copilot.
+
+These engines extract answers from crawlable text. The content rules above
+(HowTo schema, FAQPage schema, "About" section, robots.txt allowing AI crawlers)
+already handle technical signals. Additional rules:
+
+Answer-first writing: Every FAQ answer and "About" paragraph must open
+with a direct, complete answer. No preamble.
+  Wrong: "That's a great question. When it comes to PDF conversion..."
+  Right: "PDF to DOCX conversion preserves text and basic formatting.
+          Tables and images may require manual adjustment after conversion."
+
+Factual density: Include concrete facts in About sections.
+  Examples: file size limits, supported color depths, format specs, compatibility notes.
+  AI engines prefer citing factual, specific content over vague marketing copy.
+
+Named entity clarity: Always refer to tools by their full name on first mention
+  per page: "EverydayTools Hub PDF to DOCX Converter" — this helps AI engines
+  associate the answer with the specific tool/site.
+
+No orphan pages: every tool must be linked from the homepage and from
+  at least one other tool page (via relatedTools). AI crawlers follow links;
+  unlinked pages get low crawl priority.
+
+Freshness signal: Add a <time datetime="{ISO date}"> element to each tool page
+  displaying "Last verified: {Month Year}" in the About section.
+  Update this date in tools.config.ts at each deployment via new Date() at build time.
+  This signals content currency to both Google and AI crawlers.
