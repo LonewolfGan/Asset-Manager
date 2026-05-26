@@ -262,6 +262,7 @@ export default function TopNav() {
   const [location] = useLocation();
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [locale, setLocale] = useState<"EN" | "FR">("EN");
   const navRef = useRef<HTMLDivElement>(null);
   const { theme, toggle } = useTheme();
 
@@ -305,7 +306,22 @@ export default function TopNav() {
             {/* Locale */}
             <div className="hidden md:flex" style={{ alignItems: "center", border: "1px solid var(--border)", borderRadius: 4, overflow: "hidden" }}>
               {(["EN", "FR"] as const).map((lang, i) => (
-                <button key={lang} style={{ background: lang === "EN" ? "var(--bg-subtle)" : "transparent", color: lang === "EN" ? "var(--text-primary)" : "var(--text-secondary)", border: "none", borderLeft: i === 1 ? "1px solid var(--border)" : "none", padding: "4px 10px", fontFamily: "var(--font-mono)", fontSize: 11, fontWeight: 500, cursor: "pointer", transition: "background 120ms ease" }}>
+                <button
+                  key={lang}
+                  onClick={() => setLocale(lang)}
+                  style={{
+                    background: lang === locale ? "var(--bg-subtle)" : "transparent",
+                    color: lang === locale ? "var(--text-primary)" : "var(--text-secondary)",
+                    border: "none",
+                    borderLeft: i === 1 ? "1px solid var(--border)" : "none",
+                    padding: "4px 10px",
+                    fontFamily: "var(--font-mono)",
+                    fontSize: 11,
+                    fontWeight: 500,
+                    cursor: "pointer",
+                    transition: "background 120ms ease, color 120ms ease",
+                  }}
+                >
                   {lang}
                 </button>
               ))}
