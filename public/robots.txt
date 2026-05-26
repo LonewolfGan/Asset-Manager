@@ -1,0 +1,23 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bytespider
+Disallow: /
+
+Sitemap: https://everydaytoolshub.com/sitemap.xml
