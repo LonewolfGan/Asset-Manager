@@ -1,0 +1,286 @@
+You are a senior product engineer at a tools company with a world-class design bar.
+You have used ilovepdf.com, smallpdf.com, and squoosh.app extensively.
+Your output must match that level of craft — NOT a Replit starter template.
+
+═══════════════════════════════════════════════════════════
+CRITICAL UI/UX RULES — THESE ARE NON-NEGOTIABLE BUGS TO AVOID
+═══════════════════════════════════════════════════════════
+
+These are known failure modes. Every single one must be explicitly prevented:
+
+1. DROPDOWNS MUST SCROLL
+   - All <select> elements and custom dropdowns MUST have max-height + overflow-y: auto
+   - Never allow a dropdown to exceed 280px height
+   - Use a searchable combobox (not native <select>) for any list > 20 items
+   - Currency and format selectors: use a custom searchable dropdown with keyboard nav
+   - Test: 170 currencies MUST be browsable without the list being cut off
+
+2. ALL TEXT OUTPUTS MUST SCROLL
+   - Any text result area (extracted PDF text, converted content, metadata) MUST be:
+     max-height: 400px, overflow-y: auto, font-family: monospace, white-space: pre-wrap
+   - Never let text overflow outside its container
+   - Always show a "Copy all" and "Download as .txt" button above the text output
+
+3. NO DARK THEME UNLESS EXPLICITLY ASKED
+   - Background: #F7F6F3 (warm off-white)
+   - Surface cards: #FFFFFF
+   - Text: #1A1916
+   - Accent: #1A6BFF (buttons, links only)
+   - No dark backgrounds, no dark cards, no dark navbars
+   - The site must feel like ilovepdf.com — bright, clean, confident
+
+4. EVERY TOOL PAGE IS SELF-CONTAINED AND COMPLETE
+   - No "coming soon", no empty states without instruction
+   - Every tool works end-to-end on page load
+   - File upload always shows: accepted formats, max file size
+   - After conversion: show file name, file size, a green checkmark, download button
+   - Errors: red inline message below the action button, human language, never console errors
+
+5. LAYOUT NEVER BREAKS
+   - All content scrolls, nothing is clipped or hidden by overflow:hidden
+   - Mobile: single column, buttons full width, dropdowns full width
+   - Desktop: max-width 720px centered for tool area, 1100px for homepage grid
+   - No fixed heights on content areas — use min-height, never height on text containers
+
+═══════════════════════════════════════════════════════════
+COMPLETE TOOL CATALOGUE — IMPLEMENT ALL
+═══════════════════════════════════════════════════════════
+
+Each tool has its own route, its own page, a working UI, and real logic.
+
+── PDF TOOLS (/pdf-tools) ──────────────────────────────
+  /pdf-to-word          PDF → DOCX (pdfjs-dist extract text → docx library)
+  /pdf-to-text          PDF → TXT (pdfjs-dist, scrollable output, download)
+  /pdf-to-html          PDF → HTML basic (pdfjs-dist text layer)
+  /pdf-to-epub          PDF → EPUB (epub-gen-memory)
+  /pdf-compress         PDF compression (pdf-lib: remove unused objects, re-encode images)
+  /pdf-merge            Merge multiple PDFs (pdf-lib PDFDocument.copyPages)
+  /pdf-split            Split by page range or every N pages (pdf-lib)
+  /pdf-rotate           Rotate pages (pdf-lib page.setRotation)
+  /pdf-unlock           Remove password (pdf-lib, note: only owner password)
+  /pdf-protect          Add password (pdf-lib encrypt)
+  /pdf-page-numbers     Add page numbers (pdf-lib)
+  /pdf-watermark        Add text watermark (pdf-lib drawText on each page)
+
+── WORD / DOC TOOLS (/word-tools) ──────────────────────
+  /word-to-pdf          DOCX → PDF (docx → html via mammoth → print/pdf-lib)
+  /word-to-text         DOCX → TXT (mammoth extractRawText, scrollable output)
+  /word-to-html         DOCX → HTML (mammoth convertToHtml, syntax highlighted preview)
+  /word-to-epub         DOCX → EPUB (mammoth → epub-gen)
+
+── OTHER DOCUMENT TOOLS ────────────────────────────────
+  /markdown-to-pdf      MD → PDF (marked → html → pdf-lib)
+  /markdown-to-docx     MD → DOCX (marked → html-docx-js)
+  /html-to-pdf          HTML paste/upload → PDF (html-to-image + pdf-lib)
+  /txt-to-pdf           TXT → PDF (pdf-lib, monospace font)
+  /txt-to-docx          TXT → DOCX (docx library)
+
+── IMAGE TOOLS (/image-tools) ──────────────────────────
+  /image-converter      Any → Any: PNG/JPEG/WEBP/AVIF/BMP/GIF/TIFF/ICO
+                        Canvas API + quality slider + resize + batch 20 files
+  /heic-to-jpg          HEIC/HEIF → JPEG/PNG (heic2any)
+  /image-compress       Compress JPEG/PNG/WEBP (quality slider, show before/after KB)
+  /image-resize         Resize by px or % (Canvas, maintain aspect ratio toggle)
+  /image-crop           Crop with drag handles (Canvas, aspect ratio presets)
+  /image-to-pdf         One or multiple images → single PDF (pdf-lib)
+  /pdf-to-image         PDF pages → PNG/JPEG (pdfjs-dist renderToCanvas, zip if multiple)
+  /background-remover   @imgly/background-removal WASM, fully client-side, free, no API key
+
+── PRIVACY TOOLS (/privacy-tools) ──────────────────────
+  /metadata-cleaner     Images (exifr read + piexifjs strip) + PDF (pdf-lib strip XMP)
+                        + DOCX (JSZip strip core.xml/app.xml)
+                        Mandatory UI note (verbatim):
+                        "This tool removes common metadata fields (EXIF, XMP, document
+                        properties). It does not guarantee removal of cryptographic
+                        fingerprints, steganographic data, or AI model watermarks
+                        embedded in pixel values."
+
+── CALCULATORS & GENERATORS (/tools) ───────────────────
+  /password-generator   Length 8-128, charset options, entropy in bits, pronounceable mode,
+                        copy button, last 10 history (sessionStorage only)
+  /percentage-calc      % of, % change, reverse %, discount, tip+split, margin/markup
+                        All results live on keypress, no submit button
+  /unit-converter       Length, Weight, Temp, Volume, Area, Speed, Pressure,
+                        Energy, Power, Data (bits↔bytes), Time, Angle, Frequency
+                        Searchable unit input, bidirectional, pinned favourites
+  /currency-converter   170 ISO currencies, searchable dropdowns, swap button,
+                        Open Exchange Rates free API (NEXT_PUBLIC_OXR_APP_ID in .env),
+                        fallback static snapshot with "rates as of [date]" notice,
+                        last 10 conversions in localStorage
+
+═══════════════════════════════════════════════════════════
+HOMEPAGE DESIGN — like ilovepdf.com
+═══════════════════════════════════════════════════════════
+
+- Clean white background, no hero banner, no marketing text above the tools
+- Group tools into visual category sections:
+    PDF Tools | Word & Docs | Image Tools | Privacy Tools | Calculators
+- Each tool = a ToolCard: icon (SVG, no emoji), tool name, one-line description
+- ToolCard hover: subtle lift (box-shadow), accent color border on left, no scale
+- Category header: left-aligned, DM Serif Display font, small uppercase label above
+- Grid: 4 columns desktop, 2 tablet, 1 mobile
+- Below grid: one AdSlot (horizontal banner)
+
+═══════════════════════════════════════════════════════════
+COMPONENT SPECIFICATIONS
+═══════════════════════════════════════════════════════════
+
+<FileUpload>
+  - Dashed border drop zone, icon + "Drop file here or click to browse"
+  - Shows accepted extensions and max size below the zone
+  - After file selected: filename + size chip with × to remove
+  - Multiple files: show list with individual remove buttons
+  - Drag-over state: border color → accent, background → accent/5%
+
+<FormatSelector> (replaces native <select> for long lists)
+  - Custom dropdown with search input at top
+  - max-height: 260px, overflow-y: auto
+  - Keyboard navigable (arrow keys, enter, escape)
+  - Shows current value always visible in trigger button
+  - Used for: currency pairs, image formats, document formats
+
+<ResultPanel>
+  - Green checkmark + "Ready to download" heading
+  - File name + converted file size
+  - Primary download button (accent color, full width on mobile)
+  - If text output: scrollable pre-formatted area (max-height 400px, overflow auto)
+    with "Copy" and "Download .txt" buttons above
+
+<AdSlot>
+  - <div data-ad-slot="[id]" data-ad-type="[horizontal|square|sidebar]"
+         data-ad-network="adsense"
+         style="min-height:[90px|250px]; background: transparent;">
+  - In development: show a labelled placeholder with dimensions
+  - In production: placeholder is invisible (no border, no background)
+  - NEVER import or execute any ad script
+
+<FAQSection>
+  - Accordion (click to expand), 5–7 questions per tool
+  - Renders JSON-LD FAQPage schema in a <script> tag
+  - Questions are real and tool-specific (not generic)
+
+═══════════════════════════════════════════════════════════
+TYPOGRAPHY & VISUAL SYSTEM
+═══════════════════════════════════════════════════════════
+
+Fonts (Google Fonts, load only weights used):
+  DM Serif Display 400          → h1, h2, category headers
+  IBM Plex Sans 400, 500, 600   → all UI, body, labels, buttons
+  IBM Plex Mono 400             → passwords, metadata tables, text outputs, code
+
+CSS Variables (define in :root, use everywhere, no hardcoded colors):
+  --bg:          #F7F6F3
+  --surface:     #FFFFFF
+  --border:      #E2E0DB
+  --text:        #1A1916
+  --muted:       #6B6860
+  --accent:      #1A6BFF
+  --accent-dark: #0F4FCC
+  --danger:      #D4380D
+  --success:     #1A7A3F
+  --radius:      8px
+  --shadow-sm:   0 1px 3px rgba(0,0,0,0.08)
+  --shadow-md:   0 4px 12px rgba(0,0,0,0.10)
+
+Spacing: use a 4px base grid (4, 8, 12, 16, 24, 32, 48, 64, 96)
+Never use arbitrary pixel values outside this scale.
+
+═══════════════════════════════════════════════════════════
+TECH STACK
+═══════════════════════════════════════════════════════════
+
+Next.js 14 App Router, TypeScript strict
+Tailwind CSS v3 (configure to match CSS variables above)
+next-i18next — /locales/en/*.json and /locales/fr/*.json
+No UI component library — build everything from scratch
+
+Client-side libraries (all free, no API keys unless noted):
+  pdf-lib                       PDF creation, manipulation, compression
+  pdfjs-dist                    PDF parsing, text extraction, page rendering
+  mammoth                       DOCX → HTML / text
+  docx                          Create DOCX programmatically
+  epub-gen-memory               Generate EPUB in browser
+  html-docx-js                  HTML → DOCX
+  marked                        Markdown → HTML
+  html-to-image                 HTML → PNG/JPEG (for HTML→PDF)
+  heic2any                      HEIC → JPEG/PNG
+  exifr                         Read EXIF metadata
+  piexifjs                      Write/strip EXIF
+  jszip                         Read/write ZIP (DOCX/EPUB are ZIP)
+  @imgly/background-removal     AI background removal, WASM, fully free, no API key
+  JSZip                         Already listed above
+
+All heavy libraries (pdfjs-dist, @imgly/background-removal) MUST be loaded with:
+  next/dynamic({ ssr: false }) and show a loading state while WASM initializes.
+
+═══════════════════════════════════════════════════════════
+SERVICES — STRICT INTERFACES
+═══════════════════════════════════════════════════════════
+
+/services/documentConversionService.ts
+  Implements all document conversion pairs
+  getSupportedPairs(): Array<{from: DocFormat, to: DocFormat, clientSide: boolean}>
+  convert(file, from, to, onProgress?): Promise<Blob>
+  If a pair is not implementable: throw new Error("NOT_IMPLEMENTED: [reason]")
+
+/services/imageConversionService.ts
+  convert(file, toFormat, opts): Promise<Blob>
+  convertBatch(files, toFormat, opts, onProgress?): Promise<Blob[]>
+  getSupportedFormats(): ImageFormat[]
+
+/services/backgroundRemovalService.ts
+  removeBackground(file, onProgress?): Promise<Blob>
+  // Uses @imgly/background-removal
+  // TO SWAP API: replace this function body with fetch() to remove.bg or ClipDrop
+
+/services/metadataService.ts
+  analyze(file): Promise<{fields: Record<string, string|number|null>}>
+  clean(file): Promise<Blob>
+
+/services/currencyRatesService.ts
+  getRates(base: string): Promise<Record<string, number>>
+  // Reads process.env.NEXT_PUBLIC_OXR_APP_ID
+  // Falls back to /data/currency-snapshot.json with staleness warning
+
+/config/formats.config.ts         — all supported conversion pairs + library mapping
+/config/units.config.ts           — all unit categories, toBase(), fromBase()
+/config/currencies.config.ts      — ISO 4217 full list + static snapshot rates
+/config/tools.config.ts           — slug, title_en, title_fr, description_en, description_fr, category, icon
+
+═══════════════════════════════════════════════════════════
+SEO PER PAGE
+═══════════════════════════════════════════════════════════
+
+Every tool page exports generateMetadata():
+  title: "[Tool Name] — Free Online Tool | EverydayTools Hub"
+  description: benefit-first, <155 chars, EN and FR variants
+  canonical, hreflang en/fr, og:image, twitter:card
+
+FAQSection: 5–7 real questions per tool + JSON-LD FAQPage schema
+Homepage: JSON-LD WebSite + SiteLinksSearchBox schema
+
+═══════════════════════════════════════════════════════════
+FINAL QUALITY CHECKLIST — review against this before done
+═══════════════════════════════════════════════════════════
+
+□ Every dropdown scrolls — test with 170 currencies
+□ Every text output scrolls — test with a 10-page PDF extraction
+□ No dark backgrounds anywhere
+□ PDF Compress tool exists and works
+□ PDF Merge works with 2+ files
+□ Image converter supports at least 6 formats with quality slider
+□ Background remover uses @imgly/background-removal (no mock, real WASM)
+□ Metadata cleaner shows actual EXIF fields, not placeholder text
+□ Password generator shows entropy in bits
+□ Currency converter falls back gracefully when no API key
+□ All buttons have aria-labels, all inputs have labels
+□ Heavy libs are dynamically imported (no SSR crash)
+□ Mobile layout: no horizontal scroll, no clipped content
+□ No emojis anywhere in UI text
+□ README explains where to plug: AdSense, OXR key, background API swap
+
+DELIVER IN PHASES:
+  PHASE 1: Architecture plan. Stop and wait for "OK, build it."
+  PHASE 2: Full project scaffold — all routes, layout, homepage, ToolCard grid.
+  PHASE 3: All tools implemented per catalogue above.
+  PHASE 4: Quality pass. Self-review against checklist. README.

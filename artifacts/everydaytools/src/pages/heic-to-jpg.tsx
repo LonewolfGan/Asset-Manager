@@ -1,0 +1,90 @@
+import { useState } from 'react';
+import FileUpload from '@/components/FileUpload';
+import ResultPanel from '@/components/ResultPanel';
+import ProgressBar from '@/components/ProgressBar';
+import FAQSection from '@/components/FAQSection';
+import AdSlot from '@/components/AdSlot';
+import Breadcrumb from '@/components/Breadcrumb';
+
+export default function HeicToJpg() {
+  const [files, setFiles] = useState<File[]>([]);
+  const [result, setResult] = useState<{blob: Blob, filename: string, sizeAfter: number, sizeBefore?: number} | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [progress, setProgress] = useState(0);
+  const [isProcessing, setIsProcessing] = useState(false);
+  
+  const [format, setFormat] = useState<'image/jpeg' | 'image/png'>('image/jpeg');
+
+  const handleConvert = async () => {
+    if (!files[0]) return;
+    setError(null); setIsProcessing(true); setProgress(0);
+    try {
+      const file = files[0];
+      const heic2any = (await import('heic2any')).default;
+      
+      setProgress(50);
+      
+      const converted = await heic2any({
+        blob: file,
+        toType: format,
+        quality: 0.9
+      });
+      
+      const blob = Array.isArray(converted) ? converted[0] : converted;
+      setProgress(100);
+      
+      const ext = format === 'image/jpeg' ? '.jpg' : '.png';
+      setResult({ blob, filename: file.name.replace(/\.heic$/i, ext).replace(/\.heif$/i, ext), sizeAfter: blob.size, sizeBefore: file.size });
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Conversion failed. Please try again.');
+    } finally { setIsProcessing(false); }
+  };
+
+  const faqs = [
+    { q: "What is HEIC?", a: "HEIC is Apple's high-efficiency image format used on modern iPhones." },
+    { q: "Why convert to JPG/PNG?", a: "Many websites and older operating systems do not support viewing HEIC files natively." },
+    { q: "Is quality lost during conversion?", a: "Slight quality loss occurs when converting to JPEG, but PNG conversion is practically lossless." },
+    { q: "Are Live Photos supported?", a: "Only the primary still image is extracted. Video components are ignored." },
+    { q: "Is EXIF metadata preserved?", a: "Yes, standard EXIF metadata like date and camera model is usually preserved." }
+  ];
+
+  return (
+    <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
+      <Breadcrumb items={['Home', 'Image Tools', 'HEIC to JPG']} />
+      <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>HEIC to JPG</h1>
+      <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>Convert Apple iPhone HEIC/HEIF photos to universally compatible formats.</p>
+      
+      <FileUpload accept={['.heic', '.heif']} maxSizeMB={20} onFiles={setFiles} />
+      
+      {files.length > 0 && (
+        <div style={{ marginTop: 24, padding: 20, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
+          <h3 style={{ fontSize: 16, fontWeight: 500, marginBottom: 16 }}>Target Format</h3>
+          <div style={{ display: 'flex', gap: 16 }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+              <input type="radio" checked={format === 'image/jpeg'} onChange={() => setFormat('image/jpeg')} style={{ accentColor: 'var(--accent)' }} />
+              <span>JPEG (Smaller size)</span>
+            </label>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+              <input type="radio" checked={format === 'image/png'} onChange={() => setFormat('image/png')} style={{ accentColor: 'var(--accent)' }} />
+              <span>PNG (Lossless)</span>
+            </label>
+          </div>
+        </div>
+      )}
+
+      {files.length > 0 && !isProcessing && (
+        <button onClick={handleConvert} disabled={isProcessing}
+          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: '#fff', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15, fontWeight: 500, cursor: 'pointer', width: '100%' }}>
+          Convert Photo
+        </button>
+      )}
+      
+      {isProcessing && <ProgressBar progress={progress} label="Converting image..." />}
+      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
+      {result && <ResultPanel {...result} />}
+      
+      <FAQSection faqs={faqs} />
+      <AdSlot type="horizontal" />
+    </div>
+  );
+}

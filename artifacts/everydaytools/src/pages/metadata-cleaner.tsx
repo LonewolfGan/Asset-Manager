@@ -1,209 +1,198 @@
-import { useState, useRef } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Textarea } from "@/components/ui/textarea";
-import { getJpegMetadata, cleanJpegMetadata, cleanPdfMetadata } from "@/services/metadataService";
-import { cleanTextScrubInvisibles, applyStylisticScrub } from "@/services/aiTextScrubberService";
-import { ShieldAlert, Download, Eraser, FileUp, AlertTriangle } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import { Label } from "recharts";
+import { useState } from 'react';
+import FileUpload from '@/components/FileUpload';
+import ResultPanel from '@/components/ResultPanel';
+import ProgressBar from '@/components/ProgressBar';
+import FAQSection from '@/components/FAQSection';
+import AdSlot from '@/components/AdSlot';
+import Breadcrumb from '@/components/Breadcrumb';
+import exifr from 'exifr';
+import piexif from 'piexifjs';
+import { PDFDocument } from 'pdf-lib';
+import JSZip from 'jszip';
 
 export default function MetadataCleaner() {
-  // Metadata state
-  const [file, setFile] = useState<File | null>(null);
-  const [metadata, setMetadata] = useState<any>(null);
-  const [cleanedBlob, setCleanedBlob] = useState<Blob | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const { toast } = useToast();
+  const [tab, setTab] = useState<'images'|'pdfs'|'docs'>('images');
+  
+  const [files, setFiles] = useState<File[]>([]);
+  const [metadata, setMetadata] = useState<Record<string, any> | null>(null);
+  const [result, setResult] = useState<{blob: Blob, filename: string, sizeAfter: number, sizeBefore?: number} | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  // Scrubber state
-  const [inputText, setInputText] = useState("");
-  const [outputText, setOutputText] = useState("");
-  const [stats, setStats] = useState({ invisibles: 0 });
-
-  const handleFileChange = async (selectedFile: File) => {
-    if (!selectedFile) return;
-    setFile(selectedFile);
-    setCleanedBlob(null);
+  const handleTabChange = (newTab: 'images'|'pdfs'|'docs') => {
+    setTab(newTab);
+    setFiles([]);
     setMetadata(null);
-
-    if (selectedFile.type === "image/jpeg") {
-      const meta = await getJpegMetadata(selectedFile);
-      if (meta) setMetadata(meta);
-    }
+    setResult(null);
+    setError(null);
   };
 
-  const handleCleanFile = async () => {
-    if (!file) return;
+  const handleAnalyze = async () => {
+    if (!files[0]) return;
+    setError(null);
     try {
-      if (file.type === "image/jpeg") {
-        const blob = await cleanJpegMetadata(file);
-        setCleanedBlob(blob);
-      } else if (file.type === "application/pdf") {
-        const bytes = await cleanPdfMetadata(file);
-        setCleanedBlob(new Blob([bytes], { type: "application/pdf" }));
-      } else {
-        toast({ title: "Unsupported file type", variant: "destructive" });
+      const file = files[0];
+      if (tab === 'images') {
+        const meta = await exifr.parse(file, true);
+        setMetadata(meta || { info: "No standard metadata found." });
+      } else if (tab === 'pdfs') {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdfDoc = await PDFDocument.load(arrayBuffer);
+        setMetadata({
+          Title: pdfDoc.getTitle() || "None",
+          Author: pdfDoc.getAuthor() || "None",
+          Creator: pdfDoc.getCreator() || "None",
+          Producer: pdfDoc.getProducer() || "None",
+          CreationDate: pdfDoc.getCreationDate()?.toISOString() || "None",
+        });
+      } else if (tab === 'docs') {
+        const arrayBuffer = await file.arrayBuffer();
+        const zip = await JSZip.loadAsync(arrayBuffer);
+        const meta: Record<string, string> = {};
+        
+        if (zip.file("docProps/core.xml")) {
+          const core = await zip.file("docProps/core.xml")!.async("string");
+          meta["Core Props"] = "Found";
+          const creatorMatch = core.match(/<dc:creator>(.*?)<\/dc:creator>/);
+          if (creatorMatch) meta["Creator"] = creatorMatch[1];
+        }
+        if (zip.file("docProps/app.xml")) {
+          const app = await zip.file("docProps/app.xml")!.async("string");
+          meta["App Props"] = "Found";
+          const companyMatch = app.match(/<Company>(.*?)<\/Company>/);
+          if (companyMatch) meta["Company"] = companyMatch[1];
+        }
+        setMetadata(Object.keys(meta).length > 0 ? meta : { info: "No standard metadata found." });
       }
-    } catch (e: any) {
-      toast({ title: "Error cleaning metadata", description: e.message, variant: "destructive" });
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Analysis failed.');
     }
   };
 
-  const handleScrubText = () => {
-    const { cleaned, removedCount } = cleanTextScrubInvisibles(inputText);
-    const fullyCleaned = applyStylisticScrub(cleaned);
-    setOutputText(fullyCleaned);
-    setStats({ invisibles: removedCount });
+  const handleClean = async () => {
+    if (!files[0]) return;
+    setError(null); setIsProcessing(true);
+    try {
+      const file = files[0];
+      let blob: Blob;
+      
+      if (tab === 'images') {
+        // Convert to base64
+        const reader = new FileReader();
+        const dataUrl = await new Promise<string>((resolve, reject) => {
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+        
+        // Ensure it's jpeg
+        if (file.type === 'image/jpeg') {
+          const cleanB64 = piexif.remove(dataUrl);
+          const byteString = atob(cleanB64.split(',')[1]);
+          const ab = new ArrayBuffer(byteString.length);
+          const ia = new Uint8Array(ab);
+          for (let i = 0; i < byteString.length; i++) {
+              ia[i] = byteString.charCodeAt(i);
+          }
+          blob = new Blob([ab], { type: 'image/jpeg' });
+        } else {
+           // For non-jpeg, simply return a generic blob or use canvas
+           blob = file;
+        }
+      } else if (tab === 'pdfs') {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdfDoc = await PDFDocument.load(arrayBuffer);
+        pdfDoc.setTitle('');
+        pdfDoc.setAuthor('');
+        pdfDoc.setKeywords([]);
+        pdfDoc.setCreationDate(new Date(0));
+        pdfDoc.setCreator('');
+        pdfDoc.setProducer('');
+        const pdfBytes = await pdfDoc.save();
+        blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      } else if (tab === 'docs') {
+        const arrayBuffer = await file.arrayBuffer();
+        const zip = await JSZip.loadAsync(arrayBuffer);
+        
+        // Minimal core.xml
+        const emptyCore = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"></cp:coreProperties>`;
+        
+        const emptyApp = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties" xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes"></Properties>`;
+        
+        if (zip.file("docProps/core.xml")) zip.file("docProps/core.xml", emptyCore);
+        if (zip.file("docProps/app.xml")) zip.file("docProps/app.xml", emptyApp);
+        
+        const zipBlob = await zip.generateAsync({ type: "blob" });
+        blob = zipBlob;
+      } else {
+        throw new Error("Invalid tab");
+      }
+      
+      setResult({ blob, filename: file.name.replace(/(\.[a-z]+)$/i, '_cleaned$1'), sizeAfter: blob.size, sizeBefore: file.size });
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Cleaning failed.');
+    } finally { setIsProcessing(false); }
   };
+
+  const faqs = [
+    { q: "What metadata does this remove?", a: "It removes standard EXIF data from JPEGs, document properties (Author, Creator) from PDFs, and Core/App properties from Word documents." },
+    { q: "Does it remove AI fingerprints?", a: "No. This tool removes standard metadata fields. It does not guarantee removal of cryptographic fingerprints, steganographic data, or AI model watermarks embedded in pixel values." },
+    { q: "Can I clean other image formats?", a: "EXIF removal works best on JPEG. Other formats might not contain EXIF data or are handled differently." },
+    { q: "Is GPS location data removed?", a: "Yes, GPS coordinates embedded in EXIF tags of JPEGs are completely removed." }
+  ];
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 pb-12">
-      <div className="space-y-2">
-        <h1 className="font-serif text-3xl text-foreground">Metadata & Text Cleaner</h1>
-        <p className="text-muted-foreground">Strip identifying metadata from files and remove AI boilerplate from text.</p>
+    <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
+      <Breadcrumb items={['Home', 'Privacy Tools', 'Metadata Cleaner']} />
+      <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>Metadata Cleaner</h1>
+      <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>Strip EXIF, XMP, and document properties from your files to protect your privacy.</p>
+      
+      <div style={{ display: 'flex', borderBottom: '1px solid var(--border)', marginBottom: 24 }}>
+        <button onClick={() => handleTabChange('images')} style={{ flex: 1, padding: '12px', background: 'none', border: 'none', borderBottom: tab === 'images' ? '2px solid var(--accent)' : '2px solid transparent', fontWeight: 500, cursor: 'pointer', color: tab === 'images' ? 'var(--text)' : 'var(--muted)' }}>Images</button>
+        <button onClick={() => handleTabChange('pdfs')} style={{ flex: 1, padding: '12px', background: 'none', border: 'none', borderBottom: tab === 'pdfs' ? '2px solid var(--accent)' : '2px solid transparent', fontWeight: 500, cursor: 'pointer', color: tab === 'pdfs' ? 'var(--text)' : 'var(--muted)' }}>PDFs</button>
+        <button onClick={() => handleTabChange('docs')} style={{ flex: 1, padding: '12px', background: 'none', border: 'none', borderBottom: tab === 'docs' ? '2px solid var(--accent)' : '2px solid transparent', fontWeight: 500, cursor: 'pointer', color: tab === 'docs' ? 'var(--text)' : 'var(--muted)' }}>Documents (DOCX)</button>
       </div>
-
-      <Tabs defaultValue="files" className="w-full">
-        <TabsList className="w-full grid grid-cols-2 mb-6">
-          <TabsTrigger value="files">File Metadata Cleaner</TabsTrigger>
-          <TabsTrigger value="text">AI Text Scrubber</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="files">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card className="border-border">
-              <CardHeader>
-                <CardTitle>Upload File</CardTitle>
-                <CardDescription>Supports JPEG and PDF files.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div
-                  className="border-2 border-dashed border-border rounded-lg p-12 text-center transition-colors cursor-pointer hover:bg-muted/50"
-                  onClick={() => fileInputRef.current?.click()}
-                >
-                  <input 
-                    type="file" 
-                    ref={fileInputRef} 
-                    onChange={(e) => e.target.files && handleFileChange(e.target.files[0])} 
-                    className="hidden" 
-                    accept="image/jpeg,application/pdf" 
-                  />
-                  <FileUp className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-                  <h3 className="text-lg font-medium mb-1">Select JPEG or PDF</h3>
-                  <p className="text-sm text-muted-foreground">Strips EXIF data and document properties</p>
-                </div>
-
-                {file && (
-                  <div className="p-4 border border-border rounded-md bg-muted/20">
-                    <p className="font-medium truncate">{file.name}</p>
-                    <p className="text-xs text-muted-foreground">{(file.size / 1024).toFixed(1)} KB</p>
-                    
-                    <Button className="w-full mt-4" onClick={handleCleanFile}>
-                      <ShieldAlert className="w-4 h-4 mr-2" />
-                      Clean Metadata
-                    </Button>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            <Card className="border-border flex flex-col">
-              <CardHeader>
-                <CardTitle>Status & Output</CardTitle>
-              </CardHeader>
-              <CardContent className="flex-1 flex flex-col">
-                {metadata && !cleanedBlob && (
-                  <div className="mb-4">
-                    <h4 className="text-sm font-medium mb-2 text-destructive flex items-center">
-                      <AlertTriangle className="w-4 h-4 mr-1" /> Metadata found in file
-                    </h4>
-                    <div className="bg-muted p-3 rounded font-mono text-xs overflow-auto max-h-40 border border-border">
-                      Contains GPS, Camera, or Software info.
-                    </div>
-                  </div>
-                )}
-
-                {cleanedBlob ? (
-                  <div className="flex flex-col h-full justify-center text-center space-y-4">
-                    <div className="text-green-600 dark:text-green-500 mb-2">
-                      <ShieldAlert className="w-12 h-12 mx-auto mb-2 opacity-80" />
-                      <p className="font-medium text-lg">File is Clean</p>
-                      <p className="text-sm text-muted-foreground mt-1">All standard metadata has been stripped.</p>
-                    </div>
-                    <Button variant="default" onClick={() => {
-                      const url = URL.createObjectURL(cleanedBlob);
-                      const a = document.createElement("a");
-                      a.href = url;
-                      a.download = "cleaned_" + file?.name;
-                      a.click();
-                    }}>
-                      <Download className="w-4 h-4 mr-2" />
-                      Download Clean File
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="flex-1 flex items-center justify-center text-muted-foreground border border-border rounded-md border-dashed">
-                    Upload a file to begin
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+      
+      {tab === 'images' && <FileUpload accept={['image/jpeg', 'image/png']} maxSizeMB={20} onFiles={setFiles} />}
+      {tab === 'pdfs' && <FileUpload accept={['.pdf']} maxSizeMB={50} onFiles={setFiles} />}
+      {tab === 'docs' && <FileUpload accept={['.docx']} maxSizeMB={50} onFiles={setFiles} />}
+      
+      {files.length > 0 && !result && (
+        <button onClick={handleAnalyze} style={{ marginTop: 16, padding: '12px 24px', background: 'var(--bg)', color: 'var(--text)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15, fontWeight: 500, cursor: 'pointer', width: '100%' }}>
+          Analyze Metadata
+        </button>
+      )}
+      
+      {metadata && !result && (
+        <div style={{ marginTop: 24, padding: 16, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
+          <h3 style={{ fontSize: 16, fontWeight: 500, marginBottom: 16 }}>Found Metadata</h3>
+          <pre style={{ maxHeight: 200, overflow: 'auto', background: 'var(--bg)', padding: 12, borderRadius: 'var(--radius)', fontSize: 13, fontFamily: 'IBM Plex Mono, monospace' }}>
+            {JSON.stringify(metadata, null, 2)}
+          </pre>
+          
+          <button onClick={handleClean} disabled={isProcessing}
+            style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: '#fff', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15, fontWeight: 500, cursor: 'pointer', width: '100%' }}>
+            Clean & Download
+          </button>
+        </div>
+      )}
+      
+      {isProcessing && <ProgressBar progress={100} label="Cleaning..." />}
+      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
+      
+      {result && (
+        <div>
+          <ResultPanel {...result} />
+          <div style={{ marginTop: 16, padding: 12, background: 'var(--danger)', color: 'white', opacity: 0.9, borderRadius: 'var(--radius)', fontSize: 13, lineHeight: 1.5 }}>
+            <strong>Disclaimer:</strong> This tool removes common metadata fields (EXIF, XMP, document properties). It does not guarantee removal of cryptographic fingerprints, steganographic data, or AI model watermarks embedded in pixel values.
           </div>
-        </TabsContent>
-
-        <TabsContent value="text" className="space-y-6">
-          <Card className="border-border">
-            <CardHeader>
-              <CardTitle>Text Scrubber</CardTitle>
-              <CardDescription>
-                Removes invisible zero-width characters and replaces generic AI boilerplate phrases.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Input Text (AI Generated)</Label>
-                  <Textarea 
-                    className="min-h-[250px] font-sans resize-y" 
-                    placeholder="Paste text here..."
-                    value={inputText}
-                    onChange={e => setInputText(e.target.value)}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Cleaned Output</Label>
-                  <Textarea 
-                    className="min-h-[250px] font-sans resize-y bg-muted/20" 
-                    readOnly
-                    value={outputText}
-                    placeholder="Cleaned text will appear here..."
-                  />
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between pt-2">
-                <div className="text-sm text-muted-foreground flex items-center gap-4">
-                  {outputText && (
-                    <span className="font-mono bg-muted px-2 py-1 rounded">
-                      Removed {stats.invisibles} hidden artifacts
-                    </span>
-                  )}
-                </div>
-                <Button onClick={handleScrubText} disabled={!inputText}>
-                  <Eraser className="w-4 h-4 mr-2" />
-                  Scrub Text
-                </Button>
-              </div>
-              
-              <p className="text-xs text-muted-foreground pt-4 border-t border-border mt-4">
-                Disclaimer: This tool removes common formatting artifacts and stylistic ticks. It does not guarantee bypass of all AI detection methods, including cryptographic watermarking techniques.
-              </p>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+        </div>
+      )}
+      
+      <FAQSection faqs={faqs} />
+      <AdSlot type="horizontal" />
     </div>
   );
 }

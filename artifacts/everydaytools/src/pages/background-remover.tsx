@@ -1,167 +1,89 @@
-import { useState, useRef } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { removeImageBackground } from "@/services/backgroundRemovalService";
-import { Image as ImageIcon, Download, Eraser } from "lucide-react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useState } from 'react';
+import FileUpload from '@/components/FileUpload';
+import ResultPanel from '@/components/ResultPanel';
+import ProgressBar from '@/components/ProgressBar';
+import FAQSection from '@/components/FAQSection';
+import AdSlot from '@/components/AdSlot';
+import Breadcrumb from '@/components/Breadcrumb';
 
 export default function BackgroundRemover() {
-  const [file, setFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [resultUrl, setResultUrl] = useState<string | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
+  const [result, setResult] = useState<{blob: Blob, filename: string, sizeAfter: number, sizeBefore?: number} | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
-  const [status, setStatus] = useState<"idle" | "processing" | "done" | "error">("idle");
-  const [errorMsg, setErrorMsg] = useState("");
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [loadingEngine, setLoadingEngine] = useState(false);
 
-  const handleFileChange = (selectedFile: File) => {
-    if (!selectedFile) return;
-    setFile(selectedFile);
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
-    setPreviewUrl(URL.createObjectURL(selectedFile));
-    setStatus("idle");
-    setResultUrl(null);
-    setErrorMsg("");
-    setProgress(0);
-  };
-
-  const processFile = async () => {
-    if (!file) return;
-    setStatus("processing");
-    setProgress(0);
-
+  const handleConvert = async () => {
+    if (!files[0]) return;
+    setError(null); setIsProcessing(true); setProgress(0); setLoadingEngine(true);
     try {
-      const resultBlob = await removeImageBackground(file, setProgress);
-      const url = URL.createObjectURL(resultBlob);
-      setResultUrl(url);
-      setStatus("done");
-      setProgress(100);
-    } catch (error: any) {
-      setStatus("error");
-      setErrorMsg(error.message || "An error occurred during processing.");
-    }
+      const file = files[0];
+      const { removeBackground } = await import('@imgly/background-removal');
+      setLoadingEngine(false);
+      
+      const blob = await removeBackground(file, {
+        progress: (key, current, total) => {
+          setProgress(Math.round((current / total) * 100));
+        }
+      });
+      
+      setResult({ blob, filename: file.name.replace(/\.[^/.]+$/, '_nobg.png'), sizeAfter: blob.size, sizeBefore: file.size });
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Conversion failed. Please try again.');
+    } finally { setIsProcessing(false); setLoadingEngine(false); }
   };
+
+  const faqs = [
+    { q: "Is my image uploaded anywhere?", a: "No, processing happens entirely on your device." },
+    { q: "Why does it take long the first time?", a: "The AI model (~40MB) must be downloaded and cached in your browser." },
+    { q: "Does it work well with hair?", a: "Yes, the AI model is trained to handle complex edges like hair and fur." },
+    { q: "What happens if the background is complex?", a: "It usually works well, but highly cluttered backgrounds might have minor artifacts." },
+    { q: "Can I swap the AI model?", a: "Currently, this uses the default @imgly/background-removal model optimized for web." }
+  ];
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 pb-12">
-      <div className="space-y-2">
-        <h1 className="font-serif text-3xl text-foreground">AI Background Remover</h1>
-        <p className="text-muted-foreground">Remove image backgrounds entirely in your browser using local AI models. No data leaves your device.</p>
-        <p className="text-xs text-muted-foreground mt-1 px-3 py-1.5 bg-muted rounded-md inline-block">Note: The AI model (~40MB) will be downloaded on first use. This may take a few seconds.</p>
+    <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
+      <Breadcrumb items={['Home', 'Image Tools', 'Background Remover']} />
+      <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>Background Remover</h1>
+      <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>Remove image backgrounds entirely in your browser using local AI.</p>
+      
+      <div style={{ padding: 16, background: 'var(--bg)', borderRadius: 'var(--radius)', marginBottom: 24, fontSize: 14 }}>
+        <strong>Note:</strong> The AI model is downloaded once and cached in your browser (~40MB). Processing is entirely on your device — no image is uploaded.
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="border-border">
-          <CardHeader>
-            <CardTitle>Original Image</CardTitle>
-            <CardDescription>Select an image to process.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {!previewUrl ? (
-              <div
-                className={`border-2 border-dashed rounded-lg p-12 text-center transition-colors cursor-pointer h-[300px] flex flex-col items-center justify-center ${isDragging ? "border-primary bg-primary/5" : "border-border hover:bg-muted/50"}`}
-                onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-                onDragLeave={() => setIsDragging(false)}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  setIsDragging(false);
-                  if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-                    handleFileChange(e.dataTransfer.files[0]);
-                  }
-                }}
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <input 
-                  type="file" 
-                  ref={fileInputRef} 
-                  onChange={(e) => e.target.files && handleFileChange(e.target.files[0])} 
-                  className="hidden" 
-                  accept="image/*" 
-                />
-                <ImageIcon className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-                <h3 className="text-lg font-medium mb-1">Drag & drop image</h3>
-                <p className="text-sm text-muted-foreground">or click to browse</p>
+      
+      <FileUpload accept={['image/jpeg', 'image/png', 'image/webp']} maxSizeMB={10} onFiles={setFiles} />
+      
+      {files.length > 0 && !isProcessing && (
+        <button onClick={handleConvert} disabled={isProcessing}
+          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: '#fff', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15, fontWeight: 500, cursor: 'pointer', width: '100%' }}>
+          Remove Background
+        </button>
+      )}
+      
+      {isProcessing && <ProgressBar progress={progress} label={loadingEngine ? "Loading AI model..." : "Processing image..."} />}
+      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
+      
+      {result && (
+        <div style={{ marginTop: 24 }}>
+          <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
+            <div style={{ flex: 1 }}>
+              <p style={{ fontSize: 14, fontWeight: 500, marginBottom: 8 }}>Original</p>
+              <img src={URL.createObjectURL(files[0])} style={{ width: '100%', borderRadius: 'var(--radius)', border: '1px solid var(--border)' }} alt="Original" />
+            </div>
+            <div style={{ flex: 1 }}>
+              <p style={{ fontSize: 14, fontWeight: 500, marginBottom: 8 }}>Result</p>
+              <div style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 0h10v10H0zm10 10h10v10H10z\' fill=\'%23e5e5e5\' fill-rule=\'evenodd\'/%3E%3C/svg%3E")', borderRadius: 'var(--radius)', border: '1px solid var(--border)', overflow: 'hidden' }}>
+                <img src={URL.createObjectURL(result.blob)} style={{ width: '100%', display: 'block' }} alt="Result" />
               </div>
-            ) : (
-              <div className="relative border border-border rounded-lg overflow-hidden h-[300px] flex items-center justify-center bg-muted/20">
-                <img src={previewUrl} alt="Original" className="max-h-full max-w-full object-contain" />
-                <Button 
-                  variant="secondary" 
-                  size="sm" 
-                  className="absolute top-2 right-2 shadow-sm"
-                  onClick={() => {
-                    setFile(null);
-                    setPreviewUrl(null);
-                    setResultUrl(null);
-                    setStatus("idle");
-                  }}
-                >
-                  Change
-                </Button>
-              </div>
-            )}
-
-            <Button 
-              className="w-full" 
-              disabled={!file || status === "processing"} 
-              onClick={processFile}
-            >
-              {status === "processing" ? "Removing Background..." : "Remove Background"}
-            </Button>
-
-            {status === "processing" && (
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Processing...</span>
-                  <span className="font-mono">{progress}%</span>
-                </div>
-                <Progress value={progress} className="h-2" />
-              </div>
-            )}
-            
-            {status === "error" && (
-              <Alert variant="destructive">
-                <AlertTitle>Processing Failed</AlertTitle>
-                <AlertDescription>{errorMsg}</AlertDescription>
-              </Alert>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card className="border-border flex flex-col">
-          <CardHeader>
-            <CardTitle>Result</CardTitle>
-            <CardDescription>Transparent PNG output.</CardDescription>
-          </CardHeader>
-          <CardContent className="flex-1 flex flex-col min-h-[300px]">
-            {resultUrl ? (
-              <div className="flex flex-col h-full space-y-4">
-                <div className="flex-1 border border-border rounded-md overflow-hidden relative" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 0h10v10H0zm10 10h10v10H10z\' fill=\'%23e5e5e5\' fill-rule=\'evenodd\'/%3E%3C/svg%3E")' }}>
-                  <img src={resultUrl} alt="Result" className="w-full h-full object-contain" />
-                </div>
-                <Button variant="default" className="w-full" onClick={() => {
-                  const a = document.createElement("a");
-                  a.href = resultUrl;
-                  a.download = file?.name.replace(/\.[^/.]+$/, "_nobg.png") || "removed_bg.png";
-                  a.click();
-                }}>
-                  <Download className="w-4 h-4 mr-2" />
-                  Download PNG
-                </Button>
-              </div>
-            ) : (
-              <div className="flex items-center justify-center h-[300px] text-center p-8 text-muted-foreground border border-border rounded-md border-dashed">
-                <div className="space-y-2">
-                  <Eraser className="w-8 h-8 mx-auto opacity-20" />
-                  <p>Result will appear here</p>
-                </div>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+            </div>
+          </div>
+          <ResultPanel {...result} />
+        </div>
+      )}
+      
+      <FAQSection faqs={faqs} />
+      <AdSlot type="horizontal" />
     </div>
   );
 }

@@ -1,162 +1,195 @@
-import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { Slider } from "@/components/ui/slider";
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { generatePassword, calculateEntropy, getEntropyLabel } from "@/services/passwordService";
-import { Copy, RefreshCw } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useState, useEffect } from 'react';
+import FAQSection from '@/components/FAQSection';
+import AdSlot from '@/components/AdSlot';
+import Breadcrumb from '@/components/Breadcrumb';
 
 export default function PasswordGenerator() {
   const [length, setLength] = useState(16);
-  const [options, setOptions] = useState({
-    uppercase: true,
-    lowercase: true,
-    numbers: true,
-    symbols: true,
-  });
+  const [uppercase, setUppercase] = useState(true);
+  const [lowercase, setLowercase] = useState(true);
+  const [numbers, setNumbers] = useState(true);
+  const [symbols, setSymbols] = useState(true);
+  const [pronounceable, setPronounceable] = useState(false);
   const [count, setCount] = useState(1);
+  
   const [passwords, setPasswords] = useState<string[]>([]);
-  const { toast } = useToast();
-
-  const handleGenerate = () => {
-    if (!options.uppercase && !options.lowercase && !options.numbers && !options.symbols) {
-      toast({ title: "Select at least one character type", variant: "destructive" });
-      return;
-    }
-    const newPasswords = Array.from({ length: count }, () => generatePassword(length, options));
-    setPasswords(newPasswords);
-  };
+  const [history, setHistory] = useState<string[]>([]);
 
   useEffect(() => {
-    handleGenerate();
-  }, [length, options, count]);
+    const saved = sessionStorage.getItem('password_history');
+    if (saved) {
+      try { setHistory(JSON.parse(saved)); } catch (e) {}
+    }
+    generate();
+  }, []);
 
-  const entropy = calculateEntropy(length, options);
-  const entropyLabel = getEntropyLabel(entropy);
-
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    toast({ title: "Copied to clipboard" });
+  const generateSingle = () => {
+    if (pronounceable) {
+      const cons = "bcdfghjklmnpqrstvwxyz";
+      const vows = "aeiou";
+      let pw = "";
+      for (let i = 0; i < length; i++) {
+        const chars = i % 2 === 0 ? cons : vows;
+        const array = new Uint32Array(1);
+        crypto.getRandomValues(array);
+        pw += chars[array[0] % chars.length];
+      }
+      return pw;
+    }
+    
+    let chars = "";
+    if (uppercase) chars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    if (lowercase) chars += "abcdefghijklmnopqrstuvwxyz";
+    if (numbers) chars += "0123456789";
+    if (symbols) chars += "!@#$%^&*()_+-=[]{}|;':\",.<>?/";
+    
+    if (!chars) chars = "abcdefghijklmnopqrstuvwxyz";
+    
+    let pw = "";
+    const array = new Uint32Array(length);
+    crypto.getRandomValues(array);
+    for (let i = 0; i < length; i++) {
+      pw += chars[array[i] % chars.length];
+    }
+    return pw;
   };
 
+  const generate = () => {
+    const pws = [];
+    for (let i = 0; i < count; i++) {
+      pws.push(generateSingle());
+    }
+    setPasswords(pws);
+    
+    const newHistory = [...pws, ...history].slice(0, 10);
+    setHistory(newHistory);
+    sessionStorage.setItem('password_history', JSON.stringify(newHistory));
+  };
+
+  const getEntropy = () => {
+    let R = 0;
+    if (pronounceable) R = 21; // simplified avg
+    else {
+      if (uppercase) R += 26;
+      if (lowercase) R += 26;
+      if (numbers) R += 10;
+      if (symbols) R += 32;
+      if (R === 0) R = 26;
+    }
+    return length * Math.log2(R);
+  };
+
+  const entropy = getEntropy();
+  let strengthLabel = "Weak";
+  let strengthColor = "var(--danger)";
+  
+  if (entropy >= 40 && entropy < 60) { strengthLabel = "Fair"; strengthColor = "#D97706"; }
+  else if (entropy >= 60 && entropy < 80) { strengthLabel = "Strong"; strengthColor = "var(--success)"; }
+  else if (entropy >= 80 && entropy < 100) { strengthLabel = "Very Strong"; strengthColor = "var(--accent)"; }
+  else if (entropy >= 100) { strengthLabel = "Exceptional"; strengthColor = "#7C3AED"; }
+
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+  };
+
+  const faqs = [
+    { q: "Is this secure?", a: "Yes, it uses crypto.getRandomValues() for cryptographically secure randomness, unlike Math.random()." },
+    { q: "What is entropy?", a: "Entropy measures password predictability in bits. Higher is better." },
+    { q: "Are passwords saved?", a: "Passwords remain in your browser's session storage until you close the tab. They are never sent to a server." },
+    { q: "What is a pronounceable password?", a: "It alternates consonants and vowels so the password is easier to read and remember." }
+  ];
+
   return (
-    <div className="max-w-4xl mx-auto space-y-6 pb-12">
-      <div className="space-y-2">
-        <h1 className="font-serif text-3xl text-foreground">Password Generator</h1>
-        <p className="text-muted-foreground">Generate highly secure passwords with entropy calculation. Runs entirely in your browser.</p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="md:col-span-1 border-border">
-          <CardHeader>
-            <CardTitle>Settings</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <Label>Length</Label>
-                <span className="font-mono text-sm">{length}</span>
-              </div>
-              <Slider
-                value={[length]}
-                onValueChange={(v) => setLength(v[0])}
-                min={8}
-                max={128}
-                step={1}
-              />
+    <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
+      <Breadcrumb items={['Home', 'Calculators', 'Password Generator']} />
+      <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>Password Generator</h1>
+      <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>Generate cryptographically secure passwords locally.</p>
+      
+      <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: 24 }}>
+        
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+          <h2 style={{ fontSize: 24, fontFamily: 'IBM Plex Mono, monospace', wordBreak: 'break-all', margin: 0 }}>{passwords[0] || ""}</h2>
+          <button onClick={() => handleCopy(passwords[0])} style={{ padding: '8px 16px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', cursor: 'pointer' }}>Copy</button>
+        </div>
+        
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 24 }}>
+          <span style={{ fontSize: 14, fontWeight: 500, color: strengthColor }}>{strengthLabel}</span>
+          <span style={{ fontSize: 13, color: 'var(--muted)' }}>({Math.round(entropy)} bits)</span>
+        </div>
+        
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+              <label style={{ fontSize: 14, fontWeight: 500 }}>Length: {length}</label>
             </div>
-
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="uppercase">Uppercase (A-Z)</Label>
-                <Switch 
-                  id="uppercase" 
-                  checked={options.uppercase} 
-                  onCheckedChange={(c) => setOptions(prev => ({ ...prev, uppercase: c }))} 
-                />
-              </div>
-              <div className="flex items-center justify-between">
-                <Label htmlFor="lowercase">Lowercase (a-z)</Label>
-                <Switch 
-                  id="lowercase" 
-                  checked={options.lowercase} 
-                  onCheckedChange={(c) => setOptions(prev => ({ ...prev, lowercase: c }))} 
-                />
-              </div>
-              <div className="flex items-center justify-between">
-                <Label htmlFor="numbers">Numbers (0-9)</Label>
-                <Switch 
-                  id="numbers" 
-                  checked={options.numbers} 
-                  onCheckedChange={(c) => setOptions(prev => ({ ...prev, numbers: c }))} 
-                />
-              </div>
-              <div className="flex items-center justify-between">
-                <Label htmlFor="symbols">Symbols (!@#$)</Label>
-                <Switch 
-                  id="symbols" 
-                  checked={options.symbols} 
-                  onCheckedChange={(c) => setOptions(prev => ({ ...prev, symbols: c }))} 
-                />
-              </div>
+            <input type="range" min="8" max="128" value={length} onChange={e => setLength(parseInt(e.target.value))} style={{ width: '100%', accentColor: 'var(--accent)' }} />
+          </div>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, cursor: 'pointer' }}>
+              <input type="checkbox" checked={uppercase} onChange={e => setUppercase(e.target.checked)} disabled={pronounceable} style={{ accentColor: 'var(--accent)' }} /> Uppercase (A-Z)
+            </label>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, cursor: 'pointer' }}>
+              <input type="checkbox" checked={lowercase} onChange={e => setLowercase(e.target.checked)} disabled={pronounceable} style={{ accentColor: 'var(--accent)' }} /> Lowercase (a-z)
+            </label>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, cursor: 'pointer' }}>
+              <input type="checkbox" checked={numbers} onChange={e => setNumbers(e.target.checked)} disabled={pronounceable} style={{ accentColor: 'var(--accent)' }} /> Numbers (0-9)
+            </label>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, cursor: 'pointer' }}>
+              <input type="checkbox" checked={symbols} onChange={e => setSymbols(e.target.checked)} disabled={pronounceable} style={{ accentColor: 'var(--accent)' }} /> Symbols (!@#$)
+            </label>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, cursor: 'pointer', gridColumn: '1 / -1' }}>
+              <input type="checkbox" checked={pronounceable} onChange={e => setPronounceable(e.target.checked)} style={{ accentColor: 'var(--accent)' }} /> Pronounceable mode
+            </label>
+          </div>
+          
+          <div style={{ display: 'flex', gap: 16, alignItems: 'flex-end' }}>
+            <div style={{ flex: 1 }}>
+              <label style={{ fontSize: 14, fontWeight: 500, display: 'block', marginBottom: 8 }}>Generate Count</label>
+              <select value={count} onChange={e => setCount(parseInt(e.target.value))} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg)' }}>
+                <option value={1}>1</option>
+                <option value={5}>5</option>
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+              </select>
             </div>
-
-            <div className="space-y-2">
-              <Label>Quantity</Label>
-              <Select value={count.toString()} onValueChange={(v) => setCount(parseInt(v))}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Quantity" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="1">1 password</SelectItem>
-                  <SelectItem value="5">5 passwords</SelectItem>
-                  <SelectItem value="10">10 passwords</SelectItem>
-                  <SelectItem value="25">25 passwords</SelectItem>
-                  <SelectItem value="50">50 passwords</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <Button className="w-full" onClick={handleGenerate}>
-              <RefreshCw className="w-4 h-4 mr-2" />
+            <button onClick={generate} style={{ flex: 2, padding: '10px', background: 'var(--accent)', color: '#fff', border: 'none', borderRadius: 'var(--radius)', fontWeight: 500, cursor: 'pointer' }}>
               Regenerate
-            </Button>
-          </CardContent>
-        </Card>
-
-        <Card className="md:col-span-2 border-border flex flex-col">
-          <CardHeader>
-            <div className="flex justify-between items-start">
-              <div>
-                <CardTitle>Generated Passwords</CardTitle>
-                <CardDescription>Click to copy. Never saved to storage.</CardDescription>
-              </div>
-              <div className="text-right">
-                <div className="text-sm font-medium text-muted-foreground mb-1">Strength: <span className="text-foreground">{entropyLabel}</span></div>
-                <div className="font-mono text-sm bg-muted px-2 py-1 rounded">~{Math.round(entropy)} bits</div>
-              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      {passwords.length > 1 && (
+        <div style={{ marginTop: 24, padding: 16, background: 'var(--bg)', borderRadius: 'var(--radius)', border: '1px solid var(--border)', maxHeight: 300, overflow: 'auto' }}>
+          <h3 style={{ fontSize: 14, fontWeight: 500, marginBottom: 12 }}>Bulk Generation</h3>
+          {passwords.map((p, i) => (
+            <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid var(--border)' }}>
+              <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 14 }}>{p}</span>
+              <button onClick={() => handleCopy(p)} style={{ background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer', fontSize: 13 }}>Copy</button>
             </div>
-          </CardHeader>
-          <CardContent className="flex-1 overflow-auto space-y-2 max-h-[500px]">
-            {passwords.map((pw, i) => (
-              <div 
-                key={i} 
-                className="flex items-center gap-3 p-3 bg-muted/50 border border-border rounded-md hover:bg-muted transition-colors cursor-pointer group"
-                onClick={() => copyToClipboard(pw)}
-              >
-                <div className="flex-1 font-mono text-lg break-all">{pw}</div>
-                <Button variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
-                  <Copy className="h-4 w-4" />
-                </Button>
+          ))}
+        </div>
+      )}
+      
+      {history.length > 0 && (
+        <div style={{ marginTop: 24 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+            <h3 style={{ fontSize: 14, fontWeight: 500 }}>History</h3>
+            <button onClick={() => { setHistory([]); sessionStorage.removeItem('password_history'); }} style={{ background: 'none', border: 'none', color: 'var(--danger)', cursor: 'pointer', fontSize: 13 }}>Clear History</button>
+          </div>
+          <div style={{ background: 'var(--surface)', borderRadius: 'var(--radius)', border: '1px solid var(--border)' }}>
+            {history.map((p, i) => (
+              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 16px', borderBottom: i === history.length - 1 ? 'none' : '1px solid var(--border)' }}>
+                <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 14 }}>{p}</span>
               </div>
             ))}
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        </div>
+      )}
+      
+      <FAQSection faqs={faqs} />
+      <AdSlot type="horizontal" />
     </div>
   );
 }
