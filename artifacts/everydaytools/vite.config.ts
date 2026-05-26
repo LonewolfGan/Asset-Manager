@@ -152,6 +152,8 @@ export default defineConfig({
     alias: {
       "@": path.resolve(import.meta.dirname, "src"),
       "@assets": path.resolve(import.meta.dirname, "..", "..", "attached_assets"),
+      "path": "path-browserify",
+      "fs": path.resolve(import.meta.dirname, "src/stubs/fs.ts"),
     },
     dedupe: ["react", "react-dom"],
   },
@@ -159,6 +161,17 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    rollupOptions: {
+      onwarn(warning, warn) {
+        if (
+          warning.code === "SOURCEMAP_ERROR" ||
+          warning.message?.includes("Can't resolve original location of error")
+        ) {
+          return;
+        }
+        warn(warning);
+      },
+    },
   },
   server: {
     port,
