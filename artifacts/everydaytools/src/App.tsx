@@ -1,11 +1,16 @@
-import { Switch, Route, Router as WouterRouter } from "wouter";
+import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import TopNav from "@/components/TopNav";
 import NotFound from "@/pages/not-found";
 import { LocaleProvider } from "@/contexts/locale-context";
+import { HelmetProvider } from "react-helmet-async";
+import {
+  SLUG_MAP_EN_TO_INTERNAL,
+  SLUG_MAP_FR_TO_INTERNAL,
+} from "@/config/tools-seo-data";
 
 const Home = lazy(() => import("@/pages/index"));
 
@@ -53,6 +58,43 @@ const PercentageCalc = lazy(() => import("@/pages/percentage-calc"));
 const UnitConverter = lazy(() => import("@/pages/unit-converter"));
 const CurrencyConverter = lazy(() => import("@/pages/currency-converter"));
 
+const TOOL_COMPONENTS: Record<string, React.LazyExoticComponent<() => JSX.Element>> = {
+  "pdf-to-word": PdfToWord,
+  "pdf-to-text": PdfToText,
+  "pdf-to-html": PdfToHtml,
+  "pdf-to-epub": PdfToEpub,
+  "pdf-compress": PdfCompress,
+  "pdf-merge": PdfMerge,
+  "pdf-split": PdfSplit,
+  "pdf-rotate": PdfRotate,
+  "pdf-unlock": PdfUnlock,
+  "pdf-protect": PdfProtect,
+  "pdf-page-numbers": PdfPageNumbers,
+  "pdf-watermark": PdfWatermark,
+  "word-to-text": WordToText,
+  "word-to-html": WordToHtml,
+  "word-to-epub": WordToEpub,
+  "markdown-to-pdf": MarkdownToPdf,
+  "markdown-to-docx": MarkdownToDocx,
+  "html-to-pdf": HtmlToPdf,
+  "txt-to-pdf": TxtToPdf,
+  "txt-to-docx": TxtToDocx,
+  "image-converter": ImageConverter,
+  "heic-to-jpg": HeicToJpg,
+  "image-compress": ImageCompress,
+  "image-resize": ImageResize,
+  "image-crop": ImageCrop,
+  "image-to-pdf": ImageToPdf,
+  "pdf-to-image": PdfToImage,
+  "background-remover": BackgroundRemover,
+  "metadata-cleaner": MetadataCleaner,
+  "ai-text-scrubber": AiTextScrubber,
+  "password-generator": PasswordGenerator,
+  "percentage-calc": PercentageCalc,
+  "unit-converter": UnitConverter,
+  "currency-converter": CurrencyConverter,
+};
+
 const queryClient = new QueryClient();
 
 function PageLoader() {
@@ -63,6 +105,15 @@ function PageLoader() {
   );
 }
 
+function LocaleToolRoute({ params }: { params: { slug: string } }) {
+  const slug = params?.slug ?? "";
+  const internalSlug =
+    SLUG_MAP_EN_TO_INTERNAL[slug] ?? SLUG_MAP_FR_TO_INTERNAL[slug];
+  const Comp = internalSlug ? TOOL_COMPONENTS[internalSlug] : null;
+  if (!Comp) return <NotFound />;
+  return <Comp />;
+}
+
 function Router() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-base)', fontFamily: 'var(--font-ui)' }}>
@@ -71,6 +122,11 @@ function Router() {
         <Suspense fallback={<PageLoader />}>
           <Switch>
             <Route path="/" component={Home} />
+
+            {/* Locale-aware SEO routes — render the same tool component */}
+            <Route path="/en/:slug" component={LocaleToolRoute} />
+            <Route path="/fr/:slug" component={LocaleToolRoute} />
+
             {/* PDF Tools */}
             <Route path="/pdf-to-word" component={PdfToWord} />
             <Route path="/pdf-to-text" component={PdfToText} />
@@ -120,16 +176,18 @@ function Router() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <LocaleProvider>
-          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-            <Router />
-          </WouterRouter>
-          <Toaster />
-        </LocaleProvider>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <LocaleProvider>
+            <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+              <Router />
+            </WouterRouter>
+            <Toaster />
+          </LocaleProvider>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </HelmetProvider>
   );
 }
 

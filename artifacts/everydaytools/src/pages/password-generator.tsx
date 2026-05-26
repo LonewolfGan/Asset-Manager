@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
+import ToolPageSEO from '@/components/ToolPageSEO';
 
 export default function PasswordGenerator() {
   const [length, setLength] = useState(16);
@@ -92,7 +93,8 @@ export default function PasswordGenerator() {
   };
 
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
+    <>
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Calculators', 'Password Generator']} />
       <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>Password Generator</h1>
       <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>Generate cryptographically secure passwords locally.</p>
@@ -181,5 +183,7 @@ export default function PasswordGenerator() {
       )}
       <AdSlot type="horizontal" />
     </div>
+    <ToolPageSEO internalSlug="password-generator" />
+  </>
   );
 }

@@ -4,6 +4,7 @@ import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
+import ToolPageSEO from '@/components/ToolPageSEO';
 
 export default function PdfToHtml() {
   const [files, setFiles] = useState<File[]>([]);
@@ -45,7 +46,8 @@ export default function PdfToHtml() {
   };
 
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
+    <>
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'PDF Tools', 'PDF to HTML']} />
       <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>PDF to HTML</h1>
       <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>Extract text from a PDF and format it as a clean HTML webpage.</p>
@@ -61,5 +63,7 @@ export default function PdfToHtml() {
       {result && <ResultPanel {...result} />}
       <AdSlot type="horizontal" />
     </div>
+    <ToolPageSEO internalSlug="pdf-to-html" />
+  </>
   );
 }

@@ -5,6 +5,7 @@ import ProgressBar from '@/components/ProgressBar';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import { Document, Packer, Paragraph, TextRun } from 'docx';
+import ToolPageSEO from '@/components/ToolPageSEO';
 
 export default function PdfToWord() {
   const [files, setFiles] = useState<File[]>([]);
@@ -57,7 +58,8 @@ export default function PdfToWord() {
   };
 
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
+    <>
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'PDF Tools', 'PDF to Word']} />
       <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>PDF to Word</h1>
       <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>Convert PDF documents into editable Word (DOCX) files in your browser.</p>
@@ -73,5 +75,7 @@ export default function PdfToWord() {
       {result && <ResultPanel {...result} />}
       <AdSlot type="horizontal" />
     </div>
+    <ToolPageSEO internalSlug="pdf-to-word" />
+  </>
   );
 }

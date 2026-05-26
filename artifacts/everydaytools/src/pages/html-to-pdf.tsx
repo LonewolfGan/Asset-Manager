@@ -6,6 +6,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import { PDFDocument } from 'pdf-lib';
 import { toCanvas } from 'html-to-image';
+import ToolPageSEO from '@/components/ToolPageSEO';
 
 export default function HtmlToPdf() {
   const [files, setFiles] = useState<File[]>([]);
@@ -87,7 +88,8 @@ export default function HtmlToPdf() {
   };
 
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
+    <>
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Word Tools', 'HTML to PDF']} />
       <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>HTML to PDF</h1>
       <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>Convert HTML snippets or files into a PDF document visually.</p>
@@ -122,5 +124,7 @@ export default function HtmlToPdf() {
       {result && <ResultPanel {...result} />}
       <AdSlot type="horizontal" />
     </div>
+    <ToolPageSEO internalSlug="html-to-pdf" />
+  </>
   );
 }

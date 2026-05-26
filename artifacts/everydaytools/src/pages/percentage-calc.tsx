@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
+import ToolPageSEO from '@/components/ToolPageSEO';
 
 export default function PercentageCalc() {
   const [tab, setTab] = useState<'of'|'isWhat'|'change'|'discount'|'tip'|'markup'>('of');
@@ -44,7 +45,8 @@ export default function PercentageCalc() {
   };
 
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
+    <>
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Calculators', 'Percentage Calculator']} />
       <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>Percentage Calculator</h1>
       <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>Instantly calculate percentages, discounts, tips, and margins.</p>
@@ -118,5 +120,7 @@ export default function PercentageCalc() {
       </div>
       <AdSlot type="horizontal" />
     </div>
+    <ToolPageSEO internalSlug="percentage-calc" />
+  </>
   );
 }

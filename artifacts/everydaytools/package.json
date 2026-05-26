@@ -89,6 +89,7 @@
     "onnxruntime-web": "^1.26.0",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^5.7.284",
-    "piexifjs": "^1.0.6"
+    "piexifjs": "^1.0.6",
+    "react-helmet-async": "^3.0.0"
   }
 }

@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
+import ToolPageSEO from '@/components/ToolPageSEO';
 
 type Mode = 'quality' | 'target';
 type ResizeMode = 'none' | 'percent' | 'dimensions';
@@ -239,7 +240,8 @@ export default function ImageCompress() {
   const doneCount = files.filter((f) => f.status === 'done').length;
 
   return (
-    <div style={{ maxWidth: 800, margin: '0 auto', padding: '24px 24px 80px' }}>
+    <>
+      <div style={{ maxWidth: 800, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Tools', 'Image Compressor']} />
       <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>
         Image Compressor
@@ -601,5 +603,7 @@ export default function ImageCompress() {
       )}
       <AdSlot type="horizontal" />
     </div>
+    <ToolPageSEO internalSlug="image-compress" />
+  </>
   );
 }

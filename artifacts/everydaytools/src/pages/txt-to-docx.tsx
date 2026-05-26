@@ -5,6 +5,7 @@ import ProgressBar from '@/components/ProgressBar';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import { Document, Packer, Paragraph, TextRun } from 'docx';
+import ToolPageSEO from '@/components/ToolPageSEO';
 
 export default function TxtToDocx() {
   const [files, setFiles] = useState<File[]>([]);
@@ -56,7 +57,8 @@ export default function TxtToDocx() {
   };
 
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
+    <>
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Word Tools', 'Text to Word']} />
       <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>Text to Word</h1>
       <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>Convert plain text into an editable Microsoft Word document.</p>
@@ -89,5 +91,7 @@ export default function TxtToDocx() {
       {result && <ResultPanel {...result} />}
       <AdSlot type="horizontal" />
     </div>
+    <ToolPageSEO internalSlug="txt-to-docx" />
+  </>
   );
 }

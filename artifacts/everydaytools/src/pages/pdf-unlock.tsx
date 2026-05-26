@@ -5,6 +5,7 @@ import ProgressBar from '@/components/ProgressBar';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import { PDFDocument } from 'pdf-lib';
+import ToolPageSEO from '@/components/ToolPageSEO';
 
 export default function PdfUnlock() {
   const [files, setFiles] = useState<File[]>([]);
@@ -50,7 +51,8 @@ export default function PdfUnlock() {
   };
 
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
+    <>
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'PDF Tools', 'Unlock PDF']} />
       <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>Unlock PDF</h1>
       <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>Remove printing, copying, and editing restrictions from PDF files.</p>
@@ -73,5 +75,7 @@ export default function PdfUnlock() {
       {result && <ResultPanel {...result} />}
       <AdSlot type="horizontal" />
     </div>
+    <ToolPageSEO internalSlug="pdf-unlock" />
+  </>
   );
 }

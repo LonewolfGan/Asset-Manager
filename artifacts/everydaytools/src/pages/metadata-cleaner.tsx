@@ -8,6 +8,7 @@ import exifr from 'exifr';
 import piexif from 'piexifjs';
 import { PDFDocument } from 'pdf-lib';
 import JSZip from 'jszip';
+import ToolPageSEO from '@/components/ToolPageSEO';
 
 export default function MetadataCleaner() {
   const [tab, setTab] = useState<'images'|'pdfs'|'docs'>('images');
@@ -136,7 +137,8 @@ export default function MetadataCleaner() {
   };
 
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
+    <>
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Privacy Tools', 'Metadata Cleaner']} />
       <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>Metadata Cleaner</h1>
       <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>Strip EXIF, XMP, and document properties from your files to protect your privacy.</p>
@@ -184,5 +186,7 @@ export default function MetadataCleaner() {
       )}
       <AdSlot type="horizontal" />
     </div>
+    <ToolPageSEO internalSlug="metadata-cleaner" />
+  </>
   );
 }

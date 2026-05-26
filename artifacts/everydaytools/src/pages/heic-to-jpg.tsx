@@ -4,6 +4,7 @@ import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
+import ToolPageSEO from '@/components/ToolPageSEO';
 
 export default function HeicToJpg() {
   const [files, setFiles] = useState<File[]>([]);
@@ -40,7 +41,8 @@ export default function HeicToJpg() {
   };
 
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
+    <>
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Image Tools', 'HEIC to JPG']} />
       <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>HEIC to JPG</h1>
       <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>Convert Apple iPhone HEIC/HEIF photos to universally compatible formats.</p>
@@ -75,5 +77,7 @@ export default function HeicToJpg() {
       {result && <ResultPanel {...result} />}
       <AdSlot type="horizontal" />
     </div>
+    <ToolPageSEO internalSlug="heic-to-jpg" />
+  </>
   );
 }

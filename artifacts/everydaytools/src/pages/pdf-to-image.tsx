@@ -5,6 +5,7 @@ import ProgressBar from '@/components/ProgressBar';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import JSZip from 'jszip';
+import ToolPageSEO from '@/components/ToolPageSEO';
 
 export default function PdfToImage() {
   const [files, setFiles] = useState<File[]>([]);
@@ -70,7 +71,8 @@ export default function PdfToImage() {
   };
 
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
+    <>
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Image Tools', 'PDF to Image']} />
       <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>PDF to Image</h1>
       <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>Convert PDF pages into high-quality JPEG or PNG images.</p>
@@ -126,5 +128,7 @@ export default function PdfToImage() {
       {result && <ResultPanel {...result} />}
       <AdSlot type="horizontal" />
     </div>
+    <ToolPageSEO internalSlug="pdf-to-image" />
+  </>
   );
 }

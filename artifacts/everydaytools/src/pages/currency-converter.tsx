@@ -3,6 +3,7 @@ import FormatSelector from '@/components/FormatSelector';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import { CURRENCIES, FALLBACK_RATES, FALLBACK_DATE } from '@/config/currencies.config';
+import ToolPageSEO from '@/components/ToolPageSEO';
 
 export default function CurrencyConverter() {
   const [rates, setRates] = useState<Record<string, number>>({});
@@ -88,7 +89,8 @@ export default function CurrencyConverter() {
   const currencyOptions = CURRENCIES.map(c => ({ value: c.code, label: `${c.code} - ${c.name}` }));
 
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
+    <>
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Calculators', 'Currency Converter']} />
       <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>Currency Converter</h1>
       <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>Convert between 170 currencies with live exchange rates.</p>
@@ -153,5 +155,7 @@ export default function CurrencyConverter() {
       </div>
       <AdSlot type="horizontal" />
     </div>
+    <ToolPageSEO internalSlug="currency-converter" />
+  </>
   );
 }

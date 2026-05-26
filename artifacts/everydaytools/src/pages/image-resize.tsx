@@ -4,6 +4,7 @@ import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
+import ToolPageSEO from '@/components/ToolPageSEO';
 
 export default function ImageResize() {
   const [files, setFiles] = useState<File[]>([]);
@@ -101,7 +102,8 @@ export default function ImageResize() {
   };
 
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
+    <>
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Image Tools', 'Resize Image']} />
       <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>Resize Image</h1>
       <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>Change the dimensions of your image quickly.</p>
@@ -165,5 +167,7 @@ export default function ImageResize() {
       {result && <ResultPanel {...result} />}
       <AdSlot type="horizontal" />
     </div>
+    <ToolPageSEO internalSlug="image-resize" />
+  </>
   );
 }

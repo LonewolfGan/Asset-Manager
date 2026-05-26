@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
+import ToolPageSEO from '@/components/ToolPageSEO';
 
 export default function AiTextScrubber() {
   const [tab, setTab] = useState<'invisible'|'stylistic'>('invisible');
@@ -63,7 +64,8 @@ export default function AiTextScrubber() {
   };
 
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
+    <>
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Privacy Tools', 'AI Text Scrubber']} />
       <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>AI Text Scrubber</h1>
       <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>Remove invisible trackers and common AI stylistic boilerplate from text.</p>
@@ -121,5 +123,7 @@ export default function AiTextScrubber() {
       </p>
       <AdSlot type="horizontal" />
     </div>
+    <ToolPageSEO internalSlug="ai-text-scrubber" />
+  </>
   );
 }

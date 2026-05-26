@@ -2,20 +2,59 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>EverydayTools Hub</title>
-    <meta name="description" content="EverydayTools Hub — built on Replit. Update this description to reflect the app." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5" />
+    <title>EverydayTools Hub — Free Online Tools | Convert PDF, Images, Calculate</title>
+    <meta name="description" content="Browser-based document and image tools. Convert PDF, Word, images, generate passwords, calculate units and currencies — free, no upload, no account." />
     <meta name="robots" content="index, follow" />
-    <meta property="og:title" content="EverydayTools Hub" />
-    <meta property="og:description" content="EverydayTools Hub — built on Replit. Update this description to reflect the app." />
+    <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="EverydayTools Hub — Free Online Tools" />
+    <meta property="og:description" content="Browser-based document and image tools. Convert PDF, Word, images, generate passwords, calculate units and currencies — free, no upload, no account." />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://everydaytoolshub.com" />
+    <meta property="og:site_name" content="EverydayTools Hub" />
+    <meta property="og:image" content="/opengraph.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="EverydayTools Hub" />
-    <meta name="twitter:description" content="EverydayTools Hub — built on Replit. Update this description to reflect the app." />
+    <meta name="twitter:title" content="EverydayTools Hub — Free Online Tools" />
+    <meta name="twitter:description" content="Browser-based document and image tools. Free, no upload, no account." />
+    <meta name="twitter:image" content="/opengraph.jpg" />
+
+    <!-- Canonical & Hreflang (fallback — SSR pages override these) -->
+    <link rel="canonical" href="https://everydaytoolshub.com" />
+    <link rel="alternate" hreflang="en" href="https://everydaytoolshub.com/en" />
+    <link rel="alternate" hreflang="fr" href="https://everydaytoolshub.com/fr" />
+    <link rel="alternate" hreflang="x-default" href="https://everydaytoolshub.com/en" />
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Fonts: preconnect first, then non-blocking load -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Fraunces (display) + Geist (UI) + Geist Mono — matches CSS variables -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap"
+      />
+    </noscript>
   </head>
   <body>
     <div id="root"></div>

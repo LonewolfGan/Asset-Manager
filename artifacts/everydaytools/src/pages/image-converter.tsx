@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { convertImage } from "@/services/imageConversionService";
 import { ImagePlus, Download, Trash2, CheckCircle2, AlertCircle } from "lucide-react";
 import JSZip from "jszip";
+import ToolPageSEO from '@/components/ToolPageSEO';
 
 type FileState = {
   id: string;
@@ -103,7 +104,8 @@ export default function ImageConverter() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6 pb-12">
+    <>
+      <div className="max-w-5xl mx-auto space-y-6 pb-12">
       <div className="space-y-2">
         <h1 className="font-serif text-3xl text-foreground">Image Converter</h1>
         <p className="text-muted-foreground">Resize, compress, and convert images locally. Batch support up to 20 files.</p>
@@ -237,5 +239,7 @@ export default function ImageConverter() {
         </div>
       </div>
     </div>
+    <ToolPageSEO internalSlug="image-converter" />
+  </>
   );
 }

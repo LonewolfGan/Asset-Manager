@@ -5,6 +5,7 @@ import ProgressBar from '@/components/ProgressBar';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import mammoth from 'mammoth';
+import ToolPageSEO from '@/components/ToolPageSEO';
 
 export default function WordToEpub() {
   const [files, setFiles] = useState<File[]>([]);
@@ -48,7 +49,8 @@ export default function WordToEpub() {
   };
 
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
+    <>
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Word Tools', 'Word to EPUB']} />
       <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>Word to EPUB</h1>
       <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>Turn your Word manuscripts into EPUB e-books for any device.</p>
@@ -67,5 +69,7 @@ export default function WordToEpub() {
       {result && <ResultPanel {...result} />}
       <AdSlot type="horizontal" />
     </div>
+    <ToolPageSEO internalSlug="word-to-epub" />
+  </>
   );
 }
