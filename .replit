@@ -29,11 +29,11 @@ outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "PORT=25203 BASE_PATH=/ pnpm --filter @workspace/everydaytools run dev"
-waitForPort = 25203
+args = "PORT=5000 BASE_PATH=/ pnpm --filter @workspace/everydaytools run dev"
+waitForPort = 5000
 
 [agent]
-stack = "PNPM_WORKSPACE"
+stack = "BEST_EFFORT_FALLBACK"
 expertMode = true
 
 [postMerge]
@@ -51,6 +51,10 @@ externalPort = 80
 [[ports]]
 localPort = 25203
 externalPort = 3000
+
+[[ports]]
+localPort = 5000
+externalPort = 80
 
 [nix]
 channel = "stable-25_05"
