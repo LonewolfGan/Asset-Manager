@@ -1,6 +1,5 @@
 {
   "framework": null,
-  "nodeVersion": "22.x",
   "installCommand": "pnpm install --frozen-lockfile",
   "buildCommand": "PORT=3000 BASE_PATH=/ pnpm --filter @workspace/everydaytools run build",
   "outputDirectory": "artifacts/everydaytools/dist/public",
