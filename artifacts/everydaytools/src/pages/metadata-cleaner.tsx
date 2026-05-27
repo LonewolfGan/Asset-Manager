@@ -4,9 +4,6 @@ import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
-import exifr from 'exifr';
-import piexif from 'piexifjs';
-import { PDFDocument } from 'pdf-lib';
 import JSZip from 'jszip';
 import ToolPageSEO from '@/components/ToolPageSEO';
 
@@ -32,24 +29,20 @@ export default function MetadataCleaner() {
     setError(null);
     try {
       const file = files[0];
-      if (tab === 'images') {
-        const meta = await exifr.parse(file, true);
-        setMetadata(meta || { info: "No standard metadata found." });
-      } else if (tab === 'pdfs') {
-        const arrayBuffer = await file.arrayBuffer();
-        const pdfDoc = await PDFDocument.load(arrayBuffer);
-        setMetadata({
-          Title: pdfDoc.getTitle() || "None",
-          Author: pdfDoc.getAuthor() || "None",
-          Creator: pdfDoc.getCreator() || "None",
-          Producer: pdfDoc.getProducer() || "None",
-          CreationDate: pdfDoc.getCreationDate()?.toISOString() || "None",
-        });
+      if (tab === 'images' || tab === 'pdfs') {
+        const fd = new FormData();
+        fd.append('file', file);
+        const res = await fetch('/api/metadata/read', { method: 'POST', body: fd });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({ error: 'Analysis failed' }));
+          throw new Error(err.error);
+        }
+        const data = await res.json();
+        setMetadata(data.metadata && Object.keys(data.metadata).length > 0 ? data.metadata : { info: "No standard metadata found." });
       } else if (tab === 'docs') {
         const arrayBuffer = await file.arrayBuffer();
         const zip = await JSZip.loadAsync(arrayBuffer);
         const meta: Record<string, string> = {};
-        
         if (zip.file("docProps/core.xml")) {
           const core = await zip.file("docProps/core.xml")!.async("string");
           meta["Core Props"] = "Found";
@@ -75,61 +68,31 @@ export default function MetadataCleaner() {
     try {
       const file = files[0];
       let blob: Blob;
-      
-      if (tab === 'images') {
-        // Convert to base64
-        const reader = new FileReader();
-        const dataUrl = await new Promise<string>((resolve, reject) => {
-          reader.onload = () => resolve(reader.result as string);
-          reader.onerror = reject;
-          reader.readAsDataURL(file);
-        });
-        
-        // Ensure it's jpeg
-        if (file.type === 'image/jpeg') {
-          const cleanB64 = piexif.remove(dataUrl);
-          const byteString = atob(cleanB64.split(',')[1]);
-          const ab = new ArrayBuffer(byteString.length);
-          const ia = new Uint8Array(ab);
-          for (let i = 0; i < byteString.length; i++) {
-              ia[i] = byteString.charCodeAt(i);
-          }
-          blob = new Blob([ab], { type: 'image/jpeg' });
-        } else {
-           // For non-jpeg, simply return a generic blob or use canvas
-           blob = file;
+
+      if (tab === 'images' || tab === 'pdfs') {
+        const fd = new FormData();
+        fd.append('file', file);
+        const res = await fetch('/api/metadata/clean', { method: 'POST', body: fd });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({ error: 'Cleaning failed' }));
+          throw new Error(err.error);
         }
-      } else if (tab === 'pdfs') {
-        const arrayBuffer = await file.arrayBuffer();
-        const pdfDoc = await PDFDocument.load(arrayBuffer);
-        pdfDoc.setTitle('');
-        pdfDoc.setAuthor('');
-        pdfDoc.setKeywords([]);
-        pdfDoc.setCreationDate(new Date(0));
-        pdfDoc.setCreator('');
-        pdfDoc.setProducer('');
-        const pdfBytes = await pdfDoc.save();
-        blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const arrayBuffer = await res.arrayBuffer();
+        blob = new Blob([arrayBuffer], { type: file.type });
       } else if (tab === 'docs') {
         const arrayBuffer = await file.arrayBuffer();
         const zip = await JSZip.loadAsync(arrayBuffer);
-        
-        // Minimal core.xml
         const emptyCore = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"></cp:coreProperties>`;
-        
         const emptyApp = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties" xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes"></Properties>`;
-        
         if (zip.file("docProps/core.xml")) zip.file("docProps/core.xml", emptyCore);
         if (zip.file("docProps/app.xml")) zip.file("docProps/app.xml", emptyApp);
-        
-        const zipBlob = await zip.generateAsync({ type: "blob" });
-        blob = zipBlob;
+        blob = await zip.generateAsync({ type: "blob" });
       } else {
         throw new Error("Invalid tab");
       }
-      
+
       setResult({ blob, filename: file.name.replace(/(\.[a-z]+)$/i, '_cleaned$1'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Cleaning failed.');

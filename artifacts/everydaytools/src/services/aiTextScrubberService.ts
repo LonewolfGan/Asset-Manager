@@ -1,42 +1,30 @@
-export const cleanTextScrubInvisibles = (text: string): { cleaned: string, removedCount: number } => {
-  const invisibleCharsRegex = /[​‌‍﻿⁠]/g;
-  const matches = text.match(invisibleCharsRegex);
-  const removedCount = matches ? matches.length : 0;
-  const cleaned = text.replace(invisibleCharsRegex, "");
-  return { cleaned, removedCount };
-};
+import { apiFetch } from "@/lib/apiBase";
 
-const replacementMap: Record<string, string[]> = {
-  "In conclusion": ["To sum up", "Overall", "Taken together"],
-  "It is important to note": ["Note that", "Worth mentioning"],
-  "Furthermore": ["Also", "Beyond this"],
-  "In summary": ["In short", "To recap"],
-  "It is worth noting": ["Note that"],
-  "As previously mentioned": ["As noted"],
-  "In today's world": [""],
-  "At the end of the day": ["Ultimately"],
-  "Needless to say": [""],
-  "It goes without saying": [""],
-};
-
-export const applyStylisticScrub = (text: string): string => {
-  let scrubbedText = text;
-  
-  for (const [phrase, alternatives] of Object.entries(replacementMap)) {
-    const regex = new RegExp(`\\b${phrase}\\b`, "gi");
-    scrubbedText = scrubbedText.replace(regex, (match) => {
-      const isCapitalized = match.charAt(0) === match.charAt(0).toUpperCase();
-      const randomAlt = alternatives[Math.floor(Math.random() * alternatives.length)];
-      if (!randomAlt) return ""; // empty replacement
-      
-      // Preserve original capitalization if needed, simple approach:
-      if (isCapitalized && randomAlt.length > 0) {
-        return randomAlt.charAt(0).toUpperCase() + randomAlt.slice(1);
-      }
-      return randomAlt.toLowerCase();
-    });
+export const cleanTextScrubInvisibles = async (
+  text: string
+): Promise<{ cleaned: string; removedCount: number }> => {
+  const res = await apiFetch("/text/scrub", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text, options: { invisibles: true, stylistic: false } }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ error: "Request failed" }));
+    throw new Error(err.error ?? "Scrub failed");
   }
-  
-  // Clean up double spaces that might result from empty replacements
-  return scrubbedText.replace(/\s{2,}/g, ' ').trim();
+  return res.json();
+};
+
+export const applyStylisticScrub = async (text: string): Promise<string> => {
+  const res = await apiFetch("/text/scrub", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text, options: { invisibles: false, stylistic: true } }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ error: "Request failed" }));
+    throw new Error(err.error ?? "Scrub failed");
+  }
+  const data = await res.json();
+  return data.cleaned as string;
 };

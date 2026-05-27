@@ -1,63 +1,34 @@
-import piexif from "piexifjs";
-import { PDFDocument } from "pdf-lib";
+import { apiUpload } from "@/lib/apiBase";
 
 export const getJpegMetadata = async (file: File): Promise<any> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const dataURL = e.target?.result as string;
-        if (!dataURL.startsWith("data:image/jpeg")) {
-          resolve(null);
-          return;
-        }
-        const exifObj = piexif.load(dataURL);
-        resolve(exifObj);
-      } catch (err) {
-        resolve(null);
-      }
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
+  const fd = new FormData();
+  fd.append("file", file);
+  const res = await apiUpload("/metadata/read", fd);
+  if (!res.ok) return null;
+  const data = await res.json();
+  return data.metadata ?? null;
 };
 
 export const cleanJpegMetadata = async (file: File): Promise<Blob> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const dataURL = e.target?.result as string;
-        const cleanedDataUrl = piexif.remove(dataURL);
-        
-        // Convert data URL back to Blob
-        const byteString = atob(cleanedDataUrl.split(',')[1]);
-        const mimeString = cleanedDataUrl.split(',')[0].split(':')[1].split(';')[0];
-        const ab = new ArrayBuffer(byteString.length);
-        const ia = new Uint8Array(ab);
-        for (let i = 0; i < byteString.length; i++) {
-          ia[i] = byteString.charCodeAt(i);
-        }
-        resolve(new Blob([ab], { type: mimeString }));
-      } catch (err) {
-        reject(err);
-      }
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
+  const fd = new FormData();
+  fd.append("file", file);
+  const res = await apiUpload("/metadata/clean", fd);
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ error: "Request failed" }));
+    throw new Error(err.error ?? "Metadata cleaning failed");
+  }
+  const arrayBuffer = await res.arrayBuffer();
+  return new Blob([arrayBuffer], { type: "image/jpeg" });
 };
 
 export const cleanPdfMetadata = async (file: File): Promise<Uint8Array> => {
-  const arrayBuffer = await file.arrayBuffer();
-  const pdfDoc = await PDFDocument.load(arrayBuffer);
-  
-  pdfDoc.setTitle('');
-  pdfDoc.setAuthor('');
-  pdfDoc.setSubject('');
-  pdfDoc.setKeywords([]);
-  pdfDoc.setProducer('');
-  pdfDoc.setCreator('');
-  
-  return pdfDoc.save();
+  const fd = new FormData();
+  fd.append("file", file);
+  const res = await apiUpload("/metadata/clean", fd);
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ error: "Request failed" }));
+    throw new Error(err.error ?? "Metadata cleaning failed");
+  }
+  const arrayBuffer = await res.arrayBuffer();
+  return new Uint8Array(arrayBuffer);
 };

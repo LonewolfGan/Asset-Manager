@@ -1,30 +1,28 @@
-export type ProgressCallback = (progress: number) => void;
+import { apiUpload } from "@/lib/apiBase";
 
-const ORT_VERSION = "1.26.0";
-const ORT_CDN = `https://cdn.jsdelivr.net/npm/onnxruntime-web@${ORT_VERSION}/dist/`;
+export type ProgressCallback = (progress: number) => void;
 
 export const removeImageBackground = async (
   file: File,
   onProgress?: ProgressCallback
 ): Promise<Blob> => {
-  const { removeBackground } = await import("@imgly/background-removal");
+  onProgress?.(5);
 
-  return removeBackground(file, {
-    model: "medium",
-    output: { format: "image/png" },
-    publicPath: `https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/dist/`,
-    env: {
-      ort: {
-        wasm: {
-          wasmPaths: ORT_CDN,
-        },
-      },
-    },
-    progress: (key, current, total) => {
-      if (onProgress) {
-        const percent = Math.round((current / total) * 100);
-        onProgress(Math.min(100, Math.max(0, percent || 0)));
-      }
-    },
-  });
+  const fd = new FormData();
+  fd.append("file", file);
+
+  onProgress?.(15);
+
+  const res = await apiUpload("/remove-background", fd);
+
+  onProgress?.(90);
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ error: "Request failed" }));
+    throw new Error(err.error ?? "Background removal failed");
+  }
+
+  const arrayBuffer = await res.arrayBuffer();
+  onProgress?.(100);
+  return new Blob([arrayBuffer], { type: "image/png" });
 };

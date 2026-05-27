@@ -19,15 +19,24 @@ export default function BackgroundRemover() {
     setError(null); setIsProcessing(true); setProgress(0); setLoadingEngine(true);
     try {
       const file = files[0];
-      const { removeBackground } = await import('@imgly/background-removal');
       setLoadingEngine(false);
-      
-      const blob = await removeBackground(file, {
-        progress: (key, current, total) => {
-          setProgress(Math.round((current / total) * 100));
-        }
-      });
-      
+      setProgress(10);
+
+      const fd = new FormData();
+      fd.append('file', file);
+
+      setProgress(20);
+      const res = await fetch('/api/remove-background', { method: 'POST', body: fd });
+      setProgress(90);
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: 'Server error' }));
+        throw new Error(err.error ?? 'Background removal failed');
+      }
+
+      const arrayBuffer = await res.arrayBuffer();
+      const blob = new Blob([arrayBuffer], { type: 'image/png' });
+      setProgress(100);
       setResult({ blob, filename: file.name.replace(/\.[^/.]+$/, '_nobg.png'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Conversion failed. Please try again.');
@@ -42,7 +51,7 @@ export default function BackgroundRemover() {
       <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>Remove image backgrounds entirely in your browser using local AI.</p>
       
       <div style={{ padding: 16, background: 'var(--bg)', borderRadius: 'var(--radius)', marginBottom: 24, fontSize: 14 }}>
-        <strong>Note:</strong> The AI model is downloaded once and cached in your browser (~40MB). Processing is entirely on your device — no image is uploaded.
+        <strong>Note:</strong> Background removal is processed server-side using AI. Your image is sent to the server, processed, and returned — it is not stored.
       </div>
       
       <FileUpload accept={['image/jpeg', 'image/png', 'image/webp']} maxSizeMB={10} onFiles={setFiles} />

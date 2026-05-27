@@ -16,24 +16,15 @@ export default function CurrencyConverter() {
   useEffect(() => {
     const fetchRates = async () => {
       try {
-        const cached = localStorage.getItem('currency_rates_cache');
-        if (cached) {
-          const { timestamp, data } = JSON.parse(cached);
-          if (Date.now() - timestamp < 3600000) { // 1h
-            setRates(data.rates);
-            setSource(`Live rates, updated ${Math.round((Date.now() - timestamp)/60000)} min ago`);
-            return;
-          }
-        }
-        
-        const res = await fetch('https://open.er-api.com/v6/latest/USD');
+        const res = await fetch('/api/rates');
+        if (!res.ok) throw new Error("API error");
         const data = await res.json();
         if (data && data.rates) {
           setRates(data.rates);
-          setSource('Live rates, updated 0 min ago');
-          localStorage.setItem('currency_rates_cache', JSON.stringify({ timestamp: Date.now(), data }));
+          const age = data.ageMinutes ?? 0;
+          setSource(age > 0 ? `Live rates, updated ${age} min ago` : 'Live rates, just updated');
         } else {
-          throw new Error("Invalid API response");
+          throw new Error("Invalid response");
         }
       } catch (e) {
         setRates(FALLBACK_RATES);

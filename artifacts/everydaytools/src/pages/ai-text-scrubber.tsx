@@ -9,44 +9,47 @@ export default function AiTextScrubber() {
   const [outputText, setOutputText] = useState("");
   const [invisiblesCount, setInvisiblesCount] = useState<number | null>(null);
 
-  const handleScanInvisibles = () => {
-    const matches = inputText.match(/[\u200B-\u200D\uFEFF\u2060\u2061\u2062\u2063]/g);
-    setInvisiblesCount(matches ? matches.length : 0);
-  };
-
-  const handleRemoveInvisibles = () => {
-    const cleaned = inputText.replace(/[\u200B-\u200D\uFEFF\u2060\u2061\u2062\u2063]/g, "");
-    setOutputText(cleaned);
-  };
-
-  const replacements: Record<string, string[]> = {
-    "In conclusion": ["To sum up", "Overall", "Taken together"],
-    "It is important to note": ["Note that", "Worth mentioning"],
-    "Furthermore": ["Also", "Beyond this"],
-    "In summary": ["In short", "To recap"],
-    "It is worth noting": ["Note that"],
-    "As previously mentioned": ["As noted above"],
-    "In today's world": [""],
-    "At the end of the day": ["Ultimately"],
-    "Needless to say": [""],
-    "It goes without saying": [""],
-    "Moving forward": ["Going forward", "Next"],
-    "Delve into": ["Explore", "Examine"],
-    "Utilize": ["Use"],
-    "Leverage": ["Use", "Apply"],
-    "In order to": ["To"]
-  };
-
-  const handleStylisticScrub = () => {
-    let result = inputText;
-    for (const [phrase, alts] of Object.entries(replacements)) {
-      const alt = alts[Math.floor(Math.random() * alts.length)];
-      const regex = new RegExp(phrase, 'gi');
-      result = result.replace(regex, alt);
+  const handleScanInvisibles = async () => {
+    try {
+      const res = await fetch('/api/text/scrub', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: inputText, options: { invisibles: true, stylistic: false } }),
+      });
+      const data = await res.json();
+      setInvisiblesCount(data.removedCount ?? 0);
+    } catch {
+      const matches = inputText.match(/[\u200B-\u200D\uFEFF\u2060\u2061\u2062\u2063]/g);
+      setInvisiblesCount(matches ? matches.length : 0);
     }
-    // Clean up double spaces if replacements were empty
-    result = result.replace(/\s{2,}/g, ' ');
-    setOutputText(result);
+  };
+
+  const handleRemoveInvisibles = async () => {
+    try {
+      const res = await fetch('/api/text/scrub', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: inputText, options: { invisibles: true, stylistic: false } }),
+      });
+      const data = await res.json();
+      setOutputText(data.cleaned ?? inputText);
+    } catch {
+      setOutputText(inputText.replace(/[\u200B-\u200D\uFEFF\u2060\u2061\u2062\u2063]/g, ""));
+    }
+  };
+
+  const handleStylisticScrub = async () => {
+    try {
+      const res = await fetch('/api/text/scrub', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: inputText, options: { invisibles: false, stylistic: true } }),
+      });
+      const data = await res.json();
+      setOutputText(data.cleaned ?? inputText);
+    } catch {
+      setOutputText(inputText);
+    }
   };
 
   const handleCopy = () => {
