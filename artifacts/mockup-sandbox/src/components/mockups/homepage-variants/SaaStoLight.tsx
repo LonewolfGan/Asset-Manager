@@ -1,587 +1,704 @@
 
-// SaaSto-inspired light theme homepage for EverydayTools
+// Premium dark — Vercel / Linear / Raycast aesthetic
+// Strict adherence to brief: zinc-950 bg, glassmorphism cards, bento grid, blueprint grid, no colored gradients
 
-const C = {
-  bg: "#FFFFFF",
-  bgTint: "#F7F5FF",
-  bgTint2: "#FFF5FB",
-  purple: "#7B61FF",
-  blue: "#1A6BFF",
-  pink: "#FF61B6",
-  orange: "#FF9843",
-  dark: "#12002E",
-  darkMid: "#3D3066",
-  muted: "#7A7395",
-  border: "#EAE8F5",
-  cardBg: "#FFFFFF",
+import { useState } from "react";
+
+// ─── Design tokens ────────────────────────────────────────
+const T = {
+  bg:       "#08090a",        // zinc-950
+  surface:  "rgba(255,255,255,0.04)",
+  surfaceHover: "rgba(255,255,255,0.08)",
+  border:   "rgba(255,255,255,0.10)",
+  borderSubtle: "rgba(255,255,255,0.06)",
+  text1:    "#f4f4f5",        // zinc-100
+  text2:    "#a1a1aa",        // zinc-400
+  text3:    "#71717a",        // zinc-500
+  accent:   "#1A6BFF",
+  accentDim: "rgba(26,107,255,0.12)",
+  inset:    "inset 2px 4px 16px 0px rgba(248,248,248,0.06)",
 };
 
-function Blob({ style }: { style: React.CSSProperties }) {
+// ─── Blueprint grid (hero backdrop) ───────────────────────
+const GRID_STYLE: React.CSSProperties = {
+  position: "absolute",
+  inset: 0,
+  backgroundImage: `
+    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
+  `,
+  backgroundSize: "24px 24px",
+  maskImage: "radial-gradient(ellipse 60% 50% at 50% 0%, #000 70%, transparent 100%)",
+  WebkitMaskImage: "radial-gradient(ellipse 60% 50% at 50% 0%, #000 70%, transparent 100%)",
+  pointerEvents: "none",
+};
+
+// ─── Thin Lucide-style icon SVGs ──────────────────────────
+function Icon({ d, size = 16 }: { d: string; size?: number }) {
   return (
-    <div style={{
-      position: "absolute",
-      borderRadius: "50%",
-      filter: "blur(80px)",
-      opacity: 0.35,
-      pointerEvents: "none",
-      ...style,
-    }} />
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d={d} />
+    </svg>
+  );
+}
+const ICONS = {
+  arrowRight:   "M5 12h14M12 5l7 7-7 7",
+  shield:       "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",
+  zap:          "M13 2L3 14h9l-1 8 10-12h-9l1-8z",
+  layers:       "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5",
+  globe:        "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z",
+  fileText:     "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8",
+  image:        "M21 19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3l2-3h4l2 3h3a2 2 0 0 1 2 2zM12 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8z",
+  lock:         "M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zM7 11V7a5 5 0 0 1 10 0v4",
+  calculator:   "M4 2h16a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zM8 6h1M12 6h1M16 6h1M8 10h1M12 10h1M16 10h1M8 14h1M12 14h1M16 14h1M8 18h8",
+  eyeOff:       "M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22",
+  check:        "M20 6L9 17l-5-5",
+  external:     "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3",
+};
+
+// ─── Shared card wrapper ───────────────────────────────────
+function Card({
+  children, style, hoverable = false,
+}: { children: React.ReactNode; style?: React.CSSProperties; hoverable?: boolean }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => hoverable && setHovered(true)}
+      onMouseLeave={() => hoverable && setHovered(false)}
+      style={{
+        background: hovered ? T.surfaceHover : T.surface,
+        border: `1px solid ${T.border}`,
+        borderRadius: 12,
+        boxShadow: T.inset,
+        transition: "background 200ms ease",
+        ...style,
+      }}
+    >
+      {children}
+    </div>
   );
 }
 
+// ─── Nav ───────────────────────────────────────────────────
 function Nav() {
   return (
     <nav style={{
       position: "sticky", top: 0, zIndex: 50,
-      background: "rgba(255,255,255,0.85)",
-      backdropFilter: "blur(12px)",
-      borderBottom: `1px solid ${C.border}`,
-      height: 64,
+      background: "rgba(8,9,10,0.80)",
+      backdropFilter: "blur(16px)",
+      borderBottom: `1px solid ${T.borderSubtle}`,
+      height: 56,
       display: "flex", alignItems: "center",
-      padding: "0 64px", gap: 40,
+      padding: "0 48px", gap: 32,
     }}>
-      {/* Logo */}
-      <div style={{ display: "flex", alignItems: "center", gap: 9, marginRight: 8 }}>
-        <svg width="28" height="28" viewBox="0 0 64 64" fill="none">
-          <rect width="64" height="64" rx="11" fill="#1A1916"/>
+      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <svg width="24" height="24" viewBox="0 0 64 64" fill="none">
+          <rect width="64" height="64" rx="10" fill="#1A1916"/>
           <rect x="14" y="15" width="36" height="7" rx="2" fill="#1A6BFF"/>
           <rect x="14" y="28" width="28" height="7" rx="2" fill="#F7F6F3"/>
           <rect x="14" y="41" width="36" height="7" rx="2" fill="#F7F6F3"/>
         </svg>
-        <span style={{ fontSize: 16, fontWeight: 600, color: C.dark, letterSpacing: "-0.02em", fontFamily: "'Geist', sans-serif" }}>
+        <span style={{ fontSize: 15, fontWeight: 600, color: T.text1, letterSpacing: "-0.02em", fontFamily: "'Geist', sans-serif" }}>
           EverydayTools
         </span>
       </div>
-      <div style={{ display: "flex", gap: 28 }}>
-        {["Convert Documents", "Convert Images", "Tools", "About"].map(l => (
-          <span key={l} style={{ fontSize: 14, color: C.muted, cursor: "pointer", fontFamily: "'Geist', sans-serif", fontWeight: 500 }}>{l}</span>
+
+      <div style={{ display: "flex", gap: 2 }}>
+        {["Documents", "Images", "Tools", "Changelog"].map(l => (
+          <span key={l} style={{
+            fontSize: 13.5, color: T.text3, cursor: "pointer",
+            fontFamily: "'Geist', sans-serif", fontWeight: 500,
+            padding: "6px 12px", borderRadius: 6,
+            transition: "color 150ms",
+          }}>{l}</span>
         ))}
       </div>
-      <div style={{ marginLeft: "auto", display: "flex", gap: 12, alignItems: "center" }}>
-        <span style={{ fontSize: 14, color: C.muted, cursor: "pointer", fontFamily: "'Geist', sans-serif" }}>Sign in</span>
+
+      <div style={{ marginLeft: "auto", display: "flex", gap: 10, alignItems: "center" }}>
+        <span style={{ fontSize: 13.5, color: T.text3, cursor: "pointer", fontFamily: "'Geist', sans-serif", padding: "6px 12px" }}>
+          Log in
+        </span>
         <div style={{
-          background: `linear-gradient(135deg, ${C.purple}, ${C.blue})`,
-          color: "#fff", borderRadius: 10, padding: "9px 22px",
-          fontSize: 14, fontWeight: 600, cursor: "pointer",
+          background: T.text1,
+          color: T.bg,
+          borderRadius: 8, padding: "7px 16px",
+          fontSize: 13.5, fontWeight: 600, cursor: "pointer",
           fontFamily: "'Geist', sans-serif",
-          boxShadow: "0 4px 14px rgba(123,97,255,0.35)",
+          letterSpacing: "-0.01em",
         }}>
-          Get Started Free
+          Open app →
         </div>
       </div>
     </nav>
   );
 }
 
+// ─── Hero ──────────────────────────────────────────────────
 function Hero() {
   return (
     <section style={{
       position: "relative",
+      padding: "120px 48px 100px",
       overflow: "hidden",
-      padding: "100px 64px 80px",
-      display: "grid",
-      gridTemplateColumns: "1fr 1fr",
-      gap: 60,
-      alignItems: "center",
-      background: C.bg,
     }}>
-      <Blob style={{ width: 600, height: 600, background: C.purple, top: -200, left: -150 }} />
-      <Blob style={{ width: 400, height: 400, background: C.pink, top: 100, right: -100 }} />
-      <Blob style={{ width: 300, height: 300, background: C.blue, bottom: -100, left: 300 }} />
+      {/* Blueprint grid */}
+      <div style={GRID_STYLE} />
 
-      <div style={{ position: "relative", zIndex: 1 }}>
+      {/* Subtle accent glow behind text */}
+      <div style={{
+        position: "absolute",
+        top: -80, left: "50%", transform: "translateX(-50%)",
+        width: 600, height: 400,
+        background: "radial-gradient(ellipse, rgba(26,107,255,0.10) 0%, transparent 70%)",
+        pointerEvents: "none",
+      }} />
+
+      <div style={{ position: "relative", zIndex: 1, maxWidth: 760, margin: "0 auto", textAlign: "center" }}>
+
         {/* Badge */}
         <div style={{
           display: "inline-flex", alignItems: "center", gap: 8,
-          background: "rgba(123,97,255,0.08)",
-          border: `1px solid rgba(123,97,255,0.2)`,
-          borderRadius: 100, padding: "6px 14px 6px 8px",
-          marginBottom: 28,
+          background: T.accentDim,
+          border: `1px solid rgba(26,107,255,0.2)`,
+          borderRadius: 100, padding: "5px 12px 5px 8px",
+          marginBottom: 32,
         }}>
           <span style={{
-            background: `linear-gradient(135deg, ${C.purple}, ${C.blue})`,
-            color: "#fff", borderRadius: 100, padding: "2px 10px",
-            fontSize: 11, fontWeight: 700, fontFamily: "'Geist', sans-serif",
-            letterSpacing: "0.05em", textTransform: "uppercase",
+            fontFamily: "'Geist Mono', monospace",
+            fontSize: 10, fontWeight: 700,
+            color: T.accent,
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            background: "rgba(26,107,255,0.15)",
+            borderRadius: 100, padding: "2px 8px",
           }}>New</span>
-          <span style={{ fontSize: 13, color: C.purple, fontWeight: 500, fontFamily: "'Geist', sans-serif" }}>
-            AI Background Remover — now on-device
+          <span style={{ fontSize: 13, color: T.text2, fontFamily: "'Geist', sans-serif", letterSpacing: "-0.01em" }}>
+            AI Background Remover — fully on-device
           </span>
         </div>
 
         {/* Headline */}
         <h1 style={{
-          fontFamily: "Fraunces, Georgia, serif",
-          fontSize: 58,
-          fontWeight: 400,
-          lineHeight: 1.08,
-          letterSpacing: "-0.03em",
-          margin: "0 0 20px",
-          color: C.dark,
+          fontFamily: "'Geist', sans-serif",
+          fontSize: 62,
+          fontWeight: 700,
+          letterSpacing: "-0.04em",
+          lineHeight: 1.06,
+          color: T.text1,
+          margin: "0 0 24px",
         }}>
-          Every tool you<br />
-          reach for,{" "}
-          <span style={{
-            backgroundImage: `linear-gradient(135deg, ${C.purple} 0%, ${C.blue} 60%, ${C.pink} 100%)`,
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-          }}>
-            daily.
-          </span>
+          Built different,<br />
+          <span style={{ color: T.text3 }}>on purpose.</span>
         </h1>
 
-        {/* Subtext */}
+        {/* Sub-headline */}
         <p style={{
           fontFamily: "'Geist', sans-serif",
-          fontSize: 17,
-          color: C.muted,
+          fontSize: 18,
+          color: T.text2,
           lineHeight: 1.7,
-          maxWidth: 460,
-          margin: "0 0 36px",
+          maxWidth: 520,
+          margin: "0 auto 44px",
+          letterSpacing: "-0.01em",
         }}>
-          28 free browser-based tools for PDFs, images, privacy &amp; calculations. No uploads, no accounts — your files never leave your device.
+          28 browser-based tools for PDFs, images, privacy &amp; calculations.
+          Your files never leave your device — not even for a millisecond.
         </p>
 
         {/* CTAs */}
-        <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
+        <div style={{ display: "flex", gap: 12, justifyContent: "center", alignItems: "center" }}>
           <div style={{
-            background: `linear-gradient(135deg, ${C.purple}, ${C.blue})`,
-            color: "#fff",
-            borderRadius: 12,
-            padding: "13px 28px",
-            fontSize: 15, fontWeight: 600,
+            display: "flex", alignItems: "center", gap: 6,
+            background: T.text1,
+            color: T.bg,
+            borderRadius: 9, padding: "11px 24px",
+            fontSize: 14, fontWeight: 600,
             cursor: "pointer",
             fontFamily: "'Geist', sans-serif",
-            boxShadow: "0 6px 20px rgba(123,97,255,0.4)",
-            display: "flex", alignItems: "center", gap: 8,
+            letterSpacing: "-0.02em",
           }}>
-            Explore All Tools
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            Explore all tools
+            <Icon d={ICONS.arrowRight} size={14} />
           </div>
           <div style={{
+            display: "flex", alignItems: "center", gap: 6,
             background: "transparent",
-            color: C.dark,
-            border: `2px solid ${C.border}`,
-            borderRadius: 12,
-            padding: "11px 24px",
-            fontSize: 15, fontWeight: 500,
+            color: T.text2,
+            border: `1px solid ${T.border}`,
+            borderRadius: 9, padding: "10px 20px",
+            fontSize: 14, fontWeight: 500,
             cursor: "pointer",
             fontFamily: "'Geist', sans-serif",
-            display: "flex", alignItems: "center", gap: 8,
+            letterSpacing: "-0.01em",
           }}>
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke={C.purple} strokeWidth="1.5"/><path d="M7 6.5l4 2.5-4 2.5V6.5z" fill={C.purple}/></svg>
-            Watch demo
+            View on GitHub
+            <Icon d={ICONS.external} size={13} />
           </div>
         </div>
 
-        {/* Trust line */}
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 32 }}>
-          <div style={{ display: "flex" }}>
-            {["#7B61FF","#1A6BFF","#FF61B6","#FF9843","#22C55E"].map((c, i) => (
-              <div key={i} style={{
-                width: 28, height: 28, borderRadius: "50%",
-                background: c, border: "2px solid #fff",
-                marginLeft: i === 0 ? 0 : -8,
-              }}/>
-            ))}
-          </div>
-          <span style={{ fontSize: 13, color: C.muted, fontFamily: "'Geist', sans-serif" }}>
-            <strong style={{ color: C.dark }}>50,000+</strong> people use EverydayTools monthly
-          </span>
-        </div>
-      </div>
-
-      {/* Hero visual — browser mockup with tool cards */}
-      <div style={{ position: "relative", zIndex: 1 }}>
-        <div style={{
-          background: "#FFFFFF",
-          borderRadius: 20,
-          boxShadow: "0 24px 80px rgba(123,97,255,0.18), 0 4px 20px rgba(0,0,0,0.08)",
-          overflow: "hidden",
-          border: `1px solid ${C.border}`,
+        {/* Social proof line */}
+        <p style={{
+          marginTop: 36, fontSize: 13, color: T.text3,
+          fontFamily: "'Geist', sans-serif", letterSpacing: "-0.01em",
         }}>
-          {/* Browser chrome */}
-          <div style={{ background: "#F3F2F8", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8, borderBottom: `1px solid ${C.border}` }}>
-            {["#FF5F57","#FFBD2E","#28C940"].map(c => (
-              <div key={c} style={{ width: 10, height: 10, borderRadius: "50%", background: c }}/>
-            ))}
-            <div style={{ flex: 1, background: "#E8E6F5", borderRadius: 6, height: 22, marginLeft: 8, display: "flex", alignItems: "center", paddingLeft: 10 }}>
-              <span style={{ fontSize: 11, color: C.muted, fontFamily: "'Geist Mono', monospace" }}>everydaytools.app</span>
-            </div>
-          </div>
-          {/* Tool preview grid inside browser */}
-          <div style={{ padding: "20px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-            {[
-              { label: "PDF to Word", cat: "PDF", color: C.purple },
-              { label: "Background Remover", cat: "AI", color: C.pink },
-              { label: "Image Converter", cat: "IMAGE", color: C.blue },
-              { label: "Password Generator", cat: "UTILITY", color: C.orange },
-              { label: "Compress PDF", cat: "PDF", color: C.purple },
-              { label: "Currency Converter", cat: "UTILITY", color: "#22C55E" },
-            ].map(t => (
-              <div key={t.label} style={{
-                background: C.bgTint,
-                borderRadius: 10,
-                padding: "12px 14px",
-                border: `1px solid ${C.border}`,
-                display: "flex", flexDirection: "column", gap: 4,
-              }}>
-                <span style={{
-                  fontSize: 9, fontWeight: 700, letterSpacing: "0.08em",
-                  color: t.color, fontFamily: "'Geist', sans-serif",
-                  textTransform: "uppercase",
-                }}>{t.cat}</span>
-                <span style={{ fontSize: 12, fontWeight: 600, color: C.dark, fontFamily: "'Geist', sans-serif" }}>{t.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Floating decorative elements */}
-        <div style={{
-          position: "absolute", top: -24, right: -20,
-          background: "#fff",
-          borderRadius: 14, padding: "10px 14px",
-          boxShadow: "0 8px 24px rgba(0,0,0,0.10)",
-          display: "flex", alignItems: "center", gap: 8,
-          border: `1px solid ${C.border}`,
-        }}>
-          <div style={{ width: 28, height: 28, borderRadius: 8, background: `linear-gradient(135deg, ${C.purple}, ${C.blue})`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <span style={{ color: "#fff", fontSize: 14 }}>🔒</span>
-          </div>
-          <div>
-            <div style={{ fontSize: 11, fontWeight: 700, color: C.dark, fontFamily: "'Geist', sans-serif" }}>100% Private</div>
-            <div style={{ fontSize: 10, color: C.muted, fontFamily: "'Geist', sans-serif" }}>Files never uploaded</div>
-          </div>
-        </div>
-
-        <div style={{
-          position: "absolute", bottom: -20, left: -20,
-          background: "#fff",
-          borderRadius: 14, padding: "10px 14px",
-          boxShadow: "0 8px 24px rgba(0,0,0,0.10)",
-          display: "flex", alignItems: "center", gap: 8,
-          border: `1px solid ${C.border}`,
-        }}>
-          <div style={{ width: 28, height: 28, borderRadius: 8, background: `linear-gradient(135deg, ${C.pink}, ${C.orange})`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <span style={{ color: "#fff", fontSize: 14 }}>⚡</span>
-          </div>
-          <div>
-            <div style={{ fontSize: 11, fontWeight: 700, color: C.dark, fontFamily: "'Geist', sans-serif" }}>28 Tools</div>
-            <div style={{ fontSize: 10, color: C.muted, fontFamily: "'Geist', sans-serif" }}>All completely free</div>
-          </div>
-        </div>
+          Free forever · No account · No uploads
+        </p>
       </div>
     </section>
   );
 }
 
+// ─── Stats bar ─────────────────────────────────────────────
 function StatsBar() {
   const stats = [
-    { num: "28", label: "Free Tools", color: C.purple },
-    { num: "0", label: "Files Uploaded", color: C.pink },
-    { num: "170+", label: "Currencies", color: C.blue },
-    { num: "100%", label: "Client-side", color: C.orange },
+    { num: "28", unit: "Tools" },
+    { num: "0",  unit: "Files uploaded" },
+    { num: "170+", unit: "Currencies" },
+    { num: "100%", unit: "Client-side" },
   ];
   return (
-    <section style={{
-      background: C.dark,
-      padding: "48px 64px",
+    <div style={{
+      borderTop: `1px solid ${T.borderSubtle}`,
+      borderBottom: `1px solid ${T.borderSubtle}`,
       display: "grid",
       gridTemplateColumns: "repeat(4, 1fr)",
-      gap: 0,
+      padding: "0 48px",
     }}>
       {stats.map((s, i) => (
-        <div key={s.label} style={{
+        <div key={s.unit} style={{
+          padding: "36px 0",
           textAlign: "center",
-          padding: "0 24px",
-          borderRight: i < stats.length - 1 ? "1px solid rgba(255,255,255,0.1)" : "none",
+          borderRight: i < stats.length - 1 ? `1px solid ${T.borderSubtle}` : "none",
         }}>
           <div style={{
-            fontFamily: "Fraunces, Georgia, serif",
-            fontSize: 48, fontWeight: 400,
-            backgroundImage: `linear-gradient(135deg, ${s.color}, #fff)`,
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-            lineHeight: 1.1,
+            fontFamily: "'Geist Mono', monospace",
+            fontSize: 36, fontWeight: 700,
+            color: T.text1,
+            letterSpacing: "-0.04em",
+            lineHeight: 1,
           }}>{s.num}</div>
-          <div style={{ fontFamily: "'Geist', sans-serif", fontSize: 14, color: "rgba(255,255,255,0.55)", marginTop: 6 }}>{s.label}</div>
+          <div style={{
+            fontFamily: "'Geist Mono', monospace",
+            fontSize: 10, fontWeight: 500,
+            color: T.text3,
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            marginTop: 8,
+          }}>{s.unit}</div>
         </div>
       ))}
-    </section>
+    </div>
   );
 }
 
+// ─── Features (glassmorphism 4-up) ─────────────────────────
 function Features() {
   const features = [
-    { icon: "🛡️", title: "Zero uploads, ever", desc: "Every tool runs entirely in your browser. Your PDFs, images, and passwords never touch a server.", color: C.purple, bg: "#F0ECFF" },
-    { icon: "⚡", title: "Instant & free", desc: "No account. No paywall. No ads. Open a tool, use it, leave. As fast and simple as that.", color: C.blue, bg: "#E8F0FF" },
-    { icon: "🎨", title: "28 tools in one place", desc: "From PDF conversion to AI background removal to tip calculators — everything you reach for daily.", color: C.pink, bg: "#FFE8F5" },
-    { icon: "🌍", title: "Multilingual", desc: "Full support for English and French, with more languages on the way. Tools for everyone.", color: C.orange, bg: "#FFF0E0" },
+    { icon: ICONS.shield,  title: "Zero uploads, ever",   desc: "Every operation executes inside your browser tab. Your documents and images are never transmitted anywhere." },
+    { icon: ICONS.zap,     title: "Instant — no queue",   desc: "No server round-trips. Processing starts the moment you drop a file, not when a job slot opens up." },
+    { icon: ICONS.layers,  title: "28 tools, one place",  desc: "PDF, image, privacy, and calculator tools in a single lightweight app. No juggling five different sites." },
+    { icon: ICONS.globe,   title: "EN & FR — more coming", desc: "Full English and French support across every tool and error message. More languages on the roadmap." },
   ];
   return (
-    <section style={{ background: C.bgTint, padding: "100px 64px" }}>
-      {/* Header */}
-      <div style={{ textAlign: "center", marginBottom: 64 }}>
-        <div style={{
-          display: "inline-flex", alignItems: "center", gap: 6,
-          background: "rgba(123,97,255,0.08)", border: `1px solid rgba(123,97,255,0.15)`,
-          borderRadius: 100, padding: "5px 14px", marginBottom: 20,
-        }}>
-          <span style={{ fontSize: 12, color: C.purple, fontWeight: 600, fontFamily: "'Geist', sans-serif", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-            Why EverydayTools
-          </span>
-        </div>
-        <h2 style={{
-          fontFamily: "Fraunces, Georgia, serif",
-          fontSize: 44, fontWeight: 400, letterSpacing: "-0.025em",
-          color: C.dark, margin: "0 0 16px", lineHeight: 1.15,
-        }}>
-          Built different,{" "}
-          <span style={{ backgroundImage: `linear-gradient(135deg, ${C.purple}, ${C.blue})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-            on purpose
-          </span>
-        </h2>
-        <p style={{ fontFamily: "'Geist', sans-serif", fontSize: 16, color: C.muted, maxWidth: 480, margin: "0 auto", lineHeight: 1.7 }}>
-          We built the tool suite we wished existed — private, fast, and free. No strings attached.
-        </p>
+    <section style={{ padding: "80px 48px" }}>
+      <div style={{ marginBottom: 48 }}>
+        <span style={{
+          fontFamily: "'Geist Mono', monospace",
+          fontSize: 11, color: T.accent,
+          letterSpacing: "0.12em", textTransform: "uppercase",
+          fontWeight: 600,
+        }}>WHY EVERYDAYTOOLS</span>
       </div>
-
-      {/* Cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 20 }}>
-        {features.map(f => (
-          <div key={f.title} style={{
-            background: "#fff",
-            borderRadius: 20,
-            padding: "32px 28px",
-            border: `1px solid ${C.border}`,
-            boxShadow: "0 2px 12px rgba(123,97,255,0.06)",
-            display: "flex", flexDirection: "column", gap: 16,
-          }}>
-            <div style={{
-              width: 56, height: 56, borderRadius: 16,
-              background: f.bg,
-              display: "flex", alignItems: "center", justifyContent: "center",
-              fontSize: 26,
-            }}>
-              {f.icon}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }}>
+        {features.map((f) => {
+          const [hov, setHov] = useState(false);
+          return (
+            <div
+              key={f.title}
+              onMouseEnter={() => setHov(true)}
+              onMouseLeave={() => setHov(false)}
+              style={{
+                background: hov ? T.surfaceHover : T.surface,
+                border: `1px solid ${T.border}`,
+                borderRadius: 12,
+                boxShadow: T.inset,
+                padding: "28px 24px",
+                transition: "background 200ms ease",
+                cursor: "default",
+              }}
+            >
+              <div style={{
+                color: T.text2,
+                marginBottom: 20,
+                transform: hov ? "translateX(2px)" : "translateX(0)",
+                transition: "transform 200ms ease",
+              }}>
+                <Icon d={f.icon} size={18} />
+              </div>
+              <h3 style={{
+                fontFamily: "'Geist', sans-serif",
+                fontSize: 15, fontWeight: 600,
+                color: T.text1,
+                letterSpacing: "-0.02em",
+                margin: "0 0 10px",
+                transform: hov ? "translateX(2px)" : "translateX(0)",
+                transition: "transform 200ms ease",
+              }}>{f.title}</h3>
+              <p style={{
+                fontFamily: "'Geist', sans-serif",
+                fontSize: 13.5, color: T.text3,
+                lineHeight: 1.65, margin: 0,
+                letterSpacing: "-0.01em",
+              }}>{f.desc}</p>
             </div>
-            <div>
-              <h3 style={{ fontFamily: "'Geist', sans-serif", fontSize: 17, fontWeight: 700, color: C.dark, margin: "0 0 8px" }}>
-                {f.title}
-              </h3>
-              <p style={{ fontFamily: "'Geist', sans-serif", fontSize: 14, color: C.muted, lineHeight: 1.65, margin: 0 }}>
-                {f.desc}
-              </p>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );
 }
 
-function ToolCategories() {
+// ─── Bento tool categories ──────────────────────────────────
+function ToolsBento() {
   const cats = [
-    { label: "PDF Tools", count: 14, color: C.purple, bg: "#F0ECFF", tools: ["PDF to Word", "PDF to Text", "Compress PDF", "Merge PDFs", "Split PDF", "+9 more"] },
-    { label: "Image Tools", count: 9, color: C.blue, bg: "#E8F0FF", tools: ["Image Converter", "HEIC to JPG", "Compress Image", "Background Remover", "+5 more"] },
-    { label: "Privacy Tools", count: 2, color: C.pink, bg: "#FFE8F5", tools: ["Metadata Cleaner", "AI Text Scrubber"] },
-    { label: "Calculators", count: 4, color: C.orange, bg: "#FFF0E0", tools: ["Password Generator", "Currency Converter", "Unit Converter", "Percentage Calc"] },
+    {
+      icon: ICONS.fileText, label: "PDF", title: "PDF Tools",
+      count: "14", colSpan: 2,
+      tools: ["PDF to Word", "PDF to Text", "PDF to HTML", "Compress PDF", "Merge PDFs", "Split PDF", "PDF Protect", "PDF Watermark"],
+      accent: T.accent,
+    },
+    {
+      icon: ICONS.image, label: "IMAGE", title: "Image Tools",
+      count: "09", colSpan: 1,
+      tools: ["Image Converter", "HEIC to JPG", "Compress Image", "Background Remover", "Resize Image", "Crop Image"],
+      accent: "#8B5CF6",
+    },
+    {
+      icon: ICONS.eyeOff, label: "PRIVACY", title: "Privacy Tools",
+      count: "02", colSpan: 1,
+      tools: ["Metadata Cleaner", "AI Text Scrubber"],
+      accent: "#EC4899",
+    },
+    {
+      icon: ICONS.calculator, label: "UTILITY", title: "Calculators",
+      count: "04", colSpan: 2,
+      tools: ["Password Generator", "Currency Converter", "Unit Converter", "Percentage Calculator"],
+      accent: "#10B981",
+    },
   ];
+
   return (
-    <section style={{ background: C.bg, padding: "100px 64px" }}>
-      <div style={{ textAlign: "center", marginBottom: 64 }}>
-        <div style={{
-          display: "inline-flex", alignItems: "center", gap: 6,
-          background: "rgba(26,107,255,0.07)", border: `1px solid rgba(26,107,255,0.15)`,
-          borderRadius: 100, padding: "5px 14px", marginBottom: 20,
-        }}>
-          <span style={{ fontSize: 12, color: C.blue, fontWeight: 600, fontFamily: "'Geist', sans-serif", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-            All Tools
-          </span>
-        </div>
-        <h2 style={{ fontFamily: "Fraunces, Georgia, serif", fontSize: 44, fontWeight: 400, letterSpacing: "-0.025em", color: C.dark, margin: "0 0 16px", lineHeight: 1.15 }}>
-          28 tools, four categories
-        </h2>
-        <p style={{ fontFamily: "'Geist', sans-serif", fontSize: 16, color: C.muted, maxWidth: 440, margin: "0 auto", lineHeight: 1.7 }}>
-          Every tool you need, organized where you'd expect it.
-        </p>
-      </div>
-
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 20 }}>
-        {cats.map(cat => (
-          <div key={cat.label} style={{
-            background: cat.bg, borderRadius: 20, padding: "28px 24px",
-            display: "flex", flexDirection: "column", gap: 20,
-            border: `1px solid rgba(0,0,0,0.04)`,
-          }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <h3 style={{ fontFamily: "'Geist', sans-serif", fontSize: 17, fontWeight: 700, color: C.dark, margin: 0 }}>{cat.label}</h3>
-              <span style={{
-                fontFamily: "'Geist', sans-serif", fontSize: 12, fontWeight: 600,
-                color: cat.color, background: "#fff", borderRadius: 100,
-                padding: "3px 10px", border: `1px solid ${cat.color}22`,
-              }}>{cat.count}</span>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-              {cat.tools.map(t => (
-                <div key={t} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <div style={{ width: 5, height: 5, borderRadius: "50%", background: cat.color, flexShrink: 0 }}/>
-                  <span style={{ fontFamily: "'Geist', sans-serif", fontSize: 13, color: C.darkMid, fontWeight: t.startsWith("+") ? 600 : 400 }}>{t}</span>
-                </div>
-              ))}
-            </div>
-            <div style={{
-              display: "inline-flex", alignItems: "center", gap: 6,
-              color: cat.color, cursor: "pointer",
-              fontFamily: "'Geist', sans-serif", fontSize: 13, fontWeight: 600,
-            }}>
-              Explore {cat.label}
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function PrivacyStrip() {
-  const items = [
-    { icon: "🔒", title: "No server uploads", desc: "All processing happens in your browser tab. Nothing is sent anywhere." },
-    { icon: "🚫", title: "No account needed", desc: "Just open a tool and use it. No sign-up, no email, no friction." },
-    { icon: "🗑️", title: "No data retained", desc: "Close the tab and everything is gone. No logs, no history, no tracking." },
-  ];
-  return (
-    <section style={{
-      background: C.dark,
-      padding: "100px 64px",
-      position: "relative",
-      overflow: "hidden",
-    }}>
-      <Blob style={{ width: 500, height: 500, background: C.purple, top: -200, right: -100, opacity: 0.15 }} />
-      <Blob style={{ width: 400, height: 400, background: C.blue, bottom: -200, left: -100, opacity: 0.12 }} />
-
-      <div style={{ position: "relative", zIndex: 1, maxWidth: 900, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: 64 }}>
-          <h2 style={{ fontFamily: "Fraunces, Georgia, serif", fontSize: 44, fontWeight: 400, letterSpacing: "-0.025em", color: "#fff", margin: "0 0 16px", lineHeight: 1.15 }}>
-            Your privacy is{" "}
-            <span style={{ backgroundImage: `linear-gradient(135deg, ${C.purple}, ${C.pink})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-              not negotiable
-            </span>
-          </h2>
-          <p style={{ fontFamily: "'Geist', sans-serif", fontSize: 16, color: "rgba(255,255,255,0.55)", maxWidth: 460, margin: "0 auto", lineHeight: 1.7 }}>
-            Every tool is engineered from the ground up to keep your data on your device.
-          </p>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
-          {items.map(item => (
-            <div key={item.title} style={{
-              background: "rgba(255,255,255,0.05)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              borderRadius: 20,
-              padding: "32px 28px",
-              backdropFilter: "blur(8px)",
-            }}>
-              <div style={{ fontSize: 32, marginBottom: 16 }}>{item.icon}</div>
-              <h3 style={{ fontFamily: "'Geist', sans-serif", fontSize: 17, fontWeight: 700, color: "#fff", margin: "0 0 10px" }}>{item.title}</h3>
-              <p style={{ fontFamily: "'Geist', sans-serif", fontSize: 14, color: "rgba(255,255,255,0.5)", lineHeight: 1.65, margin: 0 }}>{item.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function CTASection() {
-  return (
-    <section style={{
-      background: C.bgTint,
-      padding: "100px 64px",
-      textAlign: "center",
-      position: "relative",
-      overflow: "hidden",
-    }}>
-      <Blob style={{ width: 500, height: 500, background: C.purple, top: -200, left: "50%", transform: "translateX(-50%)", opacity: 0.2 }} />
-      <div style={{ position: "relative", zIndex: 1 }}>
-        <h2 style={{ fontFamily: "Fraunces, Georgia, serif", fontSize: 52, fontWeight: 400, letterSpacing: "-0.03em", color: C.dark, margin: "0 0 20px", lineHeight: 1.1 }}>
-          Start using your tools.<br />
-          <span style={{ backgroundImage: `linear-gradient(135deg, ${C.purple}, ${C.blue})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-            Right now. For free.
-          </span>
-        </h2>
-        <p style={{ fontFamily: "'Geist', sans-serif", fontSize: 17, color: C.muted, maxWidth: 440, margin: "0 auto 40px", lineHeight: 1.7 }}>
-          No account. No credit card. Just 28 tools ready to use the moment you click.
-        </p>
-        <div style={{ display: "flex", gap: 14, justifyContent: "center" }}>
-          <div style={{
-            background: `linear-gradient(135deg, ${C.purple}, ${C.blue})`,
-            color: "#fff", borderRadius: 12, padding: "15px 36px",
-            fontSize: 16, fontWeight: 700, cursor: "pointer",
-            fontFamily: "'Geist', sans-serif",
-            boxShadow: "0 8px 28px rgba(123,97,255,0.4)",
-          }}>
-            Explore All 28 Tools
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Footer() {
-  return (
-    <footer style={{ background: C.dark, padding: "60px 64px 40px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-      <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 40, marginBottom: 48 }}>
+    <section style={{ padding: "0 48px 80px" }}>
+      <div style={{ marginBottom: 48, display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
         <div>
-          <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 16 }}>
-            <svg width="26" height="26" viewBox="0 0 64 64" fill="none">
-              <rect width="64" height="64" rx="11" fill="#1A1916"/>
+          <span style={{
+            fontFamily: "'Geist Mono', monospace",
+            fontSize: 11, color: T.accent,
+            letterSpacing: "0.12em", textTransform: "uppercase", fontWeight: 600,
+          }}>TOOL INDEX</span>
+          <h2 style={{
+            fontFamily: "'Geist', sans-serif",
+            fontSize: 36, fontWeight: 700,
+            letterSpacing: "-0.04em", color: T.text1,
+            margin: "10px 0 0",
+          }}>28 tools, four categories.</h2>
+        </div>
+        <span style={{
+          fontFamily: "'Geist Mono', monospace",
+          fontSize: 11, color: T.text3,
+          letterSpacing: "0.08em", textTransform: "uppercase",
+        }}>All free · No signup</span>
+      </div>
+
+      {/* Bento grid — 3 columns */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+        {cats.map(cat => {
+          const [hov, setHov] = useState(false);
+          return (
+            <div
+              key={cat.title}
+              onMouseEnter={() => setHov(true)}
+              onMouseLeave={() => setHov(false)}
+              style={{
+                gridColumn: `span ${cat.colSpan}`,
+                background: hov ? T.surfaceHover : T.surface,
+                border: `1px solid ${T.border}`,
+                borderRadius: 12,
+                boxShadow: T.inset,
+                padding: "28px 28px 24px",
+                transition: "background 200ms ease",
+                cursor: "pointer",
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
+                <div style={{
+                  display: "flex", alignItems: "center", gap: 10,
+                  transform: hov ? "translateX(2px)" : "translateX(0)",
+                  transition: "transform 200ms ease",
+                }}>
+                  <div style={{
+                    width: 32, height: 32, borderRadius: 8,
+                    background: `rgba(${cat.accent.replace('#','').match(/.{2}/g)?.map(h=>parseInt(h,16)).join(',')}, 0.12)`,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    color: cat.accent,
+                  }}>
+                    <Icon d={cat.icon} size={16} />
+                  </div>
+                  <span style={{
+                    fontFamily: "'Geist', sans-serif",
+                    fontSize: 16, fontWeight: 600,
+                    color: T.text1, letterSpacing: "-0.02em",
+                  }}>{cat.title}</span>
+                </div>
+                <span style={{
+                  fontFamily: "'Geist Mono', monospace",
+                  fontSize: 11, fontWeight: 700,
+                  color: cat.accent,
+                  background: `rgba(${cat.accent.replace('#','').match(/.{2}/g)?.map(h=>parseInt(h,16)).join(',')}, 0.10)`,
+                  border: `1px solid rgba(${cat.accent.replace('#','').match(/.{2}/g)?.map(h=>parseInt(h,16)).join(',')}, 0.20)`,
+                  borderRadius: 100,
+                  padding: "3px 10px",
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                }}>{cat.count} TOOLS</span>
+              </div>
+
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: cat.colSpan === 2 ? "repeat(2, 1fr)" : "1fr",
+                gap: "6px 20px",
+              }}>
+                {cat.tools.map(t => (
+                  <div key={t} style={{
+                    display: "flex", alignItems: "center", gap: 8,
+                    padding: "5px 0",
+                    borderTop: `1px solid ${T.borderSubtle}`,
+                  }}>
+                    <Icon d={ICONS.check} size={12} />
+                    <span style={{
+                      fontFamily: "'Geist', sans-serif",
+                      fontSize: 13, color: T.text3,
+                      letterSpacing: "-0.01em",
+                    }}>{t}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div style={{
+                marginTop: 20,
+                display: "flex", alignItems: "center", gap: 6,
+                color: cat.accent,
+                fontFamily: "'Geist', sans-serif",
+                fontSize: 13, fontWeight: 500,
+                opacity: hov ? 1 : 0.7,
+                transition: "opacity 200ms ease",
+              }}>
+                Open {cat.title}
+                <Icon d={ICONS.arrowRight} size={13} />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+// ─── Privacy commitment ─────────────────────────────────────
+function Privacy() {
+  const items = [
+    { icon: ICONS.lock,   title: "No server upload",  desc: "All computation — PDF parsing, image encoding, AI inference — runs in your browser's WASM sandbox." },
+    { icon: ICONS.eyeOff, title: "No account required", desc: "Open a tool, use it, close the tab. Zero sign-up friction. No email, no password, no OAuth dance." },
+    { icon: ICONS.shield, title: "No data retained",   desc: "When you close the tab, everything is gone. No localStorage for sensitive data. No telemetry of your files." },
+  ];
+  return (
+    <section style={{
+      padding: "80px 48px",
+      borderTop: `1px solid ${T.borderSubtle}`,
+      borderBottom: `1px solid ${T.borderSubtle}`,
+    }}>
+      <div style={{ marginBottom: 48 }}>
+        <span style={{
+          fontFamily: "'Geist Mono', monospace",
+          fontSize: 11, color: T.accent,
+          letterSpacing: "0.12em", textTransform: "uppercase", fontWeight: 600,
+        }}>PRIVACY BY DESIGN</span>
+        <h2 style={{
+          fontFamily: "'Geist', sans-serif",
+          fontSize: 36, fontWeight: 700,
+          letterSpacing: "-0.04em", color: T.text1,
+          margin: "10px 0 0",
+        }}>Your privacy is not negotiable.</h2>
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+        {items.map(item => {
+          const [hov, setHov] = useState(false);
+          return (
+            <div
+              key={item.title}
+              onMouseEnter={() => setHov(true)}
+              onMouseLeave={() => setHov(false)}
+              style={{
+                background: hov ? T.surfaceHover : T.surface,
+                border: `1px solid ${T.border}`,
+                borderRadius: 12,
+                boxShadow: T.inset,
+                padding: "28px 24px",
+                transition: "background 200ms ease",
+              }}
+            >
+              <div style={{
+                color: T.text2, marginBottom: 18,
+                transform: hov ? "translateX(2px)" : "translateX(0)",
+                transition: "transform 200ms ease",
+              }}>
+                <Icon d={item.icon} size={18} />
+              </div>
+              <h3 style={{
+                fontFamily: "'Geist', sans-serif",
+                fontSize: 15, fontWeight: 600, color: T.text1,
+                letterSpacing: "-0.02em", margin: "0 0 10px",
+                transform: hov ? "translateX(2px)" : "translateX(0)",
+                transition: "transform 200ms ease",
+              }}>{item.title}</h3>
+              <p style={{
+                fontFamily: "'Geist', sans-serif",
+                fontSize: 13.5, color: T.text3,
+                lineHeight: 1.65, margin: 0, letterSpacing: "-0.01em",
+              }}>{item.desc}</p>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+// ─── CTA ───────────────────────────────────────────────────
+function CTA() {
+  return (
+    <section style={{ padding: "100px 48px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+      <div style={GRID_STYLE} />
+      <div style={{
+        position: "absolute", top: "50%", left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: 500, height: 300,
+        background: "radial-gradient(ellipse, rgba(26,107,255,0.08) 0%, transparent 70%)",
+        pointerEvents: "none",
+      }} />
+      <div style={{ position: "relative", zIndex: 1 }}>
+        <h2 style={{
+          fontFamily: "'Geist', sans-serif",
+          fontSize: 52, fontWeight: 700,
+          letterSpacing: "-0.04em", color: T.text1,
+          margin: "0 0 16px", lineHeight: 1.08,
+        }}>
+          Start using your tools.<br />
+          <span style={{ color: T.text3 }}>Right now. For free.</span>
+        </h2>
+        <p style={{
+          fontFamily: "'Geist', sans-serif",
+          fontSize: 16, color: T.text2,
+          maxWidth: 400, margin: "0 auto 40px",
+          lineHeight: 1.7, letterSpacing: "-0.01em",
+        }}>
+          No account. No credit card. 28 tools available the moment you open the app.
+        </p>
+        <div style={{
+          display: "inline-flex", alignItems: "center", gap: 7,
+          background: T.text1, color: T.bg,
+          borderRadius: 9, padding: "13px 28px",
+          fontSize: 15, fontWeight: 600, cursor: "pointer",
+          fontFamily: "'Geist', sans-serif", letterSpacing: "-0.02em",
+        }}>
+          Open EverydayTools
+          <Icon d={ICONS.arrowRight} size={15} />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Footer ────────────────────────────────────────────────
+function Footer() {
+  const cols = [
+    { head: "TOOLS",   links: ["PDF Tools", "Image Tools", "Privacy Tools", "Calculators"] },
+    { head: "PRODUCT", links: ["Changelog", "Privacy Policy", "Terms of Use"] },
+    { head: "LANGUAGE",links: ["English", "Français"] },
+  ];
+  return (
+    <footer style={{
+      borderTop: `1px solid ${T.borderSubtle}`,
+      padding: "48px 48px 36px",
+    }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr 1fr 1fr", gap: 40, marginBottom: 48 }}>
+        <div>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
+            <svg width="22" height="22" viewBox="0 0 64 64" fill="none">
+              <rect width="64" height="64" rx="10" fill="#1A1916"/>
               <rect x="14" y="15" width="36" height="7" rx="2" fill="#1A6BFF"/>
               <rect x="14" y="28" width="28" height="7" rx="2" fill="#F7F6F3"/>
               <rect x="14" y="41" width="36" height="7" rx="2" fill="#F7F6F3"/>
             </svg>
-            <span style={{ fontSize: 15, fontWeight: 600, color: "#fff", fontFamily: "'Geist', sans-serif" }}>EverydayTools</span>
+            <span style={{ fontSize: 14, fontWeight: 600, color: T.text1, fontFamily: "'Geist', sans-serif", letterSpacing: "-0.02em" }}>EverydayTools</span>
           </div>
-          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", lineHeight: 1.7, maxWidth: 260, fontFamily: "'Geist', sans-serif", margin: 0 }}>
-            Browser-based tools for everyday digital tasks. Private, free, and always available.
+          <p style={{ fontSize: 13, color: T.text3, lineHeight: 1.7, maxWidth: 240, fontFamily: "'Geist', sans-serif", letterSpacing: "-0.01em", margin: 0 }}>
+            Browser-based tools for everyday digital tasks. Private by design. Free forever.
           </p>
         </div>
-        {[
-          { heading: "Tools", links: ["PDF Tools", "Image Tools", "Privacy Tools", "Calculators"] },
-          { heading: "Company", links: ["About", "Privacy Policy", "Terms"] },
-          { heading: "Language", links: ["English", "Français"] },
-        ].map(col => (
-          <div key={col.heading}>
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", fontFamily: "'Geist', sans-serif", marginBottom: 16 }}>{col.heading}</div>
+        {cols.map(col => (
+          <div key={col.head}>
+            <div style={{
+              fontFamily: "'Geist Mono', monospace",
+              fontSize: 10, fontWeight: 700,
+              letterSpacing: "0.12em", textTransform: "uppercase",
+              color: T.text3, marginBottom: 14,
+            }}>{col.head}</div>
             {col.links.map(l => (
-              <div key={l} style={{ fontSize: 13, color: "rgba(255,255,255,0.55)", fontFamily: "'Geist', sans-serif", marginBottom: 10, cursor: "pointer" }}>{l}</div>
+              <div key={l} style={{
+                fontSize: 13, color: T.text3,
+                fontFamily: "'Geist', sans-serif",
+                letterSpacing: "-0.01em",
+                marginBottom: 9, cursor: "pointer",
+              }}>{l}</div>
             ))}
           </div>
         ))}
       </div>
-      <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: 24, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span style={{ fontSize: 12, color: "rgba(255,255,255,0.25)", fontFamily: "'Geist', sans-serif" }}>© 2025 EverydayTools. All rights reserved.</span>
-        <span style={{ fontSize: 12, color: "rgba(255,255,255,0.25)", fontFamily: "'Geist', sans-serif" }}>Made with care, in the browser.</span>
+      <div style={{
+        borderTop: `1px solid ${T.borderSubtle}`,
+        paddingTop: 24,
+        display: "flex", justifyContent: "space-between", alignItems: "center",
+      }}>
+        <span style={{ fontSize: 12, color: T.text3, fontFamily: "'Geist Mono', monospace", letterSpacing: "0.04em" }}>
+          © 2025 EVERYDAYTOOLS
+        </span>
+        <span style={{ fontSize: 12, color: T.text3, fontFamily: "'Geist Mono', monospace", letterSpacing: "0.04em" }}>
+          MADE IN THE BROWSER
+        </span>
       </div>
     </footer>
   );
 }
 
+// ─── Root export ───────────────────────────────────────────
 export function SaaStoLight() {
   return (
-    <div style={{ fontFamily: "'Geist', sans-serif", background: C.bg, minWidth: 1200 }}>
+    <div style={{
+      background: T.bg,
+      color: T.text1,
+      minWidth: 1200,
+      minHeight: "100vh",
+      fontFamily: "'Geist', sans-serif",
+    }}>
       <Nav />
       <Hero />
       <StatsBar />
       <Features />
-      <ToolCategories />
-      <PrivacyStrip />
-      <CTASection />
+      <ToolsBento />
+      <Privacy />
+      <CTA />
       <Footer />
     </div>
   );

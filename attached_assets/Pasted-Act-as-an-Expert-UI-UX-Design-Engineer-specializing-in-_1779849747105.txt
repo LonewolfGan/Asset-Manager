@@ -1,0 +1,63 @@
+Act as an Expert UI/UX Design Engineer specializing in "High Premium" B2B SaaS and Developer Tools (e.g., the Vercel, Linear, or Raycast aesthetic).
+
+I am providing an image of my current website design ("EverydayTools"). It is currently too flashy, uses inconsistent pastel colors, and looks like a generic AI-generated template. I need you to completely rebuild this landing page using React and Tailwind CSS, strictly adhering to the "Minimalist Strategic" dark mode aesthetic.
+
+Please rebuild the content from the image, specifically:
+
+The Hero Section ("Built different, on purpose", "Zero uploads, ever").
+
+The Stats bar (28 Free Tools, 0 Files Uploaded, 170+ Currencies, 100% Client-side).
+
+The Tool Categories Section ("28 tools, four categories" -> PDF Tools, Image Tools, Privacy Tools, Calculators).
+
+STRICT DESIGN SYSTEM INSTRUCTIONS:
+
+GLOBAL THEME & COLORS:
+
+Force a strict Dark Mode. The global background must be a very deep neutral, specifically Tailwind's bg-zinc-950 or #08090a. Do NOT use pure black.
+
+Text should be text-zinc-100 for primary headings, text-zinc-400 for descriptions, and text-zinc-500 for muted details.
+
+REMOVE ALL flashy gradients, pastel backgrounds, and glowing auroras. Do not use primary colors (red, blue, green) for backgrounds; use them only as subtle accents (e.g., a tiny dot or a 10% opacity badge background).
+
+BENTO GRID ARCHITECTURE:
+
+Rebuild the "four categories" and "features" sections using a CSS Grid (Bento Grid layout) with gap-4 or gap-6.
+
+Create asymmetric hierarchy (e.g., make the most important category col-span-2 and others col-span-1).
+
+PREMIUM CARD STYLING (GLASSMORPHISM):
+
+Absolutely NO drop shadows (shadow-lg, shadow-xl, etc. are forbidden).
+
+Every card must use this exact approach: A very dark semi-transparent background (e.g., bg-white/5 or bg-[rgba(40,40,40,0.30)]).
+
+Apply a strict 1-pixel semi-transparent border: border border-white/10.
+
+Apply a volumetric inset shadow to simulate an internal top-edge light reflection. Use exactly this Tailwind class: shadow-[2px_4px_16px_0px_rgba(248,248,248,0.06)_inset].
+
+BACKGROUND TEXTURE (BLUEPRINT GRID):
+
+Behind the main hero section, implement a "Vercel-style" blueprint grid using pure CSS gradients (no images).
+
+Use a 1px line with 5% opacity every 24px.
+
+You MUST mask this grid using [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] so it fades smoothly into the background edges and doesn't clutter the whole screen.
+
+TYPOGRAPHY:
+
+Use a clean Neo-grotesque Sans-serif font (Inter or Geist Sans).
+
+Main Hero Headings must have tight tracking (tracking-tight or -0.03em) and heavy weights (font-semibold).
+
+For the tool count numbers (e.g., "14 Tools", "8 Tools") and small badges, strictly use a Monospace font (font-mono) with uppercase letters and wide tracking (tracking-widest).
+
+ICONOGRAPHY & MICRO-INTERACTIONS:
+
+Strictly use the lucide-react library for all icons.
+
+All icons must have a consistent, thin stroke width (strokeWidth={1.5}). Do NOT use filled or multi-colored icons.
+
+Add subtle group hover effects on the Bento cards (e.g., group-hover:bg-white/10 transition duration-200). Make the icon or title translate 2 pixels to the right (group-hover:translate-x-1) on hover.
+
+Write the complete, functional React code for this page. Do not omit the CSS logic for the background or the inset shadows.
