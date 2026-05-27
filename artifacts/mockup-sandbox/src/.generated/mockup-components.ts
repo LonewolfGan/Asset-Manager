@@ -4,6 +4,7 @@ export const modules: ModuleMap = {
   "./components/mockups/homepage-variants/Command.tsx": () => import("../components/mockups/homepage-variants/Command.tsx"),
   "./components/mockups/homepage-variants/Editorial.tsx": () => import("../components/mockups/homepage-variants/Editorial.tsx"),
   "./components/mockups/homepage-variants/Magazine.tsx": () => import("../components/mockups/homepage-variants/Magazine.tsx"),
+  "./components/mockups/homepage-variants/SaaStoLight.tsx": () => import("../components/mockups/homepage-variants/SaaStoLight.tsx"),
   "./components/mockups/logo-concepts/LogoA.tsx": () => import("../components/mockups/logo-concepts/LogoA.tsx"),
   "./components/mockups/logo-concepts/LogoB.tsx": () => import("../components/mockups/logo-concepts/LogoB.tsx"),
   "./components/mockups/logo-concepts/LogoC.tsx": () => import("../components/mockups/logo-concepts/LogoC.tsx")
