@@ -1,0 +1,74 @@
+Design system & Tailwind requirements:
+- Use a cohesive design system, not random utility soup:
+  - Define a small set of “design tokens” with Tailwind config or class patterns:
+    - Colors: dark background, surfaces, primary accent, text main, text muted, subtle borders.
+    - Spacing scale: use consistent multiples (e.g. 4, 8, 12, 16, 24, 32).
+    - Radius: choose 2–3 radii and reuse them (e.g. 8, 12, 9999 for pills).
+  - Use a modern, neutral font (system UI stack is fine).
+- Visual style:
+  - Clean, minimal, slightly “pro SaaS dashboard” vibe.
+  - Avoid gradients, glowing neon effects, over-the-top glassmorphism.
+  - Cards with:
+    - Subtle border (border, border-slate-700 or similar)
+    - Soft shadow on hover
+    - Slight translate-y on hover
+    - Clear focus state for accessibility
+- No AI-focused visual clichés:
+  - No brain / robot / chat bubbles icons for the main UI.
+  - Use simple, abstract or file-related icons instead.
+
+Component architecture requirements:
+- Make components small and reusable:
+  - ToolCard: receives tool data and “isActive” + “onSelect”.
+  - ToolsGrid: receives list of tools and selected tool id.
+  - ToolDetail: receives selected tool data and renders form/inputs for that tool.
+  - AppShell / Layout: handles header + main content layout.
+- State management:
+  - Keep it simple: use React useState/useEffect in App or Dashboard to manage:
+    - selectedToolId
+    - maybe a list of “recent actions” (optional).
+- Do NOT introduce external state libraries (no Redux, Zustand, etc.) for now.
+
+Responsiveness:
+- Mobile:
+  - Header at top, full width.
+  - Tools grid as 1 column or 2 small columns.
+  - ToolDetail stacked below the grid with appropriate spacing.
+- Tablet/desktop:
+  - 2–4 columns grid depending on breakpoints.
+  - ToolDetail on the right of the grid or in a second column/row, but always visible when a tool is selected.
+- Use Tailwind breakpoints (sm, md, lg, xl) with a clean hierarchy.
+
+Copy and UX:
+- No lorem ipsum.
+- Short, product-focused copy:
+  - “Combine multiple PDFs into a single file.”
+  - “Reduce file size while preserving quality.”
+  - Etc., for each tool.
+- No AI marketing buzzwords, no “magical AI”, no “powered by agents”.
+
+Code quality:
+- Use functional components and hooks only.
+- Keep files small, with clear responsibilities.
+- Use meaningful names for components and props.
+- Types (if using TS) should be simple and explicit (Tool, ToolCategory, etc.).
+- Ensure good accessibility basics:
+  - Buttons with type="button".
+  - Proper labels/aria-labels for file inputs.
+  - Keyboard focus states visible.
+
+Deliverable:
+- Scaffold the full React + Tailwind project structure.
+- Provide the contents of:
+  - main entry file
+  - App component
+  - layout components
+  - tools components
+  - tools data file
+  - Tailwind setup (postcss.config, tailwind.config, index.css or equivalent)
+- When I run this project, I should see:
+  - A single dashboard page with a header, tools grid, and detail panel.
+  - No separate marketing landing page.
+  - No AI / agent / LLM references anywhere in the UI.
+  - A clean, professional, modern design suitable for a real PDF tools product.
+
