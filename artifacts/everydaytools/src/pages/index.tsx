@@ -1,490 +1,311 @@
+import { useState, useMemo } from "react";
 import { Link } from "wouter";
-import { tools } from "../config/tools.config";
-import { useLocale } from "../hooks/use-locale";
+import { tools } from "@/config/tools.config";
+import type { LucideIcon } from "lucide-react";
 
-// ─── Design tokens (mirrors index.css) ───────────────────
-const D = {
-  surface:     "rgba(255,255,255,0.04)",
-  surfaceHov:  "rgba(255,255,255,0.08)",
-  border:      "rgba(255,255,255,0.10)",
-  borderSub:   "rgba(255,255,255,0.06)",
-  inset:       "inset 2px 4px 16px 0px rgba(248,248,248,0.06)",
-  t1:          "#f4f4f5",
-  t2:          "#a1a1aa",
-  t3:          "#71717a",
-  accent:      "#1A6BFF",
-  accentDim:   "rgba(26,107,255,0.12)",
+type DashCategory = "Documents" | "Images" | "Privacy" | "Calculators";
+
+interface DashTool {
+  slug: string;
+  name: string;
+  description: string;
+  category: DashCategory;
+  Icon: LucideIcon;
+  badge?: string;
+  route: string;
+}
+
+const CATEGORY_MAP: Record<string, DashCategory> = {
+  pdf:         "Documents",
+  word:        "Documents",
+  image:       "Images",
+  privacy:     "Privacy",
+  calculators: "Calculators",
 };
 
-// ─── Blueprint grid backdrop ──────────────────────────────
-const GRID: React.CSSProperties = {
-  position: "absolute", inset: 0, pointerEvents: "none",
-  backgroundImage: `
-    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
-  `,
-  backgroundSize: "24px 24px",
-  maskImage: "radial-gradient(ellipse 60% 50% at 50% 0%, #000 70%, transparent 100%)",
-  WebkitMaskImage: "radial-gradient(ellipse 60% 50% at 50% 0%, #000 70%, transparent 100%)",
-};
+const BADGE_SLUGS = new Set(["background-remover", "ai-text-scrubber"]);
 
-// ─── Thin Lucide-style icon ───────────────────────────────
-function Icon({ d, size = 16 }: { d: string; size?: number }) {
+const DASH_TOOLS: DashTool[] = tools.map((t) => ({
+  slug:        t.slug,
+  name:        t.title,
+  description: t.description,
+  category:    CATEGORY_MAP[t.category] ?? "Documents",
+  Icon:        t.icon as LucideIcon,
+  badge:       BADGE_SLUGS.has(t.slug) ? "AI" : undefined,
+  route:       `/${t.slug}`,
+}));
+
+const CATEGORIES: DashCategory[] = ["Documents", "Images", "Privacy", "Calculators"];
+
+function LogoMark() {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-      <path d={d} />
+    <svg width="22" height="22" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect width="64" height="64" rx="11" fill="#1A1916"/>
+      <rect x="14" y="15" width="36" height="7" rx="2" fill="#1A6BFF"/>
+      <rect x="14" y="28" width="28" height="7" rx="2" fill="#F7F6F3"/>
+      <rect x="14" y="41" width="36" height="7" rx="2" fill="#F7F6F3"/>
     </svg>
   );
 }
-const IC = {
-  arrow:  "M5 12h14M12 5l7 7-7 7",
-  shield: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",
-  zap:    "M13 2L3 14h9l-1 8 10-12h-9l1-8z",
-  layers: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5",
-  globe:  "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z",
-  file:   "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8",
-  img:    "M21 19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3l2-3h4l2 3h3a2 2 0 0 1 2 2zM12 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8z",
-  lock:   "M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zM7 11V7a5 5 0 0 1 10 0v4",
-  calc:   "M4 2h16a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zM8 6h1M12 6h1M16 6h1M8 10h1M12 10h1M16 10h1M8 14h1M12 14h1M16 14h1M8 18h8",
-  type:   "M4 7V4h16v3M9 20h6M12 4v16",
-  eye:    "M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22",
-  check:  "M20 6L9 17l-5-5",
-};
 
-// ─── Bento category config ────────────────────────────────
-const BENTO = [
-  { id: "pdf",        label: "PDF",     title: "PDF Tools",       colSpan: 2, accent: "#1A6BFF", icon: IC.file   },
-  { id: "image",      label: "IMAGE",   title: "Image Tools",     colSpan: 1, accent: "#8B5CF6", icon: IC.img    },
-  { id: "word",       label: "DOCS",    title: "Document Tools",  colSpan: 1, accent: "#10B981", icon: IC.type   },
-  { id: "calculators",label: "UTILITY", title: "Calculators",     colSpan: 1, accent: "#F59E0B", icon: IC.calc   },
-  { id: "privacy",    label: "PRIVACY", title: "Privacy Tools",   colSpan: 1, accent: "#EC4899", icon: IC.eye    },
-] as const;
-
-// hex→rgb helper for inline accent tints
-function hexRgb(hex: string) {
-  const r = parseInt(hex.slice(1,3),16);
-  const g = parseInt(hex.slice(3,5),16);
-  const b = parseInt(hex.slice(5,7),16);
-  return `${r},${g},${b}`;
-}
-
-// ─── Shared GlassCard ─────────────────────────────────────
-function GlassCard({
-  children, style, pad = "28px 24px",
-}: { children: React.ReactNode; style?: React.CSSProperties; pad?: string }) {
+function ToolCard({ tool, isActive, onSelect }: { tool: DashTool; isActive: boolean; onSelect: () => void }) {
+  const { Icon } = tool;
   return (
-    <div
-      className="glass-card"
+    <button
+      type="button"
+      onClick={onSelect}
       style={{
-        background: D.surface,
-        border: `1px solid ${D.border}`,
+        width: "100%",
+        textAlign: "left",
+        padding: 16,
         borderRadius: 12,
-        boxShadow: D.inset,
-        padding: pad,
-        transition: "background 200ms ease",
-        ...style,
+        border: isActive ? "1px solid rgba(26,107,255,0.4)" : "1px solid #E8E6E1",
+        background: isActive ? "rgba(26,107,255,0.06)" : "#FFFFFF",
+        boxShadow: isActive ? "0 1px 4px rgba(26,107,255,0.08)" : "none",
+        cursor: "pointer",
+        transition: "border-color 120ms ease, box-shadow 120ms ease, transform 120ms ease",
+        outline: "none",
+      }}
+      onMouseEnter={(e) => {
+        if (!isActive) {
+          (e.currentTarget as HTMLElement).style.borderColor = "#C8C6C1";
+          (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 12px rgba(0,0,0,0.08)";
+          (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (!isActive) {
+          (e.currentTarget as HTMLElement).style.borderColor = "#E8E6E1";
+          (e.currentTarget as HTMLElement).style.boxShadow = "none";
+          (e.currentTarget as HTMLElement).style.transform = "none";
+        }
       }}
     >
-      {children}
-    </div>
-  );
-}
-
-// ─── Hero ─────────────────────────────────────────────────
-function Hero() {
-  return (
-    <section style={{
-      position: "relative", overflow: "hidden",
-      padding: "108px 20px 96px",
-      textAlign: "center",
-    }}>
-      <div style={GRID} />
-      <div style={{
-        position: "absolute", top: -100, left: "50%", transform: "translateX(-50%)",
-        width: 640, height: 420, pointerEvents: "none",
-        background: "radial-gradient(ellipse, rgba(26,107,255,0.09) 0%, transparent 70%)",
-      }} />
-
-      <div style={{ position: "relative", zIndex: 1, maxWidth: 700, margin: "0 auto" }}>
-        {/* Badge */}
+      <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
         <div style={{
-          display: "inline-flex", alignItems: "center", gap: 8,
-          background: D.accentDim, border: `1px solid rgba(26,107,255,0.2)`,
-          borderRadius: 100, padding: "5px 14px 5px 8px", marginBottom: 36,
+          marginTop: 2,
+          flexShrink: 0,
+          width: 36,
+          height: 36,
+          borderRadius: 8,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: isActive ? "rgba(26,107,255,0.10)" : "#F2F0EB",
+          color: isActive ? "#1A6BFF" : "#6B6963",
+          transition: "background 120ms ease, color 120ms ease",
         }}>
-          <span style={{
-            fontFamily: "var(--font-mono)", fontSize: 10, fontWeight: 700,
-            color: D.accent, letterSpacing: "0.10em", textTransform: "uppercase",
-            background: "rgba(26,107,255,0.15)", borderRadius: 100, padding: "2px 9px",
-          }}>New</span>
-          <span style={{ fontFamily: "var(--font-ui)", fontSize: 13, color: D.t2, letterSpacing: "-0.01em" }}>
-            AI Background Remover — fully on-device
-          </span>
+          <Icon size={17} strokeWidth={1.75} />
         </div>
-
-        {/* Headline */}
-        <h1 style={{
-          fontFamily: "var(--font-ui)",
-          fontSize: "clamp(40px, 5.5vw, 64px)",
-          fontWeight: 700,
-          letterSpacing: "-0.04em",
-          lineHeight: 1.06,
-          color: D.t1,
-          margin: "0 0 22px",
-        }}>
-          Built different,<br />
-          <span style={{ color: D.t3 }}>on purpose.</span>
-        </h1>
-
-        {/* Subtext */}
-        <p style={{
-          fontFamily: "var(--font-ui)", fontSize: 17,
-          color: D.t2, lineHeight: 1.7,
-          maxWidth: 500, margin: "0 auto 44px",
-          letterSpacing: "-0.01em",
-        }}>
-          28 free browser-based tools for PDFs, images, privacy &amp; calculations.
-          Your files never leave your device — not even for a millisecond.
-        </p>
-
-        {/* CTAs */}
-        <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-          <Link href="/#tools" style={{
-            display: "inline-flex", alignItems: "center", gap: 7,
-            background: D.t1, color: "#08090a",
-            borderRadius: 9, padding: "11px 24px",
-            fontSize: 14, fontWeight: 600,
-            textDecoration: "none",
-            fontFamily: "var(--font-ui)", letterSpacing: "-0.02em",
+        <div style={{ minWidth: 0, flex: 1 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <span style={{
+              fontSize: 13,
+              fontWeight: 500,
+              color: isActive ? "#1A6BFF" : "#1A1916",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}>
+              {tool.name}
+            </span>
+            {tool.badge && (
+              <span style={{
+                flexShrink: 0,
+                fontSize: 10,
+                fontWeight: 600,
+                padding: "2px 5px",
+                borderRadius: 4,
+                background: "rgba(26,107,255,0.10)",
+                color: "#1A6BFF",
+                lineHeight: 1,
+              }}>
+                {tool.badge}
+              </span>
+            )}
+          </div>
+          <p style={{
+            marginTop: 4,
+            fontSize: 12,
+            color: "#8A8880",
+            lineHeight: 1.4,
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
           }}>
-            Explore all tools <Icon d={IC.arrow} size={14} />
-          </Link>
-          <a href="#why" style={{
-            display: "inline-flex", alignItems: "center", gap: 7,
-            background: "transparent", color: D.t2,
-            border: `1px solid ${D.border}`,
-            borderRadius: 9, padding: "10px 20px",
-            fontSize: 14, fontWeight: 500,
-            textDecoration: "none",
-            fontFamily: "var(--font-ui)", letterSpacing: "-0.01em",
-          }}>
-            How it works
-          </a>
+            {tool.description}
+          </p>
         </div>
-
-        <p style={{
-          marginTop: 36, fontSize: 12.5, color: D.t3,
-          fontFamily: "var(--font-mono)", letterSpacing: "0.06em",
-          textTransform: "uppercase",
-        }}>
-          Free forever · No account · No uploads
-        </p>
       </div>
-    </section>
+    </button>
   );
 }
 
-// ─── Stats bar ─────────────────────────────────────────────
-function StatsBar() {
-  const stats = [
-    { num: "28",   label: "Free Tools" },
-    { num: "0",    label: "Files Uploaded" },
-    { num: "170+", label: "Currencies" },
-    { num: "100%", label: "Client-Side" },
-  ];
+function ToolsGrid({ tools: list, selectedSlug, onSelect }: { tools: DashTool[]; selectedSlug: string | null; onSelect: (slug: string) => void }) {
   return (
-    <div style={{
-      borderTop: `1px solid ${D.borderSub}`,
-      borderBottom: `1px solid ${D.borderSub}`,
-      display: "grid",
-      gridTemplateColumns: "repeat(4, 1fr)",
-      maxWidth: "var(--content-wide)", margin: "0 auto",
-    }}>
-      {stats.map((s, i) => (
-        <div key={s.label} style={{
-          padding: "32px 0", textAlign: "center",
-          borderRight: i < stats.length - 1 ? `1px solid ${D.borderSub}` : "none",
-        }}>
-          <div style={{
-            fontFamily: "var(--font-mono)", fontSize: 38, fontWeight: 700,
-            color: D.t1, letterSpacing: "-0.04em", lineHeight: 1,
-          }}>{s.num}</div>
-          <div style={{
-            fontFamily: "var(--font-mono)", fontSize: 10, fontWeight: 500,
-            color: D.t3, letterSpacing: "0.14em",
-            textTransform: "uppercase", marginTop: 8,
-          }}>{s.label}</div>
-        </div>
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 10 }}>
+      {list.map((tool) => (
+        <ToolCard key={tool.slug} tool={tool} isActive={selectedSlug === tool.slug} onSelect={() => onSelect(tool.slug)} />
       ))}
     </div>
   );
 }
 
-// ─── Features ─────────────────────────────────────────────
-const FEATURES = [
-  { icon: IC.shield, title: "Zero uploads, ever",    desc: "Every operation executes inside your browser tab. Your documents and images are never transmitted to any server." },
-  { icon: IC.zap,    title: "Instant — no queue",    desc: "No server round-trips. Processing starts the moment you drop a file, not when a remote job slot opens up." },
-  { icon: IC.layers, title: "28 tools, one place",   desc: "PDF, image, privacy, and calculator tools under one lightweight app. No juggling five different sites." },
-  { icon: IC.globe,  title: "EN & FR supported",     desc: "Full English and French support across every tool and every error message. More languages on the roadmap." },
-];
-
-function Features() {
+function ToolDetail({ tool }: { tool: DashTool }) {
+  const { Icon } = tool;
   return (
-    <section id="why" style={{ padding: "80px 20px", maxWidth: "var(--content-wide)", margin: "0 auto" }}>
-      <p style={{
-        fontFamily: "var(--font-mono)", fontSize: 11, color: D.accent,
-        letterSpacing: "0.12em", textTransform: "uppercase", fontWeight: 600,
-        marginBottom: 40,
-      }}>Why EverydayTools</p>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 14 }}>
-        {FEATURES.map(f => (
-          <GlassCard key={f.title} style={{ cursor: "default" }}>
-            <div style={{ color: D.t2, marginBottom: 20 }}>
-              <Icon d={f.icon} size={18} />
-            </div>
-            <h3 style={{
-              fontFamily: "var(--font-ui)", fontSize: 15, fontWeight: 600,
-              color: D.t1, letterSpacing: "-0.02em", margin: "0 0 10px",
-            }}>{f.title}</h3>
-            <p style={{
-              fontFamily: "var(--font-ui)", fontSize: 13.5, color: D.t3,
-              lineHeight: 1.65, margin: 0, letterSpacing: "-0.01em",
-            }}>{f.desc}</p>
-          </GlassCard>
-        ))}
+    <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+      <div style={{ marginBottom: 20, paddingBottom: 20, borderBottom: "1px solid #EEECE8" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
+          <div style={{ width: 32, height: 32, borderRadius: 8, background: "rgba(26,107,255,0.10)", display: "flex", alignItems: "center", justifyContent: "center", color: "#1A6BFF", flexShrink: 0 }}>
+            <Icon size={16} strokeWidth={1.75} />
+          </div>
+          <span style={{ fontSize: 13, fontWeight: 600, color: "#1A1916" }}>{tool.name}</span>
+          {tool.badge && (
+            <span style={{ fontSize: 10, fontWeight: 600, padding: "2px 5px", borderRadius: 4, background: "rgba(26,107,255,0.10)", color: "#1A6BFF", lineHeight: 1 }}>
+              {tool.badge}
+            </span>
+          )}
+        </div>
+        <p style={{ fontSize: 12, color: "#8A8880", lineHeight: 1.6, marginLeft: 42 }}>{tool.description}</p>
       </div>
-    </section>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        <Link href={tool.route}>
+          <button
+            type="button"
+            style={{ width: "100%", padding: "10px 16px", borderRadius: 10, background: "#1A1916", color: "#FFFFFF", fontSize: 13, fontWeight: 500, border: "none", cursor: "pointer", transition: "background 120ms ease" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "#2A2924"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "#1A1916"; }}
+          >
+            Open {tool.name}
+          </button>
+        </Link>
+        <p style={{ textAlign: "center", fontSize: 11, color: "#BBBBBB" }}>
+          {tool.category} &middot; {tool.route}
+        </p>
+      </div>
+    </div>
   );
 }
 
-// ─── Bento tool categories ─────────────────────────────────
-function ToolsBento() {
+function EmptyDetail() {
   return (
-    <section id="tools" style={{ padding: "0 20px 80px", maxWidth: "var(--content-wide)", margin: "0 auto" }}>
-      <div style={{
-        display: "flex", alignItems: "baseline",
-        justifyContent: "space-between", marginBottom: 40,
-        flexWrap: "wrap", gap: 12,
-      }}>
-        <div>
-          <p style={{
-            fontFamily: "var(--font-mono)", fontSize: 11, color: D.accent,
-            letterSpacing: "0.12em", textTransform: "uppercase", fontWeight: 600,
-            margin: "0 0 10px",
-          }}>Tool Index</p>
-          <h2 style={{
-            fontFamily: "var(--font-ui)", fontSize: "clamp(26px, 3vw, 36px)",
-            fontWeight: 700, letterSpacing: "-0.04em", color: D.t1, margin: 0,
-          }}>28 tools, five categories.</h2>
-        </div>
-        <span style={{
-          fontFamily: "var(--font-mono)", fontSize: 11, color: D.t3,
-          letterSpacing: "0.08em", textTransform: "uppercase",
-        }}>All free · No signup</span>
+    <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", gap: 16, padding: "0 24px" }}>
+      <div style={{ width: 48, height: 48, borderRadius: 12, background: "#F2F0EB", border: "1px solid #E8E6E1", display: "flex", alignItems: "center", justifyContent: "center", color: "#C0BEB8" }}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h6M3 15h6"/>
+        </svg>
       </div>
+      <div>
+        <p style={{ fontSize: 13, fontWeight: 500, color: "#6B6963" }}>Select a tool</p>
+        <p style={{ fontSize: 12, color: "#AAAAAA", marginTop: 4 }}>Pick any tool from the grid to see details and open it.</p>
+      </div>
+    </div>
+  );
+}
 
-      {/* Bento grid — 3 columns */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
-        {BENTO.map(cat => {
-          const catTools = tools.filter(t => t.category === cat.id);
-          const rgb = hexRgb(cat.accent);
-          return (
-            <div
-              key={cat.id}
-              className="bento-card"
+export default function DashboardHome() {
+  const [selectedSlug, setSelectedSlug]     = useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = useState<DashCategory | "All">("All");
+  const [query, setQuery]                   = useState("");
+
+  const filteredTools = useMemo(() => {
+    let list = activeCategory === "All" ? DASH_TOOLS : DASH_TOOLS.filter((t) => t.category === activeCategory);
+    if (query.trim()) {
+      const q = query.toLowerCase();
+      list = list.filter((t) => t.name.toLowerCase().includes(q) || t.description.toLowerCase().includes(q));
+    }
+    return list;
+  }, [activeCategory, query]);
+
+  const selectedTool = DASH_TOOLS.find((t) => t.slug === selectedSlug) ?? null;
+
+  return (
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "#F7F6F3", color: "#1A1916", fontFamily: "var(--font-ui, system-ui, sans-serif)" }}>
+
+      {/* Header */}
+      <header style={{ height: 56, borderBottom: "1px solid #E8E6E1", background: "#FFFFFF", display: "flex", alignItems: "center", padding: "0 20px", gap: 20, position: "sticky", top: 0, zIndex: 20, boxShadow: "0 1px 0 0 #E8E6E1", flexShrink: 0 }}>
+
+        {/* Logo */}
+        <div style={{ display: "flex", alignItems: "center", gap: 9, flexShrink: 0 }}>
+          <LogoMark />
+          <span style={{ fontSize: 14, fontWeight: 600, letterSpacing: "-0.02em", color: "#1A1916" }}>EverydayTools</span>
+        </div>
+
+        {/* Category nav */}
+        <nav style={{ display: "flex", alignItems: "center", gap: 2, flex: 1, overflowX: "auto" }}>
+          {(["All", ...CATEGORIES] as const).map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              onClick={() => { setActiveCategory(cat); setSelectedSlug(null); }}
               style={{
-                gridColumn: `span ${cat.colSpan}`,
-                background: D.surface,
-                border: `1px solid ${D.border}`,
-                borderRadius: 12,
-                boxShadow: D.inset,
-                padding: "26px 26px 22px",
-                transition: "background 200ms ease",
+                padding: "6px 12px",
+                borderRadius: 8,
+                border: "none",
+                background: activeCategory === cat ? "#F2F0EB" : "transparent",
+                color: activeCategory === cat ? "#1A1916" : "#6B6963",
+                fontSize: 12,
+                fontWeight: 500,
+                cursor: "pointer",
+                whiteSpace: "nowrap",
+                transition: "background 120ms ease, color 120ms ease",
+                fontFamily: "var(--font-ui, system-ui, sans-serif)",
               }}
             >
-              {/* Header */}
-              <div style={{
-                display: "flex", justifyContent: "space-between",
-                alignItems: "center", marginBottom: 18,
-              }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                  <div style={{
-                    width: 32, height: 32, borderRadius: 8,
-                    background: `rgba(${rgb}, 0.12)`,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    color: cat.accent, flexShrink: 0,
-                  }}>
-                    <Icon d={cat.icon} size={16} />
-                  </div>
-                  <span style={{
-                    fontFamily: "var(--font-ui)", fontSize: 15.5, fontWeight: 600,
-                    color: D.t1, letterSpacing: "-0.02em",
-                  }}>{cat.title}</span>
-                </div>
-                <span style={{
-                  fontFamily: "var(--font-mono)", fontSize: 10, fontWeight: 700,
-                  color: cat.accent,
-                  background: `rgba(${rgb}, 0.10)`,
-                  border: `1px solid rgba(${rgb}, 0.20)`,
-                  borderRadius: 100, padding: "3px 10px",
-                  letterSpacing: "0.08em", textTransform: "uppercase",
-                  whiteSpace: "nowrap",
-                }}>
-                  {String(catTools.length).padStart(2, "0")} Tools
-                </span>
-              </div>
-
-              {/* Tool links */}
-              <div style={{
-                display: "grid",
-                gridTemplateColumns: cat.colSpan === 2 ? "repeat(2, 1fr)" : "1fr",
-                gap: "0 20px",
-              }}>
-                {catTools.map(tool => (
-                  <Link
-                    key={tool.slug}
-                    href={`/${tool.slug}`}
-                    style={{
-                      display: "flex", alignItems: "center", gap: 7,
-                      padding: "6px 0",
-                      borderTop: `1px solid ${D.borderSub}`,
-                      color: D.t3,
-                      textDecoration: "none",
-                      fontFamily: "var(--font-ui)", fontSize: 13,
-                      letterSpacing: "-0.01em",
-                      transition: "color 150ms ease",
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = D.t1)}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = D.t3)}
-                  >
-                    <Icon d={IC.check} size={11} />
-                    {tool.title}
-                  </Link>
-                ))}
-              </div>
-
-              {/* Footer CTA */}
-              <div style={{ marginTop: 16 }}>
-                <Link href={`/${catTools[0]?.slug ?? ""}`} style={{
-                  display: "inline-flex", alignItems: "center", gap: 5,
-                  color: cat.accent, textDecoration: "none",
-                  fontFamily: "var(--font-ui)", fontSize: 13, fontWeight: 500,
-                }}>
-                  Open {cat.title} <Icon d={IC.arrow} size={12} />
-                </Link>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
-
-// ─── Privacy strip ─────────────────────────────────────────
-const PRIVACY_ITEMS = [
-  { icon: IC.lock,   title: "No server upload",    desc: "All computation — PDF parsing, image encoding, AI inference — runs in your browser's WebAssembly sandbox." },
-  { icon: IC.eye,    title: "No account required",  desc: "Open a tool, use it, close the tab. Zero sign-up friction. No email, no password, no OAuth dance." },
-  { icon: IC.shield, title: "No data retained",     desc: "When you close the tab, everything is gone. No localStorage for sensitive data. No telemetry of your files." },
-];
-
-function Privacy() {
-  return (
-    <section style={{
-      borderTop: `1px solid ${D.borderSub}`,
-      borderBottom: `1px solid ${D.borderSub}`,
-      padding: "80px 20px",
-    }}>
-      <div style={{ maxWidth: "var(--content-wide)", margin: "0 auto" }}>
-        <p style={{
-          fontFamily: "var(--font-mono)", fontSize: 11, color: D.accent,
-          letterSpacing: "0.12em", textTransform: "uppercase", fontWeight: 600,
-          marginBottom: 10,
-        }}>Privacy by Design</p>
-        <h2 style={{
-          fontFamily: "var(--font-ui)", fontSize: "clamp(24px, 3vw, 34px)",
-          fontWeight: 700, letterSpacing: "-0.04em", color: D.t1,
-          margin: "0 0 40px",
-        }}>Your privacy is not negotiable.</h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 14 }}>
-          {PRIVACY_ITEMS.map(item => (
-            <GlassCard key={item.title} style={{ cursor: "default" }}>
-              <div style={{ color: D.t2, marginBottom: 18 }}>
-                <Icon d={item.icon} size={18} />
-              </div>
-              <h3 style={{
-                fontFamily: "var(--font-ui)", fontSize: 15, fontWeight: 600,
-                color: D.t1, letterSpacing: "-0.02em", margin: "0 0 10px",
-              }}>{item.title}</h3>
-              <p style={{
-                fontFamily: "var(--font-ui)", fontSize: 13.5, color: D.t3,
-                lineHeight: 1.65, margin: 0, letterSpacing: "-0.01em",
-              }}>{item.desc}</p>
-            </GlassCard>
+              {cat}
+            </button>
           ))}
+        </nav>
+
+        {/* Search */}
+        <label style={{ display: "flex", alignItems: "center", gap: 6, background: "#F7F6F3", border: "1px solid #E8E6E1", borderRadius: 8, padding: "6px 10px", width: 176, flexShrink: 0, cursor: "text" }}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9A9890" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input
+            type="search"
+            placeholder="Search tools..."
+            value={query}
+            onChange={(e) => { setQuery(e.target.value); setSelectedSlug(null); }}
+            aria-label="Search tools"
+            style={{ background: "transparent", border: "none", outline: "none", fontSize: 12, color: "#1A1916", width: "100%", fontFamily: "var(--font-ui, system-ui, sans-serif)" }}
+          />
+        </label>
+      </header>
+
+      {/* Body */}
+      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
+
+        {/* Tools grid */}
+        <div style={{ flex: 1, minWidth: 0, overflowY: "auto", padding: 20 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
+            <span style={{ fontSize: 12, fontWeight: 500, color: "#9A9890" }}>
+              {activeCategory === "All" ? "All tools" : activeCategory}
+            </span>
+            <span style={{ fontSize: 12, color: "#C0BEB8" }}>{filteredTools.length}</span>
+          </div>
+
+          {filteredTools.length > 0 ? (
+            <ToolsGrid tools={filteredTools} selectedSlug={selectedSlug} onSelect={setSelectedSlug} />
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "80px 0", textAlign: "center", gap: 8 }}>
+              <p style={{ fontSize: 13, fontWeight: 500, color: "#6B6963" }}>No tools match &ldquo;{query}&rdquo;</p>
+              <button type="button" onClick={() => setQuery("")} style={{ fontSize: 12, color: "#1A6BFF", background: "none", border: "none", cursor: "pointer", textDecoration: "underline", fontFamily: "inherit" }}>Clear search</button>
+            </div>
+          )}
+        </div>
+
+        {/* Divider */}
+        <div style={{ width: 1, background: "#E8E6E1", flexShrink: 0 }} />
+
+        {/* Detail panel */}
+        <div style={{ width: 320, flexShrink: 0, background: "#FFFFFF", overflowY: "auto", padding: 20 }}>
+          {selectedTool ? <ToolDetail tool={selectedTool} /> : <EmptyDetail />}
         </div>
       </div>
-    </section>
-  );
-}
-
-// ─── CTA ──────────────────────────────────────────────────
-function CTA() {
-  return (
-    <section style={{
-      position: "relative", overflow: "hidden",
-      padding: "100px 20px", textAlign: "center",
-    }}>
-      <div style={GRID} />
-      <div style={{
-        position: "absolute", top: "50%", left: "50%",
-        transform: "translate(-50%, -50%)",
-        width: 500, height: 300, pointerEvents: "none",
-        background: "radial-gradient(ellipse, rgba(26,107,255,0.07) 0%, transparent 70%)",
-      }} />
-      <div style={{ position: "relative", zIndex: 1 }}>
-        <h2 style={{
-          fontFamily: "var(--font-ui)",
-          fontSize: "clamp(32px, 4.5vw, 52px)",
-          fontWeight: 700, letterSpacing: "-0.04em",
-          color: D.t1, margin: "0 0 16px", lineHeight: 1.08,
-        }}>
-          Start using your tools.<br />
-          <span style={{ color: D.t3 }}>Right now. For free.</span>
-        </h2>
-        <p style={{
-          fontFamily: "var(--font-ui)", fontSize: 16, color: D.t2,
-          maxWidth: 400, margin: "0 auto 40px",
-          lineHeight: 1.7, letterSpacing: "-0.01em",
-        }}>
-          No account. No credit card. 28 tools ready the moment you open the app.
-        </p>
-        <Link href="/#tools" style={{
-          display: "inline-flex", alignItems: "center", gap: 7,
-          background: D.t1, color: "#08090a",
-          borderRadius: 9, padding: "13px 28px",
-          fontSize: 15, fontWeight: 600,
-          textDecoration: "none",
-          fontFamily: "var(--font-ui)", letterSpacing: "-0.02em",
-        }}>
-          Explore all tools <Icon d={IC.arrow} size={15} />
-        </Link>
-      </div>
-    </section>
-  );
-}
-
-// ─── Page ─────────────────────────────────────────────────
-export default function Home() {
-  return (
-    <div>
-      <Hero />
-      <StatsBar />
-      <Features />
-      <ToolsBento />
-      <Privacy />
-      <CTA />
     </div>
   );
 }
