@@ -45,16 +45,16 @@
 /* ─── DARK THEME (default) ─── */
 :root {
   /* Semantic color tokens */
-  --bg-base:        #111113;
-  --bg-surface:     #18181b;
-  --bg-elevated:    #222228;
-  --bg-hover:       #2a2a30;
+  --bg-base:        #08090a;
+  --bg-surface:     #111116;
+  --bg-elevated:    #1a1a20;
+  --bg-hover:       #222228;
   --bg-subtle:      var(--bg-hover);
-  --border:         #2e2e36;
-  --border-strong:  #3f3f4a;
-  --text-primary:   #f0f0f0;
-  --text-secondary: #8c8c9a;
-  --text-tertiary:  #52525e;
+  --border:         rgba(255,255,255,0.10);
+  --border-strong:  rgba(255,255,255,0.18);
+  --text-primary:   #f4f4f5;
+  --text-secondary: #a1a1aa;
+  --text-tertiary:  #71717a;
   --accent:         #1A6BFF;
   --accent-subtle:  rgba(26, 107, 255, 0.12);
   --accent-text:    #FFFFFF;
@@ -70,6 +70,7 @@
   --radius:   4px;
   --shadow-sm: none;
   --shadow-md: none;
+  --shadow-card: inset 2px 4px 16px 0px rgba(248,248,248,0.06);
 
   /* Font families */
   --font-display: 'Fraunces', Georgia, serif;
