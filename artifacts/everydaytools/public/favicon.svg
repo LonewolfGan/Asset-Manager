@@ -1,6 +1,14 @@
 <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="64" height="64" rx="11" fill="#1A1916"/>
-  <rect x="14" y="15" width="36" height="7" rx="2" fill="#1A6BFF"/>
-  <rect x="14" y="28" width="28" height="7" rx="2" fill="#F7F6F3"/>
-  <rect x="14" y="41" width="36" height="7" rx="2" fill="#F7F6F3"/>
+  <rect width="64" height="64" rx="14" fill="#1A1916"/>
+  <!-- Grid of 6 tool squares -->
+  <rect x="10" y="10" width="19" height="19" rx="4" fill="#1A6BFF"/>
+  <rect x="35" y="10" width="19" height="19" rx="4" fill="#1A6BFF" opacity="0.55"/>
+  <rect x="10" y="35" width="19" height="19" rx="4" fill="#1A6BFF" opacity="0.55"/>
+  <rect x="35" y="35" width="19" height="19" rx="4" fill="#F7F6F3" opacity="0.9"/>
+  <!-- Sparkle cross in top-left square -->
+  <line x1="19.5" y1="14" x2="19.5" y2="25" stroke="#F7F6F3" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="14" y1="19.5" x2="25" y2="19.5" stroke="#F7F6F3" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- Arrow in bottom-right square -->
+  <polyline points="40,47 49,47 49,40" fill="none" stroke="#1A1916" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="40" y1="54" x2="49" y2="47" stroke="#1A1916" stroke-width="2.2" stroke-linecap="round"/>
 </svg>
