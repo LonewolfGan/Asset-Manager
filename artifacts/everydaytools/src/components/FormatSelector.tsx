@@ -50,7 +50,8 @@ export default function FormatSelector({ options, value, onChange, placeholder =
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between bg-white border border-[var(--border)] rounded-md px-3 py-2 text-left focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent shadow-sm"
+        className="w-full flex items-center justify-between border border-[var(--border)] rounded-md px-3 py-2 text-left focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent shadow-sm"
+        style={{ background: 'var(--bg-surface)', color: 'var(--text-primary)' }}
       >
         <span className={selectedOption ? "text-[var(--text)]" : "text-[var(--muted)]"}>
           {selectedOption ? selectedOption.label : placeholder}
@@ -59,7 +60,7 @@ export default function FormatSelector({ options, value, onChange, placeholder =
       </button>
 
       {isOpen && (
-        <div className="absolute z-50 mt-1 w-full bg-white border border-[var(--border)] rounded-md shadow-lg overflow-hidden">
+        <div className="absolute z-50 mt-1 w-full border border-[var(--border)] rounded-md shadow-lg overflow-hidden" style={{ background: 'var(--bg-surface)' }}>
           <div className="p-2 border-b border-[var(--border)]">
             <div className="relative">
               <Search className="absolute left-2 top-2.5 w-4 h-4 text-[var(--muted)]" />
@@ -67,6 +68,7 @@ export default function FormatSelector({ options, value, onChange, placeholder =
                 type="text"
                 autoFocus
                 className="w-full pl-8 pr-3 py-1.5 bg-[var(--bg)] border border-[var(--border)] rounded text-sm focus:outline-none focus:border-[var(--accent)]"
+                style={{ color: 'var(--text-primary)' }}
                 placeholder="Search..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}

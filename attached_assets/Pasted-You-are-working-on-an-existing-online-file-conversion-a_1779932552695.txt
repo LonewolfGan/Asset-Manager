@@ -1,0 +1,269 @@
+You are working on an existing online file conversion and tools website. The site already has 36 tools implemented. Your job is to add missing tools, fix structural issues, and expand image conversion coverage. Do not touch the existing working tools unless instructed.
+
+1. CRITICAL FIXES (do these first)
+1a. Add missing Word → PDF (the inverse already exists)
+
+Create a tool at /word-to-pdf
+Accept .docx and .doc files
+Convert to PDF client-side using a library like docx-preview + html2canvas + jsPDF, or use mammoth.js to extract HTML then print to PDF
+Match the existing UI style of the other tools
+
+1b. Fix "Image Converter" — split into dedicated pages
+
+The current generic "Image Converter" tool should remain but each format pair must also have its own dedicated route/page
+This is critical for SEO — each page targets a specific search query
+Do not remove the generic tool, just add the dedicated pages
+
+
+2. NEW CATEGORY — Excel & Spreadsheets
+Create a new "Excel & Spreadsheets" category in the navigation. Add the following tools:
+Excel to PDF /excel-to-pdf
+
+Accept .xlsx and .xls
+Render the spreadsheet and export as PDF
+Use SheetJS (xlsx) to read the file and jsPDF or html2canvas to export
+
+Excel to CSV /excel-to-csv
+
+Accept .xlsx
+Use SheetJS to parse and export as .csv
+Allow selecting which sheet to export if the file has multiple sheets
+
+CSV to Excel /csv-to-excel
+
+Accept .csv
+Use SheetJS to convert and export as .xlsx
+
+CSV to JSON + JSON to CSV /csv-to-json
+
+Two modes in one page (tab switcher)
+CSV → paste or upload → output JSON
+JSON → paste or upload → output CSV
+Use PapaParse for CSV parsing
+
+CSV Viewer /csv-viewer
+
+Upload or paste a CSV
+Display as a clean sortable HTML table
+Show row count, column count
+Allow downloading back as CSV
+
+
+3. NEW CATEGORY — PowerPoint
+Create a new "PowerPoint" category. Add:
+PowerPoint to PDF /pptx-to-pdf
+
+Accept .pptx
+Use pptx2html or similar to convert slides, then print to PDF
+Show a preview of slides before downloading
+
+PowerPoint to Images /pptx-to-images
+
+Accept .pptx
+Export each slide as PNG or JPG
+Allow downloading all slides as a ZIP
+
+PDF to PowerPoint /pdf-to-pptx
+
+Accept .pdf
+Convert each page to an image and insert into a .pptx file (one slide per page)
+Use pdf.js for rendering pages + PptxGenJS to build the PPTX
+
+
+4. MISSING PDF TOOLS
+PDF to Excel /pdf-to-excel
+
+Accept .pdf
+Extract tables from the PDF and export as .xlsx
+Use pdf.js to extract text, detect table structure, then use SheetJS to write XLSX
+
+Reorder PDF Pages /reorder-pdf
+
+Accept .pdf
+Show a drag-and-drop grid of page thumbnails
+Allow reordering pages then downloading the new PDF
+Use pdf-lib for manipulation and pdf.js for thumbnails
+
+OCR — Scanned PDF or Image to Text /ocr
+
+Accept .pdf or image files (JPG, PNG)
+Use Tesseract.js (runs in browser, no server needed)
+Display extracted text, allow copying and downloading as .txt
+
+
+5. IMAGE CONVERSIONS — dedicated pages
+Use the Canvas API or browser-image-compression + native browser codecs for all conversions. For AVIF support use @jsquash/avif. For WebP use native canvas toBlob('image/webp').
+Create one page per conversion pair. Each page must:
+
+Have its own route (e.g. /png-to-webp)
+Accept drag & drop + click to upload
+Show a before/after file size comparison
+Allow downloading the converted file
+Support batch upload (multiple files at once)
+
+WebP conversions
+
+/png-to-webp — PNG → WebP
+/jpg-to-webp — JPG/JPEG → WebP
+/gif-to-webp — GIF → WebP
+/bmp-to-webp — BMP → WebP
+/tiff-to-webp — TIFF → WebP
+/webp-to-png — WebP → PNG
+/webp-to-jpg — WebP → JPG
+/webp-to-gif — WebP → GIF
+/webp-to-pdf — WebP → PDF
+
+AVIF conversions (use @jsquash/avif)
+
+/jpg-to-avif — JPG → AVIF
+/png-to-avif — PNG → AVIF
+/webp-to-avif — WebP → AVIF
+/avif-to-jpg — AVIF → JPG
+/avif-to-png — AVIF → PNG
+
+Classic conversions
+
+/jpg-to-png — JPG → PNG
+/png-to-jpg — PNG → JPG
+/png-to-svg — PNG → SVG (use Potrace.js for tracing)
+/svg-to-png — SVG → PNG
+
+HEIC (expand existing)
+
+Already have /heic-to-jpg — keep it
+/heic-to-png — HEIC → PNG (use heic2any)
+/heic-to-webp — HEIC → WebP
+/heic-to-pdf — HEIC → PDF
+
+Legacy formats
+
+/gif-to-mp4 — GIF → MP4 (use gif.js + whammy or ffmpeg.wasm)
+/gif-to-png — GIF → PNG (first frame)
+/bmp-to-jpg — BMP → JPG
+/tiff-to-jpg — TIFF → JPG
+/tiff-to-png — TIFF → PNG
+
+Image to PDF (dedicated)
+
+/jpg-to-pdf — JPG → PDF (dedicated page, not just the generic one)
+/png-to-pdf — PNG → PDF (dedicated page)
+
+
+6. MISSING IMAGE TOOLS
+Flip & Rotate /flip-rotate-image
+
+Flip horizontal, flip vertical, rotate 90°/180°/270°
+Live preview before download
+Support JPG, PNG, WebP
+
+Add Watermark to Image /watermark-image
+
+Upload an image
+Add text watermark: choose text, font size, color, opacity, position
+Optionally upload a logo as watermark
+Download watermarked image
+
+Favicon Generator /favicon-generator
+
+Upload any image (PNG, JPG, SVG)
+Generate: .ico, 16x16, 32x32, 64x64, 128x128, 180x180 (Apple touch icon), 192x192 (Android)
+Download all sizes as a ZIP
+
+
+7. NEW CATEGORY — Text & Code
+Create a "Text & Code" category in the nav. Add:
+JSON Formatter /json-formatter
+
+Paste JSON → format/indent it with syntax highlighting
+Validate and show errors
+Minify mode
+Copy to clipboard button
+Use highlight.js or prism.js for highlighting
+
+Base64 Encoder/Decoder /base64
+
+Two tabs: Encode and Decode
+Text input → Base64 output and vice versa
+Also handle file → Base64 (drag & drop any file)
+
+URL Encoder/Decoder /url-encoder
+
+Two modes: encode and decode
+Real-time output as user types
+
+Word & Character Counter /word-counter
+
+Paste or type text
+Show live: word count, character count (with/without spaces), sentence count, paragraph count, reading time estimate
+
+HTML Formatter & Minifier /html-formatter
+
+Paste HTML → format with indentation or minify
+Syntax highlighting
+Copy button
+
+Lorem Ipsum Generator /lorem-ipsum
+
+Choose: paragraphs / words / sentences / lists
+Choose count
+Options: classic lorem ipsum OR random words
+Copy to clipboard
+
+
+8. MISSING DOC TOOLS
+Word to Markdown /word-to-markdown
+
+Accept .docx
+Use mammoth.js to extract HTML then convert to Markdown
+Show preview, allow download as .md
+
+HTML to Markdown /html-to-markdown
+
+Paste HTML or upload .html file
+Convert to clean Markdown
+Use turndown.js
+
+
+9. PRIVACY — expand the category
+File Checksum /checksum
+
+Upload any file
+Compute and display: MD5, SHA-1, SHA-256, SHA-512
+All computed in browser using Web Crypto API
+Allow user to paste an expected hash to verify integrity
+
+
+10. NAVIGATION RESTRUCTURE
+Update the main navigation to reflect the new categories. Final nav structure:
+PDF          → all PDF tools
+Documents    → Word, Excel, PowerPoint, Markdown, HTML (grouped by format)
+Images       → all image tools + all conversion pairs (grouped: WebP, AVIF, HEIC, Classic...)
+Text & Code  → JSON, Base64, URL, Word Counter, HTML, Lorem Ipsum
+Generators   → QR Code, Password, Color Picker, Favicon
+Calculators  → Percentage, Unit, Currency, Tip
+Privacy      → Metadata Cleaner, AI Text Scrubber, Checksum, Encrypt
+On the homepage, show tools grouped by category with a count badge per category.
+
+LIBRARIES TO USE
+SheetJS (xlsx)         → Excel read/write
+PapaParse              → CSV parsing
+pdf-lib                → PDF manipulation
+pdf.js (pdfjs-dist)    → PDF rendering/reading
+jsPDF                  → PDF generation
+mammoth.js             → DOCX → HTML
+PptxGenJS              → Create PPTX files
+Tesseract.js           → OCR in browser
+heic2any               → HEIC conversion
+@jsquash/avif          → AVIF encode/decode
+turndown.js            → HTML → Markdown
+highlight.js           → Syntax highlighting
+jszip                  → ZIP downloads (for batch exports)
+All processing must happen client-side in the browser. No files should be sent to a server.
+
+CONSTRAINTS
+
+Keep the existing design system (colors, fonts, card style, button style)
+Every tool page must have: drag & drop upload area, file size limit notice, download button, and a "how it works" section (2-3 lines)
+Mobile responsive
+No file uploads to any server — 100% client-side
+Each image conversion page must show before/after file size in KB/MB

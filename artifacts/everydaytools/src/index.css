@@ -100,6 +100,7 @@
   /* Spacing scale */
   --content-narrow: 640px;
   --content-mid:    800px;
+  --content-tool:   900px;
   --content-wide:   1200px;
   --content-full:   1400px;
 

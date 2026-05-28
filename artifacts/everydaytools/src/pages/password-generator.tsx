@@ -104,7 +104,7 @@ export default function PasswordGenerator() {
       <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: 24 }}>
         
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-          <h2 style={{ fontSize: 24, fontFamily: 'IBM Plex Mono, monospace', wordBreak: 'break-all', margin: 0 }}>{passwords[0] || ""}</h2>
+          <h2 style={{ fontSize: 24, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)', wordBreak: 'break-all', margin: 0 }}>{passwords[0] || ""}</h2>
           <button onClick={() => handleCopy(passwords[0])} style={{ padding: '8px 16px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', cursor: 'pointer' }}>Copy</button>
         </div>
         
@@ -142,7 +142,7 @@ export default function PasswordGenerator() {
           <div style={{ display: 'flex', gap: 16, alignItems: 'flex-end' }}>
             <div style={{ flex: 1 }}>
               <label style={{ fontSize: 14, fontWeight: 500, display: 'block', marginBottom: 8 }}>Generate Count</label>
-              <select value={count} onChange={e => setCount(parseInt(e.target.value))} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg)' }}>
+              <select value={count} onChange={e => setCount(parseInt(e.target.value))} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg)', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', outline: 'none' }}>
                 <option value={1}>1</option>
                 <option value={5}>5</option>
                 <option value={10}>10</option>
@@ -161,7 +161,7 @@ export default function PasswordGenerator() {
           <h3 style={{ fontSize: 14, fontWeight: 500, marginBottom: 12 }}>Bulk Generation</h3>
           {passwords.map((p, i) => (
             <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid var(--border)' }}>
-              <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 14 }}>{p}</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 14, color: 'var(--text-primary)' }}>{p}</span>
               <button onClick={() => handleCopy(p)} style={{ background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer', fontSize: 13 }}>Copy</button>
             </div>
           ))}
@@ -177,7 +177,7 @@ export default function PasswordGenerator() {
           <div style={{ background: 'var(--surface)', borderRadius: 'var(--radius)', border: '1px solid var(--border)' }}>
             {history.map((p, i) => (
               <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 16px', borderBottom: i === history.length - 1 ? 'none' : '1px solid var(--border)' }}>
-                <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 14 }}>{p}</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 14, color: 'var(--text-primary)' }}>{p}</span>
               </div>
             ))}
           </div>

@@ -96,7 +96,7 @@ export default function CurrencyConverter() {
               <label style={{ display: 'block', fontSize: 14, marginBottom: 8 }}>From</label>
               <FormatSelector options={currencyOptions} value={fromCurrency} onChange={setFromCurrency} />
             </div>
-            <button onClick={handleSwap} style={{ marginTop: 26, padding: '8px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '50%', cursor: 'pointer' }}>⇄</button>
+            <button onClick={handleSwap} aria-label="Swap currencies" style={{ marginTop: 26, padding: '8px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '50%', cursor: 'pointer', color: 'var(--text-primary)', lineHeight: 1 }}>⇄</button>
             <div style={{ flex: 1 }}>
               <label style={{ display: 'block', fontSize: 14, marginBottom: 8 }}>To</label>
               <FormatSelector options={currencyOptions} value={toCurrency} onChange={setToCurrency} />
@@ -105,9 +105,9 @@ export default function CurrencyConverter() {
           
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40, marginTop: 16 }}>
             <div>
-              <input type="number" value={amount} onChange={e => setAmount(e.target.value)} style={{ width: '100%', padding: '16px', fontSize: 24, fontFamily: 'IBM Plex Mono, monospace', border: 'none', borderBottom: '2px solid var(--accent)', outline: 'none', background: 'var(--bg)', borderRadius: 'var(--radius) var(--radius) 0 0' }} />
+              <input type="number" value={amount} onChange={e => setAmount(e.target.value)} style={{ width: '100%', padding: '16px', fontSize: 24, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)', border: 'none', borderBottom: '2px solid var(--accent)', outline: 'none', background: 'var(--bg)', borderRadius: 'var(--radius) var(--radius) 0 0' }} />
             </div>
-            <div style={{ padding: '16px 0', fontSize: 24, fontFamily: 'IBM Plex Mono, monospace', borderBottom: '2px solid var(--border)', color: result === "—" ? 'var(--muted)' : 'var(--text)' }}>
+            <div style={{ padding: '16px 0', fontSize: 24, fontFamily: 'var(--font-mono)', borderBottom: '2px solid var(--border)', color: result === "—" ? 'var(--text-tertiary)' : 'var(--text-primary)' }}>
               {result}
             </div>
           </div>
@@ -121,7 +121,7 @@ export default function CurrencyConverter() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 32 }}>
         <div style={{ background: 'var(--bg)', padding: 16, borderRadius: 'var(--radius)', border: '1px solid var(--border)' }}>
           <h3 style={{ fontSize: 14, fontWeight: 500, marginBottom: 12 }}>Quick Conversions</h3>
-          <table style={{ width: '100%', fontSize: 13, fontFamily: 'IBM Plex Mono, monospace' }}>
+          <table style={{ width: '100%', fontSize: 13, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>
             <tbody>
               {[1, 10, 100, 1000, 10000].map(amt => (
                 <tr key={amt}>
@@ -136,7 +136,7 @@ export default function CurrencyConverter() {
         <div style={{ background: 'var(--bg)', padding: 16, borderRadius: 'var(--radius)', border: '1px solid var(--border)' }}>
           <h3 style={{ fontSize: 14, fontWeight: 500, marginBottom: 12 }}>Recent History</h3>
           {history.length > 0 ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontSize: 13, fontFamily: 'IBM Plex Mono, monospace' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontSize: 13, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>
               {history.slice(0, 5).map((h, i) => (
                 <div key={i} style={{ padding: '4px 0', borderBottom: i === 4 ? 'none' : '1px solid var(--border)' }}>{h}</div>
               ))}

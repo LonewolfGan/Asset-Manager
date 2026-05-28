@@ -90,7 +90,7 @@ export default function UnitConverter() {
       
       <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 16, marginBottom: 16, borderBottom: '1px solid var(--border)' }}>
         {UNIT_CATEGORIES.map(c => (
-          <button key={c.id} onClick={() => setActiveCategory(c.id)} style={{ padding: '8px 16px', background: activeCategory === c.id ? 'var(--accent)' : 'var(--bg)', color: activeCategory === c.id ? '#fff' : 'var(--text)', border: 'none', borderRadius: 'var(--radius)', cursor: 'pointer', fontSize: 14, whiteSpace: 'nowrap' }}>
+          <button key={c.id} onClick={() => setActiveCategory(c.id)} style={{ padding: '8px 16px', background: activeCategory === c.id ? 'var(--accent)' : 'var(--bg)', color: activeCategory === c.id ? 'var(--accent-text)' : 'var(--text-primary)', border: 'none', borderRadius: 'var(--radius)', cursor: 'pointer', fontSize: 14, whiteSpace: 'nowrap' }}>
             {c.name}
           </button>
         ))}
@@ -104,7 +104,7 @@ export default function UnitConverter() {
               <label style={{ display: 'block', fontSize: 14, marginBottom: 8 }}>From</label>
               <FormatSelector options={unitOptions} value={fromUnit} onChange={setFromUnit} />
             </div>
-            <button onClick={handleSwap} style={{ marginTop: 26, padding: '8px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '50%', cursor: 'pointer' }}>⇄</button>
+            <button onClick={handleSwap} aria-label="Swap units" style={{ marginTop: 26, padding: '8px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '50%', cursor: 'pointer', color: 'var(--text-primary)', lineHeight: 1 }}>⇄</button>
             <div style={{ flex: 1 }}>
               <label style={{ display: 'block', fontSize: 14, marginBottom: 8 }}>To</label>
               <FormatSelector options={unitOptions} value={toUnit} onChange={setToUnit} />
@@ -113,9 +113,9 @@ export default function UnitConverter() {
           
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40, marginTop: 16 }}>
             <div>
-              <input type="number" value={amount} onChange={e => setAmount(e.target.value)} style={{ width: '100%', padding: '16px', fontSize: 24, fontFamily: 'IBM Plex Mono, monospace', border: 'none', borderBottom: '2px solid var(--accent)', outline: 'none', background: 'var(--bg)', borderRadius: 'var(--radius) var(--radius) 0 0' }} />
+              <input type="number" value={amount} onChange={e => setAmount(e.target.value)} style={{ width: '100%', padding: '16px', fontSize: 24, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)', border: 'none', borderBottom: '2px solid var(--accent)', outline: 'none', background: 'var(--bg)', borderRadius: 'var(--radius) var(--radius) 0 0' }} />
             </div>
-            <div style={{ padding: '16px 0', fontSize: 24, fontFamily: 'IBM Plex Mono, monospace', borderBottom: '2px solid var(--border)' }}>
+            <div style={{ padding: '16px 0', fontSize: 24, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)', borderBottom: '2px solid var(--border)' }}>
               {result}
             </div>
           </div>
@@ -124,7 +124,7 @@ export default function UnitConverter() {
             <span style={{ fontSize: 14, color: 'var(--muted)' }}>
               1 {category.units.find(u => u.id === fromUnit)?.symbol} = {calculate("1")} {category.units.find(u => u.id === toUnit)?.symbol}
             </span>
-            <button onClick={toggleFavorite} style={{ padding: '6px 12px', background: 'none', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: 13, cursor: 'pointer' }}>
+            <button onClick={toggleFavorite} aria-label={favorites.includes(`${activeCategory}:${fromUnit}:${toUnit}`) ? "Unpin conversion" : "Pin conversion"} style={{ padding: '6px 12px', background: 'none', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: 13, cursor: 'pointer', color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>
               {favorites.includes(`${activeCategory}:${fromUnit}:${toUnit}`) ? "★ Pinned" : "☆ Pin"}
             </button>
           </div>

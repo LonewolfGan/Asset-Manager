@@ -1,0 +1,167 @@
+# REPLIT AGENT PROMPT — Design Audit & Consistency Fix
+
+You are performing a complete design audit on this web application. Your goal is to find and fix every visual inconsistency, accessibility error, and broken styling — without changing the overall design direction or color system. Do not redesign anything. Fix only what is broken or inconsistent.
+
+---
+
+## 1. DOUBLE BORDERS & BORDER STACKING
+
+Scan every component for unintentional double borders:
+
+- Elements that have both a `border` and an `outline` visible at the same time unintentionally
+- Cards inside containers where both the card and the wrapper have borders, creating a double-line effect
+- Input fields that show a browser default border AND a custom border simultaneously
+- Buttons with both a `border` property and a `box-shadow` that looks like a border
+- Table cells in bordered tables where adjacent `border` values stack visually
+- Fix: keep only one border source per element. Use `border: none` to reset before applying custom borders. On inputs, always add `outline: none` and control focus state manually.
+
+---
+
+## 2. DARK MODE / LIGHT MODE — BROKEN ELEMENTS
+
+Audit every component in both dark and light mode (if the site supports theme switching) or audit all color values globally:
+
+- Any element using hardcoded `color: white` or `color: #fff` that becomes invisible on a light background
+- Any element using hardcoded `color: black` or `color: #000` or `color: #0e0e0f` that becomes invisible on a dark background
+- Background colors hardcoded as `white` or `#ffffff` that break dark mode
+- `background: white` on modals, tooltips, dropdowns, or overlays that don't adapt to the theme
+- Placeholder text in inputs that's invisible (e.g. `color: white` placeholder on white background)
+- SVG icons with hardcoded `fill` or `stroke` colors that don't adapt to the theme
+- `border-color` values that are invisible in one of the modes
+- Fix: replace all hardcoded color values with CSS variables already defined in `:root`. Never use raw color names (white, black) — always use variables.
+
+---
+
+## 3. INVISIBLE OR LOW-CONTRAST TEXT
+
+Run a contrast audit on every text element:
+
+- Body text must have a contrast ratio of at least **4.5:1** against its background (WCAG AA)
+- Large text (18px+ or 14px+ bold) must have at least **3:1** contrast
+- Placeholder text must be at least **3:1**
+- Disabled state text must still be readable (at least **2:1**, never fully invisible)
+- Muted/secondary text (like `color: var(--muted)`) — check it's not below 3:1 on the actual background it sits on
+- Text on colored badges, tags, or pills — check the text color against the badge background
+- Text on gradient backgrounds — check contrast at the lightest AND darkest point of the gradient
+- Icon-only buttons must have an `aria-label` or `title` attribute
+- Fix: adjust color values to pass contrast. Do not change the color system, just lighten or darken the specific value until it passes.
+
+---
+
+## 4. SHADOWS — BROKEN OR INCONSISTENT
+
+Audit all `box-shadow` and `text-shadow` usage:
+
+- Shadows that are too intense and look wrong in dark mode (e.g. a dark shadow on a dark card)
+- Shadows using hardcoded dark colors (`box-shadow: 0 4px 12px rgba(0,0,0,0.5)`) that disappear entirely in dark mode
+- Shadows used as fake borders that stack with real borders
+- Multiple shadows on the same element from different CSS rules (specificity conflicts)
+- Elements with `box-shadow` on hover that flash or jump due to layout shift
+- Text shadows on body text (almost always a mistake — remove unless intentional display type)
+- Fix: standardize shadows with a set of 3 levels using CSS variables: `--shadow-sm`, `--shadow-md`, `--shadow-lg`. Use `rgba` with low opacity. In dark mode, reduce shadow opacity or use a glow-style shadow with the accent color instead.
+
+---
+
+## 5. FOCUS STATES & ACCESSIBILITY
+
+- Every interactive element (button, link, input, select, checkbox) must have a visible focus ring
+- No `outline: none` without a replacement focus style
+- Focus ring must have at least 3:1 contrast against the surrounding background
+- Keyboard navigation must work in logical order (check `tabindex` is not misused)
+- All images must have an `alt` attribute (empty `alt=""` is acceptable for decorative images)
+- All form inputs must have an associated `<label>` or `aria-label`
+- Buttons that only contain an icon must have `aria-label`
+- Color must not be the only way to convey information (e.g. error state must show icon + text, not just red color)
+- Fix each issue found. Add `aria-label` where missing. Implement custom focus styles using `outline` or `box-shadow` with the accent color.
+
+---
+
+## 6. SPACING & ALIGNMENT INCONSISTENCIES
+
+- Find all places where similar components have different padding values (e.g. some cards have `padding: 1.5rem`, others `padding: 24px`, others `padding: 20px`)
+- Find text that is not aligned with its container (off-center labels, icons misaligned with text)
+- Find components where icon size is inconsistent (some 16px, some 20px, some 1.2rem — pick one unit and standardize)
+- Margins that collapse unexpectedly (margin-top on first child inside a flex container)
+- Fix: define spacing tokens as CSS variables — `--space-xs`, `--space-sm`, `--space-md`, `--space-lg`, `--space-xl`. Replace magic numbers throughout.
+
+---
+
+## 7. COMPONENT CONSISTENCY AUDIT
+
+For each repeated component type, verify it is visually identical everywhere it appears:
+
+**Buttons**
+- Primary button: same height, padding, font-size, border-radius everywhere
+- Ghost/secondary button: same style everywhere
+- Danger button: consistent red variant
+- No button has both a border AND a shadow that looks like a border
+
+**Cards**
+- All tool cards have same border-radius (or none — be consistent), same padding, same hover behavior
+- No card shows a double border from parent + self
+- Card hover states are consistent (same transition duration, same effect)
+
+**Inputs & Form Fields**
+- Same height, same padding, same border color everywhere
+- Focus state is consistent across all inputs, textareas, selects
+- Error state is consistent
+
+**Badges / Tags / Pills**
+- Same padding, same font-size, same border-radius everywhere
+- Text is always legible (see contrast check above)
+
+**Modals / Drawers / Dropdowns**
+- All use the same background color variable
+- All have consistent border and shadow
+- Close button is always in the same position
+- Overlay backdrop is consistent
+
+---
+
+## 8. TYPOGRAPHY CONSISTENCY
+
+- Only 2 font families should be used (display/heading font + body/mono font). Flag any third font appearing.
+- Font sizes must follow a consistent scale — flag any size that is not part of the defined scale
+- Line-height must be consistent per text role: headings ~1.1, body ~1.6, captions ~1.4
+- Letter-spacing must be consistent per text role
+- No `font-weight` value outside the loaded font weights (prevents FAUX bold)
+- `<h1>` through `<h6>` must decrease consistently in size
+- Fix all deviations.
+
+---
+
+## 9. RESPONSIVE ISSUES
+
+- Check every component at 375px (mobile), 768px (tablet), 1280px (desktop)
+- Text that overflows its container on mobile
+- Buttons that are too small to tap (minimum 44x44px touch target)
+- Horizontal scroll triggered by any element
+- Grid or flex layouts that break below a certain width
+- Images or SVGs that overflow their bounds
+- Fix with appropriate `@media` queries. Do not use fixed pixel widths on text containers.
+
+---
+
+## 10. Z-INDEX CONFLICTS
+
+- Modals, dropdowns, tooltips, notifications — audit their `z-index` values
+- Any element that appears behind another it should be in front of
+- Sticky headers that get covered by content when scrolling
+- Fix: create a z-index scale as CSS variables — `--z-base: 1`, `--z-dropdown: 100`, `--z-sticky: 200`, `--z-modal: 300`, `--z-toast: 400`.
+
+---
+
+## OUTPUT FORMAT
+
+For every issue found, fix it directly in the code. Then generate a report in this format:
+
+```
+CATEGORY | ELEMENT | ISSUE | FIX APPLIED
+---
+Borders  | .tool-card inside .grid-wrapper | Double border: card has border-1px + wrapper has border-1px | Removed border from wrapper
+Contrast | .tool-desc muted text | #6b6b70 on #161618 = 3.1:1 ratio, fails AA for small text | Changed to #8a8a90 = 4.6:1
+Dark mode | .modal-overlay | background: white hardcoded | Changed to var(--surface)
+Shadow   | .btn-primary:hover | box-shadow looks like extra border on top of existing border | Changed to offset shadow only
+```
+
+List every single fix. Do not group or summarize — list each fix individually.
