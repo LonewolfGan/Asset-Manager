@@ -5,7 +5,7 @@ type Theme = 'dark' | 'light';
 export function useTheme() {
   const [theme, setThemeState] = useState<Theme>(() => {
     try {
-      return (localStorage.getItem('et-theme') as Theme) ?? 'dark';
+      return (localStorage.getItem('et-theme') as Theme) ?? 'light';
     } catch {
       return 'dark';
     }

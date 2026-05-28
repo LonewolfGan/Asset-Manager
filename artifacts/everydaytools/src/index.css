@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:is([data-theme="dark"] *));
 
 @theme inline {
   --color-background: hsl(var(--background));
@@ -36,45 +36,54 @@
   --font-sans: var(--font-ui);
   --font-serif: var(--font-display);
   --font-mono: var(--font-mono);
-  --radius-sm: 2px;
-  --radius-md: 4px;
-  --radius-lg: 4px;
-  --radius-xl: 4px;
+  --radius-sm: 6px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 18px;
 }
 
-/* ─── DARK THEME (default) ─── */
+/* ─── LIGHT THEME (default) ─── */
 :root {
   /* Semantic color tokens */
-  --bg-base:        #08090a;
-  --bg-surface:     #111116;
-  --bg-elevated:    #1a1a20;
-  --bg-hover:       #222228;
+  --bg-base:        #F7F7F5;
+  --bg-surface:     #FFFFFF;
+  --bg-elevated:    #F0F0EE;
+  --bg-hover:       #EBEBEA;
   --bg-subtle:      var(--bg-hover);
-  --border:         rgba(255,255,255,0.10);
-  --border-strong:  rgba(255,255,255,0.18);
-  --text-primary:   #f4f4f5;
-  --text-secondary: #a1a1aa;
-  --text-tertiary:  #71717a;
-  --accent:         #7C3AED;
-  --accent-subtle:  rgba(124, 58, 237, 0.14);
+  --border:         #E7E7E7;
+  --border-strong:  #CFCFCF;
+  --text-primary:   #111111;
+  --text-secondary: #666666;
+  --text-tertiary:  #999999;
+  --accent:         #FF6B35;
+  --accent-hover:   #E85A24;
+  --accent-subtle:  rgba(255, 107, 53, 0.10);
   --accent-text:    #FFFFFF;
-  --danger:         #FF4444;
-  --success:        #22C55E;
-  --warning:        #F59E0B;
+  --danger:         #DC2626;
+  --success:        #16A34A;
+  --warning:        #D97706;
+
+  /* Radius */
+  --radius:         8px;
+  --radius-btn:     14px;
+  --radius-card:    18px;
+  --radius-input:   14px;
+
+  /* Shadows */
+  --shadow-sm:      0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:      0 4px 12px rgba(0,0,0,0.06);
+  --shadow-card:    0 1px 2px rgba(0,0,0,0.04);
+  --shadow-hover:   0 4px 12px rgba(0,0,0,0.06);
 
   /* Backward-compat aliases */
   --bg:       var(--bg-base);
   --surface:  var(--bg-surface);
   --text:     var(--text-primary);
   --muted:    var(--text-secondary);
-  --radius:   4px;
-  --shadow-sm: none;
-  --shadow-md: none;
-  --shadow-card: inset 2px 4px 16px 0px rgba(248,248,248,0.06);
 
   /* Font families */
-  --font-display: 'Fraunces', Georgia, serif;
-  --font-ui:      'Geist', system-ui, -apple-system, sans-serif;
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-ui:      'Inter', system-ui, -apple-system, sans-serif;
   --font-mono:    'Geist Mono', 'Courier New', monospace;
 
   /* Font scale */
@@ -91,13 +100,77 @@
   /* Spacing scale */
   --content-narrow: 640px;
   --content-mid:    800px;
-  --content-wide:   1100px;
+  --content-wide:   1200px;
   --content-full:   1400px;
 
-  /* Tailwind HSL slots (kept for Radix/shadcn compat) */
+  /* Tailwind HSL slots */
+  --background:  40 5% 97%;
+  --foreground:  0 0% 7%;
+  --primary:     16 100% 60%;
+  --primary-foreground: 0 0% 100%;
+  --card:        0 0% 100%;
+  --card-foreground: 0 0% 7%;
+  --border-hsl:  0 0% 91%;
+  --input:       0 0% 91%;
+  --muted-tw:    40 5% 94%;
+  --muted-foreground: 0 0% 40%;
+  --accent-tw:   16 100% 60%;
+  --accent-foreground: 0 0% 100%;
+  --secondary:   40 5% 94%;
+  --secondary-foreground: 0 0% 7%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 100%;
+  --ring:        16 100% 60%;
+  --popover:     0 0% 100%;
+  --popover-foreground: 0 0% 7%;
+  --sidebar:     0 0% 100%;
+  --sidebar-foreground: 0 0% 7%;
+  --sidebar-border: 0 0% 91%;
+  --sidebar-primary: 16 100% 60%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 40 5% 94%;
+  --sidebar-accent-foreground: 0 0% 7%;
+  --sidebar-ring: 16 100% 60%;
+}
+
+/* ─── DARK THEME ─── */
+[data-theme="dark"] {
+  --bg-base:        #08090a;
+  --bg-surface:     #111116;
+  --bg-elevated:    #1a1a20;
+  --bg-hover:       #222228;
+  --bg-subtle:      var(--bg-hover);
+  --border:         rgba(255,255,255,0.10);
+  --border-strong:  rgba(255,255,255,0.18);
+  --text-primary:   #f4f4f5;
+  --text-secondary: #a1a1aa;
+  --text-tertiary:  #71717a;
+  --accent:         #FF6B35;
+  --accent-hover:   #FF8255;
+  --accent-subtle:  rgba(255, 107, 53, 0.14);
+  --accent-text:    #FFFFFF;
+  --danger:         #FF4444;
+  --success:        #22C55E;
+  --warning:        #F59E0B;
+
+  --radius:         8px;
+  --radius-btn:     14px;
+  --radius-card:    18px;
+  --radius-input:   14px;
+
+  --shadow-sm:      none;
+  --shadow-md:      none;
+  --shadow-card:    inset 2px 4px 16px 0px rgba(248,248,248,0.04);
+  --shadow-hover:   0 4px 16px rgba(0,0,0,0.4);
+
+  --bg:       var(--bg-base);
+  --surface:  var(--bg-surface);
+  --text:     var(--text-primary);
+  --muted:    var(--text-secondary);
+
   --background: 240 3% 7%;
   --foreground: 0 0% 94%;
-  --primary: 268 76% 58%;
+  --primary: 16 100% 60%;
   --primary-foreground: 0 0% 100%;
   --card: 240 3% 10%;
   --card-foreground: 0 0% 94%;
@@ -105,75 +178,23 @@
   --input: 240 4% 18%;
   --muted-tw: 240 3% 14%;
   --muted-foreground: 240 3% 55%;
-  --accent-tw: 268 76% 58%;
+  --accent-tw: 16 100% 60%;
   --accent-foreground: 0 0% 100%;
   --secondary: 240 3% 14%;
   --secondary-foreground: 0 0% 94%;
   --destructive: 0 100% 63%;
   --destructive-foreground: 0 0% 100%;
-  --ring: 268 76% 58%;
+  --ring: 16 100% 60%;
   --popover: 240 3% 10%;
   --popover-foreground: 0 0% 94%;
   --sidebar: 240 3% 10%;
   --sidebar-foreground: 0 0% 94%;
   --sidebar-border: 240 4% 18%;
-  --sidebar-primary: 268 76% 58%;
+  --sidebar-primary: 16 100% 60%;
   --sidebar-primary-foreground: 0 0% 100%;
   --sidebar-accent: 240 3% 14%;
   --sidebar-accent-foreground: 0 0% 94%;
-  --sidebar-ring: 268 76% 58%;
-}
-
-/* ─── LIGHT THEME ─── */
-[data-theme="light"] {
-  --bg-base:        #F8F8F8;
-  --bg-surface:     #FFFFFF;
-  --bg-elevated:    #F0F0F0;
-  --bg-hover:       #E8E8E8;
-  --bg-subtle:      var(--bg-hover);
-  --border:         #E0E0E0;
-  --border-strong:  #C8C8C8;
-  --text-primary:   #0A0A0A;
-  --text-secondary: #666666;
-  --text-tertiary:  #999999;
-  --accent:         #6D28D9;
-  --accent-subtle:  rgba(109, 40, 217, 0.10);
-  --accent-text:    #FFFFFF;
-  --danger:         #CC2200;
-  --success:        #15803D;
-
-  --bg:      var(--bg-base);
-  --surface: var(--bg-surface);
-  --text:    var(--text-primary);
-  --muted:   var(--text-secondary);
-
-  --background: 0 0% 98%;
-  --foreground: 0 0% 4%;
-  --primary: 263 70% 50%;
-  --primary-foreground: 0 0% 100%;
-  --card: 0 0% 100%;
-  --card-foreground: 0 0% 4%;
-  --border-hsl: 0 0% 89%;
-  --input: 0 0% 89%;
-  --muted-tw: 0 0% 96%;
-  --muted-foreground: 0 0% 40%;
-  --accent-tw: 263 70% 50%;
-  --accent-foreground: 0 0% 100%;
-  --secondary: 0 0% 96%;
-  --secondary-foreground: 0 0% 4%;
-  --destructive: 7 100% 40%;
-  --destructive-foreground: 0 0% 100%;
-  --ring: 263 70% 50%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 4%;
-  --sidebar: 0 0% 98%;
-  --sidebar-foreground: 0 0% 4%;
-  --sidebar-border: 0 0% 89%;
-  --sidebar-primary: 263 70% 50%;
-  --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 0 0% 96%;
-  --sidebar-accent-foreground: 0 0% 4%;
-  --sidebar-ring: 263 70% 50%;
+  --sidebar-ring: 16 100% 60%;
 }
 
 /* ─── BASE ─── */
@@ -199,10 +220,15 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    font-weight: 400;
-    letter-spacing: -0.03em;
+    font-weight: 700;
+    letter-spacing: -0.02em;
     color: var(--text-primary);
+    line-height: 1.2;
   }
+
+  h1 { font-size: 3rem; }
+  h2 { font-size: 2.25rem; }
+  h3 { font-size: 1.75rem; }
 
   a {
     color: inherit;
@@ -288,7 +314,7 @@ input:focus-visible {
 /* ─── SKELETON LOADING ─── */
 .skeleton {
   background: var(--bg-subtle);
-  border-radius: 2px;
+  border-radius: 6px;
   animation: skeleton-pulse 1.2s ease infinite;
 }
 @keyframes skeleton-pulse {

@@ -1,0 +1,366 @@
+# DESIGN SYSTEM
+
+Create a complete reusable design system for the entire website.
+This design system must be applied consistently across ALL pages and ALL tools.
+
+The website is a lightweight utility platform for:
+- PDF tools
+- File conversion
+- Compression
+- Image tools
+- Misc utilities
+
+The design should feel:
+- minimal
+- modern
+- handcrafted
+- fast
+- trustworthy
+- functional
+
+Avoid any “AI generated SaaS” appearance.
+
+--------------------------------------------------
+CORE DESIGN PRINCIPLES
+--------------------------------------------------
+
+- Utility-first aesthetic
+- Simple and clean interfaces
+- Fast visual hierarchy
+- Large whitespace
+- Consistent spacing
+- Minimal visual noise
+- Functional before decorative
+- Human-designed feel
+
+The UI should resemble:
+- Notion simplicity
+- Linear cleanliness
+- Old Dropbox utility feel
+- Developer tool interfaces
+
+--------------------------------------------------
+COLOR SYSTEM
+--------------------------------------------------
+
+Background:
+#F7F7F5
+
+Surface:
+#FFFFFF
+
+Primary Text:
+#111111
+
+Secondary Text:
+#666666
+
+Borders:
+#E7E7E7
+
+Primary Accent:
+#FF6B35
+
+Primary Hover:
+#E85A24
+
+Success:
+#16A34A
+
+Warning:
+#D97706
+
+Error:
+#DC2626
+
+--------------------------------------------------
+TYPOGRAPHY
+--------------------------------------------------
+
+Headings:
+Space Grotesk
+
+Body:
+Inter
+
+Rules:
+- Large readable headings
+- Clean body text
+- Medium font weights
+- Comfortable line-height
+- Avoid excessive font variation
+
+Typography scale:
+
+H1:
+48px
+700 weight
+
+H2:
+36px
+700 weight
+
+H3:
+28px
+600 weight
+
+Body Large:
+18px
+
+Body:
+16px
+
+Small:
+14px
+
+Caption:
+12px
+
+--------------------------------------------------
+SPACING SYSTEM
+--------------------------------------------------
+
+Base spacing unit:
+8px
+
+Spacing scale:
+4px
+8px
+12px
+16px
+24px
+32px
+48px
+64px
+
+Use generous whitespace.
+
+--------------------------------------------------
+BORDER RADIUS
+--------------------------------------------------
+
+Buttons:
+14px
+
+Cards:
+18px
+
+Upload zones:
+18px
+
+Inputs:
+14px
+
+--------------------------------------------------
+BORDERS
+--------------------------------------------------
+
+Use subtle thin borders:
+1px solid #E7E7E7
+
+Avoid heavy outlines.
+
+--------------------------------------------------
+SHADOWS
+--------------------------------------------------
+
+Minimal shadows only.
+
+Card shadow:
+0 1px 2px rgba(0,0,0,0.04)
+
+Hover shadow:
+0 4px 12px rgba(0,0,0,0.06)
+
+Avoid dramatic floating effects.
+
+--------------------------------------------------
+BUTTON SYSTEM
+--------------------------------------------------
+
+PRIMARY BUTTON:
+- Background: #FF6B35
+- Text: white
+- Hover: #E85A24
+- Rounded corners
+- Medium font weight
+- Smooth transition
+
+SECONDARY BUTTON:
+- White background
+- Thin border
+- Dark text
+
+GHOST BUTTON:
+- Transparent
+- Subtle hover background
+
+--------------------------------------------------
+CARD SYSTEM
+--------------------------------------------------
+
+Cards should:
+- Use white surfaces
+- Thin borders
+- Minimal shadows
+- Clean padding
+- Soft hover lift
+
+Hover effect:
+translateY(-2px)
+
+Cards must feel practical and lightweight.
+
+--------------------------------------------------
+INPUT SYSTEM
+--------------------------------------------------
+
+Inputs should:
+- Have soft borders
+- Minimal styling
+- Large padding
+- Clear focus state
+
+Focus:
+border-color: #FF6B35
+
+--------------------------------------------------
+UPLOAD ZONES
+--------------------------------------------------
+
+Upload areas are a key design component.
+
+Style:
+- Dashed border
+- Soft neutral background
+- Large centered icon
+- Clear instructions
+- Minimal appearance
+
+Hover:
+- Slight border accent
+- Slight background change
+
+--------------------------------------------------
+ICONOGRAPHY
+--------------------------------------------------
+
+Use Lucide icons only.
+
+Icons should be:
+- Outline style
+- Thin
+- Consistent stroke width
+- Minimalistic
+
+--------------------------------------------------
+ANIMATION SYSTEM
+--------------------------------------------------
+
+Animations must be subtle.
+
+Allowed:
+- Soft hover transitions
+- Small translate effects
+- Fade-in transitions
+- Smooth background transitions
+
+Duration:
+150ms–250ms
+
+Avoid:
+- flashy animations
+- parallax
+- floating blobs
+- exaggerated motion
+
+--------------------------------------------------
+LAYOUT SYSTEM
+--------------------------------------------------
+
+Use clean grid layouts.
+
+Container width:
+1200px max
+
+Content padding:
+24px desktop
+16px mobile
+
+Section spacing:
+64px vertical
+
+--------------------------------------------------
+NAVBAR STYLE
+--------------------------------------------------
+
+Navbar:
+- Sticky top
+- White background
+- Thin bottom border
+- Compact height
+- Minimal design
+
+Include:
+- Logo
+- Search
+- Tool categories
+
+No marketing CTA buttons.
+
+--------------------------------------------------
+TOOL CARD DESIGN
+--------------------------------------------------
+
+Tool cards should include:
+- Minimal icon
+- Tool name
+- Small description
+
+Style:
+- Border-only aesthetic
+- Clean hover
+- Organized spacing
+
+--------------------------------------------------
+SEARCH DESIGN
+--------------------------------------------------
+
+Search bar should feel central to the experience.
+
+Style:
+- Rounded
+- Large padding
+- Soft border
+- Minimal look
+
+--------------------------------------------------
+MOBILE DESIGN
+--------------------------------------------------
+
+Mobile UI must remain:
+- lightweight
+- fast
+- uncluttered
+- touch-friendly
+
+Use:
+- stacked layouts
+- larger touch areas
+- simplified spacing
+
+--------------------------------------------------
+IMPORTANT
+--------------------------------------------------
+
+The final result must NOT feel like:
+- a startup landing page
+- an AI SaaS template
+- a crypto dashboard
+- a futuristic AI product
+
+The final result SHOULD feel like:
+- a polished utility website
+- a real product people trust
+- a fast practical tool platform
+- a handcrafted modern web app

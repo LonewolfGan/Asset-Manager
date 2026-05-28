@@ -45,8 +45,9 @@ export default function ResultPanel({ filename, sizeBefore, sizeAfter, blob, tex
     <div style={{
       marginTop: 24,
       border: '1px solid var(--border)',
-      borderRadius: 8,
+      borderRadius: 'var(--radius-card)',
       overflow: 'hidden',
+      boxShadow: 'var(--shadow-card)',
     }}>
       {/* Header bar */}
       <div style={{
@@ -138,12 +139,15 @@ export default function ResultPanel({ filename, sizeBefore, sizeAfter, blob, tex
             background: 'var(--accent)',
             color: 'var(--accent-text)',
             border: 'none',
-            borderRadius: 4,
+            borderRadius: 'var(--radius-btn)',
             fontFamily: 'var(--font-ui)',
             fontSize: 'var(--text-sm)',
             fontWeight: 500,
             cursor: 'pointer',
+            transition: 'background 150ms ease',
           }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--accent-hover)'; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--accent)'; }}
         >
           <Download size={14} />
           Download {filename.split('.').pop()?.toUpperCase()}
@@ -180,15 +184,18 @@ export default function ResultPanel({ filename, sizeBefore, sizeAfter, blob, tex
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: 5,
-                  padding: '4px 10px',
+                  padding: '5px 12px',
                   background: 'none',
                   border: '1px solid var(--border)',
-                  borderRadius: 3,
+                  borderRadius: 10,
                   fontFamily: 'var(--font-ui)',
                   fontSize: 'var(--text-xs)',
                   color: 'var(--text-secondary)',
                   cursor: 'pointer',
+                  transition: 'border-color 150ms ease, color 150ms ease',
                 }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; (e.currentTarget as HTMLElement).style.color = 'var(--accent)'; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)'; }}
               >
                 <Copy size={11} />
                 {copied ? 'Copied' : 'Copy all'}
@@ -199,15 +206,18 @@ export default function ResultPanel({ filename, sizeBefore, sizeAfter, blob, tex
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: 5,
-                  padding: '4px 10px',
+                  padding: '5px 12px',
                   background: 'none',
                   border: '1px solid var(--border)',
-                  borderRadius: 3,
+                  borderRadius: 10,
                   fontFamily: 'var(--font-ui)',
                   fontSize: 'var(--text-xs)',
                   color: 'var(--text-secondary)',
                   cursor: 'pointer',
+                  transition: 'border-color 150ms ease, color 150ms ease',
                 }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; (e.currentTarget as HTMLElement).style.color = 'var(--accent)'; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)'; }}
               >
                 <Download size={11} />
                 .txt

@@ -55,11 +55,12 @@ function ToolCard({ tool }: { tool: DashTool }) {
         style={{
           width: "100%",
           padding: 14,
-          borderRadius: 8,
+          borderRadius: 'var(--radius-card)',
           border: "1px solid var(--border)",
           background: "var(--bg-surface)",
           cursor: "pointer",
-          transition: "border-color 120ms ease, box-shadow 120ms ease, transform 120ms ease",
+          transition: "border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease",
+          boxShadow: "var(--shadow-card)",
           fontFamily: "var(--font-ui)",
         }}
         onMouseEnter={(e) => {

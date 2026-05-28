@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { X } from 'lucide-react';
+import { X, Upload } from 'lucide-react';
 
 interface FileUploadProps {
   accept: string[];
@@ -65,22 +65,37 @@ export default function FileUpload({ accept, maxSizeMB, multiple = false, onFile
         onDrop={handleDrop}
         onClick={() => inputRef.current?.click()}
         style={{
-          border: `2px dashed ${dragActive ? 'var(--accent)' : 'var(--border-strong)'}`,
-          borderRadius: 8,
-          background: dragActive ? 'var(--bg-hover)' : 'var(--bg-surface)',
-          padding: '48px 24px',
+          border: `1.5px dashed ${dragActive ? 'var(--accent)' : 'var(--border-strong)'}`,
+          borderRadius: 'var(--radius-card)',
+          background: dragActive ? 'var(--accent-subtle)' : 'var(--bg-surface)',
+          padding: '56px 24px',
           textAlign: 'center',
           cursor: 'pointer',
-          transition: 'border-color 120ms ease, background 120ms ease',
+          transition: 'border-color 200ms ease, background 200ms ease',
+          boxShadow: dragActive ? 'none' : 'var(--shadow-card)',
         }}
       >
         <input ref={inputRef} type="file" style={{ display: 'none' }} accept={accept.join(',')} multiple={multiple} onChange={handleChange} />
-        <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', margin: '0 0 4px' }}>
-          Drop file here or click to browse
-        </p>
-        <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', margin: 0 }}>
-          {accept.join(', ')} · max {maxSizeMB} MB
-        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+          <div style={{
+            width: 44, height: 44, borderRadius: 12,
+            background: dragActive ? 'var(--accent-subtle)' : 'var(--bg-elevated)',
+            border: '1px solid var(--border)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: dragActive ? 'var(--accent)' : 'var(--text-tertiary)',
+            transition: 'background 200ms ease, color 200ms ease, border-color 200ms ease',
+          }}>
+            <Upload size={20} strokeWidth={1.5} />
+          </div>
+          <div>
+            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-primary)', margin: '0 0 4px' }}>
+              Drop file here or <span style={{ color: 'var(--accent)', textDecoration: 'underline', textDecorationStyle: 'dotted' }}>browse</span>
+            </p>
+            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', margin: 0 }}>
+              {accept.join(', ')} &middot; max {maxSizeMB} MB
+            </p>
+          </div>
+        </div>
       </div>
 
       {error && (
@@ -88,17 +103,22 @@ export default function FileUpload({ accept, maxSizeMB, multiple = false, onFile
       )}
 
       {selectedFiles.length > 0 && (
-        <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 6 }}>
           {selectedFiles.map((file, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--bg-surface)', border: '1px solid var(--border)', padding: '8px 12px', gap: 12 }}>
+            <div key={i} style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              background: 'var(--bg-surface)', border: '1px solid var(--border)',
+              borderRadius: 10, padding: '10px 14px', gap: 12,
+              boxShadow: 'var(--shadow-sm)',
+            }}>
               <div style={{ flex: 1, overflow: 'hidden' }}>
-                <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{file.name}</p>
+                <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-primary)', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{file.name}</p>
                 <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', margin: '2px 0 0' }}>{(file.size / 1024 / 1024).toFixed(2)} MB</p>
               </div>
               <button
                 onClick={(e) => { e.stopPropagation(); removeFile(i); }}
                 aria-label="Remove file"
-                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: 'var(--text-tertiary)', display: 'flex', alignItems: 'center', flexShrink: 0, transition: 'color 120ms ease' }}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: 'var(--text-tertiary)', display: 'flex', alignItems: 'center', flexShrink: 0, transition: 'color 150ms ease' }}
                 onMouseEnter={(e) => (e.currentTarget as HTMLElement).style.color = 'var(--danger)'}
                 onMouseLeave={(e) => (e.currentTarget as HTMLElement).style.color = 'var(--text-tertiary)'}
               >
