@@ -5,6 +5,10 @@ export type Translations = {
     groups: { documents: string; images: string; tools: string };
     links: Record<string, string>;
     searchPlaceholder: string;
+    breadcrumb: {
+      home: string; pdf: string; word: string; image: string;
+      privacy: string; calculators: string; tools: string;
+    };
   };
   home: {
     title: string;
@@ -44,11 +48,34 @@ export type Translations = {
     essentialOnly: string;
     acceptAll: string;
   };
+  tipCalc: {
+    tabTip: string; tabPercent: string;
+    billAmount: string; tipPct: string; numPeople: string;
+    bill: string; tip: (pct: number) => string; total: string;
+    tipPerPerson: string; totalPerPerson: string;
+    pctOf: string; whatIs: string; isWhatPctOf: string;
+    pctChange: string; pctChangeFrom: string; pctChangeTo: string;
+  };
+  pctCalc: {
+    tabs: { of: string; isWhat: string; change: string; discount: string; tip: string; markup: string };
+    labels: {
+      whatIsPct: string; ofY: string; xIsWhat: string; changeFrom: string; changeTo: string;
+      discountPct: string; origPrice: string; tipPct: string; billAmount: string;
+      splitBetween: string; marginPct: string; cost: string;
+    };
+    result: string; increase: string; decrease: string;
+    finalPrice: string; saved: string; tipLabel: string;
+    perPerson: string; sellingPrice: string; markupLabel: string;
+  };
 };
 
 const EN: Translations = {
   nav: {
     searchPlaceholder: "Search tools...",
+    breadcrumb: {
+      home: "Home", pdf: "PDF Tools", word: "Word Tools", image: "Image Tools",
+      privacy: "Privacy Tools", calculators: "Calculators", tools: "Tools",
+    },
     groups: {
       documents: "Convert Documents",
       images: "Convert Images",
@@ -189,11 +216,34 @@ const EN: Translations = {
     essentialOnly: "Essential only",
     acceptAll: "Accept all",
   },
+  tipCalc: {
+    tabTip: "Tip Calculator", tabPercent: "Percentages",
+    billAmount: "Bill Amount", tipPct: "Tip Percentage", numPeople: "Number of People",
+    bill: "Bill", tip: (pct) => `Tip (${pct}%)`, total: "Total",
+    tipPerPerson: "Tip / person", totalPerPerson: "Total / person",
+    pctOf: "What is X% of Y?", whatIs: "What is", isWhatPctOf: "is what % of",
+    pctChange: "% change from X to Y", pctChangeFrom: "% change from", pctChangeTo: "to",
+  },
+  pctCalc: {
+    tabs: { of: "X % of Y", isWhat: "X is what % of Y", change: "Percentage Change", discount: "Discount", tip: "Tip & Split", markup: "Markup / Margin" },
+    labels: {
+      whatIsPct: "What is (X)%", ofY: "of (Y)", xIsWhat: "(X) is what percent", changeFrom: "Change from (X)", changeTo: "to (Y)",
+      discountPct: "Discount % (X)", origPrice: "Original Price (Y)", tipPct: "Tip % (X)", billAmount: "Bill Amount (Y)",
+      splitBetween: "Split between (People)", marginPct: "Margin % (X)", cost: "Cost (Y)",
+    },
+    result: "Result", increase: "Increase", decrease: "Decrease",
+    finalPrice: "Final", saved: "Saved", tipLabel: "Tip",
+    perPerson: "Per Person", sellingPrice: "Selling Price", markupLabel: "Markup",
+  },
 };
 
 const FR: Translations = {
   nav: {
     searchPlaceholder: "Rechercher des outils...",
+    breadcrumb: {
+      home: "Accueil", pdf: "Outils PDF", word: "Outils Word", image: "Outils Image",
+      privacy: "Outils Confidentialité", calculators: "Calculateurs", tools: "Outils",
+    },
     groups: {
       documents: "Convertir les Documents",
       images: "Convertir les Images",
@@ -333,6 +383,25 @@ const FR: Translations = {
     privacyPolicy: "Politique de confidentialité",
     essentialOnly: "Essentiel seulement",
     acceptAll: "Tout accepter",
+  },
+  tipCalc: {
+    tabTip: "Calculateur de Pourboire", tabPercent: "Pourcentages",
+    billAmount: "Montant de l'addition", tipPct: "Pourcentage de pourboire", numPeople: "Nombre de personnes",
+    bill: "Addition", tip: (pct) => `Pourboire (${pct}%)`, total: "Total",
+    tipPerPerson: "Pourboire / personne", totalPerPerson: "Total / personne",
+    pctOf: "Quel est X% de Y ?", whatIs: "Quel est", isWhatPctOf: "est quel % de",
+    pctChange: "% de variation de X à Y", pctChangeFrom: "% de variation de", pctChangeTo: "à",
+  },
+  pctCalc: {
+    tabs: { of: "X % de Y", isWhat: "X est quel % de Y", change: "Variation en %", discount: "Remise", tip: "Pourboire & Partage", markup: "Marge / Majoration" },
+    labels: {
+      whatIsPct: "Quel est (X)%", ofY: "de (Y)", xIsWhat: "(X) est quel pourcentage", changeFrom: "Variation de (X)", changeTo: "à (Y)",
+      discountPct: "Remise % (X)", origPrice: "Prix d'origine (Y)", tipPct: "Pourboire % (X)", billAmount: "Montant de l'addition (Y)",
+      splitBetween: "Partager entre (personnes)", marginPct: "Marge % (X)", cost: "Coût (Y)",
+    },
+    result: "Résultat", increase: "Augmentation", decrease: "Diminution",
+    finalPrice: "Final", saved: "Économisé", tipLabel: "Pourboire",
+    perPerson: "Par personne", sellingPrice: "Prix de vente", markupLabel: "Marge",
   },
 };
 
