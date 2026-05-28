@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { hasConsent, setConsent, resetConsent } from '@/lib/consent';
+import { useLocale } from '@/hooks/use-locale';
 
 export default function CookieBanner() {
+  const { t } = useLocale();
   const [visible, setVisible] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -19,15 +21,8 @@ export default function CookieBanner() {
 
   if (!mounted || !visible) return null;
 
-  const accept = () => {
-    setConsent(true, true);
-    setVisible(false);
-  };
-
-  const reject = () => {
-    setConsent(false, false);
-    setVisible(false);
-  };
+  const accept = () => { setConsent(true, true); setVisible(false); };
+  const reject = () => { setConsent(false, false); setVisible(false); };
 
   return (
     <div
@@ -35,9 +30,7 @@ export default function CookieBanner() {
       aria-label="Cookie preferences"
       style={{
         position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
+        bottom: 0, left: 0, right: 0,
         zIndex: 9999,
         background: 'var(--bg-surface)',
         borderTop: '1px solid var(--border)',
@@ -51,12 +44,11 @@ export default function CookieBanner() {
       }}
     >
       <p style={{ margin: 0, fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.55, maxWidth: 680 }}>
-        We use privacy-first analytics (no cookies, no personal data) and, with your consent, ads that help keep
-        all tools free. Your files are{' '}
-        <strong style={{ color: 'var(--text-primary)', fontWeight: 500 }}>never uploaded</strong> — everything
-        runs in your browser.{' '}
+        {t.cookie.message}{' '}
+        <strong style={{ color: 'var(--text-primary)', fontWeight: 500 }}>{t.cookie.neverUploaded}</strong>
+        {' — '}
         <a href="/privacy" style={{ color: 'var(--text-secondary)', textDecoration: 'underline' }}>
-          Privacy policy
+          {t.cookie.privacyPolicy}
         </a>
       </p>
       <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
@@ -75,7 +67,7 @@ export default function CookieBanner() {
             whiteSpace: 'nowrap',
           }}
         >
-          Essential only
+          {t.cookie.essentialOnly}
         </button>
         <button
           onClick={accept}
@@ -92,7 +84,7 @@ export default function CookieBanner() {
             whiteSpace: 'nowrap',
           }}
         >
-          Accept all
+          {t.cookie.acceptAll}
         </button>
       </div>
     </div>

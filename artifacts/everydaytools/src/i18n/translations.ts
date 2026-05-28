@@ -4,6 +4,7 @@ export type Translations = {
   nav: {
     groups: { documents: string; images: string; tools: string };
     links: Record<string, string>;
+    searchPlaceholder: string;
   };
   home: {
     title: string;
@@ -28,10 +29,26 @@ export type Translations = {
     darkMode: string;
     loading: string;
   };
+  footer: {
+    tagline: string;
+    rights: string;
+    privacyPolicy: string;
+    termsOfService: string;
+    cookiePreferences: string;
+    columns: { pdf: string; images: string; utilities: string };
+  };
+  cookie: {
+    message: string;
+    neverUploaded: string;
+    privacyPolicy: string;
+    essentialOnly: string;
+    acceptAll: string;
+  };
 };
 
 const EN: Translations = {
   nav: {
+    searchPlaceholder: "Search tools...",
     groups: {
       documents: "Convert Documents",
       images: "Convert Images",
@@ -156,10 +173,26 @@ const EN: Translations = {
     darkMode: "Dark mode",
     loading: "Loading…",
   },
+  footer: {
+    tagline: "A collection of browser-based tools for everyday file tasks. Fast, private, and free.",
+    rights: "All rights reserved.",
+    privacyPolicy: "Privacy Policy",
+    termsOfService: "Terms of Service",
+    cookiePreferences: "Cookie Preferences",
+    columns: { pdf: "PDF Tools", images: "Image Tools", utilities: "Utilities" },
+  },
+  cookie: {
+    message: "We use privacy-first analytics (no cookies, no personal data) and, with your consent, ads that help keep all tools free. Your files are",
+    neverUploaded: "never uploaded",
+    privacyPolicy: "Privacy policy",
+    essentialOnly: "Essential only",
+    acceptAll: "Accept all",
+  },
 };
 
 const FR: Translations = {
   nav: {
+    searchPlaceholder: "Rechercher des outils...",
     groups: {
       documents: "Convertir les Documents",
       images: "Convertir les Images",
@@ -283,6 +316,21 @@ const FR: Translations = {
     lightMode: "Mode clair",
     darkMode: "Mode sombre",
     loading: "Chargement…",
+  },
+  footer: {
+    tagline: "Une collection d'outils en ligne pour les tâches courantes. Rapide, privé et gratuit.",
+    rights: "Tous droits réservés.",
+    privacyPolicy: "Politique de confidentialité",
+    termsOfService: "Conditions d'utilisation",
+    cookiePreferences: "Préférences de cookies",
+    columns: { pdf: "Outils PDF", images: "Outils Image", utilities: "Utilitaires" },
+  },
+  cookie: {
+    message: "Nous utilisons des analyses respectueuses de la vie privée (sans cookies, sans données personnelles) et, avec votre consentement, des publicités qui aident à maintenir tous les outils gratuits. Vos fichiers ne sont",
+    neverUploaded: "jamais téléchargés",
+    privacyPolicy: "Politique de confidentialité",
+    essentialOnly: "Essentiel seulement",
+    acceptAll: "Tout accepter",
   },
 };
 

@@ -39,8 +39,10 @@ export default function UnitConverter() {
     const num = parseFloat(val);
     if (isNaN(num)) return "—";
     
-    const fromDef = category.units.find(u => u.id === fromUnit)!;
-    const toDef = category.units.find(u => u.id === toUnit)!;
+    const fromDef = category.units.find(u => u.id === fromUnit);
+    const toDef = category.units.find(u => u.id === toUnit);
+
+    if (!fromDef || !toDef) return "—";
     
     const baseValue = fromDef.toBase(num);
     const targetValue = toDef.fromBase(baseValue);

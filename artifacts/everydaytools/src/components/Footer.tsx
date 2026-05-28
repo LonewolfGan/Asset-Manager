@@ -1,42 +1,45 @@
 import { Link } from 'wouter';
+import { useLocale } from '@/hooks/use-locale';
 
-const TOOL_COLUMNS = [
+const TOOL_COLUMNS_KEYS = [
   {
-    heading: "PDF Tools",
+    key: "pdf" as const,
     links: [
-      { label: "PDF to Word", href: "/pdf-to-word" },
-      { label: "PDF to Text", href: "/pdf-to-text" },
-      { label: "Compress PDF", href: "/pdf-compress" },
-      { label: "Merge PDFs", href: "/pdf-merge" },
-      { label: "Split PDF", href: "/pdf-split" },
-      { label: "Protect PDF", href: "/pdf-protect" },
+      { slug: "pdf-to-word", href: "/pdf-to-word" },
+      { slug: "pdf-to-text", href: "/pdf-to-text" },
+      { slug: "pdf-compress", href: "/pdf-compress" },
+      { slug: "pdf-merge", href: "/pdf-merge" },
+      { slug: "pdf-split", href: "/pdf-split" },
+      { slug: "pdf-protect", href: "/pdf-protect" },
     ],
   },
   {
-    heading: "Image Tools",
+    key: "images" as const,
     links: [
-      { label: "Image Converter", href: "/image-converter" },
-      { label: "Background Remover", href: "/background-remover" },
-      { label: "Compress Image", href: "/image-compress" },
-      { label: "Resize Image", href: "/image-resize" },
-      { label: "HEIC to JPG", href: "/heic-to-jpg" },
-      { label: "Image to PDF", href: "/image-to-pdf" },
+      { slug: "image-converter", href: "/image-converter" },
+      { slug: "background-remover", href: "/background-remover" },
+      { slug: "image-compress", href: "/image-compress" },
+      { slug: "image-resize", href: "/image-resize" },
+      { slug: "heic-to-jpg", href: "/heic-to-jpg" },
+      { slug: "image-to-pdf", href: "/image-to-pdf" },
     ],
   },
   {
-    heading: "Utilities",
+    key: "utilities" as const,
     links: [
-      { label: "Metadata Cleaner", href: "/metadata-cleaner" },
-      { label: "AI Text Scrubber", href: "/ai-text-scrubber" },
-      { label: "Password Generator", href: "/password-generator" },
-      { label: "Currency Converter", href: "/currency-converter" },
-      { label: "Unit Converter", href: "/unit-converter" },
-      { label: "Tip Calculator", href: "/percentage-calc" },
+      { slug: "metadata-cleaner", href: "/metadata-cleaner" },
+      { slug: "ai-text-scrubber", href: "/ai-text-scrubber" },
+      { slug: "password-generator", href: "/password-generator" },
+      { slug: "currency-converter", href: "/currency-converter" },
+      { slug: "unit-converter", href: "/unit-converter" },
+      { slug: "percentage-calc", href: "/percentage-calc" },
     ],
   },
 ];
 
 export default function Footer() {
+  const { t } = useLocale();
+
   const manageConsent = () => {
     window.dispatchEvent(new Event('et:show-consent'));
   };
@@ -71,13 +74,13 @@ export default function Footer() {
             </span>
           </Link>
           <p style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.65, margin: "0 0 20px", maxWidth: 240 }}>
-            A collection of browser-based tools for everyday file tasks. Fast, private, and free.
+            {t.footer.tagline}
           </p>
         </div>
 
         {/* Tool link columns */}
-        {TOOL_COLUMNS.map((col) => (
-          <div key={col.heading}>
+        {TOOL_COLUMNS_KEYS.map((col) => (
+          <div key={col.key}>
             <h3 style={{
               fontFamily: "var(--font-ui)",
               fontSize: 11,
@@ -87,7 +90,7 @@ export default function Footer() {
               color: "var(--text-tertiary)",
               margin: "0 0 14px",
             }}>
-              {col.heading}
+              {t.footer.columns[col.key]}
             </h3>
             <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 9 }}>
               {col.links.map((l) => (
@@ -98,7 +101,7 @@ export default function Footer() {
                     onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-primary)")}
                     onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-secondary)")}
                   >
-                    {l.label}
+                    {t.nav.links[l.slug] ?? l.slug}
                   </Link>
                 </li>
               ))}
@@ -120,12 +123,12 @@ export default function Footer() {
         gap: 12,
       }}>
         <span style={{ fontSize: 12, color: "var(--text-tertiary)" }}>
-          &copy; {new Date().getFullYear()} EverydayTools Hub. All rights reserved.
+          &copy; {new Date().getFullYear()} EverydayTools Hub. {t.footer.rights}
         </span>
         <nav style={{ display: "flex", alignItems: "center", gap: 20 }}>
           {[
-            { label: "Privacy Policy", href: "/privacy" },
-            { label: "Terms of Service", href: "/terms" },
+            { label: t.footer.privacyPolicy, href: "/privacy" },
+            { label: t.footer.termsOfService, href: "/terms" },
           ].map((l) => (
             <Link
               key={l.href}
@@ -143,7 +146,7 @@ export default function Footer() {
             onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-primary)")}
             onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-tertiary)")}
           >
-            Cookie Preferences
+            {t.footer.cookiePreferences}
           </button>
         </nav>
       </div>

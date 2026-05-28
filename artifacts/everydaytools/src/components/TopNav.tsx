@@ -243,7 +243,7 @@ function MobileDrawer({ open, onClose, currentPath }: { open: boolean; onClose: 
             </svg>
             <input
               type="search"
-              placeholder="Search tools..."
+              placeholder={t.nav.searchPlaceholder}
               style={{ background: "transparent", border: "none", outline: "none", fontSize: 13, color: "var(--text-primary)", width: "100%", fontFamily: "var(--font-ui)" }}
               onChange={(e) => {
                 window.dispatchEvent(new CustomEvent("et:search", { detail: e.target.value }));
@@ -376,7 +376,7 @@ export default function TopNav() {
             </svg>
             <input
               type="search"
-              placeholder="Search tools..."
+              placeholder={t.nav.searchPlaceholder}
               value={searchQuery}
               onChange={(e) => handleSearch(e.target.value)}
               aria-label="Search tools"
