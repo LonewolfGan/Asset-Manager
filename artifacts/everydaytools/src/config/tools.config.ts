@@ -3,7 +3,7 @@ import {
   Type, FileCode, BookMarked, FileDown, FileInput, Globe, ScrollText, FilePlus,
   ImageIcon, Smartphone, ZoomOut, Maximize2, Crop, Image as ImageIcon2, FileImage, Wand2,
   ShieldOff, ScanText,
-  KeyRound, Percent, ArrowLeftRight, DollarSign
+  KeyRound, Percent, ArrowLeftRight, DollarSign, QrCode
 } from "lucide-react";
 
 export const tools = [
@@ -49,5 +49,6 @@ export const tools = [
   {slug: 'password-generator', title: 'Password Generator', description: 'Generate cryptographically secure passwords with entropy display', category: 'calculators', icon: KeyRound, formats: []},
   {slug: 'percentage-calc', title: 'Percentage Calculator', description: 'Calculate percentages, discounts, tips, and markup instantly', category: 'calculators', icon: Percent, formats: []},
   {slug: 'unit-converter', title: 'Unit Converter', description: 'Convert between 200+ units across 13 measurement categories', category: 'calculators', icon: ArrowLeftRight, formats: []},
-  {slug: 'currency-converter', title: 'Currency Converter', description: 'Convert between 170 currencies with live rates', category: 'calculators', icon: DollarSign, formats: []}
+  {slug: 'currency-converter', title: 'Currency Converter', description: 'Convert between 170 currencies with live rates', category: 'calculators', icon: DollarSign, formats: []},
+  {slug: 'qr-code-generator', title: 'QR Code Generator', description: 'Generate QR codes from URLs, text, Wi-Fi credentials, or contact cards', category: 'calculators', icon: QrCode, formats: []}
 ];

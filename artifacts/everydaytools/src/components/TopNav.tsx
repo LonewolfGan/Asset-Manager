@@ -39,7 +39,7 @@ const GROUPS: { id: string; pairs: NavPair[] }[] = [
       [{ href: "/background-remover" }, { href: "/metadata-cleaner" }],
       [{ href: "/ai-text-scrubber" }, { href: "/password-generator" }],
       [{ href: "/currency-converter" }, { href: "/unit-converter" }],
-      [{ href: "/percentage-calc" }, null],
+      [{ href: "/percentage-calc" }, { href: "/qr-code-generator" }],
     ],
   },
 ];

@@ -63,6 +63,7 @@ const EN: Translations = {
       "currency-converter": "Currency Converter",
       "unit-converter": "Unit Converter",
       "percentage-calc": "Percentage Calculator",
+      "qr-code-generator": "QR Code Generator",
     },
   },
   home: {
@@ -118,6 +119,7 @@ const EN: Translations = {
     "percentage-calc": { title: "Percentage Calculator", description: "Calculate percentages, discounts, tips, and markup instantly" },
     "unit-converter": { title: "Unit Converter", description: "Convert between 200+ units across 13 measurement categories" },
     "currency-converter": { title: "Currency Converter", description: "Convert between 170 currencies with live rates" },
+    "qr-code-generator": { title: "QR Code Generator", description: "Generate QR codes from URLs, text, Wi-Fi credentials, or contact cards — entirely in your browser" },
   },
   ui: {
     dropzone: "Drop file here or click to browse",
@@ -170,6 +172,7 @@ const FR: Translations = {
       "currency-converter": "Convertisseur de Devises",
       "unit-converter": "Convertisseur d'Unités",
       "percentage-calc": "Calculateur de Pourcentage",
+      "qr-code-generator": "Générateur de QR Code",
     },
   },
   home: {
@@ -225,6 +228,7 @@ const FR: Translations = {
     "percentage-calc": { title: "Calculateur de Pourcentage", description: "Calculer des pourcentages, remises, pourboires et marges instantanément" },
     "unit-converter": { title: "Convertisseur d'Unités", description: "Convertir entre plus de 200 unités dans 13 catégories de mesure" },
     "currency-converter": { title: "Convertisseur de Devises", description: "Convertir entre 170 devises avec des taux en temps réel" },
+    "qr-code-generator": { title: "Générateur de QR Code", description: "Générez des QR codes depuis des URLs, du texte, des identifiants Wi-Fi ou des cartes de contact — entièrement dans votre navigateur" },
   },
   ui: {
     dropzone: "Déposez le fichier ici ou cliquez pour parcourir",

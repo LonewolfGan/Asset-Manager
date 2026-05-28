@@ -60,6 +60,9 @@ const PercentageCalc = lazy(() => import("@/pages/percentage-calc"));
 const UnitConverter = lazy(() => import("@/pages/unit-converter"));
 const CurrencyConverter = lazy(() => import("@/pages/currency-converter"));
 
+// Generators
+const QrCodeGenerator = lazy(() => import("@/pages/qr-code-generator"));
+
 // Legal
 const Privacy = lazy(() => import("@/pages/privacy"));
 const Terms = lazy(() => import("@/pages/terms"));
@@ -99,6 +102,7 @@ const TOOL_COMPONENTS: Record<string, React.LazyExoticComponent<() => JSX.Elemen
   "percentage-calc": PercentageCalc,
   "unit-converter": UnitConverter,
   "currency-converter": CurrencyConverter,
+  "qr-code-generator": QrCodeGenerator,
 };
 
 const queryClient = new QueryClient();
@@ -172,6 +176,7 @@ function Router() {
             <Route path="/percentage-calc" component={PercentageCalc} />
             <Route path="/unit-converter" component={UnitConverter} />
             <Route path="/currency-converter" component={CurrencyConverter} />
+            <Route path="/qr-code-generator" component={QrCodeGenerator} />
             {/* Legal */}
             <Route path="/privacy" component={Privacy} />
             <Route path="/terms" component={Terms} />
