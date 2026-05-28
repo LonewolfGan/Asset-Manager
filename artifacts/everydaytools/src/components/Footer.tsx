@@ -73,22 +73,6 @@ export default function Footer() {
           <p style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.65, margin: "0 0 20px", maxWidth: 240 }}>
             A collection of browser-based tools for everyday file tasks. Fast, private, and free.
           </p>
-          <div style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 6,
-            fontSize: 12,
-            color: "var(--text-tertiary)",
-            background: "var(--bg-elevated)",
-            border: "1px solid var(--border)",
-            borderRadius: 8,
-            padding: "5px 10px",
-          }}>
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            </svg>
-            Files never leave your browser
-          </div>
         </div>
 
         {/* Tool link columns */}
