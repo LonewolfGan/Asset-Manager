@@ -7,8 +7,10 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 import { marked } from 'marked';
 import ToolPageSEO from '@/components/ToolPageSEO';
+import { useLocale } from '@/hooks/use-locale';
 
 export default function MarkdownToPdf() {
+  const { t } = useLocale();
   const [files, setFiles] = useState<File[]>([]);
   const [result, setResult] = useState<{blob: Blob, filename: string, sizeAfter: number, sizeBefore?: number} | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -86,8 +88,8 @@ export default function MarkdownToPdf() {
     <>
       <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Word Tools', 'Markdown to PDF']} />
-      <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>Markdown to PDF</h1>
-      <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>Convert Markdown (.md) or text files into a simple PDF document.</p>
+      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['markdown-to-pdf']?.title ?? 'Markdown to PDF'}</h1>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['markdown-to-pdf']?.description ?? 'Convert Markdown (.md) or text files into a simple PDF document.'}</p>
       
       <FileUpload accept={['.md', '.txt', 'text/markdown', 'text/plain']} maxSizeMB={10} onFiles={setFiles} />
       

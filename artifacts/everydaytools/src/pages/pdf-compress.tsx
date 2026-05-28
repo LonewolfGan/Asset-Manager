@@ -4,6 +4,7 @@ import ProgressBar from '@/components/ProgressBar';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
+import { useLocale } from '@/hooks/use-locale';
 
 type Level = 'screen' | 'ebook' | 'prepress';
 
@@ -69,6 +70,7 @@ async function compressPdf(
 }
 
 export default function PdfCompress() {
+  const { t } = useLocale();
   const [files, setFiles] = useState<File[]>([]);
   const [level, setLevel] = useState<Level>('ebook');
   const [result, setResult] = useState<{ blob: Blob; filename: string; sizeBefore: number; sizeAfter: number } | null>(null);
@@ -114,9 +116,9 @@ export default function PdfCompress() {
       <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>
         PDF Compressor
       </h1>
-      <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-compress']?.description ?? '
         Reduce PDF file size by re-rendering pages at a target DPI and quality. All processing runs in your browser.
-      </p>
+      '}</p>
 
       <FileUpload accept={['.pdf', 'application/pdf']} maxSizeMB={50} onFiles={setFiles} />
 

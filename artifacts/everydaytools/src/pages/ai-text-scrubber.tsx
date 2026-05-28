@@ -2,8 +2,10 @@ import { useState } from 'react';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
+import { useLocale } from '@/hooks/use-locale';
 
 export default function AiTextScrubber() {
+  const { t } = useLocale();
   const [tab, setTab] = useState<'invisible'|'stylistic'>('invisible');
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
@@ -70,8 +72,8 @@ export default function AiTextScrubber() {
     <>
       <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Privacy Tools', 'AI Text Scrubber']} />
-      <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>AI Text Scrubber</h1>
-      <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>Remove invisible trackers and common AI stylistic boilerplate from text.</p>
+      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['ai-text-scrubber']?.title ?? 'AI Text Scrubber'}</h1>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['ai-text-scrubber']?.description ?? 'Remove invisible trackers and common AI stylistic boilerplate from text.'}</p>
       
       <div style={{ display: 'flex', borderBottom: '1px solid var(--border)', marginBottom: 24 }}>
         <button onClick={() => setTab('invisible')} style={{ flex: 1, padding: '12px', background: 'none', border: 'none', borderBottom: tab === 'invisible' ? '2px solid var(--accent)' : '2px solid transparent', fontWeight: 500, cursor: 'pointer', color: tab === 'invisible' ? 'var(--text)' : 'var(--muted)' }}>Invisible Character Remover</button>

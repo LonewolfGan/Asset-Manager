@@ -6,8 +6,10 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import JSZip from 'jszip';
 import ToolPageSEO from '@/components/ToolPageSEO';
+import { useLocale } from '@/hooks/use-locale';
 
 export default function MetadataCleaner() {
+  const { t } = useLocale();
   const [tab, setTab] = useState<'images'|'pdfs'|'docs'>('images');
   
   const [files, setFiles] = useState<File[]>([]);
@@ -103,8 +105,8 @@ export default function MetadataCleaner() {
     <>
       <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Privacy Tools', 'Metadata Cleaner']} />
-      <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>Metadata Cleaner</h1>
-      <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>Strip EXIF, XMP, and document properties from your files to protect your privacy.</p>
+      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['metadata-cleaner']?.title ?? 'Metadata Cleaner'}</h1>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['metadata-cleaner']?.description ?? 'Strip EXIF, XMP, and document properties from your files to protect your privacy.'}</p>
       
       <div style={{ display: 'flex', borderBottom: '1px solid var(--border)', marginBottom: 24 }}>
         <button onClick={() => handleTabChange('images')} style={{ flex: 1, padding: '12px', background: 'none', border: 'none', borderBottom: tab === 'images' ? '2px solid var(--accent)' : '2px solid transparent', fontWeight: 500, cursor: 'pointer', color: tab === 'images' ? 'var(--text)' : 'var(--muted)' }}>Images</button>

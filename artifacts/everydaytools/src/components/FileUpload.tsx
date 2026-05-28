@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { X, Upload } from 'lucide-react';
+import { useLocale } from '@/hooks/use-locale';
 
 interface FileUploadProps {
   accept: string[];
@@ -9,6 +10,7 @@ interface FileUploadProps {
 }
 
 export default function FileUpload({ accept, maxSizeMB, multiple = false, onFiles }: FileUploadProps) {
+  const { t } = useLocale();
   const [dragActive, setDragActive] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -89,10 +91,10 @@ export default function FileUpload({ accept, maxSizeMB, multiple = false, onFile
           </div>
           <div>
             <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-primary)', margin: '0 0 4px' }}>
-              Drop file here or <span style={{ color: 'var(--accent)', textDecoration: 'underline', textDecorationStyle: 'dotted' }}>browse</span>
+              {t.ui.dropzone}
             </p>
             <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', margin: 0 }}>
-              {accept.join(', ')} &middot; max {maxSizeMB} MB
+              {t.ui.dropzoneHint(accept.join(', '), maxSizeMB)}
             </p>
           </div>
         </div>

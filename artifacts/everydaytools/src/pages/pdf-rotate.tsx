@@ -6,8 +6,10 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import { PDFDocument, degrees } from 'pdf-lib';
 import ToolPageSEO from '@/components/ToolPageSEO';
+import { useLocale } from '@/hooks/use-locale';
 
 export default function PdfRotate() {
+  const { t } = useLocale();
   const [files, setFiles] = useState<File[]>([]);
   const [result, setResult] = useState<{blob: Blob, filename: string, sizeAfter: number, sizeBefore?: number} | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -45,8 +47,8 @@ export default function PdfRotate() {
     <>
       <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'PDF Tools', 'Rotate PDF']} />
-      <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>Rotate PDF</h1>
-      <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>Rotate all pages in a PDF file permanently.</p>
+      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['pdf-rotate']?.title ?? 'Rotate PDF'}</h1>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-rotate']?.description ?? 'Rotate all pages in a PDF file permanently.'}</p>
       
       <FileUpload accept={['.pdf']} maxSizeMB={50} onFiles={setFiles} />
       

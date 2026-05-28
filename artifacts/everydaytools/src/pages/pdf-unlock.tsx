@@ -6,8 +6,10 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import { PDFDocument } from 'pdf-lib';
 import ToolPageSEO from '@/components/ToolPageSEO';
+import { useLocale } from '@/hooks/use-locale';
 
 export default function PdfUnlock() {
+  const { t } = useLocale();
   const [files, setFiles] = useState<File[]>([]);
   const [result, setResult] = useState<{blob: Blob, filename: string, sizeAfter: number, sizeBefore?: number} | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -54,8 +56,8 @@ export default function PdfUnlock() {
     <>
       <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'PDF Tools', 'Unlock PDF']} />
-      <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>Unlock PDF</h1>
-      <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>Remove printing, copying, and editing restrictions from PDF files.</p>
+      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['pdf-unlock']?.title ?? 'Unlock PDF'}</h1>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-unlock']?.description ?? 'Remove printing, copying, and editing restrictions from PDF files.'}</p>
       
       <div style={{ padding: '16px', background: 'var(--danger)', color: 'white', borderRadius: 'var(--radius)', marginBottom: 24, fontSize: 14, opacity: 0.9 }}>
         <strong>Note:</strong> This removes the owner password (print/copy restrictions). It does not bypass user (open) passwords.

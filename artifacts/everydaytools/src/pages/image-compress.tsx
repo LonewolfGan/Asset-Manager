@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
+import { useLocale } from '@/hooks/use-locale';
 
 type Mode = 'quality' | 'target';
 type ResizeMode = 'none' | 'percent' | 'dimensions';
@@ -133,6 +134,7 @@ async function stripExif(blob: Blob, file: File): Promise<Blob> {
 }
 
 export default function ImageCompress() {
+  const { t } = useLocale();
   const [files, setFiles] = useState<FileResult[]>([]);
   const [mode, setMode] = useState<Mode>('quality');
   const [quality, setQuality] = useState(80);
@@ -246,9 +248,9 @@ export default function ImageCompress() {
       <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>
         Image Compressor
       </h1>
-      <p style={{ color: 'var(--muted)', marginBottom: 32, fontSize: 15 }}>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['image-compress']?.description ?? '
         Compress up to 20 images at once. Quality slider or target file size. All processing runs in your browser.
-      </p>
+      '}</p>
 
       {/* Drop zone */}
       <div

@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { Link } from "wouter";
 import { tools } from "@/config/tools.config";
+import { useLocale } from "@/hooks/use-locale";
 import type { LucideIcon } from "lucide-react";
 
 type DashCategory = "Documents" | "Images" | "Privacy" | "Calculators";
@@ -44,8 +45,12 @@ const CATEGORY_COLORS: Record<DashCategory, { icon: string; bg: string; badge: s
 
 /* ── ToolCard ────────────────────────────────────────────────────────────── */
 function ToolCard({ tool }: { tool: DashTool }) {
+  const { t } = useLocale();
   const { Icon } = tool;
   const colors = CATEGORY_COLORS[tool.category];
+  const tl = t.tools[tool.slug];
+  const name = tl?.title ?? tool.name;
+  const description = tl?.description ?? tool.description;
 
   return (
     <Link href={tool.route} style={{ textDecoration: "none", display: "block" }}>
@@ -95,7 +100,7 @@ function ToolCard({ tool }: { tool: DashTool }) {
             fontFamily: "var(--font-ui)",
             lineHeight: 1.2,
           }}>
-            {tool.name}
+            {name}
           </span>
           {tool.badge && (
             <span style={{
@@ -127,7 +132,7 @@ function ToolCard({ tool }: { tool: DashTool }) {
           overflow: "hidden",
           fontFamily: "var(--font-ui)",
         }}>
-          {tool.description}
+          {description}
         </p>
       </article>
     </Link>
