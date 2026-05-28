@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Link } from "wouter";
 import { tools } from "@/config/tools.config";
 import type { LucideIcon } from "lucide-react";
@@ -35,13 +35,11 @@ const DASH_TOOLS: DashTool[] = tools.map((t) => ({
   route:       `/${t.slug}`,
 }));
 
-const CATEGORIES: DashCategory[] = ["Documents", "Images", "Privacy", "Calculators"];
-
 const CATEGORY_COLORS: Record<DashCategory, { icon: string; bg: string; badge: string; badgeBg: string }> = {
-  Documents:   { icon: "#D97706", bg: "rgba(217,119,6,0.12)",   badge: "#D97706", badgeBg: "rgba(217,119,6,0.12)" },
-  Images:      { icon: "#0D9488", bg: "rgba(13,148,136,0.12)",  badge: "#0D9488", badgeBg: "rgba(13,148,136,0.12)" },
-  Privacy:     { icon: "#7C3AED", bg: "rgba(124,58,237,0.13)",  badge: "#7C3AED", badgeBg: "rgba(124,58,237,0.13)" },
-  Calculators: { icon: "#EA580C", bg: "rgba(234,88,12,0.12)",   badge: "#EA580C", badgeBg: "rgba(234,88,12,0.12)" },
+  Documents:   { icon: "#D97706", bg: "rgba(217,119,6,0.10)",   badge: "#D97706", badgeBg: "rgba(217,119,6,0.10)" },
+  Images:      { icon: "#0D9488", bg: "rgba(13,148,136,0.10)",  badge: "#0D9488", badgeBg: "rgba(13,148,136,0.10)" },
+  Privacy:     { icon: "#7C3AED", bg: "rgba(124,58,237,0.10)",  badge: "#7C3AED", badgeBg: "rgba(124,58,237,0.10)" },
+  Calculators: { icon: "#EA580C", bg: "rgba(234,88,12,0.10)",   badge: "#EA580C", badgeBg: "rgba(234,88,12,0.10)" },
 };
 
 /* ── ToolCard ────────────────────────────────────────────────────────────── */
@@ -51,201 +49,158 @@ function ToolCard({ tool }: { tool: DashTool }) {
 
   return (
     <Link href={tool.route} style={{ textDecoration: "none", display: "block" }}>
-      <div
+      <article
         style={{
-          width: "100%",
-          padding: 14,
-          borderRadius: 'var(--radius-card)',
+          padding: "20px",
+          borderRadius: "var(--radius-card)",
           border: "1px solid var(--border)",
           background: "var(--bg-surface)",
           cursor: "pointer",
           transition: "border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease",
-          boxShadow: "var(--shadow-card)",
-          fontFamily: "var(--font-ui)",
+          boxShadow: "0 1px 4px rgba(0,0,0,0.05)",
+          height: "100%",
         }}
         onMouseEnter={(e) => {
           const el = e.currentTarget as HTMLElement;
-          el.style.borderColor = colors.icon + "88";
-          el.style.boxShadow = `0 4px 14px rgba(0,0,0,0.25)`;
-          el.style.transform = "translateY(-2px)";
+          el.style.borderColor = colors.icon + "66";
+          el.style.boxShadow = "0 8px 24px rgba(0,0,0,0.09)";
+          el.style.transform = "translateY(-3px)";
         }}
         onMouseLeave={(e) => {
           const el = e.currentTarget as HTMLElement;
           el.style.borderColor = "var(--border)";
-          el.style.boxShadow = "none";
+          el.style.boxShadow = "0 1px 4px rgba(0,0,0,0.05)";
           el.style.transform = "none";
         }}
       >
-        <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-          <div style={{
-            marginTop: 1,
-            flexShrink: 0,
-            width: 32,
-            height: 32,
-            borderRadius: 6,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            background: colors.bg,
-            color: colors.icon,
-          }}>
-            <Icon size={16} strokeWidth={1.75} />
-          </div>
-          <div style={{ minWidth: 0, flex: 1 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <span style={{
-                fontSize: 13,
-                fontWeight: 500,
-                color: "var(--text-primary)",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}>
-                {tool.name}
-              </span>
-              {tool.badge && (
-                <span style={{
-                  flexShrink: 0,
-                  fontSize: 9,
-                  fontWeight: 600,
-                  padding: "2px 5px",
-                  borderRadius: 4,
-                  background: colors.badgeBg,
-                  color: colors.badge,
-                  lineHeight: 1.2,
-                  letterSpacing: "0.02em",
-                }}>
-                  {tool.badge}
-                </span>
-              )}
-            </div>
-            <p style={{
-              marginTop: 3,
-              fontSize: 12,
-              color: "var(--text-tertiary)",
-              lineHeight: 1.4,
-              display: "-webkit-box",
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: "vertical",
-              overflow: "hidden",
-            }}>
-              {tool.description}
-            </p>
-          </div>
+        {/* Icon */}
+        <div style={{
+          width: 40,
+          height: 40,
+          borderRadius: 12,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: colors.bg,
+          color: colors.icon,
+          marginBottom: 14,
+        }}>
+          <Icon size={18} strokeWidth={1.75} />
         </div>
-      </div>
+
+        {/* Name + badge */}
+        <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 6 }}>
+          <span style={{
+            fontSize: 14,
+            fontWeight: 600,
+            color: "var(--text-primary)",
+            fontFamily: "var(--font-ui)",
+            lineHeight: 1.2,
+          }}>
+            {tool.name}
+          </span>
+          {tool.badge && (
+            <span style={{
+              fontSize: 9,
+              fontWeight: 700,
+              padding: "2px 6px",
+              borderRadius: 6,
+              background: colors.badgeBg,
+              color: colors.badge,
+              lineHeight: 1.2,
+              letterSpacing: "0.04em",
+              textTransform: "uppercase",
+              flexShrink: 0,
+            }}>
+              {tool.badge}
+            </span>
+          )}
+        </div>
+
+        {/* Description */}
+        <p style={{
+          fontSize: 13,
+          color: "var(--text-secondary)",
+          lineHeight: 1.5,
+          margin: 0,
+          display: "-webkit-box",
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: "vertical",
+          overflow: "hidden",
+          fontFamily: "var(--font-ui)",
+        }}>
+          {tool.description}
+        </p>
+      </article>
     </Link>
   );
 }
 
 /* ── Dashboard Home ──────────────────────────────────────────────────────── */
 export default function DashboardHome() {
-  const [activeCategory, setActiveCategory] = useState<DashCategory | "All">("All");
   const [query, setQuery] = useState("");
 
+  useEffect(() => {
+    const handler = (e: Event) => {
+      setQuery((e as CustomEvent<string>).detail ?? "");
+    };
+    window.addEventListener("et:search", handler);
+    return () => window.removeEventListener("et:search", handler);
+  }, []);
+
   const filteredTools = useMemo(() => {
-    let list = activeCategory === "All" ? DASH_TOOLS : DASH_TOOLS.filter((t) => t.category === activeCategory);
-    if (query.trim()) {
-      const q = query.toLowerCase();
-      list = list.filter((t) => t.name.toLowerCase().includes(q) || t.description.toLowerCase().includes(q));
-    }
-    return list;
-  }, [activeCategory, query]);
+    if (!query.trim()) return DASH_TOOLS;
+    const q = query.toLowerCase();
+    return DASH_TOOLS.filter((t) => t.name.toLowerCase().includes(q) || t.description.toLowerCase().includes(q));
+  }, [query]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", flex: 1, background: "var(--bg-base)" }}>
+    <div style={{ flex: 1, background: "var(--bg-base)" }}>
+      <div style={{ maxWidth: "var(--content-wide)", margin: "0 auto", padding: "40px 24px 64px" }}>
 
-      {/* ── Filter bar ── */}
-      <div style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 8,
-        padding: "0 20px",
-        height: 44,
-        borderBottom: "1px solid var(--border)",
-        background: "var(--bg-surface)",
-        flexShrink: 0,
-        position: "sticky",
-        top: 52,
-        zIndex: 10,
-      }}>
-        <nav style={{ display: "flex", alignItems: "center", gap: 2, flex: 1, overflow: "auto" }}>
-          {(["All", ...CATEGORIES] as const).map((cat) => {
-            const isActive = activeCategory === cat;
-            const catColors = cat !== "All" ? CATEGORY_COLORS[cat as DashCategory] : null;
-            return (
-              <button
-                key={cat}
-                type="button"
-                onClick={() => setActiveCategory(cat)}
-                style={{
-                  padding: "4px 10px",
-                  borderRadius: 6,
-                  border: "none",
-                  background: isActive
-                    ? (catColors ? catColors.bg : "var(--bg-elevated)")
-                    : "transparent",
-                  color: isActive
-                    ? (catColors ? catColors.icon : "var(--text-primary)")
-                    : "var(--text-tertiary)",
-                  fontSize: 12,
-                  fontWeight: isActive ? 600 : 500,
-                  cursor: "pointer",
-                  whiteSpace: "nowrap",
-                  transition: "background 120ms ease, color 120ms ease",
-                  fontFamily: "var(--font-ui)",
-                }}
-              >
-                {cat}
-              </button>
-            );
-          })}
-        </nav>
+        {/* Page header */}
+        {!query && (
+          <div style={{ marginBottom: 40 }}>
+            <h1 style={{ fontSize: "2rem", fontWeight: 700, margin: "0 0 8px", fontFamily: "var(--font-display)", color: "var(--text-primary)", letterSpacing: "-0.03em" }}>
+              All Tools
+            </h1>
+            <p style={{ fontSize: 15, color: "var(--text-secondary)", margin: 0, fontFamily: "var(--font-ui)" }}>
+              {DASH_TOOLS.length} browser-based utilities — nothing uploaded, everything private.
+            </p>
+          </div>
+        )}
 
-        <span style={{ fontSize: 12, color: "var(--text-tertiary)", flexShrink: 0 }}>
-          {filteredTools.length} tools
-        </span>
+        {query && (
+          <div style={{ marginBottom: 32 }}>
+            <p style={{ fontSize: 14, color: "var(--text-secondary)", margin: 0, fontFamily: "var(--font-ui)" }}>
+              {filteredTools.length} result{filteredTools.length !== 1 ? "s" : ""} for &ldquo;<strong style={{ color: "var(--text-primary)" }}>{query}</strong>&rdquo;
+            </p>
+          </div>
+        )}
 
-        <label style={{
-          display: "flex", alignItems: "center", gap: 6,
-          background: "var(--bg-elevated)", border: "1px solid var(--border)",
-          borderRadius: 6, padding: "5px 10px", width: 160, flexShrink: 0, cursor: "text",
-        }}>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-          </svg>
-          <input
-            type="search"
-            placeholder="Search..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            aria-label="Search tools"
-            style={{
-              background: "transparent", border: "none", outline: "none",
-              fontSize: 12, color: "var(--text-primary)", width: "100%",
-              fontFamily: "var(--font-ui)",
-            }}
-          />
-        </label>
-      </div>
-
-      {/* ── Grid ── */}
-      <div style={{ padding: 20 }}>
+        {/* Grid */}
         {filteredTools.length > 0 ? (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 8 }}>
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
+            gap: 16,
+          }}>
             {filteredTools.map((tool) => (
               <ToolCard key={tool.slug} tool={tool} />
             ))}
           </div>
         ) : (
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "80px 0", textAlign: "center", gap: 8 }}>
-            <p style={{ fontSize: 13, fontWeight: 500, color: "var(--text-secondary)" }}>
+          <div style={{ textAlign: "center", padding: "80px 0" }}>
+            <p style={{ fontSize: 15, fontWeight: 500, color: "var(--text-secondary)", margin: "0 0 12px", fontFamily: "var(--font-ui)" }}>
               No tools match &ldquo;{query}&rdquo;
             </p>
             <button
               type="button"
-              onClick={() => setQuery("")}
-              style={{ fontSize: 12, color: "var(--accent)", background: "none", border: "none", cursor: "pointer", textDecoration: "underline", fontFamily: "var(--font-ui)" }}
+              onClick={() => {
+                setQuery("");
+                window.dispatchEvent(new CustomEvent("et:search", { detail: "" }));
+              }}
+              style={{ fontSize: 13, color: "var(--accent)", background: "none", border: "none", cursor: "pointer", fontFamily: "var(--font-ui)", padding: 0 }}
             >
               Clear search
             </button>

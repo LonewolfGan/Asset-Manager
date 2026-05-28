@@ -139,13 +139,13 @@ function NavDropdown({
             position: "absolute",
             top: "calc(100% + 10px)",
             left: 0,
-            background: "var(--bg-elevated)",
+            background: "var(--bg-surface)",
             border: "1px solid var(--border)",
-            borderRadius: 8,
+            borderRadius: 16,
             minWidth: 340,
             padding: 8,
             zIndex: 100,
-            boxShadow: "0 8px 24px rgba(0,0,0,0.3)",
+            boxShadow: "0 8px 32px rgba(0,0,0,0.10)",
           }}
         >
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
@@ -163,25 +163,24 @@ function NavDropdown({
                       style={{
                         display: "flex",
                         alignItems: "center",
-                        height: 32,
+                        height: 34,
                         padding: "0 10px",
                         fontFamily: "var(--font-ui)",
                         fontSize: "var(--text-sm)",
-                        color: currentPath === entry.href ? "var(--text-primary)" : "var(--text-secondary)",
+                        color: currentPath === entry.href ? "var(--accent)" : "var(--text-secondary)",
                         textDecoration: "none",
-                        borderRadius: 4,
+                        borderRadius: 8,
                         whiteSpace: "nowrap",
                         transition: "background 120ms ease, color 120ms ease",
                         fontWeight: currentPath === entry.href ? 500 : 400,
-                        borderBottom: currentPath === entry.href ? "1px solid var(--accent)" : "none",
                       }}
                       onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLElement).style.background = "var(--bg-subtle)";
+                        (e.currentTarget as HTMLElement).style.background = "var(--bg-elevated)";
                         (e.currentTarget as HTMLElement).style.color = "var(--text-primary)";
                       }}
                       onMouseLeave={(e) => {
                         (e.currentTarget as HTMLElement).style.background = "transparent";
-                        (e.currentTarget as HTMLElement).style.color = currentPath === entry.href ? "var(--text-primary)" : "var(--text-secondary)";
+                        (e.currentTarget as HTMLElement).style.color = currentPath === entry.href ? "var(--accent)" : "var(--text-secondary)";
                       }}
                     >
                       {linkLabel(entry.href)}
@@ -215,7 +214,7 @@ function MobileDrawer({ open, onClose, currentPath }: { open: boolean; onClose: 
 
   return (
     <>
-      <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", zIndex: 200 }} />
+      <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.4)", zIndex: 200 }} />
       <div style={{ position: "fixed", top: 0, right: 0, bottom: 0, width: "min(300px, 88vw)", background: "var(--bg-surface)", zIndex: 201, overflowY: "auto", display: "flex", flexDirection: "column" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", borderBottom: "1px solid var(--border)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -230,6 +229,27 @@ function MobileDrawer({ open, onClose, currentPath }: { open: boolean; onClose: 
           <button onClick={onClose} aria-label="Close menu" style={{ background: "none", border: "none", cursor: "pointer", padding: 4, color: "var(--text-secondary)" }}>
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 3l12 12M15 3L3 15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>
           </button>
+        </div>
+
+        {/* Mobile search */}
+        <div style={{ padding: "12px 16px", borderBottom: "1px solid var(--border)" }}>
+          <label style={{
+            display: "flex", alignItems: "center", gap: 8,
+            background: "var(--bg-elevated)", border: "1px solid var(--border)",
+            borderRadius: 12, padding: "8px 12px", cursor: "text", width: "100%",
+          }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input
+              type="search"
+              placeholder="Search tools..."
+              style={{ background: "transparent", border: "none", outline: "none", fontSize: 13, color: "var(--text-primary)", width: "100%", fontFamily: "var(--font-ui)" }}
+              onChange={(e) => {
+                window.dispatchEvent(new CustomEvent("et:search", { detail: e.target.value }));
+              }}
+            />
+          </label>
         </div>
 
         <div style={{ flex: 1 }}>
@@ -251,7 +271,7 @@ function MobileDrawer({ open, onClose, currentPath }: { open: boolean; onClose: 
                 {isExpanded && (
                   <div style={{ paddingBottom: 6 }}>
                     {allLinks.map((entry) => (
-                      <Link key={entry.href} href={entry.href} onClick={onClose} style={{ display: "block", padding: "8px 28px", fontFamily: "var(--font-ui)", fontSize: "var(--text-sm)", color: currentPath === entry.href ? "var(--text-primary)" : "var(--text-secondary)", textDecoration: "none", fontWeight: currentPath === entry.href ? 500 : 400 }}>
+                      <Link key={entry.href} href={entry.href} onClick={onClose} style={{ display: "block", padding: "8px 28px", fontFamily: "var(--font-ui)", fontSize: "var(--text-sm)", color: currentPath === entry.href ? "var(--accent)" : "var(--text-secondary)", textDecoration: "none", fontWeight: currentPath === entry.href ? 500 : 400 }}>
                         {linkLabel(entry.href)}
                       </Link>
                     ))}
@@ -263,10 +283,10 @@ function MobileDrawer({ open, onClose, currentPath }: { open: boolean; onClose: 
         </div>
 
         <div style={{ padding: "16px 20px", borderTop: "1px solid var(--border)", display: "flex", gap: 8 }}>
-          <button onClick={toggle} style={{ padding: "6px 12px", border: "1px solid var(--border-strong)", borderRadius: 4, background: "transparent", color: "var(--text-secondary)", fontFamily: "var(--font-ui)", fontSize: "var(--text-sm)", cursor: "pointer" }}>
+          <button onClick={toggle} style={{ padding: "6px 12px", border: "1px solid var(--border)", borderRadius: 10, background: "transparent", color: "var(--text-secondary)", fontFamily: "var(--font-ui)", fontSize: "var(--text-sm)", cursor: "pointer" }}>
             {theme === 'dark' ? t.ui.lightMode : t.ui.darkMode}
           </button>
-          <div style={{ display: "flex", alignItems: "center", border: "1px solid var(--border)", borderRadius: 4, overflow: "hidden" }}>
+          <div style={{ display: "flex", alignItems: "center", border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
             {(["EN", "FR"] as const).map((lang, i) => (
               <button key={lang} onClick={() => setLocale(lang)} style={{ background: lang === locale ? "var(--bg-subtle)" : "transparent", color: lang === locale ? "var(--text-primary)" : "var(--text-secondary)", border: "none", borderLeft: i === 1 ? "1px solid var(--border)" : "none", padding: "4px 10px", fontFamily: "var(--font-mono)", fontSize: 11, fontWeight: 500, cursor: "pointer" }}>
                 {lang}
@@ -283,6 +303,7 @@ export default function TopNav() {
   const [location] = useLocation();
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const navRef = useRef<HTMLDivElement>(null);
   const { theme, toggle } = useTheme();
   const { locale, setLocale, t } = useLocale();
@@ -291,15 +312,20 @@ export default function TopNav() {
 
   useEffect(() => { setOpenGroup(null); setMobileOpen(false); }, [location]);
 
+  const handleSearch = (value: string) => {
+    setSearchQuery(value);
+    window.dispatchEvent(new CustomEvent("et:search", { detail: value }));
+  };
+
   return (
     <>
       <nav style={{ position: "sticky", top: 0, zIndex: 50, background: "var(--bg-surface)", borderBottom: "1px solid var(--border)" }}>
         <div
           ref={navRef}
-          style={{ maxWidth: "var(--content-wide)", margin: "0 auto", padding: "0 20px", height: 52, display: "flex", alignItems: "center", gap: 32 }}
+          style={{ maxWidth: "var(--content-wide)", margin: "0 auto", padding: "0 24px", height: 56, display: "flex", alignItems: "center", gap: 0 }}
         >
           {/* Logo */}
-          <Link href="/" style={{ display: "flex", alignItems: "center", gap: 9, textDecoration: "none", flexShrink: 0 }}>
+          <Link href="/" style={{ display: "flex", alignItems: "center", gap: 9, textDecoration: "none", flexShrink: 0, marginRight: 32 }}>
             <svg width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <rect width="64" height="64" rx="11" fill={theme === "light" ? "#EDEDEE" : "#1A1916"}/>
               <rect x="14" y="15" width="36" height="7" rx="2" fill="#FF6B35"/>
@@ -311,8 +337,8 @@ export default function TopNav() {
             </span>
           </Link>
 
-          {/* Desktop nav */}
-          <div className="hidden md:flex" style={{ alignItems: "center", gap: 24, flex: 1 }}>
+          {/* Desktop nav dropdowns */}
+          <div className="hidden md:flex" style={{ alignItems: "center", gap: 24 }}>
             {GROUPS.map((group) => (
               <NavDropdown
                 key={group.id}
@@ -325,10 +351,51 @@ export default function TopNav() {
             ))}
           </div>
 
+          {/* Search — desktop, grows to fill middle */}
+          <label
+            className="hidden md:flex"
+            style={{
+              flex: 1,
+              maxWidth: 280,
+              marginLeft: 24,
+              alignItems: "center",
+              gap: 8,
+              background: "var(--bg-elevated)",
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius-input)",
+              padding: "7px 14px",
+              cursor: "text",
+              transition: "border-color 150ms ease, box-shadow 150ms ease",
+            }}
+            onFocus={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 3px rgba(255,107,53,0.12)"; }}
+            onBlur={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0 }}>
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input
+              type="search"
+              placeholder="Search tools..."
+              value={searchQuery}
+              onChange={(e) => handleSearch(e.target.value)}
+              aria-label="Search tools"
+              style={{ background: "transparent", border: "none", outline: "none", fontSize: 13, color: "var(--text-primary)", width: "100%", fontFamily: "var(--font-ui)" }}
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => handleSearch("")}
+                style={{ background: "none", border: "none", cursor: "pointer", padding: 0, color: "var(--text-tertiary)", display: "flex", alignItems: "center", flexShrink: 0 }}
+              >
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2L2 10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+              </button>
+            )}
+          </label>
+
           {/* Right actions */}
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: "auto" }}>
             {/* Locale */}
-            <div className="hidden md:flex" style={{ alignItems: "center", border: "1px solid var(--border)", borderRadius: 4, overflow: "hidden" }}>
+            <div className="hidden md:flex" style={{ alignItems: "center", border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
               {(["EN", "FR"] as const).map((lang, i) => (
                 <button
                   key={lang}
@@ -338,7 +405,7 @@ export default function TopNav() {
                     color: lang === locale ? "var(--text-primary)" : "var(--text-secondary)",
                     border: "none",
                     borderLeft: i === 1 ? "1px solid var(--border)" : "none",
-                    padding: "4px 10px",
+                    padding: "5px 10px",
                     fontFamily: "var(--font-mono)",
                     fontSize: 11,
                     fontWeight: 500,
@@ -356,9 +423,9 @@ export default function TopNav() {
               onClick={toggle}
               aria-label="Toggle theme"
               className="hidden md:flex"
-              style={{ width: 32, height: 32, alignItems: "center", justifyContent: "center", background: "none", border: "1px solid var(--border)", borderRadius: 4, cursor: "pointer", color: "var(--text-secondary)", transition: "background 120ms ease, color 120ms ease" }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--bg-subtle)"; (e.currentTarget as HTMLElement).style.color = "var(--text-primary)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "none"; (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)"; }}
+              style={{ width: 34, height: 34, alignItems: "center", justifyContent: "center", background: "none", border: "1px solid var(--border)", borderRadius: 10, cursor: "pointer", color: "var(--text-secondary)", transition: "background 150ms ease, color 150ms ease, border-color 150ms ease" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--bg-elevated)"; (e.currentTarget as HTMLElement).style.color = "var(--text-primary)"; (e.currentTarget as HTMLElement).style.borderColor = "var(--border-strong)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "none"; (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)"; (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; }}
             >
               {theme === "dark" ? (
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -372,7 +439,7 @@ export default function TopNav() {
             </button>
 
             {/* Mobile hamburger */}
-            <button className="flex md:hidden" onClick={() => setMobileOpen(true)} aria-label="Open menu" style={{ background: "none", border: "1px solid var(--border)", borderRadius: 4, cursor: "pointer", padding: "6px", color: "var(--text-secondary)" }}>
+            <button className="flex md:hidden" onClick={() => setMobileOpen(true)} aria-label="Open menu" style={{ background: "none", border: "1px solid var(--border)", borderRadius: 10, cursor: "pointer", padding: "7px", color: "var(--text-secondary)" }}>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 5h12M2 8h12M2 11h12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>
             </button>
           </div>
