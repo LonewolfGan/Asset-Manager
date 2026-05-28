@@ -220,10 +220,10 @@ function MobileDrawer({ open, onClose, currentPath }: { open: boolean; onClose: 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", borderBottom: "1px solid var(--border)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <svg width="22" height="22" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <rect width="64" height="64" rx="11" fill="#1A1916"/>
-              <rect x="14" y="15" width="36" height="7" rx="2" fill="#1A6BFF"/>
-              <rect x="14" y="28" width="28" height="7" rx="2" fill="#F7F6F3"/>
-              <rect x="14" y="41" width="36" height="7" rx="2" fill="#F7F6F3"/>
+              <rect width="64" height="64" rx="11" fill={theme === "light" ? "#EDEDEE" : "#1A1916"}/>
+              <rect x="14" y="15" width="36" height="7" rx="2" fill="#7C3AED"/>
+              <rect x="14" y="28" width="28" height="7" rx="2" fill={theme === "light" ? "#1A1916" : "#F7F6F3"}/>
+              <rect x="14" y="41" width="36" height="7" rx="2" fill={theme === "light" ? "#1A1916" : "#F7F6F3"}/>
             </svg>
             <span style={{ fontFamily: "var(--font-ui)", fontSize: 15, fontWeight: 500, color: "var(--text-primary)", letterSpacing: "-0.02em" }}>EverydayTools</span>
           </div>
@@ -301,10 +301,10 @@ export default function TopNav() {
           {/* Logo */}
           <Link href="/" style={{ display: "flex", alignItems: "center", gap: 9, textDecoration: "none", flexShrink: 0 }}>
             <svg width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <rect width="64" height="64" rx="11" fill="#1A1916"/>
-              <rect x="14" y="15" width="36" height="7" rx="2" fill="#1A6BFF"/>
-              <rect x="14" y="28" width="28" height="7" rx="2" fill="#F7F6F3"/>
-              <rect x="14" y="41" width="36" height="7" rx="2" fill="#F7F6F3"/>
+              <rect width="64" height="64" rx="11" fill={theme === "light" ? "#EDEDEE" : "#1A1916"}/>
+              <rect x="14" y="15" width="36" height="7" rx="2" fill="#7C3AED"/>
+              <rect x="14" y="28" width="28" height="7" rx="2" fill={theme === "light" ? "#1A1916" : "#F7F6F3"}/>
+              <rect x="14" y="41" width="36" height="7" rx="2" fill={theme === "light" ? "#1A1916" : "#F7F6F3"}/>
             </svg>
             <span style={{ fontFamily: "var(--font-ui)", fontSize: 16, fontWeight: 500, color: "var(--text-primary)", letterSpacing: "-0.02em", lineHeight: 1 }}>
               EverydayTools
