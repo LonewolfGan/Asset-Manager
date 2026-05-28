@@ -56,21 +56,19 @@ function ToolCard({ tool }: { tool: DashTool }) {
           border: "1px solid var(--border)",
           background: "var(--bg-surface)",
           cursor: "pointer",
-          transition: "border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease",
+          transition: "border-color 150ms ease, box-shadow 150ms ease",
           boxShadow: "0 1px 4px rgba(0,0,0,0.05)",
           height: "100%",
         }}
         onMouseEnter={(e) => {
           const el = e.currentTarget as HTMLElement;
           el.style.borderColor = colors.icon + "66";
-          el.style.boxShadow = "0 8px 24px rgba(0,0,0,0.09)";
-          el.style.transform = "translateY(-3px)";
+          el.style.boxShadow = "0 2px 8px rgba(0,0,0,0.08)";
         }}
         onMouseLeave={(e) => {
           const el = e.currentTarget as HTMLElement;
           el.style.borderColor = "var(--border)";
           el.style.boxShadow = "0 1px 4px rgba(0,0,0,0.05)";
-          el.style.transform = "none";
         }}
       >
         {/* Icon */}
