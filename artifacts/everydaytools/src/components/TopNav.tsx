@@ -351,13 +351,14 @@ export default function TopNav() {
             ))}
           </div>
 
-          {/* Search — desktop, grows to fill middle */}
+          {/* Spacer */}
+          <div style={{ flex: 1 }} />
+
+          {/* Search — desktop */}
           <label
             className="hidden md:flex"
             style={{
-              flex: 1,
-              maxWidth: 280,
-              marginLeft: 24,
+              width: 212,
               alignItems: "center",
               gap: 8,
               background: "var(--bg-elevated)",
@@ -393,7 +394,7 @@ export default function TopNav() {
           </label>
 
           {/* Right actions */}
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: "auto" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: 8 }}>
             {/* Locale */}
             <div className="hidden md:flex" style={{ alignItems: "center", border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
               {(["EN", "FR"] as const).map((lang, i) => (
