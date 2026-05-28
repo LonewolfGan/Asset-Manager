@@ -248,9 +248,7 @@ export default function ImageCompress() {
       <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>
         Image Compressor
       </h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['image-compress']?.description ?? '
-        Compress up to 20 images at once. Quality slider or target file size. All processing runs in your browser.
-      '}</p>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['image-compress']?.description ?? 'Compress up to 20 images at once. Quality slider or target file size. All processing runs in your browser.'}</p>
 
       {/* Drop zone */}
       <div

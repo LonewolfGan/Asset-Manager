@@ -116,9 +116,7 @@ export default function PdfCompress() {
       <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>
         PDF Compressor
       </h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-compress']?.description ?? '
-        Reduce PDF file size by re-rendering pages at a target DPI and quality. All processing runs in your browser.
-      '}</p>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-compress']?.description ?? 'Reduce PDF file size by re-rendering pages at a target DPI and quality. All processing runs in your browser.'}</p>
 
       <FileUpload accept={['.pdf', 'application/pdf']} maxSizeMB={50} onFiles={setFiles} />
 
