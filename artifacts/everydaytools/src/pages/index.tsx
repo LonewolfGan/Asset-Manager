@@ -39,31 +39,11 @@ const DASH_TOOLS: DashTool[] = tools.map((t) => ({
   formats:     t.formats ?? [],
 }));
 
-const CATEGORY_META: Record<DashCategory, {
-  icon: string;
-  bg: string;
-  badge: string;
-  badgeBg: string;
-  accent: string;
-  label: string;
-  description: string;
-}> = {
-  Documents:   {
-    icon: "#D97706", bg: "rgba(217,119,6,0.10)", badge: "#D97706", badgeBg: "rgba(217,119,6,0.10)",
-    accent: "#D97706", label: "Documents", description: "PDF and Word file tools"
-  },
-  Images:      {
-    icon: "#0D9488", bg: "rgba(13,148,136,0.10)", badge: "#0D9488", badgeBg: "rgba(13,148,136,0.10)",
-    accent: "#0D9488", label: "Images", description: "Convert, compress, and process images"
-  },
-  Privacy:     {
-    icon: "#7C3AED", bg: "rgba(124,58,237,0.10)", badge: "#7C3AED", badgeBg: "rgba(124,58,237,0.10)",
-    accent: "#7C3AED", label: "Privacy", description: "Strip metadata and AI watermarks"
-  },
-  Calculators: {
-    icon: "#1A6BFF", bg: "rgba(26,107,255,0.10)", badge: "#1A6BFF", badgeBg: "rgba(26,107,255,0.10)",
-    accent: "#1A6BFF", label: "Calculators", description: "Conversions, generators, and calculators"
-  },
+const CATEGORY_COLORS: Record<DashCategory, { icon: string; bg: string; accent: string; badgeBg: string }> = {
+  Documents:   { icon: "#D97706", bg: "rgba(217,119,6,0.10)",   accent: "#D97706", badgeBg: "rgba(217,119,6,0.10)" },
+  Images:      { icon: "#0D9488", bg: "rgba(13,148,136,0.10)",  accent: "#0D9488", badgeBg: "rgba(13,148,136,0.10)" },
+  Privacy:     { icon: "#7C3AED", bg: "rgba(124,58,237,0.10)",  accent: "#7C3AED", badgeBg: "rgba(124,58,237,0.10)" },
+  Calculators: { icon: "#1A6BFF", bg: "rgba(26,107,255,0.10)",  accent: "#1A6BFF", badgeBg: "rgba(26,107,255,0.10)" },
 };
 
 const CATEGORY_ORDER: DashCategory[] = ["Documents", "Images", "Privacy", "Calculators"];
@@ -72,7 +52,7 @@ const CATEGORY_ORDER: DashCategory[] = ["Documents", "Images", "Privacy", "Calcu
 function ToolCard({ tool }: { tool: DashTool }) {
   const { t } = useLocale();
   const { Icon } = tool;
-  const meta = CATEGORY_META[tool.category];
+  const colors = CATEGORY_COLORS[tool.category];
   const tl = t.tools[tool.slug];
   const name = tl?.title ?? tool.name;
   const description = tl?.description ?? tool.description;
@@ -82,7 +62,6 @@ function ToolCard({ tool }: { tool: DashTool }) {
     const f = tool.formats;
     if (f.length === 0) return [];
     if (f.length === 1) return [[f[0]]];
-    // Show first two as a conversion pair, then any extra
     const pairs: string[][] = [[f[0], f[1]]];
     for (let i = 2; i < Math.min(f.length, 4); i++) pairs.push([f[i]]);
     return pairs;
@@ -108,8 +87,8 @@ function ToolCard({ tool }: { tool: DashTool }) {
         }}
         onMouseEnter={(e) => {
           const el = e.currentTarget as HTMLElement;
-          el.style.borderColor = meta.accent + "55";
-          el.style.boxShadow = `0 4px 16px rgba(0,0,0,0.08), 0 0 0 1px ${meta.accent}22`;
+          el.style.borderColor = colors.accent + "55";
+          el.style.boxShadow = `0 4px 16px rgba(0,0,0,0.08), 0 0 0 1px ${colors.accent}22`;
           el.style.transform = "translateY(-2px)";
           const arrow = el.querySelector<HTMLElement>(".card-arrow");
           if (arrow) { arrow.style.opacity = "1"; arrow.style.transform = "translateX(0)"; }
@@ -128,7 +107,7 @@ function ToolCard({ tool }: { tool: DashTool }) {
           position: "absolute",
           top: 0, left: 0, right: 0,
           height: 2,
-          background: meta.accent,
+          background: colors.accent,
           opacity: 0.35,
           borderRadius: "var(--radius-card) var(--radius-card) 0 0",
         }} />
@@ -142,15 +121,14 @@ function ToolCard({ tool }: { tool: DashTool }) {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            background: meta.bg,
-            color: meta.icon,
+            background: colors.bg,
+            color: colors.icon,
             flexShrink: 0,
           }}>
             <Icon size={19} strokeWidth={1.7} />
           </div>
-
           <div className="card-arrow" style={{
-            color: meta.icon,
+            color: colors.icon,
             opacity: 0,
             transform: "translateX(-4px)",
             transition: "opacity 160ms ease, transform 160ms ease",
@@ -177,8 +155,8 @@ function ToolCard({ tool }: { tool: DashTool }) {
               fontWeight: 700,
               padding: "2px 6px",
               borderRadius: 5,
-              background: meta.badgeBg,
-              color: meta.badge,
+              background: colors.badgeBg,
+              color: colors.icon,
               lineHeight: 1.3,
               letterSpacing: "0.06em",
               textTransform: "uppercase",
@@ -207,13 +185,7 @@ function ToolCard({ tool }: { tool: DashTool }) {
 
         {/* Format pills */}
         {formatPairs.length > 0 && (
-          <div style={{
-            display: "flex",
-            gap: 5,
-            flexWrap: "wrap",
-            marginTop: 14,
-            alignItems: "center",
-          }}>
+          <div style={{ display: "flex", gap: 5, flexWrap: "wrap", marginTop: 14, alignItems: "center" }}>
             {formatPairs.map((pair, i) => (
               <span key={i} style={{
                 display: "inline-flex",
@@ -222,8 +194,8 @@ function ToolCard({ tool }: { tool: DashTool }) {
                 fontSize: 10,
                 fontWeight: 600,
                 fontFamily: "var(--font-mono, 'IBM Plex Mono', monospace)",
-                color: meta.icon,
-                background: meta.bg,
+                color: colors.icon,
+                background: colors.bg,
                 padding: "2px 7px",
                 borderRadius: 4,
                 letterSpacing: "0.02em",
@@ -244,28 +216,27 @@ function ToolCard({ tool }: { tool: DashTool }) {
 
 /* ── Category Section ────────────────────────────────────────────────────── */
 function CategorySection({ category, tools: catTools }: { category: DashCategory; tools: DashTool[] }) {
-  const meta = CATEGORY_META[category];
+  const { t } = useLocale();
+  const colors = CATEGORY_COLORS[category];
+  const label = t.home.sectionLabels[category] ?? category;
+  const desc = t.home.sectionDescriptions[category] ?? "";
+
   return (
     <section style={{ marginBottom: 48 }}>
-      {/* Section header */}
       <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 18 }}>
         <h2 style={{
           fontSize: 13,
           fontWeight: 700,
           margin: 0,
           fontFamily: "var(--font-ui)",
-          color: meta.icon,
+          color: colors.icon,
           textTransform: "uppercase",
           letterSpacing: "0.07em",
         }}>
-          {meta.label}
+          {label}
         </h2>
-        <span style={{
-          fontSize: 12,
-          color: "var(--text-secondary)",
-          fontFamily: "var(--font-ui)",
-        }}>
-          {catTools.length} {catTools.length === 1 ? "tool" : "tools"} — {meta.description}
+        <span style={{ fontSize: 12, color: "var(--text-secondary)", fontFamily: "var(--font-ui)" }}>
+          {t.home.toolCount(catTools.length)} — {desc}
         </span>
       </div>
 
@@ -284,6 +255,7 @@ function CategorySection({ category, tools: catTools }: { category: DashCategory
 
 /* ── Dashboard Home ──────────────────────────────────────────────────────── */
 export default function DashboardHome() {
+  const { t } = useLocale();
   const [query, setQuery] = useState("");
 
   useEffect(() => {
@@ -324,24 +296,25 @@ export default function DashboardHome() {
               margin: "0 0 8px",
               fontFamily: "var(--font-display)",
               color: "var(--text-primary)",
-              letterSpacing: "-0.03em"
+              letterSpacing: "-0.03em",
             }}>
-              All Tools
+              {t.home.allTools}
             </h1>
             <p style={{
               fontSize: 15,
               color: "var(--text-secondary)",
               margin: "0 0 28px",
-              fontFamily: "var(--font-ui)"
+              fontFamily: "var(--font-ui)",
             }}>
-              {DASH_TOOLS.length} browser-based utilities — nothing uploaded, everything private.
+              {t.home.allToolsSubtitle(DASH_TOOLS.length)}
             </p>
 
-            {/* Category summary strip */}
+            {/* Category anchor pills */}
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
               {CATEGORY_ORDER.map((cat) => {
-                const meta = CATEGORY_META[cat];
-                const count = DASH_TOOLS.filter(t => t.category === cat).length;
+                const colors = CATEGORY_COLORS[cat];
+                const count = DASH_TOOLS.filter((tool) => tool.category === cat).length;
+                const label = t.home.sectionLabels[cat] ?? cat;
                 return (
                   <a
                     key={cat}
@@ -352,24 +325,20 @@ export default function DashboardHome() {
                       gap: 6,
                       padding: "5px 12px",
                       borderRadius: 20,
-                      border: `1px solid ${meta.accent}33`,
-                      background: meta.bg,
-                      color: meta.icon,
+                      border: `1px solid ${colors.accent}33`,
+                      background: colors.bg,
+                      color: colors.icon,
                       fontSize: 12.5,
                       fontWeight: 600,
                       fontFamily: "var(--font-ui)",
                       textDecoration: "none",
                       transition: "opacity 120ms ease",
                     }}
-                    onMouseEnter={e => (e.currentTarget.style.opacity = "0.75")}
-                    onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
+                    onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.75")}
+                    onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
                   >
-                    {meta.label}
-                    <span style={{
-                      fontSize: 11,
-                      fontWeight: 500,
-                      opacity: 0.7,
-                    }}>{count}</span>
+                    {label}
+                    <span style={{ fontSize: 11, fontWeight: 500, opacity: 0.7 }}>{count}</span>
                   </a>
                 );
               })}
@@ -381,7 +350,7 @@ export default function DashboardHome() {
         {isSearching && (
           <div style={{ marginBottom: 32 }}>
             <p style={{ fontSize: 14, color: "var(--text-secondary)", margin: 0, fontFamily: "var(--font-ui)" }}>
-              {filteredTools.length} result{filteredTools.length !== 1 ? "s" : ""} for &ldquo;<strong style={{ color: "var(--text-primary)" }}>{query}</strong>&rdquo;
+              {t.home.resultCount(filteredTools.length)} {t.home.resultsFor} &ldquo;<strong style={{ color: "var(--text-primary)" }}>{query}</strong>&rdquo;
             </p>
           </div>
         )}
@@ -390,7 +359,7 @@ export default function DashboardHome() {
         {filteredTools.length === 0 && (
           <div style={{ textAlign: "center", padding: "80px 0" }}>
             <p style={{ fontSize: 15, fontWeight: 500, color: "var(--text-secondary)", margin: "0 0 12px", fontFamily: "var(--font-ui)" }}>
-              No tools match &ldquo;{query}&rdquo;
+              {t.home.noResults(query)}
             </p>
             <button
               type="button"
@@ -400,7 +369,7 @@ export default function DashboardHome() {
               }}
               style={{ fontSize: 13, color: "var(--accent)", background: "none", border: "none", cursor: "pointer", fontFamily: "var(--font-ui)", padding: 0 }}
             >
-              Clear search
+              {t.home.clearSearch}
             </button>
           </div>
         )}

@@ -8,8 +8,17 @@ export type Translations = {
   home: {
     title: string;
     subtitle: string;
+    allTools: string;
+    allToolsSubtitle: (count: number) => string;
     categories: Record<string, string>;
     toolCategory: Record<string, string>;
+    sectionLabels: Record<string, string>;
+    sectionDescriptions: Record<string, string>;
+    toolCount: (n: number) => string;
+    resultCount: (n: number) => string;
+    resultsFor: string;
+    noResults: (q: string) => string;
+    clearSearch: string;
   };
   tools: Record<string, { title: string; description: string }>;
   ui: {
@@ -69,6 +78,8 @@ const EN: Translations = {
   home: {
     title: "EverydayTools",
     subtitle: "Browser-based document, image, and utility tools. No uploads. No accounts.",
+    allTools: "All Tools",
+    allToolsSubtitle: (count) => `${count} browser-based utilities — nothing uploaded, everything private.`,
     categories: {
       pdf: "PDF Tools",
       word: "Word & Docs",
@@ -83,6 +94,23 @@ const EN: Translations = {
       privacy: "Privacy",
       calculators: "Utility",
     },
+    sectionLabels: {
+      Documents: "Documents",
+      Images: "Images",
+      Privacy: "Privacy",
+      Calculators: "Calculators",
+    },
+    sectionDescriptions: {
+      Documents: "PDF and Word file tools",
+      Images: "Convert, compress, and process images",
+      Privacy: "Strip metadata and AI watermarks",
+      Calculators: "Conversions, generators, and calculators",
+    },
+    toolCount: (n) => `${n} ${n === 1 ? "tool" : "tools"}`,
+    resultCount: (n) => `${n} ${n === 1 ? "result" : "results"}`,
+    resultsFor: "for",
+    noResults: (q) => `No tools match "${q}"`,
+    clearSearch: "Clear search",
   },
   tools: {
     "pdf-to-word": { title: "PDF to Word", description: "Convert PDF files to editable DOCX format" },
@@ -178,6 +206,8 @@ const FR: Translations = {
   home: {
     title: "EverydayTools",
     subtitle: "Outils en ligne pour documents, images et utilitaires. Sans téléchargement. Sans compte.",
+    allTools: "Tous les outils",
+    allToolsSubtitle: (count) => `${count} utilitaires dans le navigateur — aucun téléchargement, tout est privé.`,
     categories: {
       pdf: "Outils PDF",
       word: "Word et Documents",
@@ -192,6 +222,23 @@ const FR: Translations = {
       privacy: "Confidentialité",
       calculators: "Utilitaire",
     },
+    sectionLabels: {
+      Documents: "Documents",
+      Images: "Images",
+      Privacy: "Confidentialité",
+      Calculators: "Calculatrices",
+    },
+    sectionDescriptions: {
+      Documents: "Outils PDF et Word",
+      Images: "Convertir, compresser et traiter les images",
+      Privacy: "Supprimer métadonnées et filigranes IA",
+      Calculators: "Conversions, générateurs et calculatrices",
+    },
+    toolCount: (n) => `${n} ${n === 1 ? "outil" : "outils"}`,
+    resultCount: (n) => `${n} ${n === 1 ? "résultat" : "résultats"}`,
+    resultsFor: "pour",
+    noResults: (q) => `Aucun outil ne correspond à « ${q} »`,
+    clearSearch: "Effacer la recherche",
   },
   tools: {
     "pdf-to-word": { title: "PDF en Word", description: "Convertir des fichiers PDF en format DOCX modifiable" },
