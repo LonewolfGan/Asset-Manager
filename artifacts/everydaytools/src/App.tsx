@@ -62,6 +62,7 @@ const CurrencyConverter = lazy(() => import("@/pages/currency-converter"));
 
 // Generators
 const QrCodeGenerator = lazy(() => import("@/pages/qr-code-generator"));
+const TipCalculator = lazy(() => import("@/pages/tip-calculator"));
 
 // Legal
 const Privacy = lazy(() => import("@/pages/privacy"));
@@ -103,6 +104,7 @@ const TOOL_COMPONENTS: Record<string, React.LazyExoticComponent<() => JSX.Elemen
   "unit-converter": UnitConverter,
   "currency-converter": CurrencyConverter,
   "qr-code-generator": QrCodeGenerator,
+  "tip-calculator": TipCalculator,
 };
 
 const queryClient = new QueryClient();
@@ -177,6 +179,7 @@ function Router() {
             <Route path="/unit-converter" component={UnitConverter} />
             <Route path="/currency-converter" component={CurrencyConverter} />
             <Route path="/qr-code-generator" component={QrCodeGenerator} />
+            <Route path="/tip-calculator" component={TipCalculator} />
             {/* Legal */}
             <Route path="/privacy" component={Privacy} />
             <Route path="/terms" component={Terms} />

@@ -165,6 +165,7 @@ const EN: Translations = {
     "unit-converter": { title: "Unit Converter", description: "Convert between 200+ units across 13 measurement categories" },
     "currency-converter": { title: "Currency Converter", description: "Convert between 170 currencies with live rates" },
     "qr-code-generator": { title: "QR Code Generator", description: "Generate QR codes from URLs, text, Wi-Fi credentials, or contact cards — entirely in your browser" },
+    "tip-calculator": { title: "Tip Calculator", description: "Calculate tip and split the bill across any number of people" },
   },
   ui: {
     dropzone: "Drop file here or click to browse",
@@ -309,6 +310,7 @@ const FR: Translations = {
     "unit-converter": { title: "Convertisseur d'Unités", description: "Convertir entre plus de 200 unités dans 13 catégories de mesure" },
     "currency-converter": { title: "Convertisseur de Devises", description: "Convertir entre 170 devises avec des taux en temps réel" },
     "qr-code-generator": { title: "Générateur de QR Code", description: "Générez des QR codes depuis des URLs, du texte, des identifiants Wi-Fi ou des cartes de contact — entièrement dans votre navigateur" },
+    "tip-calculator": { title: "Calculateur de Pourboire", description: "Calculer le pourboire et diviser l'addition entre plusieurs personnes" },
   },
   ui: {
     dropzone: "Déposez le fichier ici ou cliquez pour parcourir",
