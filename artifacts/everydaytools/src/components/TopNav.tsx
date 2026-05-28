@@ -77,7 +77,7 @@ function NavDropdown({
   const groupLabel = (t.nav.groups as Record<string, string>)[group.id] ?? group.id;
 
   const clearLeave = () => { if (leaveTimer.current) clearTimeout(leaveTimer.current); };
-  const scheduleClose = () => { clearLeave(); leaveTimer.current = setTimeout(onClose, 130); };
+  const scheduleClose = () => { clearLeave(); leaveTimer.current = setTimeout(onClose, 250); };
   useEffect(() => clearLeave, []);
 
   const handlePanelKeyDown = (e: React.KeyboardEvent) => {
@@ -137,7 +137,7 @@ function NavDropdown({
           onKeyDown={handlePanelKeyDown}
           style={{
             position: "absolute",
-            top: "calc(100% + 10px)",
+            top: "calc(100% + 4px)",
             left: 0,
             background: "var(--bg-surface)",
             border: "1px solid var(--border)",
