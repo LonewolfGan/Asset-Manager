@@ -121,12 +121,10 @@ function LocaleToolRoute({ params }: { params: { slug: string } }) {
 }
 
 function Router() {
-  const [location] = useLocation();
-  const isHome = location === "/" || location === "";
   return (
-    <div style={{ minHeight: '100vh', background: isHome ? '#F7F6F3' : 'var(--bg-base)', fontFamily: 'var(--font-ui)', display: 'flex', flexDirection: 'column' }}>
-      {!isHome && <TopNav />}
-      <main style={{ flex: isHome ? undefined : 1 }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-base)', fontFamily: 'var(--font-ui)', display: 'flex', flexDirection: 'column' }}>
+      <TopNav />
+      <main style={{ flex: 1 }}>
         <Suspense fallback={<PageLoader />}>
           <Switch>
             <Route path="/" component={Home} />
@@ -181,7 +179,7 @@ function Router() {
           </Switch>
         </Suspense>
       </main>
-      {!isHome && <Footer />}
+      <Footer />
       <CookieBanner />
     </div>
   );
