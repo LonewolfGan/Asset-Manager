@@ -39,14 +39,12 @@ const DASH_TOOLS: DashTool[] = tools.map((t) => ({
   formats:     t.formats ?? [],
 }));
 
-const CATEGORY_COLORS: Record<DashCategory, { icon: string; bg: string; accent: string; badgeBg: string }> = {
-  Documents:   { icon: "#D97706", bg: "rgba(217,119,6,0.10)",   accent: "#D97706", badgeBg: "rgba(217,119,6,0.10)" },
-  Images:      { icon: "#0D9488", bg: "rgba(13,148,136,0.10)",  accent: "#0D9488", badgeBg: "rgba(13,148,136,0.10)" },
-  Privacy:     { icon: "#7C3AED", bg: "rgba(124,58,237,0.10)",  accent: "#7C3AED", badgeBg: "rgba(124,58,237,0.10)" },
-  Calculators: { icon: "#1A6BFF", bg: "rgba(26,107,255,0.10)",  accent: "#1A6BFF", badgeBg: "rgba(26,107,255,0.10)" },
+const CATEGORY_COLORS: Record<DashCategory, { icon: string; bg: string; badgeBg: string }> = {
+  Documents:   { icon: "#D97706", bg: "rgba(217,119,6,0.10)",   badgeBg: "rgba(217,119,6,0.10)" },
+  Images:      { icon: "#0D9488", bg: "rgba(13,148,136,0.10)",  badgeBg: "rgba(13,148,136,0.10)" },
+  Privacy:     { icon: "#7C3AED", bg: "rgba(124,58,237,0.10)",  badgeBg: "rgba(124,58,237,0.10)" },
+  Calculators: { icon: "#1A6BFF", bg: "rgba(26,107,255,0.10)",  badgeBg: "rgba(26,107,255,0.10)" },
 };
-
-const CATEGORY_ORDER: DashCategory[] = ["Documents", "Images", "Privacy", "Calculators"];
 
 /* ── ToolCard ────────────────────────────────────────────────────────────── */
 function ToolCard({ tool }: { tool: DashTool }) {
@@ -72,24 +70,21 @@ function ToolCard({ tool }: { tool: DashTool }) {
       <article
         ref={ref}
         style={{
-          padding: "20px 20px 18px",
+          padding: "22px 22px 20px",
           borderRadius: "var(--radius-card)",
           border: "1px solid var(--border)",
           background: "var(--bg-surface)",
           cursor: "pointer",
-          transition: "border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease",
+          transition: "border-color 160ms ease, box-shadow 160ms ease",
           boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          position: "relative",
-          overflow: "hidden",
         }}
         onMouseEnter={(e) => {
           const el = e.currentTarget as HTMLElement;
-          el.style.borderColor = colors.accent + "55";
-          el.style.boxShadow = `0 4px 16px rgba(0,0,0,0.08), 0 0 0 1px ${colors.accent}22`;
-          el.style.transform = "translateY(-2px)";
+          el.style.borderColor = colors.icon + "55";
+          el.style.boxShadow = `0 4px 16px rgba(0,0,0,0.08)`;
           const arrow = el.querySelector<HTMLElement>(".card-arrow");
           if (arrow) { arrow.style.opacity = "1"; arrow.style.transform = "translateX(0)"; }
         }}
@@ -97,27 +92,16 @@ function ToolCard({ tool }: { tool: DashTool }) {
           const el = e.currentTarget as HTMLElement;
           el.style.borderColor = "var(--border)";
           el.style.boxShadow = "0 1px 3px rgba(0,0,0,0.04)";
-          el.style.transform = "translateY(0)";
           const arrow = el.querySelector<HTMLElement>(".card-arrow");
           if (arrow) { arrow.style.opacity = "0"; arrow.style.transform = "translateX(-4px)"; }
         }}
       >
-        {/* Top accent bar */}
-        <div style={{
-          position: "absolute",
-          top: 0, left: 0, right: 0,
-          height: 2,
-          background: colors.accent,
-          opacity: 0.35,
-          borderRadius: "var(--radius-card) var(--radius-card) 0 0",
-        }} />
-
         {/* Header row: icon + arrow */}
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 14 }}>
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 16 }}>
           <div style={{
-            width: 42,
-            height: 42,
-            borderRadius: 12,
+            width: 52,
+            height: 52,
+            borderRadius: 14,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -125,23 +109,23 @@ function ToolCard({ tool }: { tool: DashTool }) {
             color: colors.icon,
             flexShrink: 0,
           }}>
-            <Icon size={19} strokeWidth={1.7} />
+            <Icon size={24} strokeWidth={1.6} />
           </div>
           <div className="card-arrow" style={{
             color: colors.icon,
             opacity: 0,
             transform: "translateX(-4px)",
             transition: "opacity 160ms ease, transform 160ms ease",
-            paddingTop: 2,
+            paddingTop: 4,
           }}>
-            <ArrowRight size={15} strokeWidth={2} />
+            <ArrowRight size={17} strokeWidth={2} />
           </div>
         </div>
 
         {/* Name + AI badge */}
-        <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 6, flexWrap: "wrap" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 7, flexWrap: "wrap" }}>
           <span style={{
-            fontSize: 14,
+            fontSize: 15,
             fontWeight: 600,
             color: "var(--text-primary)",
             fontFamily: "var(--font-ui)",
@@ -151,9 +135,9 @@ function ToolCard({ tool }: { tool: DashTool }) {
           </span>
           {tool.badge && (
             <span style={{
-              fontSize: 9,
+              fontSize: 10,
               fontWeight: 700,
-              padding: "2px 6px",
+              padding: "2px 7px",
               borderRadius: 5,
               background: colors.badgeBg,
               color: colors.icon,
@@ -169,7 +153,7 @@ function ToolCard({ tool }: { tool: DashTool }) {
 
         {/* Description */}
         <p style={{
-          fontSize: 12.5,
+          fontSize: 13,
           color: "var(--text-secondary)",
           lineHeight: 1.55,
           margin: 0,
@@ -185,19 +169,19 @@ function ToolCard({ tool }: { tool: DashTool }) {
 
         {/* Format pills */}
         {formatPairs.length > 0 && (
-          <div style={{ display: "flex", gap: 5, flexWrap: "wrap", marginTop: 14, alignItems: "center" }}>
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 16, alignItems: "center" }}>
             {formatPairs.map((pair, i) => (
               <span key={i} style={{
                 display: "inline-flex",
                 alignItems: "center",
-                gap: 3,
-                fontSize: 10,
+                gap: 4,
+                fontSize: 11,
                 fontWeight: 600,
                 fontFamily: "var(--font-mono, 'IBM Plex Mono', monospace)",
                 color: colors.icon,
                 background: colors.bg,
-                padding: "2px 7px",
-                borderRadius: 4,
+                padding: "3px 9px",
+                borderRadius: 5,
                 letterSpacing: "0.02em",
                 lineHeight: 1.5,
               }}>
@@ -211,45 +195,6 @@ function ToolCard({ tool }: { tool: DashTool }) {
         )}
       </article>
     </Link>
-  );
-}
-
-/* ── Category Section ────────────────────────────────────────────────────── */
-function CategorySection({ category, tools: catTools }: { category: DashCategory; tools: DashTool[] }) {
-  const { t } = useLocale();
-  const colors = CATEGORY_COLORS[category];
-  const label = t.home.sectionLabels[category] ?? category;
-  const desc = t.home.sectionDescriptions[category] ?? "";
-
-  return (
-    <section style={{ marginBottom: 48 }}>
-      <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 18 }}>
-        <h2 style={{
-          fontSize: 13,
-          fontWeight: 700,
-          margin: 0,
-          fontFamily: "var(--font-ui)",
-          color: colors.icon,
-          textTransform: "uppercase",
-          letterSpacing: "0.07em",
-        }}>
-          {label}
-        </h2>
-        <span style={{ fontSize: 12, color: "var(--text-secondary)", fontFamily: "var(--font-ui)" }}>
-          {t.home.toolCount(catTools.length)} — {desc}
-        </span>
-      </div>
-
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
-        gap: 14,
-      }}>
-        {catTools.map((tool) => (
-          <ToolCard key={tool.slug} tool={tool} />
-        ))}
-      </div>
-    </section>
   );
 }
 
@@ -269,17 +214,8 @@ export default function DashboardHome() {
   const filteredTools = useMemo(() => {
     if (!query.trim()) return DASH_TOOLS;
     const q = query.toLowerCase();
-    return DASH_TOOLS.filter((t) => t.name.toLowerCase().includes(q) || t.description.toLowerCase().includes(q));
+    return DASH_TOOLS.filter((tool) => tool.name.toLowerCase().includes(q) || tool.description.toLowerCase().includes(q));
   }, [query]);
-
-  const groupedByCategory = useMemo(() => {
-    const map = new Map<DashCategory, DashTool[]>();
-    for (const cat of CATEGORY_ORDER) map.set(cat, []);
-    for (const tool of filteredTools) {
-      map.get(tool.category)!.push(tool);
-    }
-    return map;
-  }, [filteredTools]);
 
   const isSearching = query.trim().length > 0;
 
@@ -289,7 +225,7 @@ export default function DashboardHome() {
 
         {/* Page header */}
         {!isSearching && (
-          <div style={{ marginBottom: 48 }}>
+          <div style={{ marginBottom: 40 }}>
             <h1 style={{
               fontSize: "2rem",
               fontWeight: 700,
@@ -303,46 +239,11 @@ export default function DashboardHome() {
             <p style={{
               fontSize: 15,
               color: "var(--text-secondary)",
-              margin: "0 0 28px",
+              margin: 0,
               fontFamily: "var(--font-ui)",
             }}>
               {t.home.allToolsSubtitle(DASH_TOOLS.length)}
             </p>
-
-            {/* Category anchor pills */}
-            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-              {CATEGORY_ORDER.map((cat) => {
-                const colors = CATEGORY_COLORS[cat];
-                const count = DASH_TOOLS.filter((tool) => tool.category === cat).length;
-                const label = t.home.sectionLabels[cat] ?? cat;
-                return (
-                  <a
-                    key={cat}
-                    href={`#section-${cat.toLowerCase()}`}
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 6,
-                      padding: "5px 12px",
-                      borderRadius: 20,
-                      border: `1px solid ${colors.accent}33`,
-                      background: colors.bg,
-                      color: colors.icon,
-                      fontSize: 12.5,
-                      fontWeight: 600,
-                      fontFamily: "var(--font-ui)",
-                      textDecoration: "none",
-                      transition: "opacity 120ms ease",
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.75")}
-                    onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-                  >
-                    {label}
-                    <span style={{ fontSize: 11, fontWeight: 500, opacity: 0.7 }}>{count}</span>
-                  </a>
-                );
-              })}
-            </div>
           </div>
         )}
 
@@ -374,32 +275,17 @@ export default function DashboardHome() {
           </div>
         )}
 
-        {/* Search results: flat grid */}
-        {isSearching && filteredTools.length > 0 && (
+        {/* Flat grid */}
+        {filteredTools.length > 0 && (
           <div style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
-            gap: 14,
+            gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
+            gap: 16,
           }}>
             {filteredTools.map((tool) => (
               <ToolCard key={tool.slug} tool={tool} />
             ))}
           </div>
-        )}
-
-        {/* Normal: grouped by category */}
-        {!isSearching && filteredTools.length > 0 && (
-          <>
-            {CATEGORY_ORDER.map((cat) => {
-              const catTools = groupedByCategory.get(cat) ?? [];
-              if (catTools.length === 0) return null;
-              return (
-                <div key={cat} id={`section-${cat.toLowerCase()}`}>
-                  <CategorySection category={cat} tools={catTools} />
-                </div>
-              );
-            })}
-          </>
         )}
       </div>
     </div>
