@@ -3,3 +3,4 @@
 - [Vite HMR context+hook split](vite-hmr-context-hook.md) — files exporting both a React component and a hook break Fast Refresh; split into two files.
 - [Production infra](production-infra.md) — vercel.json, consent system, AdSlot, Footer, CookieBanner, Privacy/Terms pages all wired; AdSense controlled by VITE_ADSENSE_PUBLISHER_ID env var.
 - [Fullstack architecture](fullstack-arch.md) — api-server runs on port 8080 (set by artifact system), vite proxies /api→8080; pages bypass service files with inline logic — always update pages directly, not just services.
+- [i18n coverage](i18n-coverage.md) — translations.ts has full EN+FR for all tool pages; new sections: aiTextScrubber, backgroundRemover, metadataCleaner, pdfCompress, pdfMerge, imageCompress, documentConverter, imageConverter; QR code generator uses inline isFR pattern (pre-existing).

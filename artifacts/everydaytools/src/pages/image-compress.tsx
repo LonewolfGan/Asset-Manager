@@ -135,6 +135,7 @@ async function stripExif(blob: Blob, file: File): Promise<Blob> {
 
 export default function ImageCompress() {
   const { t } = useLocale();
+  const tc = t.imageCompress;
   const [files, setFiles] = useState<FileResult[]>([]);
   const [mode, setMode] = useState<Mode>('quality');
   const [quality, setQuality] = useState(80);
@@ -241,12 +242,21 @@ export default function ImageCompress() {
 
   const doneCount = files.filter((f) => f.status === 'done').length;
 
+  const btnBase: React.CSSProperties = {
+    padding: '7px 16px',
+    borderRadius: 'var(--radius)',
+    fontFamily: 'var(--font-ui)',
+    fontSize: 13.5,
+    cursor: 'pointer',
+    transition: 'all 0.15s',
+  };
+
   return (
     <>
       <div style={{ maxWidth: 800, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Tools', 'Image Compressor']} />
-      <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>
-        Image Compressor
+      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>
+        {t.tools['image-compress']?.title ?? 'Image Compressor'}
       </h1>
       <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['image-compress']?.description ?? 'Compress up to 20 images at once. Quality slider or target file size. All processing runs in your browser.'}</p>
 
@@ -264,7 +274,7 @@ export default function ImageCompress() {
           padding: '32px 24px',
           textAlign: 'center',
           cursor: 'pointer',
-          background: 'var(--surface)',
+          background: 'var(--bg-surface)',
           transition: 'border-color 0.15s',
         }}
         onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)')}
@@ -278,10 +288,10 @@ export default function ImageCompress() {
           style={{ display: 'none' }}
           onChange={(e) => addFiles(Array.from(e.target.files ?? []))}
         />
-        <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15, color: 'var(--muted)', margin: 0 }}>
-          Drop images here or click to select — up to 20 files, 20 MB each
+        <p style={{ fontFamily: 'var(--font-ui)', fontSize: 15, color: 'var(--text-secondary)', margin: 0 }}>
+          {tc.dropHint}
         </p>
-        <p style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 12, color: 'var(--border)', marginTop: 6 }}>
+        <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)', marginTop: 6 }}>
           JPEG · PNG · WEBP · AVIF
         </p>
       </div>
@@ -296,28 +306,23 @@ export default function ImageCompress() {
                 key={m}
                 onClick={() => setMode(m)}
                 style={{
-                  padding: '7px 16px',
+                  ...btnBase,
                   border: `1px solid ${mode === m ? 'var(--accent)' : 'var(--border)'}`,
-                  borderRadius: 'var(--radius)',
-                  background: mode === m ? '#F0F6FF' : 'var(--surface)',
-                  color: mode === m ? 'var(--accent)' : 'var(--muted)',
-                  fontFamily: 'IBM Plex Sans, sans-serif',
-                  fontSize: 13.5,
+                  background: mode === m ? 'var(--accent-subtle)' : 'var(--bg-surface)',
+                  color: mode === m ? 'var(--accent)' : 'var(--text-secondary)',
                   fontWeight: mode === m ? 600 : 400,
-                  cursor: 'pointer',
-                  transition: 'all 0.15s',
                 }}
               >
-                {m === 'quality' ? 'Quality slider' : 'Target file size'}
+                {m === 'quality' ? tc.qualitySlider : tc.targetSize}
               </button>
             ))}
           </div>
 
           {mode === 'quality' ? (
-            <div style={{ padding: '16px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
+            <div style={{ padding: '16px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                <span style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 14, fontWeight: 500 }}>Quality</span>
-                <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 14 }}>{quality}%</span>
+                <span style={{ fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, color: 'var(--text-primary)' }}>{tc.quality}</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 14, color: 'var(--text-primary)' }}>{quality}%</span>
               </div>
               <input
                 type="range"
@@ -328,29 +333,29 @@ export default function ImageCompress() {
                 style={{ width: '100%', accentColor: 'var(--accent)' }}
               />
               <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4 }}>
-                <span style={{ fontSize: 11, color: 'var(--muted)', fontFamily: 'IBM Plex Mono, monospace' }}>1 — smallest</span>
-                <span style={{ fontSize: 11, color: 'var(--muted)', fontFamily: 'IBM Plex Mono, monospace' }}>100 — original</span>
+                <span style={{ fontSize: 11, color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>{tc.smallest}</span>
+                <span style={{ fontSize: 11, color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>{tc.original100}</span>
               </div>
             </div>
           ) : (
-            <div style={{ padding: '16px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', display: 'flex', alignItems: 'center', gap: 12 }}>
-              <label style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 14, fontWeight: 500, whiteSpace: 'nowrap' }}>
-                Target size
+            <div style={{ padding: '16px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', display: 'flex', alignItems: 'center', gap: 12 }}>
+              <label style={{ fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, whiteSpace: 'nowrap', color: 'var(--text-primary)' }}>
+                {tc.targetSizeLabel}
               </label>
               <input
                 type="number"
                 min="1"
                 value={targetKB}
                 onChange={(e) => setTargetKB(e.target.value)}
-                style={{ width: 90, padding: '6px 10px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'IBM Plex Mono, monospace', fontSize: 14 }}
+                style={{ width: 90, padding: '6px 10px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-mono)', fontSize: 14, background: 'var(--bg-base)', color: 'var(--text-primary)' }}
               />
-              <span style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 14, color: 'var(--muted)' }}>KB per file</span>
+              <span style={{ fontFamily: 'var(--font-ui)', fontSize: 14, color: 'var(--text-secondary)' }}>{tc.kbPerFile}</span>
             </div>
           )}
 
           {/* Resize */}
-          <div style={{ padding: '16px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
-            <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 14, fontWeight: 500, margin: '0 0 10px' }}>Resize</p>
+          <div style={{ padding: '16px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
+            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, margin: '0 0 10px', color: 'var(--text-primary)' }}>{tc.resize}</p>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               {(['none', 'percent', 'dimensions'] as ResizeMode[]).map((rm) => (
                 <button
@@ -360,14 +365,14 @@ export default function ImageCompress() {
                     padding: '5px 12px',
                     border: `1px solid ${resizeMode === rm ? 'var(--accent)' : 'var(--border)'}`,
                     borderRadius: 6,
-                    background: resizeMode === rm ? '#F0F6FF' : 'transparent',
-                    color: resizeMode === rm ? 'var(--accent)' : 'var(--muted)',
-                    fontFamily: 'IBM Plex Sans, sans-serif',
+                    background: resizeMode === rm ? 'var(--accent-subtle)' : 'transparent',
+                    color: resizeMode === rm ? 'var(--accent)' : 'var(--text-secondary)',
+                    fontFamily: 'var(--font-ui)',
                     fontSize: 13,
                     cursor: 'pointer',
                   }}
                 >
-                  {rm === 'none' ? 'No resize' : rm === 'percent' ? 'Scale %' : 'Max W/H'}
+                  {rm === 'none' ? tc.noResize : rm === 'percent' ? tc.scalePercent : tc.maxWH}
                 </button>
               ))}
             </div>
@@ -382,7 +387,7 @@ export default function ImageCompress() {
                   onChange={(e) => setResizePct(+e.target.value)}
                   style={{ flex: 1, accentColor: 'var(--accent)' }}
                 />
-                <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 14, minWidth: 40 }}>{resizePct}%</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 14, minWidth: 40, color: 'var(--text-primary)' }}>{resizePct}%</span>
               </div>
             )}
 
@@ -393,17 +398,17 @@ export default function ImageCompress() {
                   placeholder="Max width"
                   value={resizeW}
                   onChange={(e) => setResizeW(e.target.value)}
-                  style={{ width: 120, padding: '6px 10px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'IBM Plex Mono, monospace', fontSize: 13 }}
+                  style={{ width: 120, padding: '6px 10px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-mono)', fontSize: 13, background: 'var(--bg-base)', color: 'var(--text-primary)' }}
                 />
-                <span style={{ color: 'var(--muted)', fontSize: 13 }}>×</span>
+                <span style={{ color: 'var(--text-secondary)', fontSize: 13 }}>×</span>
                 <input
                   type="number"
                   placeholder="Max height"
                   value={resizeH}
                   onChange={(e) => setResizeH(e.target.value)}
-                  style={{ width: 120, padding: '6px 10px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'IBM Plex Mono, monospace', fontSize: 13 }}
+                  style={{ width: 120, padding: '6px 10px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-mono)', fontSize: 13, background: 'var(--bg-base)', color: 'var(--text-primary)' }}
                 />
-                <span style={{ fontSize: 12, color: 'var(--muted)', fontFamily: 'IBM Plex Sans, sans-serif' }}>px, keeps aspect ratio</span>
+                <span style={{ fontSize: 12, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{tc.pxKeepsAspect}</span>
               </div>
             )}
           </div>
@@ -416,8 +421,8 @@ export default function ImageCompress() {
               onChange={(e) => setStripMeta(e.target.checked)}
               style={{ width: 16, height: 16, accentColor: 'var(--accent)', flexShrink: 0 }}
             />
-            <span style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 14, color: 'var(--text)' }}>
-              Strip EXIF metadata (GPS, camera info, timestamps)
+            <span style={{ fontFamily: 'var(--font-ui)', fontSize: 14, color: 'var(--text-primary)' }}>
+              {tc.stripExif}
             </span>
           </label>
 
@@ -427,18 +432,18 @@ export default function ImageCompress() {
             disabled={isProcessing}
             style={{
               padding: '12px 24px',
-              background: isProcessing ? 'var(--border)' : 'var(--accent)',
-              color: isProcessing ? 'var(--muted)' : '#fff',
+              background: isProcessing ? 'var(--bg-elevated)' : 'var(--accent)',
+              color: isProcessing ? 'var(--text-tertiary)' : 'var(--accent-text)',
               border: 'none',
               borderRadius: 'var(--radius)',
-              fontFamily: 'IBM Plex Sans, sans-serif',
+              fontFamily: 'var(--font-ui)',
               fontSize: 15,
               fontWeight: 500,
               cursor: isProcessing ? 'not-allowed' : 'pointer',
               transition: 'background 0.15s',
             }}
           >
-            {isProcessing ? 'Compressing...' : `Compress ${files.length} image${files.length > 1 ? 's' : ''}`}
+            {isProcessing ? tc.compressing : tc.compressBtn(files.length)}
           </button>
         </div>
       )}
@@ -452,30 +457,30 @@ export default function ImageCompress() {
               style={{
                 border: '1px solid var(--border)',
                 borderRadius: 'var(--radius)',
-                background: 'var(--surface)',
+                background: 'var(--bg-surface)',
                 overflow: 'hidden',
               }}
             >
               <div style={{ display: 'flex', gap: 0 }}>
                 {/* Original */}
                 <div style={{ flex: 1, padding: '12px 14px', borderRight: '1px solid var(--border)' }}>
-                  <p style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 11, color: 'var(--muted)', margin: '0 0 6px', textTransform: 'uppercase' }}>
-                    Original
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-tertiary)', margin: '0 0 6px', textTransform: 'uppercase' }}>
+                    {tc.originalLabel}
                   </p>
                   <img
                     src={entry.originalUrl}
                     alt="original"
                     style={{ width: '100%', maxHeight: 120, objectFit: 'contain', display: 'block', background: 'var(--bg-elevated)' }}
                   />
-                  <p style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 12, color: 'var(--muted)', margin: '6px 0 0' }}>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-secondary)', margin: '6px 0 0' }}>
                     {formatBytes(entry.file.size)}
                   </p>
                 </div>
 
                 {/* Compressed */}
                 <div style={{ flex: 1, padding: '12px 14px' }}>
-                  <p style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 11, color: 'var(--muted)', margin: '0 0 6px', textTransform: 'uppercase' }}>
-                    Compressed
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-tertiary)', margin: '0 0 6px', textTransform: 'uppercase' }}>
+                    {tc.compressedLabel}
                   </p>
                   {entry.status === 'done' && entry.compressedUrl && entry.blob ? (
                     <>
@@ -485,12 +490,12 @@ export default function ImageCompress() {
                         style={{ width: '100%', maxHeight: 120, objectFit: 'contain', display: 'block', background: 'var(--bg-elevated)' }}
                       />
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 6 }}>
-                        <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 12, color: 'var(--muted)' }}>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-secondary)' }}>
                           {formatBytes(entry.blob.size)}
                         </span>
                         <span
                           style={{
-                            fontFamily: 'IBM Plex Mono, monospace',
+                            fontFamily: 'var(--font-mono)',
                             fontSize: 12,
                             fontWeight: 600,
                             color: entry.blob.size < entry.file.size ? 'var(--success)' : 'var(--danger)',
@@ -501,15 +506,15 @@ export default function ImageCompress() {
                       </div>
                     </>
                   ) : entry.status === 'processing' ? (
-                    <div style={{ height: 120, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--muted)', fontSize: 13, fontFamily: 'IBM Plex Sans, sans-serif' }}>
-                      Processing...
+                    <div style={{ height: 120, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', fontSize: 13, fontFamily: 'var(--font-ui)' }}>
+                      {tc.processing}
                     </div>
                   ) : entry.status === 'error' ? (
-                    <div style={{ height: 120, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--danger)', fontSize: 13, fontFamily: 'IBM Plex Sans, sans-serif', padding: 8, textAlign: 'center' }}>
+                    <div style={{ height: 120, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--danger)', fontSize: 13, fontFamily: 'var(--font-ui)', padding: 8, textAlign: 'center' }}>
                       {entry.error}
                     </div>
                   ) : (
-                    <div style={{ height: 120, background: 'var(--bg-elevated)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--muted)', fontSize: 13, fontFamily: 'IBM Plex Sans, sans-serif' }}>
+                    <div style={{ height: 120, background: 'var(--bg-elevated)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-tertiary)', fontSize: 13, fontFamily: 'var(--font-ui)' }}>
                       —
                     </div>
                   )}
@@ -530,9 +535,9 @@ export default function ImageCompress() {
               >
                 <span
                   style={{
-                    fontFamily: 'IBM Plex Sans, sans-serif',
+                    fontFamily: 'var(--font-ui)',
                     fontSize: 13,
-                    color: 'var(--text)',
+                    color: 'var(--text-primary)',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap',
@@ -548,16 +553,16 @@ export default function ImageCompress() {
                       onClick={() => downloadOne(entry)}
                       style={{
                         padding: '4px 12px',
-                        background: 'var(--text)',
-                        color: '#fff',
+                        background: 'var(--text-primary)',
+                        color: 'var(--bg-base)',
                         border: 'none',
                         borderRadius: 5,
-                        fontFamily: 'IBM Plex Sans, sans-serif',
+                        fontFamily: 'var(--font-ui)',
                         fontSize: 12,
                         cursor: 'pointer',
                       }}
                     >
-                      Download
+                      {tc.downloadBtn}
                     </button>
                   )}
                   <button
@@ -565,15 +570,15 @@ export default function ImageCompress() {
                     style={{
                       padding: '4px 10px',
                       background: 'transparent',
-                      color: 'var(--muted)',
+                      color: 'var(--text-secondary)',
                       border: '1px solid var(--border)',
                       borderRadius: 5,
-                      fontFamily: 'IBM Plex Sans, sans-serif',
+                      fontFamily: 'var(--font-ui)',
                       fontSize: 12,
                       cursor: 'pointer',
                     }}
                   >
-                    Remove
+                    {tc.removeBtn}
                   </button>
                 </div>
               </div>
@@ -584,23 +589,23 @@ export default function ImageCompress() {
             <button
               onClick={downloadAll}
               style={{
-                padding: '11px 24px',
-                background: 'var(--text)',
-                color: '#fff',
-                border: 'none',
+                padding: '10px 24px',
+                background: 'var(--bg-surface)',
+                color: 'var(--text-primary)',
+                border: '1px solid var(--border)',
                 borderRadius: 'var(--radius)',
-                fontFamily: 'IBM Plex Sans, sans-serif',
+                fontFamily: 'var(--font-ui)',
                 fontSize: 14,
                 fontWeight: 500,
                 cursor: 'pointer',
-                alignSelf: 'flex-start',
               }}
             >
-              Download all as ZIP ({doneCount} files)
+              {tc.downloadAll(doneCount)}
             </button>
           )}
         </div>
       )}
+
       <AdSlot type="horizontal" />
     </div>
     <ToolPageSEO internalSlug="image-compress" />

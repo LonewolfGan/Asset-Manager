@@ -8,10 +8,10 @@ import { useLocale } from '@/hooks/use-locale';
 
 type Level = 'screen' | 'ebook' | 'prepress';
 
-const LEVELS: { id: Level; label: string; dpi: number; description: string; quality: number }[] = [
-  { id: 'screen', label: 'Screen', dpi: 72, description: '72 DPI — smallest file, for on-screen reading only', quality: 0.60 },
-  { id: 'ebook', label: 'Ebook', dpi: 150, description: '150 DPI — balanced, suitable for general sharing', quality: 0.80 },
-  { id: 'prepress', label: 'Prepress', dpi: 300, description: '300 DPI — light compression, print-quality retention', quality: 0.92 },
+const LEVELS: { id: Level; label: string; labelFR: string; dpi: number; description: string; descriptionFR: string; quality: number }[] = [
+  { id: 'screen', label: 'Screen', labelFR: 'Écran', dpi: 72, description: '72 DPI — smallest file, for on-screen reading only', descriptionFR: '72 PPP — fichier minimal, lecture à l\'écran uniquement', quality: 0.60 },
+  { id: 'ebook', label: 'Ebook', labelFR: 'E-book', dpi: 150, description: '150 DPI — balanced, suitable for general sharing', descriptionFR: '150 PPP — équilibré, adapté au partage général', quality: 0.80 },
+  { id: 'prepress', label: 'Prepress', labelFR: 'Impression', dpi: 300, description: '300 DPI — light compression, print-quality retention', descriptionFR: '300 PPP — compression légère, qualité d\'impression préservée', quality: 0.92 },
 ];
 
 function formatBytes(b: number) {
@@ -70,7 +70,9 @@ async function compressPdf(
 }
 
 export default function PdfCompress() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
+  const tc = t.pdfCompress;
+  const isFR = locale === 'FR';
   const [files, setFiles] = useState<File[]>([]);
   const [level, setLevel] = useState<Level>('ebook');
   const [result, setResult] = useState<{ blob: Blob; filename: string; sizeBefore: number; sizeAfter: number } | null>(null);
@@ -113,8 +115,8 @@ export default function PdfCompress() {
     <>
       <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'PDF Tools', 'Compress PDF']} />
-      <h1 style={{ fontFamily: 'DM Serif Display, serif', fontSize: 36, marginBottom: 8, color: 'var(--text)' }}>
-        PDF Compressor
+      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>
+        {t.tools['pdf-compress']?.title ?? 'PDF Compressor'}
       </h1>
       <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-compress']?.description ?? 'Reduce PDF file size by re-rendering pages at a target DPI and quality. All processing runs in your browser.'}</p>
 
@@ -122,8 +124,8 @@ export default function PdfCompress() {
 
       {files.length > 0 && (
         <div style={{ marginTop: 24 }}>
-          <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)', marginBottom: 10, fontFamily: 'IBM Plex Sans, sans-serif', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-            Compression Level
+          <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-tertiary)', marginBottom: 10, fontFamily: 'var(--font-ui)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            {tc.compressionLevel}
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {LEVELS.map((l) => (
@@ -136,7 +138,7 @@ export default function PdfCompress() {
                   padding: '12px 16px',
                   border: `1px solid ${level === l.id ? 'var(--border-strong)' : 'var(--border)'}`,
                   borderRadius: 'var(--radius)',
-                  background: level === l.id ? 'var(--accent-subtle)' : 'var(--surface)',
+                  background: level === l.id ? 'var(--accent-subtle)' : 'var(--bg-surface)',
                   cursor: 'pointer',
                   transition: 'border-color 0.15s, background 0.15s',
                 }}
@@ -150,14 +152,14 @@ export default function PdfCompress() {
                   style={{ accentColor: 'var(--accent)', width: 16, height: 16, flexShrink: 0 }}
                 />
                 <div>
-                  <span style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 14, fontWeight: 600, color: 'var(--text)' }}>
-                    {l.label}
+                  <span style={{ fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>
+                    {isFR ? l.labelFR : l.label}
                   </span>
-                  <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 12, color: 'var(--muted)', marginLeft: 8 }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)', marginLeft: 8 }}>
                     {l.dpi} DPI · quality {Math.round(l.quality * 100)}%
                   </span>
-                  <p style={{ margin: '2px 0 0', fontSize: 13, color: 'var(--muted)', fontFamily: 'IBM Plex Sans, sans-serif' }}>
-                    {l.description}
+                  <p style={{ margin: '2px 0 0', fontSize: 13, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>
+                    {isFR ? l.descriptionFR : l.description}
                   </p>
                 </div>
               </label>
@@ -177,32 +179,32 @@ export default function PdfCompress() {
             color: 'var(--accent-text)',
             border: 'none',
             borderRadius: 'var(--radius)',
-            fontFamily: 'IBM Plex Sans, sans-serif',
+            fontFamily: 'var(--font-ui)',
             fontSize: 15,
             fontWeight: 500,
             cursor: 'pointer',
           }}
         >
-          Compress PDF
+          {tc.compressBtn}
         </button>
       )}
 
-      {isProcessing && <ProgressBar progress={progress} label="Compressing PDF — rendering pages..." />}
-      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
+      {isProcessing && <ProgressBar progress={progress} label={tc.compressingLabel} />}
+      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14, fontFamily: 'var(--font-ui)' }}>{error}</p>}
 
       {result && (
-        <div style={{ marginTop: 24, padding: 20, border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--surface)' }}>
+        <div style={{ marginTop: 24, padding: 20, border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-surface)' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 16 }}>
             {[
-              { label: 'Original', value: formatBytes(result.sizeBefore) },
-              { label: 'Compressed', value: formatBytes(result.sizeAfter) },
-              { label: 'Reduction', value: `${reduction > 0 ? '-' : '+'}${Math.abs(reduction)}%` },
+              { label: tc.statsOriginal, value: formatBytes(result.sizeBefore) },
+              { label: tc.statsCompressed, value: formatBytes(result.sizeAfter) },
+              { label: tc.statsReduction, value: `${reduction > 0 ? '-' : '+'}${Math.abs(reduction)}%` },
             ].map((s) => (
               <div key={s.label} style={{ textAlign: 'center' }}>
-                <p style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 22, fontWeight: 600, color: s.label === 'Reduction' && reduction > 0 ? 'var(--success)' : 'var(--text)', margin: 0 }}>
+                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 600, color: s.label === tc.statsReduction && reduction > 0 ? 'var(--success)' : 'var(--text-primary)', margin: 0 }}>
                   {s.value}
                 </p>
-                <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 12, color: 'var(--muted)', margin: '2px 0 0' }}>
+                <p style={{ fontFamily: 'var(--font-ui)', fontSize: 12, color: 'var(--text-tertiary)', margin: '2px 0 0' }}>
                   {s.label}
                 </p>
               </div>
@@ -217,13 +219,13 @@ export default function PdfCompress() {
               color: 'var(--accent-text)',
               border: 'none',
               borderRadius: 'var(--radius)',
-              fontFamily: 'IBM Plex Sans, sans-serif',
+              fontFamily: 'var(--font-ui)',
               fontSize: 14,
               fontWeight: 500,
               cursor: 'pointer',
             }}
           >
-            Download {result.filename}
+            {tc.downloadBtn(result.filename)}
           </button>
         </div>
       )}
@@ -237,11 +239,11 @@ export default function PdfCompress() {
           borderRadius: 'var(--radius)',
           fontSize: 13,
           color: 'var(--warning)',
-          fontFamily: 'IBM Plex Sans, sans-serif',
+          fontFamily: 'var(--font-ui)',
           lineHeight: 1.55,
         }}
       >
-        <strong>Note:</strong> Compression results depend on the original PDF content. PDFs that are already optimized or contain mostly vector content may see minimal size reduction. This tool re-renders pages as JPEG images — text will not be selectable in the output.
+        {tc.note}
       </div>
       <AdSlot type="horizontal" />
     </div>

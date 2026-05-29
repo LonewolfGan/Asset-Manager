@@ -87,6 +87,104 @@ export type Translations = {
     strength: { weak: string; fair: string; strong: string; veryStrong: string; exceptional: string };
   };
   formatSelector: { search: string; noResults: string };
+  aiTextScrubber: {
+    tabInvisible: string;
+    tabStylistic: string;
+    placeholder: string;
+    scan: string;
+    removeBtn: string;
+    scrubPhrases: string;
+    foundCount: (n: number) => string;
+    cleanedOutput: string;
+    copy: string;
+    downloadTxt: string;
+    disclaimer: string;
+  };
+  backgroundRemover: {
+    note: string;
+    removeBtn: string;
+    loadingModel: string;
+    processingImage: string;
+    original: string;
+    result: string;
+  };
+  metadataCleaner: {
+    tabImages: string;
+    tabPdfs: string;
+    tabDocs: string;
+    analyzeBtn: string;
+    foundMetadata: string;
+    cleanBtn: string;
+    cleaningLabel: string;
+    disclaimer: string;
+  };
+  pdfCompress: {
+    compressionLevel: string;
+    compressBtn: string;
+    compressingLabel: string;
+    statsOriginal: string;
+    statsCompressed: string;
+    statsReduction: string;
+    downloadBtn: (filename: string) => string;
+    note: string;
+  };
+  pdfMerge: {
+    mergeBtn: (n: number) => string;
+    mergingLabel: string;
+    errorMin2: string;
+  };
+  imageCompress: {
+    qualitySlider: string;
+    targetSize: string;
+    quality: string;
+    smallest: string;
+    original100: string;
+    targetSizeLabel: string;
+    kbPerFile: string;
+    resize: string;
+    noResize: string;
+    scalePercent: string;
+    maxWH: string;
+    pxKeepsAspect: string;
+    stripExif: string;
+    compressBtn: (n: number) => string;
+    compressing: string;
+    originalLabel: string;
+    compressedLabel: string;
+    processing: string;
+    downloadBtn: string;
+    removeBtn: string;
+    dropHint: string;
+    downloadAll: (n: number) => string;
+  };
+  documentConverter: {
+    inputFile: string;
+    selectDesc: string;
+    dragDrop: string;
+    clickBrowse: string;
+    convertBtn: string;
+    processingBtn: string;
+    converting: string;
+    conversionFailed: string;
+    output: string;
+    outputDesc: string;
+    downloadTxt: string;
+    pdfSuccess: string;
+    ready: string;
+  };
+  imageConverter: {
+    settings: string;
+    outputFormat: string;
+    quality: string;
+    convertAll: string;
+    converting: string;
+    downloadAll: string;
+    download: string;
+    addImages: string;
+    dragDrop: string;
+    processing: string;
+    clearAll: string;
+  };
 };
 
 const EN: Translations = {
@@ -213,6 +311,7 @@ const EN: Translations = {
     "currency-converter": { title: "Currency Converter", description: "Convert between 170 currencies with live rates" },
     "qr-code-generator": { title: "QR Code Generator", description: "Generate QR codes from URLs, text, Wi-Fi credentials, or contact cards — entirely in your browser" },
     "tip-calculator": { title: "Tip Calculator", description: "Calculate tip and split the bill across any number of people" },
+    "document-converter": { title: "Document Converter", description: "Convert PDFs, DOCX, and TXT files directly in your browser. All processing is local." },
   },
   ui: {
     dropzone: "Drop file here or click to browse",
@@ -281,6 +380,104 @@ const EN: Translations = {
     strength: { weak: "Weak", fair: "Fair", strong: "Strong", veryStrong: "Very Strong", exceptional: "Exceptional" },
   },
   formatSelector: { search: "Search...", noResults: "No results found" },
+  aiTextScrubber: {
+    tabInvisible: "Invisible Character Remover",
+    tabStylistic: "Stylistic Scrubber",
+    placeholder: "Paste text here...",
+    scan: "Scan",
+    removeBtn: "Remove",
+    scrubPhrases: "Scrub Phrases",
+    foundCount: (n) => `${n} invisible character${n === 1 ? "" : "s"} found.`,
+    cleanedOutput: "Cleaned Output",
+    copy: "Copy",
+    downloadTxt: "Download .txt",
+    disclaimer: "Disclaimer: This does not guarantee bypass of all AI detection methods, including cryptographic watermarking techniques.",
+  },
+  backgroundRemover: {
+    note: "Note: Background removal is processed server-side using AI. Your image is sent to the server, processed, and returned — it is not stored.",
+    removeBtn: "Remove Background",
+    loadingModel: "Loading AI model...",
+    processingImage: "Processing image...",
+    original: "Original",
+    result: "Result",
+  },
+  metadataCleaner: {
+    tabImages: "Images",
+    tabPdfs: "PDFs",
+    tabDocs: "Documents (DOCX)",
+    analyzeBtn: "Analyze Metadata",
+    foundMetadata: "Found Metadata",
+    cleanBtn: "Clean & Download",
+    cleaningLabel: "Cleaning...",
+    disclaimer: "Disclaimer: This tool removes common metadata fields (EXIF, XMP, document properties). It does not guarantee removal of cryptographic fingerprints, steganographic data, or AI model watermarks embedded in pixel values.",
+  },
+  pdfCompress: {
+    compressionLevel: "Compression Level",
+    compressBtn: "Compress PDF",
+    compressingLabel: "Compressing PDF — rendering pages...",
+    statsOriginal: "Original",
+    statsCompressed: "Compressed",
+    statsReduction: "Reduction",
+    downloadBtn: (filename) => `Download ${filename}`,
+    note: "Note: Compression results depend on the original PDF content. PDFs that are already optimized or contain mostly vector content may see minimal size reduction. This tool re-renders pages as JPEG images — text will not be selectable in the output.",
+  },
+  pdfMerge: {
+    mergeBtn: (n) => `Merge ${n} PDFs`,
+    mergingLabel: "Merging PDFs...",
+    errorMin2: "Please select at least 2 PDFs to merge.",
+  },
+  imageCompress: {
+    qualitySlider: "Quality slider",
+    targetSize: "Target file size",
+    quality: "Quality",
+    smallest: "1 — smallest",
+    original100: "100 — original",
+    targetSizeLabel: "Target size",
+    kbPerFile: "KB per file",
+    resize: "Resize",
+    noResize: "No resize",
+    scalePercent: "Scale %",
+    maxWH: "Max W/H",
+    pxKeepsAspect: "px, keeps aspect ratio",
+    stripExif: "Strip EXIF metadata (GPS, camera info, timestamps)",
+    compressBtn: (n) => `Compress ${n} image${n === 1 ? "" : "s"}`,
+    compressing: "Compressing...",
+    originalLabel: "Original",
+    compressedLabel: "Compressed",
+    processing: "Processing...",
+    downloadBtn: "Download",
+    removeBtn: "Remove",
+    dropHint: "Drop images here or click to select — up to 20 files, 20 MB each",
+    downloadAll: (n) => `Download All (${n})`,
+  },
+  documentConverter: {
+    inputFile: "Input File",
+    selectDesc: "Select a PDF, DOCX, or TXT file.",
+    dragDrop: "Drag & drop your file here",
+    clickBrowse: "or click to browse",
+    convertBtn: "Convert Document",
+    processingBtn: "Processing...",
+    converting: "Converting...",
+    conversionFailed: "Conversion Failed",
+    output: "Output",
+    outputDesc: "Extracted text or downloaded file.",
+    downloadTxt: "Download as TXT",
+    pdfSuccess: "PDF converted and downloaded successfully.",
+    ready: "Ready to convert.",
+  },
+  imageConverter: {
+    settings: "Settings",
+    outputFormat: "Output Format",
+    quality: "Quality",
+    convertAll: "Convert All",
+    converting: "Converting...",
+    downloadAll: "Download All (ZIP)",
+    download: "Download",
+    addImages: "Add Images",
+    dragDrop: "Drag & drop or click to browse (max 20)",
+    processing: "Processing...",
+    clearAll: "Clear All",
+  },
 };
 
 const FR: Translations = {
@@ -407,6 +604,7 @@ const FR: Translations = {
     "currency-converter": { title: "Convertisseur de Devises", description: "Convertir entre 170 devises avec des taux en temps réel" },
     "qr-code-generator": { title: "Générateur de QR Code", description: "Générez des QR codes depuis des URLs, du texte, des identifiants Wi-Fi ou des cartes de contact — entièrement dans votre navigateur" },
     "tip-calculator": { title: "Calculateur de Pourboire", description: "Calculer le pourboire et diviser l'addition entre plusieurs personnes" },
+    "document-converter": { title: "Convertisseur de Documents", description: "Convertir des fichiers PDF, DOCX et TXT directement dans votre navigateur. Tout le traitement est local." },
   },
   ui: {
     dropzone: "Déposez le fichier ici ou cliquez pour parcourir",
@@ -454,7 +652,7 @@ const FR: Translations = {
     pinnedConversions: "Conversions épinglées", swapAriaLabel: "Inverser les unités",
     categoryNames: {
       length: "Longueur", weight: "Masse", temperature: "Température", volume: "Volume",
-      area: "Surface", speed: "Vitesse", pressure: "Pression", energy: "Énergie",
+      area: "Superficie", speed: "Vitesse", pressure: "Pression", energy: "Énergie",
       power: "Puissance", data: "Données", time: "Temps", angle: "Angle", frequency: "Fréquence",
     },
   },
@@ -463,8 +661,8 @@ const FR: Translations = {
     quickConversions: "Conversions rapides", recentHistory: "Historique récent",
     noRecent: "Aucune conversion récente.",
     liveRatesUpdated: (min) => `Taux en direct, mis à jour il y a ${min} min`,
-    liveRatesJust: "Taux en direct, tout juste mis à jour",
-    offlineSnapshot: (date) => `Instantané hors ligne — taux au ${date}`,
+    liveRatesJust: "Taux en direct, vient d'être mis à jour",
+    offlineSnapshot: (date) => `Données hors ligne — taux au ${date}`,
   },
   passwordGenerator: {
     length: (n) => `Longueur : ${n}`,
@@ -472,9 +670,107 @@ const FR: Translations = {
     numbers: "Chiffres (0-9)", symbols: "Symboles (!@#$)", pronounceable: "Mode prononçable",
     count: "Nombre à générer", regenerate: "Régénérer", copy: "Copier",
     bulkGeneration: "Génération en masse", history: "Historique", clearHistory: "Effacer l'historique",
-    strength: { weak: "Faible", fair: "Acceptable", strong: "Fort", veryStrong: "Très fort", exceptional: "Exceptionnel" },
+    strength: { weak: "Faible", fair: "Correct", strong: "Fort", veryStrong: "Très fort", exceptional: "Exceptionnel" },
   },
   formatSelector: { search: "Rechercher...", noResults: "Aucun résultat" },
+  aiTextScrubber: {
+    tabInvisible: "Suppression de caractères invisibles",
+    tabStylistic: "Nettoyage stylistique",
+    placeholder: "Collez votre texte ici...",
+    scan: "Analyser",
+    removeBtn: "Supprimer",
+    scrubPhrases: "Nettoyer les phrases",
+    foundCount: (n) => `${n} caractère${n === 1 ? "" : "s"} invisible${n === 1 ? "" : "s"} trouvé${n === 1 ? "" : "s"}.`,
+    cleanedOutput: "Résultat nettoyé",
+    copy: "Copier",
+    downloadTxt: "Télécharger .txt",
+    disclaimer: "Avertissement : Ceci ne garantit pas le contournement de toutes les méthodes de détection d'IA, y compris les techniques de filigrane cryptographique.",
+  },
+  backgroundRemover: {
+    note: "Remarque : La suppression d'arrière-plan est traitée côté serveur par IA. Votre image est envoyée au serveur, traitée et renvoyée — elle n'est pas stockée.",
+    removeBtn: "Supprimer l'arrière-plan",
+    loadingModel: "Chargement du modèle IA...",
+    processingImage: "Traitement de l'image...",
+    original: "Original",
+    result: "Résultat",
+  },
+  metadataCleaner: {
+    tabImages: "Images",
+    tabPdfs: "PDFs",
+    tabDocs: "Documents (DOCX)",
+    analyzeBtn: "Analyser les métadonnées",
+    foundMetadata: "Métadonnées trouvées",
+    cleanBtn: "Nettoyer et télécharger",
+    cleaningLabel: "Nettoyage...",
+    disclaimer: "Avertissement : Cet outil supprime les champs de métadonnées courants (EXIF, XMP, propriétés du document). Il ne garantit pas la suppression des empreintes cryptographiques, des données stéganographiques ou des filigranes de modèle IA intégrés dans les valeurs de pixels.",
+  },
+  pdfCompress: {
+    compressionLevel: "Niveau de compression",
+    compressBtn: "Compresser le PDF",
+    compressingLabel: "Compression du PDF — rendu des pages...",
+    statsOriginal: "Original",
+    statsCompressed: "Compressé",
+    statsReduction: "Réduction",
+    downloadBtn: (filename) => `Télécharger ${filename}`,
+    note: "Remarque : Les résultats de compression dépendent du contenu PDF original. Les PDF déjà optimisés ou contenant principalement du contenu vectoriel peuvent voir une réduction minimale. Cet outil restitue les pages en images JPEG — le texte ne sera pas sélectionnable dans le résultat.",
+  },
+  pdfMerge: {
+    mergeBtn: (n) => `Fusionner ${n} PDFs`,
+    mergingLabel: "Fusion des PDFs...",
+    errorMin2: "Veuillez sélectionner au moins 2 PDFs à fusionner.",
+  },
+  imageCompress: {
+    qualitySlider: "Curseur de qualité",
+    targetSize: "Taille cible",
+    quality: "Qualité",
+    smallest: "1 — plus petit",
+    original100: "100 — original",
+    targetSizeLabel: "Taille cible",
+    kbPerFile: "Ko par fichier",
+    resize: "Redimensionner",
+    noResize: "Sans redimensionnement",
+    scalePercent: "Échelle %",
+    maxWH: "Max L/H",
+    pxKeepsAspect: "px, conserve le ratio",
+    stripExif: "Supprimer les métadonnées EXIF (GPS, info appareil, horodatages)",
+    compressBtn: (n) => `Compresser ${n} image${n === 1 ? "" : "s"}`,
+    compressing: "Compression...",
+    originalLabel: "Original",
+    compressedLabel: "Compressé",
+    processing: "Traitement...",
+    downloadBtn: "Télécharger",
+    removeBtn: "Supprimer",
+    dropHint: "Déposez des images ici ou cliquez pour sélectionner — 20 fichiers max, 20 Mo chacun",
+    downloadAll: (n) => `Tout télécharger (${n})`,
+  },
+  documentConverter: {
+    inputFile: "Fichier d'entrée",
+    selectDesc: "Sélectionnez un fichier PDF, DOCX ou TXT.",
+    dragDrop: "Déposez votre fichier ici",
+    clickBrowse: "ou cliquez pour parcourir",
+    convertBtn: "Convertir le document",
+    processingBtn: "Traitement...",
+    converting: "Conversion...",
+    conversionFailed: "Conversion échouée",
+    output: "Résultat",
+    outputDesc: "Texte extrait ou fichier téléchargé.",
+    downloadTxt: "Télécharger en TXT",
+    pdfSuccess: "PDF converti et téléchargé avec succès.",
+    ready: "Prêt à convertir.",
+  },
+  imageConverter: {
+    settings: "Paramètres",
+    outputFormat: "Format de sortie",
+    quality: "Qualité",
+    convertAll: "Tout convertir",
+    converting: "Conversion...",
+    downloadAll: "Tout télécharger (ZIP)",
+    download: "Télécharger",
+    addImages: "Ajouter des images",
+    dragDrop: "Glissez-déposez ou cliquez pour parcourir (max 20)",
+    processing: "Traitement...",
+    clearAll: "Tout effacer",
+  },
 };
 
 export const TRANSLATIONS: Record<Locale, Translations> = { EN, FR };

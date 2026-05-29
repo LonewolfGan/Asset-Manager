@@ -10,6 +10,7 @@ import { useLocale } from '@/hooks/use-locale';
 
 export default function PdfMerge() {
   const { t } = useLocale();
+  const tc = t.pdfMerge;
   const [files, setFiles] = useState<File[]>([]);
   const [result, setResult] = useState<{blob: Blob, filename: string, sizeAfter: number, sizeBefore?: number} | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -18,14 +19,14 @@ export default function PdfMerge() {
 
   const handleConvert = async () => {
     if (files.length < 2) {
-      setError("Please select at least 2 PDFs to merge.");
+      setError(tc.errorMin2);
       return;
     }
     setError(null); setIsProcessing(true); setProgress(0);
     try {
       const mergedPdf = await PDFDocument.create();
       let totalSizeBefore = 0;
-      
+
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         totalSizeBefore += file.size;
@@ -37,7 +38,7 @@ export default function PdfMerge() {
         });
         setProgress(Math.round(((i + 1) / files.length) * 100));
       }
-      
+
       const pdfBytes = await mergedPdf.save();
       const blob = new Blob([pdfBytes], { type: 'application/pdf' });
       setResult({ blob, filename: 'merged_document.pdf', sizeAfter: blob.size, sizeBefore: totalSizeBefore });
@@ -52,18 +53,18 @@ export default function PdfMerge() {
       <Breadcrumb items={['Home', 'PDF Tools', 'Merge PDFs']} />
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['pdf-merge']?.title ?? 'Merge PDFs'}</h1>
       <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-merge']?.description ?? 'Combine multiple PDF files into a single document instantly.'}</p>
-      
+
       <FileUpload accept={['.pdf']} maxSizeMB={50} multiple={true} onFiles={setFiles} />
-      
+
       {files.length > 0 && !isProcessing && (
         <button onClick={handleConvert} disabled={isProcessing || files.length < 2}
-          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15, fontWeight: 500, cursor: files.length < 2 ? 'not-allowed' : 'pointer', width: '100%', opacity: files.length < 2 ? 0.5 : 1 }}>
-          Merge {files.length} PDFs
+          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 15, fontWeight: 500, cursor: files.length < 2 ? 'not-allowed' : 'pointer', width: '100%', opacity: files.length < 2 ? 0.5 : 1 }}>
+          {tc.mergeBtn(files.length)}
         </button>
       )}
-      
-      {isProcessing && <ProgressBar progress={progress} label="Merging PDFs..." />}
-      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
+
+      {isProcessing && <ProgressBar progress={progress} label={tc.mergingLabel} />}
+      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14, fontFamily: 'var(--font-ui)' }}>{error}</p>}
       {result && <ResultPanel {...result} />}
       <AdSlot type="horizontal" />
     </div>

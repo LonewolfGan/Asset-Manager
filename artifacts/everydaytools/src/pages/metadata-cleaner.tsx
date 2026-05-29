@@ -10,8 +10,9 @@ import { useLocale } from '@/hooks/use-locale';
 
 export default function MetadataCleaner() {
   const { t } = useLocale();
+  const tc = t.metadataCleaner;
   const [tab, setTab] = useState<'images'|'pdfs'|'docs'>('images');
-  
+
   const [files, setFiles] = useState<File[]>([]);
   const [metadata, setMetadata] = useState<Record<string, any> | null>(null);
   const [result, setResult] = useState<{blob: Blob, filename: string, sizeAfter: number, sizeBefore?: number} | null>(null);
@@ -101,51 +102,64 @@ export default function MetadataCleaner() {
     } finally { setIsProcessing(false); }
   };
 
+  const tabStyle = (active: boolean): React.CSSProperties => ({
+    flex: 1,
+    padding: '12px',
+    background: 'none',
+    border: 'none',
+    borderBottom: active ? '2px solid var(--accent)' : '2px solid transparent',
+    fontWeight: 500,
+    cursor: 'pointer',
+    color: active ? 'var(--text-primary)' : 'var(--text-secondary)',
+    fontFamily: 'var(--font-ui)',
+    fontSize: 14,
+  });
+
   return (
     <>
       <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Privacy Tools', 'Metadata Cleaner']} />
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['metadata-cleaner']?.title ?? 'Metadata Cleaner'}</h1>
       <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['metadata-cleaner']?.description ?? 'Strip EXIF, XMP, and document properties from your files to protect your privacy.'}</p>
-      
+
       <div style={{ display: 'flex', borderBottom: '1px solid var(--border)', marginBottom: 24 }}>
-        <button onClick={() => handleTabChange('images')} style={{ flex: 1, padding: '12px', background: 'none', border: 'none', borderBottom: tab === 'images' ? '2px solid var(--accent)' : '2px solid transparent', fontWeight: 500, cursor: 'pointer', color: tab === 'images' ? 'var(--text)' : 'var(--muted)' }}>Images</button>
-        <button onClick={() => handleTabChange('pdfs')} style={{ flex: 1, padding: '12px', background: 'none', border: 'none', borderBottom: tab === 'pdfs' ? '2px solid var(--accent)' : '2px solid transparent', fontWeight: 500, cursor: 'pointer', color: tab === 'pdfs' ? 'var(--text)' : 'var(--muted)' }}>PDFs</button>
-        <button onClick={() => handleTabChange('docs')} style={{ flex: 1, padding: '12px', background: 'none', border: 'none', borderBottom: tab === 'docs' ? '2px solid var(--accent)' : '2px solid transparent', fontWeight: 500, cursor: 'pointer', color: tab === 'docs' ? 'var(--text)' : 'var(--muted)' }}>Documents (DOCX)</button>
+        <button onClick={() => handleTabChange('images')} style={tabStyle(tab === 'images')}>{tc.tabImages}</button>
+        <button onClick={() => handleTabChange('pdfs')} style={tabStyle(tab === 'pdfs')}>{tc.tabPdfs}</button>
+        <button onClick={() => handleTabChange('docs')} style={tabStyle(tab === 'docs')}>{tc.tabDocs}</button>
       </div>
-      
+
       {tab === 'images' && <FileUpload accept={['image/jpeg', 'image/png']} maxSizeMB={20} onFiles={setFiles} />}
       {tab === 'pdfs' && <FileUpload accept={['.pdf']} maxSizeMB={50} onFiles={setFiles} />}
       {tab === 'docs' && <FileUpload accept={['.docx']} maxSizeMB={50} onFiles={setFiles} />}
-      
+
       {files.length > 0 && !result && (
-        <button onClick={handleAnalyze} style={{ marginTop: 16, padding: '12px 24px', background: 'var(--bg)', color: 'var(--text)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15, fontWeight: 500, cursor: 'pointer', width: '100%' }}>
-          Analyze Metadata
+        <button onClick={handleAnalyze} style={{ marginTop: 16, padding: '12px 24px', background: 'var(--bg-surface)', color: 'var(--text-primary)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 15, fontWeight: 500, cursor: 'pointer', width: '100%' }}>
+          {tc.analyzeBtn}
         </button>
       )}
-      
+
       {metadata && !result && (
-        <div style={{ marginTop: 24, padding: 16, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
-          <h3 style={{ fontSize: 16, fontWeight: 500, marginBottom: 16 }}>Found Metadata</h3>
-          <pre style={{ maxHeight: 200, overflow: 'auto', background: 'var(--bg)', padding: 12, borderRadius: 'var(--radius)', fontSize: 13, fontFamily: 'IBM Plex Mono, monospace' }}>
+        <div style={{ marginTop: 24, padding: 16, background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
+          <h3 style={{ fontSize: 16, fontWeight: 500, marginBottom: 16, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{tc.foundMetadata}</h3>
+          <pre style={{ maxHeight: 200, overflow: 'auto', background: 'var(--bg-base)', padding: 12, borderRadius: 'var(--radius)', fontSize: 13, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>
             {JSON.stringify(metadata, null, 2)}
           </pre>
-          
+
           <button onClick={handleClean} disabled={isProcessing}
-            style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15, fontWeight: 500, cursor: 'pointer', width: '100%' }}>
-            Clean & Download
+            style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 15, fontWeight: 500, cursor: 'pointer', width: '100%' }}>
+            {tc.cleanBtn}
           </button>
         </div>
       )}
-      
-      {isProcessing && <ProgressBar progress={100} label="Cleaning..." />}
-      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
-      
+
+      {isProcessing && <ProgressBar progress={100} label={tc.cleaningLabel} />}
+      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14, fontFamily: 'var(--font-ui)' }}>{error}</p>}
+
       {result && (
         <div>
           <ResultPanel {...result} />
-          <div style={{ marginTop: 16, padding: 12, background: 'var(--danger)', color: 'white', opacity: 0.9, borderRadius: 'var(--radius)', fontSize: 13, lineHeight: 1.5 }}>
-            <strong>Disclaimer:</strong> This tool removes common metadata fields (EXIF, XMP, document properties). It does not guarantee removal of cryptographic fingerprints, steganographic data, or AI model watermarks embedded in pixel values.
+          <div style={{ marginTop: 16, padding: 12, background: 'var(--danger)', color: 'white', opacity: 0.9, borderRadius: 'var(--radius)', fontSize: 13, lineHeight: 1.5, fontFamily: 'var(--font-ui)' }}>
+            {tc.disclaimer}
           </div>
         </div>
       )}

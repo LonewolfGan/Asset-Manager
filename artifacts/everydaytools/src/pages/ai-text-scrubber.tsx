@@ -6,6 +6,7 @@ import { useLocale } from '@/hooks/use-locale';
 
 export default function AiTextScrubber() {
   const { t } = useLocale();
+  const tc = t.aiTextScrubber;
   const [tab, setTab] = useState<'invisible'|'stylistic'>('invisible');
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
@@ -74,57 +75,57 @@ export default function AiTextScrubber() {
       <Breadcrumb items={['Home', 'Privacy Tools', 'AI Text Scrubber']} />
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['ai-text-scrubber']?.title ?? 'AI Text Scrubber'}</h1>
       <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['ai-text-scrubber']?.description ?? 'Remove invisible trackers and common AI stylistic boilerplate from text.'}</p>
-      
+
       <div style={{ display: 'flex', borderBottom: '1px solid var(--border)', marginBottom: 24 }}>
-        <button onClick={() => setTab('invisible')} style={{ flex: 1, padding: '12px', background: 'none', border: 'none', borderBottom: tab === 'invisible' ? '2px solid var(--accent)' : '2px solid transparent', fontWeight: 500, cursor: 'pointer', color: tab === 'invisible' ? 'var(--text)' : 'var(--muted)' }}>Invisible Character Remover</button>
-        <button onClick={() => setTab('stylistic')} style={{ flex: 1, padding: '12px', background: 'none', border: 'none', borderBottom: tab === 'stylistic' ? '2px solid var(--accent)' : '2px solid transparent', fontWeight: 500, cursor: 'pointer', color: tab === 'stylistic' ? 'var(--text)' : 'var(--muted)' }}>Stylistic Scrubber</button>
+        <button onClick={() => setTab('invisible')} style={{ flex: 1, padding: '12px', background: 'none', border: 'none', borderBottom: tab === 'invisible' ? '2px solid var(--accent)' : '2px solid transparent', fontWeight: 500, cursor: 'pointer', color: tab === 'invisible' ? 'var(--text-primary)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{tc.tabInvisible}</button>
+        <button onClick={() => setTab('stylistic')} style={{ flex: 1, padding: '12px', background: 'none', border: 'none', borderBottom: tab === 'stylistic' ? '2px solid var(--accent)' : '2px solid transparent', fontWeight: 500, cursor: 'pointer', color: tab === 'stylistic' ? 'var(--text-primary)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{tc.tabStylistic}</button>
       </div>
-      
-      <textarea 
-        placeholder="Paste text here..."
+
+      <textarea
+        placeholder={tc.placeholder}
         value={inputText}
         onChange={e => { setInputText(e.target.value); setOutputText(""); setInvisiblesCount(null); }}
-        style={{ width: '100%', minHeight: 200, padding: 16, border: '1px solid var(--border)', borderRadius: 'var(--radius)', outline: 'none', fontFamily: 'IBM Plex Sans, sans-serif', resize: 'vertical' }}
+        style={{ width: '100%', minHeight: 200, padding: 16, border: '1px solid var(--border)', borderRadius: 'var(--radius)', outline: 'none', fontFamily: 'var(--font-ui)', resize: 'vertical', background: 'var(--bg-base)', color: 'var(--text-primary)' }}
       />
-      
+
       {tab === 'invisible' && (
         <div style={{ display: 'flex', gap: 16, marginTop: 16 }}>
-          <button onClick={handleScanInvisibles} style={{ flex: 1, padding: '12px', background: 'var(--bg)', color: 'var(--text)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontWeight: 500, cursor: 'pointer' }}>Scan</button>
-          <button onClick={handleRemoveInvisibles} disabled={!inputText} style={{ flex: 1, padding: '12px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontWeight: 500, cursor: 'pointer' }}>Remove</button>
+          <button onClick={handleScanInvisibles} style={{ flex: 1, padding: '12px', background: 'var(--bg-surface)', color: 'var(--text-primary)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontWeight: 500, cursor: 'pointer' }}>{tc.scan}</button>
+          <button onClick={handleRemoveInvisibles} disabled={!inputText} style={{ flex: 1, padding: '12px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontWeight: 500, cursor: 'pointer' }}>{tc.removeBtn}</button>
         </div>
       )}
-      
+
       {tab === 'stylistic' && (
-        <button onClick={handleStylisticScrub} disabled={!inputText} style={{ width: '100%', marginTop: 16, padding: '12px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontWeight: 500, cursor: 'pointer' }}>
-          Scrub Phrases
+        <button onClick={handleStylisticScrub} disabled={!inputText} style={{ width: '100%', marginTop: 16, padding: '12px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontWeight: 500, cursor: 'pointer' }}>
+          {tc.scrubPhrases}
         </button>
       )}
-      
+
       {invisiblesCount !== null && tab === 'invisible' && (
-        <p style={{ marginTop: 16, fontSize: 14, color: invisiblesCount > 0 ? 'var(--danger)' : 'var(--success)' }}>
-          {invisiblesCount} invisible characters found.
+        <p style={{ marginTop: 16, fontSize: 14, color: invisiblesCount > 0 ? 'var(--danger)' : 'var(--success)', fontFamily: 'var(--font-ui)' }}>
+          {tc.foundCount(invisiblesCount)}
         </p>
       )}
-      
+
       {outputText && (
         <div style={{ marginTop: 32 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-            <h3 style={{ fontSize: 16, fontWeight: 500 }}>Cleaned Output</h3>
+            <h3 style={{ fontSize: 16, fontWeight: 500, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{tc.cleanedOutput}</h3>
             <div style={{ display: 'flex', gap: 8 }}>
-              <button onClick={handleCopy} style={{ padding: '6px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: 13, cursor: 'pointer' }}>Copy</button>
-              <button onClick={handleDownload} style={{ padding: '6px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: 13, cursor: 'pointer' }}>Download .txt</button>
+              <button onClick={handleCopy} style={{ padding: '6px 12px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: 13, cursor: 'pointer', fontFamily: 'var(--font-ui)', color: 'var(--text-primary)' }}>{tc.copy}</button>
+              <button onClick={handleDownload} style={{ padding: '6px 12px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: 13, cursor: 'pointer', fontFamily: 'var(--font-ui)', color: 'var(--text-primary)' }}>{tc.downloadTxt}</button>
             </div>
           </div>
-          <textarea 
+          <textarea
             readOnly
             value={outputText}
-            style={{ width: '100%', minHeight: 200, padding: 16, border: '1px solid var(--success)', borderRadius: 'var(--radius)', outline: 'none', fontFamily: 'IBM Plex Mono, monospace', background: 'var(--bg)' }}
+            style={{ width: '100%', minHeight: 200, padding: 16, border: '1px solid var(--success)', borderRadius: 'var(--radius)', outline: 'none', fontFamily: 'var(--font-mono)', background: 'var(--bg-base)', color: 'var(--text-primary)' }}
           />
         </div>
       )}
-      
-      <p style={{ marginTop: 24, fontSize: 13, color: 'var(--muted)', textAlign: 'center', padding: '0 24px' }}>
-        <strong>Disclaimer:</strong> This does not guarantee bypass of all AI detection methods, including cryptographic watermarking techniques.
+
+      <p style={{ marginTop: 24, fontSize: 13, color: 'var(--text-tertiary)', textAlign: 'center', padding: '0 24px', fontFamily: 'var(--font-ui)' }}>
+        {tc.disclaimer}
       </p>
       <AdSlot type="horizontal" />
     </div>
