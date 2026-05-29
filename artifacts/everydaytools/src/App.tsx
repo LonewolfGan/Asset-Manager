@@ -244,8 +244,10 @@ function LocaleToolRoute({ params }: { params: { slug: string } }) {
 function Router() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-base)', fontFamily: 'var(--font-ui)', display: 'flex', flexDirection: 'column' }}>
+      <a href="#main-content" className="skip-link">Skip to main content</a>
+      <div id="status-announcer" aria-live="polite" aria-atomic="true" className="sr-only" />
       <TopNav />
-      <main style={{ flex: 1 }}>
+      <main id="main-content" style={{ flex: 1 }}>
         <Suspense fallback={<PageLoader />}>
           <Switch>
             <Route path="/" component={Home} />

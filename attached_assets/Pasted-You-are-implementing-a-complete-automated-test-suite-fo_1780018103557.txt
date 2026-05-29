@@ -1,0 +1,1192 @@
+You are implementing a complete automated test suite for this site. Every tool, every page, every interaction must be covered. Tests must run automatically and produce a clear pass/fail report. After writing the tests, run them all and fix every failure.
+
+SETUP — TEST INFRASTRUCTURE
+Before writing any test, set up the testing stack:
+bash# Unit + Integration tests
+npm install --save-dev vitest @vitest/coverage-v8 jsdom
+
+# Component tests
+npm install --save-dev @testing-library/dom @testing-library/user-event @testing-library/jest-dom
+
+# E2E tests (full browser)
+npm install --save-dev playwright @playwright/test
+
+# Accessibility tests
+npm install --save-dev axe-core @axe-core/playwright
+
+# Visual regression (optional but recommended)
+npm install --save-dev @playwright/test
+
+# Performance
+npm install --save-dev lighthouse
+Configure vitest.config.js:
+javascriptimport { defineConfig } from 'vitest/config'
+export default defineConfig({
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: ['./tests/setup.js'],
+    coverage: {
+      reporter: ['text', 'html'],
+      exclude: ['node_modules/', 'tests/'],
+    },
+  },
+})
+Configure playwright.config.js:
+javascriptimport { defineConfig, devices } from '@playwright/test'
+export default defineConfig({
+  testDir: './tests/e2e',
+  fullyParallel: true,
+  retries: 1,
+  reporter: 'html',
+  use: {
+    baseURL: 'http://localhost:3000',
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
+  },
+  projects: [
+    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
+    { name: 'safari', use: { ...devices['Desktop Safari'] } },
+    { name: 'mobile-chrome', use: { ...devices['Pixel 7'] } },
+    { name: 'mobile-safari', use: { ...devices['iPhone 14'] } },
+  ],
+})
+Create tests/setup.js:
+javascriptimport '@testing-library/jest-dom'
+import { vi } from 'vitest'
+
+// Mock File API
+global.URL.createObjectURL = vi.fn(() => 'mock-url')
+global.URL.revokeObjectURL = vi.fn()
+
+// Mock crypto for password generator
+global.crypto.getRandomValues = vi.fn((arr) => {
+  for (let i = 0; i < arr.length; i++) arr[i] = Math.floor(Math.random() * 256)
+  return arr
+})
+
+MODULE 1 — UNIT TESTS (vitest)
+File: tests/unit/
+1a. Conversion logic — every calculator
+javascript// tests/unit/calculators/unit-converter.test.js
+import { describe, it, expect } from 'vitest'
+import { convert } from '@/tools/unit-converter/logic'
+
+describe('Unit Converter — Length', () => {
+  it('1 km = 1000 m', () => expect(convert(1, 'km', 'm')).toBe(1000))
+  it('1 mile = 1.60934 km', () => expect(convert(1, 'mi', 'km')).toBeCloseTo(1.60934, 3))
+  it('1 inch = 2.54 cm', () => expect(convert(1, 'in', 'cm')).toBeCloseTo(2.54, 2))
+  it('1 foot = 30.48 cm', () => expect(convert(1, 'ft', 'cm')).toBeCloseTo(30.48, 2))
+  it('1 yard = 0.9144 m', () => expect(convert(1, 'yd', 'm')).toBeCloseTo(0.9144, 4))
+  it('0 km = 0 m', () => expect(convert(0, 'km', 'm')).toBe(0))
+  it('negative values work', () => expect(convert(-5, 'km', 'm')).toBe(-5000))
+})
+
+describe('Unit Converter — Temperature', () => {
+  it('0°C = 32°F', () => expect(convert(0, 'celsius', 'fahrenheit')).toBe(32))
+  it('100°C = 212°F', () => expect(convert(100, 'celsius', 'fahrenheit')).toBe(212))
+  it('0°C = 273.15K', () => expect(convert(0, 'celsius', 'kelvin')).toBeCloseTo(273.15, 2))
+  it('-40°C = -40°F', () => expect(convert(-40, 'celsius', 'fahrenheit')).toBe(-40))
+  it('32°F = 0°C', () => expect(convert(32, 'fahrenheit', 'celsius')).toBe(0))
+  it('absolute zero: -273.15°C = 0K', () => expect(convert(-273.15, 'celsius', 'kelvin')).toBeCloseTo(0, 1))
+})
+
+describe('Unit Converter — Weight', () => {
+  it('1 kg = 1000 g', () => expect(convert(1, 'kg', 'g')).toBe(1000))
+  it('1 lb = 453.592 g', () => expect(convert(1, 'lb', 'g')).toBeCloseTo(453.592, 2))
+  it('1 oz = 28.3495 g', () => expect(convert(1, 'oz', 'g')).toBeCloseTo(28.3495, 2))
+})
+
+describe('Unit Converter — Volume', () => {
+  it('1 L = 1000 mL', () => expect(convert(1, 'l', 'ml')).toBe(1000))
+  it('1 gallon = 3.78541 L', () => expect(convert(1, 'gal', 'l')).toBeCloseTo(3.78541, 3))
+  it('1 cup = 236.588 mL', () => expect(convert(1, 'cup', 'ml')).toBeCloseTo(236.588, 2))
+})
+
+describe('Unit Converter — Data', () => {
+  it('1 GB = 1024 MB', () => expect(convert(1, 'gb', 'mb')).toBe(1024))
+  it('1 TB = 1024 GB', () => expect(convert(1, 'tb', 'gb')).toBe(1024))
+  it('1 MB = 1024 KB', () => expect(convert(1, 'mb', 'kb')).toBe(1024))
+})
+javascript// tests/unit/calculators/percentage.test.js
+import { calculatePercentage, percentageOf, percentageChange } from '@/tools/percentage/logic'
+
+describe('Percentage Calculator', () => {
+  it('20% of 150 = 30', () => expect(percentageOf(20, 150)).toBe(30))
+  it('30 is what % of 150 = 20', () => expect(calculatePercentage(30, 150)).toBe(20))
+  it('% change from 100 to 150 = +50%', () => expect(percentageChange(100, 150)).toBe(50))
+  it('% change from 150 to 100 = -33.33%', () => expect(percentageChange(150, 100)).toBeCloseTo(-33.33, 2))
+  it('handles 0 denominator gracefully', () => expect(calculatePercentage(30, 0)).toBeNull())
+})
+javascript// tests/unit/calculators/tip.test.js
+import { calculateTip } from '@/tools/tip-calculator/logic'
+
+describe('Tip Calculator', () => {
+  it('15% tip on $100 = $15 tip, $115 total', () => {
+    const result = calculateTip(100, 15, 1)
+    expect(result.tipAmount).toBe(15)
+    expect(result.total).toBe(115)
+    expect(result.perPerson).toBe(115)
+  })
+  it('splits correctly among 4 people', () => {
+    const result = calculateTip(100, 20, 4)
+    expect(result.perPerson).toBe(30) // ($100 + $20) / 4
+  })
+  it('handles $0 bill', () => {
+    const result = calculateTip(0, 15, 1)
+    expect(result.tipAmount).toBe(0)
+    expect(result.total).toBe(0)
+  })
+})
+1b. Password generator
+javascript// tests/unit/generators/password.test.js
+import { generatePassword, calculateStrength } from '@/tools/password-generator/logic'
+
+describe('Password Generator', () => {
+  it('generates correct length', () => {
+    for (const len of [8, 12, 16, 32, 64]) {
+      expect(generatePassword({ length: len, uppercase: true, numbers: true, symbols: true })).toHaveLength(len)
+    }
+  })
+  it('includes uppercase when requested', () => {
+    const pwd = generatePassword({ length: 50, uppercase: true, lowercase: false, numbers: false, symbols: false })
+    expect(pwd).toMatch(/[A-Z]/)
+    expect(pwd).not.toMatch(/[a-z]/)
+  })
+  it('includes numbers when requested', () => {
+    const pwd = generatePassword({ length: 50, uppercase: false, lowercase: false, numbers: true, symbols: false })
+    expect(pwd).toMatch(/[0-9]/)
+  })
+  it('includes symbols when requested', () => {
+    const pwd = generatePassword({ length: 50, uppercase: false, lowercase: false, numbers: false, symbols: true })
+    expect(pwd).toMatch(/[^a-zA-Z0-9]/)
+  })
+  it('never generates two identical passwords', () => {
+    const a = generatePassword({ length: 16, uppercase: true, numbers: true, symbols: true })
+    const b = generatePassword({ length: 16, uppercase: true, numbers: true, symbols: true })
+    expect(a).not.toBe(b)
+  })
+  it('uses crypto.getRandomValues (not Math.random)', () => {
+    // crypto.getRandomValues is mocked in setup — verify it was called
+    const spy = vi.spyOn(crypto, 'getRandomValues')
+    generatePassword({ length: 16, uppercase: true, numbers: true, symbols: true })
+    expect(spy).toHaveBeenCalled()
+  })
+
+  it('strength: 8 chars no complexity = weak', () => {
+    expect(calculateStrength('aaaaaaaa')).toBe('weak')
+  })
+  it('strength: 16 chars mixed = strong', () => {
+    expect(calculateStrength('aB3!aB3!aB3!aB3!')).toBe('strong')
+  })
+})
+1c. File validation utilities
+javascript// tests/unit/utils/file-validation.test.js
+import { validateFile, isMimeTypeValid, isFileSizeValid } from '@/utils/file-validation'
+
+describe('File Validation', () => {
+  const makeFakeFile = (name, type, size) =>
+    new File([new ArrayBuffer(size)], name, { type })
+
+  it('accepts valid PDF by MIME type', () => {
+    const file = makeFakeFile('test.pdf', 'application/pdf', 1024)
+    expect(isMimeTypeValid(file, ['application/pdf'])).toBe(true)
+  })
+  it('rejects JPG disguised as PDF', () => {
+    const file = makeFakeFile('fake.pdf', 'image/jpeg', 1024)
+    expect(isMimeTypeValid(file, ['application/pdf'])).toBe(false)
+  })
+  it('rejects empty file', () => {
+    const file = makeFakeFile('empty.pdf', 'application/pdf', 0)
+    expect(validateFile(file, { accept: ['application/pdf'], maxSize: 50 * 1024 * 1024 }).valid).toBe(false)
+  })
+  it('rejects file over size limit', () => {
+    const file = makeFakeFile('big.pdf', 'application/pdf', 100 * 1024 * 1024) // 100MB
+    expect(isFileSizeValid(file, 50 * 1024 * 1024)).toBe(false)
+  })
+  it('accepts file under size limit', () => {
+    const file = makeFakeFile('ok.pdf', 'application/pdf', 10 * 1024 * 1024) // 10MB
+    expect(isFileSizeValid(file, 50 * 1024 * 1024)).toBe(true)
+  })
+})
+1d. Translation completeness
+javascript// tests/unit/i18n/translation-completeness.test.js
+import en from '@/locales/en.json'
+import fr from '@/locales/fr.json'
+import ar from '@/locales/ar.json'
+
+const flattenKeys = (obj, prefix = '') =>
+  Object.keys(obj).reduce((acc, key) => {
+    const fullKey = prefix ? `${prefix}.${key}` : key
+    if (typeof obj[key] === 'object' && obj[key] !== null) {
+      Object.assign(acc, flattenKeys(obj[key], fullKey))
+    } else {
+      acc[fullKey] = obj[key]
+    }
+    return acc
+  }, {})
+
+describe('Translation Completeness', () => {
+  const enKeys = Object.keys(flattenKeys(en))
+  const frKeys = Object.keys(flattenKeys(fr))
+  const arKeys = Object.keys(flattenKeys(ar))
+
+  it('FR has all EN keys', () => {
+    const missing = enKeys.filter(k => !frKeys.includes(k))
+    expect(missing).toEqual([]) // will list missing keys if fails
+  })
+  it('AR has all EN keys', () => {
+    const missing = enKeys.filter(k => !arKeys.includes(k))
+    expect(missing).toEqual([])
+  })
+  it('no translation value is empty string', () => {
+    const flat = flattenKeys(en)
+    const empty = Object.entries(flat).filter(([, v]) => v === '')
+    expect(empty).toEqual([])
+  })
+  it('no untranslated marker left in any language file', () => {
+    const flatFr = flattenKeys(fr)
+    const marked = Object.entries(flatFr).filter(([, v]) => String(v).startsWith('⚠️'))
+    expect(marked).toEqual([]) // fail = translation was marked but never translated
+  })
+})
+
+MODULE 2 — COMPONENT / INTEGRATION TESTS
+File: tests/integration/
+javascript// tests/integration/tools/compress-pdf.test.js
+import { render, screen, fireEvent, waitFor } from '@testing-library/dom'
+import userEvent from '@testing-library/user-event'
+import { vi } from 'vitest'
+
+// Mock pdf-lib
+vi.mock('pdf-lib', () => ({
+  PDFDocument: {
+    load: vi.fn().mockResolvedValue({
+      save: vi.fn().mockResolvedValue(new Uint8Array([1, 2, 3])),
+    }),
+  },
+}))
+
+describe('Compress PDF Tool', () => {
+  beforeEach(() => {
+    document.body.innerHTML = '' // reset DOM
+    // Mount your component here
+  })
+
+  it('shows drop zone on load', () => {
+    expect(screen.getByRole('button', { name: /upload/i })).toBeInTheDocument()
+  })
+
+  it('rejects non-PDF file', async () => {
+    const input = document.querySelector('input[type="file"]')
+    const fakeFile = new File(['content'], 'image.jpg', { type: 'image/jpeg' })
+    await userEvent.upload(input, fakeFile)
+    await waitFor(() => {
+      expect(screen.getByRole('alert')).toHaveTextContent(/PDF/i)
+    })
+  })
+
+  it('rejects empty file', async () => {
+    const input = document.querySelector('input[type="file"]')
+    const emptyFile = new File([], 'empty.pdf', { type: 'application/pdf' })
+    await userEvent.upload(input, emptyFile)
+    await waitFor(() => {
+      expect(screen.getByRole('alert')).toBeInTheDocument()
+    })
+  })
+
+  it('shows compression level options', async () => {
+    const input = document.querySelector('input[type="file"]')
+    const validFile = new File([new ArrayBuffer(1024)], 'test.pdf', { type: 'application/pdf' })
+    await userEvent.upload(input, validFile)
+    await waitFor(() => {
+      expect(screen.getByLabelText(/compression/i) || screen.getByRole('group')).toBeInTheDocument()
+    })
+  })
+
+  it('shows progress during processing', async () => {
+    // trigger processing and verify progress indicator appears
+    const input = document.querySelector('input[type="file"]')
+    const validFile = new File([new ArrayBuffer(1024)], 'test.pdf', { type: 'application/pdf' })
+    await userEvent.upload(input, validFile)
+    const compressBtn = screen.getByRole('button', { name: /compress/i })
+    fireEvent.click(compressBtn)
+    expect(screen.getByRole('progressbar')).toBeInTheDocument()
+  })
+
+  it('shows download button after completion', async () => {
+    // ... simulate successful compression
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /download/i })).toBeInTheDocument()
+    })
+  })
+
+  it('shows file size before and after', async () => {
+    await waitFor(() => {
+      expect(screen.getByText(/original/i)).toBeInTheDocument()
+      expect(screen.getByText(/compressed/i)).toBeInTheDocument()
+    })
+  })
+
+  it('download filename is correct', async () => {
+    // verify output is named "test-compressed.pdf" not "download"
+    await waitFor(() => {
+      const downloadLink = screen.getByRole('link', { name: /download/i })
+      expect(downloadLink).toHaveAttribute('download', expect.stringContaining('compressed'))
+    })
+  })
+
+  it('reset button clears the tool', async () => {
+    const resetBtn = screen.getByRole('button', { name: /reset/i })
+    fireEvent.click(resetBtn)
+    expect(screen.getByRole('button', { name: /upload/i })).toBeInTheDocument()
+  })
+})
+Write equivalent integration tests for EVERY tool. Use this as the template. At minimum test:
+
+Initial render (drop zone visible)
+Wrong file type rejection
+Empty file rejection
+File too large rejection
+Processing state (progress indicator)
+Success state (download button appears)
+Correct download filename
+Reset functionality
+Error message content (user-facing, not raw JS errors)
+
+
+MODULE 3 — E2E TESTS (Playwright)
+File: tests/e2e/
+3a. Every tool — happy path
+javascript// tests/e2e/tools/compress-pdf.spec.js
+import { test, expect } from '@playwright/test'
+import path from 'path'
+
+const FIXTURES = path.join(__dirname, '../fixtures')
+
+test.describe('Compress PDF — E2E', () => {
+
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/compress-pdf')
+  })
+
+  test('page loads correctly', async ({ page }) => {
+    await expect(page).toHaveTitle(/compress pdf/i)
+    await expect(page.locator('h1')).toContainText(/compress/i)
+    await expect(page.locator('[data-testid="drop-zone"]')).toBeVisible()
+  })
+
+  test('full happy path — upload, compress, download', async ({ page }) => {
+    // Upload a real test PDF
+    const fileInput = page.locator('input[type="file"]')
+    await fileInput.setInputFiles(path.join(FIXTURES, 'test-5mb.pdf'))
+
+    // Wait for file to be recognized
+    await expect(page.locator('[data-testid="file-name"]')).toContainText('test-5mb.pdf')
+
+    // Select compression level
+    await page.locator('[data-testid="compression-level-medium"]').click()
+
+    // Start compression
+    await page.locator('[data-testid="compress-btn"]').click()
+
+    // Progress bar appears
+    await expect(page.locator('[role="progressbar"]')).toBeVisible()
+
+    // Download button appears (wait up to 30s for large files)
+    await expect(page.locator('[data-testid="download-btn"]')).toBeVisible({ timeout: 30000 })
+
+    // File size reduction shown
+    await expect(page.locator('[data-testid="size-comparison"]')).toBeVisible()
+
+    // Download the file
+    const downloadPromise = page.waitForEvent('download')
+    await page.locator('[data-testid="download-btn"]').click()
+    const download = await downloadPromise
+    expect(download.suggestedFilename()).toMatch(/compressed/)
+    expect(download.suggestedFilename()).toMatch(/\.pdf$/)
+  })
+
+  test('rejects non-PDF file', async ({ page }) => {
+    const fileInput = page.locator('input[type="file"]')
+    await fileInput.setInputFiles(path.join(FIXTURES, 'test-image.jpg'))
+    await expect(page.locator('[role="alert"]')).toBeVisible()
+    await expect(page.locator('[role="alert"]')).toContainText(/pdf/i)
+  })
+
+  test('UI stays responsive during processing', async ({ page }) => {
+    const fileInput = page.locator('input[type="file"]')
+    await fileInput.setInputFiles(path.join(FIXTURES, 'test-20mb.pdf'))
+    await page.locator('[data-testid="compress-btn"]').click()
+
+    // Page must not freeze — can still interact
+    await expect(page.locator('[data-testid="cancel-btn"]')).toBeEnabled()
+  })
+
+  test('cancel button works', async ({ page }) => {
+    const fileInput = page.locator('input[type="file"]')
+    await fileInput.setInputFiles(path.join(FIXTURES, 'test-20mb.pdf'))
+    await page.locator('[data-testid="compress-btn"]').click()
+    await page.locator('[data-testid="cancel-btn"]').click()
+    // Returns to initial state
+    await expect(page.locator('[data-testid="drop-zone"]')).toBeVisible()
+  })
+})
+Create test fixtures — real files for testing:
+tests/fixtures/
+  test-1mb.pdf       ← small PDF for fast tests
+  test-5mb.pdf       ← medium PDF
+  test-20mb.pdf      ← large PDF (performance test)
+  test-corrupted.pdf ← corrupted PDF (error handling test)
+  test-encrypted.pdf ← password-protected PDF
+  test-image.jpg     ← wrong type (error test)
+  test.xlsx          ← for Excel tools
+  test.docx          ← for Word tools
+  test.pptx          ← for PowerPoint tools
+  test.png           ← for image tools
+  test.heic          ← for HEIC conversion
+  test.csv           ← for CSV tools
+  empty.pdf          ← 0 bytes (edge case)
+Write E2E happy path + error tests for EVERY tool using this template.
+3b. Navigation E2E
+javascript// tests/e2e/navigation.spec.js
+test.describe('Navigation', () => {
+
+  test('homepage loads with all categories', async ({ page }) => {
+    await page.goto('/')
+    await expect(page.locator('nav')).toBeVisible()
+    for (const cat of ['PDF', 'Documents', 'Images', 'Calculators']) {
+      await expect(page.locator('nav')).toContainText(cat)
+    }
+  })
+
+  test('every tool card links to a working page', async ({ page }) => {
+    await page.goto('/')
+    const links = await page.locator('[data-testid="tool-card"] a').all()
+    for (const link of links) {
+      const href = await link.getAttribute('href')
+      const response = await page.request.get(href)
+      expect(response.status()).toBe(200)
+    }
+  })
+
+  test('search finds tools', async ({ page }) => {
+    await page.goto('/')
+    await page.locator('[data-testid="search-input"]').fill('compress')
+    await expect(page.locator('[data-testid="tool-card"]').first()).toContainText(/compress/i)
+  })
+
+  test('language switcher changes UI language', async ({ page }) => {
+    await page.goto('/')
+    await page.locator('[data-testid="lang-switcher"]').click()
+    await page.locator('[data-testid="lang-fr"]').click()
+    await expect(page.locator('nav')).not.toContainText('PDF Tools') // verify something changed
+  })
+
+  test('404 page shows for unknown routes', async ({ page }) => {
+    await page.goto('/this-tool-does-not-exist')
+    await expect(page).toHaveURL(/\/this-tool-does-not-exist/)
+    await expect(page.locator('h1')).toContainText(/404|not found/i)
+  })
+})
+
+MODULE 4 — ACCESSIBILITY TESTS
+File: tests/accessibility/
+javascript// tests/accessibility/axe.spec.js
+import { test, expect } from '@playwright/test'
+import AxeBuilder from '@axe-core/playwright'
+
+const TOOL_PAGES = [
+  '/',
+  '/compress-pdf',
+  '/merge-pdf',
+  '/split-pdf',
+  '/rotate-pdf',
+  '/unlock-pdf',
+  '/protect-pdf',
+  '/watermark-pdf',
+  '/add-page-numbers',
+  '/pdf-to-word',
+  '/pdf-to-text',
+  '/pdf-to-image',
+  '/word-to-pdf',
+  '/excel-to-pdf',
+  '/excel-to-csv',
+  '/csv-to-excel',
+  '/pptx-to-pdf',
+  '/png-to-webp',
+  '/jpg-to-webp',
+  '/png-to-jpg',
+  '/jpg-to-png',
+  '/jpg-to-avif',
+  '/heic-to-jpg',
+  '/compress-image',
+  '/resize-image',
+  '/crop-image',
+  '/background-remover',
+  '/image-to-pdf',
+  '/json-formatter',
+  '/base64',
+  '/url-encoder',
+  '/word-counter',
+  '/password-generator',
+  '/qr-generator',
+  '/percentage-calculator',
+  '/unit-converter',
+  '/currency-converter',
+  '/tip-calculator',
+  '/metadata-cleaner',
+]
+
+for (const route of TOOL_PAGES) {
+  test(`${route} — no critical accessibility violations`, async ({ page }) => {
+    await page.goto(route)
+    await page.waitForLoadState('networkidle')
+
+    const results = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+      .analyze()
+
+    // Log violations for debugging
+    if (results.violations.length > 0) {
+      console.log(`Violations on ${route}:`, JSON.stringify(results.violations, null, 2))
+    }
+
+    expect(results.violations).toEqual([])
+  })
+}
+
+test('focus ring visible on all interactive elements', async ({ page }) => {
+  await page.goto('/compress-pdf')
+  // Tab through the page and verify each focused element has a visible outline
+  const focusableElements = await page.locator('button, a, input, select, textarea, [tabindex="0"]').all()
+  for (const el of focusableElements) {
+    await el.focus()
+    const outline = await el.evaluate(e =>
+      window.getComputedStyle(e).getPropertyValue('outline')
+    )
+    expect(outline).not.toBe('none')
+    expect(outline).not.toBe('0px none rgb(0, 0, 0)')
+  }
+})
+
+test('skip link appears on Tab and works', async ({ page }) => {
+  await page.goto('/')
+  await page.keyboard.press('Tab')
+  const skipLink = page.locator('.skip-link')
+  await expect(skipLink).toBeVisible()
+  await skipLink.click()
+  const main = page.locator('#main-content')
+  await expect(main).toBeFocused()
+})
+
+test('all images have alt attributes', async ({ page }) => {
+  await page.goto('/')
+  const images = await page.locator('img').all()
+  for (const img of images) {
+    const alt = await img.getAttribute('alt')
+    expect(alt).not.toBeNull() // alt="" is fine (decorative), alt missing is not
+  }
+})
+
+test('color contrast — text elements pass WCAG AA', async ({ page }) => {
+  await page.goto('/')
+  const results = await new AxeBuilder({ page })
+    .withRules(['color-contrast'])
+    .analyze()
+  expect(results.violations).toEqual([])
+})
+
+test('no keyboard trap outside modals', async ({ page }) => {
+  await page.goto('/compress-pdf')
+  // Tab 30 times — should not get stuck
+  for (let i = 0; i < 30; i++) {
+    await page.keyboard.press('Tab')
+  }
+  // Should be able to reach footer/nav — not trapped in one component
+  const focused = await page.evaluate(() => document.activeElement?.tagName)
+  expect(focused).not.toBeNull()
+})
+
+test('modal focus trap works correctly', async ({ page }) => {
+  await page.goto('/protect-pdf') // tool with a modal
+  // Open modal
+  await page.locator('[data-testid="settings-modal-trigger"]').click()
+  await expect(page.locator('[role="dialog"]')).toBeVisible()
+  // Tab should stay inside modal
+  const firstFocusable = page.locator('[role="dialog"] button, [role="dialog"] input').first()
+  await firstFocusable.focus()
+  // Tab multiple times
+  for (let i = 0; i < 10; i++) await page.keyboard.press('Tab')
+  // Focus should still be inside the modal
+  const isInsideModal = await page.evaluate(() =>
+    document.querySelector('[role="dialog"]')?.contains(document.activeElement)
+  )
+  expect(isInsideModal).toBe(true)
+  // Escape closes modal
+  await page.keyboard.press('Escape')
+  await expect(page.locator('[role="dialog"]')).not.toBeVisible()
+})
+
+test('screen reader live region announces tool state', async ({ page }) => {
+  await page.goto('/compress-pdf')
+  const liveRegion = page.locator('[aria-live]')
+  await expect(liveRegion).toBeAttached()
+  // Upload a file and verify live region updates
+  await page.locator('input[type="file"]').setInputFiles('tests/fixtures/test-1mb.pdf')
+  await page.locator('[data-testid="compress-btn"]').click()
+  await expect(liveRegion).not.toBeEmpty({ timeout: 5000 })
+})
+
+MODULE 5 — RESPONSIVE TESTS
+File: tests/responsive/
+javascript// tests/responsive/viewports.spec.js
+import { test, expect, devices } from '@playwright/test'
+
+const VIEWPORTS = [
+  { name: 'iPhone SE', width: 375, height: 667 },
+  { name: 'iPhone 14 Pro', width: 430, height: 932 },
+  { name: 'iPad', width: 768, height: 1024 },
+  { name: 'Laptop', width: 1280, height: 800 },
+  { name: 'Desktop', width: 1920, height: 1080 },
+]
+
+const PAGES_TO_TEST = ['/', '/compress-pdf', '/unit-converter', '/png-to-webp', '/json-formatter']
+
+for (const viewport of VIEWPORTS) {
+  for (const route of PAGES_TO_TEST) {
+    test(`${route} — ${viewport.name} (${viewport.width}px) — no overflow`, async ({ page }) => {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height })
+      await page.goto(route)
+      await page.waitForLoadState('networkidle')
+
+      // Check for horizontal scroll
+      const hasHorizontalScroll = await page.evaluate(() =>
+        document.documentElement.scrollWidth > document.documentElement.clientWidth
+      )
+      expect(hasHorizontalScroll).toBe(false)
+    })
+
+    test(`${route} — ${viewport.name} — all buttons tappable (min 44px)`, async ({ page }) => {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height })
+      await page.goto(route)
+
+      const buttons = await page.locator('button, [role="button"], a').all()
+      for (const btn of buttons) {
+        const box = await btn.boundingBox()
+        if (box && await btn.isVisible()) {
+          expect(box.height).toBeGreaterThanOrEqual(44)
+          expect(box.width).toBeGreaterThanOrEqual(44)
+        }
+      }
+    })
+  }
+}
+
+test('inputs have font-size >= 16px on mobile (prevent iOS zoom)', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 667 })
+  await page.goto('/unit-converter')
+  const inputs = await page.locator('input, select, textarea').all()
+  for (const input of inputs) {
+    if (await input.isVisible()) {
+      const fontSize = await input.evaluate(el =>
+        parseFloat(window.getComputedStyle(el).fontSize)
+      )
+      expect(fontSize).toBeGreaterThanOrEqual(16)
+    }
+  }
+})
+
+test('navigation is usable on mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 667 })
+  await page.goto('/')
+  // Nav should either be visible or have a hamburger menu
+  const nav = page.locator('nav')
+  const hamburger = page.locator('[data-testid="hamburger-menu"]')
+  const isNavVisible = await nav.isVisible()
+  const isHamburgerVisible = await hamburger.isVisible().catch(() => false)
+  expect(isNavVisible || isHamburgerVisible).toBe(true)
+})
+
+test('tool widget fits in mobile viewport without overflow', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 667 })
+  const toolPages = ['/compress-pdf', '/unit-converter', '/png-to-webp']
+  for (const route of toolPages) {
+    await page.goto(route)
+    const toolWidget = page.locator('[data-testid="tool-widget"]')
+    const box = await toolWidget.boundingBox()
+    expect(box?.width).toBeLessThanOrEqual(375)
+  }
+})
+
+MODULE 6 — PERFORMANCE TESTS
+File: tests/performance/
+javascript// tests/performance/lighthouse.spec.js
+import { test, expect } from '@playwright/test'
+import { playAudit } from 'playwright-lighthouse'
+
+const CRITICAL_PAGES = ['/', '/compress-pdf', '/png-to-webp', '/unit-converter']
+
+for (const route of CRITICAL_PAGES) {
+  test(`${route} — Lighthouse scores`, async ({ page, browserContext }) => {
+    await page.goto(route)
+    const results = await playAudit({
+      page,
+      thresholds: {
+        performance: 85,
+        accessibility: 95,
+        'best-practices': 90,
+        seo: 90,
+      },
+    })
+    // Results auto-fail the test if thresholds not met
+  })
+}
+
+test('large file processing does not freeze UI', async ({ page }) => {
+  await page.goto('/compress-pdf')
+
+  // Upload a large file
+  await page.locator('input[type="file"]').setInputFiles('tests/fixtures/test-20mb.pdf')
+  await page.locator('[data-testid="compress-btn"]').click()
+
+  // Measure: can we still click during processing?
+  const start = Date.now()
+  let interactionWorked = false
+  while (Date.now() - start < 10000) { // check for 10 seconds
+    try {
+      await page.locator('[data-testid="cancel-btn"]').click({ timeout: 500 })
+      interactionWorked = true
+      break
+    } catch {}
+    await page.waitForTimeout(200)
+  }
+  expect(interactionWorked).toBe(true) // UI was never frozen
+})
+
+test('page load time — no tool page takes > 3s', async ({ page }) => {
+  const toolPages = ['/compress-pdf', '/unit-converter', '/background-remover']
+  for (const route of toolPages) {
+    const start = Date.now()
+    await page.goto(route)
+    await page.waitForLoadState('networkidle')
+    const loadTime = Date.now() - start
+    expect(loadTime).toBeLessThan(3000)
+  }
+})
+
+test('heavy libraries load lazily — not on homepage', async ({ page }) => {
+  const requests: string[] = []
+  page.on('request', req => requests.push(req.url()))
+  await page.goto('/')
+  await page.waitForLoadState('networkidle')
+
+  // These should NOT load on homepage
+  const heavyLibs = ['tesseract', 'ffmpeg', 'avif']
+  for (const lib of heavyLibs) {
+    const loaded = requests.some(url => url.toLowerCase().includes(lib))
+    expect(loaded).toBe(false) // lazy load = not loaded on homepage
+  }
+})
+
+test('memory does not leak after tool use', async ({ page }) => {
+  await page.goto('/compress-pdf')
+
+  const memBefore = await page.evaluate(() => (performance as any).memory?.usedJSHeapSize)
+
+  // Use the tool 5 times
+  for (let i = 0; i < 5; i++) {
+    await page.locator('input[type="file"]').setInputFiles('tests/fixtures/test-1mb.pdf')
+    await page.locator('[data-testid="compress-btn"]').click()
+    await page.locator('[data-testid="download-btn"]').waitFor({ timeout: 15000 })
+    await page.locator('[data-testid="reset-btn"]').click()
+  }
+
+  const memAfter = await page.evaluate(() => (performance as any).memory?.usedJSHeapSize)
+
+  // Memory should not have grown by more than 20MB
+  if (memBefore && memAfter) {
+    expect(memAfter - memBefore).toBeLessThan(20 * 1024 * 1024)
+  }
+})
+
+MODULE 7 — SEO TESTS
+File: tests/seo/
+javascript// tests/seo/meta.spec.js
+import { test, expect } from '@playwright/test'
+
+const ALL_TOOL_ROUTES = [
+  '/',
+  '/compress-pdf', '/merge-pdf', '/split-pdf', '/rotate-pdf',
+  '/unlock-pdf', '/protect-pdf', '/watermark-pdf', '/add-page-numbers',
+  '/pdf-to-word', '/pdf-to-text', '/pdf-to-image', '/pdf-to-excel',
+  '/word-to-pdf', '/excel-to-pdf', '/excel-to-csv', '/csv-to-excel',
+  '/pptx-to-pdf', '/pptx-to-images',
+  '/png-to-webp', '/jpg-to-webp', '/webp-to-png', '/webp-to-jpg',
+  '/png-to-jpg', '/jpg-to-png', '/jpg-to-avif', '/png-to-avif',
+  '/heic-to-jpg', '/heic-to-png',
+  '/compress-image', '/resize-image', '/crop-image', '/background-remover',
+  '/json-formatter', '/base64', '/url-encoder', '/word-counter',
+  '/password-generator', '/qr-generator', '/percentage-calculator',
+  '/unit-converter', '/currency-converter', '/tip-calculator',
+  '/metadata-cleaner',
+]
+
+for (const route of ALL_TOOL_ROUTES) {
+  test(`${route} — SEO meta tags complete`, async ({ page }) => {
+    await page.goto(route)
+
+    // Title
+    const title = await page.title()
+    expect(title.length).toBeGreaterThan(10)
+    expect(title.length).toBeLessThanOrEqual(60)
+    expect(title).not.toBe('ToolKit') // must be unique, not just the site name
+
+    // Meta description
+    const desc = await page.locator('meta[name="description"]').getAttribute('content')
+    expect(desc).not.toBeNull()
+    expect(desc!.length).toBeGreaterThan(50)
+    expect(desc!.length).toBeLessThanOrEqual(155)
+
+    // Canonical
+    const canonical = await page.locator('link[rel="canonical"]').getAttribute('href')
+    expect(canonical).not.toBeNull()
+    expect(canonical).toContain(route)
+
+    // OG tags
+    const ogTitle = await page.locator('meta[property="og:title"]').getAttribute('content')
+    const ogDesc = await page.locator('meta[property="og:description"]').getAttribute('content')
+    const ogUrl = await page.locator('meta[property="og:url"]').getAttribute('content')
+    expect(ogTitle).not.toBeNull()
+    expect(ogDesc).not.toBeNull()
+    expect(ogUrl).not.toBeNull()
+
+    // H1 — exactly one
+    const h1Count = await page.locator('h1').count()
+    expect(h1Count).toBe(1)
+
+    // Structured data
+    const jsonLd = await page.locator('script[type="application/ld+json"]').first().textContent()
+    expect(jsonLd).not.toBeNull()
+    expect(() => JSON.parse(jsonLd!)).not.toThrow() // must be valid JSON
+
+    // Schema type
+    const schema = JSON.parse(jsonLd!)
+    expect(schema['@type']).toMatch(/WebApplication|WebSite|FAQPage/)
+  })
+}
+
+test('sitemap.xml exists and is valid', async ({ page }) => {
+  const response = await page.request.get('/sitemap.xml')
+  expect(response.status()).toBe(200)
+  const body = await response.text()
+  expect(body).toContain('<?xml')
+  expect(body).toContain('<urlset')
+  // Every tool route must be in the sitemap
+  for (const route of ALL_TOOL_ROUTES) {
+    expect(body).toContain(route)
+  }
+})
+
+test('robots.txt exists and allows crawling', async ({ page }) => {
+  const response = await page.request.get('/robots.txt')
+  expect(response.status()).toBe(200)
+  const body = await response.text()
+  expect(body).toContain('User-agent: *')
+  expect(body).toContain('Allow: /')
+  expect(body).toContain('Sitemap:')
+  expect(body).not.toContain('Disallow: /') // must not block everything
+})
+
+test('no two pages have the same title', async ({ page }) => {
+  const titles: string[] = []
+  for (const route of ALL_TOOL_ROUTES) {
+    await page.goto(route)
+    const title = await page.title()
+    expect(titles).not.toContain(title) // duplicate = SEO problem
+    titles.push(title)
+  }
+})
+
+test('FAQ structured data is valid on tool pages', async ({ page }) => {
+  await page.goto('/compress-pdf')
+  const scripts = await page.locator('script[type="application/ld+json"]').all()
+  let faqFound = false
+  for (const script of scripts) {
+    const content = await script.textContent()
+    const schema = JSON.parse(content!)
+    if (schema['@type'] === 'FAQPage') {
+      faqFound = true
+      expect(schema.mainEntity).toBeDefined()
+      expect(schema.mainEntity.length).toBeGreaterThanOrEqual(3)
+      for (const qa of schema.mainEntity) {
+        expect(qa['@type']).toBe('Question')
+        expect(qa.name).toBeTruthy()
+        expect(qa.acceptedAnswer?.text).toBeTruthy()
+      }
+    }
+  }
+  expect(faqFound).toBe(true)
+})
+
+MODULE 8 — SECURITY TESTS
+File: tests/security/
+javascript// tests/security/security.spec.js
+import { test, expect } from '@playwright/test'
+
+test('no file content sent to any external server', async ({ page }) => {
+  const externalRequests: string[] = []
+
+  page.on('request', request => {
+    const url = request.url()
+    // Ignore known local and CDN resources
+    if (!url.includes('localhost') && !url.includes('cdnjs') && !url.includes('fonts.google')) {
+      if (request.method() === 'POST' || request.postData()) {
+        externalRequests.push(url)
+      }
+    }
+  })
+
+  await page.goto('/compress-pdf')
+  await page.locator('input[type="file"]').setInputFiles('tests/fixtures/test-1mb.pdf')
+  await page.locator('[data-testid="compress-btn"]').click()
+  await page.locator('[data-testid="download-btn"]').waitFor({ timeout: 30000 })
+
+  expect(externalRequests).toEqual([]) // NO data sent externally
+})
+
+test('password generator uses crypto.getRandomValues', async ({ page }) => {
+  await page.goto('/password-generator')
+
+  // Override Math.random to detect if it's used
+  await page.addInitScript(() => {
+    const originalRandom = Math.random
+    ;(window as any).__mathRandomCalled = false
+    Math.random = () => {
+      ;(window as any).__mathRandomCalled = true
+      return originalRandom()
+    }
+  })
+
+  await page.locator('[data-testid="generate-btn"]').click()
+
+  const mathRandomUsed = await page.evaluate(() => (window as any).__mathRandomCalled)
+  expect(mathRandomUsed).toBe(false) // must use crypto, not Math.random
+})
+
+test('no sensitive data in localStorage', async ({ page }) => {
+  await page.goto('/compress-pdf')
+  await page.locator('input[type="file"]').setInputFiles('tests/fixtures/test-1mb.pdf')
+  await page.locator('[data-testid="compress-btn"]').click()
+  await page.locator('[data-testid="download-btn"]').waitFor({ timeout: 30000 })
+
+  const localStorage = await page.evaluate(() => {
+    const items: Record<string, string> = {}
+    for (let i = 0; i < window.localStorage.length; i++) {
+      const key = window.localStorage.key(i)!
+      items[key] = window.localStorage.getItem(key)!
+    }
+    return items
+  })
+
+  // No file content or binary data in localStorage
+  for (const [key, value] of Object.entries(localStorage)) {
+    expect(value.length).toBeLessThan(10000) // no large blobs stored
+    expect(value).not.toMatch(/^data:/) // no base64 file data
+  }
+})
+
+test('XSS — malicious filename does not execute script', async ({ page }) => {
+  await page.goto('/compress-pdf')
+
+  // Create a file with an XSS payload as name
+  await page.evaluate(() => {
+    const dt = new DataTransfer()
+    dt.items.add(new File(['%PDF-1.4'], '<img src=x onerror=alert(1)>.pdf', { type: 'application/pdf' }))
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement
+    Object.defineProperty(input, 'files', { value: dt.files })
+    input.dispatchEvent(new Event('change', { bubbles: true }))
+  })
+
+  // No alert dialog should have appeared
+  page.on('dialog', dialog => {
+    expect(dialog.message()).not.toBe('1') // XSS would trigger alert(1)
+    dialog.dismiss()
+  })
+
+  await page.waitForTimeout(1000)
+  // Page should still be functional
+  await expect(page.locator('[data-testid="drop-zone"]')).toBeVisible()
+})
+
+test('Content Security Policy header is set', async ({ page }) => {
+  const response = await page.request.get('/')
+  const csp = response.headers()['content-security-policy']
+  expect(csp).toBeDefined()
+  expect(csp).not.toBeNull()
+})
+
+MODULE 9 — TRANSLATION TESTS (E2E)
+File: tests/translation/
+javascript// tests/translation/i18n.spec.js
+import { test, expect } from '@playwright/test'
+
+const LANGUAGES = [
+  { code: 'fr', name: 'French', selector: '[data-testid="lang-fr"]' },
+  { code: 'ar', name: 'Arabic', selector: '[data-testid="lang-ar"]' },
+  // add all supported languages
+]
+
+const TOOLS_TO_TEST = [
+  { route: '/unit-converter', selects: ['[data-testid="from-unit"]', '[data-testid="to-unit"]'] },
+  { route: '/currency-converter', selects: ['[data-testid="from-currency"]', '[data-testid="to-currency"]'] },
+  { route: '/compress-pdf', selects: [] },
+]
+
+for (const lang of LANGUAGES) {
+  for (const tool of TOOLS_TO_TEST) {
+    test(`${tool.route} — all text translated in ${lang.name}`, async ({ page }) => {
+      await page.goto('/')
+
+      // Switch language
+      await page.locator('[data-testid="lang-switcher"]').click()
+      await page.locator(lang.selector).click()
+      await page.goto(tool.route)
+
+      // Check for any remaining English-only text that should be translated
+      const bodyText = await page.locator('body').innerText()
+
+      // These English strings should NOT appear in a non-English translation
+      const untranslatedStrings = ['Kilometers', 'Meters', 'Liters', 'Gallons', 'Pounds']
+      if (lang.code !== 'en') {
+        for (const str of untranslatedStrings) {
+          // Only fail if found in a visible select option
+          for (const selectSelector of tool.selects) {
+            const selectText = await page.locator(selectSelector).innerText().catch(() => '')
+            // If language is different, unit names should be translated
+            // (this test is adapted per language — adjust expected translations)
+          }
+        }
+      }
+
+      // No ⚠️ NEEDS TRANSLATION markers visible
+      expect(bodyText).not.toContain('⚠️ NEEDS TRANSLATION')
+
+      // No raw translation keys visible (e.g. "unit_converter.units.kilometer")
+      expect(bodyText).not.toMatch(/[a-z]+\.[a-z_]+\.[a-z_]+/) // dot-notation key pattern
+    })
+  }
+}
+
+test('language persists across page navigation', async ({ page }) => {
+  await page.goto('/')
+  await page.locator('[data-testid="lang-switcher"]').click()
+  await page.locator('[data-testid="lang-fr"]').click()
+
+  // Navigate to another tool
+  await page.goto('/compress-pdf')
+
+  // Language should still be French
+  const langIndicator = await page.locator('[data-testid="current-lang"]').textContent()
+  expect(langIndicator).toBe('FR')
+})
+
+test('language persists after reload', async ({ page }) => {
+  await page.goto('/')
+  await page.locator('[data-testid="lang-switcher"]').click()
+  await page.locator('[data-testid="lang-fr"]').click()
+  await page.reload()
+  const langIndicator = await page.locator('[data-testid="current-lang"]').textContent()
+  expect(langIndicator).toBe('FR')
+})
+
+MODULE 10 — CROSS-BROWSER TESTS
+Runs automatically via Playwright projects config
+javascript// tests/cross-browser/compat.spec.js
+import { test, expect } from '@playwright/test'
+
+// These tests run on ALL browsers defined in playwright.config.js
+
+test('file upload works', async ({ page }) => {
+  await page.goto('/compress-pdf')
+  const input = page.locator('input[type="file"]')
+  await input.setInputFiles('tests/fixtures/test-1mb.pdf')
+  await expect(page.locator('[data-testid="file-name"]')).toBeVisible()
+})
+
+test('drag and drop works', async ({ page }) => {
+  await page.goto('/compress-pdf')
+  const dropZone = page.locator('[data-testid="drop-zone"]')
+
+  // Simulate drag and drop
+  await dropZone.dispatchEvent('dragover', { dataTransfer: new DataTransfer() })
+  await expect(dropZone).toHaveClass(/drag-over|active/) // visual feedback
+})
+
+test('download works', async ({ page }) => {
+  await page.goto('/compress-pdf')
+  await page.locator('input[type="file"]').setInputFiles('tests/fixtures/test-1mb.pdf')
+  await page.locator('[data-testid="compress-btn"]').click()
+  await page.locator('[data-testid="download-btn"]').waitFor({ timeout: 30000 })
+
+  const downloadPromise = page.waitForEvent('download')
+  await page.locator('[data-testid="download-btn"]').click()
+  const download = await downloadPromise
+  expect(download.suggestedFilename()).toBeTruthy()
+  expect(download.suggestedFilename()).toMatch(/\.pdf$/)
+})
+
+test('CSS custom properties render correctly', async ({ page }) => {
+  await page.goto('/')
+  const accentColor = await page.evaluate(() =>
+    getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()
+  )
+  expect(accentColor).toBe('#d4ff4f')
+})
+
+RUN SCRIPTS
+Add to package.json:
+json{
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:a11y": "playwright test tests/accessibility/",
+    "test:responsive": "playwright test tests/responsive/",
+    "test:seo": "playwright test tests/seo/",
+    "test:security": "playwright test tests/security/",
+    "test:i18n": "vitest run tests/unit/i18n/ && playwright test tests/translation/",
+    "test:perf": "playwright test tests/performance/",
+    "test:all": "npm run test && npm run test:e2e",
+    "test:report": "playwright show-report"
+  }
+}
+
+AFTER RUNNING ALL TESTS
+
+Fix every failing test — do not skip or comment out failures
+If a test reveals a bug in the actual tool logic, fix the logic (not the test)
+Generate a final report:
+
+TEST SUITE REPORT
+══════════════════════════════════════════
+Unit Tests         [XX passed / XX failed]
+Integration Tests  [XX passed / XX failed]
+E2E Tests          [XX passed / XX failed]
+Accessibility      [XX passed / XX failed]
+Responsive         [XX passed / XX failed]
+Performance        [XX passed / XX failed]
+SEO                [XX passed / XX failed]
+Security           [XX passed / XX failed]
+Translation        [XX passed / XX failed]
+Cross-browser      [XX passed / XX failed]
+──────────────────────────────────────────
+TOTAL              [XX passed / XX failed]
+COVERAGE           [XX%]
+
+FAILURES:
+[list every failing test with reason and fix applied]

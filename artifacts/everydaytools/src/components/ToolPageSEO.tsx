@@ -353,7 +353,7 @@ function RelatedToolsSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en
   if (related.length === 0) return null;
 
   return (
-    <section
+    <nav
       aria-label={label}
       style={{
         marginTop: "var(--space-8, 32px)",
@@ -385,6 +385,7 @@ function RelatedToolsSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en
             key={r.href}
             href={r.href}
             style={{ textDecoration: "none" }}
+            aria-label={`${r.title} - ${r.description}`}
           >
             <div
               style={{
@@ -424,7 +425,7 @@ function RelatedToolsSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en
           </Link>
         ))}
       </div>
-    </section>
+    </nav>
   );
 }
 

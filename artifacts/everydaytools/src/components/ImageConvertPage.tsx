@@ -290,9 +290,9 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
                         </div>
                       </>
                     ) : entry.status === 'processing' ? (
-                      <div style={{ height: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', fontSize: 13, fontFamily: 'var(--font-ui)' }}>{t.common.converting}</div>
+                      <div role="status" aria-live="polite" style={{ height: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', fontSize: 13, fontFamily: 'var(--font-ui)' }}>{t.common.converting}</div>
                     ) : entry.status === 'error' ? (
-                      <div style={{ height: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--danger, #dc2626)', fontSize: 13, padding: 8, textAlign: 'center', fontFamily: 'var(--font-ui)' }}>{entry.error}</div>
+                      <div role="alert" style={{ height: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--danger, #dc2626)', fontSize: 13, padding: 8, textAlign: 'center', fontFamily: 'var(--font-ui)' }}>{entry.error}</div>
                     ) : (
                       <div style={{ height: 100, background: 'var(--bg-elevated)', borderRadius: 4, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-tertiary)', fontSize: 13, fontFamily: 'var(--font-ui)' }}>—</div>
                     )}
@@ -301,9 +301,9 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
                 <div style={{ padding: '8px 14px', borderTop: '1px solid var(--border)', background: 'var(--bg-elevated)', display: 'flex', alignItems: 'center', gap: 8 }}>
                   <span style={{ flex: 1, fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={entry.file.name}>{entry.file.name}</span>
                   {entry.status === 'done' && (
-                    <button onClick={() => downloadOne(entry)} style={{ padding: '4px 12px', background: 'var(--text-primary)', color: 'var(--bg-base)', border: 'none', borderRadius: 5, fontFamily: 'var(--font-ui)', fontSize: 12, cursor: 'pointer' }}>{t.common.download}</button>
+                    <button aria-label={`Download ${entry.file.name}`} onClick={() => downloadOne(entry)} style={{ padding: '4px 12px', background: 'var(--text-primary)', color: 'var(--bg-base)', border: 'none', borderRadius: 5, fontFamily: 'var(--font-ui)', fontSize: 12, cursor: 'pointer' }}>{t.common.download}</button>
                   )}
-                  <button onClick={() => removeFile(entry.id)} style={{ padding: '4px 10px', background: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--border)', borderRadius: 5, fontFamily: 'var(--font-ui)', fontSize: 12, cursor: 'pointer' }}>{t.common.remove}</button>
+                  <button aria-label={`Remove ${entry.file.name}`} onClick={() => removeFile(entry.id)} style={{ padding: '4px 10px', background: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--border)', borderRadius: 5, fontFamily: 'var(--font-ui)', fontSize: 12, cursor: 'pointer' }}>{t.common.remove}</button>
                 </div>
               </div>
             ))}

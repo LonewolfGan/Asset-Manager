@@ -131,6 +131,7 @@ export default function ResultPanel({ filename, sizeBefore, sizeAfter, blob, tex
       <div style={{ padding: '12px 16px', background: 'var(--bg-surface)' }}>
         <button
           onClick={handleDownload}
+          aria-label={`Download ${filename}`}
           style={{
             display: 'inline-flex',
             alignItems: 'center',
@@ -149,7 +150,7 @@ export default function ResultPanel({ filename, sizeBefore, sizeAfter, blob, tex
           onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--accent-hover)'; }}
           onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--accent)'; }}
         >
-          <Download size={14} />
+          <Download size={14} aria-hidden="true" />
           Download {filename.split('.').pop()?.toUpperCase()}
         </button>
       </div>
@@ -180,6 +181,7 @@ export default function ResultPanel({ filename, sizeBefore, sizeAfter, blob, tex
             <div style={{ display: 'flex', gap: 6 }}>
               <button
                 onClick={handleCopy}
+                aria-label="Copy extracted text"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -197,11 +199,12 @@ export default function ResultPanel({ filename, sizeBefore, sizeAfter, blob, tex
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; (e.currentTarget as HTMLElement).style.color = 'var(--accent)'; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)'; }}
               >
-                <Copy size={11} />
+                <Copy size={11} aria-hidden="true" />
                 {copied ? 'Copied' : 'Copy all'}
               </button>
               <button
                 onClick={handleDownload}
+                aria-label="Download extracted text as .txt"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -219,7 +222,7 @@ export default function ResultPanel({ filename, sizeBefore, sizeAfter, blob, tex
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; (e.currentTarget as HTMLElement).style.color = 'var(--accent)'; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)'; }}
               >
-                <Download size={11} />
+                <Download size={11} aria-hidden="true" />
                 .txt
               </button>
             </div>

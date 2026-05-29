@@ -28,6 +28,10 @@ args = "artifacts/mockup-sandbox: Component Preview Server"
 task = "workflow.run"
 args = "EverydayTools API Server"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "typecheck"
+
 [[workflows.workflow]]
 name = "EverydayTools Frontend"
 author = "agent"
@@ -64,6 +68,17 @@ waitForPort = 8080
 
 [workflows.workflow.metadata]
 outputType = "console"
+
+[[workflows.workflow]]
+name = "typecheck"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "pnpm --filter @workspace/everydaytools run typecheck"
+
+[workflows.workflow.metadata]
+isValidation = true
 
 [agent]
 stack = "BEST_EFFORT_FALLBACK"

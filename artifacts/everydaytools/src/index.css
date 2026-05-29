@@ -312,6 +312,90 @@ input:focus-visible {
   outline-offset: 2px;
 }
 
+/* ─── FIREFOX SCROLLBAR ─── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+/* ─── SCREEN READER ONLY ─── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ─── SKIP LINK ─── */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  background: var(--accent);
+  color: var(--accent-text);
+  padding: 0.5rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  z-index: 9999;
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition: top 0.1s;
+}
+.skip-link:focus {
+  top: 1rem;
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ─── TOUCH INTERACTION ─── */
+button,
+a,
+[role="button"],
+input[type="range"],
+select,
+label[for] {
+  touch-action: manipulation;
+}
+button,
+[role="button"] {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ─── MOBILE INPUT FONT SIZE (prevents iOS auto-zoom) ─── */
+@media (max-width: 480px) {
+  input:not([type="range"]):not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+/* ─── REDUCED MOTION ─── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ─── SCROLLABLE CONTAINERS ─── */
+.scrollable-area {
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+}
+
 /* ─── SKELETON LOADING ─── */
 .skeleton {
   background: var(--bg-subtle);
@@ -321,4 +405,18 @@ input:focus-visible {
 @keyframes skeleton-pulse {
   0%, 100% { opacity: 0.4; }
   50%       { opacity: 0.7; }
+}
+
+/* ─── RESPONSIVE TOOL LAYOUT ─── */
+/* Ensure all primary action buttons are full-width on mobile */
+@media (max-width: 480px) {
+  .tool-action-btn {
+    width: 100%;
+  }
+}
+/* Ensure any two-column flex layout stacks on mobile */
+@media (max-width: 480px) {
+  .tool-form-row {
+    flex-direction: column;
+  }
 }

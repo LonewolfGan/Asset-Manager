@@ -27,6 +27,7 @@ export default function ToolCard({ tool }: ToolCardProps) {
       href={`/${tool.slug}`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      aria-label={`${title}: ${description}`}
       style={{
         display: "flex",
         flexDirection: "column",
@@ -40,7 +41,7 @@ export default function ToolCard({ tool }: ToolCardProps) {
         transition: "background 200ms ease",
       }}
     >
-      <span style={{
+      <span aria-hidden="true" style={{
         fontFamily: "var(--font-mono)",
         fontSize: "0.68rem",
         fontWeight: 600,
@@ -82,7 +83,7 @@ export default function ToolCard({ tool }: ToolCardProps) {
       {tool.formats && tool.formats.length > 0 && (
         <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 4 }}>
           {tool.formats.map((fmt) => (
-            <span key={fmt} style={{
+            <span key={fmt} aria-hidden="true" style={{
               fontFamily: "var(--font-mono)",
               fontSize: "0.67rem",
               color: "var(--accent)",

@@ -7,9 +7,10 @@ interface FileUploadProps {
   maxSizeMB: number;
   multiple?: boolean;
   onFiles: (files: File[]) => void;
+  label?: string;
 }
 
-export default function FileUpload({ accept, maxSizeMB, multiple = false, onFiles }: FileUploadProps) {
+export default function FileUpload({ accept, maxSizeMB, multiple = false, onFiles, label }: FileUploadProps) {
   const { t } = useLocale();
   const [dragActive, setDragActive] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -54,18 +55,35 @@ export default function FileUpload({ accept, maxSizeMB, multiple = false, onFile
     if (e.target.files?.[0]) validateAndSetFiles(e.target.files);
   };
 
+  const openPicker = () => inputRef.current?.click();
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openPicker();
+    }
+  };
+
   const removeFile = (index: number) => {
     const next = [...selectedFiles]; next.splice(index, 1); setSelectedFiles(next); onFiles(next);
   };
 
+  const ariaLabel = label
+    ? `${label}. Drag and drop or press Enter to browse. Accepts ${accept.join(', ')}, up to ${maxSizeMB} MB.`
+    : `Upload file. Drag and drop or press Enter to browse. Accepts ${accept.join(', ')}, up to ${maxSizeMB} MB.`;
+
   return (
     <div style={{ width: '100%' }}>
       <div
+        role="button"
+        tabIndex={0}
+        aria-label={ariaLabel}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
         onDragOver={handleDrag}
         onDrop={handleDrop}
-        onClick={() => inputRef.current?.click()}
+        onClick={openPicker}
+        onKeyDown={handleKeyDown}
         style={{
           border: `1.5px dashed ${dragActive ? 'var(--accent)' : 'var(--border-strong)'}`,
           borderRadius: 'var(--radius-card)',
@@ -75,9 +93,19 @@ export default function FileUpload({ accept, maxSizeMB, multiple = false, onFile
           cursor: 'pointer',
           transition: 'border-color 200ms ease, background 200ms ease',
           boxShadow: dragActive ? 'none' : 'var(--shadow-card)',
+          minHeight: 140,
         }}
       >
-        <input ref={inputRef} type="file" style={{ display: 'none' }} accept={accept.join(',')} multiple={multiple} onChange={handleChange} />
+        <input
+          ref={inputRef}
+          type="file"
+          style={{ display: 'none' }}
+          accept={accept.join(',')}
+          multiple={multiple}
+          onChange={handleChange}
+          aria-hidden="true"
+          tabIndex={-1}
+        />
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
           <div style={{
             width: 44, height: 44, borderRadius: 12,
@@ -87,7 +115,7 @@ export default function FileUpload({ accept, maxSizeMB, multiple = false, onFile
             color: dragActive ? 'var(--accent)' : 'var(--text-tertiary)',
             transition: 'background 200ms ease, color 200ms ease, border-color 200ms ease',
           }}>
-            <Upload size={20} strokeWidth={1.5} />
+            <Upload size={20} strokeWidth={1.5} aria-hidden="true" />
           </div>
           <div>
             <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-primary)', margin: '0 0 4px' }}>
@@ -101,7 +129,7 @@ export default function FileUpload({ accept, maxSizeMB, multiple = false, onFile
       </div>
 
       {error && (
-        <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--danger)', marginTop: 8 }}>{error}</p>
+        <p role="alert" style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--danger)', marginTop: 8 }}>{error}</p>
       )}
 
       {selectedFiles.length > 0 && (
@@ -119,12 +147,12 @@ export default function FileUpload({ accept, maxSizeMB, multiple = false, onFile
               </div>
               <button
                 onClick={(e) => { e.stopPropagation(); removeFile(i); }}
-                aria-label="Remove file"
-                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: 'var(--text-tertiary)', display: 'flex', alignItems: 'center', flexShrink: 0, transition: 'color 150ms ease' }}
+                aria-label={`Remove ${file.name}`}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 8, minWidth: 44, minHeight: 44, color: 'var(--text-tertiary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'color 150ms ease', borderRadius: 6 }}
                 onMouseEnter={(e) => (e.currentTarget as HTMLElement).style.color = 'var(--danger)'}
                 onMouseLeave={(e) => (e.currentTarget as HTMLElement).style.color = 'var(--text-tertiary)'}
               >
-                <X size={14} />
+                <X size={14} aria-hidden="true" />
               </button>
             </div>
           ))}

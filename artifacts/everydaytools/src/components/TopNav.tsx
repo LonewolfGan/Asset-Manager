@@ -426,9 +426,10 @@ export default function TopNav() {
               <button
                 type="button"
                 onClick={() => handleSearch("")}
+                aria-label="Clear search"
                 style={{ background: "none", border: "none", cursor: "pointer", padding: 0, color: "var(--text-tertiary)", display: "flex", alignItems: "center", flexShrink: 0 }}
               >
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2L2 10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 2l8 8M10 2L2 10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
               </button>
             )}
           </label>
