@@ -62,7 +62,7 @@ export default function Checksum() {
           style={{ border: `2px dashed ${isDragging ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius)', padding: '40px 24px', textAlign: 'center', cursor: 'pointer', background: isDragging ? 'var(--bg-elevated)' : 'var(--bg-surface)' }}
         >
           <input ref={inputRef} type="file" style={{ display: 'none' }} onChange={(e) => { if (e.target.files?.[0]) handleFile(e.target.files[0]); }} />
-          <p style={{ fontFamily: 'var(--font-ui)', fontSize: 15, color: 'var(--text-secondary)', margin: 0 }}>Drop any file here, or click to browse</p>
+          <p style={{ fontFamily: 'var(--font-ui)', fontSize: 15, color: 'var(--text-secondary)', margin: 0 }}>{t.common.dropFileHere}</p>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)', marginTop: 6 }}>Any file type · all hashes computed in your browser</p>
         </div>
 
@@ -87,7 +87,7 @@ export default function Checksum() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)', fontWeight: 600, textTransform: 'uppercase' }}>{algo}</span>
                   <button onClick={() => navigator.clipboard.writeText(hashes[algo] ?? '')}
-                    style={{ padding: '2px 8px', border: '1px solid var(--border)', borderRadius: 4, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 11, color: 'var(--text-secondary)', cursor: 'pointer' }}>Copy</button>
+                    style={{ padding: '2px 8px', border: '1px solid var(--border)', borderRadius: 4, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 11, color: 'var(--text-secondary)', cursor: 'pointer' }}>{t.common.copy}</button>
                 </div>
                 <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: expected.trim() && hashes[algo]?.toLowerCase() === expected.trim().toLowerCase() ? 'var(--success,#16a34a)' : 'var(--text-primary)', margin: 0, wordBreak: 'break-all', lineHeight: 1.5 }}>
                   {hashes[algo]}

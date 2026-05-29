@@ -119,7 +119,7 @@ export default function PptxToPdf() {
         >
           <input ref={inputRef} type="file" accept=".pptx,.ppt" style={{ display: 'none' }} onChange={(e) => { if (e.target.files?.[0]) convert(e.target.files[0]); }} />
           <p style={{ fontFamily: 'var(--font-ui)', fontSize: 15, color: 'var(--text-secondary)', margin: 0 }}>
-            {file ? file.name : 'Drop PowerPoint file here, or click to browse'}
+            {file ? file.name : t.common.dropFileHere}
           </p>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)', marginTop: 6 }}>.pptx · max 50 MB</p>
         </div>
@@ -127,7 +127,7 @@ export default function PptxToPdf() {
         {status === 'processing' && (
           <div style={{ marginTop: 16, padding: 16, background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-secondary)' }}>
-              <span>Converting slides…</span><span style={{ fontFamily: 'var(--font-mono)' }}>{progress}%</span>
+              <span>{t.common.converting}</span><span style={{ fontFamily: 'var(--font-mono)' }}>{progress}%</span>
             </div>
             <div style={{ height: 6, background: 'var(--bg-elevated)', borderRadius: 3, overflow: 'hidden' }}>
               <div style={{ width: `${progress}%`, height: '100%', background: 'var(--accent)', transition: 'width 0.3s' }} />
@@ -139,8 +139,8 @@ export default function PptxToPdf() {
 
         {status === 'done' && pdfBlob && (
           <div style={{ marginTop: 16, padding: '16px 20px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, color: 'var(--text-primary)' }}>PDF ready — {(pdfBlob.size / 1024).toFixed(1)} KB</span>
-            <button onClick={download} style={{ padding: '9px 18px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}>Download PDF</button>
+            <span style={{ fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, color: 'var(--text-primary)' }}>{t.common.pdfReady((pdfBlob.size / 1024).toFixed(1))}</span>
+            <button onClick={download} style={{ padding: '9px 18px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}>{t.common.downloadPdf}</button>
           </div>
         )}
         <AdSlot type="horizontal" />

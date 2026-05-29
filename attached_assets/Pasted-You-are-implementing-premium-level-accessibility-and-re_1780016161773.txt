@@ -1,0 +1,422 @@
+You are implementing premium-level accessibility and responsive design across the entire site. The goal is a flawless experience on every device and for every user — including keyboard-only navigation, screen readers, and touch devices. Fix overflow issues, style scrollbars, and make the responsive behavior feel intentional and polished, not just "it doesn't break". Do not change the color system or design direction.
+
+PART 1 — OVERFLOW & SCROLL FIXES
+1a. Audit every overflow issue
+Scan the entire codebase and every page for:
+
+Any element causing horizontal scroll on mobile (overflow-x: auto on body is a symptom — find the cause)
+Tool widgets that overflow their container on screens below 480px
+Select dropdowns that are wider than the screen on mobile
+Tables (unit lists, CSV viewer, results) that overflow horizontally — wrap in a scroll container
+Long filenames or URLs that break layout — apply overflow: hidden; text-overflow: ellipsis; white-space: nowrap
+Modals or panels that are wider than the viewport on mobile
+
+Fix each overflow at its source. Never use overflow: hidden on body as a patch — find and fix the overflowing element.
+1b. Contain scrollable areas properly
+For any scrollable container (tool output areas, file lists, unit lists, CSV viewer):
+css.scrollable-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 400px;
+  /* Always define scroll containment explicitly */
+  overscroll-behavior: contain; /* prevents page scroll chain */
+}
+1c. Style all scrollbars — site-wide
+Apply custom scrollbar styling consistently across the entire site. Scrollbars must match the dark design system.
+Global scrollbar CSS (add to the root stylesheet):
+css/* WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg); /* #0e0e0f */
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border); /* #252528 */
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted); /* #6b6b70 */
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--bg);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) var(--bg);
+}
+
+/* Hover state for Firefox — apply to specific scrollable elements */
+.scrollable-area:hover {
+  scrollbar-color: var(--muted) var(--bg);
+}
+Apply to: main page scroll, file list panels, unit select dropdowns, CSV viewer, PDF page list (split/reorder), any text output area, code/JSON formatter output.
+For the accent scrollbar (use on featured/active panels):
+css.scrollbar-accent::-webkit-scrollbar-thumb {
+  background: var(--accent); /* #d4ff4f */
+}
+.scrollbar-accent::-webkit-scrollbar-thumb:hover {
+  background: #c4ef3f;
+}
+
+PART 2 — RESPONSIVE PREMIUM
+2a. Breakpoints — define and use consistently
+Set up a consistent breakpoint system. Never use random pixel values:
+css:root {
+  /* Use these everywhere — never write a raw pixel breakpoint */
+}
+
+/* Breakpoints:
+  mobile:  < 480px   (small phones)
+  sm:      480px     (large phones)
+  md:      768px     (tablets, landscape phones)
+  lg:      1024px    (small laptops)
+  xl:      1280px    (desktops)
+  2xl:     1536px    (large screens)
+*/
+Audit the codebase and replace any arbitrary breakpoints (e.g. @media (max-width: 600px)) with the standardized ones.
+2b. Mobile-first audit — every tool page
+For every tool, test at 375px and 430px width (iPhone SE and iPhone 15 Pro). Fix:
+Upload zone
+
+Drop zone must stack vertically on mobile (icon above text)
+Minimum height: 140px on mobile
+Touch tap area must be the full zone — no small invisible click area
+
+Controls & inputs
+
+Input fields: full width on mobile (width: 100%)
+Sliders (quality, size): must be at least 44px tall touch target — increase thumb size
+Number inputs: use inputmode="numeric" for mobile keyboard
+All inputs: font-size must be at least 16px on mobile to prevent iOS auto-zoom
+
+Select dropdowns
+
+On mobile, native <select> is acceptable and often better than custom dropdowns
+If using custom dropdowns: they must open upward if near bottom of screen
+Dropdown options must be at least 44px tall for touch
+
+Buttons
+
+All buttons: minimum 44px height on mobile (Apple HIG guideline)
+Primary action button: full width on mobile
+Button groups: stack vertically on mobile if they don't fit in one row
+
+Tool layout
+
+Two-column layouts (e.g. From/To in converters): stack to single column below md
+Side-by-side comparison (before/after): stack vertically on mobile
+
+File lists (Merge PDF, batch conversion)
+
+Each file item: must have enough height to tap the remove button
+Remove/reorder buttons: at least 44×44px touch area
+Drag to reorder: add alternative up/down arrow buttons for mobile (drag & drop is unusable on mobile)
+
+2c. Tablet layout (768px — 1024px)
+
+Navigation: if the nav overflows at tablet width, convert to a hamburger or condensed layout
+Tool grid on homepage: 2 columns at tablet (not 3 or 4)
+Tool pages: content area max-width capped, centered — don't stretch full width on 1024px
+
+2d. Large screen (1536px+)
+
+Apply a max-width: 1400px; margin: 0 auto on the main content container
+Tool pages: tool widget + content capped at max-width: 800px centered
+Homepage grid: max 4 columns
+Navigation: ensure it doesn't stretch awkwardly on ultrawide screens
+
+2e. Touch interactions
+
+Remove hover-only states that have no touch equivalent — they are invisible on mobile
+Anywhere you use :hover for a tooltip or action, add a long-press or tap-to-reveal alternative
+Drag & drop file upload: on touch devices, ensure the fallback "tap to browse" is always visible and large
+For any drag-to-reorder list: add up/down buttons as touch alternative
+
+2f. Images and assets
+
+All images: max-width: 100% — never overflow their container
+SVG icons: define explicit width and height in the SVG tag — do not rely on CSS alone
+Tool preview thumbnails (PDF pages, image previews): constrain with object-fit: contain inside a fixed aspect-ratio box
+
+
+PART 3 — KEYBOARD NAVIGATION PREMIUM
+Every interaction must be fully operable by keyboard alone. Test by pressing Tab through the entire page.
+3a. Focus order
+
+Tab order must follow visual reading order (top to bottom, left to right)
+No focus traps outside of modals (modal = intentional trap with Escape to exit)
+Skip link: add a "Skip to main content" link as the very first focusable element on every page:
+
+html<a href="#main-content" class="skip-link">Skip to main content</a>
+css.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  background: var(--accent);
+  color: var(--bg);
+  padding: 0.5rem 1rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.8rem;
+  z-index: 9999;
+  transition: top 0.1s;
+}
+.skip-link:focus {
+  top: 1rem; /* appears when focused via Tab */
+}
+3b. Focus ring — premium styled
+Every focusable element must have a visible, styled focus ring that matches the design system. Replace all outline: none without replacement:
+css/* Global focus style */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* For dark elements where yellow accent is visible */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* For elements inside dark cards */
+.tool-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 0;
+  box-shadow: 0 0 0 4px rgba(212,255,79,0.15);
+}
+Use :focus-visible (not :focus) — this shows the ring for keyboard users but hides it for mouse clicks.
+3c. Keyboard operability for custom components
+File upload zone:
+
+Must be focusable (tabindex="0")
+Enter or Space key must open the file picker
+
+javascriptdropZone.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    fileInput.click();
+  }
+})
+Custom sliders (quality, size):
+
+Must respond to Arrow keys (Left/Right for horizontal, Up/Down for vertical)
+Must show current value in an aria-valuenow attribute
+
+Modal / dialog:
+
+When opened: focus moves to the first focusable element inside
+Tab must cycle within the modal (focus trap)
+Escape must close the modal
+When closed: focus returns to the element that triggered it
+
+Tabs (compression level, conversion mode):
+
+Arrow keys navigate between tabs
+Enter/Space activates a tab
+Implement ARIA tab pattern: role="tablist", role="tab", role="tabpanel", aria-selected
+
+Dropdown (custom, not native select):
+
+Escape closes it
+Arrow keys navigate options
+Enter selects
+Implement role="listbox" and role="option" with aria-selected
+
+
+PART 4 — SCREEN READER (ARIA) PREMIUM
+4a. Semantic HTML first
+
+Use the correct element for the job: <button> for actions, <a> for navigation, <nav>, <main>, <section>, <article>, <aside>, <header>, <footer>
+Never use <div> or <span> for interactive elements without adding role and tabindex
+Headings: one <h1> per page (the tool name), then <h2> for sections, <h3> for subsections — never skip levels
+
+4b. Live regions — announce dynamic changes
+When the tool state changes (processing starts, completes, or errors), announce it to screen readers:
+html<!-- Add this once to the page -->
+<div aria-live="polite" aria-atomic="true" class="sr-only" id="status-announcer"></div>
+javascript// Utility function — use in every tool
+const announce = (message) => {
+  const announcer = document.getElementById('status-announcer');
+  announcer.textContent = ''; // reset to re-trigger
+  setTimeout(() => { announcer.textContent = message; }, 50);
+}
+
+// Usage:
+announce('Compressing your PDF, please wait...');
+announce('PDF compressed successfully. Ready to download.');
+announce('Error: file is too large. Maximum size is 50MB.');
+4c. Progress bars — accessible
+html<div
+  role="progressbar"
+  aria-valuenow="45"
+  aria-valuemin="0"
+  aria-valuemax="100"
+  aria-label="Compression progress: 45%"
+  class="progress-bar"
+>
+  <div class="progress-fill" style="width: 45%"></div>
+</div>
+Update aria-valuenow and aria-label dynamically as progress changes.
+4d. Icon buttons — all labeled
+Every button that contains only an icon must have aria-label:
+html<!-- Wrong -->
+<button><svg>...</svg></button>
+
+<!-- Right -->
+<button aria-label="Remove file">
+  <svg aria-hidden="true" focusable="false">...</svg>
+</button>
+Add aria-hidden="true" and focusable="false" to all decorative SVGs.
+4e. Form fields — all labeled
+Every input must have a visible or screen-reader label:
+html<!-- Visible label -->
+<label for="quality-slider">Compression quality</label>
+<input type="range" id="quality-slider" min="1" max="100" value="75" />
+
+<!-- SR-only label (when visual design doesn't allow visible label) -->
+<label for="url-input" class="sr-only">Enter URL for QR code</label>
+<input type="text" id="url-input" placeholder="https://example.com" />
+css.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+4f. Error messages — associated with inputs
+html<input
+  type="number"
+  id="percentage-input"
+  aria-describedby="percentage-error"
+  aria-invalid="true"
+/>
+<span id="percentage-error" role="alert" class="error-message">
+  Please enter a number between 0 and 100.
+</span>
+4g. File upload — screen reader friendly
+html<div
+  role="button"
+  tabindex="0"
+  aria-label="Upload PDF file. Drag and drop or press Enter to browse."
+  class="drop-zone"
+>
+  ...
+  <input
+    type="file"
+    id="file-input"
+    accept=".pdf"
+    class="sr-only"
+    aria-label="Choose PDF file"
+  />
+</div>
+
+PART 5 — MOTION & REDUCED MOTION
+Respect users who have vestibular disorders or motion sensitivity:
+css/* Wrap ALL animations in this media query */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+Audit every CSS animation and transition — make sure they are wrapped or controlled by this query. The site must be fully usable with motion disabled.
+
+PART 6 — TOUCH & MOBILE PREMIUM
+Minimum touch targets
+Every tappable element: minimum 44×44px. Implement with padding, not by changing visible size:
+css.icon-btn {
+  /* Visual size might be 20px icon */
+  width: 20px;
+  height: 20px;
+  /* But touch area is 44×44px */
+  padding: 12px;
+  margin: -12px; /* compensate layout */
+}
+Prevent double-tap zoom on buttons
+cssbutton, a, [role="button"] {
+  touch-action: manipulation; /* disables double-tap zoom, keeps pinch-zoom */
+}
+Prevent text selection on interactive elements
+cssbutton, [role="button"], .drop-zone {
+  user-select: none;
+  -webkit-user-select: none;
+}
+iOS-specific fixes
+
+Add cursor: pointer on all interactive elements — required for click events on iOS Safari
+Input fields: add autocomplete="off" on tool inputs to prevent iOS from suggesting weird values
+For file download on iOS Safari: use a different approach than <a download> — iOS Safari doesn't always honor it. Use window.open(blobUrl) as fallback
+
+
+FINAL AUDIT CHECKLIST
+After applying all fixes, verify for every tool page:
+Overflow & Scroll
+
+ No horizontal overflow at 375px, 768px, 1280px
+ All scrollable areas have styled scrollbars matching the design system
+ Scrollable areas use overscroll-behavior: contain
+
+Responsive
+
+ All buttons minimum 44px height on mobile
+ All inputs full-width on mobile with font-size ≥ 16px
+ No input zoom on iOS (font-size ≥ 16px on all inputs)
+ Tool layout stacks correctly on mobile
+ Drag-to-reorder has touch alternative (up/down arrows)
+ Content max-width applied on large screens
+
+Keyboard
+
+ Skip link visible on focus
+ Tab order is logical
+ All custom components operable by keyboard
+ Focus ring visible on every focusable element (using :focus-visible)
+ Modal traps focus and releases on close
+ Escape closes all modals and dropdowns
+
+Screen Reader
+
+ One <h1> per page
+ aria-live region announces tool state changes
+ All icon-only buttons have aria-label
+ All inputs have associated labels
+ Progress bar has correct ARIA attributes
+ All decorative SVGs have aria-hidden="true"
+ Error messages use role="alert"
+
+Touch
+
+ All interactive elements have touch-action: manipulation
+ Minimum 44×44px touch target on all tappable elements
+ No unwanted text selection on interactive elements
+ iOS download works correctly
+
+Motion
+
+ All animations respect prefers-reduced-motion
+ Site is fully usable with motion disabled
+
+Generate a fix report grouped by category listing every change made with file path and line number

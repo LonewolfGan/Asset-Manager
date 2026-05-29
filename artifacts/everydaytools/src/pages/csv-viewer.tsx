@@ -86,14 +86,14 @@ export default function CsvViewer() {
           >
             <input ref={inputRef} type="file" accept=".csv,text/csv" style={{ display: 'none' }}
               onChange={(e) => { if (e.target.files?.[0]) handleFile(e.target.files[0]); }} />
-            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 15, color: 'var(--text-secondary)', margin: 0 }}>Drop CSV file here, or click to browse</p>
+            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 15, color: 'var(--text-secondary)', margin: 0 }}>{t.common.dropFileHere}</p>
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)', marginTop: 6 }}>.csv · max 25 MB</p>
           </div>
         )}
 
         {rows.length === 0 && (
           <>
-            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-secondary)', marginBottom: 6 }}>Or paste CSV here:</p>
+            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-secondary)', marginBottom: 6 }}>{t.common.orPasteDirectly}</p>
             <div style={{ display: 'flex', gap: 10 }}>
               <textarea
                 value={csvText}
@@ -103,7 +103,7 @@ export default function CsvViewer() {
               />
               <button onClick={() => parse(csvText)}
                 style={{ padding: '0 20px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, cursor: 'pointer', alignSelf: 'stretch' }}>
-                View
+                {t.common.view}
               </button>
             </div>
           </>
@@ -121,12 +121,12 @@ export default function CsvViewer() {
               <div style={{ display: 'flex', gap: 8 }}>
                 <button onClick={() => { setRows([]); setHeaders([]); setCsvText(''); setFile(null); setError(''); }}
                   style={{ padding: '5px 12px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 12, color: 'var(--text-secondary)', cursor: 'pointer' }}>
-                  Clear
+                  {t.common.clear}
                 </button>
                 {csvText && (
                   <button onClick={downloadCsv}
                     style={{ padding: '5px 12px', border: '1px solid var(--border)', borderRadius: 6, background: 'var(--text-primary)', color: 'var(--bg-base)', fontFamily: 'var(--font-ui)', fontSize: 12, cursor: 'pointer' }}>
-                    Download CSV
+                    {t.common.downloadCsv}
                   </button>
                 )}
               </div>

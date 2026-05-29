@@ -61,7 +61,7 @@ export default function Ocr() {
         <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{desc}</p>
 
         <div style={{ padding: '12px 16px', background: 'var(--bg-elevated)', borderRadius: 'var(--radius)', border: '1px solid var(--border)', marginBottom: 24, fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-secondary)' }}>
-          First use downloads ~15 MB OCR model — this is a one-time browser cache.
+          {t.ocr.modelNote}
         </div>
 
         <div
@@ -74,7 +74,7 @@ export default function Ocr() {
           <input ref={inputRef} type="file" accept=".jpg,.jpeg,.png,.gif,.bmp,.tiff,.tif,.webp" style={{ display: 'none' }}
             onChange={(e) => { if (e.target.files?.[0]) handleFile(e.target.files[0]); }} />
           <p style={{ fontFamily: 'var(--font-ui)', fontSize: 15, color: 'var(--text-secondary)', margin: 0 }}>
-            {file ? file.name : 'Drop image here, or click to browse'}
+            {file ? file.name : t.common.dropFileHere}
           </p>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)', marginTop: 6 }}>
             JPG · PNG · GIF · BMP · TIFF · WebP · max 20 MB
@@ -84,7 +84,7 @@ export default function Ocr() {
         {file && status === 'idle' && (
           <button onClick={recognize}
             style={{ width: '100%', padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 15, fontWeight: 500, cursor: 'pointer', marginBottom: 20 }}>
-            Extract Text
+            {t.ocr.extractBtn}
           </button>
         )}
 
@@ -105,10 +105,10 @@ export default function Ocr() {
         {status === 'done' && output && (
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-              <span style={{ fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, color: 'var(--text-primary)' }}>Extracted Text</span>
+              <span style={{ fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, color: 'var(--text-primary)' }}>{t.ocr.extractedText}</span>
               <div style={{ display: 'flex', gap: 8 }}>
-                <button onClick={copy} style={{ padding: '5px 12px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 12, color: 'var(--text-secondary)', cursor: 'pointer' }}>{copied ? 'Copied!' : 'Copy'}</button>
-                <button onClick={download} style={{ padding: '5px 12px', border: '1px solid var(--border)', borderRadius: 6, background: 'var(--text-primary)', color: 'var(--bg-base)', fontFamily: 'var(--font-ui)', fontSize: 12, cursor: 'pointer' }}>Download .txt</button>
+                <button onClick={copy} style={{ padding: '5px 12px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 12, color: 'var(--text-secondary)', cursor: 'pointer' }}>{copied ? t.common.copied : t.common.copy}</button>
+                <button onClick={download} style={{ padding: '5px 12px', border: '1px solid var(--border)', borderRadius: 6, background: 'var(--text-primary)', color: 'var(--bg-base)', fontFamily: 'var(--font-ui)', fontSize: 12, cursor: 'pointer' }}>{t.common.downloadTxt}</button>
               </div>
             </div>
             <textarea readOnly value={output}

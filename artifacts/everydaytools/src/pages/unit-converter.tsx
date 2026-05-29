@@ -79,7 +79,7 @@ export default function UnitConverter() {
     }, 0);
   };
 
-  const unitOptions = category.units.map(u => ({ value: u.id, label: `${u.name} (${u.symbol})` }));
+  const unitOptions = category.units.map(u => ({ value: u.id, label: `${t.unitConverter.unitNames[u.id] ?? u.name} (${u.symbol})` }));
 
   return (
     <>

@@ -71,6 +71,7 @@ export type Translations = {
     from: string; to: string; pin: string; pinned: string;
     pinnedConversions: string; swapAriaLabel: string;
     categoryNames: Record<string, string>;
+    unitNames: Record<string, string>;
   };
   currencyConverter: {
     from: string; to: string; quickConversions: string; recentHistory: string;
@@ -184,6 +185,57 @@ export type Translations = {
     dragDrop: string;
     processing: string;
     clearAll: string;
+  };
+  ocr: {
+    modelNote: string;
+    extractBtn: string;
+    extractedText: string;
+  };
+  wordCounter: {
+    words: string;
+    chars: string;
+    noSpaces: string;
+    sentences: string;
+    paragraphs: string;
+    readingTime: string;
+    clear: string;
+    copyText: string;
+    pasteHere: string;
+  };
+  common: {
+    download: string;
+    downloadAll: (n: number) => string;
+    copy: string;
+    copied: string;
+    reset: string;
+    remove: string;
+    clear: string;
+    processing: string;
+    converting: string;
+    quality: string;
+    original: string;
+    converted: string;
+    extractText: string;
+    extractedText: string;
+    dropFileHere: string;
+    dropFilesHere: (label: string) => string;
+    uploadFile: string;
+    pasteText: string;
+    outputAppearsHere: string;
+    convertToPdf: string;
+    downloadPdf: string;
+    downloadCsv: string;
+    downloadTxt: string;
+    convertFiles: (n: number, ext: string) => string;
+    pdfReady: (kb: string) => string;
+    sheet: string;
+    exportSheet: string;
+    convertBtn: string;
+    preview: (n: number) => string;
+    orPasteDirectly: string;
+    errorGeneric: string;
+    view: string;
+    copyText: string;
   };
 };
 
@@ -478,6 +530,48 @@ const EN: Translations = {
       area: "Area", speed: "Speed", pressure: "Pressure", energy: "Energy",
       power: "Power", data: "Data", time: "Time", angle: "Angle", frequency: "Frequency",
     },
+    unitNames: {
+      "meter": "Meter", "kilometer": "Kilometer", "centimeter": "Centimeter", "millimeter": "Millimeter",
+      "mile": "Mile", "yard": "Yard", "foot": "Foot", "inch": "Inch",
+      "nautical-mile": "Nautical Mile", "light-year": "Light Year",
+      "kilogram": "Kilogram", "gram": "Gram", "milligram": "Milligram",
+      "pound": "Pound", "ounce": "Ounce", "stone": "Stone",
+      "ton-metric": "Ton (Metric)", "ton-imperial": "Ton (Imperial)", "ton-us": "Ton (US)",
+      "celsius": "Celsius", "fahrenheit": "Fahrenheit", "kelvin": "Kelvin",
+      "liter": "Liter", "milliliter": "Milliliter",
+      "gallon-us": "Gallon (US)", "gallon-uk": "Gallon (UK)",
+      "quart": "Quart", "pint": "Pint", "cup": "Cup",
+      "fluid-ounce": "Fluid Ounce", "tablespoon": "Tablespoon", "teaspoon": "Teaspoon",
+      "cubic-meter": "Cubic Meter", "cubic-centimeter": "Cubic Centimeter",
+      "square-meter": "Square Meter", "square-kilometer": "Square Kilometer",
+      "square-centimeter": "Square Centimeter", "square-millimeter": "Square Millimeter",
+      "square-mile": "Square Mile", "square-yard": "Square Yard",
+      "square-foot": "Square Foot", "square-inch": "Square Inch",
+      "hectare": "Hectare", "acre": "Acre",
+      "meter-second": "Meter / Second", "kilometer-hour": "Kilometer / Hour",
+      "mile-hour": "Mile / Hour", "knot": "Knot", "foot-second": "Foot / Second",
+      "pascal": "Pascal", "kilopascal": "Kilopascal", "megapascal": "Megapascal",
+      "bar": "Bar", "millibar": "Millibar", "psi": "PSI",
+      "atm": "Atmosphere", "torr": "Torr", "mmhg": "Millimeter of Mercury",
+      "joule": "Joule", "kilojoule": "Kilojoule", "megajoule": "Megajoule",
+      "calorie": "Calorie", "kilocalorie": "Kilocalorie",
+      "watt-hour": "Watt Hour", "kilowatt-hour": "Kilowatt Hour",
+      "electron-volt": "Electron Volt", "btu": "BTU",
+      "watt": "Watt", "kilowatt": "Kilowatt", "megawatt": "Megawatt",
+      "horsepower-metric": "Horsepower (Metric)", "horsepower-imperial": "Horsepower (Imperial)",
+      "btu-hour": "BTU / Hour",
+      "byte": "Byte", "bit": "Bit", "kilobyte": "Kilobyte",
+      "megabyte": "Megabyte", "gigabyte": "Gigabyte", "terabyte": "Terabyte",
+      "kibibyte": "Kibibyte", "mebibyte": "Mebibyte",
+      "gibibyte": "Gibibyte", "tebibyte": "Tebibyte",
+      "second": "Second", "millisecond": "Millisecond", "microsecond": "Microsecond",
+      "minute": "Minute", "hour": "Hour", "day": "Day",
+      "week": "Week", "month": "Month", "year": "Year",
+      "degree": "Degree", "radian": "Radian", "gradian": "Gradian",
+      "arcminute": "Arcminute", "arcsecond": "Arcsecond",
+      "hertz": "Hertz", "kilohertz": "Kilohertz", "megahertz": "Megahertz",
+      "gigahertz": "Gigahertz", "rpm": "RPM",
+    },
   },
   currencyConverter: {
     from: "From", to: "To",
@@ -593,6 +687,57 @@ const EN: Translations = {
     dragDrop: "Drag & drop or click to browse (max 20)",
     processing: "Processing...",
     clearAll: "Clear All",
+  },
+  ocr: {
+    modelNote: "First use downloads ~15 MB OCR model — this is a one-time browser cache.",
+    extractBtn: "Extract Text",
+    extractedText: "Extracted Text",
+  },
+  wordCounter: {
+    words: "Words",
+    chars: "Characters",
+    noSpaces: "No spaces",
+    sentences: "Sentences",
+    paragraphs: "Paragraphs",
+    readingTime: "Reading time",
+    clear: "Clear",
+    copyText: "Copy text",
+    pasteHere: "Paste or type your text here…",
+  },
+  common: {
+    download: "Download",
+    downloadAll: (n) => `Download all ${n} files as ZIP`,
+    copy: "Copy",
+    copied: "Copied!",
+    reset: "Reset",
+    remove: "Remove",
+    clear: "Clear",
+    processing: "Processing…",
+    converting: "Converting…",
+    quality: "Quality",
+    original: "Original",
+    converted: "Converted",
+    extractText: "Extract Text",
+    extractedText: "Extracted Text",
+    dropFileHere: "Drop file here, or click to browse",
+    dropFilesHere: (label) => `Drop ${label} files here or click to browse`,
+    uploadFile: "Upload File",
+    pasteText: "Paste text here…",
+    outputAppearsHere: "Output appears here…",
+    convertToPdf: "Convert to PDF",
+    downloadPdf: "Download PDF",
+    downloadCsv: "Download CSV",
+    downloadTxt: "Download .txt",
+    convertFiles: (n, ext) => `Convert ${n} file${n > 1 ? 's' : ''} to ${ext}`,
+    pdfReady: (kb) => `PDF ready — ${kb} KB`,
+    sheet: "Sheet:",
+    exportSheet: "Export sheet:",
+    convertBtn: "Convert",
+    preview: (n) => `Preview (${n} rows)`,
+    orPasteDirectly: "Or paste directly:",
+    errorGeneric: "Something went wrong. Please try again.",
+    view: "View",
+    copyText: "Copy text",
   },
 };
 
@@ -887,6 +1032,48 @@ const FR: Translations = {
       area: "Superficie", speed: "Vitesse", pressure: "Pression", energy: "Énergie",
       power: "Puissance", data: "Données", time: "Temps", angle: "Angle", frequency: "Fréquence",
     },
+    unitNames: {
+      "meter": "Mètre", "kilometer": "Kilomètre", "centimeter": "Centimètre", "millimeter": "Millimètre",
+      "mile": "Mile", "yard": "Yard", "foot": "Pied", "inch": "Pouce",
+      "nautical-mile": "Mille nautique", "light-year": "Année-lumière",
+      "kilogram": "Kilogramme", "gram": "Gramme", "milligram": "Milligramme",
+      "pound": "Livre", "ounce": "Once", "stone": "Stone",
+      "ton-metric": "Tonne (métrique)", "ton-imperial": "Tonne (impériale)", "ton-us": "Tonne (US)",
+      "celsius": "Celsius", "fahrenheit": "Fahrenheit", "kelvin": "Kelvin",
+      "liter": "Litre", "milliliter": "Millilitre",
+      "gallon-us": "Gallon (US)", "gallon-uk": "Gallon (UK)",
+      "quart": "Quart", "pint": "Pinte", "cup": "Tasse",
+      "fluid-ounce": "Once liquide", "tablespoon": "Cuillère à soupe", "teaspoon": "Cuillère à café",
+      "cubic-meter": "Mètre cube", "cubic-centimeter": "Centimètre cube",
+      "square-meter": "Mètre carré", "square-kilometer": "Kilomètre carré",
+      "square-centimeter": "Centimètre carré", "square-millimeter": "Millimètre carré",
+      "square-mile": "Mile carré", "square-yard": "Yard carré",
+      "square-foot": "Pied carré", "square-inch": "Pouce carré",
+      "hectare": "Hectare", "acre": "Acre",
+      "meter-second": "Mètre / Seconde", "kilometer-hour": "Kilomètre / Heure",
+      "mile-hour": "Mile / Heure", "knot": "Nœud", "foot-second": "Pied / Seconde",
+      "pascal": "Pascal", "kilopascal": "Kilopascal", "megapascal": "Mégapascal",
+      "bar": "Bar", "millibar": "Millibar", "psi": "PSI",
+      "atm": "Atmosphère", "torr": "Torr", "mmhg": "Millimètre de mercure",
+      "joule": "Joule", "kilojoule": "Kilojoule", "megajoule": "Mégajoule",
+      "calorie": "Calorie", "kilocalorie": "Kilocalorie",
+      "watt-hour": "Wattheure", "kilowatt-hour": "Kilowattheure",
+      "electron-volt": "Électronvolt", "btu": "BTU",
+      "watt": "Watt", "kilowatt": "Kilowatt", "megawatt": "Mégawatt",
+      "horsepower-metric": "Cheval-vapeur (métrique)", "horsepower-imperial": "Cheval-vapeur (impérial)",
+      "btu-hour": "BTU / Heure",
+      "byte": "Octet", "bit": "Bit", "kilobyte": "Kilooctet",
+      "megabyte": "Mégaoctet", "gigabyte": "Gigaoctet", "terabyte": "Téraoctet",
+      "kibibyte": "Kibioctet", "mebibyte": "Mébioctet",
+      "gibibyte": "Gibioctet", "tebibyte": "Tébioctet",
+      "second": "Seconde", "millisecond": "Milliseconde", "microsecond": "Microseconde",
+      "minute": "Minute", "hour": "Heure", "day": "Jour",
+      "week": "Semaine", "month": "Mois", "year": "Année",
+      "degree": "Degré", "radian": "Radian", "gradian": "Grade",
+      "arcminute": "Minute d'arc", "arcsecond": "Seconde d'arc",
+      "hertz": "Hertz", "kilohertz": "Kilohertz", "megahertz": "Mégahertz",
+      "gigahertz": "Gigahertz", "rpm": "tr/min",
+    },
   },
   currencyConverter: {
     from: "De", to: "Vers",
@@ -1002,6 +1189,57 @@ const FR: Translations = {
     dragDrop: "Glissez-déposez ou cliquez pour parcourir (max 20)",
     processing: "Traitement...",
     clearAll: "Tout effacer",
+  },
+  ocr: {
+    modelNote: "La première utilisation télécharge ~15 Mo de modèle OCR — mis en cache une seule fois dans le navigateur.",
+    extractBtn: "Extraire le texte",
+    extractedText: "Texte extrait",
+  },
+  wordCounter: {
+    words: "Mots",
+    chars: "Caractères",
+    noSpaces: "Sans espaces",
+    sentences: "Phrases",
+    paragraphs: "Paragraphes",
+    readingTime: "Temps de lecture",
+    clear: "Effacer",
+    copyText: "Copier le texte",
+    pasteHere: "Collez ou tapez votre texte ici…",
+  },
+  common: {
+    download: "Télécharger",
+    downloadAll: (n) => `Télécharger les ${n} fichiers en ZIP`,
+    copy: "Copier",
+    copied: "Copié !",
+    reset: "Réinitialiser",
+    remove: "Supprimer",
+    clear: "Effacer",
+    processing: "Traitement…",
+    converting: "Conversion…",
+    quality: "Qualité",
+    original: "Original",
+    converted: "Converti",
+    extractText: "Extraire le texte",
+    extractedText: "Texte extrait",
+    dropFileHere: "Déposez le fichier ici, ou cliquez pour parcourir",
+    dropFilesHere: (label) => `Déposez les fichiers ${label} ici ou cliquez pour parcourir`,
+    uploadFile: "Parcourir",
+    pasteText: "Collez votre texte ici…",
+    outputAppearsHere: "La sortie apparaît ici…",
+    convertToPdf: "Convertir en PDF",
+    downloadPdf: "Télécharger le PDF",
+    downloadCsv: "Télécharger le CSV",
+    downloadTxt: "Télécharger .txt",
+    convertFiles: (n, ext) => `Convertir ${n} fichier${n > 1 ? 's' : ''} en ${ext}`,
+    pdfReady: (kb) => `PDF prêt — ${kb} Ko`,
+    sheet: "Feuille :",
+    exportSheet: "Exporter la feuille :",
+    convertBtn: "Convertir",
+    preview: (n) => `Aperçu (${n} lignes)`,
+    orPasteDirectly: "Ou collez directement :",
+    errorGeneric: "Une erreur est survenue. Veuillez réessayer.",
+    view: "Afficher",
+    copyText: "Copier le texte",
   },
 };
 

@@ -64,12 +64,12 @@ export default function CsvToExcel() {
           <input ref={inputRef} type="file" accept=".csv,text/csv" style={{ display: 'none' }}
             onChange={(e) => { if (e.target.files?.[0]) handleFile(e.target.files[0]); }} />
           <p style={{ fontFamily: 'var(--font-ui)', fontSize: 14, color: 'var(--text-secondary)', margin: 0 }}>
-            {file ? file.name : 'Drop CSV file here, or click to browse'}
+            {file ? file.name : t.common.dropFileHere}
           </p>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)', marginTop: 4 }}>.csv · max 25 MB</p>
         </div>
 
-        <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-secondary)', marginBottom: 6 }}>Or paste CSV directly:</p>
+        <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-secondary)', marginBottom: 6 }}>{t.common.orPasteDirectly}</p>
         <textarea
           value={csvText}
           onChange={(e) => { setCsvText(e.target.value); setStatus('idle'); setXlsxBlob(null); }}
@@ -79,7 +79,7 @@ export default function CsvToExcel() {
 
         <button onClick={convert} disabled={!csvText.trim()}
           style={{ width: '100%', padding: '12px 24px', background: csvText.trim() ? 'var(--accent)' : 'var(--bg-elevated)', color: csvText.trim() ? 'var(--accent-text)' : 'var(--text-tertiary)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 15, fontWeight: 500, cursor: csvText.trim() ? 'pointer' : 'not-allowed' }}>
-          Convert to Excel (.xlsx)
+          {t.common.convertFiles(1, 'Excel (.xlsx)')}
         </button>
 
         {error && <p style={{ color: 'var(--danger,#dc2626)', marginTop: 12, fontFamily: 'var(--font-ui)', fontSize: 14 }}>{error}</p>}
@@ -87,7 +87,7 @@ export default function CsvToExcel() {
         {status === 'done' && xlsxBlob && (
           <div style={{ marginTop: 16, padding: '14px 20px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span style={{ fontFamily: 'var(--font-ui)', fontSize: 14, color: 'var(--text-primary)' }}>Excel file ready — {(xlsxBlob.size / 1024).toFixed(1)} KB</span>
-            <button onClick={download} style={{ padding: '8px 18px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: 500, cursor: 'pointer' }}>Download .xlsx</button>
+            <button onClick={download} style={{ padding: '8px 18px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: 500, cursor: 'pointer' }}>{t.common.download}</button>
           </div>
         )}
         <AdSlot type="horizontal" />

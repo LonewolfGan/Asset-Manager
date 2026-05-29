@@ -227,7 +227,7 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
           <input ref={inputRef} type="file" multiple accept={fromExts.join(',')} style={{ display: 'none' }}
             onChange={(e) => addFiles(Array.from(e.target.files ?? []))} />
           <p style={{ fontFamily: 'var(--font-ui)', fontSize: 15, color: 'var(--text-secondary)', margin: 0 }}>
-            Drop {fromLabel} files here or click to browse
+            {t.common.dropFilesHere(fromLabel)}
           </p>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)', marginTop: 6 }}>
             {fromExts.join(' · ').toUpperCase()} · up to 20 files · max 50 MB each
@@ -238,7 +238,7 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
           <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 14 }}>
             {showQuality && (
               <div style={{ padding: '14px 16px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', display: 'flex', alignItems: 'center', gap: 14 }}>
-                <span style={{ fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, color: 'var(--text-primary)', minWidth: 60 }}>Quality</span>
+                <span style={{ fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, color: 'var(--text-primary)', minWidth: 60 }}>{t.common.quality}</span>
                 <input type="range" min="1" max="100" value={quality} onChange={(e) => setQuality(+e.target.value)} style={{ flex: 1, accentColor: 'var(--accent)' }} />
                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: 14, color: 'var(--text-primary)', minWidth: 36 }}>{quality}%</span>
               </div>
@@ -249,14 +249,14 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
               disabled={isProcessing}
               style={{ padding: '12px 24px', background: isProcessing ? 'var(--bg-elevated)' : 'var(--accent)', color: isProcessing ? 'var(--text-tertiary)' : 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 15, fontWeight: 500, cursor: isProcessing ? 'not-allowed' : 'pointer' }}
             >
-              {isProcessing ? 'Converting…' : `Convert ${files.length} file${files.length > 1 ? 's' : ''} to ${toExt.toUpperCase()}`}
+              {isProcessing ? t.common.converting : t.common.convertFiles(files.length, toExt.toUpperCase())}
             </button>
 
             {files.map((entry) => (
               <div key={entry.id} style={{ border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-surface)', overflow: 'hidden' }}>
                 <div style={{ display: 'flex' }}>
                   <div style={{ flex: 1, padding: '12px 14px', borderRight: '1px solid var(--border)' }}>
-                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-tertiary)', margin: '0 0 6px', textTransform: 'uppercase' }}>Original</p>
+                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-tertiary)', margin: '0 0 6px', textTransform: 'uppercase' }}>{t.common.original}</p>
                     {entry.file.type.startsWith('image/') || entry.file.type === '' ? (
                       <img src={entry.originalUrl} alt="original" style={{ width: '100%', maxHeight: 120, objectFit: 'contain', background: 'var(--bg-elevated)', display: 'block' }} />
                     ) : (
@@ -267,7 +267,7 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
                     <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-secondary)', margin: '6px 0 0' }}>{formatBytes(entry.file.size)}</p>
                   </div>
                   <div style={{ flex: 1, padding: '12px 14px' }}>
-                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-tertiary)', margin: '0 0 6px', textTransform: 'uppercase' }}>Converted</p>
+                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-tertiary)', margin: '0 0 6px', textTransform: 'uppercase' }}>{t.common.converted}</p>
                     {entry.status === 'done' && entry.compressedUrl && entry.blob ? (
                       <>
                         {toMime.startsWith('image/') && toMime !== 'image/svg+xml' ? (
@@ -285,7 +285,7 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
                         </div>
                       </>
                     ) : entry.status === 'processing' ? (
-                      <div style={{ height: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', fontSize: 13, fontFamily: 'var(--font-ui)' }}>Converting…</div>
+                      <div style={{ height: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', fontSize: 13, fontFamily: 'var(--font-ui)' }}>{t.common.converting}</div>
                     ) : entry.status === 'error' ? (
                       <div style={{ height: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--danger, #dc2626)', fontSize: 13, padding: 8, textAlign: 'center', fontFamily: 'var(--font-ui)' }}>{entry.error}</div>
                     ) : (
@@ -296,16 +296,16 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
                 <div style={{ padding: '8px 14px', borderTop: '1px solid var(--border)', background: 'var(--bg-elevated)', display: 'flex', alignItems: 'center', gap: 8 }}>
                   <span style={{ flex: 1, fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={entry.file.name}>{entry.file.name}</span>
                   {entry.status === 'done' && (
-                    <button onClick={() => downloadOne(entry)} style={{ padding: '4px 12px', background: 'var(--text-primary)', color: 'var(--bg-base)', border: 'none', borderRadius: 5, fontFamily: 'var(--font-ui)', fontSize: 12, cursor: 'pointer' }}>Download</button>
+                    <button onClick={() => downloadOne(entry)} style={{ padding: '4px 12px', background: 'var(--text-primary)', color: 'var(--bg-base)', border: 'none', borderRadius: 5, fontFamily: 'var(--font-ui)', fontSize: 12, cursor: 'pointer' }}>{t.common.download}</button>
                   )}
-                  <button onClick={() => removeFile(entry.id)} style={{ padding: '4px 10px', background: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--border)', borderRadius: 5, fontFamily: 'var(--font-ui)', fontSize: 12, cursor: 'pointer' }}>Remove</button>
+                  <button onClick={() => removeFile(entry.id)} style={{ padding: '4px 10px', background: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--border)', borderRadius: 5, fontFamily: 'var(--font-ui)', fontSize: 12, cursor: 'pointer' }}>{t.common.remove}</button>
                 </div>
               </div>
             ))}
 
             {doneCount > 1 && (
               <button onClick={downloadAll} style={{ padding: '10px 24px', background: 'var(--bg-surface)', color: 'var(--text-primary)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}>
-                Download all {doneCount} files as ZIP
+                {t.common.downloadAll(doneCount)}
               </button>
             )}
           </div>

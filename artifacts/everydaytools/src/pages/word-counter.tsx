@@ -38,25 +38,25 @@ export default function WordCounter() {
         <p style={{ color: 'var(--text-secondary)', marginBottom: 24, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{desc}</p>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 20 }}>
-          {stat('Words', stats.words)}
-          {stat('Characters', stats.chars)}
-          {stat('No spaces', stats.charsNoSpace)}
-          {stat('Sentences', stats.sentences)}
-          {stat('Paragraphs', stats.paragraphs)}
-          {stat('Reading time', stats.words === 0 ? '0s' : stats.readingMin > 0 ? `${stats.readingMin}m ${stats.readingSec}s` : `${stats.readingSec}s`)}
+          {stat(t.wordCounter.words, stats.words)}
+          {stat(t.wordCounter.chars, stats.chars)}
+          {stat(t.wordCounter.noSpaces, stats.charsNoSpace)}
+          {stat(t.wordCounter.sentences, stats.sentences)}
+          {stat(t.wordCounter.paragraphs, stats.paragraphs)}
+          {stat(t.wordCounter.readingTime, stats.words === 0 ? '0s' : stats.readingMin > 0 ? `${stats.readingMin}m ${stats.readingSec}s` : `${stats.readingSec}s`)}
         </div>
 
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="Paste or type your text here…"
+          placeholder={t.wordCounter.pasteHere}
           style={{ width: '100%', height: 340, padding: 16, border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', fontSize: 14, lineHeight: 1.6, resize: 'vertical', boxSizing: 'border-box' }}
         />
 
         {text && (
           <div style={{ marginTop: 12, display: 'flex', gap: 8 }}>
-            <button onClick={() => setText('')} style={{ padding: '5px 14px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 12, color: 'var(--text-secondary)', cursor: 'pointer' }}>Clear</button>
-            <button onClick={() => navigator.clipboard.writeText(text)} style={{ padding: '5px 14px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 12, color: 'var(--text-secondary)', cursor: 'pointer' }}>Copy text</button>
+            <button onClick={() => setText('')} style={{ padding: '5px 14px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 12, color: 'var(--text-secondary)', cursor: 'pointer' }}>{t.wordCounter.clear}</button>
+            <button onClick={() => navigator.clipboard.writeText(text)} style={{ padding: '5px 14px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 12, color: 'var(--text-secondary)', cursor: 'pointer' }}>{t.wordCounter.copyText}</button>
           </div>
         )}
         <AdSlot type="horizontal" />
