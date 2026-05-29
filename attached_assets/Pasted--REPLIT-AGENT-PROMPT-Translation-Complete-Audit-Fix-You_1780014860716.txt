@@ -1,0 +1,338 @@
+# REPLIT AGENT PROMPT — Translation Complete Audit & Fix
+
+You are fixing a critical translation problem on this site. The issue is that many strings are hardcoded directly in the code instead of going through the translation system. The most visible example is unit selects (kilometers, meters, liters, etc.) but there are certainly others throughout the entire codebase. Your job is to find EVERY hardcoded string, add it to the translation files, and wire it through the i18n system.
+
+Do not touch design, layout, or logic. Only fix translations.
+
+---
+
+## STEP 1 — UNDERSTAND THE CURRENT i18n SETUP
+
+Before touching anything:
+
+1. Identify the i18n library being used (i18next, react-intl, vue-i18n, custom solution, etc.)
+2. Find where translation files are stored (e.g. `/locales/en.json`, `/src/i18n/fr.json`, etc.)
+3. Find how translations are called in the code (e.g. `t('key')`, `$t('key')`, `i18n.t('key')`, etc.)
+4. List every language the site supports
+5. Document this setup at the top of your report before making any changes
+
+---
+
+## STEP 2 — FULL CODEBASE SCAN FOR HARDCODED STRINGS
+
+Search the ENTIRE codebase for hardcoded user-facing strings. Do not skip any file or folder.
+
+### 2a. Scan these specific patterns
+
+Search for every instance of visible text that is NOT going through the translation function:
+
+```
+# Hardcoded strings in JSX / HTML templates
+<option value="km">Kilometers</option>
+<option value="m">Meters</option>
+<label>File size</label>
+<button>Download</button>
+<p>Drop your file here</p>
+placeholder="Enter text..."
+<h2>How it works</h2>
+<span>Processing...</span>
+<div>Error: file too large</div>
+
+# Hardcoded strings in JavaScript / TypeScript
+const label = "Kilometers"
+const units = ["Meters", "Kilometers", "Miles", "Feet", "Inches"]
+const options = [{ label: "Liters", value: "l" }]
+alert("Something went wrong")
+console.error("File is too large") // ignore console logs
+throw new Error("Invalid file") // only if this message reaches the UI
+const placeholder = "Type here..."
+const errorMessage = "Please upload a valid PDF"
+const successMessage = "File converted successfully"
+toast("Download ready!")
+notification({ message: "Processing complete" })
+
+# Hardcoded strings in data arrays / config objects
+const units = [
+  { label: "Kilometer", value: "km" },
+  { label: "Meter", value: "m" },
+  { label: "Mile", value: "mi" },
+]
+
+const currencies = [
+  { name: "US Dollar", code: "USD" },
+  { name: "Euro", code: "EUR" },
+]
+
+const categories = ["Length", "Weight", "Temperature", "Volume", "Speed", "Area"]
+```
+
+### 2b. Specific files / areas guaranteed to have hardcoded strings
+
+Check these locations with extra attention:
+
+**Unit Converter**
+- The array/object containing all unit names and categories
+- Every `<option>` or select item label
+- Category names: Length, Weight, Temperature, Volume, Speed, Area, Data, Pressure, Energy
+- Unit names: Kilometer, Meter, Centimeter, Millimeter, Mile, Yard, Foot, Inch, Nautical Mile
+- Unit names: Kilogram, Gram, Milligram, Pound, Ounce, Ton
+- Unit names: Celsius, Fahrenheit, Kelvin
+- Unit names: Liter, Milliliter, Gallon, Quart, Pint, Cup, Fluid Ounce, Cubic Meter
+- Unit names: Meter/second, Kilometer/hour, Mile/hour, Knot
+- Unit names: Byte, Kilobyte, Megabyte, Gigabyte, Terabyte
+- Section labels: "From", "To", "Result", "Swap"
+
+**Currency Converter**
+- Currency names: US Dollar, Euro, British Pound, Japanese Yen, etc.
+- Labels: "Amount", "From", "To", "Exchange Rate", "Last updated"
+
+**Tip Calculator**
+- Labels: "Bill Amount", "Tip %", "Number of People", "Total", "Per Person", "Tip Amount"
+
+**Percentage Calculator**
+- Labels and descriptions of each calculation mode
+
+**Password Generator**
+- Labels: "Length", "Uppercase", "Lowercase", "Numbers", "Symbols", "Generate", "Copy", "Strength"
+- Strength labels: "Weak", "Fair", "Good", "Strong", "Very Strong"
+
+**QR Code Generator**
+- Labels: "Enter text or URL", "Size", "Error correction", "Download PNG", "Download SVG"
+
+**All PDF tools**
+- Drag & drop zone text: "Drop PDF here", "or click to browse", "Max file size: 50MB"
+- Button labels: "Compress", "Download", "Reset", "Processing...", "Done"
+- Compression level labels: "Low", "Medium", "High", "Maximum"
+- Error messages: "This file is not a PDF", "File is encrypted", "File too large"
+- Success messages: "Compressed by 45%", "Download ready"
+- How it works section text
+
+**All Image tools**
+- Format names in selects: "PNG", "JPEG", "WebP", "AVIF", "GIF", "BMP", "TIFF"
+- Quality labels: "Low quality", "Medium quality", "High quality", "Lossless"
+- Labels: "Width", "Height", "Keep aspect ratio", "Output format", "Quality"
+
+**All conversion tools**
+- Every `<option>` in every `<select>` dropdown
+- Tab labels
+- Step descriptions
+
+**Navigation & global**
+- Category names in the nav: "PDF Tools", "Documents", "Images", "Text & Code", "Generators", "Calculators", "Privacy"
+- Tool names in the nav/homepage grid
+- Tool descriptions on the homepage cards
+- Search placeholder: "Search tools..."
+- Footer text
+- "Back to home", "All tools"
+
+**Error & status messages (global)**
+- "Loading...", "Processing...", "Please wait..."
+- "Download", "Download all", "Download as ZIP"
+- "Copy to clipboard", "Copied!"
+- "Upload a file to get started"
+- "Something went wrong. Please try again."
+- "Your browser does not support this feature."
+- "File is too large. Maximum size is X MB."
+- "Invalid file type. Expected X."
+
+---
+
+## STEP 3 — FOR EACH HARDCODED STRING FOUND
+
+Do the following:
+
+1. **Create a translation key** using dot notation, grouped by tool/section:
+```
+unit_converter.categories.length = "Length"
+unit_converter.units.kilometer = "Kilometer"
+unit_converter.units.meter = "Meter"
+unit_converter.labels.from = "From"
+unit_converter.labels.to = "To"
+unit_converter.labels.swap = "Swap"
+
+pdf_compress.dropzone.title = "Drop your PDF here"
+pdf_compress.dropzone.subtitle = "or click to browse"
+pdf_compress.dropzone.max_size = "Maximum file size: 50MB"
+pdf_compress.levels.low = "Low compression"
+pdf_compress.levels.medium = "Medium compression"
+pdf_compress.levels.high = "High compression"
+pdf_compress.errors.not_pdf = "This file is not a PDF. Please upload a .pdf file."
+pdf_compress.errors.too_large = "File exceeds the 50MB size limit."
+pdf_compress.success.reduced_by = "File size reduced by {{percent}}%"
+
+common.download = "Download"
+common.copy = "Copy"
+common.copied = "Copied!"
+common.processing = "Processing..."
+common.loading = "Loading..."
+common.reset = "Reset"
+common.cancel = "Cancel"
+common.upload = "Upload file"
+common.drop_here = "Drop file here"
+common.or = "or"
+common.browse = "click to browse"
+common.error_generic = "Something went wrong. Please try again."
+common.error_file_type = "Invalid file type. Expected: {{expected}}"
+common.error_too_large = "File is too large. Maximum: {{max}}"
+```
+
+2. **Add the key to ALL language files** simultaneously — every language must have the key
+3. **Replace the hardcoded string in the code** with the translation function call
+4. **For dynamic values** (file size, percentage, unit names in results), use interpolation:
+```javascript
+// Instead of:
+`File reduced by ${percent}%`
+// Use:
+t('pdf_compress.success.reduced_by', { percent })
+```
+
+---
+
+## STEP 4 — SPECIAL CASE: ARRAYS AND OBJECTS WITH LABELS
+
+The unit converter and currency converter use arrays of objects with labels. These are often missed because they look like data, not UI text. Fix this pattern:
+
+### WRONG — hardcoded labels in data array:
+```javascript
+const LENGTH_UNITS = [
+  { label: "Kilometer", value: "km", factor: 1000 },
+  { label: "Meter", value: "m", factor: 1 },
+  { label: "Mile", value: "mi", factor: 1609.34 },
+]
+
+// Rendered as:
+{LENGTH_UNITS.map(unit => (
+  <option value={unit.value}>{unit.label}</option>
+))}
+```
+
+### RIGHT — translation keys in data, labels resolved at render time:
+```javascript
+const LENGTH_UNITS = [
+  { labelKey: "unit_converter.units.kilometer", value: "km", factor: 1000 },
+  { labelKey: "unit_converter.units.meter", value: "m", factor: 1 },
+  { labelKey: "unit_converter.units.mile", value: "mi", factor: 1609.34 },
+]
+
+// Rendered as:
+{LENGTH_UNITS.map(unit => (
+  <option value={unit.value}>{t(unit.labelKey)}</option>
+))}
+```
+
+Apply this pattern to EVERY array of options across the entire codebase:
+- Unit categories and unit names (Unit Converter)
+- Currency names (Currency Converter)
+- Image format options (Image tools)
+- Compression level options (Compress tools)
+- PDF permission options (Protect PDF)
+- Error correction levels (QR Code)
+- Any other select/dropdown data
+
+---
+
+## STEP 5 — VERIFY EVERY LANGUAGE FILE IS COMPLETE
+
+After adding all keys:
+
+1. Check that every key exists in every language file
+2. Find any key that exists in one language but is missing in another
+3. For missing translations: do NOT leave the key empty or use the English fallback silently — mark it clearly so it can be translated:
+
+```json
+// Mark untranslated keys with a prefix so they're visible
+"unit_converter.units.kilometer": "⚠️ NEEDS TRANSLATION: Kilometer"
+```
+
+4. Check for any translation keys that exist in the language files but are NO LONGER used in the code (orphaned keys) — list them but do not delete them yet
+
+---
+
+## STEP 6 — TEST EVERY TOOL IN EVERY LANGUAGE
+
+After making all fixes, manually trace through each tool in each supported language:
+
+For each tool:
+- [ ] Page title is translated
+- [ ] All labels are translated
+- [ ] All button text is translated
+- [ ] All dropdown options are translated
+- [ ] All placeholder text is translated
+- [ ] All error messages are translated
+- [ ] All success messages are translated
+- [ ] All "how it works" text is translated
+- [ ] Dynamic strings with variables render correctly (no broken `{{percent}}` showing in UI)
+
+---
+
+## STEP 7 — LANGUAGE SWITCHER CHECK
+
+- Does switching language update ALL text on the page immediately (without page reload)?
+- Does the selected language persist across page navigation?
+- Does the selected language persist after closing and reopening the browser? (localStorage)
+- Is the default language correctly detected from the browser's language setting?
+- If a string is missing in the current language, does it fall back to English gracefully?
+
+---
+
+## FINAL REPORT FORMAT
+
+```
+TRANSLATION AUDIT REPORT
+═════════════════════════
+
+i18n SETUP:
+Library: [name]
+Translation files: [paths]
+Languages: [list]
+Translation function: [t('key') / $t('key') / etc.]
+
+─────────────────────────────────────────
+HARDCODED STRINGS FOUND & FIXED: [total count]
+─────────────────────────────────────────
+
+TOOL: Unit Converter
+  FIXED: "Kilometer" → t('unit_converter.units.kilometer') [in /src/tools/UnitConverter.jsx line 45]
+  FIXED: "Meter" → t('unit_converter.units.meter') [in /src/tools/UnitConverter.jsx line 46]
+  FIXED: "Length" category → t('unit_converter.categories.length') [in /src/data/units.js line 12]
+  FIXED: "From" label → t('unit_converter.labels.from') [in /src/tools/UnitConverter.jsx line 89]
+  ... (every fix listed)
+
+TOOL: Currency Converter
+  FIXED: "US Dollar" → t('currency_converter.currencies.usd') [...]
+  ...
+
+TOOL: Compress PDF
+  FIXED: "Drop your PDF here" → t('pdf_compress.dropzone.title') [...]
+  ...
+
+[continue for every tool]
+
+─────────────────────────────────────────
+MISSING TRANSLATIONS PER LANGUAGE:
+─────────────────────────────────────────
+French (fr): 12 keys missing → marked with ⚠️
+Arabic (ar): 8 keys missing → marked with ⚠️
+[etc.]
+
+─────────────────────────────────────────
+ORPHANED KEYS (in translation files but not used in code):
+─────────────────────────────────────────
+old_tool.some_key — NOT DELETED, just flagged
+
+─────────────────────────────────────────
+LANGUAGE SWITCHER: ✅ Working / ⚠️ Issues found: [describe]
+─────────────────────────────────────────
+TOTAL FIXES APPLIED: [n]
+STATUS: ✅ Complete
+```
+
+---
+
+## IMPORTANT CONSTRAINTS
+
+- Do NOT change any logic, design, or file processing code
+- Do NOT rename existing translation keys that are already working — only add new ones
+- Do NOT use machine translation — leave new keys in English and mark missing translations with ⚠️ NEEDS TRANSLATION prefix
+- Every fix must include the file path and line number in the report
+- When in doubt whether a string is user-facing, include it — better to over-translate than miss something
