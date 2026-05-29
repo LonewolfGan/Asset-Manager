@@ -84,6 +84,7 @@ function ToolCard({ tool }: { tool: DashTool }) {
     <Link href={tool.route} style={{ textDecoration: "none", display: "block", height: "100%" }}>
       <article
         ref={ref}
+        data-testid="tool-card"
         style={{
           padding: "22px 22px 20px",
           borderRadius: "var(--radius-card)",

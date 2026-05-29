@@ -420,6 +420,7 @@ export default function TopNav() {
               value={searchQuery}
               onChange={(e) => handleSearch(e.target.value)}
               aria-label="Search tools"
+              data-testid="search-input"
               style={{ background: "transparent", border: "none", outline: "none", fontSize: 13, color: "var(--text-primary)", width: "100%", fontFamily: "var(--font-ui)" }}
             />
             {searchQuery && (
@@ -437,10 +438,11 @@ export default function TopNav() {
           {/* Right actions */}
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: 8 }}>
             {/* Locale */}
-            <div className="hidden md:flex" style={{ alignItems: "center", border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
+            <div className="hidden md:flex" data-testid="lang-switcher" style={{ alignItems: "center", border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
               {(["EN", "FR"] as const).map((lang, i) => (
                 <button
                   key={lang}
+                  data-testid={`lang-${lang.toLowerCase()}`}
                   onClick={() => { setLocale(lang); trackLanguageChanged(lang.toLowerCase()); }}
                   style={{
                     background: lang === locale ? "var(--bg-subtle)" : "transparent",
@@ -481,7 +483,7 @@ export default function TopNav() {
             </button>
 
             {/* Mobile hamburger */}
-            <button className="flex md:hidden" onClick={() => setMobileOpen(true)} aria-label="Open menu" style={{ background: "none", border: "1px solid var(--border)", borderRadius: 10, cursor: "pointer", padding: "7px", color: "var(--text-secondary)" }}>
+            <button className="flex md:hidden" data-testid="hamburger-menu" onClick={() => setMobileOpen(true)} aria-label="Open menu" style={{ background: "none", border: "1px solid var(--border)", borderRadius: 10, cursor: "pointer", padding: "7px", color: "var(--text-secondary)" }}>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 5h12M2 8h12M2 11h12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>
             </button>
           </div>

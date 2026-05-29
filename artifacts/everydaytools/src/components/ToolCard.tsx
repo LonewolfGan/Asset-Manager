@@ -25,6 +25,7 @@ export default function ToolCard({ tool }: ToolCardProps) {
   return (
     <Link
       href={`/${tool.slug}`}
+      data-testid="tool-card"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       aria-label={`${title}: ${description}`}

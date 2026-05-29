@@ -32,6 +32,14 @@ args = "EverydayTools API Server"
 task = "workflow.run"
 args = "typecheck"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "unit-tests"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "e2e-tests"
+
 [[workflows.workflow]]
 name = "EverydayTools Frontend"
 author = "agent"
@@ -73,9 +81,31 @@ outputType = "console"
 name = "typecheck"
 author = "agent"
 
+[workflows.workflow.metadata]
+isValidation = true
+
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "pnpm --filter @workspace/everydaytools run typecheck"
+
+[[workflows.workflow]]
+name = "unit-tests"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd artifacts/everydaytools && pnpm test"
+
+[workflows.workflow.metadata]
+isValidation = true
+
+[[workflows.workflow]]
+name = "e2e-tests"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd artifacts/everydaytools && pnpm test:e2e"
 
 [workflows.workflow.metadata]
 isValidation = true

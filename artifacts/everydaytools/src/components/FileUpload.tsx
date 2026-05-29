@@ -78,6 +78,7 @@ export default function FileUpload({ accept, maxSizeMB, multiple = false, onFile
         role="button"
         tabIndex={0}
         aria-label={ariaLabel}
+        data-testid="drop-zone"
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
         onDragOver={handleDrag}
@@ -142,7 +143,7 @@ export default function FileUpload({ accept, maxSizeMB, multiple = false, onFile
               boxShadow: 'var(--shadow-sm)',
             }}>
               <div style={{ flex: 1, overflow: 'hidden' }}>
-                <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-primary)', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{file.name}</p>
+                <p data-testid="file-name" style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-primary)', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{file.name}</p>
                 <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', margin: '2px 0 0' }}>{(file.size / 1024 / 1024).toFixed(2)} MB</p>
               </div>
               <button

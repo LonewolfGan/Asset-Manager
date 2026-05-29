@@ -179,9 +179,9 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
         const blob = await canvasToBlob(canvas, toMime, quality / 100);
         const compressedUrl = URL.createObjectURL(blob);
         updated[i] = { ...updated[i], status: 'done', blob, compressedUrl };
-        if (trackUsed) trackUsed(slug, 'images');
+        trackToolUsed(slug, 'images');
       } catch (err) {
-        if (trackError) trackError(slug, 'general-error');
+        trackToolError(slug, 'general-error');
         updated[i] = { ...updated[i], status: 'error', error: err instanceof Error ? err.message : 'Conversion failed' };
       }
       setFiles([...updated]);
@@ -222,6 +222,11 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
         <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{toolDesc || `Convert ${fromLabel} files to ${toExt.toUpperCase()} — all in your browser.`}</p>
 
         <div
+          data-testid="drop-zone"
+          role="button"
+          tabIndex={0}
+          aria-label={`Upload ${fromLabel} files. Drag and drop or click to browse.`}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); inputRef.current?.click(); } }}
           onDragOver={(e) => e.preventDefault()}
           onDrop={(e) => { e.preventDefault(); addFiles(Array.from(e.dataTransfer.files)); }}
           onClick={() => inputRef.current?.click()}
