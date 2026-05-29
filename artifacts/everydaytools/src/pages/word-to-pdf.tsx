@@ -3,6 +3,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 function formatBytes(b: number) {
   if (b < 1024 * 1024) return `${(b / 1024).toFixed(1)} KB`;
@@ -26,6 +27,7 @@ export default function WordToPdf() {
   const convert = async () => {
     if (!file) return;
     setStatus('processing'); setProgress(10);
+    trackToolUsed('word-to-pdf', 'documents');
     try {
       const mammoth = (await import('mammoth')).default;
       setProgress(25);
@@ -89,6 +91,7 @@ export default function WordToPdf() {
       setProgress(100);
       setStatus('done');
     } catch (e) {
+      trackToolError('word-to-pdf', 'general-error');
       setStatus('error');
       setError(e instanceof Error ? e.message : 'Conversion failed');
     }

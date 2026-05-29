@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
@@ -69,6 +70,7 @@ export default function ImageResize() {
       }
       
       if (isNaN(targetW) || isNaN(targetH) || targetW <= 0 || targetH <= 0) {
+        trackToolError('image-resize', 'general-error');
         throw new Error("Invalid dimensions.");
       }
 
@@ -97,8 +99,10 @@ export default function ImageResize() {
       });
       
       setProgress(100);
+      trackToolUsed('image-resize', 'images');
       setResult({ blob, filename: file.name.replace(/\.(png|jpe?g|webp)$/i, '_resized.$1'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
+      trackToolError('image-resize', 'general-error');
       setError(e instanceof Error ? e.message : 'Resizing failed. Please try again.');
     } finally { setIsProcessing(false); }
   };

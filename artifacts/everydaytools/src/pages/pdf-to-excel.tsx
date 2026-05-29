@@ -3,6 +3,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 export default function PdfToExcel() {
   const { t } = useLocale();
@@ -71,6 +72,7 @@ export default function PdfToExcel() {
       setProgress(100);
       setStatus('done');
     } catch (e) {
+      trackToolError('pdf-to-excel', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed');
       setStatus('error');
     }
@@ -78,6 +80,7 @@ export default function PdfToExcel() {
 
   const download = () => {
     if (!xlsxBlob || !file) return;
+    trackToolUsed('pdf-to-excel', 'pdf');
     const url = URL.createObjectURL(xlsxBlob);
     const a = document.createElement('a');
     a.href = url;

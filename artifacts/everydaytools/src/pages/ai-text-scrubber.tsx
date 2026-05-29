@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
@@ -60,6 +61,7 @@ export default function AiTextScrubber() {
   };
 
   const handleDownload = () => {
+    trackToolUsed('ai-text-scrubber', 'utilities');
     const blob = new Blob([outputText], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

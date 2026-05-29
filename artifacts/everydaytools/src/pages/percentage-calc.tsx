@@ -3,6 +3,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed } from '@/lib/analytics';
 
 type TabId = 'of' | 'isWhat' | 'change' | 'discount' | 'tip' | 'markup';
 
@@ -33,6 +34,7 @@ export default function PercentageCalc() {
 
   const getResult = (): string => {
     if (isNaN(vx) || isNaN(vy)) return '—';
+    trackToolUsed('percentage-calc', 'calculators');
     switch (tab) {
       case 'of':
         return `${(vx / 100) * vy}`;

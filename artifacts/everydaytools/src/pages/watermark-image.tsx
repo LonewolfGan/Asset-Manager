@@ -3,6 +3,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed } from '@/lib/analytics';
 
 type Position = 'top-left' | 'top-right' | 'center' | 'bottom-left' | 'bottom-right';
 
@@ -61,6 +62,7 @@ export default function WatermarkImage() {
   };
 
   const download = () => {
+    trackToolUsed('watermark-image', 'images');
     const canvas = canvasRef.current;
     if (!canvas || !file) return;
     canvas.toBlob((blob) => {

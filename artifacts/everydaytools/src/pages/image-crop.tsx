@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import AdSlot from '@/components/AdSlot';
@@ -116,6 +117,7 @@ export default function ImageCrop() {
   };
 
   const handleCrop = async () => {
+    trackToolUsed('image-crop', 'images');
     if (!imgObj || !cropRect || !files[0]) return;
     
     const canvas = canvasRef.current!;

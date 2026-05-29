@@ -8,6 +8,7 @@ import { PDFDocument } from 'pdf-lib';
 import JSZip from 'jszip';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 export default function PdfSplit() {
   const { t } = useLocale();
@@ -53,6 +54,7 @@ export default function PdfSplit() {
     if (!files[0]) return;
     setError(null); setIsProcessing(true); setProgress(0);
     try {
+      trackToolUsed('pdf-split', 'pdf');
       const file = files[0];
       const arrayBuffer = await file.arrayBuffer();
       const sourcePdf = await PDFDocument.load(arrayBuffer);
@@ -100,6 +102,7 @@ export default function PdfSplit() {
         setResult({ blob: zipBlob, filename: file.name.replace(/\.pdf$/i, '_split.zip'), sizeAfter: zipBlob.size, sizeBefore: file.size });
       }
     } catch (e) {
+      trackToolError('pdf-split', 'general-error');
       setError(e instanceof Error ? e.message : 'Split failed. Please try again.');
     } finally { setIsProcessing(false); }
   };

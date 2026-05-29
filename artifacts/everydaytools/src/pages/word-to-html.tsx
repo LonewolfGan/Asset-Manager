@@ -7,6 +7,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import mammoth from 'mammoth';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 export default function WordToHtml() {
   const { t } = useLocale();
@@ -19,6 +20,7 @@ export default function WordToHtml() {
   const handleConvert = async () => {
     if (!files[0]) return;
     setError(null); setIsProcessing(true); setProgress(0);
+    trackToolUsed('word-to-html', 'documents');
     try {
       const file = files[0];
       const arrayBuffer = await file.arrayBuffer();
@@ -32,6 +34,7 @@ export default function WordToHtml() {
       const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
       setResult({ blob, filename: file.name.replace(/\.docx?$/i, '.html'), sizeAfter: blob.size, sizeBefore: file.size, textOutput: html });
     } catch (e) {
+      trackToolError('word-to-html', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed. Please try again.');
     } finally { setIsProcessing(false); }
   };

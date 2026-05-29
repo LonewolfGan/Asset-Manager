@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
@@ -31,7 +32,11 @@ export default function CsvViewer() {
       setHeaders(data[0]);
       setRows(data.slice(1));
       setSortCol(null); setSortDir(null);
-    } catch (e) { setError(e instanceof Error ? e.message : 'Parse error'); }
+      trackToolUsed('csv-viewer', 'documents');
+    } catch (e) { 
+      trackToolError('csv-viewer', 'general-error');
+      setError(e instanceof Error ? e.message : 'Parse error'); 
+    }
   };
 
   const handleFile = async (f: File) => {

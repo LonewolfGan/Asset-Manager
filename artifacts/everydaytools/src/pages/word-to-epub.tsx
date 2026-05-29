@@ -7,6 +7,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import mammoth from 'mammoth';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 export default function WordToEpub() {
   const { t } = useLocale();
@@ -19,6 +20,7 @@ export default function WordToEpub() {
   const handleConvert = async () => {
     if (!files[0]) return;
     setError(null); setIsProcessing(true); setProgress(0);
+    trackToolUsed('word-to-epub', 'documents');
     try {
       const file = files[0];
       const arrayBuffer = await file.arrayBuffer();
@@ -46,6 +48,7 @@ export default function WordToEpub() {
       
       setResult({ blob, filename: file.name.replace(/\.docx?$/i, '.epub'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
+      trackToolError('word-to-epub', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed. Please try again.');
     } finally { setIsProcessing(false); }
   };

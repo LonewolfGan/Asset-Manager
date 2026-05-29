@@ -3,6 +3,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 export default function WordToMarkdown() {
   const { t } = useLocale();
@@ -18,6 +19,7 @@ export default function WordToMarkdown() {
 
   const handleFile = async (f: File) => {
     setFile(f); setStatus('idle'); setOutput(''); setError('');
+    trackToolUsed('word-to-markdown', 'documents');
     try {
       const mammoth = (await import('mammoth')).default;
       const buf = await f.arrayBuffer();
@@ -29,6 +31,7 @@ export default function WordToMarkdown() {
       setOutput(md);
       setStatus('done');
     } catch (e) {
+      trackToolError('word-to-markdown', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed');
       setStatus('error');
     }

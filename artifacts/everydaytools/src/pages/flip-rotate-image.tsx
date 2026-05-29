@@ -3,6 +3,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 export default function FlipRotateImage() {
   const { t } = useLocale();
@@ -33,6 +34,7 @@ export default function FlipRotateImage() {
   };
 
   const downloadResult = async () => {
+    trackToolUsed('flip-rotate-image', 'images');
     if (!file) return;
     const img = new Image();
     const url = URL.createObjectURL(file);

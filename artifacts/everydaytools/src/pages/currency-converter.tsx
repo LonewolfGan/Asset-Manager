@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import FormatSelector from '@/components/FormatSelector';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -75,6 +76,7 @@ export default function CurrencyConverter() {
   // Save history on blur or after slight delay
   useEffect(() => {
     if (result !== "—" && parseFloat(amount) > 0) {
+      trackToolUsed('currency-converter', 'calculators');
       const timer = setTimeout(saveHistory, 2000);
       return () => clearTimeout(timer);
     }

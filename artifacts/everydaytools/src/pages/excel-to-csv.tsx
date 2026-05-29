@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
@@ -40,11 +41,13 @@ export default function ExcelToCsv() {
       setCsvContent(csv);
       setStatus('done');
     } catch (e) {
+      trackToolError('excel-to-csv', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed');
     }
   };
 
   const download = () => {
+    trackToolUsed('excel-to-csv', 'documents');
     if (!csvContent || !file) return;
     const blob = new Blob([csvContent], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);

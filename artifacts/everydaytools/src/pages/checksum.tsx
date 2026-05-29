@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
@@ -36,7 +37,11 @@ export default function Checksum() {
       }
       setHashes(results);
       setStatus('done');
-    } catch { setStatus('idle'); }
+      trackToolUsed('checksum', 'utilities');
+    } catch { 
+      trackToolError('checksum', 'general-error');
+      setStatus('idle'); 
+    }
   };
 
   function formatBytes(b: number) {

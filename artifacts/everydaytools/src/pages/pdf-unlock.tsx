@@ -7,6 +7,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { PDFDocument } from 'pdf-lib';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 export default function PdfUnlock() {
   const { t } = useLocale();
@@ -20,6 +21,7 @@ export default function PdfUnlock() {
     if (!files[0]) return;
     setError(null); setIsProcessing(true); setProgress(0);
     try {
+      trackToolUsed('pdf-unlock', 'pdf');
       const file = files[0];
       const arrayBuffer = await file.arrayBuffer();
       
@@ -48,6 +50,7 @@ export default function PdfUnlock() {
       const blob = new Blob([pdfBytes], { type: 'application/pdf' });
       setResult({ blob, filename: file.name.replace(/\.pdf$/i, '_unlocked.pdf'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
+      trackToolError('pdf-unlock', 'general-error');
       setError(e instanceof Error ? e.message : 'Unlock failed. Please try again.');
     } finally { setIsProcessing(false); }
   };

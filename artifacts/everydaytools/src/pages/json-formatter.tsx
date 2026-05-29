@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
@@ -24,7 +25,9 @@ export default function JsonFormatter() {
       const parsed = JSON.parse(text);
       if (m === 'format') setOutput(JSON.stringify(parsed, null, indent));
       else setOutput(JSON.stringify(parsed));
+      trackToolUsed('json-formatter', 'utilities');
     } catch (e) {
+      trackToolError('json-formatter', 'general-error');
       setError(e instanceof Error ? e.message : 'Invalid JSON');
     }
   };

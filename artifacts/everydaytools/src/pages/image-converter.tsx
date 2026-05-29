@@ -10,6 +10,7 @@ import JSZip from "jszip";
 import Breadcrumb from "@/components/Breadcrumb";
 import ToolPageSEO from "@/components/ToolPageSEO";
 import { useLocale } from "@/hooks/use-locale";
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 type FileState = {
   id: string;
@@ -68,12 +69,14 @@ export default function ImageConverter() {
         const url = URL.createObjectURL(blob);
         dispatch({ type: "SET_STATUS", id: item.id, status: "done", resultUrl: url, resultSize: blob.size });
       } catch (err: any) {
+        trackToolError('image-converter', 'general-error');
         dispatch({ type: "SET_STATUS", id: item.id, status: "error", error: err.message || "Conversion failed" });
       }
     }
   };
 
   const handleDownloadAll = async () => {
+    trackToolUsed('image-converter', 'images');
     const doneFiles = files.filter(f => f.status === "done" && f.resultUrl);
     if (doneFiles.length === 0) return;
 
@@ -214,6 +217,7 @@ export default function ImageConverter() {
 
                       {item.status === "done" && item.resultUrl && (
                         <Button variant="ghost" size="icon" onClick={() => {
+                          trackToolUsed('image-converter', 'images');
                           const a = document.createElement("a");
                           a.href = item.resultUrl!;
                           a.download = item.file.name.replace(/\.[^/.]+$/, "") + "." + format.split('/')[1];

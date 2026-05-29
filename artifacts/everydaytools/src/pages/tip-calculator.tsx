@@ -2,6 +2,7 @@ import { useState } from 'react';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed } from '@/lib/analytics';
 
 const QUICK_TIPS = [15, 18, 20, 25];
 
@@ -61,6 +62,10 @@ export default function TipCalculator() {
   const [p3x, setP3x] = useState('100');
   const [p3y, setP3y] = useState('120');
 
+  const handleCalculate = () => {
+    trackToolUsed('tip-calculator', 'calculators');
+  };
+
   const numBill = parseFloat(bill) || 0;
   const tipAmount = numBill * (tipPercent / 100);
   const total = numBill + tipAmount;
@@ -117,7 +122,7 @@ export default function TipCalculator() {
                 <label style={labelStyle}>{tc.billAmount}</label>
                 <div style={{ position: 'relative' }}>
                   <span style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-tertiary)', fontSize: 15, fontFamily: 'var(--font-mono)' }}>$</span>
-                  <input type="number" value={bill} min="0" step="0.01" onChange={e => setBill(e.target.value)} style={{ ...inputStyle, paddingLeft: 26 }} />
+                  <input type="number" value={bill} min="0" step="0.01" onChange={e => { setBill(e.target.value); handleCalculate(); }} style={{ ...inputStyle, paddingLeft: 26 }} />
                 </div>
               </div>
 
@@ -126,10 +131,10 @@ export default function TipCalculator() {
                   <label style={{ ...labelStyle, margin: 0 }}>{tc.tipPct}</label>
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: 15, color: 'var(--text-primary)', fontWeight: 600 }}>{tipPercent}%</span>
                 </div>
-                <input type="range" min={0} max={50} step={1} value={tipPercent} onChange={e => setTipPercent(Number(e.target.value))} style={{ width: '100%', accentColor: 'var(--accent)', marginBottom: 12 }} />
+                <input type="range" min={0} max={50} step={1} value={tipPercent} onChange={e => { setTipPercent(Number(e.target.value)); handleCalculate(); }} style={{ width: '100%', accentColor: 'var(--accent)', marginBottom: 12 }} />
                 <div style={{ display: 'flex', gap: 6 }}>
                   {QUICK_TIPS.map(p => (
-                    <button key={p} onClick={() => setTipPercent(p)} style={{
+                    <button key={p} onClick={() => { setTipPercent(p); handleCalculate(); }} style={{
                       flex: 1, padding: '6px 0',
                       background: tipPercent === p ? 'var(--accent)' : 'transparent',
                       color: tipPercent === p ? 'var(--accent-text)' : 'var(--text-secondary)',
@@ -145,7 +150,7 @@ export default function TipCalculator() {
                   <label style={{ ...labelStyle, margin: 0 }}>{tc.numPeople}</label>
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: 15, color: 'var(--text-primary)', fontWeight: 600 }}>{people}</span>
                 </div>
-                <input type="range" min={1} max={20} step={1} value={people} onChange={e => setPeople(Number(e.target.value))} style={{ width: '100%', accentColor: 'var(--accent)' }} />
+                <input type="range" min={1} max={20} step={1} value={people} onChange={e => { setPeople(Number(e.target.value)); handleCalculate(); }} style={{ width: '100%', accentColor: 'var(--accent)' }} />
               </div>
             </div>
 
@@ -222,7 +227,7 @@ function PctInput({ value, onChange, w, suffix }: { value: string; onChange: (v:
       <input
         type="number"
         value={value}
-        onChange={e => onChange(e.target.value)}
+        onChange={e => { onChange(e.target.value); trackToolUsed('tip-calculator', 'calculators'); }}
         style={{
           width: '100%',
           padding: suffix ? '8px 20px 8px 10px' : '8px 10px',

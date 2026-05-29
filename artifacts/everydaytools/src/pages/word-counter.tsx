@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed } from '@/lib/analytics';
 
 function analyze(text: string) {
   const words = text.trim() ? text.trim().split(/\s+/).filter(Boolean).length : 0;
@@ -22,6 +23,12 @@ export default function WordCounter() {
   const desc = t.tools['word-counter']?.description ?? 'Count words, characters, sentences, paragraphs, and estimate reading time.';
   const [text, setText] = useState('');
   const stats = analyze(text);
+
+  useEffect(() => {
+    if (text) {
+      trackToolUsed('word-counter', 'utilities');
+    }
+  }, [text]);
 
   const stat = (label: string, value: string | number) => (
     <div style={{ padding: '14px 16px', background: 'var(--bg-elevated)', borderRadius: 10, textAlign: 'center' }}>

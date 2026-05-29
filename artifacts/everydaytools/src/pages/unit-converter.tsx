@@ -5,6 +5,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { UNIT_CATEGORIES } from '@/config/units.config';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed } from '@/lib/analytics';
 
 export default function UnitConverter() {
   const { t } = useLocale();
@@ -15,6 +16,12 @@ export default function UnitConverter() {
   const [toUnit, setToUnit] = useState(category.units[1].id);
   const [amount, setAmount] = useState("1");
   const [favorites, setFavourites] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (amount !== "") {
+      trackToolUsed('unit-converter', 'calculators');
+    }
+  }, [amount, fromUnit, toUnit]);
 
   useEffect(() => {
     const saved = localStorage.getItem('unit_converter_favourites');

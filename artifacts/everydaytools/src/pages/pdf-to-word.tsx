@@ -7,6 +7,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { Document, Packer, Paragraph, TextRun } from 'docx';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 export default function PdfToWord() {
   const { t } = useLocale();
@@ -20,6 +21,7 @@ export default function PdfToWord() {
     if (!files[0]) return;
     setError(null); setIsProcessing(true); setProgress(0);
     try {
+      trackToolUsed('pdf-to-word', 'documents');
       const file = files[0];
       const pdfjsLib = await import('pdfjs-dist');
       pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.mjs', import.meta.url).href;
@@ -55,6 +57,7 @@ export default function PdfToWord() {
       
       setResult({ blob, filename: file.name.replace(/\.pdf$/i, '.docx'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
+      trackToolError('pdf-to-word', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed. Please try again.');
     } finally { setIsProcessing(false); }
   };

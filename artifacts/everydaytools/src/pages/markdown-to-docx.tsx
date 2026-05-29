@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
@@ -126,9 +127,11 @@ export default function MarkdownToDocx() {
 
       const blob = await markdownToDocxBlob(text);
       setProgress(100);
+      trackToolUsed('markdown-to-docx', 'documents');
 
       setResult({ blob, filename: file.name.replace(/\.(md|txt)$/i, '.docx'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
+      trackToolError('markdown-to-docx', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed. Please try again.');
     } finally { setIsProcessing(false); }
   };

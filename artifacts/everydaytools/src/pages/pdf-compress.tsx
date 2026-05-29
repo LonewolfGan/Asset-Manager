@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import FileUpload from '@/components/FileUpload';
 import ProgressBar from '@/components/ProgressBar';
 import AdSlot from '@/components/AdSlot';
@@ -91,8 +92,10 @@ export default function PdfCompress() {
       const ab = await file.arrayBuffer();
       setProgress(5);
       const blob = await compressPdf(ab, level, setProgress);
+      trackToolUsed('pdf-compress', 'pdf');
       setResult({ blob, filename: file.name.replace(/\.pdf$/i, `_${level}.pdf`), sizeBefore: file.size, sizeAfter: blob.size });
     } catch (e) {
+      trackToolError('pdf-compress', 'general-error');
       setError(e instanceof Error ? e.message : 'Compression failed. Please try again.');
     } finally {
       setIsProcessing(false);

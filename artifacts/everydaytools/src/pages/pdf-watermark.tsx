@@ -7,6 +7,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { PDFDocument, StandardFonts, rgb, degrees } from 'pdf-lib';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 export default function PdfWatermark() {
   const { t } = useLocale();
@@ -34,6 +35,7 @@ export default function PdfWatermark() {
     if (!files[0] || !text) return;
     setError(null); setIsProcessing(true); setProgress(0);
     try {
+      trackToolUsed('pdf-watermark', 'pdf');
       const file = files[0];
       const arrayBuffer = await file.arrayBuffer();
       const pdfDoc = await PDFDocument.load(arrayBuffer);
@@ -65,6 +67,7 @@ export default function PdfWatermark() {
       const blob = new Blob([pdfBytes], { type: 'application/pdf' });
       setResult({ blob, filename: file.name.replace(/\.pdf$/i, '_watermarked.pdf'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
+      trackToolError('pdf-watermark', 'general-error');
       setError(e instanceof Error ? e.message : 'Processing failed. Please try again.');
     } finally { setIsProcessing(false); }
   };

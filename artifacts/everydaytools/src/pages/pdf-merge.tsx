@@ -7,6 +7,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { PDFDocument } from 'pdf-lib';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 export default function PdfMerge() {
   const { t } = useLocale();
@@ -24,6 +25,7 @@ export default function PdfMerge() {
     }
     setError(null); setIsProcessing(true); setProgress(0);
     try {
+      trackToolUsed('pdf-merge', 'pdf');
       const mergedPdf = await PDFDocument.create();
       let totalSizeBefore = 0;
 
@@ -43,6 +45,7 @@ export default function PdfMerge() {
       const blob = new Blob([pdfBytes], { type: 'application/pdf' });
       setResult({ blob, filename: 'merged_document.pdf', sizeAfter: blob.size, sizeBefore: totalSizeBefore });
     } catch (e) {
+      trackToolError('pdf-merge', 'general-error');
       setError(e instanceof Error ? e.message : 'Merge failed. Please try again.');
     } finally { setIsProcessing(false); }
   };

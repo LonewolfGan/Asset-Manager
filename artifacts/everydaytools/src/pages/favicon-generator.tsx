@@ -3,6 +3,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 const SIZES = [16, 32, 64, 128, 180, 192];
 
@@ -32,6 +33,7 @@ export default function FaviconGenerator() {
   };
 
   const generate = async () => {
+    trackToolUsed('favicon-generator', 'images');
     if (!file) return;
     setStatus('processing');
     const img = new Image();

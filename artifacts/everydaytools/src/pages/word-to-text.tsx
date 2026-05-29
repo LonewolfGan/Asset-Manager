@@ -7,6 +7,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import mammoth from 'mammoth';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 export default function WordToText() {
   const { t } = useLocale();
@@ -19,6 +20,7 @@ export default function WordToText() {
   const handleConvert = async () => {
     if (!files[0]) return;
     setError(null); setIsProcessing(true); setProgress(0);
+    trackToolUsed('word-to-text', 'documents');
     try {
       const file = files[0];
       const arrayBuffer = await file.arrayBuffer();
@@ -30,6 +32,7 @@ export default function WordToText() {
       const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
       setResult({ blob, filename: file.name.replace(/\.docx?$/i, '.txt'), sizeAfter: blob.size, sizeBefore: file.size, textOutput: text });
     } catch (e) {
+      trackToolError('word-to-text', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed. Please try again.');
     } finally { setIsProcessing(false); }
   };

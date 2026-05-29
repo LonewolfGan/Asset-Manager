@@ -3,6 +3,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 export default function PptxToPdf() {
   const { t } = useLocale();
@@ -84,12 +85,14 @@ export default function PptxToPdf() {
       setProgress(100);
       setStatus('done');
     } catch (e) {
+      trackToolError('pptx-to-pdf', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed');
       setStatus('error');
     }
   };
 
   const download = () => {
+    trackToolUsed('pptx-to-pdf', 'documents');
     if (!pdfBlob || !file) return;
     const url = URL.createObjectURL(pdfBlob);
     const a = document.createElement('a');

@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed } from '@/lib/analytics';
 
 type Mode = 'encode' | 'decode';
 
@@ -13,6 +14,12 @@ export default function UrlEncoder() {
   const [mode, setMode] = useState<Mode>('encode');
   const [input, setInput] = useState('');
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (input) {
+      trackToolUsed('url-encoder', 'utilities');
+    }
+  }, [input, mode]);
 
   const output = (() => {
     try {

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
@@ -45,8 +46,14 @@ export default function HtmlFormatter() {
     return mode === 'format' ? formatHtml(input) : minifyHtml(input);
   })();
 
-  const copy = async () => { await navigator.clipboard.writeText(output); setCopied(true); setTimeout(() => setCopied(false), 1500); };
+  const copy = async () => { 
+    trackToolUsed('html-formatter', 'utilities');
+    await navigator.clipboard.writeText(output); 
+    setCopied(true); 
+    setTimeout(() => setCopied(false), 1500); 
+  };
   const download = () => {
+    trackToolUsed('html-formatter', 'utilities');
     const blob = new Blob([output], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

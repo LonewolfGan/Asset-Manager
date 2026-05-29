@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -53,11 +54,13 @@ export default function DocumentConverter() {
         a.download = file.name.replace(".txt", ".pdf");
         a.click();
         setStatus("done");
+        trackToolUsed('document-converter', 'documents');
         setResultText(tc.pdfSuccess);
       } else {
         throw new Error(unsupportedConversionError(file.type || "unknown"));
       }
     } catch (error: any) {
+      trackToolError('document-converter', 'general-error');
       setStatus("error");
       setErrorMsg(error.message || "An error occurred during conversion.");
     }
@@ -157,6 +160,7 @@ export default function DocumentConverter() {
                     const blob = new Blob([resultText], { type: "text/plain" });
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement("a");
+                    trackToolUsed('document-converter', 'documents');
                     a.href = url;
                     a.download = file.name.replace(/\.(pdf|docx)$/i, ".txt");
                     a.click();

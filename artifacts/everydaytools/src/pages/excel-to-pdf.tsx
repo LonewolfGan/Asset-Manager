@@ -3,6 +3,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 export default function ExcelToPdf() {
   const { t } = useLocale();
@@ -87,11 +88,13 @@ export default function ExcelToPdf() {
       setStatus('done');
     } catch (e) {
       setStatus('error');
+      trackToolError('excel-to-pdf', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed');
     }
   };
 
   const download = () => {
+    trackToolUsed('excel-to-pdf', 'documents');
     if (!pdfBlob || !file) return;
     const url = URL.createObjectURL(pdfBlob);
     const a = document.createElement('a');

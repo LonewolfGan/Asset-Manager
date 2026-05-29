@@ -7,6 +7,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { PDFDocument, degrees } from 'pdf-lib';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 export default function PdfRotate() {
   const { t } = useLocale();
@@ -21,6 +22,7 @@ export default function PdfRotate() {
     if (!files[0]) return;
     setError(null); setIsProcessing(true); setProgress(0);
     try {
+      trackToolUsed('pdf-rotate', 'pdf');
       const file = files[0];
       const arrayBuffer = await file.arrayBuffer();
       const pdfDoc = await PDFDocument.load(arrayBuffer);
@@ -39,6 +41,7 @@ export default function PdfRotate() {
       const blob = new Blob([pdfBytes], { type: 'application/pdf' });
       setResult({ blob, filename: file.name.replace(/\.pdf$/i, '_rotated.pdf'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
+      trackToolError('pdf-rotate', 'general-error');
       setError(e instanceof Error ? e.message : 'Rotation failed. Please try again.');
     } finally { setIsProcessing(false); }
   };

@@ -1,9 +1,24 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { Link } from "wouter";
+import { Helmet } from "react-helmet-async";
 import { tools } from "@/config/tools.config";
 import { useLocale } from "@/hooks/use-locale";
 import type { LucideIcon } from "lucide-react";
 import { ArrowRight } from "lucide-react";
+
+const WEBSITE_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "EverydayTools Hub",
+  url: "https://everydaytoolshub.com",
+  description:
+    "Free browser-based tools — convert PDF, images, documents. Generate passwords, calculate units and currencies. No signup. Files stay in your browser.",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: "https://everydaytoolshub.com/?q={search_term_string}",
+    "query-input": "required name=search_term_string",
+  },
+};
 
 type DashCategory = "Documents" | "Images" | "Privacy" | "Calculators";
 
@@ -220,7 +235,13 @@ export default function DashboardHome() {
   const isSearching = query.trim().length > 0;
 
   return (
-    <div style={{ flex: 1, background: "var(--bg-base)" }}>
+    <>
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(WEBSITE_SCHEMA)}
+        </script>
+      </Helmet>
+      <div style={{ flex: 1, background: "var(--bg-base)" }}>
       <div style={{ maxWidth: "var(--content-wide)", margin: "0 auto", padding: "40px 24px 80px" }}>
 
         {/* Page header */}
@@ -289,5 +310,6 @@ export default function DashboardHome() {
         )}
       </div>
     </div>
+    </>
   );
 }

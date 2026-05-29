@@ -3,6 +3,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 export default function HtmlToMarkdown() {
   const { t } = useLocale();
@@ -21,7 +22,11 @@ export default function HtmlToMarkdown() {
       const TurndownService = (await import('turndown')).default;
       const td = new TurndownService({ headingStyle: 'atx', codeBlockStyle: 'fenced', bulletListMarker: '-' });
       setOutput(td.turndown(html));
-    } catch (e) { setError(e instanceof Error ? e.message : 'Conversion failed'); }
+      if (html.trim()) trackToolUsed('html-to-markdown', 'documents');
+    } catch (e) { 
+      trackToolError('html-to-markdown', 'general-error');
+      setError(e instanceof Error ? e.message : 'Conversion failed'); 
+    }
   };
 
   const handleFile = async (f: File) => {

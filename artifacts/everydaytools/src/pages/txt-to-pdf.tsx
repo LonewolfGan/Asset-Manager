@@ -7,6 +7,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 export default function TxtToPdf() {
   const { t } = useLocale();
@@ -24,6 +25,7 @@ export default function TxtToPdf() {
     if (mode === 'paste' && !textInput.trim()) return;
     
     setError(null); setIsProcessing(true); setProgress(0);
+    trackToolUsed('txt-to-pdf', 'documents');
     try {
       let textContent = "";
       let filename = "document.pdf";
@@ -87,6 +89,7 @@ export default function TxtToPdf() {
       const blob = new Blob([pdfBytes], { type: 'application/pdf' });
       setResult({ blob, filename, sizeAfter: blob.size, sizeBefore });
     } catch (e) {
+      trackToolError('txt-to-pdf', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed. Please try again.');
     } finally { setIsProcessing(false); }
   };

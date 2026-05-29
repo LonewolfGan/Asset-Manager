@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
@@ -125,9 +126,11 @@ interface Props {
   toMime: string;
   slug: string;
   breadcrumbParent?: string;
+  trackUsed?: (toolSlug: string, category: string) => void;
+  trackError?: (toolSlug: string, errorType: string) => void;
 }
 
-export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMime, slug, breadcrumbParent = 'Image Tools' }: Props) {
+export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMime, slug, breadcrumbParent = 'Image Tools', trackUsed, trackError }: Props) {
   const { t } = useLocale();
   const toolTitle = t.tools[slug]?.title ?? slug;
   const toolDesc = t.tools[slug]?.description ?? '';
@@ -176,7 +179,9 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
         const blob = await canvasToBlob(canvas, toMime, quality / 100);
         const compressedUrl = URL.createObjectURL(blob);
         updated[i] = { ...updated[i], status: 'done', blob, compressedUrl };
+        if (trackUsed) trackUsed(slug, 'images');
       } catch (err) {
+        if (trackError) trackError(slug, 'general-error');
         updated[i] = { ...updated[i], status: 'error', error: err instanceof Error ? err.message : 'Conversion failed' };
       }
       setFiles([...updated]);

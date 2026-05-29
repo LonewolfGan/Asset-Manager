@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
@@ -33,6 +34,7 @@ export default function BackgroundRemover() {
       setProgress(90);
 
       if (!res.ok) {
+        trackToolError('background-remover', 'general-error');
         const err = await res.json().catch(() => ({ error: 'Server error' }));
         throw new Error(err.error ?? 'Background removal failed');
       }
@@ -40,8 +42,10 @@ export default function BackgroundRemover() {
       const arrayBuffer = await res.arrayBuffer();
       const blob = new Blob([arrayBuffer], { type: 'image/png' });
       setProgress(100);
+      trackToolUsed('background-remover', 'images');
       setResult({ blob, filename: file.name.replace(/\.[^/.]+$/, '_nobg.png'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
+      trackToolError('background-remover', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed. Please try again.');
     } finally { setIsProcessing(false); setLoadingEngine(false); }
   };

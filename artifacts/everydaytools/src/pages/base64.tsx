@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
@@ -34,6 +35,7 @@ export default function Base64() {
         setOutput(new TextDecoder().decode(bytes));
       }
     } catch (e) {
+      trackToolError('base64', 'general-error');
       setError(e instanceof Error ? e.message : 'Invalid input');
     }
   };
@@ -50,7 +52,13 @@ export default function Base64() {
     setInput('');
   };
 
-  const handleInput = (val: string) => { setInput(val); setFileMode(false); setFileName(''); process(val, mode); };
+  const handleInput = (val: string) => { 
+    setInput(val); 
+    setFileMode(false); 
+    setFileName(''); 
+    process(val, mode); 
+    if (val.trim()) trackToolUsed('base64', 'utilities');
+  };
   const handleMode = (m: Mode) => { setMode(m); setInput(''); setOutput(''); setError(''); setFileMode(false); };
 
   const copy = async () => {

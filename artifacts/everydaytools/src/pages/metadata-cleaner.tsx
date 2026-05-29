@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
@@ -38,6 +39,7 @@ export default function MetadataCleaner() {
         const res = await fetch('/api/metadata/read', { method: 'POST', body: fd });
         if (!res.ok) {
           const err = await res.json().catch(() => ({ error: 'Analysis failed' }));
+          trackToolError('metadata-cleaner', 'general-error');
           throw new Error(err.error);
         }
         const data = await res.json();
@@ -61,6 +63,7 @@ export default function MetadataCleaner() {
         setMetadata(Object.keys(meta).length > 0 ? meta : { info: "No standard metadata found." });
       }
     } catch (e) {
+      trackToolError('metadata-cleaner', 'general-error');
       setError(e instanceof Error ? e.message : 'Analysis failed.');
     }
   };
@@ -78,6 +81,7 @@ export default function MetadataCleaner() {
         const res = await fetch('/api/metadata/clean', { method: 'POST', body: fd });
         if (!res.ok) {
           const err = await res.json().catch(() => ({ error: 'Cleaning failed' }));
+          trackToolError('metadata-cleaner', 'general-error');
           throw new Error(err.error);
         }
         const arrayBuffer = await res.arrayBuffer();
@@ -97,7 +101,9 @@ export default function MetadataCleaner() {
       }
 
       setResult({ blob, filename: file.name.replace(/(\.[a-z]+)$/i, '_cleaned$1'), sizeAfter: blob.size, sizeBefore: file.size });
+      trackToolUsed('metadata-cleaner', 'utilities');
     } catch (e) {
+      trackToolError('metadata-cleaner', 'general-error');
       setError(e instanceof Error ? e.message : 'Cleaning failed.');
     } finally { setIsProcessing(false); }
   };

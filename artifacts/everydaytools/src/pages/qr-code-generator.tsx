@@ -4,6 +4,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 type InputMode = 'url' | 'text' | 'wifi' | 'vcard';
 type ErrorLevel = 'L' | 'M' | 'Q' | 'H';
@@ -134,12 +135,16 @@ export default function QrCodeGenerator() {
       errorCorrectionLevel: errLevel,
       color: { dark: fgColor, light: bgColor },
     }, (err) => {
-      if (err) setGenError(err.message);
+      if (err) {
+        trackToolError('qr-code-generator', 'general-error');
+        setGenError(err.message);
+      }
       else setGenError(null);
     });
   }, [getContent, size, margin, errLevel, fgColor, bgColor, mode, bgColor]);
 
   const downloadPng = () => {
+    trackToolUsed('qr-code-generator', 'utilities');
     const canvas = canvasRef.current;
     if (!canvas) return;
     const link = document.createElement('a');

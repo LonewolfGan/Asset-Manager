@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
@@ -76,10 +77,12 @@ export default function MarkdownToPdf() {
       setProgress(80);
       const pdfBytes = await pdfDoc.save();
       setProgress(100);
+      trackToolUsed('markdown-to-pdf', 'documents');
       
       const blob = new Blob([pdfBytes], { type: 'application/pdf' });
       setResult({ blob, filename: file.name.replace(/\.(md|txt)$/i, '.pdf'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
+      trackToolError('markdown-to-pdf', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed. Please try again.');
     } finally { setIsProcessing(false); }
   };

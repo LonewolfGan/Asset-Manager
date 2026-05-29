@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { useContext } from "react";
+import { Link } from "wouter";
 import { LocaleContext } from "@/contexts/locale-context";
 import {
   getToolSeoByInternalSlug,
@@ -9,9 +10,91 @@ import {
 } from "@/config/tools-seo-data";
 
 const BASE_URL = "https://everydaytoolshub.com";
+const OG_IMAGE = `${BASE_URL}/opengraph.jpg`;
+
+const CALCULATOR_SLUGS = new Set([
+  "tip-calculator",
+  "percentage-calc",
+  "unit-converter",
+  "currency-converter",
+]);
 
 interface ToolPageSEOProps {
   internalSlug: string;
+}
+
+function buildSchemas(tool: ToolSeoEntry, locale: "en" | "fr"): object[] {
+  const enSlug = SLUG_MAP_INTERNAL_TO_EN[tool.internalSlug];
+  const frSlug = SLUG_MAP_INTERNAL_TO_FR[tool.internalSlug];
+  const canonical = `${BASE_URL}/${locale}/${locale === "en" ? enSlug : frSlug}`;
+  const toolName = tool.h1[locale];
+  const desc = tool.description[locale];
+  const faqs = tool.faqs[locale];
+  const appCategory = CALCULATOR_SLUGS.has(tool.internalSlug)
+    ? "CalculatorApplication"
+    : "UtilitiesApplication";
+
+  const softwareApp: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: toolName,
+    url: canonical,
+    description: desc,
+    applicationCategory: appCategory,
+    operatingSystem: "Any",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    featureList: [
+      "No signup required",
+      "Client-side processing",
+      "Files never leave your device",
+      "Free forever",
+    ],
+    browserRequirements: "Requires JavaScript. Works offline after first load.",
+  };
+
+  const faqPage = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
+
+  const breadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: locale === "fr" ? "Accueil" : "Home",
+        item: `${BASE_URL}/${locale}`,
+      },
+      { "@type": "ListItem", position: 2, name: toolName, item: canonical },
+    ],
+  };
+
+  const steps = tool.howItWorks[locale];
+  const howTo = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name:
+      locale === "fr"
+        ? `Comment utiliser ${toolName}`
+        : `How to use ${toolName}`,
+    description: desc,
+    totalTime: "PT10S",
+    step: steps.map((s, i) => ({
+      "@type": "HowToStep",
+      position: i + 1,
+      name: s.name,
+      text: s.text,
+    })),
+  };
+
+  return [softwareApp, faqPage, breadcrumb, howTo];
 }
 
 function SeoMeta({ tool, locale }: { tool: ToolSeoEntry; locale: "en" | "fr" }) {
@@ -20,11 +103,14 @@ function SeoMeta({ tool, locale }: { tool: ToolSeoEntry; locale: "en" | "fr" }) 
   const canonical = `${BASE_URL}/${locale}/${locale === "en" ? enSlug : frSlug}`;
   const enUrl = enSlug ? `${BASE_URL}/en/${enSlug}` : undefined;
   const frUrl = frSlug ? `${BASE_URL}/fr/${frSlug}` : undefined;
+  const schemas = buildSchemas(tool, locale);
+  const keywords = tool.keywords[locale].join(", ");
 
   return (
     <Helmet>
       <title>{tool.title[locale]}</title>
       <meta name="description" content={tool.description[locale]} />
+      <meta name="keywords" content={keywords} />
       {canonical && <link rel="canonical" href={canonical} />}
       {enUrl && <link rel="alternate" hreflang="en" href={enUrl} />}
       {frUrl && <link rel="alternate" hreflang="fr" href={frUrl} />}
@@ -33,9 +119,19 @@ function SeoMeta({ tool, locale }: { tool: ToolSeoEntry; locale: "en" | "fr" }) 
       <meta property="og:description" content={tool.description[locale]} />
       {canonical && <meta property="og:url" content={canonical} />}
       <meta property="og:type" content="website" />
+      <meta property="og:image" content={OG_IMAGE} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:site_name" content="EverydayTools Hub" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={tool.title[locale]} />
       <meta name="twitter:description" content={tool.description[locale]} />
+      <meta name="twitter:image" content={OG_IMAGE} />
+      {schemas.map((schema, i) => (
+        <script key={i} type="application/ld+json">
+          {JSON.stringify(schema)}
+        </script>
+      ))}
     </Helmet>
   );
 }
@@ -236,6 +332,102 @@ function FaqSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en" | "fr" 
   );
 }
 
+function RelatedToolsSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en" | "fr" }) {
+  const label = locale === "fr" ? "Outils associés" : "Related tools";
+  const related = tool.relatedTools
+    .map((slug) => {
+      const entry = getToolSeoByInternalSlug(slug);
+      if (!entry) return null;
+      const localeSlug = locale === "en"
+        ? SLUG_MAP_INTERNAL_TO_EN[slug]
+        : SLUG_MAP_INTERNAL_TO_FR[slug];
+      if (!localeSlug) return null;
+      return {
+        title: entry.h1[locale],
+        href: `/${locale}/${localeSlug}`,
+        description: entry.description[locale],
+      };
+    })
+    .filter((x): x is { title: string; href: string; description: string } => x !== null);
+
+  if (related.length === 0) return null;
+
+  return (
+    <section
+      aria-label={label}
+      style={{
+        marginTop: "var(--space-8, 32px)",
+        paddingTop: "var(--space-8, 32px)",
+        borderTop: "1px solid var(--border)",
+      }}
+    >
+      <p
+        style={{
+          fontSize: "11px",
+          letterSpacing: "0.1em",
+          textTransform: "uppercase",
+          color: "var(--text-tertiary)",
+          marginBottom: "20px",
+          fontFamily: "var(--font-ui)",
+        }}
+      >
+        {label}
+      </p>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+          gap: "10px",
+        }}
+      >
+        {related.map((r) => (
+          <Link
+            key={r.href}
+            href={r.href}
+            style={{ textDecoration: "none" }}
+          >
+            <div
+              style={{
+                padding: "14px 16px",
+                border: "1px solid var(--border)",
+                borderRadius: "var(--radius-md)",
+                background: "var(--bg-surface)",
+                transition: "border-color 140ms ease",
+              }}
+            >
+              <p
+                style={{
+                  fontSize: "13px",
+                  fontWeight: 500,
+                  color: "var(--text-primary)",
+                  margin: "0 0 4px",
+                  fontFamily: "var(--font-ui)",
+                }}
+              >
+                {r.title}
+              </p>
+              <p
+                style={{
+                  fontSize: "12px",
+                  color: "var(--text-tertiary)",
+                  margin: 0,
+                  lineHeight: 1.5,
+                  display: "-webkit-box",
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                }}
+              >
+                {r.description}
+              </p>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export function ToolPageSEO({ internalSlug }: ToolPageSEOProps) {
   const ctx = useContext(LocaleContext);
   const locale: "en" | "fr" = ctx?.locale?.toLowerCase().startsWith("fr") ? "fr" : "en";
@@ -256,6 +448,7 @@ export function ToolPageSEO({ internalSlug }: ToolPageSEOProps) {
         <HowItWorksSection tool={tool} locale={locale} />
         <AboutSection tool={tool} locale={locale} />
         <FaqSection tool={tool} locale={locale} />
+        <RelatedToolsSection tool={tool} locale={locale} />
       </div>
     </>
   );

@@ -3,6 +3,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 export default function PptxToImages() {
   const { t } = useLocale();
@@ -75,12 +76,14 @@ export default function PptxToImages() {
       setProgress(100);
       setStatus('done');
     } catch (e) {
+      trackToolError('pptx-to-images', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed');
       setStatus('error');
     }
   };
 
   const downloadAll = async () => {
+    trackToolUsed('pptx-to-images', 'documents');
     const JSZip = (await import('jszip')).default;
     const zip = new JSZip();
     for (const slide of slides) {

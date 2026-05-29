@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
@@ -38,11 +39,13 @@ export default function CsvToJson() {
         setOutput(Papa.unparse(rows));
       }
     } catch (e) {
+      trackToolError('csv-to-json', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed');
     }
   };
 
   const download = () => {
+    trackToolUsed('csv-to-json', 'documents');
     if (!output) return;
     const ext = mode === 'csv-to-json' ? '.json' : '.csv';
     const mime = mode === 'csv-to-json' ? 'application/json' : 'text/csv';

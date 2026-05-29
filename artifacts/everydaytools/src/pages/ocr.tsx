@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
@@ -36,7 +37,9 @@ export default function Ocr() {
       await worker.terminate();
       setOutput(result.data.text);
       setStatus('done');
+      trackToolUsed('ocr', 'utilities');
     } catch (e) {
+      trackToolError('ocr', 'general-error');
       setError(e instanceof Error ? e.message : 'OCR failed');
       setStatus('error');
     }

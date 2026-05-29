@@ -7,6 +7,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import JSZip from 'jszip';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 export default function PdfToImage() {
   const { t } = useLocale();
@@ -23,6 +24,7 @@ export default function PdfToImage() {
     if (!files[0]) return;
     setError(null); setIsProcessing(true); setProgress(0);
     try {
+      trackToolUsed('pdf-to-image', 'images');
       const file = files[0];
       const pdfjsLib = await import('pdfjs-dist');
       pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.mjs', import.meta.url).href;
@@ -68,6 +70,7 @@ export default function PdfToImage() {
       setProgress(100);
       setResult({ blob: zipBlob, filename: file.name.replace(/\.pdf$/i, '_images.zip'), sizeAfter: zipBlob.size, sizeBefore: file.size });
     } catch (e) {
+      trackToolError('pdf-to-image', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed. Please try again.');
     } finally { setIsProcessing(false); }
   };

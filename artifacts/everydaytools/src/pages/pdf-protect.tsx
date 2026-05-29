@@ -7,6 +7,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { PDFDocument } from 'pdf-lib';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 export default function PdfProtect() {
   const { t } = useLocale();
@@ -30,6 +31,7 @@ export default function PdfProtect() {
     }
     setError(null); setIsProcessing(true); setProgress(0);
     try {
+      trackToolUsed('pdf-protect', 'pdf');
       const file = files[0];
       const arrayBuffer = await file.arrayBuffer();
       const pdfDoc = await PDFDocument.load(arrayBuffer);
@@ -51,6 +53,7 @@ export default function PdfProtect() {
       const blob = new Blob([pdfBytes], { type: 'application/pdf' });
       setResult({ blob, filename: file.name.replace(/\.pdf$/i, '_protected.pdf'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
+      trackToolError('pdf-protect', 'general-error');
       setError(e instanceof Error ? e.message : 'Protection failed. Please try again.');
     } finally { setIsProcessing(false); }
   };

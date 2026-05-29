@@ -8,6 +8,7 @@ import { PDFDocument } from 'pdf-lib';
 import { toCanvas } from 'html-to-image';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 export default function HtmlToPdf() {
   const { t } = useLocale();
@@ -84,7 +85,9 @@ export default function HtmlToPdf() {
       
       const blob = new Blob([pdfBytes], { type: 'application/pdf' });
       setResult({ blob, filename, sizeAfter: blob.size, sizeBefore });
+      trackToolUsed('html-to-pdf', 'documents');
     } catch (e) {
+      trackToolError('html-to-pdf', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed. Please try again.');
     } finally { setIsProcessing(false); }
   };

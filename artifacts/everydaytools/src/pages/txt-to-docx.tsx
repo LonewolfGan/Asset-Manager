@@ -7,6 +7,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { Document, Packer, Paragraph, TextRun } from 'docx';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 export default function TxtToDocx() {
   const { t } = useLocale();
@@ -20,6 +21,7 @@ export default function TxtToDocx() {
   const [textInput, setTextInput] = useState("");
 
   const handleConvert = async () => {
+    trackToolUsed('txt-to-docx', 'documents');
     if (mode === 'upload' && !files[0]) return;
     if (mode === 'paste' && !textInput.trim()) return;
     
@@ -54,6 +56,7 @@ export default function TxtToDocx() {
       
       setResult({ blob, filename, sizeAfter: blob.size, sizeBefore });
     } catch (e) {
+      trackToolError('txt-to-docx', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed. Please try again.');
     } finally { setIsProcessing(false); }
   };

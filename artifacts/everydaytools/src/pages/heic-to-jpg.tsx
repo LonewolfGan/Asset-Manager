@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
@@ -34,10 +35,12 @@ export default function HeicToJpg() {
       
       const blob = Array.isArray(converted) ? converted[0] : converted;
       setProgress(100);
+      trackToolUsed('heic-to-jpg', 'images');
       
       const ext = format === 'image/jpeg' ? '.jpg' : '.png';
       setResult({ blob, filename: file.name.replace(/\.heic$/i, ext).replace(/\.heif$/i, ext), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
+      trackToolError('heic-to-jpg', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed. Please try again.');
     } finally { setIsProcessing(false); }
   };

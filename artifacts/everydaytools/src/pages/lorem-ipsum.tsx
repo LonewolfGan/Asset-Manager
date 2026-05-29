@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
@@ -57,6 +58,7 @@ export default function LoremIpsum() {
     } else {
       result = Array.from({ length: count }, () => capitalize(randomWord() + ' ' + randomWord() + ' ' + randomWord())).map((item) => `• ${item}`).join('\n');
     }
+    trackToolUsed('lorem-ipsum', 'utilities');
     setOutput(result);
   };
 

@@ -3,6 +3,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 export default function PdfToPptx() {
   const { t } = useLocale();
@@ -16,6 +17,7 @@ export default function PdfToPptx() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const convert = async (f: File) => {
+    trackToolUsed('pdf-to-pptx', 'documents');
     setFile(f); setStatus('processing'); setProgress(5);
     try {
       const pdfjsLib = await import('pdfjs-dist');
@@ -51,6 +53,7 @@ export default function PdfToPptx() {
       setProgress(100);
       setStatus('done');
     } catch (e) {
+      trackToolError('pdf-to-pptx', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed');
       setStatus('error');
     }

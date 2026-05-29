@@ -1,0 +1,264 @@
+You are implementing complete SEO optimization, per-tool landing page content, and analytics tracking across the entire site. This is not about design — it is about making every page discoverable by Google and measurable. Do not touch styling or tool logic.
+
+PART 1 — SEO & METADATA (every page)
+1a. Dynamic <head> per tool page
+Every tool must have its own unique metadata. Create a centralized SEO config file /src/seo/toolMeta.js (or equivalent) that maps each tool route to its metadata:
+javascriptexport const toolMeta = {
+  '/compress-pdf': {
+    title: 'Compress PDF Online — Reduce PDF File Size for Free',
+    description: 'Compress PDF files online for free. Reduce PDF size without losing quality. No signup required. Works in your browser — your files never leave your device.',
+    keywords: 'compress pdf, reduce pdf size, pdf compressor, shrink pdf',
+    ogTitle: 'Compress PDF — Free Online PDF Compressor',
+    ogDescription: 'Reduce your PDF file size instantly. No upload to servers. 100% free.',
+    canonical: 'https://yourdomain.com/compress-pdf',
+    schema: 'FileConverter', // used in step 1c
+  },
+  '/png-to-webp': {
+    title: 'Convert PNG to WebP Online — Free & Fast',
+    description: 'Convert PNG images to WebP format online for free. Reduce image size by up to 80% with no quality loss. No signup. Instant download.',
+    keywords: 'png to webp, convert png to webp, png webp converter',
+    ogTitle: 'PNG to WebP Converter — Free Online',
+    ogDescription: 'Convert PNG to WebP instantly in your browser. Smaller files, same quality.',
+    canonical: 'https://yourdomain.com/png-to-webp',
+    schema: 'FileConverter',
+  },
+  // ... add every tool
+}
+Write a complete entry for EVERY tool page on the site following this naming formula:
+
+Title: [Action] [Format] Online — [Benefit] for Free (max 60 chars)
+Description: Lead with the action, include "free", "no signup", "browser-based" or "files stay on your device" (max 155 chars)
+Keywords: 3-5 specific phrases people actually search
+
+Apply the metadata dynamically on each page using the router. In React use react-helmet-async. In Vue use vue-meta or useHead. In Next.js use the built-in metadata export.
+1b. Open Graph & Twitter Card tags
+On every page, set:
+html<meta property="og:type" content="website" />
+<meta property="og:title" content="..." />
+<meta property="og:description" content="..." />
+<meta property="og:url" content="..." />
+<meta property="og:image" content="https://yourdomain.com/og/compress-pdf.png" />
+<meta property="og:site_name" content="ToolKit" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="..." />
+<meta name="twitter:description" content="..." />
+<meta name="twitter:image" content="..." />
+Create a default OG image fallback (/og/default.png) for pages without a specific one. Size: 1200×630px.
+1c. Structured Data — Schema.org
+On every tool page, inject a <script type="application/ld+json"> with the appropriate schema:
+For all file conversion/manipulation tools:
+json{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Compress PDF",
+  "url": "https://yourdomain.com/compress-pdf",
+  "description": "Compress PDF files online for free...",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "No signup required",
+    "Client-side processing",
+    "Multiple compression levels",
+    "Instant download"
+  ]
+}
+For the homepage:
+json{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "ToolKit",
+  "url": "https://yourdomain.com",
+  "description": "Free online file tools — PDF, images, documents. No signup. Files stay in your browser.",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://yourdomain.com/search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+For calculator tools (Tip, Percentage, Unit, Currency):
+json{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "applicationCategory": "CalculatorApplication",
+  ...
+}
+1d. Canonical URLs
+Every page must have a <link rel="canonical" href="https://yourdomain.com/[tool-slug]" /> — prevents duplicate content issues if the same page is accessible at multiple URLs.
+1e. Sitemap
+Generate /public/sitemap.xml containing every tool URL:
+xml<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://yourdomain.com/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <lastmod>2025-01-01</lastmod>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/compress-pdf</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <!-- every tool URL -->
+</urlset>
+Automate this: write a script that reads the routes config and generates sitemap.xml automatically so it stays up to date when new tools are added.
+1f. robots.txt
+Create /public/robots.txt:
+User-agent: *
+Allow: /
+
+Sitemap: https://yourdomain.com/sitemap.xml
+1g. Hreflang (multilingual)
+Since the site has multiple languages, add hreflang tags on every page:
+html<link rel="alternate" hreflang="en" href="https://yourdomain.com/en/compress-pdf" />
+<link rel="alternate" hreflang="fr" href="https://yourdomain.com/fr/compress-pdf" />
+<link rel="alternate" hreflang="ar" href="https://yourdomain.com/ar/compress-pdf" />
+<link rel="alternate" hreflang="x-default" href="https://yourdomain.com/compress-pdf" />
+
+PART 2 — LANDING PAGE CONTENT (every tool page)
+Every tool page must have content below the tool widget. This content is what Google reads. Add it to every single tool without exception.
+Structure to implement on every tool page:
+[TOOL WIDGET — existing]
+
+[SECTION 1 — How it works]
+[SECTION 2 — Features / Why use this tool]
+[SECTION 3 — FAQ]
+[SECTION 4 — Related tools]
+Section 1 — How it works (3 steps)
+Simple 3-step visual explanation. Example for Compress PDF:
+Step 1: Upload your PDF
+Drag and drop your PDF file or click to browse. Files up to 50MB supported.
+
+Step 2: Choose compression level
+Select Low, Medium, or High compression depending on your quality needs.
+
+Step 3: Download your compressed PDF
+Click download and get your smaller PDF instantly. No email required.
+Write the 3 steps for every tool. Keep each step under 20 words. Put the steps in the translation system (not hardcoded).
+Section 2 — Why use this tool (feature bullets)
+4 short feature points. Example for Compress PDF:
+
+100% Free — No hidden fees, no premium tier required for basic compression
+No signup — Start compressing immediately without creating an account
+Files stay private — Your PDF never leaves your browser. Nothing is uploaded to our servers.
+Works everywhere — Chrome, Firefox, Safari, Edge. Mobile and desktop.
+
+These 4 points should be generic enough to apply across tool categories. Create reusable components for common ones (NoSignup, ClientSide, FreeForever, CrossBrowser) and add tool-specific ones where relevant.
+Section 3 — FAQ (5 questions per tool)
+Research and write 5 questions that people actually search for around each tool. These questions become eligible for Google's "People also ask" rich results.
+Use FAQ Schema for each:
+json{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is it safe to compress a PDF online?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. This tool compresses your PDF entirely in your browser using JavaScript. Your file is never uploaded to any server, so it stays completely private."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will compressing a PDF reduce its quality?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It depends on the compression level you choose. Low compression preserves full quality with a modest size reduction. High compression reduces size significantly but may slightly reduce image quality inside the PDF."
+      }
+    }
+  ]
+}
+Write 5 real FAQs for every tool. Keep answers between 40-80 words. All FAQ content must go through the translation system.
+Section 4 — Related tools (3-4 tools)
+At the bottom of every tool page, show 3-4 related tool cards linking to other tools. Examples:
+
+Compress PDF → related: Merge PDF, Split PDF, PDF to Word, Protect PDF
+PNG to WebP → related: JPG to WebP, Compress Image, PNG to PDF, WebP to PNG
+
+Create a relatedTools map in the SEO config. Reuse the existing tool card component.
+
+PART 3 — ANALYTICS (Plausible)
+Use Plausible Analytics — it is privacy-friendly (GDPR compliant, no cookies, no consent banner needed), lightweight (< 1KB script), and free to self-host.
+3a. Install Plausible
+Add to the <head> of every page:
+html<script defer data-domain="yourdomain.com" src="https://plausible.io/js/script.js"></script>
+If self-hosting: replace the src with your Plausible instance URL.
+3b. Custom events — track tool usage
+Track when users actually use each tool (not just visit the page):
+javascript// When a file is successfully processed and download is triggered
+window.plausible('Tool Used', {
+  props: {
+    tool: 'compress-pdf',
+    category: 'pdf',
+    file_type: 'application/pdf',
+    // do NOT log file name or content — privacy
+  }
+})
+
+// When an error occurs
+window.plausible('Tool Error', {
+  props: {
+    tool: 'compress-pdf',
+    error_type: 'file_too_large', // generic category, not user data
+  }
+})
+
+// When user switches language
+window.plausible('Language Changed', {
+  props: { language: 'fr' }
+})
+Create a utility function so all tools use the same tracking call:
+javascript// /src/utils/analytics.js
+export const trackToolUsed = (toolSlug, category) => {
+  if (typeof window.plausible !== 'undefined') {
+    window.plausible('Tool Used', { props: { tool: toolSlug, category } })
+  }
+}
+
+export const trackToolError = (toolSlug, errorType) => {
+  if (typeof window.plausible !== 'undefined') {
+    window.plausible('Tool Error', { props: { tool: toolSlug, error_type: errorType } })
+  }
+}
+Wire trackToolUsed into every tool's download/success handler. Wire trackToolError into every tool's error handler.
+3c. What this gives you
+After 2-4 weeks you will know:
+
+Which tools are actually used (vs just visited)
+Which tools have the highest error rate (= needs fixing)
+Where users come from (search, direct, social)
+Which languages are most used
+Top pages by traffic
+
+
+FINAL CHECKLIST
+For every tool page, verify:
+
+ Unique <title> tag (max 60 chars)
+ Unique <meta name="description"> (max 155 chars)
+ <link rel="canonical">
+ Open Graph tags (og:title, og:description, og:url, og:image)
+ Twitter Card tags
+ Schema.org WebApplication JSON-LD
+ FAQ Schema JSON-LD
+ Included in sitemap.xml
+ hreflang tags for each language
+ "How it works" section (3 steps)
+ Features section (4 points)
+ FAQ section (5 questions)
+ Related tools section (3-4 tools)
+ trackToolUsed() called on successful download
+ trackToolError() called on all error states
+
+CONSTRAINTS
+
+All landing page text must go through the translation system — nothing hardcoded
+Do not change tool widget logic or design
+Do not add any tracking that logs file names, file content, or personally identifiable information
+FAQ answers must be factually accurate about how the tool works

@@ -3,6 +3,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 interface PageThumb {
   index: number;
@@ -43,6 +44,7 @@ export default function ReorderPdf() {
       setPages(thumbs);
       setStatus('idle');
     } catch (e) {
+      trackToolError('reorder-pdf', 'general-error');
       setError(e instanceof Error ? e.message : 'Failed to load PDF');
       setStatus('error');
     }
@@ -62,6 +64,7 @@ export default function ReorderPdf() {
   const removePage = (idx: number) => setPages((prev) => prev.filter((_, i) => i !== idx));
 
   const save = async () => {
+    trackToolUsed('reorder-pdf', 'pdf');
     if (!file) return;
     setStatus('saving'); setProgress(0);
     try {
@@ -85,6 +88,7 @@ export default function ReorderPdf() {
       setProgress(100);
       setStatus('done');
     } catch (e) {
+      trackToolError('reorder-pdf', 'general-error');
       setError(e instanceof Error ? e.message : 'Failed to save PDF');
       setStatus('error');
     }

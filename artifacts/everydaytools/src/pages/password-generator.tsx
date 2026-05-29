@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
@@ -57,6 +58,7 @@ export default function PasswordGenerator() {
   };
 
   const generate = () => {
+    trackToolUsed('password-generator', 'utilities');
     const pws = [];
     for (let i = 0; i < count; i++) {
       pws.push(generateSingle());

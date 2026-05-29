@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
@@ -34,11 +35,13 @@ export default function CsvToExcel() {
       setXlsxBlob(new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
       setStatus('done');
     } catch (e) {
+      trackToolError('csv-to-excel', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed');
     }
   };
 
   const download = () => {
+    trackToolUsed('csv-to-excel', 'documents');
     if (!xlsxBlob) return;
     const name = file?.name.replace(/\.csv$/i, '.xlsx') ?? 'converted.xlsx';
     const url = URL.createObjectURL(xlsxBlob);

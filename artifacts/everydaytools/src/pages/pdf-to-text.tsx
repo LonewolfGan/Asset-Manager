@@ -6,6 +6,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 export default function PdfToText() {
   const { t } = useLocale();
@@ -22,6 +23,7 @@ export default function PdfToText() {
     setProgress(0);
     
     try {
+      trackToolUsed('pdf-to-text', 'pdf');
       const pdfjsLib = await import('pdfjs-dist');
       pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.mjs', import.meta.url).href;
       
@@ -48,6 +50,7 @@ export default function PdfToText() {
         textOutput: fullText
       });
     } catch (e) {
+      trackToolError('pdf-to-text', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed. Please try again.');
     } finally {
       setIsProcessing(false);

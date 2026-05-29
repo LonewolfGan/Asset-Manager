@@ -3,6 +3,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 type Mode = 'quality' | 'target';
 type ResizeMode = 'none' | 'percent' | 'dimensions';
@@ -202,6 +203,7 @@ export default function ImageCompress() {
         const compressedUrl = URL.createObjectURL(blob);
         updated[i] = { ...updated[i], status: 'done', blob, compressedUrl };
       } catch (err) {
+        trackToolError('image-compress', 'general-error');
         updated[i] = {
           ...updated[i],
           status: 'error',
@@ -214,6 +216,7 @@ export default function ImageCompress() {
   };
 
   const downloadOne = (entry: FileResult) => {
+    trackToolUsed('image-compress', 'images');
     if (!entry.blob) return;
     const url = URL.createObjectURL(entry.blob);
     const a = document.createElement('a');
@@ -224,6 +227,7 @@ export default function ImageCompress() {
   };
 
   const downloadAll = async () => {
+    trackToolUsed('image-compress', 'images');
     const done = files.filter((f) => f.status === 'done' && f.blob);
     if (!done.length) return;
     const JSZip = (await import('jszip')).default;

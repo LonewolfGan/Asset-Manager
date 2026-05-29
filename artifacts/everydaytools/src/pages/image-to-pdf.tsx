@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import ProgressBar from '@/components/ProgressBar';
@@ -35,6 +36,7 @@ export default function ImageToPdf() {
         } else if (file.type === 'image/png') {
           img = await pdfDoc.embedPng(arrayBuffer);
         } else {
+          trackToolError('image-to-pdf', 'general-error');
           throw new Error(`Unsupported format ${file.type}. Please use JPG or PNG.`);
         }
         
@@ -46,10 +48,12 @@ export default function ImageToPdf() {
       
       const pdfBytes = await pdfDoc.save();
       setProgress(100);
+      trackToolUsed('image-to-pdf', 'images');
       
       const blob = new Blob([pdfBytes], { type: 'application/pdf' });
       setResult({ blob, filename: 'images_merged.pdf', sizeAfter: blob.size, sizeBefore: totalSizeBefore });
     } catch (e) {
+      trackToolError('image-to-pdf', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed. Please try again.');
     } finally { setIsProcessing(false); }
   };
