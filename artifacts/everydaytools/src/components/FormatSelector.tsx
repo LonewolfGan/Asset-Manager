@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { ChevronDown, Check, Search } from 'lucide-react';
+import { useLocale } from '@/hooks/use-locale';
 
 interface FormatSelectorProps {
   options: Array<{value: string, label: string}>;
@@ -8,7 +9,8 @@ interface FormatSelectorProps {
   placeholder?: string;
 }
 
-export default function FormatSelector({ options, value, onChange, placeholder = "Select option..." }: FormatSelectorProps) {
+export default function FormatSelector({ options, value, onChange, placeholder }: FormatSelectorProps) {
+  const { t } = useLocale();
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
@@ -54,7 +56,7 @@ export default function FormatSelector({ options, value, onChange, placeholder =
         style={{ background: 'var(--bg-surface)', color: 'var(--text-primary)' }}
       >
         <span className={selectedOption ? "text-[var(--text)]" : "text-[var(--muted)]"}>
-          {selectedOption ? selectedOption.label : placeholder}
+          {selectedOption ? selectedOption.label : (placeholder ?? t.formatSelector.search)}
         </span>
         <ChevronDown className={`w-4 h-4 text-[var(--muted)] transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
@@ -69,7 +71,7 @@ export default function FormatSelector({ options, value, onChange, placeholder =
                 autoFocus
                 className="w-full pl-8 pr-3 py-1.5 bg-[var(--bg)] border border-[var(--border)] rounded text-sm focus:outline-none focus:border-[var(--accent)]"
                 style={{ color: 'var(--text-primary)' }}
-                placeholder="Search..."
+                placeholder={t.formatSelector.search}
                 value={search}
                 onChange={e => setSearch(e.target.value)}
               />
@@ -81,7 +83,7 @@ export default function FormatSelector({ options, value, onChange, placeholder =
             tabIndex={-1}
           >
             {filteredOptions.length === 0 ? (
-              <li className="px-3 py-2 text-sm text-[var(--muted)] text-center">No results found</li>
+              <li className="px-3 py-2 text-sm text-[var(--muted)] text-center">{t.formatSelector.noResults}</li>
             ) : (
               filteredOptions.map((opt) => (
                 <li

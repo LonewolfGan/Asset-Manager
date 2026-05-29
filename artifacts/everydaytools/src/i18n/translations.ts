@@ -67,6 +67,26 @@ export type Translations = {
     finalPrice: string; saved: string; tipLabel: string;
     perPerson: string; sellingPrice: string; markupLabel: string;
   };
+  unitConverter: {
+    from: string; to: string; pin: string; pinned: string;
+    pinnedConversions: string; swapAriaLabel: string;
+    categoryNames: Record<string, string>;
+  };
+  currencyConverter: {
+    from: string; to: string; quickConversions: string; recentHistory: string;
+    noRecent: string;
+    liveRatesUpdated: (min: number) => string;
+    liveRatesJust: string;
+    offlineSnapshot: (date: string) => string;
+  };
+  passwordGenerator: {
+    length: (n: number) => string;
+    uppercase: string; lowercase: string; numbers: string; symbols: string; pronounceable: string;
+    count: string; regenerate: string; copy: string;
+    bulkGeneration: string; history: string; clearHistory: string;
+    strength: { weak: string; fair: string; strong: string; veryStrong: string; exceptional: string };
+  };
+  formatSelector: { search: string; noResults: string };
 };
 
 const EN: Translations = {
@@ -235,6 +255,32 @@ const EN: Translations = {
     finalPrice: "Final", saved: "Saved", tipLabel: "Tip",
     perPerson: "Per Person", sellingPrice: "Selling Price", markupLabel: "Markup",
   },
+  unitConverter: {
+    from: "From", to: "To", pin: "Pin", pinned: "Pinned",
+    pinnedConversions: "Pinned Conversions", swapAriaLabel: "Swap units",
+    categoryNames: {
+      length: "Length", weight: "Weight", temperature: "Temperature", volume: "Volume",
+      area: "Area", speed: "Speed", pressure: "Pressure", energy: "Energy",
+      power: "Power", data: "Data", time: "Time", angle: "Angle", frequency: "Frequency",
+    },
+  },
+  currencyConverter: {
+    from: "From", to: "To",
+    quickConversions: "Quick Conversions", recentHistory: "Recent History",
+    noRecent: "No recent conversions.",
+    liveRatesUpdated: (min) => `Live rates, updated ${min} min ago`,
+    liveRatesJust: "Live rates, just updated",
+    offlineSnapshot: (date) => `Offline snapshot — rates as of ${date}`,
+  },
+  passwordGenerator: {
+    length: (n) => `Length: ${n}`,
+    uppercase: "Uppercase (A-Z)", lowercase: "Lowercase (a-z)",
+    numbers: "Numbers (0-9)", symbols: "Symbols (!@#$)", pronounceable: "Pronounceable mode",
+    count: "Generate Count", regenerate: "Regenerate", copy: "Copy",
+    bulkGeneration: "Bulk Generation", history: "History", clearHistory: "Clear History",
+    strength: { weak: "Weak", fair: "Fair", strong: "Strong", veryStrong: "Very Strong", exceptional: "Exceptional" },
+  },
+  formatSelector: { search: "Search...", noResults: "No results found" },
 };
 
 const FR: Translations = {
@@ -403,6 +449,32 @@ const FR: Translations = {
     finalPrice: "Final", saved: "Économisé", tipLabel: "Pourboire",
     perPerson: "Par personne", sellingPrice: "Prix de vente", markupLabel: "Marge",
   },
+  unitConverter: {
+    from: "De", to: "Vers", pin: "Épingler", pinned: "Épinglé",
+    pinnedConversions: "Conversions épinglées", swapAriaLabel: "Inverser les unités",
+    categoryNames: {
+      length: "Longueur", weight: "Masse", temperature: "Température", volume: "Volume",
+      area: "Surface", speed: "Vitesse", pressure: "Pression", energy: "Énergie",
+      power: "Puissance", data: "Données", time: "Temps", angle: "Angle", frequency: "Fréquence",
+    },
+  },
+  currencyConverter: {
+    from: "De", to: "Vers",
+    quickConversions: "Conversions rapides", recentHistory: "Historique récent",
+    noRecent: "Aucune conversion récente.",
+    liveRatesUpdated: (min) => `Taux en direct, mis à jour il y a ${min} min`,
+    liveRatesJust: "Taux en direct, tout juste mis à jour",
+    offlineSnapshot: (date) => `Instantané hors ligne — taux au ${date}`,
+  },
+  passwordGenerator: {
+    length: (n) => `Longueur : ${n}`,
+    uppercase: "Majuscules (A-Z)", lowercase: "Minuscules (a-z)",
+    numbers: "Chiffres (0-9)", symbols: "Symboles (!@#$)", pronounceable: "Mode prononçable",
+    count: "Nombre à générer", regenerate: "Régénérer", copy: "Copier",
+    bulkGeneration: "Génération en masse", history: "Historique", clearHistory: "Effacer l'historique",
+    strength: { weak: "Faible", fair: "Acceptable", strong: "Fort", veryStrong: "Très fort", exceptional: "Exceptionnel" },
+  },
+  formatSelector: { search: "Rechercher...", noResults: "Aucun résultat" },
 };
 
 export const TRANSLATIONS: Record<Locale, Translations> = { EN, FR };

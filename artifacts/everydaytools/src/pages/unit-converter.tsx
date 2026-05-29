@@ -91,7 +91,7 @@ export default function UnitConverter() {
       <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 16, marginBottom: 16, borderBottom: '1px solid var(--border)' }}>
         {UNIT_CATEGORIES.map(c => (
           <button key={c.id} onClick={() => setActiveCategory(c.id)} style={{ padding: '8px 16px', background: activeCategory === c.id ? 'var(--accent)' : 'var(--bg)', color: activeCategory === c.id ? 'var(--accent-text)' : 'var(--text-primary)', border: 'none', borderRadius: 'var(--radius)', cursor: 'pointer', fontSize: 14, whiteSpace: 'nowrap' }}>
-            {c.name}
+            {t.unitConverter.categoryNames[c.id] ?? c.name}
           </button>
         ))}
       </div>
@@ -101,12 +101,12 @@ export default function UnitConverter() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
             <div style={{ flex: 1 }}>
-              <label style={{ display: 'block', fontSize: 14, marginBottom: 8 }}>From</label>
+              <label style={{ display: 'block', fontSize: 14, marginBottom: 8, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.unitConverter.from}</label>
               <FormatSelector options={unitOptions} value={fromUnit} onChange={setFromUnit} />
             </div>
-            <button onClick={handleSwap} aria-label="Swap units" style={{ marginTop: 26, padding: '8px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '50%', cursor: 'pointer', color: 'var(--text-primary)', lineHeight: 1 }}>⇄</button>
+            <button onClick={handleSwap} aria-label={t.unitConverter.swapAriaLabel} style={{ marginTop: 26, padding: '8px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '50%', cursor: 'pointer', color: 'var(--text-primary)', lineHeight: 1 }}>⇄</button>
             <div style={{ flex: 1 }}>
-              <label style={{ display: 'block', fontSize: 14, marginBottom: 8 }}>To</label>
+              <label style={{ display: 'block', fontSize: 14, marginBottom: 8, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.unitConverter.to}</label>
               <FormatSelector options={unitOptions} value={toUnit} onChange={setToUnit} />
             </div>
           </div>
@@ -124,8 +124,8 @@ export default function UnitConverter() {
             <span style={{ fontSize: 14, color: 'var(--muted)' }}>
               1 {category.units.find(u => u.id === fromUnit)?.symbol} = {calculate("1")} {category.units.find(u => u.id === toUnit)?.symbol}
             </span>
-            <button onClick={toggleFavorite} aria-label={favorites.includes(`${activeCategory}:${fromUnit}:${toUnit}`) ? "Unpin conversion" : "Pin conversion"} style={{ padding: '6px 12px', background: 'none', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: 13, cursor: 'pointer', color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>
-              {favorites.includes(`${activeCategory}:${fromUnit}:${toUnit}`) ? "★ Pinned" : "☆ Pin"}
+            <button onClick={toggleFavorite} aria-label={favorites.includes(`${activeCategory}:${fromUnit}:${toUnit}`) ? t.unitConverter.pinned : t.unitConverter.pin} style={{ padding: '6px 12px', background: 'none', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: 13, cursor: 'pointer', color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>
+              {favorites.includes(`${activeCategory}:${fromUnit}:${toUnit}`) ? `★ ${t.unitConverter.pinned}` : `☆ ${t.unitConverter.pin}`}
             </button>
           </div>
         </div>
@@ -133,7 +133,7 @@ export default function UnitConverter() {
       
       {favorites.length > 0 && (
         <div style={{ marginBottom: 32 }}>
-          <h3 style={{ fontSize: 14, fontWeight: 500, marginBottom: 12 }}>Pinned Conversions</h3>
+          <h3 style={{ fontSize: 14, fontWeight: 500, marginBottom: 12, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{t.unitConverter.pinnedConversions}</h3>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             {favorites.map(fav => {
               const [cat, from, to] = fav.split(':');

@@ -8,8 +8,9 @@ import { useLocale } from '@/hooks/use-locale';
 
 export default function CurrencyConverter() {
   const { t } = useLocale();
+  type SourceInfo = { type: 'loading' } | { type: 'live'; age: number } | { type: 'offline'; date: string };
   const [rates, setRates] = useState<Record<string, number>>({});
-  const [source, setSource] = useState<string>("Loading...");
+  const [sourceInfo, setSourceInfo] = useState<SourceInfo>({ type: 'loading' });
   const [fromCurrency, setFromCurrency] = useState('USD');
   const [toCurrency, setToCurrency] = useState('EUR');
   const [amount, setAmount] = useState('1');
@@ -24,13 +25,13 @@ export default function CurrencyConverter() {
         if (data && data.rates) {
           setRates(data.rates);
           const age = data.ageMinutes ?? 0;
-          setSource(age > 0 ? `Live rates, updated ${age} min ago` : 'Live rates, just updated');
+          setSourceInfo({ type: 'live', age });
         } else {
           throw new Error("Invalid response");
         }
       } catch (e) {
         setRates(FALLBACK_RATES);
-        setSource(`Offline snapshot — rates as of ${FALLBACK_DATE}`);
+        setSourceInfo({ type: 'offline', date: FALLBACK_DATE });
       }
     };
     
@@ -93,12 +94,12 @@ export default function CurrencyConverter() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
             <div style={{ flex: 1 }}>
-              <label style={{ display: 'block', fontSize: 14, marginBottom: 8 }}>From</label>
+              <label style={{ display: 'block', fontSize: 14, marginBottom: 8, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.currencyConverter.from}</label>
               <FormatSelector options={currencyOptions} value={fromCurrency} onChange={setFromCurrency} />
             </div>
-            <button onClick={handleSwap} aria-label="Swap currencies" style={{ marginTop: 26, padding: '8px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '50%', cursor: 'pointer', color: 'var(--text-primary)', lineHeight: 1 }}>⇄</button>
+            <button onClick={handleSwap} aria-label={t.unitConverter.swapAriaLabel} style={{ marginTop: 26, padding: '8px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '50%', cursor: 'pointer', color: 'var(--text-primary)', lineHeight: 1 }}>⇄</button>
             <div style={{ flex: 1 }}>
-              <label style={{ display: 'block', fontSize: 14, marginBottom: 8 }}>To</label>
+              <label style={{ display: 'block', fontSize: 14, marginBottom: 8, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.currencyConverter.to}</label>
               <FormatSelector options={currencyOptions} value={toCurrency} onChange={setToCurrency} />
             </div>
           </div>
@@ -112,15 +113,19 @@ export default function CurrencyConverter() {
             </div>
           </div>
           
-          <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 8, textAlign: 'right' }}>
-            {source}
+          <div style={{ fontSize: 12, color: 'var(--text-tertiary)', marginTop: 8, textAlign: 'right', fontFamily: 'var(--font-ui)' }}>
+            {sourceInfo.type === 'live'
+              ? (sourceInfo.age > 0 ? t.currencyConverter.liveRatesUpdated(sourceInfo.age) : t.currencyConverter.liveRatesJust)
+              : sourceInfo.type === 'offline'
+              ? t.currencyConverter.offlineSnapshot(sourceInfo.date)
+              : ''}
           </div>
         </div>
       </div>
       
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 32 }}>
         <div style={{ background: 'var(--bg)', padding: 16, borderRadius: 'var(--radius)', border: '1px solid var(--border)' }}>
-          <h3 style={{ fontSize: 14, fontWeight: 500, marginBottom: 12 }}>Quick Conversions</h3>
+          <h3 style={{ fontSize: 14, fontWeight: 500, marginBottom: 12, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{t.currencyConverter.quickConversions}</h3>
           <table style={{ width: '100%', fontSize: 13, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>
             <tbody>
               {[1, 10, 100, 1000, 10000].map(amt => (
@@ -134,7 +139,7 @@ export default function CurrencyConverter() {
         </div>
         
         <div style={{ background: 'var(--bg)', padding: 16, borderRadius: 'var(--radius)', border: '1px solid var(--border)' }}>
-          <h3 style={{ fontSize: 14, fontWeight: 500, marginBottom: 12 }}>Recent History</h3>
+          <h3 style={{ fontSize: 14, fontWeight: 500, marginBottom: 12, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{t.currencyConverter.recentHistory}</h3>
           {history.length > 0 ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontSize: 13, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>
               {history.slice(0, 5).map((h, i) => (
@@ -142,7 +147,7 @@ export default function CurrencyConverter() {
               ))}
             </div>
           ) : (
-            <p style={{ fontSize: 13, color: 'var(--muted)' }}>No recent conversions.</p>
+            <p style={{ fontSize: 13, color: 'var(--text-tertiary)', fontFamily: 'var(--font-ui)' }}>{t.currencyConverter.noRecent}</p>
           )}
         </div>
       </div>
