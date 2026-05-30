@@ -258,9 +258,16 @@ function LocaleToolRoute({ params }: { params: { slug: string } }) {
   return <Comp />;
 }
 
+function ScrollToTop() {
+  const [location] = useLocation();
+  useEffect(() => { window.scrollTo(0, 0); }, [location]);
+  return null;
+}
+
 function Router() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-base)', fontFamily: 'var(--font-ui)', display: 'flex', flexDirection: 'column' }}>
+      <ScrollToTop />
       <a href="#main-content" className="skip-link">Skip to main content</a>
       <div id="status-announcer" aria-live="polite" aria-atomic="true" className="sr-only" />
       <TopNav />
