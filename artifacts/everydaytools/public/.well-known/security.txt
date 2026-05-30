@@ -1,0 +1,5 @@
+Contact: mailto:security@everydaytools.app
+Preferred-Languages: en, fr
+Canonical: https://everydaytools.app/.well-known/security.txt
+Policy: https://everydaytools.app/security
+Expires: 2027-01-01T00:00:00.000Z

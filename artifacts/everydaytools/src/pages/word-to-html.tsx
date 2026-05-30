@@ -8,6 +8,7 @@ import mammoth from 'mammoth';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
+import { sanitizeHTML } from '@/utils/sanitize';
 
 export default function WordToHtml() {
   const { t } = useLocale();
@@ -69,7 +70,7 @@ export default function WordToHtml() {
           <h3 style={{ fontSize: 16, fontWeight: 500, marginBottom: 12 }}>Preview</h3>
           <div 
             style={{ maxHeight: 400, overflow: 'auto', background: 'var(--bg)', padding: 16, borderRadius: 'var(--radius)', border: '1px solid var(--border)' }}
-            dangerouslySetInnerHTML={{ __html: result.textOutput.replace(/<!DOCTYPE html>.*<body>/is, '').replace(/<\/body><\/html>/i, '') }}
+            dangerouslySetInnerHTML={{ __html: sanitizeHTML(result.textOutput.replace(/<!DOCTYPE html>.*<body>/is, '').replace(/<\/body><\/html>/i, '')) }}
           />
         </div>
       )}

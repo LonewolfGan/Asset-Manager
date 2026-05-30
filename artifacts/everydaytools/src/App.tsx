@@ -123,6 +123,7 @@ const TipCalculator = lazy(() => import("@/pages/tip-calculator"));
 // Legal
 const Privacy = lazy(() => import("@/pages/privacy"));
 const Terms = lazy(() => import("@/pages/terms"));
+const SecurityPage = lazy(() => import("@/pages/security"));
 
 const TOOL_COMPONENTS: Record<string, React.LazyExoticComponent<() => React.ReactElement>> = {
   // PDF
@@ -354,6 +355,7 @@ function Router() {
             {/* Legal */}
             <Route path="/privacy" component={Privacy} />
             <Route path="/terms" component={Terms} />
+            <Route path="/security" component={SecurityPage} />
             <Route component={NotFound} />
           </Switch>
         </Suspense>

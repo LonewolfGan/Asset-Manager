@@ -1,0 +1,443 @@
+You are doing a full visual bug sweep across the entire site.
+Do not redesign anything. Only find broken styles and fix them.
+Go page by page, component by component. Fix every single visual anomaly you find.
+
+KNOWN BUGS — FIX THESE FIRST
+BUG 1 — Range slider: thumb not centered, sitting at the bottom
+The range input thumb (<input type="range">) is vertically misaligned —
+it appears at the bottom of the track instead of centered on it.
+Root cause: missing vertical alignment CSS on the range input and its thumb.
+Fix — apply globally to all range inputs:
+cssinput[type="range"] {
+  /* Reset browser defaults that cause alignment issues */
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;                          /* track height */
+  background: var(--border);            /* #252528 */
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  /* CRITICAL — this fixes the vertical alignment */
+  vertical-align: middle;
+  margin: 0;
+  padding: 0;
+}
+
+/* Track — WebKit (Chrome, Safari, Edge) */
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  /* Center the track vertically */
+  display: flex;
+  align-items: center;
+}
+
+/* Thumb — WebKit */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);            /* #d4ff4f */
+  border: 2px solid var(--bg);         /* #0e0e0f — creates a clean ring */
+  cursor: pointer;
+  /* CRITICAL — this is what centers the thumb on the track */
+  margin-top: -7px;                     /* (thumb height - track height) / 2 = (18 - 4) / 2 = 7 */
+  box-shadow: 0 0 0 0 transparent;
+  transition: box-shadow 0.15s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 6px rgba(212, 255, 79, 0.15);
+}
+
+input[type="range"]::-webkit-slider-thumb:active {
+  box-shadow: 0 0 0 8px rgba(212, 255, 79, 0.2);
+}
+
+/* Track — Firefox */
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  border: none;
+}
+
+/* Thumb — Firefox */
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  cursor: pointer;
+  box-shadow: none;
+}
+
+/* Fill color left of thumb — Firefox */
+input[type="range"]::-moz-range-progress {
+  background: var(--accent);
+  height: 4px;
+  border-radius: 2px;
+}
+
+/* Focus state */
+input[type="range"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+/* Wrapper — if the range is inside a flex or grid container */
+.range-wrapper {
+  display: flex;
+  align-items: center;     /* centers range with any label beside it */
+  gap: 0.75rem;
+  width: 100%;
+}
+Apply this CSS to the global stylesheet. Verify it fixes the range on:
+
+Compress Image (quality slider)
+Compress PDF (compression level if using range)
+Resize Image (percentage slider)
+Password Generator (length slider)
+Any other tool using <input type="range">
+
+For the filled track effect (progress fill left of thumb) in WebKit —
+this requires JavaScript since WebKit doesn't support ::-webkit-slider-progress:
+javascript// Add to every range input on mount
+const updateRangeFill = (input) => {
+  const min = parseFloat(input.min) || 0
+  const max = parseFloat(input.max) || 100
+  const val = parseFloat(input.value)
+  const pct = ((val - min) / (max - min)) * 100
+  input.style.background = `linear-gradient(to right, var(--accent) ${pct}%, var(--border) ${pct}%)`
+}
+
+document.querySelectorAll('input[type="range"]').forEach(input => {
+  updateRangeFill(input)
+  input.addEventListener('input', () => updateRangeFill(input))
+})
+
+BUG 2 — Orange background with gray text (unreadable combination)
+Search the entire codebase for every element that has:
+
+background: var(--accent2) or background: #ff6b35 (orange)
+AND color that is gray, muted, or any dark/low-contrast value
+
+Fix — text on orange background must ALWAYS be dark:
+css/* Any element with orange background needs dark text */
+.badge-hot,
+.tag-hot,
+[data-variant="orange"],
+.pill-orange,
+.alert-orange {
+  background: rgba(255, 107, 53, 0.12);  /* soft orange bg */
+  color: #ff6b35;                         /* orange text on dark bg */
+  border: 1px solid rgba(255, 107, 53, 0.35);
+}
+
+/* If solid orange background is used */
+.solid-orange {
+  background: #ff6b35;
+  color: #0e0e0f;   /* MUST be very dark — not gray, not muted */
+  font-weight: 600; /* bold for legibility */
+}
+Search and fix every instance:
+bash# Find all elements with orange/accent2 background
+grep -r "accent2\|ff6b35" src/ --include="*.css" --include="*.jsx" --include="*.vue" --include="*.svelte"
+For each result — verify the text color has at least 4.5:1 contrast ratio
+against the background. Use: https://webaim.org/resources/contrastchecker/
+
+SYSTEMATIC VISUAL AUDIT — EVERY COMPONENT
+Now do a full sweep of every component type on the site.
+Go through this checklist for EVERY page.
+
+RANGE INPUTS (all tools with sliders)
+For each range input across the site, verify:
+
+ Thumb is perfectly centered on the track (not above, not below)
+ Thumb is visible and uses accent color
+ Track has fill color left of thumb showing progress
+ Hover state shows a glow ring around thumb
+ Focus state has visible outline
+ Range works in Chrome, Firefox, Safari (all have different pseudo-elements)
+ Label showing current value updates live as slider moves
+ Min/max labels (if present) are aligned with the ends of the slider
+
+
+BUTTONS — all variants
+Search every button in the codebase. For each:
+Primary button:
+
+ Background: var(--accent) — yellow-green
+ Text: var(--bg) — near black — NOT gray, NOT white
+ Hover: offset shadow effect (translate -2px -2px + box-shadow accent2)
+ Active/pressed: translate back (0,0)
+ Disabled: opacity 0.4, cursor not-allowed, no hover effect
+ Loading state: spinner visible, text hidden or "Processing..."
+ Consistent height across ALL pages (define --btn-height CSS variable)
+
+Ghost/secondary button:
+
+ Background: transparent
+ Border: var(--border)
+ Text: var(--muted) → hover: var(--text)
+ NO filled background on hover — only border color changes
+
+Danger button (Unlock PDF, Delete, etc.):
+
+ Background: rgba of red — NOT solid orange (that's the secondary accent)
+ Text: readable against that background
+
+Icon button (close, copy, remove):
+
+ Minimum 36×36px clickable area
+ aria-label present
+ Hover shows subtle background, not full color fill
+
+
+SELECT DROPDOWNS (all tools)
+Every <select> across the site:
+
+ Custom styled — NOT browser default appearance
+ Background: var(--surface) — NOT white, NOT transparent
+ Text: var(--text) — visible on dark background
+ Border: var(--border) — visible but subtle
+ Arrow icon: custom SVG, correct color (NOT browser default)
+ Focus state: accent outline
+ Options: dark background, readable text (check in Chrome AND Firefox — Firefox
+ignores most option styling)
+ Disabled state: opacity, cursor not-allowed
+
+Fix every select that shows white background in dark mode.
+Most common cause:
+css/* WRONG — browser default bleeds through */
+select {
+  /* no background set */
+}
+
+/* RIGHT */
+select {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: var(--surface);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b6b70' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 12px;
+  padding-right: 2.5rem;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 0;
+}
+
+select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 0;
+  border-color: var(--accent);
+}
+
+BADGES, TAGS & PILLS
+Every badge/tag/pill on every page:
+
+ Text is readable (contrast ≥ 4.5:1 against badge background)
+ "New" badge: purple tint — text must be purple (not gray on purple bg)
+ "Hot" / "Popular" badge: orange tint — text must be orange (not gray on orange bg)
+ "Exists" badge: green tint — text must be green (not gray on green bg)
+ Consistent padding across all badges: 0.18rem 0.55rem
+ Consistent font-size: 0.65rem or 0.7rem — pick one
+ Consistent letter-spacing: 0.1em
+ All uppercase
+ No badge has both a border AND a solid background that creates double-border visual
+
+
+CARDS (tool cards, homepage grid)
+Every card:
+
+ Background: var(--card) — #1a1a1d — consistent everywhere
+ Border: via grid gap (background: var(--border); gap: 1px) — NOT individual card borders
+ Top accent bar on hover: scaleX(0) → scaleX(1) animation
+ Icon box: consistent size (40×40px), border, bg
+ Card hover background: #1e1e22 — slightly lighter than rest
+ No double border (card + wrapper both having borders)
+ Tool name: Syne, consistent size
+ Tool description: muted color, consistent size
+ Tag: positioned consistently (bottom-left)
+ Click area: entire card is clickable — not just the title
+
+
+INPUTS & TEXTAREAS
+Every text input and textarea:
+
+ Background: var(--surface) — NEVER white or transparent
+ Text: var(--text) — readable
+ Placeholder: var(--muted) — visible but clearly secondary
+ Border: var(--border)
+ Focus: border-color: var(--accent) + outline: 2px solid var(--accent) with offset
+ No double border (default browser outline + custom border at same time)
+ Consistent height: 2.5rem for single-line inputs
+ Consistent padding: 0 0.75rem
+ Border-radius: consistent (0 for the flat design, or pick a value and use it everywhere)
+ Font: var(--font-mono) — DM Mono — consistent with design system
+ Font-size: minimum 16px on mobile to prevent iOS zoom
+
+
+PROGRESS BARS
+Every progress bar:
+
+ Track background: var(--border) — NOT gray-200 or any light color
+ Fill: var(--accent) — yellow-green
+ Height: consistent (4px or 6px — pick one)
+ Animated: CSS transition on width or animated stripes for indeterminate
+ Label: percentage shown next to or inside the bar
+ ARIA attributes: role="progressbar", aria-valuenow, aria-valuemin, aria-valuemax
+
+
+MODALS & OVERLAYS
+Every modal on the site:
+
+ Overlay: rgba(0,0,0,0.7) — dark enough to obscure background
+ Modal box: var(--card) background — NOT white
+ Border: 1px solid var(--border)
+ No double border (box-shadow that looks like border + actual border)
+ Close button: top-right, consistent position, 36×36px minimum
+ Header: Syne font, consistent size
+ Body padding: consistent (1.5rem 2rem)
+ Footer/actions: right-aligned buttons, consistent gap
+ Scroll: if content overflows, scrolls inside modal (not full page scroll)
+ Backdrop click: closes modal
+ Escape key: closes modal
+
+
+DROP ZONES (file upload areas)
+Every drop zone:
+
+ Border: 2px dashed var(--border) — dashed makes it clearly a drop target
+ Background: var(--surface) — NOT white
+ Text: centered, icon + title + subtitle stacked
+ Drag-over state: border becomes var(--accent), background becomes rgba(212,255,79,0.05)
+ Transition: smooth color change on drag enter/leave
+ After upload: file name shown clearly, with file size, with remove button
+
+
+NAVIGATION
+Desktop nav:
+
+ Background: rgba(14,14,15,0.85) with backdrop-filter: blur(12px)
+ Border-bottom: 1px solid var(--border) — exactly one border, not two
+ Links: var(--muted) → hover: var(--text) — consistent
+ Active page: indicated clearly (accent color or accent underline)
+ Logo dot: animated pulse using accent color
+
+Mobile nav:
+
+ Hamburger button: visible, 44×44px minimum
+ Mobile menu: slides in from side OR drops down — consistent, smooth
+ Mobile menu background: var(--bg) — NOT transparent, NOT white
+ Mobile links: large enough to tap (44px min height per item)
+
+
+FOOTER
+
+ Background: var(--bg) or var(--surface) — never white
+ Border-top: 1px solid var(--border) — single border
+ Text: var(--muted) — readable
+ Links: visible, hover state works
+
+
+TYPOGRAPHY — global sweep
+Check every page for:
+
+ Font stack applied correctly: Syne for headings, DM Mono for body
+ No system font or serif font bleeding through anywhere
+ Heading hierarchy: h1 → h2 → h3 — sizes decrease consistently
+ No text using color: white hardcoded (use var(--text))
+ No text using color: black hardcoded (use var(--bg) or var(--text))
+ Muted text: var(--muted) — #6b6b70 — verify it's readable (≥ 3:1 on dark bg)
+ Line-height: body text 1.6, headings 1.1, captions 1.4
+ No text overflowing its container (add overflow-wrap: break-word globally)
+
+
+TOOL-SPECIFIC PAGES — extra checks
+Unit Converter:
+
+ Category select (Length, Weight, etc.): dark background, readable text
+ Unit selects (Kilometer, Meter, etc.): dark background, readable text
+ "Swap" button: centered between the two selects, consistent style
+ Result display: large, clear, uses accent color for the number
+
+Currency Converter:
+
+ Currency flags or codes: consistent size
+ Amount input: properly styled (not browser default)
+ Rate display: readable, muted text for label, bright text for value
+ "Last updated" timestamp: small, muted, visible
+
+Password Generator:
+
+ Strength bar: colored fill (red/orange/yellow/green), not always gray
+ Strength label: matches bar color (not always the same muted color)
+ Length slider: centered thumb (see BUG 1)
+ Checkbox options: styled, NOT browser default checkboxes
+ Generated password: monospace font, large, copyable
+
+QR Code Generator:
+
+ QR code preview: visible on dark background (white QR on dark bg — or provide bg toggle)
+ Download buttons: both PNG and SVG options styled consistently
+
+Compress Image / PDF:
+
+ Quality/compression slider: thumb centered (see BUG 1)
+ Before/after size: clear visual hierarchy — original size vs compressed size
+ Reduction percentage: accent color, prominent
+
+Background Remover:
+
+ Loading state while AI model loads: spinner + "Loading engine..." text
+ Result preview: checkerboard pattern behind transparent areas (standard convention)
+
+
+HOW TO FIND REMAINING BUGS
+Beyond the known bugs and component audit above, run these scans:
+bash# Find all hardcoded colors that might cause dark/light mode issues
+grep -rn "color: white\|color: black\|background: white\|background: black\|background-color: white\|background-color: black" src/
+
+# Find all inline styles (potential inconsistencies)
+grep -rn "style=\"" src/ --include="*.jsx" --include="*.vue" --include="*.html"
+
+# Find any !important (sign of specificity hacks that cause visual bugs)
+grep -rn "!important" src/ --include="*.css"
+
+# Find magic pixel values not using CSS variables
+grep -rn "px" src/ --include="*.css" | grep -v "var(--" | grep -v "/\*"
+For each result — evaluate if it's intentional or a bug. Fix the bugs.
+
+AFTER FIXING
+
+Open every tool page in the browser
+Test the range slider: drag it from min to max — thumb must stay centered
+Change language — verify no orange-on-gray or white-on-white text appears
+Resize to 375px — verify no overflow, all components still look correct
+Check Chrome AND Firefox — range inputs and selects render differently
+
+Generate a fix report:
+VISUAL BUG REPORT
+══════════════════════════════════
+
+BUG: Range thumb sitting below track
+PAGES AFFECTED: /compress-image, /resize-image, /password-generator, /compress-pdf
+FIX: Added margin-top: -7px to ::-webkit-slider-thumb globally
+FILE: src/styles/global.css line 142
+STATUS: ✅ Fixed
+
+BUG: Orange badge (#ff6b35 bg) with gray text (#6b6b70) — contrast 1.8:1
+PAGES AFFECTED: homepage tool cards (Popular badge), /compress-pdf
+FIX: Changed text to #ff6b35 on dark semi-transparent bg rgba(255,107,53,0.12)
+FILE: src/components/ToolCard.css line 67
+STATUS: ✅ Fixed
+
+[list every single fix]

@@ -9,6 +9,7 @@ import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 import { marked } from 'marked';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { sanitizeHTML } from '@/utils/sanitize';
 
 export default function MarkdownToPdf() {
   const { t } = useLocale();
@@ -31,7 +32,7 @@ export default function MarkdownToPdf() {
       
       // Basic text extraction from HTML for a simple PDF
       const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = htmlContent;
+      tempDiv.innerHTML = sanitizeHTML(htmlContent);
       const plainText = tempDiv.textContent || tempDiv.innerText || '';
       const lines = plainText.split('\n');
       

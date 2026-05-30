@@ -9,6 +9,7 @@ import { toCanvas } from 'html-to-image';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
+import { sanitizeHTML } from '@/utils/sanitize';
 
 export default function HtmlToPdf() {
   const { t } = useLocale();
@@ -44,7 +45,7 @@ export default function HtmlToPdf() {
       
       // Create hidden div
       const container = document.createElement('div');
-      container.innerHTML = htmlContent;
+      container.innerHTML = sanitizeHTML(htmlContent);
       Object.assign(container.style, {
         position: 'absolute',
         left: '-9999px',

@@ -129,6 +129,7 @@ export default function Footer() {
           {[
             { label: t.footer.privacyPolicy, href: "/privacy" },
             { label: t.footer.termsOfService, href: "/terms" },
+            { label: t.footer.security, href: "/security" },
           ].map((l) => (
             <Link
               key={l.href}

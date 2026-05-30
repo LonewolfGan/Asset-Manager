@@ -40,6 +40,7 @@ export type Translations = {
     privacyPolicy: string;
     termsOfService: string;
     cookiePreferences: string;
+    security: string;
     columns: { pdf: string; images: string; utilities: string };
   };
   cookie: {
@@ -539,6 +540,7 @@ const EN: Translations = {
     privacyPolicy: "Privacy Policy",
     termsOfService: "Terms of Service",
     cookiePreferences: "Cookie Preferences",
+    security: "Security",
     columns: { pdf: "PDF Tools", images: "Image Tools", utilities: "Utilities" },
   },
   cookie: {
@@ -1085,6 +1087,7 @@ const FR: Translations = {
     privacyPolicy: "Politique de confidentialité",
     termsOfService: "Conditions d'utilisation",
     cookiePreferences: "Préférences de cookies",
+    security: "Sécurité",
     columns: { pdf: "Outils PDF", images: "Outils Image", utilities: "Utilitaires" },
   },
   cookie: {

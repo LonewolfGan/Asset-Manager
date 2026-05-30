@@ -4,6 +4,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
+import { sanitizeHTML } from '@/utils/sanitize';
 
 function formatBytes(b: number) {
   if (b < 1024 * 1024) return `${(b / 1024).toFixed(1)} KB`;
@@ -51,7 +52,7 @@ export default function WordToPdf() {
 
       const container = document.createElement('div');
       container.style.cssText = 'position:fixed;left:-9999px;top:0;width:794px;background:#fff;padding:0;';
-      container.innerHTML = fullHtml;
+      container.innerHTML = sanitizeHTML(fullHtml);
       document.body.appendChild(container);
       setProgress(75);
 
@@ -67,7 +68,7 @@ export default function WordToPdf() {
         clip.style.cssText = `width:794px;height:${Math.min(pageH, totalH - i * pageH)}px;overflow:hidden;position:relative;`;
         const inner = document.createElement('div');
         inner.style.cssText = `position:absolute;top:-${i * pageH}px;width:794px;`;
-        inner.innerHTML = container.innerHTML;
+        inner.innerHTML = sanitizeHTML(container.innerHTML);
         clip.appendChild(inner);
         document.body.appendChild(clip);
         const dataUrl = await toPng(clip, { width: 794, pixelRatio: 1.5 });

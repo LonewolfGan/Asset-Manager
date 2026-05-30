@@ -4,6 +4,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
+import { sanitizeHTML } from '@/utils/sanitize';
 
 export default function ExcelToPdf() {
   const { t } = useLocale();
@@ -55,7 +56,7 @@ export default function ExcelToPdf() {
 
       const container = document.createElement('div');
       container.style.cssText = 'position:fixed;left:-9999px;top:0;width:1100px;background:#fff;';
-      container.innerHTML = styledHtml;
+      container.innerHTML = sanitizeHTML(styledHtml);
       document.body.appendChild(container);
       setProgress(55);
 
