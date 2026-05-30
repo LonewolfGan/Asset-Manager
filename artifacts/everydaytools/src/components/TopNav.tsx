@@ -162,7 +162,7 @@ function NavDropdown({
           transition: "color 120ms ease, border-color 120ms ease",
         }}
         onMouseEnter={(e) => { if (!isActive) (e.currentTarget as HTMLElement).style.color = "var(--text-primary)"; }}
-        onMouseLeave={(e) => { if (!isActive) (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)"; }}
+        onMouseLeave={(e) => { if (!isActive && !isOpen) (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)"; }}
       >
         {groupLabel}
         <svg width="9" height="5" viewBox="0 0 9 5" fill="none" style={{ transform: isOpen ? "rotate(180deg)" : "none", transition: "transform 120ms ease", flexShrink: 0 }}>
