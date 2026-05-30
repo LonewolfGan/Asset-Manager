@@ -68,9 +68,14 @@ export default function FileUpload({ accept, maxSizeMB, multiple = false, onFile
     const next = [...selectedFiles]; next.splice(index, 1); setSelectedFiles(next); onFiles(next);
   };
 
+  const displayFormats = accept
+    .filter(a => a.startsWith('.'))
+    .map(a => a.toUpperCase().slice(1))
+    .join(', ') || accept.join(', ');
+
   const ariaLabel = label
-    ? `${label}. Drag and drop or press Enter to browse. Accepts ${accept.join(', ')}, up to ${maxSizeMB} MB.`
-    : `Upload file. Drag and drop or press Enter to browse. Accepts ${accept.join(', ')}, up to ${maxSizeMB} MB.`;
+    ? `${label}. Drag and drop or press Enter to browse. Accepts ${displayFormats}, up to ${maxSizeMB} MB.`
+    : `Upload file. Drag and drop or press Enter to browse. Accepts ${displayFormats}, up to ${maxSizeMB} MB.`;
 
   return (
     <div style={{ width: '100%' }}>
@@ -123,7 +128,7 @@ export default function FileUpload({ accept, maxSizeMB, multiple = false, onFile
               {t.ui.dropzone}
             </p>
             <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', margin: 0 }}>
-              {t.ui.dropzoneHint(accept.join(', '), maxSizeMB)}
+              {t.ui.dropzoneHint(displayFormats, maxSizeMB)}
             </p>
           </div>
         </div>

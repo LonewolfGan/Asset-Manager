@@ -384,8 +384,8 @@ function RelatedToolsSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en
           <Link
             key={r.href}
             href={r.href}
-            style={{ textDecoration: "none" }}
-            aria-label={`${r.title} - ${r.description}`}
+            style={{ textDecoration: "none", display: "flex" }}
+            aria-label={r.title}
           >
             <div
               style={{
@@ -393,7 +393,16 @@ function RelatedToolsSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en
                 border: "1px solid var(--border)",
                 borderRadius: "var(--radius-md)",
                 background: "var(--bg-surface)",
-                transition: "border-color 140ms ease",
+                transition: "border-color 140ms ease, background 140ms ease",
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
               }}
             >
               <p
@@ -410,7 +419,7 @@ function RelatedToolsSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en
               <p
                 style={{
                   fontSize: "12px",
-                  color: "var(--text-tertiary)",
+                  color: "var(--text-secondary)",
                   margin: 0,
                   lineHeight: 1.5,
                   display: "-webkit-box",

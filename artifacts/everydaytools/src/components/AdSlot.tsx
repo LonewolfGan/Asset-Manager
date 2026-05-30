@@ -71,16 +71,9 @@ export default function AdSlot({ type, slotId = '' }: AdSlotProps) {
           minHeight,
           border: '1px dashed var(--border)',
           borderRadius: 'var(--radius)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
           background: 'transparent',
         }}
-      >
-        <span style={{ fontSize: 11, color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>
-          ad · {type} · {width} × {minHeight}
-        </span>
-      </div>
+      />
     );
   }
 
