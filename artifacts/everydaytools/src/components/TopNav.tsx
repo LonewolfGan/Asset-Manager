@@ -326,9 +326,9 @@ function MobileDrawer({ open, onClose, currentPath }: { open: boolean; onClose: 
           <button onClick={toggle} style={{ padding: "6px 12px", border: "1px solid var(--border)", borderRadius: 10, background: "transparent", color: "var(--text-secondary)", fontFamily: "var(--font-ui)", fontSize: "var(--text-sm)", cursor: "pointer" }}>
             {theme === 'dark' ? t.ui.lightMode : t.ui.darkMode}
           </button>
-          <div style={{ display: "flex", alignItems: "center", border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
+          <div style={{ display: "flex", border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
             {(["EN", "FR"] as const).map((lang, i) => (
-              <button key={lang} onClick={() => { setLocale(lang); trackLanguageChanged(lang.toLowerCase()); }} style={{ background: lang === locale ? "var(--bg-subtle)" : "transparent", color: lang === locale ? "var(--text-primary)" : "var(--text-secondary)", border: "none", borderLeft: i === 1 ? "1px solid var(--border)" : "none", padding: "4px 10px", fontFamily: "var(--font-mono)", fontSize: 11, fontWeight: 500, cursor: "pointer" }}>
+              <button key={lang} onClick={() => { setLocale(lang); trackLanguageChanged(lang.toLowerCase()); }} style={{ background: lang === locale ? "var(--bg-subtle)" : "transparent", color: lang === locale ? "var(--text-primary)" : "var(--text-secondary)", border: "none", borderLeft: i === 1 ? "1px solid var(--border)" : "none", padding: "6px 12px", fontFamily: "var(--font-mono)", fontSize: 11, fontWeight: 500, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 {lang}
               </button>
             ))}
