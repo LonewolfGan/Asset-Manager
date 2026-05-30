@@ -93,15 +93,15 @@ export default function PdfWatermark() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginTop: 16 }}>
             <div>
               <label style={{ display: 'block', fontSize: 14, marginBottom: 6, fontWeight: 500 }}>Font Size ({fontSize})</label>
-              <input type="range" min="12" max="120" value={fontSize} onChange={(e) => setFontSize(parseInt(e.target.value))} style={{ width: '100%', accentColor: 'var(--accent)' }} />
+              <input type="range" min="12" max="120" value={fontSize} onChange={(e) => setFontSize(parseInt(e.target.value))} style={{ width: '100%' }} />
             </div>
             <div>
               <label style={{ display: 'block', fontSize: 14, marginBottom: 6, fontWeight: 500 }}>Opacity ({Math.round(opacity*100)}%)</label>
-              <input type="range" min="0.1" max="1" step="0.1" value={opacity} onChange={(e) => setOpacity(parseFloat(e.target.value))} style={{ width: '100%', accentColor: 'var(--accent)' }} />
+              <input type="range" min="0.1" max="1" step="0.1" value={opacity} onChange={(e) => setOpacity(parseFloat(e.target.value))} style={{ width: '100%' }} />
             </div>
             <div>
               <label style={{ display: 'block', fontSize: 14, marginBottom: 6, fontWeight: 500 }}>Color</label>
-              <select value={colorStr} onChange={(e) => setColorStr(e.target.value)} style={{ width: '100%', padding: '8px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg)' }}>
+              <select value={colorStr} onChange={(e) => setColorStr(e.target.value)} style={{ width: '100%', padding: '8px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)' }}>
                 <option value="gray">Gray</option>
                 <option value="black">Black</option>
                 <option value="red">Red</option>

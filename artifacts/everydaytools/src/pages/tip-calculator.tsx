@@ -136,7 +136,7 @@ export default function TipCalculator() {
                   <label htmlFor="tip-pct" style={{ ...labelStyle, margin: 0 }}>{tc.tipPct}</label>
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: 15, color: 'var(--text-primary)', fontWeight: 600 }}>{tipPercent}%</span>
                 </div>
-                <input id="tip-pct" type="range" min={0} max={50} step={1} value={tipPercent} onChange={e => { setTipPercent(Number(e.target.value)); handleCalculate(); }} style={{ width: '100%', accentColor: 'var(--accent)', marginBottom: 12 }} />
+                <input id="tip-pct" type="range" min={0} max={50} step={1} value={tipPercent} onChange={e => { setTipPercent(Number(e.target.value)); handleCalculate(); }} style={{ width: '100%', marginBottom: 12 }} />
                 <div style={{ display: 'flex', gap: 6 }}>
                   {QUICK_TIPS.map(p => (
                     <button key={p} onClick={() => { setTipPercent(p); handleCalculate(); }} style={{
@@ -155,7 +155,7 @@ export default function TipCalculator() {
                   <label htmlFor="tip-people" style={{ ...labelStyle, margin: 0 }}>{tc.numPeople}</label>
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: 15, color: 'var(--text-primary)', fontWeight: 600 }}>{people}</span>
                 </div>
-                <input id="tip-people" type="range" min={1} max={20} step={1} value={people} onChange={e => { setPeople(Number(e.target.value)); handleCalculate(); }} style={{ width: '100%', accentColor: 'var(--accent)' }} />
+                <input id="tip-people" type="range" min={1} max={20} step={1} value={people} onChange={e => { setPeople(Number(e.target.value)); handleCalculate(); }} style={{ width: '100%' }} />
               </div>
             </div>
 

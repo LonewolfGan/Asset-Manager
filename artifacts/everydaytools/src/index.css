@@ -264,40 +264,77 @@ input[type="range"] {
   appearance: none;
   width: 100%;
   height: 4px;
-  background: var(--bg-subtle);
+  background: var(--border);
   border-radius: 2px;
   outline: none;
   cursor: pointer;
+  vertical-align: middle;
+  margin: 0;
+  padding: 0;
 }
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 16px;
-  height: 16px;
+  appearance: none;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   background: var(--accent);
+  border: 2px solid var(--bg-surface);
   cursor: pointer;
-  box-shadow: none;
-  border: none;
+  margin-top: -7px;
+  box-shadow: 0 0 0 0 transparent;
+  transition: box-shadow 0.15s;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 6px var(--accent-subtle);
+}
+input[type="range"]::-webkit-slider-thumb:active {
+  box-shadow: 0 0 0 8px var(--accent-subtle);
 }
 input[type="range"]::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   background: var(--accent);
+  border: 2px solid var(--bg-surface);
   cursor: pointer;
   box-shadow: none;
+}
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
   border: none;
 }
-input[type="range"]::-webkit-slider-runnable-track {
-  background: linear-gradient(
-    to right,
-    var(--accent) 0%,
-    var(--accent) var(--range-progress, 0%),
-    var(--bg-subtle) var(--range-progress, 0%),
-    var(--bg-subtle) 100%
-  );
+input[type="range"]::-moz-range-progress {
+  background: var(--accent);
   height: 4px;
   border-radius: 2px;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+}
+input[type="range"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+/* ─── SELECT DROPDOWNS ─── */
+select {
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999999' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 12px;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 0;
+  border-color: var(--accent);
 }
 
 /* ─── FOCUS RING ─── */

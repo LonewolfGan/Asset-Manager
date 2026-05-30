@@ -335,7 +335,7 @@ export default function ImageCompress() {
                 max="100"
                 value={quality}
                 onChange={(e) => setQuality(+e.target.value)}
-                style={{ width: '100%', accentColor: 'var(--accent)' }}
+                style={{ width: '100%' }}
               />
               <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4 }}>
                 <span style={{ fontSize: 11, color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>{tc.smallest}</span>
@@ -390,7 +390,7 @@ export default function ImageCompress() {
                   max="200"
                   value={resizePct}
                   onChange={(e) => setResizePct(+e.target.value)}
-                  style={{ flex: 1, accentColor: 'var(--accent)' }}
+                  style={{ flex: 1 }}
                 />
                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: 14, minWidth: 40, color: 'var(--text-primary)' }}>{resizePct}%</span>
               </div>

@@ -367,6 +367,29 @@ function Router() {
 }
 
 function App() {
+  useEffect(() => {
+    function updateRangeFill(input: HTMLInputElement) {
+      const min = parseFloat(input.min) || 0;
+      const max = parseFloat(input.max) || 100;
+      const val = parseFloat(input.value);
+      const pct = ((val - min) / (max - min)) * 100;
+      input.style.background = `linear-gradient(to right, var(--accent) ${pct}%, var(--border) ${pct}%)`;
+    }
+    function handleInput(e: Event) {
+      const el = e.target as HTMLInputElement;
+      if (el.type === 'range') updateRangeFill(el);
+    }
+    document.addEventListener('input', handleInput);
+    const observer = new MutationObserver(() => {
+      document.querySelectorAll<HTMLInputElement>('input[type="range"]').forEach(updateRangeFill);
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+    return () => {
+      document.removeEventListener('input', handleInput);
+      observer.disconnect();
+    };
+  }, []);
+
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>

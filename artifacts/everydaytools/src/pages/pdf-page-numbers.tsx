@@ -77,7 +77,7 @@ export default function PdfPageNumbers() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
             <div>
               <label style={{ display: 'block', fontSize: 14, marginBottom: 6, fontWeight: 500 }}>Position (Bottom)</label>
-              <select value={position} onChange={(e) => setPosition(e.target.value as any)} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg)' }}>
+              <select value={position} onChange={(e) => setPosition(e.target.value as any)} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)' }}>
                 <option value="left">Left</option>
                 <option value="center">Center</option>
                 <option value="right">Right</option>

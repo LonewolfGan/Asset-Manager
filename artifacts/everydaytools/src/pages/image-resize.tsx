@@ -150,9 +150,9 @@ export default function ImageResize() {
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
                 <span style={{ fontSize: 14, fontWeight: 500 }}>Percentage</span>
-                <span style={{ fontSize: 14, fontFamily: 'IBM Plex Mono, monospace' }}>{percentage}%</span>
+                <span style={{ fontSize: 14, fontFamily: 'var(--font-mono)' }}>{percentage}%</span>
               </div>
-              <input type="range" min="1" max="200" value={percentage} onChange={e => setPercentage(e.target.value)} style={{ width: '100%', accentColor: 'var(--accent)' }} />
+              <input type="range" min="1" max="200" value={percentage} onChange={e => setPercentage(e.target.value)} style={{ width: '100%' }} />
               <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 8 }}>
                 Output: {Math.round(origW * (parseInt(percentage)/100))} x {Math.round(origH * (parseInt(percentage)/100))} px
               </p>
@@ -163,7 +163,7 @@ export default function ImageResize() {
 
       {files.length > 0 && !isProcessing && (
         <button onClick={handleConvert} disabled={isProcessing}
-          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15, fontWeight: 500, cursor: 'pointer', width: '100%' }}>
+          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 15, fontWeight: 500, cursor: 'pointer', width: '100%' }}>
           Resize Image
         </button>
       )}

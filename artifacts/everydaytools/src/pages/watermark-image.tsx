@@ -114,7 +114,7 @@ export default function WatermarkImage() {
               </div>
               <div>
                 <label style={{ fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Font size: {fontSize}px</label>
-                <input type="range" min="12" max="120" value={fontSize} onChange={(e) => setFontSize(+e.target.value)} style={{ width: '100%', accentColor: 'var(--accent)' }} />
+                <input type="range" min="12" max="120" value={fontSize} onChange={(e) => setFontSize(+e.target.value)} style={{ width: '100%' }} />
               </div>
               <div>
                 <label style={{ fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Color</label>
@@ -122,7 +122,7 @@ export default function WatermarkImage() {
               </div>
               <div>
                 <label style={{ fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Opacity: {opacity}%</label>
-                <input type="range" min="5" max="100" value={opacity} onChange={(e) => setOpacity(+e.target.value)} style={{ width: '100%', accentColor: 'var(--accent)' }} />
+                <input type="range" min="5" max="100" value={opacity} onChange={(e) => setOpacity(+e.target.value)} style={{ width: '100%' }} />
               </div>
             </div>
 

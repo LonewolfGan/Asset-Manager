@@ -281,7 +281,7 @@ export default function QrCodeGenerator() {
                 <input
                   type="range" min={128} max={512} step={8} value={size}
                   onChange={(e) => setSize(Number(e.target.value))}
-                  style={{ width: '100%', accentColor: 'var(--accent)' }}
+                  style={{ width: '100%' }}
                 />
               </Field>
 
@@ -290,7 +290,7 @@ export default function QrCodeGenerator() {
                 <input
                   type="range" min={0} max={6} step={1} value={margin}
                   onChange={(e) => setMargin(Number(e.target.value))}
-                  style={{ width: '100%', accentColor: 'var(--accent)' }}
+                  style={{ width: '100%' }}
                 />
               </Field>
 
