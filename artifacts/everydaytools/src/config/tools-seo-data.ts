@@ -4460,6 +4460,1007 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     }
   },
+  {
+    internalSlug: "base64",
+    slugs: { en: "base64-encoder-decoder", fr: "encodeur-decodeur-base64" },
+    title: { en: "Base64 Encoder / Decoder — Free Online Tool | EverydayTools Hub", fr: "Encodeur / Décodeur Base64 — Outil Gratuit En Ligne | EverydayTools Hub" },
+    h1: { en: "Base64 Encoder / Decoder", fr: "Encodeur / Décodeur Base64" },
+    description: { en: "Encode text or files to Base64, or decode Base64 strings back to plain text. Instant results, no server required.", fr: "Encodez du texte ou des fichiers en Base64, ou décodez des chaînes Base64 en texte brut. Résultats instantanés." },
+    keywords: {
+      en: ["base64 encoder decoder online", "encode text to base64", "decode base64 string", "base64 converter free", "base64 encode file"],
+      fr: ["encodeur decodeur base64 en ligne", "encoder texte base64", "decoder base64", "convertisseur base64 gratuit"],
+    },
+    relatedTools: ["url-encoder", "json-formatter", "checksum"],
+    howItWorks: {
+      en: [
+        { name: "Enter or paste text", text: "Type or paste your text, or switch to File mode to upload a binary file for encoding." },
+        { name: "Choose Encode or Decode", text: "Select Encode to convert plain text to a Base64 string, or Decode to convert a Base64 string back to readable text." },
+        { name: "Copy the result", text: "The output appears instantly. Click Copy to grab the result to your clipboard." },
+      ],
+      fr: [
+        { name: "Saisissez ou collez du texte", text: "Tapez ou collez votre texte, ou passez en mode Fichier pour encoder un fichier binaire." },
+        { name: "Choisissez Encoder ou Décoder", text: "Sélectionnez Encoder pour convertir du texte brut en chaîne Base64, ou Décoder pour l'inverse." },
+        { name: "Copiez le résultat", text: "La sortie apparaît instantanément. Cliquez sur Copier pour récupérer le résultat." },
+      ],
+    },
+    about: {
+      en: "Base64 is an encoding scheme that represents binary data as a sequence of printable ASCII characters. It is widely used in email attachments (MIME), embedding images in HTML/CSS as data URIs, storing binary data in JSON, and transmitting data over text-only channels. EverydayTools Base64 handles both text encoding and binary file encoding.",
+      fr: "Base64 est un schéma d'encodage qui représente des données binaires sous forme de caractères ASCII imprimables. Il est largement utilisé dans les pièces jointes e-mail (MIME), l'intégration d'images en HTML/CSS via des URI de données, le stockage de données binaires en JSON et la transmission sur des canaux texte uniquement.",
+    },
+    faqs: {
+      en: [
+        { q: "What is Base64 used for?", a: "Base64 encoding is used whenever binary data (images, files, keys) must be transmitted over a medium that only handles text — such as email bodies, JSON payloads, HTML attributes, or configuration files." },
+        { q: "Is Base64 a form of encryption?", a: "No. Base64 is encoding, not encryption. It does not provide any security or confidentiality. Anyone with a Base64 string can decode it instantly. For secure storage, use proper encryption." },
+        { q: "Can I encode large files?", a: "Yes, but Base64 expansion is roughly 33% — a 1 MB file becomes about 1.33 MB when encoded. For very large files the encoding may be slow in the browser." },
+        { q: "Is the Base64 tool free?", a: "Yes. EverydayTools Base64 Encoder / Decoder is completely free with no account required." },
+      ],
+      fr: [
+        { q: "À quoi sert le Base64 ?", a: "L'encodage Base64 est utilisé lorsque des données binaires doivent être transmises via un canal ne gérant que le texte — comme les corps d'e-mail, les payloads JSON, les attributs HTML ou les fichiers de configuration." },
+        { q: "Le Base64 est-il une forme de chiffrement ?", a: "Non. Le Base64 est de l'encodage, pas du chiffrement. Il n'offre aucune sécurité. N'importe qui ayant la chaîne Base64 peut la décoder instantanément. Pour un stockage sécurisé, utilisez un vrai chiffrement." },
+        { q: "L'outil Base64 est-il gratuit ?", a: "Oui. L'encodeur/décodeur Base64 d'EverydayTools est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "checksum",
+    slugs: { en: "file-checksum-calculator", fr: "calculateur-checksum-fichier" },
+    title: { en: "File Checksum Calculator — SHA-256, SHA-512 & More | EverydayTools Hub", fr: "Calculateur Checksum Fichier — SHA-256, SHA-512 | EverydayTools Hub" },
+    h1: { en: "File Checksum Calculator", fr: "Calculateur de Checksum de Fichier" },
+    description: { en: "Verify file integrity with SHA-1, SHA-256, SHA-384, and SHA-512 checksums. Paste the expected hash to confirm your download is authentic.", fr: "Vérifiez l'intégrité d'un fichier avec les checksums SHA-1, SHA-256, SHA-384 et SHA-512. Collez le hash attendu pour confirmer l'authenticité." },
+    keywords: {
+      en: ["file checksum calculator", "sha256 hash online", "verify file integrity", "sha512 checksum", "md5 sha1 sha256 online", "hash generator"],
+      fr: ["calculateur checksum fichier", "sha256 en ligne", "verifier integrite fichier", "hash sha256 gratuit", "generateur hash"],
+    },
+    relatedTools: ["metadata-cleaner", "pdf-protect", "base64"],
+    howItWorks: {
+      en: [
+        { name: "Drop your file", text: "Drag any file into the upload area or click to browse. The file is read entirely in your browser." },
+        { name: "Select hash algorithm", text: "Choose SHA-1, SHA-256, SHA-384, or SHA-512. The hash is computed immediately after the file loads." },
+        { name: "Compare with expected hash", text: "Paste the expected hash from the download source. The tool instantly shows a match or mismatch." },
+      ],
+      fr: [
+        { name: "Déposez votre fichier", text: "Faites glisser n'importe quel fichier dans la zone de dépôt ou cliquez pour naviguer. Le fichier est lu dans votre navigateur." },
+        { name: "Sélectionnez l'algorithme", text: "Choisissez SHA-1, SHA-256, SHA-384 ou SHA-512. Le hash est calculé dès que le fichier est chargé." },
+        { name: "Comparez avec le hash attendu", text: "Collez le hash fourni par la source du téléchargement. L'outil affiche immédiatement une correspondance ou une différence." },
+      ],
+    },
+    about: {
+      en: "A checksum (or cryptographic hash) is a fixed-length fingerprint of a file's content. Even a single changed byte produces a completely different hash — making checksums the standard way to verify that a downloaded file has not been corrupted or tampered with. SHA-256 is the most commonly used algorithm today; SHA-1 is legacy but still seen on older software sites.",
+      fr: "Un checksum (ou hash cryptographique) est une empreinte de longueur fixe du contenu d'un fichier. Un seul octet modifié produit un hash entièrement différent — ce qui en fait le moyen standard de vérifier qu'un fichier téléchargé n'a pas été corrompu ou altéré. SHA-256 est l'algorithme le plus courant aujourd'hui ; SHA-1 est obsolète mais encore présent sur d'anciens sites logiciels.",
+    },
+    faqs: {
+      en: [
+        { q: "Why should I verify a file checksum?", a: "Checksums let you confirm that a downloaded file is exactly what the publisher intended. If a file was corrupted during transfer or replaced by a malicious version, its hash will differ from the one listed on the official download page." },
+        { q: "Which hash algorithm should I use?", a: "SHA-256 is the current standard for file integrity checks. SHA-512 provides stronger guarantees but is rarely required in practice. Avoid SHA-1 for new workflows — it has known weaknesses. MD5 is not supported as it is considered cryptographically broken." },
+        { q: "How large a file can I check?", a: "There is no hard size limit. The file is read in chunks so that even multi-gigabyte files can be hashed without memory issues. Larger files will take longer to process." },
+      ],
+      fr: [
+        { q: "Pourquoi vérifier le checksum d'un fichier ?", a: "Les checksums vous permettent de confirmer qu'un fichier téléchargé est exactement celui prévu par l'éditeur. Si un fichier a été corrompu pendant le transfert ou remplacé par une version malveillante, son hash différera de celui indiqué sur la page de téléchargement officielle." },
+        { q: "Quel algorithme de hash utiliser ?", a: "SHA-256 est le standard actuel pour les vérifications d'intégrité. Évitez SHA-1 pour de nouveaux usages — il présente des faiblesses connues. MD5 n'est pas pris en charge car cryptographiquement compromis." },
+        { q: "Le calculateur de checksum est-il gratuit ?", a: "Oui. EverydayTools File Checksum Calculator est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "csv-to-excel",
+    slugs: { en: "convert-csv-to-excel", fr: "convertir-csv-en-excel" },
+    title: { en: "CSV to Excel Converter — Free Online XLSX Tool | EverydayTools Hub", fr: "Convertir CSV en Excel — Outil XLSX Gratuit En Ligne | EverydayTools Hub" },
+    h1: { en: "CSV to Excel Converter", fr: "Convertisseur CSV en Excel" },
+    description: { en: "Convert CSV files to Excel (.xlsx) spreadsheets instantly. Preserves delimiters, handles quoting, and supports large datasets.", fr: "Convertissez des fichiers CSV en tableurs Excel (.xlsx) instantanément. Préserve les délimiteurs et gère les guillemets." },
+    keywords: {
+      en: ["csv to excel converter", "convert csv to xlsx online", "csv to spreadsheet free", "csv to xls online", "import csv excel"],
+      fr: ["convertir csv en excel", "csv en xlsx en ligne gratuit", "csv vers tableur", "importer csv excel"],
+    },
+    relatedTools: ["excel-to-csv", "csv-viewer", "csv-to-json"],
+    howItWorks: {
+      en: [
+        { name: "Paste or upload your CSV", text: "Paste CSV text directly or upload a .csv file. The tool automatically detects the delimiter (comma, semicolon, tab)." },
+        { name: "Convert to XLSX", text: "Click Convert. Each CSV row becomes a spreadsheet row, with proper column alignment and cell typing." },
+        { name: "Download the Excel file", text: "Your .xlsx file downloads immediately, ready to open in Excel, Google Sheets, or LibreOffice." },
+      ],
+      fr: [
+        { name: "Collez ou uploadez votre CSV", text: "Collez du texte CSV directement ou uploadez un fichier .csv. L'outil détecte automatiquement le délimiteur (virgule, point-virgule, tabulation)." },
+        { name: "Convertissez en XLSX", text: "Cliquez sur Convertir. Chaque ligne CSV devient une ligne de feuille de calcul, avec un alignement des colonnes et un typage des cellules appropriés." },
+        { name: "Téléchargez le fichier Excel", text: "Votre fichier .xlsx se télécharge immédiatement, prêt à ouvrir dans Excel, Google Sheets ou LibreOffice." },
+      ],
+    },
+    about: {
+      en: "CSV (Comma-Separated Values) is the most portable tabular format, but it lacks Excel features like multiple sheets, cell formatting, or formulas. Converting to XLSX makes your data easier to analyse, sort, and share — especially with colleagues who rely on Excel.",
+      fr: "Le CSV (Comma-Separated Values) est le format tabulaire le plus portable, mais il manque des fonctionnalités Excel comme les feuilles multiples, la mise en forme des cellules ou les formules. La conversion en XLSX facilite l'analyse, le tri et le partage des données.",
+    },
+    faqs: {
+      en: [
+        { q: "What delimiters are supported?", a: "The converter auto-detects commas, semicolons, and tab characters as delimiters. If your file uses a different separator, paste the CSV and the column alignment will show whether detection was correct." },
+        { q: "Are there limits on file size or row count?", a: "CSV text up to a few tens of MB is supported. Excel has a hard limit of 1,048,576 rows per sheet; if your CSV exceeds this, only the first million rows will be included." },
+        { q: "Is CSV to Excel Converter free?", a: "Yes. EverydayTools CSV to Excel Converter is completely free with no account required." },
+      ],
+      fr: [
+        { q: "Quels délimiteurs sont pris en charge ?", a: "Le convertisseur détecte automatiquement les virgules, points-virgules et tabulations. Si votre fichier utilise un autre séparateur, collez le CSV et l'alignement des colonnes indiquera si la détection est correcte." },
+        { q: "Y a-t-il des limites de taille ou de nombre de lignes ?", a: "Les textes CSV jusqu'à quelques dizaines de Mo sont pris en charge. Excel a une limite de 1 048 576 lignes par feuille." },
+        { q: "Le convertisseur CSV en Excel est-il gratuit ?", a: "Oui. EverydayTools CSV en Excel est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "csv-to-json",
+    slugs: { en: "convert-csv-to-json", fr: "convertir-csv-en-json" },
+    title: { en: "CSV to JSON Converter — Free Online Tool | EverydayTools Hub", fr: "Convertir CSV en JSON — Outil Gratuit En Ligne | EverydayTools Hub" },
+    h1: { en: "CSV ↔ JSON Converter", fr: "Convertisseur CSV ↔ JSON" },
+    description: { en: "Convert CSV to JSON or JSON to CSV instantly. Paste text or upload a file and get a clean, structured result immediately.", fr: "Convertissez du CSV en JSON ou du JSON en CSV instantanément. Collez du texte ou chargez un fichier." },
+    keywords: {
+      en: ["csv to json converter", "convert csv to json online", "json to csv free", "csv json transform", "parse csv online"],
+      fr: ["convertir csv en json", "csv en json en ligne gratuit", "json en csv", "transformer csv json"],
+    },
+    relatedTools: ["csv-to-excel", "csv-viewer", "json-formatter"],
+    howItWorks: {
+      en: [
+        { name: "Paste or upload your data", text: "Switch between CSV→JSON and JSON→CSV modes. Paste text directly or upload a file." },
+        { name: "Instant conversion", text: "The converter runs as you type. CSV is parsed using the first row as header keys; JSON arrays are unrolled to rows." },
+        { name: "Copy or download the result", text: "Copy the output to your clipboard or download it as a file." },
+      ],
+      fr: [
+        { name: "Collez ou chargez vos données", text: "Basculez entre les modes CSV→JSON et JSON→CSV. Collez du texte directement ou chargez un fichier." },
+        { name: "Conversion instantanée", text: "Le convertisseur s'exécute au fur et à mesure de la saisie. Le CSV est analysé en utilisant la première ligne comme clés d'en-tête." },
+        { name: "Copiez ou téléchargez le résultat", text: "Copiez la sortie dans votre presse-papier ou téléchargez-la sous forme de fichier." },
+      ],
+    },
+    about: {
+      en: "CSV and JSON are the two most common formats for structured tabular data. CSV is preferred in spreadsheets and databases; JSON is preferred in APIs and JavaScript applications. This tool converts in both directions, making it easy to move data between these worlds.",
+      fr: "CSV et JSON sont les deux formats les plus courants pour les données tabulaires structurées. Le CSV est préféré dans les tableurs et bases de données ; le JSON est préféré dans les API et applications JavaScript. Cet outil convertit dans les deux sens.",
+    },
+    faqs: {
+      en: [
+        { q: "How does CSV to JSON conversion work?", a: "The first row of the CSV is treated as the key names for each JSON object. Each subsequent row becomes an object in the output array. Empty cells become empty strings or null values." },
+        { q: "What about nested JSON?", a: "The converter handles flat arrays of objects. Deeply nested JSON structures will be flattened to a single level when converting to CSV." },
+        { q: "Is the CSV ↔ JSON Converter free?", a: "Yes. EverydayTools CSV ↔ JSON Converter is completely free with no account required." },
+      ],
+      fr: [
+        { q: "Comment fonctionne la conversion CSV en JSON ?", a: "La première ligne du CSV est utilisée comme noms de clés pour chaque objet JSON. Chaque ligne suivante devient un objet dans le tableau de sortie." },
+        { q: "Qu'en est-il du JSON imbriqué ?", a: "Le convertisseur gère les tableaux plats d'objets. Les structures JSON profondément imbriquées sont aplaties lors de la conversion en CSV." },
+        { q: "Le convertisseur CSV ↔ JSON est-il gratuit ?", a: "Oui. EverydayTools CSV ↔ JSON est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "csv-viewer",
+    slugs: { en: "csv-file-viewer", fr: "visualiseur-fichier-csv" },
+    title: { en: "CSV Viewer — View & Sort CSV Files Online | EverydayTools Hub", fr: "Visualiseur CSV — Afficher et Trier des Fichiers CSV En Ligne | EverydayTools Hub" },
+    h1: { en: "CSV File Viewer", fr: "Visualiseur de Fichier CSV" },
+    description: { en: "View and sort CSV files as a formatted table. Upload a file or paste CSV text — no account, no server upload required.", fr: "Affichez et triez des fichiers CSV sous forme de tableau formaté. Chargez un fichier ou collez du texte CSV." },
+    keywords: {
+      en: ["csv viewer online", "view csv file online", "csv table viewer free", "open csv online", "csv file reader"],
+      fr: ["visualiseur csv en ligne", "afficher fichier csv", "lecteur csv gratuit", "ouvrir csv en ligne"],
+    },
+    relatedTools: ["csv-to-excel", "csv-to-json", "excel-to-csv"],
+    howItWorks: {
+      en: [
+        { name: "Upload or paste your CSV", text: "Drop a .csv file into the upload area, or paste CSV text directly into the editor. The first row is treated as column headers." },
+        { name: "Explore the table", text: "The CSV renders as a clean, scrollable table. Click any column header to sort ascending or descending." },
+        { name: "Export if needed", text: "Download the current view as CSV or convert to Excel using the linked tools." },
+      ],
+      fr: [
+        { name: "Chargez ou collez votre CSV", text: "Déposez un fichier .csv ou collez du texte CSV directement. La première ligne est traitée comme en-têtes de colonnes." },
+        { name: "Explorez le tableau", text: "Le CSV s'affiche sous forme de tableau propre et défilable. Cliquez sur n'importe quel en-tête de colonne pour trier." },
+        { name: "Exportez si nécessaire", text: "Téléchargez la vue actuelle en CSV ou convertissez-la en Excel avec les outils liés." },
+      ],
+    },
+    about: {
+      en: "CSV files are plain text and can't be directly previewed in most browsers. This viewer renders any CSV as a formatted table, making it easy to spot data issues, check column counts, and scan row values — without opening Excel or a text editor.",
+      fr: "Les fichiers CSV sont du texte brut et ne peuvent pas être directement prévisualisés dans la plupart des navigateurs. Ce visualiseur affiche n'importe quel CSV sous forme de tableau formaté, facilitant la détection de problèmes de données et la vérification des colonnes.",
+    },
+    faqs: {
+      en: [
+        { q: "What delimiters does the CSV Viewer support?", a: "Comma, semicolon, and tab are auto-detected. If the table columns look misaligned, try switching the delimiter manually." },
+        { q: "Can I edit the data in the viewer?", a: "The viewer is read-only. To edit cells and save changes, export to Excel first using the CSV to Excel tool, make your edits there, and re-export as CSV if needed." },
+        { q: "Is the CSV Viewer free?", a: "Yes. EverydayTools CSV Viewer is completely free with no account required." },
+      ],
+      fr: [
+        { q: "Quels délimiteurs le visualiseur CSV prend-il en charge ?", a: "Virgule, point-virgule et tabulation sont détectés automatiquement. Si les colonnes semblent mal alignées, essayez de changer le délimiteur manuellement." },
+        { q: "Puis-je modifier les données dans le visualiseur ?", a: "Le visualiseur est en lecture seule. Pour modifier des cellules, exportez d'abord en Excel, faites vos modifications, puis réexportez en CSV si nécessaire." },
+        { q: "Le visualiseur CSV est-il gratuit ?", a: "Oui. EverydayTools CSV Viewer est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "excel-to-csv",
+    slugs: { en: "convert-excel-to-csv", fr: "convertir-excel-en-csv" },
+    title: { en: "Excel to CSV Converter — Free Online XLSX to CSV | EverydayTools Hub", fr: "Convertir Excel en CSV — XLSX vers CSV Gratuit En Ligne | EverydayTools Hub" },
+    h1: { en: "Excel to CSV Converter", fr: "Convertisseur Excel en CSV" },
+    description: { en: "Convert Excel spreadsheets (.xlsx, .xls) to CSV format instantly. Handles multi-sheet workbooks — choose which sheet to export.", fr: "Convertissez des tableurs Excel (.xlsx, .xls) en format CSV instantanément. Supporte les classeurs multi-feuilles." },
+    keywords: {
+      en: ["excel to csv converter", "convert xlsx to csv online", "xls to csv free", "excel spreadsheet to csv", "export excel as csv"],
+      fr: ["convertir excel en csv", "xlsx en csv en ligne gratuit", "xls vers csv", "exporter excel en csv"],
+    },
+    relatedTools: ["csv-to-excel", "excel-to-pdf", "csv-viewer"],
+    howItWorks: {
+      en: [
+        { name: "Upload your Excel file", text: "Drag a .xlsx or .xls file into the upload area. Multi-sheet workbooks are detected automatically." },
+        { name: "Select the sheet", text: "If your workbook has multiple sheets, choose which one to export. Each sheet exports separately." },
+        { name: "Download the CSV", text: "Click Convert. A .csv file with proper quoting for values containing commas or newlines downloads immediately." },
+      ],
+      fr: [
+        { name: "Chargez votre fichier Excel", text: "Déposez un fichier .xlsx ou .xls. Les classeurs multi-feuilles sont détectés automatiquement." },
+        { name: "Sélectionnez la feuille", text: "Si votre classeur a plusieurs feuilles, choisissez celle à exporter. Chaque feuille s'exporte séparément." },
+        { name: "Téléchargez le CSV", text: "Cliquez sur Convertir. Un fichier .csv avec des guillemets appropriés se télécharge immédiatement." },
+      ],
+    },
+    about: {
+      en: "CSV is the universal interchange format for tabular data — readable by every database, programming language, and analytics tool. Exporting an Excel file to CSV strips formulas, formatting, and multiple sheets, leaving clean, portable data that imports anywhere.",
+      fr: "Le CSV est le format d'échange universel pour les données tabulaires — lisible par chaque base de données, langage de programmation et outil d'analyse. L'exportation d'un fichier Excel en CSV supprime les formules, la mise en forme et les feuilles multiples, laissant des données propres et portables.",
+    },
+    faqs: {
+      en: [
+        { q: "Are Excel formulas included in the CSV?", a: "No. CSV stores only plain values — the computed result of each formula, not the formula itself. If you need to preserve formulas, keep the original .xlsx file." },
+        { q: "What encoding does the CSV use?", a: "Output is UTF-8, which handles special characters, accents, and non-Latin scripts correctly." },
+        { q: "Is Excel to CSV Converter free?", a: "Yes. EverydayTools Excel to CSV Converter is completely free with no account required." },
+      ],
+      fr: [
+        { q: "Les formules Excel sont-elles incluses dans le CSV ?", a: "Non. Le CSV ne stocke que des valeurs brutes — le résultat calculé de chaque formule, pas la formule elle-même. Si vous avez besoin de conserver les formules, gardez le fichier .xlsx original." },
+        { q: "Quel encodage utilise le CSV ?", a: "La sortie est en UTF-8, ce qui gère correctement les caractères spéciaux, les accents et les scripts non latins." },
+        { q: "Le convertisseur Excel en CSV est-il gratuit ?", a: "Oui. EverydayTools Excel en CSV est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "excel-to-pdf",
+    slugs: { en: "convert-excel-to-pdf", fr: "convertir-excel-en-pdf" },
+    title: { en: "Excel to PDF Converter — Free Online XLSX to PDF | EverydayTools Hub", fr: "Convertir Excel en PDF — XLSX vers PDF Gratuit En Ligne | EverydayTools Hub" },
+    h1: { en: "Excel to PDF Converter", fr: "Convertisseur Excel en PDF" },
+    description: { en: "Convert Excel spreadsheets to PDF format. Renders tables and data into a printable, shareable PDF document.", fr: "Convertissez des tableurs Excel en PDF. Transforme tableaux et données en un document PDF imprimable et partageable." },
+    keywords: {
+      en: ["excel to pdf converter", "convert xlsx to pdf online", "xls to pdf free", "excel spreadsheet to pdf", "print excel as pdf"],
+      fr: ["convertir excel en pdf", "xlsx en pdf en ligne gratuit", "xls vers pdf", "imprimer excel en pdf"],
+    },
+    relatedTools: ["excel-to-csv", "pdf-compress", "pdf-merge"],
+    howItWorks: {
+      en: [
+        { name: "Upload your Excel file", text: "Drop a .xlsx or .xls file. The spreadsheet is parsed and rendered for PDF output." },
+        { name: "Render as PDF", text: "Each sheet is rendered as a paginated PDF table, with column headers and row data preserved." },
+        { name: "Download the PDF", text: "Click Convert. Your PDF downloads immediately, ready to share, print, or archive." },
+      ],
+      fr: [
+        { name: "Chargez votre fichier Excel", text: "Déposez un fichier .xlsx ou .xls. Le tableur est analysé et rendu pour la sortie PDF." },
+        { name: "Rendu en PDF", text: "Chaque feuille est rendue sous forme de tableau PDF paginé, avec les en-têtes de colonnes et les données de lignes préservés." },
+        { name: "Téléchargez le PDF", text: "Cliquez sur Convertir. Votre PDF se télécharge immédiatement, prêt à partager, imprimer ou archiver." },
+      ],
+    },
+    about: {
+      en: "Excel files require Excel or compatible software to open. A PDF is universally readable on any device without additional software. Converting your spreadsheet to PDF is useful for sharing reports, invoices, or data summaries with recipients who don't need to edit the data.",
+      fr: "Les fichiers Excel nécessitent Excel ou un logiciel compatible pour être ouverts. Un PDF est universellement lisible sur n'importe quel appareil sans logiciel supplémentaire. Convertir votre tableur en PDF est utile pour partager des rapports, factures ou résumés de données.",
+    },
+    faqs: {
+      en: [
+        { q: "Will the PDF look exactly like the Excel sheet?", a: "The converter renders table data faithfully, but advanced formatting (conditional formatting, charts, custom fonts) may not transfer perfectly. For pixel-perfect output, use Excel's own export to PDF feature." },
+        { q: "Can I convert multiple sheets at once?", a: "Currently each conversion outputs one PDF per workbook, with each sheet on separate pages. Charts and pivot tables are not rendered." },
+        { q: "Is Excel to PDF Converter free?", a: "Yes. EverydayTools Excel to PDF Converter is completely free with no account required." },
+      ],
+      fr: [
+        { q: "Le PDF ressemblera-t-il exactement à la feuille Excel ?", a: "Le convertisseur reproduit fidèlement les données tabulaires, mais la mise en forme avancée (mise en forme conditionnelle, graphiques, polices personnalisées) peut ne pas être parfaitement transférée." },
+        { q: "Puis-je convertir plusieurs feuilles à la fois ?", a: "Actuellement, chaque conversion produit un PDF par classeur, avec chaque feuille sur des pages séparées. Les graphiques et tableaux croisés dynamiques ne sont pas rendus." },
+        { q: "Le convertisseur Excel en PDF est-il gratuit ?", a: "Oui. EverydayTools Excel en PDF est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "favicon-generator",
+    slugs: { en: "favicon-generator", fr: "generateur-favicon" },
+    title: { en: "Favicon Generator — Create ICO & PNG Favicons | EverydayTools Hub", fr: "Générateur de Favicon — Créer des Favicons ICO & PNG | EverydayTools Hub" },
+    h1: { en: "Favicon Generator", fr: "Générateur de Favicon" },
+    description: { en: "Generate favicons in all standard sizes (16×16 to 512×512) from any PNG, JPG, or SVG image. Download as a ZIP with all formats included.", fr: "Générez des favicons dans toutes les tailles standard (16×16 à 512×512) à partir d'une image PNG, JPG ou SVG. Téléchargez en ZIP." },
+    keywords: {
+      en: ["favicon generator", "create favicon online", "favicon ico generator", "favicon from image", "website favicon maker", "apple touch icon generator"],
+      fr: ["générateur favicon", "créer favicon en ligne", "favicon ico", "favicon depuis image", "favicon site web"],
+    },
+    relatedTools: ["image-converter", "image-resize", "image-crop"],
+    howItWorks: {
+      en: [
+        { name: "Upload your image", text: "Drop a PNG, JPG, or SVG. Square images produce the best results — the tool crops to a square automatically if needed." },
+        { name: "Choose sizes", text: "All standard favicon sizes are selected by default: 16×16, 32×32, 64×64, 128×128, Apple Touch Icon (180×180), and Android (192×192)." },
+        { name: "Download as ZIP", text: "Click Generate. A ZIP archive containing all selected sizes as individual PNG/ICO files downloads to your device." },
+      ],
+      fr: [
+        { name: "Chargez votre image", text: "Déposez un PNG, JPG ou SVG. Les images carrées donnent les meilleurs résultats — l'outil recadre automatiquement en carré si nécessaire." },
+        { name: "Choisissez les tailles", text: "Toutes les tailles de favicon standard sont sélectionnées par défaut : 16×16, 32×32, 64×64, 128×128, Apple Touch Icon (180×180) et Android (192×192)." },
+        { name: "Téléchargez en ZIP", text: "Cliquez sur Générer. Une archive ZIP contenant toutes les tailles sélectionnées se télécharge sur votre appareil." },
+      ],
+    },
+    about: {
+      en: "A favicon is the small icon shown in browser tabs, bookmarks, and the address bar. Modern browsers and mobile devices require multiple sizes — 16×16 for tabs, 32×32 for desktop shortcuts, 180×180 for Apple devices, and 192×192 for Android. Starting from a high-resolution square image gives the best results across all sizes.",
+      fr: "Un favicon est la petite icône affichée dans les onglets du navigateur, les favoris et la barre d'adresse. Les navigateurs modernes et les appareils mobiles nécessitent plusieurs tailles — 16×16 pour les onglets, 32×32 pour les raccourcis bureau, 180×180 pour les appareils Apple et 192×192 pour Android.",
+    },
+    faqs: {
+      en: [
+        { q: "What image size should I start with?", a: "Use at least a 512×512 pixel square image for the best downscaling quality. Simple, high-contrast designs work best at small sizes — thin details and text become illegible at 16×16 pixels." },
+        { q: "How do I install a favicon on my website?", a: "Place the favicon files at the root of your web server and add <link rel=\"icon\" href=\"/favicon.ico\"> to the <head> of your HTML. For Apple devices, add <link rel=\"apple-touch-icon\" href=\"/apple-touch-icon.png\">." },
+        { q: "Is Favicon Generator free?", a: "Yes. EverydayTools Favicon Generator is completely free with no account required." },
+      ],
+      fr: [
+        { q: "Quelle taille d'image dois-je utiliser ?", a: "Utilisez au moins une image carrée de 512×512 pixels pour la meilleure qualité de réduction. Les designs simples et à fort contraste fonctionnent mieux aux petites tailles — les détails fins et le texte deviennent illisibles à 16×16 pixels." },
+        { q: "Comment installer un favicon sur mon site web ?", a: "Placez les fichiers favicon à la racine de votre serveur web et ajoutez <link rel=\"icon\" href=\"/favicon.ico\"> dans le <head> de votre HTML. Pour les appareils Apple, ajoutez <link rel=\"apple-touch-icon\" href=\"/apple-touch-icon.png\">." },
+        { q: "Le générateur de favicon est-il gratuit ?", a: "Oui. EverydayTools Favicon Generator est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "flip-rotate-image",
+    slugs: { en: "flip-and-rotate-image", fr: "retourner-pivoter-image" },
+    title: { en: "Flip & Rotate Image — Free Online Tool | EverydayTools Hub", fr: "Retourner et Pivoter une Image — Outil Gratuit En Ligne | EverydayTools Hub" },
+    h1: { en: "Flip & Rotate Image", fr: "Retourner et Pivoter une Image" },
+    description: { en: "Flip images horizontally or vertically, or rotate by any angle. Supports PNG, JPEG, and WebP. Instant download.", fr: "Retournez des images horizontalement ou verticalement, ou faites pivoter selon n'importe quel angle. PNG, JPEG, WebP." },
+    keywords: {
+      en: ["flip image online", "rotate image free", "mirror image horizontally", "rotate image 90 degrees", "flip photo vertically online"],
+      fr: ["retourner image en ligne", "pivoter image gratuit", "miroir horizontal image", "rotation image 90 degrés"],
+    },
+    relatedTools: ["image-crop", "image-resize", "watermark-image"],
+    howItWorks: {
+      en: [
+        { name: "Upload your image", text: "Drop or select a PNG, JPEG, or WebP file. A preview appears immediately." },
+        { name: "Apply transformations", text: "Click Flip Horizontal, Flip Vertical, or set a custom rotation angle. Transformations stack and preview live." },
+        { name: "Download the result", text: "Click Download. The transformed image saves in the same format as the original." },
+      ],
+      fr: [
+        { name: "Chargez votre image", text: "Déposez ou sélectionnez un fichier PNG, JPEG ou WebP. Un aperçu apparaît immédiatement." },
+        { name: "Appliquez les transformations", text: "Cliquez sur Retourner horizontal, Retourner vertical ou définissez un angle de rotation personnalisé. Les transformations s'accumulent et l'aperçu est en direct." },
+        { name: "Téléchargez le résultat", text: "Cliquez sur Télécharger. L'image transformée est enregistrée dans le même format que l'original." },
+      ],
+    },
+    about: {
+      en: "Flip and rotation are the most basic image orientation corrections. Flipping horizontally mirrors the image left-to-right — useful for fixing selfies or creating reflection effects. Vertical flip mirrors top-to-bottom. Custom rotation lets you straighten a tilted horizon or create artistic compositions.",
+      fr: "Le retournement et la rotation sont les corrections d'orientation d'image les plus basiques. Le retournement horizontal crée un miroir gauche-droite — utile pour corriger des selfies ou créer des effets de réflexion. La rotation personnalisée permet de redresser un horizon incliné.",
+    },
+    faqs: {
+      en: [
+        { q: "Does rotating by a non-90° angle crop the image?", a: "Yes. When rotating by an arbitrary angle (e.g. 15°), the corners of the original image go outside the canvas. The tool adds a transparent or white border to accommodate the full rotated image." },
+        { q: "Is the original image quality preserved?", a: "Flip operations are lossless. Rotation by arbitrary angles involves resampling which may introduce very minor softness at a pixel level." },
+        { q: "Is Flip & Rotate free?", a: "Yes. EverydayTools Flip & Rotate Image is completely free with no account required." },
+      ],
+      fr: [
+        { q: "Une rotation non-90° recadre-t-elle l'image ?", a: "Oui. Lors d'une rotation par un angle arbitraire, les coins de l'image originale sortent du canevas. L'outil ajoute une bordure transparente ou blanche pour accueillir l'image pivotée complète." },
+        { q: "La qualité de l'image originale est-elle préservée ?", a: "Les opérations de retournement sont sans perte. La rotation par des angles arbitraires implique un rééchantillonnage qui peut introduire une légère douceur au niveau des pixels." },
+        { q: "Retourner & Pivoter est-il gratuit ?", a: "Oui. EverydayTools Flip & Rotate Image est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "html-formatter",
+    slugs: { en: "html-formatter-beautifier", fr: "formateur-html-beautifier" },
+    title: { en: "HTML Formatter & Minifier — Free Online Beautifier | EverydayTools Hub", fr: "Formateur & Minificateur HTML — Beautifier Gratuit En Ligne | EverydayTools Hub" },
+    h1: { en: "HTML Formatter & Minifier", fr: "Formateur & Minificateur HTML" },
+    description: { en: "Beautify or minify HTML code with a single click. Proper indentation, consistent formatting, and configurable indent size.", fr: "Embellissez ou minifiez du code HTML en un clic. Indentation correcte, mise en forme cohérente." },
+    keywords: {
+      en: ["html formatter online", "beautify html code", "html minifier free", "html indenter", "pretty print html", "html beautifier"],
+      fr: ["formateur html en ligne", "embellir code html", "minificateur html gratuit", "indenter html", "html beautifier gratuit"],
+    },
+    relatedTools: ["json-formatter", "html-to-markdown", "html-to-pdf"],
+    howItWorks: {
+      en: [
+        { name: "Paste your HTML", text: "Paste raw or minified HTML into the left editor. Any valid HTML — full pages or fragments — is accepted." },
+        { name: "Format or Minify", text: "Click Beautify for readable, properly indented output. Click Minify to collapse all whitespace for production use." },
+        { name: "Copy the result", text: "The formatted HTML appears in the right panel. Click Copy to grab it to your clipboard." },
+      ],
+      fr: [
+        { name: "Collez votre HTML", text: "Collez du HTML brut ou minifié dans l'éditeur de gauche. Tout HTML valide — pages complètes ou fragments — est accepté." },
+        { name: "Formatez ou minifiez", text: "Cliquez sur Beautifier pour une sortie lisible et correctement indentée. Cliquez sur Minifier pour supprimer tous les espaces blancs." },
+        { name: "Copiez le résultat", text: "Le HTML formaté apparaît dans le panneau de droite. Cliquez sur Copier pour le récupérer." },
+      ],
+    },
+    about: {
+      en: "Well-formatted HTML is easier to read, debug, and maintain. Minified HTML removes all unnecessary whitespace to reduce file size — useful for production deployments where every byte counts. This formatter handles both directions and supports configurable indent sizes (2 or 4 spaces, or tabs).",
+      fr: "Un HTML bien formaté est plus facile à lire, déboguer et maintenir. Le HTML minifié supprime tous les espaces inutiles pour réduire la taille du fichier — utile pour les déploiements en production. Ce formateur gère les deux directions.",
+    },
+    faqs: {
+      en: [
+        { q: "Does formatting change how the HTML renders in a browser?", a: "No. Whitespace between HTML tags is generally ignored by browsers. Formatting and minifying only affect the source code readability, not the rendered output." },
+        { q: "Can I format HTML with embedded CSS or JavaScript?", a: "Yes. Inline <style> blocks and <script> blocks are preserved as-is. Embedded code is not re-formatted." },
+        { q: "Is HTML Formatter free?", a: "Yes. EverydayTools HTML Formatter is completely free with no account required." },
+      ],
+      fr: [
+        { q: "Le formatage change-t-il le rendu HTML dans un navigateur ?", a: "Non. Les espaces blancs entre les balises HTML sont généralement ignorés par les navigateurs. Le formatage et la minification n'affectent que la lisibilité du code source." },
+        { q: "Puis-je formater du HTML avec du CSS ou JavaScript intégré ?", a: "Oui. Les blocs <style> et <script> en ligne sont préservés tels quels. Le code intégré n'est pas reformaté." },
+        { q: "Le formateur HTML est-il gratuit ?", a: "Oui. EverydayTools HTML Formatter est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "html-to-markdown",
+    slugs: { en: "convert-html-to-markdown", fr: "convertir-html-en-markdown" },
+    title: { en: "HTML to Markdown Converter — Free Online Tool | EverydayTools Hub", fr: "Convertir HTML en Markdown — Outil Gratuit En Ligne | EverydayTools Hub" },
+    h1: { en: "HTML to Markdown Converter", fr: "Convertisseur HTML en Markdown" },
+    description: { en: "Convert HTML markup to clean Markdown syntax. Handles headings, links, lists, bold, italic, code blocks, and tables.", fr: "Convertissez du HTML en syntaxe Markdown propre. Gère les titres, liens, listes, gras, italique, blocs de code et tableaux." },
+    keywords: {
+      en: ["html to markdown converter", "convert html to markdown online", "html to md free", "html markdown transform", "paste html get markdown"],
+      fr: ["convertir html en markdown", "html en markdown en ligne gratuit", "transformateur html markdown"],
+    },
+    relatedTools: ["html-formatter", "markdown-to-pdf", "markdown-to-docx"],
+    howItWorks: {
+      en: [
+        { name: "Paste your HTML", text: "Paste HTML content into the left panel. Full pages or fragments are both accepted." },
+        { name: "Convert instantly", text: "The Markdown equivalent appears in the right panel in real time as you type or paste." },
+        { name: "Copy the Markdown", text: "Click Copy to grab the Markdown output, ready to paste into a README, CMS, or documentation tool." },
+      ],
+      fr: [
+        { name: "Collez votre HTML", text: "Collez du contenu HTML dans le panneau de gauche. Les pages complètes ou les fragments sont acceptés." },
+        { name: "Conversion instantanée", text: "L'équivalent Markdown apparaît dans le panneau de droite en temps réel." },
+        { name: "Copiez le Markdown", text: "Cliquez sur Copier pour récupérer la sortie Markdown, prête à coller dans un README, CMS ou outil de documentation." },
+      ],
+    },
+    about: {
+      en: "Markdown is the preferred format for documentation, README files, blog posts, and notes — it's readable as plain text and renders beautifully in GitHub, Notion, Obsidian, and most modern CMSs. This converter strips HTML tags and translates them to their Markdown equivalents, giving you clean, portable text.",
+      fr: "Markdown est le format préféré pour la documentation, les fichiers README, les articles de blog et les notes — il est lisible en texte brut et s'affiche magnifiquement dans GitHub, Notion, Obsidian et la plupart des CMS modernes. Ce convertisseur transforme les balises HTML en leur équivalent Markdown.",
+    },
+    faqs: {
+      en: [
+        { q: "What HTML elements are converted to Markdown?", a: "Headings (h1–h6), paragraphs, links, images, bold, italic, inline code, code blocks, unordered and ordered lists, blockquotes, and tables are all converted. Complex CSS styling is stripped." },
+        { q: "What happens to HTML that has no Markdown equivalent?", a: "Elements like <div>, <span>, <figure>, and custom attributes are stripped. Only the text content and supported structural elements are preserved." },
+        { q: "Is HTML to Markdown Converter free?", a: "Yes. EverydayTools HTML to Markdown Converter is completely free with no account required." },
+      ],
+      fr: [
+        { q: "Quels éléments HTML sont convertis en Markdown ?", a: "Les titres (h1–h6), paragraphes, liens, images, gras, italique, code en ligne, blocs de code, listes et tableaux sont tous convertis. Les styles CSS complexes sont supprimés." },
+        { q: "Que se passe-t-il avec le HTML sans équivalent Markdown ?", a: "Les éléments comme <div>, <span> et les attributs personnalisés sont supprimés. Seul le contenu textuel et les éléments structurels supportés sont préservés." },
+        { q: "Le convertisseur HTML en Markdown est-il gratuit ?", a: "Oui. EverydayTools HTML en Markdown est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "json-formatter",
+    slugs: { en: "json-formatter-validator", fr: "formateur-validateur-json" },
+    title: { en: "JSON Formatter & Validator — Free Online Beautifier | EverydayTools Hub", fr: "Formateur & Validateur JSON — Beautifier Gratuit En Ligne | EverydayTools Hub" },
+    h1: { en: "JSON Formatter & Validator", fr: "Formateur & Validateur JSON" },
+    description: { en: "Format, validate, and minify JSON. Highlights syntax errors, pretty-prints with configurable indentation, and minifies for production.", fr: "Formatez, validez et minifiez du JSON. Met en évidence les erreurs de syntaxe et pretty-print avec indentation configurable." },
+    keywords: {
+      en: ["json formatter online", "validate json free", "json beautifier", "json minifier", "pretty print json", "json syntax checker"],
+      fr: ["formateur json en ligne", "valider json gratuit", "json beautifier", "json minificateur", "pretty print json"],
+    },
+    relatedTools: ["csv-to-json", "base64", "html-formatter"],
+    howItWorks: {
+      en: [
+        { name: "Paste your JSON", text: "Paste raw or minified JSON into the input panel. Syntax errors are highlighted in red immediately." },
+        { name: "Format or Minify", text: "Click Beautify for readable output with 2-space indentation, or Minify to produce compact single-line JSON." },
+        { name: "Copy the result", text: "The formatted JSON appears in the output panel. Click Copy to grab it." },
+      ],
+      fr: [
+        { name: "Collez votre JSON", text: "Collez du JSON brut ou minifié dans le panneau d'entrée. Les erreurs de syntaxe sont immédiatement mises en évidence en rouge." },
+        { name: "Formatez ou minifiez", text: "Cliquez sur Beautifier pour une sortie lisible avec indentation à 2 espaces, ou sur Minifier pour produire un JSON compact sur une seule ligne." },
+        { name: "Copiez le résultat", text: "Le JSON formaté apparaît dans le panneau de sortie. Cliquez sur Copier." },
+      ],
+    },
+    about: {
+      en: "JSON (JavaScript Object Notation) is the standard format for REST APIs, configuration files, and data exchange. Minified JSON compresses whitespace for transmission efficiency; formatted JSON is readable for debugging and review. This formatter handles both and flags syntax errors before you copy or use the output.",
+      fr: "JSON (JavaScript Object Notation) est le format standard pour les API REST, les fichiers de configuration et l'échange de données. Le JSON minifié compresse les espaces pour l'efficacité de transmission ; le JSON formaté est lisible pour le débogage. Ce formateur gère les deux et signale les erreurs de syntaxe.",
+    },
+    faqs: {
+      en: [
+        { q: "What JSON syntax errors are detected?", a: "Missing commas, unclosed brackets or braces, unquoted keys, trailing commas (not valid in JSON), and invalid escape sequences are all flagged with the line number of the error." },
+        { q: "What is the size limit for JSON input?", a: "Input up to a few MB is supported. Very large JSON files (50 MB+) may be slow to parse in the browser." },
+        { q: "Is JSON Formatter free?", a: "Yes. EverydayTools JSON Formatter & Validator is completely free with no account required." },
+      ],
+      fr: [
+        { q: "Quelles erreurs de syntaxe JSON sont détectées ?", a: "Les virgules manquantes, les crochets ou accolades non fermés, les clés non entre guillemets, les virgules de fin (non valides en JSON) et les séquences d'échappement invalides sont tous signalés avec le numéro de ligne de l'erreur." },
+        { q: "Quelle est la limite de taille pour l'entrée JSON ?", a: "L'entrée jusqu'à quelques Mo est prise en charge. Les très grands fichiers JSON (50 Mo+) peuvent être lents à analyser dans le navigateur." },
+        { q: "Le formateur JSON est-il gratuit ?", a: "Oui. EverydayTools JSON Formatter & Validator est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "lorem-ipsum",
+    slugs: { en: "lorem-ipsum-generator", fr: "generateur-lorem-ipsum" },
+    title: { en: "Lorem Ipsum Generator — Free Placeholder Text | EverydayTools Hub", fr: "Générateur Lorem Ipsum — Texte de Remplacement Gratuit | EverydayTools Hub" },
+    h1: { en: "Lorem Ipsum Generator", fr: "Générateur Lorem Ipsum" },
+    description: { en: "Generate Lorem Ipsum placeholder text by word, sentence, or paragraph count. Copy instantly for use in designs, mockups, and prototypes.", fr: "Générez du texte Lorem Ipsum par nombre de mots, phrases ou paragraphes. Copiez instantanément pour maquettes et prototypes." },
+    keywords: {
+      en: ["lorem ipsum generator", "placeholder text generator", "dummy text online", "lorem ipsum paragraphs", "design placeholder text"],
+      fr: ["générateur lorem ipsum", "générateur texte placeholder", "texte factice en ligne", "lorem ipsum paragraphes"],
+    },
+    relatedTools: ["word-counter", "url-encoder", "json-formatter"],
+    howItWorks: {
+      en: [
+        { name: "Set the output type", text: "Choose whether to generate by words, sentences, or paragraphs." },
+        { name: "Set the count", text: "Enter the quantity you need. The preview updates instantly." },
+        { name: "Copy the text", text: "Click Copy. Your placeholder text is ready to paste into Figma, HTML, a CMS, or anywhere else." },
+      ],
+      fr: [
+        { name: "Définissez le type de sortie", text: "Choisissez de générer par mots, phrases ou paragraphes." },
+        { name: "Définissez le nombre", text: "Entrez la quantité souhaitée. L'aperçu se met à jour instantanément." },
+        { name: "Copiez le texte", text: "Cliquez sur Copier. Votre texte de remplacement est prêt à coller dans Figma, HTML, un CMS ou n'importe où ailleurs." },
+      ],
+    },
+    about: {
+      en: "Lorem Ipsum text has been the standard placeholder for typesetting and design since the 1500s. It mimics natural language letter distribution without conveying meaning, allowing designers and developers to focus on layout and typography without distraction from readable content.",
+      fr: "Le texte Lorem Ipsum est le texte de remplacement standard pour la typographie et le design depuis les années 1500. Il imite la distribution naturelle des lettres d'une langue sans véhiculer de sens, permettant aux designers et développeurs de se concentrer sur la mise en page et la typographie.",
+    },
+    faqs: {
+      en: [
+        { q: "Where does Lorem Ipsum text come from?", a: "It derives from sections 1.10.32 and 1.10.33 of 'de Finibus Bonorum et Malorum' by Cicero, written in 45 BC. The text was scrambled in the 1500s to make it unreadable for design proofing purposes." },
+        { q: "Is the generated text always the same?", a: "The standard Lorem Ipsum passage is deterministic. For variation, many generators use random word selection from a Lorem Ipsum word list — this tool offers both." },
+        { q: "Is Lorem Ipsum Generator free?", a: "Yes. EverydayTools Lorem Ipsum Generator is completely free with no account required." },
+      ],
+      fr: [
+        { q: "D'où vient le texte Lorem Ipsum ?", a: "Il est dérivé des sections 1.10.32 et 1.10.33 du 'de Finibus Bonorum et Malorum' de Cicéron, écrit en 45 av. J.-C. Le texte a été brouillé dans les années 1500 pour le rendre illisible à des fins de maquette typographique." },
+        { q: "Le texte généré est-il toujours le même ?", a: "Le passage Lorem Ipsum standard est déterministe. Pour les variations, de nombreux générateurs utilisent une sélection aléatoire de mots d'une liste Lorem Ipsum." },
+        { q: "Le générateur Lorem Ipsum est-il gratuit ?", a: "Oui. EverydayTools Lorem Ipsum Generator est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "ocr",
+    slugs: { en: "ocr-image-to-text", fr: "ocr-image-en-texte" },
+    title: { en: "OCR — Extract Text from Images Free Online | EverydayTools Hub", fr: "OCR — Extraire le Texte des Images Gratuit En Ligne | EverydayTools Hub" },
+    h1: { en: "OCR — Image to Text", fr: "OCR — Image en Texte" },
+    description: { en: "Extract text from scanned images, photos, and screenshots using Tesseract OCR. Supports 40+ languages. Download as TXT.", fr: "Extrayez du texte d'images numérisées, photos et captures d'écran avec Tesseract OCR. Supporte 40+ langues. Téléchargez en TXT." },
+    keywords: {
+      en: ["ocr online free", "extract text from image", "image to text converter", "tesseract ocr online", "scan text from photo", "ocr jpg png"],
+      fr: ["ocr en ligne gratuit", "extraire texte image", "convertisseur image en texte", "tesseract ocr", "scanner texte photo"],
+    },
+    relatedTools: ["pdf-to-text", "metadata-cleaner", "pdf-to-word"],
+    howItWorks: {
+      en: [
+        { name: "Upload your image", text: "Drop a PNG, JPG, TIFF, or BMP image. Photos of printed text, scanned documents, or screenshots all work." },
+        { name: "Select language", text: "Choose the language of the text in your image for better recognition accuracy (default: English)." },
+        { name: "Extract and download", text: "Click Extract. The recognised text appears in the output area. Copy to clipboard or download as a .txt file." },
+      ],
+      fr: [
+        { name: "Chargez votre image", text: "Déposez une image PNG, JPG, TIFF ou BMP. Les photos de texte imprimé, les documents numérisés ou les captures d'écran fonctionnent tous." },
+        { name: "Sélectionnez la langue", text: "Choisissez la langue du texte dans votre image pour une meilleure précision de reconnaissance (par défaut : Anglais)." },
+        { name: "Extrayez et téléchargez", text: "Cliquez sur Extraire. Le texte reconnu apparaît dans la zone de sortie. Copiez ou téléchargez en fichier .txt." },
+      ],
+    },
+    about: {
+      en: "OCR (Optical Character Recognition) converts images of text into machine-readable characters. This tool uses Tesseract.js — a port of Google's Tesseract engine — to recognise text in over 40 languages directly in your browser. Best results come from high-resolution images with good contrast between text and background.",
+      fr: "L'OCR (Reconnaissance Optique de Caractères) convertit les images de texte en caractères lisibles par machine. Cet outil utilise Tesseract.js — un portage du moteur Tesseract de Google — pour reconnaître le texte dans plus de 40 langues directement dans votre navigateur.",
+    },
+    faqs: {
+      en: [
+        { q: "What image quality gives the best OCR results?", a: "High resolution (300 DPI or higher), good contrast between text and background, horizontal text orientation, and minimal noise produce the best results. Blurry, low-contrast, or tilted images will have lower accuracy." },
+        { q: "Does OCR work with handwriting?", a: "Tesseract was designed for printed text and produces poor results with cursive handwriting. Block letters or very neat printing may be partially recognised but accuracy will be lower than for printed documents." },
+        { q: "Is OCR free?", a: "Yes. EverydayTools OCR tool is completely free with no account required." },
+      ],
+      fr: [
+        { q: "Quelle qualité d'image donne les meilleurs résultats OCR ?", a: "Une haute résolution (300 DPI ou plus), un bon contraste entre le texte et l'arrière-plan, une orientation horizontale du texte et un minimum de bruit produisent les meilleurs résultats." },
+        { q: "L'OCR fonctionne-t-il avec l'écriture manuscrite ?", a: "Tesseract a été conçu pour le texte imprimé et produit de mauvais résultats avec l'écriture cursive. Les lettres en majuscules peuvent être partiellement reconnues mais avec une précision inférieure." },
+        { q: "L'outil OCR est-il gratuit ?", a: "Oui. EverydayTools OCR est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "pdf-to-excel",
+    slugs: { en: "convert-pdf-to-excel", fr: "convertir-pdf-en-excel" },
+    title: { en: "PDF to Excel Converter — Extract Tables Free Online | EverydayTools Hub", fr: "Convertir PDF en Excel — Extraire Tableaux Gratuit En Ligne | EverydayTools Hub" },
+    h1: { en: "PDF to Excel Converter", fr: "Convertisseur PDF en Excel" },
+    description: { en: "Extract tables from PDF files into an Excel spreadsheet (.xlsx). Detects table structure and maps data to rows and columns.", fr: "Extrayez des tableaux de fichiers PDF dans un tableur Excel (.xlsx). Détecte la structure des tableaux et mappe les données." },
+    keywords: {
+      en: ["pdf to excel converter", "extract table from pdf", "convert pdf to xlsx online", "pdf table extractor free", "pdf to spreadsheet"],
+      fr: ["convertir pdf en excel", "extraire tableau pdf", "pdf en xlsx gratuit", "extracteur tableau pdf"],
+    },
+    relatedTools: ["excel-to-pdf", "pdf-to-text", "csv-to-excel"],
+    howItWorks: {
+      en: [
+        { name: "Upload your PDF", text: "Drop a PDF containing tables. The tool scans each page for table-like structures." },
+        { name: "Table detection", text: "Detected tables are listed by page. Select which tables to include in the Excel output." },
+        { name: "Download the XLSX", text: "Click Export. Each detected table becomes a sheet in the downloaded Excel workbook." },
+      ],
+      fr: [
+        { name: "Chargez votre PDF", text: "Déposez un PDF contenant des tableaux. L'outil scanne chaque page à la recherche de structures de type tableau." },
+        { name: "Détection des tableaux", text: "Les tableaux détectés sont listés par page. Sélectionnez ceux à inclure dans la sortie Excel." },
+        { name: "Téléchargez le XLSX", text: "Cliquez sur Exporter. Chaque tableau détecté devient une feuille dans le classeur Excel téléchargé." },
+      ],
+    },
+    about: {
+      en: "Extracting tables from PDF is notoriously difficult because PDFs describe visual positions, not data structure. This tool uses heuristics to detect rectangular table regions and map cell positions to rows and columns. Results are best on PDFs created from spreadsheets or word processors; scanned PDFs or PDFs with complex nested tables may produce partial results.",
+      fr: "L'extraction de tableaux depuis des PDF est notoirement difficile car les PDF décrivent des positions visuelles, pas une structure de données. Cet outil utilise des heuristiques pour détecter les régions tabulaires rectangulaires.",
+    },
+    faqs: {
+      en: [
+        { q: "Does this work on scanned PDFs?", a: "Scanned PDFs (image-only PDFs) do not contain text data, so table extraction is not possible. Use the OCR tool first to convert the scan to a text-based PDF, then try table extraction." },
+        { q: "Will all tables be extracted correctly?", a: "Simple single-level tables with clear borders extract well. Merged cells, nested tables, and tables spanning multiple pages may produce imperfect results that need manual cleanup in Excel." },
+        { q: "Is PDF to Excel Converter free?", a: "Yes. EverydayTools PDF to Excel Converter is completely free with no account required." },
+      ],
+      fr: [
+        { q: "Cela fonctionne-t-il sur les PDF numérisés ?", a: "Les PDF numérisés (PDF image uniquement) ne contiennent pas de données textuelles. Utilisez d'abord l'outil OCR pour convertir le scan en PDF basé sur du texte, puis essayez l'extraction de tableaux." },
+        { q: "Tous les tableaux seront-ils correctement extraits ?", a: "Les tableaux simples à un seul niveau avec des bordures claires s'extraient bien. Les cellules fusionnées et les tableaux imbriqués peuvent produire des résultats imparfaits." },
+        { q: "Le convertisseur PDF en Excel est-il gratuit ?", a: "Oui. EverydayTools PDF en Excel est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "pdf-to-pptx",
+    slugs: { en: "convert-pdf-to-powerpoint", fr: "convertir-pdf-en-powerpoint" },
+    title: { en: "PDF to PowerPoint Converter — Free Online Tool | EverydayTools Hub", fr: "Convertir PDF en PowerPoint — Outil Gratuit En Ligne | EverydayTools Hub" },
+    h1: { en: "PDF to PowerPoint Converter", fr: "Convertisseur PDF en PowerPoint" },
+    description: { en: "Convert each PDF page into a PowerPoint slide (.pptx). Each page becomes an image slide — great for presentations and repurposing content.", fr: "Convertissez chaque page PDF en une diapositive PowerPoint (.pptx). Chaque page devient une diapositive image." },
+    keywords: {
+      en: ["pdf to powerpoint converter", "convert pdf to pptx online", "pdf to slides free", "pdf page to powerpoint slide"],
+      fr: ["convertir pdf en powerpoint", "pdf en pptx gratuit", "pdf en diapositives", "convertir page pdf en slide"],
+    },
+    relatedTools: ["pptx-to-pdf", "pdf-to-word", "pptx-to-images"],
+    howItWorks: {
+      en: [
+        { name: "Upload your PDF", text: "Drop a PDF file. Each page will become one slide in the output presentation." },
+        { name: "Convert to PPTX", text: "Each PDF page is rendered as a high-quality image and placed on a widescreen slide." },
+        { name: "Download the presentation", text: "The .pptx file downloads immediately, ready to open in PowerPoint or Google Slides." },
+      ],
+      fr: [
+        { name: "Chargez votre PDF", text: "Déposez un fichier PDF. Chaque page deviendra une diapositive dans la présentation de sortie." },
+        { name: "Conversion en PPTX", text: "Chaque page PDF est rendue comme une image haute qualité et placée sur une diapositive au format large." },
+        { name: "Téléchargez la présentation", text: "Le fichier .pptx se télécharge immédiatement, prêt à ouvrir dans PowerPoint ou Google Slides." },
+      ],
+    },
+    about: {
+      en: "Converting PDF pages to PowerPoint slides is a common workflow for repurposing reports, brochures, or academic papers as presentations. Since PDF pages are rendered as images per slide, the visual appearance is preserved exactly — though the text becomes part of an image and won't be editable in PowerPoint.",
+      fr: "Convertir des pages PDF en diapositives PowerPoint est un flux de travail courant pour réutiliser des rapports, brochures ou documents académiques en présentations. Les pages PDF étant rendues comme images par diapositive, l'apparence visuelle est préservée exactement.",
+    },
+    faqs: {
+      en: [
+        { q: "Can I edit the text on slides after conversion?", a: "No. Each slide contains the PDF page as an image. Text within the image is not selectable or editable in PowerPoint. For editable text, use the PDF to Word converter instead." },
+        { q: "What aspect ratio are the slides?", a: "Slides are created in the standard widescreen 16:9 format. The PDF page image is scaled to fit within the slide area." },
+        { q: "Is PDF to PowerPoint Converter free?", a: "Yes. EverydayTools PDF to PowerPoint Converter is completely free with no account required." },
+      ],
+      fr: [
+        { q: "Puis-je modifier le texte des diapositives après la conversion ?", a: "Non. Chaque diapositive contient la page PDF sous forme d'image. Le texte dans l'image n'est pas sélectionnable dans PowerPoint. Pour un texte modifiable, utilisez plutôt le convertisseur PDF en Word." },
+        { q: "Quel format ont les diapositives ?", a: "Les diapositives sont créées au format large standard 16:9. L'image de la page PDF est mise à l'échelle pour s'adapter à la zone de diapositive." },
+        { q: "Le convertisseur PDF en PowerPoint est-il gratuit ?", a: "Oui. EverydayTools PDF en PowerPoint est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "pptx-to-images",
+    slugs: { en: "convert-powerpoint-to-images", fr: "convertir-powerpoint-en-images" },
+    title: { en: "PowerPoint to Images — Export Slides as PNG | EverydayTools Hub", fr: "PowerPoint en Images — Exporter les Diapositives en PNG | EverydayTools Hub" },
+    h1: { en: "PowerPoint to Images", fr: "PowerPoint en Images" },
+    description: { en: "Export each PowerPoint slide as a PNG image and download all images as a ZIP archive. No PowerPoint required.", fr: "Exportez chaque diapositive PowerPoint en PNG et téléchargez toutes les images en ZIP. Sans PowerPoint requis." },
+    keywords: {
+      en: ["powerpoint to images", "convert pptx to png", "export slides as images", "pptx to jpg free", "screenshot presentation slides"],
+      fr: ["powerpoint en images", "convertir pptx en png", "exporter diapositives en images", "pptx en jpg gratuit"],
+    },
+    relatedTools: ["pptx-to-pdf", "image-converter", "pdf-to-image"],
+    howItWorks: {
+      en: [
+        { name: "Upload your PPTX", text: "Drop a .pptx file. The presentation is parsed and each slide is rendered." },
+        { name: "Slides rendered as images", text: "Each slide becomes a high-resolution PNG image, preserving fonts, colors, and layout." },
+        { name: "Download the ZIP", text: "All slide images download as a single ZIP archive. Individual slide images are named slide-1.png, slide-2.png, etc." },
+      ],
+      fr: [
+        { name: "Chargez votre PPTX", text: "Déposez un fichier .pptx. La présentation est analysée et chaque diapositive est rendue." },
+        { name: "Diapositives rendues en images", text: "Chaque diapositive devient une image PNG haute résolution, préservant les polices, couleurs et mise en page." },
+        { name: "Téléchargez le ZIP", text: "Toutes les images de diapositives se téléchargent dans une seule archive ZIP." },
+      ],
+    },
+    about: {
+      en: "Exporting presentation slides as images is useful for embedding them on websites, sending previews by email, uploading to social media, or creating thumbnail grids. PNG output preserves slide content at high resolution without requiring recipients to have PowerPoint installed.",
+      fr: "L'exportation de diapositives de présentation en images est utile pour les intégrer sur des sites Web, envoyer des aperçus par e-mail, publier sur les réseaux sociaux ou créer des grilles de miniatures. La sortie PNG préserve le contenu des diapositives en haute résolution.",
+    },
+    faqs: {
+      en: [
+        { q: "Are animations and transitions included?", a: "No. Animations and slide transitions are static — each slide is captured as a single frame showing the fully-built slide state." },
+        { q: "What resolution are the exported images?", a: "Images are exported at 96–150 DPI by default, which is sufficient for web use. Slides are rendered at the native 16:9 aspect ratio." },
+        { q: "Is PowerPoint to Images free?", a: "Yes. EverydayTools PowerPoint to Images is completely free with no account required." },
+      ],
+      fr: [
+        { q: "Les animations et transitions sont-elles incluses ?", a: "Non. Les animations et transitions de diapositives sont statiques — chaque diapositive est capturée comme une seule image montrant l'état final." },
+        { q: "Quelle résolution ont les images exportées ?", a: "Les images sont exportées à 96–150 DPI par défaut, ce qui est suffisant pour une utilisation web. Les diapositives sont rendues au format natif 16:9." },
+        { q: "PowerPoint en Images est-il gratuit ?", a: "Oui. EverydayTools PowerPoint en Images est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "pptx-to-pdf",
+    slugs: { en: "convert-powerpoint-to-pdf", fr: "convertir-powerpoint-en-pdf" },
+    title: { en: "PowerPoint to PDF Converter — Free Online PPTX to PDF | EverydayTools Hub", fr: "Convertir PowerPoint en PDF — PPTX vers PDF Gratuit En Ligne | EverydayTools Hub" },
+    h1: { en: "PowerPoint to PDF Converter", fr: "Convertisseur PowerPoint en PDF" },
+    description: { en: "Convert PowerPoint presentations (.pptx) to PDF. Each slide becomes a PDF page — shareable, printable, and viewable without PowerPoint.", fr: "Convertissez des présentations PowerPoint (.pptx) en PDF. Chaque diapositive devient une page PDF — partageable et imprimable." },
+    keywords: {
+      en: ["powerpoint to pdf", "convert pptx to pdf online", "pptx pdf free", "presentation to pdf", "slides to pdf converter"],
+      fr: ["powerpoint en pdf", "convertir pptx en pdf gratuit", "présentation en pdf", "diapositives en pdf"],
+    },
+    relatedTools: ["pptx-to-images", "pdf-compress", "pdf-merge"],
+    howItWorks: {
+      en: [
+        { name: "Upload your PPTX file", text: "Drop a .pptx file. Each slide is rendered and queued for PDF output." },
+        { name: "Each slide becomes a page", text: "Slides are rendered in order as PDF pages, preserving layout, fonts, and images." },
+        { name: "Download the PDF", text: "Your PDF downloads immediately, ready to share, print, or archive." },
+      ],
+      fr: [
+        { name: "Chargez votre fichier PPTX", text: "Déposez un fichier .pptx. Chaque diapositive est rendue et mise en file pour la sortie PDF." },
+        { name: "Chaque diapositive devient une page", text: "Les diapositives sont rendues dans l'ordre en pages PDF, en préservant la mise en page, les polices et les images." },
+        { name: "Téléchargez le PDF", text: "Votre PDF se télécharge immédiatement, prêt à partager, imprimer ou archiver." },
+      ],
+    },
+    about: {
+      en: "PDF is the universal presentation format — readable on any device without PowerPoint, preserving layout regardless of fonts or OS. Sharing presentations as PDFs prevents accidental edits, ensures consistent rendering, and keeps file sizes manageable.",
+      fr: "Le PDF est le format de présentation universel — lisible sur n'importe quel appareil sans PowerPoint, préservant la mise en page indépendamment des polices ou du système d'exploitation. Partager des présentations en PDF prévient les modifications accidentelles.",
+    },
+    faqs: {
+      en: [
+        { q: "Will animations and videos be in the PDF?", a: "No. PDFs are static — each slide is rendered as a single page showing the fully-built state. Animations, embedded videos, and sound are removed." },
+        { q: "Can I convert only specific slides?", a: "Currently the converter exports all slides. To export a subset, use the Reorder PDF Pages tool after conversion to remove unwanted pages." },
+        { q: "Is PowerPoint to PDF Converter free?", a: "Yes. EverydayTools PowerPoint to PDF Converter is completely free with no account required." },
+      ],
+      fr: [
+        { q: "Les animations et vidéos seront-elles dans le PDF ?", a: "Non. Les PDF sont statiques — chaque diapositive est rendue comme une seule page. Les animations, vidéos intégrées et sons sont supprimés." },
+        { q: "Puis-je convertir uniquement certaines diapositives ?", a: "Actuellement, le convertisseur exporte toutes les diapositives. Pour exporter un sous-ensemble, utilisez l'outil Réorganiser les pages PDF après la conversion." },
+        { q: "Le convertisseur PowerPoint en PDF est-il gratuit ?", a: "Oui. EverydayTools PowerPoint en PDF est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "qr-code-generator",
+    slugs: { en: "qr-code-generator", fr: "generateur-qr-code" },
+    title: { en: "QR Code Generator — Free, No Signup | EverydayTools Hub", fr: "Générateur de QR Code — Gratuit, Sans Inscription | EverydayTools Hub" },
+    h1: { en: "QR Code Generator", fr: "Générateur de QR Code" },
+    description: { en: "Generate QR codes for URLs, text, Wi-Fi credentials, or contact cards (vCard). Download as PNG or SVG — free, no account.", fr: "Générez des QR codes pour URL, texte, Wi-Fi ou cartes de contact (vCard). Téléchargez en PNG ou SVG." },
+    keywords: {
+      en: ["qr code generator free", "create qr code online", "wifi qr code generator", "url to qr code", "vcard qr code", "qr code download"],
+      fr: ["générateur qr code gratuit", "créer qr code en ligne", "qr code wifi", "url en qr code", "qr code téléchargement"],
+    },
+    relatedTools: ["url-encoder", "base64", "password-generator"],
+    howItWorks: {
+      en: [
+        { name: "Choose content type", text: "Select URL, plain text, Wi-Fi (SSID + password + security type), or Contact (vCard with name, phone, email)." },
+        { name: "Enter your data", text: "Fill in the fields. The QR code preview updates in real time." },
+        { name: "Download", text: "Download the QR code as a PNG for digital use or SVG for scalable print use." },
+      ],
+      fr: [
+        { name: "Choisissez le type de contenu", text: "Sélectionnez URL, texte brut, Wi-Fi (SSID + mot de passe + type de sécurité) ou Contact (vCard)." },
+        { name: "Entrez vos données", text: "Remplissez les champs. L'aperçu du QR code se met à jour en temps réel." },
+        { name: "Téléchargez", text: "Téléchargez le QR code en PNG pour un usage numérique ou en SVG pour une impression évolutive." },
+      ],
+    },
+    about: {
+      en: "QR codes are two-dimensional barcodes that encode data as a pattern of black and white squares. Smartphones scan them instantly with the camera app. Common uses include linking to websites, sharing Wi-Fi credentials without typing, sharing contact details, and redirecting printed materials to web content.",
+      fr: "Les QR codes sont des codes-barres bidimensionnels qui encodent des données sous forme de motif de carrés noirs et blancs. Les smartphones les scannent instantanément avec l'application caméra. Utilisations courantes : liens vers des sites web, partage d'identifiants Wi-Fi, partage de coordonnées.",
+    },
+    faqs: {
+      en: [
+        { q: "What is the maximum amount of data a QR code can hold?", a: "QR codes can hold up to about 3,000 alphanumeric characters. Longer data produces denser, harder-to-scan codes. For URLs, keep links short using a URL shortener for best scannability." },
+        { q: "Can QR codes expire?", a: "QR codes themselves do not expire — they are just encoded data. If a QR code points to a URL, it will stop working if the URL becomes unavailable." },
+        { q: "Is QR Code Generator free?", a: "Yes. EverydayTools QR Code Generator is completely free with no account required." },
+      ],
+      fr: [
+        { q: "Quelle est la quantité maximale de données qu'un QR code peut contenir ?", a: "Les QR codes peuvent contenir jusqu'à environ 3 000 caractères alphanumériques. Les données plus longues produisent des codes plus denses, plus difficiles à scanner. Pour les URL, gardez les liens courts." },
+        { q: "Les QR codes expirent-ils ?", a: "Les QR codes eux-mêmes n'expirent pas — ce sont juste des données encodées. Si un QR code pointe vers une URL, il cessera de fonctionner si l'URL devient indisponible." },
+        { q: "Le générateur de QR code est-il gratuit ?", a: "Oui. EverydayTools QR Code Generator est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "reorder-pdf",
+    slugs: { en: "reorder-pdf-pages", fr: "reorganiser-pages-pdf" },
+    title: { en: "Reorder PDF Pages — Drag & Drop Page Manager | EverydayTools Hub", fr: "Réorganiser les Pages PDF — Gestionnaire par Glisser-Déposer | EverydayTools Hub" },
+    h1: { en: "Reorder PDF Pages", fr: "Réorganiser les Pages PDF" },
+    description: { en: "Drag and drop to reorder, delete, and rearrange pages in a PDF. Preview thumbnails for every page. Download the reorganised PDF.", fr: "Glissez-déposez pour réorganiser, supprimer et déplacer les pages d'un PDF. Aperçu miniature de chaque page." },
+    keywords: {
+      en: ["reorder pdf pages", "rearrange pdf pages online", "drag drop pdf pages", "delete pdf pages free", "pdf page manager"],
+      fr: ["réorganiser pages pdf", "déplacer pages pdf en ligne", "glisser déposer pages pdf", "supprimer pages pdf gratuit"],
+    },
+    relatedTools: ["pdf-split", "pdf-merge", "pdf-rotate"],
+    howItWorks: {
+      en: [
+        { name: "Upload your PDF", text: "Drop a PDF file. All pages are rendered as thumbnails so you can see what each contains." },
+        { name: "Drag to reorder", text: "Drag thumbnail cards to rearrange the page order. Click the delete icon on any card to remove that page." },
+        { name: "Download the result", text: "Click Save. The reordered PDF downloads with the pages in the new order." },
+      ],
+      fr: [
+        { name: "Chargez votre PDF", text: "Déposez un fichier PDF. Toutes les pages sont rendues sous forme de miniatures." },
+        { name: "Glissez pour réorganiser", text: "Faites glisser les vignettes pour réorganiser l'ordre des pages. Cliquez sur l'icône de suppression pour retirer une page." },
+        { name: "Téléchargez le résultat", text: "Cliquez sur Enregistrer. Le PDF réorganisé se télécharge avec les pages dans le nouvel ordre." },
+      ],
+    },
+    about: {
+      en: "PDF page management is one of the most common document tasks — removing a blank page, moving an appendix to the front, or reversing the scan order of a batch of documents. This tool lets you see every page and drag them into exactly the order you need.",
+      fr: "La gestion des pages PDF est l'une des tâches documentaires les plus courantes — supprimer une page blanche, déplacer une annexe en tête, ou inverser l'ordre de numérisation d'un lot de documents.",
+    },
+    faqs: {
+      en: [
+        { q: "Is there a page limit?", a: "The tool handles PDFs with hundreds of pages, but rendering thumbnails for very large PDFs (200+ pages) may take a few seconds." },
+        { q: "Can I undo a deleted page?", a: "Yes. Deleted pages are removed from the visual order but not saved until you click Download. Refresh the page to start over with the original file." },
+        { q: "Is Reorder PDF Pages free?", a: "Yes. EverydayTools Reorder PDF Pages is completely free with no account required." },
+      ],
+      fr: [
+        { q: "Y a-t-il une limite de pages ?", a: "L'outil gère les PDF avec des centaines de pages, mais le rendu des miniatures pour les très grands PDF (200+ pages) peut prendre quelques secondes." },
+        { q: "Puis-je annuler une page supprimée ?", a: "Oui. Les pages supprimées sont retirées de l'ordre visuel mais pas sauvegardées jusqu'à ce que vous cliquiez sur Télécharger. Actualisez la page pour recommencer avec le fichier original." },
+        { q: "Réorganiser les pages PDF est-il gratuit ?", a: "Oui. EverydayTools Reorder PDF Pages est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "url-encoder",
+    slugs: { en: "url-encoder-decoder", fr: "encodeur-decodeur-url" },
+    title: { en: "URL Encoder / Decoder — Free Online Tool | EverydayTools Hub", fr: "Encodeur / Décodeur URL — Outil Gratuit En Ligne | EverydayTools Hub" },
+    h1: { en: "URL Encoder / Decoder", fr: "Encodeur / Décodeur URL" },
+    description: { en: "Encode or decode URL components instantly. Converts special characters to percent-encoding (%20, %2F, etc.) and back.", fr: "Encodez ou décodez des composants URL instantanément. Convertit les caractères spéciaux en encodage pourcent (%20, etc.)." },
+    keywords: {
+      en: ["url encoder decoder online", "percent encoding online", "encode url free", "decode url online", "urlencode urldecode", "url escape characters"],
+      fr: ["encodeur decodeur url en ligne", "encodage pourcent", "encoder url gratuit", "decoder url en ligne", "urlencode urldecode"],
+    },
+    relatedTools: ["base64", "json-formatter", "qr-code-generator"],
+    howItWorks: {
+      en: [
+        { name: "Paste your URL or text", text: "Paste a full URL or just a text value into the input field." },
+        { name: "Choose Encode or Decode", text: "Encode converts special characters to percent-encoding (e.g., spaces become %20). Decode reverses this." },
+        { name: "Copy the result", text: "The converted text appears instantly. Click Copy to grab it." },
+      ],
+      fr: [
+        { name: "Collez votre URL ou texte", text: "Collez une URL complète ou juste une valeur textuelle dans le champ d'entrée." },
+        { name: "Choisissez Encoder ou Décoder", text: "L'encodage convertit les caractères spéciaux en encodage pourcent (par ex., les espaces deviennent %20). Le décodage inverse cela." },
+        { name: "Copiez le résultat", text: "Le texte converti apparaît instantanément. Cliquez sur Copier." },
+      ],
+    },
+    about: {
+      en: "URLs can only contain a limited set of characters. Special characters — spaces, accents, slashes, ampersands — must be percent-encoded when used in query strings or path segments. URL encoding is essential when building API requests, constructing query parameters, or debugging web traffic.",
+      fr: "Les URL ne peuvent contenir qu'un ensemble limité de caractères. Les caractères spéciaux — espaces, accents, barres obliques, esperluettes — doivent être encodés en pourcentage lorsqu'ils sont utilisés dans des chaînes de requête ou des segments de chemin.",
+    },
+    faqs: {
+      en: [
+        { q: "What is the difference between encodeURI and encodeURIComponent?", a: "encodeURI encodes a full URL, preserving characters like /, :, and # that have structural meaning. encodeURIComponent encodes a single component (e.g., a query parameter value), converting those structural characters too. This tool encodes components by default." },
+        { q: "Why is a space encoded as %20 sometimes and + other times?", a: "In the query string of a form submission (application/x-www-form-urlencoded), spaces are encoded as +. In other URL contexts, the correct encoding is %20. This tool uses %20 (RFC 3986 standard)." },
+        { q: "Is URL Encoder / Decoder free?", a: "Yes. EverydayTools URL Encoder / Decoder is completely free with no account required." },
+      ],
+      fr: [
+        { q: "Quelle est la différence entre encodeURI et encodeURIComponent ?", a: "encodeURI encode une URL complète, en préservant les caractères comme /, : et # qui ont une signification structurelle. encodeURIComponent encode un seul composant (par ex., une valeur de paramètre de requête), convertissant également ces caractères structurels." },
+        { q: "Pourquoi un espace est-il encodé comme %20 ou + selon les cas ?", a: "Dans la chaîne de requête d'une soumission de formulaire, les espaces sont encodés comme +. Dans d'autres contextes d'URL, l'encodage correct est %20. Cet outil utilise %20 (standard RFC 3986)." },
+        { q: "L'encodeur/décodeur URL est-il gratuit ?", a: "Oui. EverydayTools URL Encoder / Decoder est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "watermark-image",
+    slugs: { en: "add-watermark-to-image", fr: "ajouter-filigrane-image" },
+    title: { en: "Add Watermark to Image — Free Online Tool | EverydayTools Hub", fr: "Ajouter un Filigrane à une Image — Outil Gratuit En Ligne | EverydayTools Hub" },
+    h1: { en: "Add Watermark to Image", fr: "Ajouter un Filigrane à une Image" },
+    description: { en: "Add text watermarks to images with custom position, opacity, font size, and color. Supports PNG, JPEG, and WebP.", fr: "Ajoutez des filigranes texte à des images avec position, opacité, taille de police et couleur personnalisées. PNG, JPEG, WebP." },
+    keywords: {
+      en: ["add watermark to image online", "image watermark free", "text watermark photo", "watermark picture online", "custom watermark photo"],
+      fr: ["ajouter filigrane image en ligne", "filigrane photo gratuit", "filigrane texte image", "watermark photo en ligne"],
+    },
+    relatedTools: ["flip-rotate-image", "image-resize", "image-compress"],
+    howItWorks: {
+      en: [
+        { name: "Upload your image", text: "Drop or select a PNG, JPEG, or WebP image. A live preview shows the watermark position." },
+        { name: "Configure the watermark", text: "Enter the watermark text, then adjust font size, color, opacity (0–100%), and position (9 anchor points or free drag)." },
+        { name: "Download", text: "Click Apply & Download. The watermarked image downloads in the same format as the original." },
+      ],
+      fr: [
+        { name: "Chargez votre image", text: "Déposez ou sélectionnez une image PNG, JPEG ou WebP. Un aperçu en direct montre la position du filigrane." },
+        { name: "Configurez le filigrane", text: "Entrez le texte du filigrane, puis ajustez la taille de police, la couleur, l'opacité (0–100 %) et la position (9 points d'ancrage ou glissement libre)." },
+        { name: "Téléchargez", text: "Cliquez sur Appliquer et Télécharger. L'image avec filigrane se télécharge dans le même format que l'original." },
+      ],
+    },
+    about: {
+      en: "Watermarks protect intellectual property by visibly marking images with a name, copyright notice, or website URL. A well-placed semi-transparent watermark makes unauthorised use obvious while keeping the image presentable. This tool lets you place text watermarks precisely without installing any software.",
+      fr: "Les filigranes protègent la propriété intellectuelle en marquant visiblement les images avec un nom, une notice de copyright ou une URL de site Web. Un filigrane semi-transparent bien placé rend l'utilisation non autorisée évidente tout en gardant l'image présentable.",
+    },
+    faqs: {
+      en: [
+        { q: "Can I add an image watermark instead of text?", a: "Currently only text watermarks are supported. For image-over-image compositing, use image editing software such as GIMP or Photoshop." },
+        { q: "Does adding a watermark reduce image quality?", a: "No. The watermark is rendered on a canvas copy of the original image and exported at the same resolution. JPEG output may have minor compression artefacts depending on the quality setting." },
+        { q: "Is Add Watermark free?", a: "Yes. EverydayTools Add Watermark to Image is completely free with no account required." },
+      ],
+      fr: [
+        { q: "Puis-je ajouter un filigrane image plutôt que texte ?", a: "Actuellement, seuls les filigranes texte sont pris en charge. Pour la composition image sur image, utilisez un logiciel d'édition d'images comme GIMP ou Photoshop." },
+        { q: "L'ajout d'un filigrane réduit-il la qualité de l'image ?", a: "Non. Le filigrane est rendu sur une copie canvas de l'image originale et exporté à la même résolution." },
+        { q: "Ajouter un filigrane est-il gratuit ?", a: "Oui. EverydayTools Add Watermark to Image est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "word-counter",
+    slugs: { en: "word-character-counter", fr: "compteur-mots-caracteres" },
+    title: { en: "Word & Character Counter — Free Online Tool | EverydayTools Hub", fr: "Compteur de Mots et Caractères — Outil Gratuit En Ligne | EverydayTools Hub" },
+    h1: { en: "Word & Character Counter", fr: "Compteur de Mots et Caractères" },
+    description: { en: "Count words, characters (with/without spaces), sentences, paragraphs, and estimated reading time. Paste any text to analyze instantly.", fr: "Comptez mots, caractères (avec/sans espaces), phrases, paragraphes et temps de lecture estimé. Collez n'importe quel texte." },
+    keywords: {
+      en: ["word counter online", "character counter free", "count words online", "word count tool", "reading time calculator", "sentence counter"],
+      fr: ["compteur de mots en ligne", "compteur de caractères gratuit", "compter mots en ligne", "outil de comptage de mots", "calculateur temps de lecture"],
+    },
+    relatedTools: ["lorem-ipsum", "url-encoder", "word-to-pdf"],
+    howItWorks: {
+      en: [
+        { name: "Paste or type your text", text: "Drop text directly into the editor. Word, character, sentence, and paragraph counts update as you type." },
+        { name: "Review statistics", text: "See word count, character count (with and without spaces), sentence count, paragraph count, and estimated reading time at 200 WPM." },
+        { name: "Use for any text", text: "Perfect for essays, tweets, SEO meta descriptions, SMS messages, or any content with a length requirement." },
+      ],
+      fr: [
+        { name: "Collez ou tapez votre texte", text: "Déposez du texte directement dans l'éditeur. Les comptages de mots, caractères, phrases et paragraphes se mettent à jour au fur et à mesure de la frappe." },
+        { name: "Consultez les statistiques", text: "Voir le nombre de mots, de caractères (avec et sans espaces), de phrases, de paragraphes et le temps de lecture estimé à 200 MPM." },
+        { name: "Utilisez pour n'importe quel texte", text: "Parfait pour les essais, tweets, méta-descriptions SEO, messages SMS ou tout contenu avec une contrainte de longueur." },
+      ],
+    },
+    about: {
+      en: "Word and character counts matter in many contexts: academic papers with word limits, tweets (280 characters), SMS (160 characters), meta descriptions (155 characters), LinkedIn posts, and book chapters. This tool gives you an instant breakdown of every text metric without pasting into Word or Google Docs.",
+      fr: "Les comptages de mots et de caractères sont importants dans de nombreux contextes : dissertations avec limites de mots, tweets (280 caractères), SMS (160 caractères), méta-descriptions (155 caractères), publications LinkedIn et chapitres de livres.",
+    },
+    faqs: {
+      en: [
+        { q: "Does the word counter work with languages other than English?", a: "Yes. Words are counted by splitting on whitespace, which works for any space-separated language. Character counting is Unicode-aware, so accented characters, CJK characters, and emoji are each counted as one character." },
+        { q: "What counts as a word?", a: "Any sequence of non-whitespace characters. Hyphenated words (e.g., 'well-known') count as one word. Numbers and punctuation are included if attached to letters." },
+        { q: "Is the Word Counter free?", a: "Yes. EverydayTools Word & Character Counter is completely free with no account required." },
+      ],
+      fr: [
+        { q: "Le compteur de mots fonctionne-t-il avec des langues autres que l'anglais ?", a: "Oui. Les mots sont comptés en divisant sur les espaces blancs, ce qui fonctionne pour toute langue séparée par des espaces. Le comptage des caractères est compatible Unicode, donc les caractères accentués, CJK et emojis comptent chacun comme un caractère." },
+        { q: "Qu'est-ce qui compte comme un mot ?", a: "Toute séquence de caractères non-espaces. Les mots avec trait d'union (par ex., 'bien-connu') comptent comme un seul mot." },
+        { q: "Le compteur de mots est-il gratuit ?", a: "Oui. EverydayTools Word & Character Counter est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "word-to-markdown",
+    slugs: { en: "convert-word-to-markdown", fr: "convertir-word-en-markdown" },
+    title: { en: "Word to Markdown Converter — Free DOCX to MD | EverydayTools Hub", fr: "Convertir Word en Markdown — DOCX vers MD Gratuit | EverydayTools Hub" },
+    h1: { en: "Word to Markdown Converter", fr: "Convertisseur Word en Markdown" },
+    description: { en: "Convert DOCX files to clean Markdown. Preserves headings, lists, bold, italic, links, and tables. Ready for GitHub, Notion, or any Markdown editor.", fr: "Convertissez des fichiers DOCX en Markdown propre. Préserve titres, listes, gras, italique, liens et tableaux." },
+    keywords: {
+      en: ["word to markdown converter", "docx to markdown online", "convert word to md", "docx md free", "word document to markdown"],
+      fr: ["convertir word en markdown", "docx en markdown en ligne", "word en md gratuit", "document word en markdown"],
+    },
+    relatedTools: ["html-to-markdown", "markdown-to-pdf", "word-to-text"],
+    howItWorks: {
+      en: [
+        { name: "Upload your DOCX", text: "Drop a .docx file. The document is parsed for its structural content." },
+        { name: "Convert to Markdown", text: "Headings become # symbols, bold becomes **text**, lists become - or 1. syntax, and links are preserved as [text](url)." },
+        { name: "Copy or download", text: "Copy the Markdown directly or download as a .md file for use in any editor." },
+      ],
+      fr: [
+        { name: "Chargez votre DOCX", text: "Déposez un fichier .docx. Le document est analysé pour son contenu structurel." },
+        { name: "Conversion en Markdown", text: "Les titres deviennent des symboles #, le gras devient **texte**, les listes deviennent la syntaxe - ou 1., et les liens sont préservés." },
+        { name: "Copiez ou téléchargez", text: "Copiez le Markdown directement ou téléchargez en fichier .md pour utilisation dans n'importe quel éditeur." },
+      ],
+    },
+    about: {
+      en: "Markdown has become the default writing format for documentation, GitHub READMEs, Notion pages, and static site generators. Converting Word documents to Markdown strips proprietary formatting while preserving the document's structure and meaning — making it easy to publish Word content anywhere Markdown is accepted.",
+      fr: "Markdown est devenu le format d'écriture par défaut pour la documentation, les README GitHub, les pages Notion et les générateurs de sites statiques. Convertir des documents Word en Markdown supprime la mise en forme propriétaire tout en préservant la structure et le sens du document.",
+    },
+    faqs: {
+      en: [
+        { q: "Are images in the DOCX included?", a: "Images embedded in the Word document are not currently extracted. Only text content and structure (headings, lists, tables, formatting) are converted." },
+        { q: "What Word formatting maps to Markdown?", a: "Heading styles (Heading 1–6) → # to ######. Bold → **bold**. Italic → *italic*. Hyperlinks → [text](url). Numbered and bulleted lists → 1. and - syntax. Simple tables → Markdown table pipes." },
+        { q: "Is Word to Markdown free?", a: "Yes. EverydayTools Word to Markdown Converter is completely free with no account required." },
+      ],
+      fr: [
+        { q: "Les images dans le DOCX sont-elles incluses ?", a: "Les images intégrées dans le document Word ne sont pas actuellement extraites. Seul le contenu texte et la structure sont convertis." },
+        { q: "Quel formatage Word correspond à Markdown ?", a: "Styles de titre (Titre 1–6) → # à ######. Gras → **gras**. Italique → *italique*. Hyperliens → [texte](url). Listes numérotées et à puces → 1. et - syntaxe." },
+        { q: "Word en Markdown est-il gratuit ?", a: "Oui. EverydayTools Word to Markdown Converter est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "word-to-pdf",
+    slugs: { en: "convert-word-to-pdf", fr: "convertir-word-en-pdf" },
+    title: { en: "Word to PDF Converter — Free DOCX to PDF Online | EverydayTools Hub", fr: "Convertir Word en PDF — DOCX vers PDF Gratuit En Ligne | EverydayTools Hub" },
+    h1: { en: "Word to PDF Converter", fr: "Convertisseur Word en PDF" },
+    description: { en: "Convert Word documents (.docx, .doc) to PDF. Preserves text, headings, lists, and basic formatting. No signup, no upload to servers.", fr: "Convertissez des documents Word (.docx, .doc) en PDF. Préserve texte, titres, listes et mise en forme de base. Sans inscription." },
+    keywords: {
+      en: ["word to pdf converter", "convert docx to pdf online", "doc to pdf free", "word document to pdf", "docx pdf online"],
+      fr: ["convertir word en pdf", "docx en pdf en ligne gratuit", "doc en pdf", "document word en pdf", "convertisseur word pdf"],
+    },
+    relatedTools: ["word-to-text", "pdf-compress", "txt-to-pdf"],
+    howItWorks: {
+      en: [
+        { name: "Upload your Word document", text: "Drop a .docx or .doc file. The document content is extracted." },
+        { name: "Convert to PDF", text: "Text, headings, paragraphs, lists, and basic formatting are rendered into a clean, paginated PDF." },
+        { name: "Download the PDF", text: "Your PDF downloads immediately, ready to share or print." },
+      ],
+      fr: [
+        { name: "Chargez votre document Word", text: "Déposez un fichier .docx ou .doc. Le contenu du document est extrait." },
+        { name: "Conversion en PDF", text: "Le texte, les titres, les paragraphes, les listes et la mise en forme de base sont rendus dans un PDF propre et paginé." },
+        { name: "Téléchargez le PDF", text: "Votre PDF se télécharge immédiatement, prêt à partager ou imprimer." },
+      ],
+    },
+    about: {
+      en: "PDF is the standard for sharing documents that should look the same on every device — preserving layout, fonts, and formatting regardless of what software the recipient has. Converting a Word document to PDF locks in the appearance and prevents unintentional edits.",
+      fr: "Le PDF est le standard pour partager des documents qui doivent avoir le même aspect sur chaque appareil — préservant la mise en page, les polices et la mise en forme indépendamment du logiciel du destinataire. Convertir un document Word en PDF fixe l'apparence et prévient les modifications non intentionnelles.",
+    },
+    faqs: {
+      en: [
+        { q: "Will the PDF look exactly like the Word document?", a: "Text, headings, paragraphs, and lists are faithfully rendered. Complex layouts (text boxes, columns, custom fonts, tracked changes) may not render perfectly. For pixel-perfect output, use Word's own Save As PDF feature." },
+        { q: "Are .doc files supported as well as .docx?", a: "Yes, both .docx (modern) and .doc (legacy) formats are accepted." },
+        { q: "Is Word to PDF Converter free?", a: "Yes. EverydayTools Word to PDF Converter is completely free with no account required." },
+      ],
+      fr: [
+        { q: "Le PDF ressemblera-t-il exactement au document Word ?", a: "Le texte, les titres, les paragraphes et les listes sont fidèlement rendus. Les mises en page complexes (zones de texte, colonnes, polices personnalisées) peuvent ne pas être parfaitement reproduites. Pour un résultat pixel-perfect, utilisez la fonctionnalité Enregistrer en PDF de Word." },
+        { q: "Les fichiers .doc sont-ils pris en charge en plus de .docx ?", a: "Oui, les formats .docx (moderne) et .doc (héritage) sont tous deux acceptés." },
+        { q: "Le convertisseur Word en PDF est-il gratuit ?", a: "Oui. EverydayTools Word to PDF Converter est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
 ];
 
 export type Locale = "en" | "fr";
