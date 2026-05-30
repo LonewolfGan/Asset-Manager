@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
+import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed } from '@/lib/analytics';
 
@@ -221,6 +222,7 @@ export default function TipCalculator() {
 
         <div style={{ marginTop: 40 }}><AdSlot type="horizontal" /></div>
       </div>
+      <ToolPageSEO internalSlug="tip-calculator" />
     </>
   );
 

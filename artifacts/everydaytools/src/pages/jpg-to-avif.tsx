@@ -1,5 +1,10 @@
 import ImageConvertPage from '@/components/ImageConvertPage';
-import { trackToolUsed, trackToolError } from '@/lib/analytics';
+import ToolPageSEO from '@/components/ToolPageSEO';
 export default function JpgToAvif() {
-  return <ImageConvertPage fromLabel="JPG/JPEG" fromExts={['.jpg','.jpeg']} fromMimes={['image/jpeg']} toMime="image/avif" slug="jpg-to-avif" />;
+  return (
+    <>
+      <ToolPageSEO internalSlug="jpg-to-avif" />
+      <ImageConvertPage fromLabel="JPG/JPEG" fromExts={['.jpg','.jpeg']} fromMimes={['image/jpeg']} toMime="image/avif" slug="jpg-to-avif" />
+    </>
+  );
 }

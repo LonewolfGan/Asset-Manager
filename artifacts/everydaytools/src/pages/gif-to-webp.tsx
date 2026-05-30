@@ -1,5 +1,10 @@
 import ImageConvertPage from '@/components/ImageConvertPage';
-import { trackToolUsed, trackToolError } from '@/lib/analytics';
+import ToolPageSEO from '@/components/ToolPageSEO';
 export default function GifToWebp() {
-  return <ImageConvertPage fromLabel="GIF" fromExts={['.gif']} fromMimes={['image/gif']} toMime="image/webp" slug="gif-to-webp" trackUsed={trackToolUsed} trackError={trackToolError} />;
+  return (
+    <>
+      <ToolPageSEO internalSlug="gif-to-webp" />
+      <ImageConvertPage fromLabel="GIF" fromExts={['.gif']} fromMimes={['image/gif']} toMime="image/webp" slug="gif-to-webp" />
+    </>
+  );
 }

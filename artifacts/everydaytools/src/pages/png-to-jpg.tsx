@@ -1,5 +1,10 @@
 import ImageConvertPage from '@/components/ImageConvertPage';
-import { trackToolUsed, trackToolError } from '@/lib/analytics';
+import ToolPageSEO from '@/components/ToolPageSEO';
 export default function PngToJpg() {
-  return <ImageConvertPage fromLabel="PNG" fromExts={['.png']} fromMimes={['image/png']} toMime="image/jpeg" slug="png-to-jpg" />;
+  return (
+    <>
+      <ToolPageSEO internalSlug="png-to-jpg" />
+      <ImageConvertPage fromLabel="PNG" fromExts={['.png']} fromMimes={['image/png']} toMime="image/jpeg" slug="png-to-jpg" />
+    </>
+  );
 }

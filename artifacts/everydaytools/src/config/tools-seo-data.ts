@@ -1586,6 +1586,3072 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ],
     },
   },
+  {
+    internalSlug: "avif-to-jpg",
+    slugs: {
+      en: "convert-avif-to-jpg",
+      fr: "convertir-avif-en-jpg"
+    },
+    title: {
+      en: "AVIF to JPG Converter — Free, Online | EverydayTools Hub",
+      fr: "Convertir AVIF en JPG — Gratuit, En Ligne | EverydayTools Hub"
+    },
+    h1: {
+      en: "AVIF to JPG Converter",
+      fr: "Convertisseur AVIF en JPG"
+    },
+    description: {
+      en: "Convert AVIF images to JPG format in your browser. Free, no upload, no account required. AVIF is not universally supported outside modern browsers. JPEG opens on every device, app, and platform.",
+      fr: "Convertissez des images AVIF en JPG dans votre navigateur. Gratuit, sans envoi, sans compte. AVIF n'est pas universellement supporté en dehors des navigateurs modernes. JPEG s'ouvre sur tous les appareils, applications et plateformes."
+    },
+    keywords: {
+      en: [
+        "avif to jpg converter",
+        "convert avif to jpg online free",
+        "avif to jpg free",
+        "avif jpg online",
+        "free avif to jpg converter",
+        "avif to jpg no upload"
+      ],
+      fr: [
+        "convertir avif en jpg",
+        "avif en jpg gratuit",
+        "convertisseur avif jpg en ligne",
+        "avif vers jpg sans logiciel",
+        "avif jpg en ligne gratuit",
+        "convertir image avif en jpg"
+      ]
+    },
+    relatedTools: [
+      "avif-to-png",
+      "image-converter",
+      "image-compress",
+      "jpg-to-png"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Upload your AVIF file",
+          text: "Click the upload area or drag your .avif file. Multiple files are supported for batch conversion."
+        },
+        {
+          name: "Convert automatically",
+          text: "EverydayTools converts your AVIF to JPG entirely in your browser — no image is ever sent to a server."
+        },
+        {
+          name: "Download the JPG file",
+          text: "Your JPG file downloads immediately — no quality reduction applied beyond the chosen format's own compression."
+        }
+      ],
+      fr: [
+        {
+          name: "Téléversez votre fichier AVIF",
+          text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier .avif. Plusieurs fichiers sont supportés pour la conversion par lot."
+        },
+        {
+          name: "Conversion automatique",
+          text: "EverydayTools convertit votre AVIF en JPG entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+        },
+        {
+          name: "Téléchargez le fichier JPG",
+          text: "Votre fichier JPG se télécharge immédiatement — sans réduction de qualité supplémentaire."
+        }
+      ]
+    },
+    about: {
+      en: "AVIF is a next-generation format with superior compression — typically 50% smaller than JPEG — but with limited support in older software and non-browser apps.\n\nAVIF is not universally supported outside modern browsers. JPEG opens on every device, app, and platform. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted JPG files immediately. No account, no upload, no waiting.",
+      fr: "AVIF est un format nouvelle génération avec une compression supérieure — environ 50 % plus petit que JPEG — mais avec un support limité dans les anciens logiciels.\n\nAVIF n'est pas universellement supporté en dehors des navigateurs modernes. JPEG s'ouvre sur tous les appareils, applications et plateformes. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers JPG convertis immédiatement. Sans compte, sans envoi, sans attente."
+    },
+    faqs: {
+      en: [
+        {
+          q: "Why convert AVIF to JPG?",
+          a: "AVIF is not universally supported outside modern browsers. JPEG opens on every device, app, and platform."
+        },
+        {
+          q: "Does AVIF to JPG conversion affect quality?",
+          a: "JPEG is lossy, so minimal quality loss occurs. At high-quality settings the difference is imperceptible."
+        },
+        {
+          q: "Is the conversion done in my browser?",
+          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
+        },
+        {
+          q: "Can I convert multiple files at once?",
+          a: "Yes. The tool supports batch conversion of multiple AVIF files in a single upload."
+        },
+        {
+          q: "Is AVIF to JPG Converter free?",
+          a: "Yes. EverydayTools AVIF to JPG Converter is completely free, with no account required and no watermarks."
+        }
+      ],
+      fr: [
+        {
+          q: "Comment convertir AVIF en jpg gratuitement ?",
+          a: "Téléversez votre fichier AVIF dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
+        },
+        {
+          q: "Pourquoi convertir AVIF en JPG ?",
+          a: "AVIF n'est pas universellement supporté en dehors des navigateurs modernes. JPEG s'ouvre sur tous les appareils, applications et plateformes."
+        },
+        {
+          q: "La conversion affecte-t-elle la qualité ?",
+          a: "JPEG est avec perte, donc une légère perte de qualité se produit. À haute qualité, la différence est imperceptible."
+        },
+        {
+          q: "Puis-je convertir plusieurs fichiers à la fois ?",
+          a: "Oui. L'outil supporte la conversion par lot de plusieurs fichiers AVIF en un seul téléversement."
+        },
+        {
+          q: "Le convertisseur AVIF en JPG est-il gratuit ?",
+          a: "Oui. Le convertisseur AVIF en JPG d'EverydayTools est entièrement gratuit, sans compte requis et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    internalSlug: "avif-to-png",
+    slugs: {
+      en: "convert-avif-to-png",
+      fr: "convertir-avif-en-png"
+    },
+    title: {
+      en: "AVIF to PNG Converter — Free, Online | EverydayTools Hub",
+      fr: "Convertir AVIF en PNG — Gratuit, En Ligne | EverydayTools Hub"
+    },
+    h1: {
+      en: "AVIF to PNG Converter",
+      fr: "Convertisseur AVIF en PNG"
+    },
+    description: {
+      en: "Convert AVIF images to PNG format in your browser. Free, no upload, no account required. PNG is lossless and supports transparency, making it ideal for design work where pixel-perfect quality matters.",
+      fr: "Convertissez des images AVIF en PNG dans votre navigateur. Gratuit, sans envoi, sans compte. PNG est sans perte et supporte la transparence, ce qui le rend idéal pour le travail de design où la précision au pixel compte."
+    },
+    keywords: {
+      en: [
+        "avif to png converter",
+        "convert avif to png online free",
+        "avif to png free",
+        "avif png online",
+        "free avif to png converter",
+        "avif to png no upload"
+      ],
+      fr: [
+        "convertir avif en png",
+        "avif en png gratuit",
+        "convertisseur avif png en ligne",
+        "avif vers png sans logiciel",
+        "avif png en ligne gratuit",
+        "convertir image avif en png"
+      ]
+    },
+    relatedTools: [
+      "avif-to-jpg",
+      "png-to-webp",
+      "image-converter",
+      "background-remover"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Upload your AVIF file",
+          text: "Click the upload area or drag your .avif file. Multiple files are supported for batch conversion."
+        },
+        {
+          name: "Convert automatically",
+          text: "EverydayTools converts your AVIF to PNG entirely in your browser — no image is ever sent to a server."
+        },
+        {
+          name: "Download the PNG file",
+          text: "Your PNG file downloads immediately — no quality reduction applied beyond the chosen format's own compression."
+        }
+      ],
+      fr: [
+        {
+          name: "Téléversez votre fichier AVIF",
+          text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier .avif. Plusieurs fichiers sont supportés pour la conversion par lot."
+        },
+        {
+          name: "Conversion automatique",
+          text: "EverydayTools convertit votre AVIF en PNG entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+        },
+        {
+          name: "Téléchargez le fichier PNG",
+          text: "Votre fichier PNG se télécharge immédiatement — sans réduction de qualité supplémentaire."
+        }
+      ]
+    },
+    about: {
+      en: "AVIF is a next-generation format with superior compression — typically 50% smaller than JPEG — but with limited support in older software and non-browser apps.\n\nPNG is lossless and supports transparency, making it ideal for design work where pixel-perfect quality matters. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted PNG files immediately. No account, no upload, no waiting.",
+      fr: "AVIF est un format nouvelle génération avec une compression supérieure — environ 50 % plus petit que JPEG — mais avec un support limité dans les anciens logiciels.\n\nPNG est sans perte et supporte la transparence, ce qui le rend idéal pour le travail de design où la précision au pixel compte. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers PNG convertis immédiatement. Sans compte, sans envoi, sans attente."
+    },
+    faqs: {
+      en: [
+        {
+          q: "Why convert AVIF to PNG?",
+          a: "PNG is lossless and supports transparency, making it ideal for design work where pixel-perfect quality matters."
+        },
+        {
+          q: "Does AVIF to PNG conversion affect quality?",
+          a: "PNG output is lossless — no quality loss. File sizes will be larger than the source AVIF."
+        },
+        {
+          q: "Is the conversion done in my browser?",
+          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
+        },
+        {
+          q: "Can I convert multiple files at once?",
+          a: "Yes. The tool supports batch conversion of multiple AVIF files in a single upload."
+        },
+        {
+          q: "Is AVIF to PNG Converter free?",
+          a: "Yes. EverydayTools AVIF to PNG Converter is completely free, with no account required and no watermarks."
+        }
+      ],
+      fr: [
+        {
+          q: "Comment convertir AVIF en png gratuitement ?",
+          a: "Téléversez votre fichier AVIF dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
+        },
+        {
+          q: "Pourquoi convertir AVIF en PNG ?",
+          a: "PNG est sans perte et supporte la transparence, ce qui le rend idéal pour le travail de design où la précision au pixel compte."
+        },
+        {
+          q: "La conversion affecte-t-elle la qualité ?",
+          a: "La sortie PNG est sans perte — aucune perte de qualité. Les fichiers seront plus grands que l'AVIF source."
+        },
+        {
+          q: "Puis-je convertir plusieurs fichiers à la fois ?",
+          a: "Oui. L'outil supporte la conversion par lot de plusieurs fichiers AVIF en un seul téléversement."
+        },
+        {
+          q: "Le convertisseur AVIF en PNG est-il gratuit ?",
+          a: "Oui. Le convertisseur AVIF en PNG d'EverydayTools est entièrement gratuit, sans compte requis et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    internalSlug: "bmp-to-jpg",
+    slugs: {
+      en: "convert-bmp-to-jpg",
+      fr: "convertir-bmp-en-jpg"
+    },
+    title: {
+      en: "BMP to JPG Converter — Free, Online | EverydayTools Hub",
+      fr: "Convertir BMP en JPG — Gratuit, En Ligne | EverydayTools Hub"
+    },
+    h1: {
+      en: "BMP to JPG Converter",
+      fr: "Convertisseur BMP en JPG"
+    },
+    description: {
+      en: "Convert BMP images to JPG format in your browser. Free, no upload, no account required. BMP files are huge — often 10–50× larger than JPEG for the same image. Convert to JPEG for drastically smaller files with minimal visible quality loss.",
+      fr: "Convertissez des images BMP en JPG dans votre navigateur. Gratuit, sans envoi, sans compte. Les fichiers BMP sont énormes — souvent 10 à 50 fois plus grands que JPEG. Convertissez en JPEG pour des fichiers bien plus petits avec une perte de qualité minime."
+    },
+    keywords: {
+      en: [
+        "bmp to jpg converter",
+        "convert bmp to jpg online free",
+        "bmp to jpg free",
+        "bmp jpg online",
+        "free bmp to jpg converter",
+        "bmp to jpg no upload"
+      ],
+      fr: [
+        "convertir bmp en jpg",
+        "bmp en jpg gratuit",
+        "convertisseur bmp jpg en ligne",
+        "bmp vers jpg sans logiciel",
+        "bmp jpg en ligne gratuit",
+        "convertir image bmp en jpg"
+      ]
+    },
+    relatedTools: [
+      "bmp-to-webp",
+      "image-converter",
+      "image-compress",
+      "jpg-to-png"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Upload your BMP file",
+          text: "Click the upload area or drag your .bmp file. Multiple files are supported for batch conversion."
+        },
+        {
+          name: "Convert automatically",
+          text: "EverydayTools converts your BMP to JPG entirely in your browser — no image is ever sent to a server."
+        },
+        {
+          name: "Download the JPG file",
+          text: "Your JPG file downloads immediately — no quality reduction applied beyond the chosen format's own compression."
+        }
+      ],
+      fr: [
+        {
+          name: "Téléversez votre fichier BMP",
+          text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier .bmp. Plusieurs fichiers sont supportés pour la conversion par lot."
+        },
+        {
+          name: "Conversion automatique",
+          text: "EverydayTools convertit votre BMP en JPG entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+        },
+        {
+          name: "Téléchargez le fichier JPG",
+          text: "Votre fichier JPG se télécharge immédiatement — sans réduction de qualité supplémentaire."
+        }
+      ]
+    },
+    about: {
+      en: "BMP is an uncompressed Windows bitmap format. BMP stores every pixel without any compression, resulting in files that are typically 10–50× larger than the equivalent JPEG.\n\nBMP files are huge — often 10–50× larger than JPEG for the same image. Convert to JPEG for drastically smaller files with minimal visible quality loss. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted JPG files immediately. No account, no upload, no waiting.",
+      fr: "BMP est un format bitmap Windows non compressé. BMP stocke chaque pixel sans compression, donnant des fichiers 10 à 50 fois plus grands que le JPEG équivalent.\n\nLes fichiers BMP sont énormes — souvent 10 à 50 fois plus grands que JPEG. Convertissez en JPEG pour des fichiers bien plus petits avec une perte de qualité minime. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers JPG convertis immédiatement. Sans compte, sans envoi, sans attente."
+    },
+    faqs: {
+      en: [
+        {
+          q: "Why convert BMP to JPG?",
+          a: "BMP files are huge — often 10–50× larger than JPEG for the same image. Convert to JPEG for drastically smaller files with minimal visible quality loss."
+        },
+        {
+          q: "Does BMP to JPG conversion affect quality?",
+          a: "JPEG is lossy. The conversion from uncompressed BMP produces a file that is typically 90–95% smaller with minimal visible change."
+        },
+        {
+          q: "Is the conversion done in my browser?",
+          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
+        },
+        {
+          q: "Can I convert multiple files at once?",
+          a: "Yes. The tool supports batch conversion of multiple BMP files in a single upload."
+        },
+        {
+          q: "Is BMP to JPG Converter free?",
+          a: "Yes. EverydayTools BMP to JPG Converter is completely free, with no account required and no watermarks."
+        }
+      ],
+      fr: [
+        {
+          q: "Comment convertir BMP en jpg gratuitement ?",
+          a: "Téléversez votre fichier BMP dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
+        },
+        {
+          q: "Pourquoi convertir BMP en JPG ?",
+          a: "Les fichiers BMP sont énormes — souvent 10 à 50 fois plus grands que JPEG. Convertissez en JPEG pour des fichiers bien plus petits avec une perte de qualité minime."
+        },
+        {
+          q: "La conversion affecte-t-elle la qualité ?",
+          a: "JPEG est avec perte. La conversion depuis BMP non compressé produit un fichier 90 à 95 % plus petit avec un changement visible minimal."
+        },
+        {
+          q: "Puis-je convertir plusieurs fichiers à la fois ?",
+          a: "Oui. L'outil supporte la conversion par lot de plusieurs fichiers BMP en un seul téléversement."
+        },
+        {
+          q: "Le convertisseur BMP en JPG est-il gratuit ?",
+          a: "Oui. Le convertisseur BMP en JPG d'EverydayTools est entièrement gratuit, sans compte requis et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    internalSlug: "bmp-to-webp",
+    slugs: {
+      en: "convert-bmp-to-webp",
+      fr: "convertir-bmp-en-webp"
+    },
+    title: {
+      en: "BMP to WebP Converter — Free, Online | EverydayTools Hub",
+      fr: "Convertir BMP en WebP — Gratuit, En Ligne | EverydayTools Hub"
+    },
+    h1: {
+      en: "BMP to WebP Converter",
+      fr: "Convertisseur BMP en WebP"
+    },
+    description: {
+      en: "Convert BMP images to WebP format in your browser. Free, no upload, no account required. BMP is an uncompressed legacy format. WebP delivers modern compression ratios — typically 90%+ size reduction — ideal for web use.",
+      fr: "Convertissez des images BMP en WebP dans votre navigateur. Gratuit, sans envoi, sans compte. BMP est un format non compressé obsolète. WebP offre une compression moderne — réduction de taille de 90 %+ — idéal pour le web."
+    },
+    keywords: {
+      en: [
+        "bmp to webp converter",
+        "convert bmp to webp online free",
+        "bmp to webp free",
+        "bmp webp online",
+        "free bmp to webp converter",
+        "bmp to webp no upload"
+      ],
+      fr: [
+        "convertir bmp en webp",
+        "bmp en webp gratuit",
+        "convertisseur bmp webp en ligne",
+        "bmp vers webp sans logiciel",
+        "bmp webp en ligne gratuit",
+        "convertir image bmp en webp"
+      ]
+    },
+    relatedTools: [
+      "bmp-to-jpg",
+      "png-to-webp",
+      "image-converter",
+      "image-compress"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Upload your BMP file",
+          text: "Click the upload area or drag your .bmp file. Multiple files are supported for batch conversion."
+        },
+        {
+          name: "Convert automatically",
+          text: "EverydayTools converts your BMP to WebP entirely in your browser — no image is ever sent to a server."
+        },
+        {
+          name: "Download the WebP file",
+          text: "Your WebP file downloads immediately — no quality reduction applied beyond the chosen format's own compression."
+        }
+      ],
+      fr: [
+        {
+          name: "Téléversez votre fichier BMP",
+          text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier .bmp. Plusieurs fichiers sont supportés pour la conversion par lot."
+        },
+        {
+          name: "Conversion automatique",
+          text: "EverydayTools convertit votre BMP en WebP entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+        },
+        {
+          name: "Téléchargez le fichier WebP",
+          text: "Votre fichier WebP se télécharge immédiatement — sans réduction de qualité supplémentaire."
+        }
+      ]
+    },
+    about: {
+      en: "BMP is an uncompressed Windows bitmap format. BMP stores every pixel without any compression, resulting in files that are typically 10–50× larger than the equivalent JPEG.\n\nBMP is an uncompressed legacy format. WebP delivers modern compression ratios — typically 90%+ size reduction — ideal for web use. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted WebP files immediately. No account, no upload, no waiting.",
+      fr: "BMP est un format bitmap Windows non compressé. BMP stocke chaque pixel sans compression, donnant des fichiers 10 à 50 fois plus grands que le JPEG équivalent.\n\nBMP est un format non compressé obsolète. WebP offre une compression moderne — réduction de taille de 90 %+ — idéal pour le web. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers WebP convertis immédiatement. Sans compte, sans envoi, sans attente."
+    },
+    faqs: {
+      en: [
+        {
+          q: "Why convert BMP to WebP?",
+          a: "BMP is an uncompressed legacy format. WebP delivers modern compression ratios — typically 90%+ size reduction — ideal for web use."
+        },
+        {
+          q: "Does BMP to WebP conversion affect quality?",
+          a: "WebP uses lossy compression by default. The file will be dramatically smaller than the source BMP with minimal visible quality difference."
+        },
+        {
+          q: "Is the conversion done in my browser?",
+          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
+        },
+        {
+          q: "Can I convert multiple files at once?",
+          a: "Yes. The tool supports batch conversion of multiple BMP files in a single upload."
+        },
+        {
+          q: "Is BMP to WebP Converter free?",
+          a: "Yes. EverydayTools BMP to WebP Converter is completely free, with no account required and no watermarks."
+        }
+      ],
+      fr: [
+        {
+          q: "Comment convertir BMP en webp gratuitement ?",
+          a: "Téléversez votre fichier BMP dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
+        },
+        {
+          q: "Pourquoi convertir BMP en WebP ?",
+          a: "BMP est un format non compressé obsolète. WebP offre une compression moderne — réduction de taille de 90 %+ — idéal pour le web."
+        },
+        {
+          q: "La conversion affecte-t-elle la qualité ?",
+          a: "WebP utilise une compression avec perte par défaut. Le fichier sera nettement plus petit que le BMP source avec une différence de qualité visible minimale."
+        },
+        {
+          q: "Puis-je convertir plusieurs fichiers à la fois ?",
+          a: "Oui. L'outil supporte la conversion par lot de plusieurs fichiers BMP en un seul téléversement."
+        },
+        {
+          q: "Le convertisseur BMP en WebP est-il gratuit ?",
+          a: "Oui. Le convertisseur BMP en WebP d'EverydayTools est entièrement gratuit, sans compte requis et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    internalSlug: "gif-to-png",
+    slugs: {
+      en: "convert-gif-to-png",
+      fr: "convertir-gif-en-png"
+    },
+    title: {
+      en: "GIF to PNG Converter — Free, Online | EverydayTools Hub",
+      fr: "Convertir GIF en PNG — Gratuit, En Ligne | EverydayTools Hub"
+    },
+    h1: {
+      en: "GIF to PNG Converter",
+      fr: "Convertisseur GIF en PNG"
+    },
+    description: {
+      en: "Convert GIF images to PNG format in your browser. Free, no upload, no account required. PNG is a lossless format with full 24-bit color, making it far superior to GIF for static images where quality matters.",
+      fr: "Convertissez des images GIF en PNG dans votre navigateur. Gratuit, sans envoi, sans compte. PNG est sans perte avec 24 bits de couleur, le rendant bien supérieur à GIF pour les images statiques où la qualité compte."
+    },
+    keywords: {
+      en: [
+        "gif to png converter",
+        "convert gif to png online free",
+        "gif to png free",
+        "gif png online",
+        "free gif to png converter",
+        "gif to png no upload"
+      ],
+      fr: [
+        "convertir gif en png",
+        "gif en png gratuit",
+        "convertisseur gif png en ligne",
+        "gif vers png sans logiciel",
+        "gif png en ligne gratuit",
+        "convertir image gif en png"
+      ]
+    },
+    relatedTools: [
+      "gif-to-webp",
+      "png-to-webp",
+      "image-converter",
+      "image-compress"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Upload your GIF file",
+          text: "Click the upload area or drag your .gif file. Multiple files are supported for batch conversion."
+        },
+        {
+          name: "Convert automatically",
+          text: "EverydayTools converts your GIF to PNG entirely in your browser — no image is ever sent to a server."
+        },
+        {
+          name: "Download the PNG file",
+          text: "Your PNG file downloads immediately — no quality reduction applied beyond the chosen format's own compression."
+        }
+      ],
+      fr: [
+        {
+          name: "Téléversez votre fichier GIF",
+          text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier .gif. Plusieurs fichiers sont supportés pour la conversion par lot."
+        },
+        {
+          name: "Conversion automatique",
+          text: "EverydayTools convertit votre GIF en PNG entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+        },
+        {
+          name: "Téléchargez le fichier PNG",
+          text: "Votre fichier PNG se télécharge immédiatement — sans réduction de qualité supplémentaire."
+        }
+      ]
+    },
+    about: {
+      en: "GIF is a format limited to 256 colors per frame, best known for its animation support. GIF's color restriction makes it a poor choice for photos.\n\nPNG is a lossless format with full 24-bit color, making it far superior to GIF for static images where quality matters. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted PNG files immediately. No account, no upload, no waiting.",
+      fr: "GIF est un format limité à 256 couleurs par image, surtout connu pour le support de l'animation. La restriction de couleurs de GIF en fait un mauvais choix pour les photos.\n\nPNG est sans perte avec 24 bits de couleur, le rendant bien supérieur à GIF pour les images statiques où la qualité compte. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers PNG convertis immédiatement. Sans compte, sans envoi, sans attente."
+    },
+    faqs: {
+      en: [
+        {
+          q: "Why convert GIF to PNG?",
+          a: "PNG is a lossless format with full 24-bit color, making it far superior to GIF for static images where quality matters."
+        },
+        {
+          q: "Does GIF to PNG conversion affect quality?",
+          a: "PNG is lossless. Converting a GIF to PNG will improve color quality (24-bit vs. 256 colors) and is lossless from the PNG side."
+        },
+        {
+          q: "Is the conversion done in my browser?",
+          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
+        },
+        {
+          q: "Can I convert multiple files at once?",
+          a: "Yes. The tool supports batch conversion of multiple GIF files in a single upload."
+        },
+        {
+          q: "Is GIF to PNG Converter free?",
+          a: "Yes. EverydayTools GIF to PNG Converter is completely free, with no account required and no watermarks."
+        }
+      ],
+      fr: [
+        {
+          q: "Comment convertir GIF en png gratuitement ?",
+          a: "Téléversez votre fichier GIF dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
+        },
+        {
+          q: "Pourquoi convertir GIF en PNG ?",
+          a: "PNG est sans perte avec 24 bits de couleur, le rendant bien supérieur à GIF pour les images statiques où la qualité compte."
+        },
+        {
+          q: "La conversion affecte-t-elle la qualité ?",
+          a: "PNG est sans perte. La conversion d'un GIF en PNG améliore la qualité des couleurs (24 bits vs. 256 couleurs)."
+        },
+        {
+          q: "Puis-je convertir plusieurs fichiers à la fois ?",
+          a: "Oui. L'outil supporte la conversion par lot de plusieurs fichiers GIF en un seul téléversement."
+        },
+        {
+          q: "Le convertisseur GIF en PNG est-il gratuit ?",
+          a: "Oui. Le convertisseur GIF en PNG d'EverydayTools est entièrement gratuit, sans compte requis et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    internalSlug: "gif-to-webp",
+    slugs: {
+      en: "convert-gif-to-webp",
+      fr: "convertir-gif-en-webp"
+    },
+    title: {
+      en: "GIF to WebP Converter — Free, Online | EverydayTools Hub",
+      fr: "Convertir GIF en WebP — Gratuit, En Ligne | EverydayTools Hub"
+    },
+    h1: {
+      en: "GIF to WebP Converter",
+      fr: "Convertisseur GIF en WebP"
+    },
+    description: {
+      en: "Convert GIF images to WebP format in your browser. Free, no upload, no account required. WebP supports animation just like GIF, but with dramatically better compression — typically 50–80% smaller. Ideal for web use.",
+      fr: "Convertissez des images GIF en WebP dans votre navigateur. Gratuit, sans envoi, sans compte. WebP supporte l'animation comme GIF, mais avec une compression nettement meilleure — typiquement 50 à 80 % plus petite. Idéal pour le web."
+    },
+    keywords: {
+      en: [
+        "gif to webp converter",
+        "convert gif to webp online free",
+        "gif to webp free",
+        "gif webp online",
+        "free gif to webp converter",
+        "gif to webp no upload"
+      ],
+      fr: [
+        "convertir gif en webp",
+        "gif en webp gratuit",
+        "convertisseur gif webp en ligne",
+        "gif vers webp sans logiciel",
+        "gif webp en ligne gratuit",
+        "convertir image gif en webp"
+      ]
+    },
+    relatedTools: [
+      "gif-to-png",
+      "png-to-webp",
+      "image-converter",
+      "image-compress"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Upload your GIF file",
+          text: "Click the upload area or drag your .gif file. Multiple files are supported for batch conversion."
+        },
+        {
+          name: "Convert automatically",
+          text: "EverydayTools converts your GIF to WebP entirely in your browser — no image is ever sent to a server."
+        },
+        {
+          name: "Download the WebP file",
+          text: "Your WebP file downloads immediately — no quality reduction applied beyond the chosen format's own compression."
+        }
+      ],
+      fr: [
+        {
+          name: "Téléversez votre fichier GIF",
+          text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier .gif. Plusieurs fichiers sont supportés pour la conversion par lot."
+        },
+        {
+          name: "Conversion automatique",
+          text: "EverydayTools convertit votre GIF en WebP entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+        },
+        {
+          name: "Téléchargez le fichier WebP",
+          text: "Votre fichier WebP se télécharge immédiatement — sans réduction de qualité supplémentaire."
+        }
+      ]
+    },
+    about: {
+      en: "GIF is a format limited to 256 colors per frame, best known for its animation support. GIF's color restriction makes it a poor choice for photos.\n\nWebP supports animation just like GIF, but with dramatically better compression — typically 50–80% smaller. Ideal for web use. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted WebP files immediately. No account, no upload, no waiting.",
+      fr: "GIF est un format limité à 256 couleurs par image, surtout connu pour le support de l'animation. La restriction de couleurs de GIF en fait un mauvais choix pour les photos.\n\nWebP supporte l'animation comme GIF, mais avec une compression nettement meilleure — typiquement 50 à 80 % plus petite. Idéal pour le web. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers WebP convertis immédiatement. Sans compte, sans envoi, sans attente."
+    },
+    faqs: {
+      en: [
+        {
+          q: "Why convert GIF to WebP?",
+          a: "WebP supports animation just like GIF, but with dramatically better compression — typically 50–80% smaller. Ideal for web use."
+        },
+        {
+          q: "Does GIF to WebP conversion affect quality?",
+          a: "Animated WebP files are significantly smaller than animated GIFs. Static frames also compress better with WebP."
+        },
+        {
+          q: "Is the conversion done in my browser?",
+          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
+        },
+        {
+          q: "Can I convert multiple files at once?",
+          a: "Yes. The tool supports batch conversion of multiple GIF files in a single upload."
+        },
+        {
+          q: "Is GIF to WebP Converter free?",
+          a: "Yes. EverydayTools GIF to WebP Converter is completely free, with no account required and no watermarks."
+        }
+      ],
+      fr: [
+        {
+          q: "Comment convertir GIF en webp gratuitement ?",
+          a: "Téléversez votre fichier GIF dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
+        },
+        {
+          q: "Pourquoi convertir GIF en WebP ?",
+          a: "WebP supporte l'animation comme GIF, mais avec une compression nettement meilleure — typiquement 50 à 80 % plus petite. Idéal pour le web."
+        },
+        {
+          q: "La conversion affecte-t-elle la qualité ?",
+          a: "Les WebP animés sont nettement plus petits que les GIF animés. Les images statiques se compriment aussi mieux avec WebP."
+        },
+        {
+          q: "Puis-je convertir plusieurs fichiers à la fois ?",
+          a: "Oui. L'outil supporte la conversion par lot de plusieurs fichiers GIF en un seul téléversement."
+        },
+        {
+          q: "Le convertisseur GIF en WebP est-il gratuit ?",
+          a: "Oui. Le convertisseur GIF en WebP d'EverydayTools est entièrement gratuit, sans compte requis et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    internalSlug: "heic-to-pdf",
+    slugs: {
+      en: "convert-heic-to-pdf",
+      fr: "convertir-heic-en-pdf"
+    },
+    title: {
+      en: "HEIC to PDF Converter — Free, Online | EverydayTools Hub",
+      fr: "Convertir HEIC en PDF — Gratuit, En Ligne | EverydayTools Hub"
+    },
+    h1: {
+      en: "HEIC to PDF Converter",
+      fr: "Convertisseur HEIC en PDF"
+    },
+    description: {
+      en: "Convert HEIC images to PDF format in your browser. Free, no upload, no account required. Wrap one or more iPhone photos in a PDF for easy sharing, printing, or document archiving — compatible with any device.",
+      fr: "Convertissez des images HEIC en PDF dans votre navigateur. Gratuit, sans envoi, sans compte. Regroupez une ou plusieurs photos iPhone dans un PDF pour un partage, une impression ou un archivage facile — compatible avec tous les appareils."
+    },
+    keywords: {
+      en: [
+        "heic to pdf converter",
+        "convert heic to pdf online free",
+        "heic to pdf free",
+        "heic pdf online",
+        "free heic to pdf converter",
+        "heic to pdf no upload"
+      ],
+      fr: [
+        "convertir heic en pdf",
+        "heic en pdf gratuit",
+        "convertisseur heic pdf en ligne",
+        "heic vers pdf sans logiciel",
+        "heic pdf en ligne gratuit",
+        "convertir image heic en pdf"
+      ]
+    },
+    relatedTools: [
+      "heic-to-jpg",
+      "image-to-pdf",
+      "pdf-to-image",
+      "image-converter"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Upload your HEIC file",
+          text: "Click the upload area or drag your .heic file. Multiple files are supported for batch conversion."
+        },
+        {
+          name: "Convert automatically",
+          text: "EverydayTools converts your HEIC to PDF entirely in your browser — no image is ever sent to a server."
+        },
+        {
+          name: "Download the PDF file",
+          text: "Your PDF with all images as pages downloads immediately."
+        }
+      ],
+      fr: [
+        {
+          name: "Téléversez votre fichier HEIC",
+          text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier .heic. Plusieurs fichiers sont supportés pour la conversion par lot."
+        },
+        {
+          name: "Conversion automatique",
+          text: "EverydayTools convertit votre HEIC en PDF entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+        },
+        {
+          name: "Téléchargez le fichier PDF",
+          text: "Votre PDF avec toutes les images en pages se télécharge immédiatement."
+        }
+      ]
+    },
+    about: {
+      en: "HEIC is Apple's default iPhone photo format since iOS 11. HEIC offers around 50% smaller file sizes than JPEG at the same quality, but requires Apple devices or special software to open.\n\nWrap one or more iPhone photos in a PDF for easy sharing, printing, or document archiving — compatible with any device. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted PDF files immediately. No account, no upload, no waiting.",
+      fr: "HEIC est le format photo iPhone par défaut depuis iOS 11. HEIC offre environ 50 % de fichiers plus petits que JPEG à la même qualité, mais nécessite des appareils Apple ou un logiciel spécial.\n\nRegroupez une ou plusieurs photos iPhone dans un PDF pour un partage, une impression ou un archivage facile — compatible avec tous les appareils. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers PDF convertis immédiatement. Sans compte, sans envoi, sans attente."
+    },
+    faqs: {
+      en: [
+        {
+          q: "Why convert HEIC to PDF?",
+          a: "Wrap one or more iPhone photos in a PDF for easy sharing, printing, or document archiving — compatible with any device."
+        },
+        {
+          q: "Does HEIC to PDF conversion affect quality?",
+          a: "Images are embedded in the PDF at full resolution. No quality loss occurs during the conversion."
+        },
+        {
+          q: "Is the conversion done in my browser?",
+          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
+        },
+        {
+          q: "Can I convert multiple files at once?",
+          a: "Yes. The tool supports batch conversion of multiple HEIC files in a single upload."
+        },
+        {
+          q: "Is HEIC to PDF Converter free?",
+          a: "Yes. EverydayTools HEIC to PDF Converter is completely free, with no account required and no watermarks."
+        }
+      ],
+      fr: [
+        {
+          q: "Comment convertir HEIC en pdf gratuitement ?",
+          a: "Téléversez votre fichier HEIC dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
+        },
+        {
+          q: "Pourquoi convertir HEIC en PDF ?",
+          a: "Regroupez une ou plusieurs photos iPhone dans un PDF pour un partage, une impression ou un archivage facile — compatible avec tous les appareils."
+        },
+        {
+          q: "La conversion affecte-t-elle la qualité ?",
+          a: "Les images sont intégrées dans le PDF à pleine résolution. Aucune perte de qualité ne se produit pendant la conversion."
+        },
+        {
+          q: "Puis-je convertir plusieurs fichiers à la fois ?",
+          a: "Oui. L'outil supporte la conversion par lot de plusieurs fichiers HEIC en un seul téléversement."
+        },
+        {
+          q: "Le convertisseur HEIC en PDF est-il gratuit ?",
+          a: "Oui. Le convertisseur HEIC en PDF d'EverydayTools est entièrement gratuit, sans compte requis et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    internalSlug: "heic-to-png",
+    slugs: {
+      en: "convert-heic-to-png",
+      fr: "convertir-heic-en-png"
+    },
+    title: {
+      en: "HEIC to PNG Converter — Free, Online | EverydayTools Hub",
+      fr: "Convertir HEIC en PNG — Gratuit, En Ligne | EverydayTools Hub"
+    },
+    h1: {
+      en: "HEIC to PNG Converter",
+      fr: "Convertisseur HEIC en PNG"
+    },
+    description: {
+      en: "Convert HEIC images to PNG format in your browser. Free, no upload, no account required. PNG is lossless and supports transparency — ideal for design work, editing, or when you need a pixel-perfect copy of your iPhone photo.",
+      fr: "Convertissez des images HEIC en PNG dans votre navigateur. Gratuit, sans envoi, sans compte. PNG est sans perte et supporte la transparence — idéal pour le design, l'édition ou lorsque vous avez besoin d'une copie exacte de votre photo iPhone."
+    },
+    keywords: {
+      en: [
+        "heic to png converter",
+        "convert heic to png online free",
+        "heic to png free",
+        "heic png online",
+        "free heic to png converter",
+        "heic to png no upload"
+      ],
+      fr: [
+        "convertir heic en png",
+        "heic en png gratuit",
+        "convertisseur heic png en ligne",
+        "heic vers png sans logiciel",
+        "heic png en ligne gratuit",
+        "convertir image heic en png"
+      ]
+    },
+    relatedTools: [
+      "heic-to-jpg",
+      "heic-to-webp",
+      "png-to-webp",
+      "background-remover"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Upload your HEIC file",
+          text: "Click the upload area or drag your .heic file. Multiple files are supported for batch conversion."
+        },
+        {
+          name: "Convert automatically",
+          text: "EverydayTools converts your HEIC to PNG entirely in your browser — no image is ever sent to a server."
+        },
+        {
+          name: "Download the PNG file",
+          text: "Your PNG file downloads immediately — no quality reduction applied beyond the chosen format's own compression."
+        }
+      ],
+      fr: [
+        {
+          name: "Téléversez votre fichier HEIC",
+          text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier .heic. Plusieurs fichiers sont supportés pour la conversion par lot."
+        },
+        {
+          name: "Conversion automatique",
+          text: "EverydayTools convertit votre HEIC en PNG entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+        },
+        {
+          name: "Téléchargez le fichier PNG",
+          text: "Votre fichier PNG se télécharge immédiatement — sans réduction de qualité supplémentaire."
+        }
+      ]
+    },
+    about: {
+      en: "HEIC is Apple's default iPhone photo format since iOS 11. HEIC offers around 50% smaller file sizes than JPEG at the same quality, but requires Apple devices or special software to open.\n\nPNG is lossless and supports transparency — ideal for design work, editing, or when you need a pixel-perfect copy of your iPhone photo. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted PNG files immediately. No account, no upload, no waiting.",
+      fr: "HEIC est le format photo iPhone par défaut depuis iOS 11. HEIC offre environ 50 % de fichiers plus petits que JPEG à la même qualité, mais nécessite des appareils Apple ou un logiciel spécial.\n\nPNG est sans perte et supporte la transparence — idéal pour le design, l'édition ou lorsque vous avez besoin d'une copie exacte de votre photo iPhone. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers PNG convertis immédiatement. Sans compte, sans envoi, sans attente."
+    },
+    faqs: {
+      en: [
+        {
+          q: "Why convert HEIC to PNG?",
+          a: "PNG is lossless and supports transparency — ideal for design work, editing, or when you need a pixel-perfect copy of your iPhone photo."
+        },
+        {
+          q: "Does HEIC to PNG conversion affect quality?",
+          a: "PNG is lossless, so the output preserves full image quality. PNG files will be larger than the source HEIC."
+        },
+        {
+          q: "Is the conversion done in my browser?",
+          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
+        },
+        {
+          q: "Can I convert multiple files at once?",
+          a: "Yes. The tool supports batch conversion of multiple HEIC files in a single upload."
+        },
+        {
+          q: "Is HEIC to PNG Converter free?",
+          a: "Yes. EverydayTools HEIC to PNG Converter is completely free, with no account required and no watermarks."
+        }
+      ],
+      fr: [
+        {
+          q: "Comment convertir HEIC en png gratuitement ?",
+          a: "Téléversez votre fichier HEIC dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
+        },
+        {
+          q: "Pourquoi convertir HEIC en PNG ?",
+          a: "PNG est sans perte et supporte la transparence — idéal pour le design, l'édition ou lorsque vous avez besoin d'une copie exacte de votre photo iPhone."
+        },
+        {
+          q: "La conversion affecte-t-elle la qualité ?",
+          a: "PNG est sans perte, donc la sortie préserve la qualité complète de l'image. Les fichiers PNG seront plus grands que le HEIC source."
+        },
+        {
+          q: "Puis-je convertir plusieurs fichiers à la fois ?",
+          a: "Oui. L'outil supporte la conversion par lot de plusieurs fichiers HEIC en un seul téléversement."
+        },
+        {
+          q: "Le convertisseur HEIC en PNG est-il gratuit ?",
+          a: "Oui. Le convertisseur HEIC en PNG d'EverydayTools est entièrement gratuit, sans compte requis et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    internalSlug: "heic-to-webp",
+    slugs: {
+      en: "convert-heic-to-webp",
+      fr: "convertir-heic-en-webp"
+    },
+    title: {
+      en: "HEIC to WebP Converter — Free, Online | EverydayTools Hub",
+      fr: "Convertir HEIC en WebP — Gratuit, En Ligne | EverydayTools Hub"
+    },
+    h1: {
+      en: "HEIC to WebP Converter",
+      fr: "Convertisseur HEIC en WebP"
+    },
+    description: {
+      en: "Convert HEIC images to WebP format in your browser. Free, no upload, no account required. Convert iPhone photos to WebP for web-optimized output — small file sizes with great quality, supported by all modern browsers.",
+      fr: "Convertissez des images HEIC en WebP dans votre navigateur. Gratuit, sans envoi, sans compte. Convertissez des photos iPhone en WebP pour une sortie optimisée pour le web — petits fichiers avec excellente qualité."
+    },
+    keywords: {
+      en: [
+        "heic to webp converter",
+        "convert heic to webp online free",
+        "heic to webp free",
+        "heic webp online",
+        "free heic to webp converter",
+        "heic to webp no upload"
+      ],
+      fr: [
+        "convertir heic en webp",
+        "heic en webp gratuit",
+        "convertisseur heic webp en ligne",
+        "heic vers webp sans logiciel",
+        "heic webp en ligne gratuit",
+        "convertir image heic en webp"
+      ]
+    },
+    relatedTools: [
+      "heic-to-jpg",
+      "heic-to-png",
+      "png-to-webp",
+      "image-converter"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Upload your HEIC file",
+          text: "Click the upload area or drag your .heic file. Multiple files are supported for batch conversion."
+        },
+        {
+          name: "Convert automatically",
+          text: "EverydayTools converts your HEIC to WebP entirely in your browser — no image is ever sent to a server."
+        },
+        {
+          name: "Download the WebP file",
+          text: "Your WebP file downloads immediately — no quality reduction applied beyond the chosen format's own compression."
+        }
+      ],
+      fr: [
+        {
+          name: "Téléversez votre fichier HEIC",
+          text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier .heic. Plusieurs fichiers sont supportés pour la conversion par lot."
+        },
+        {
+          name: "Conversion automatique",
+          text: "EverydayTools convertit votre HEIC en WebP entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+        },
+        {
+          name: "Téléchargez le fichier WebP",
+          text: "Votre fichier WebP se télécharge immédiatement — sans réduction de qualité supplémentaire."
+        }
+      ]
+    },
+    about: {
+      en: "HEIC is Apple's default iPhone photo format since iOS 11. HEIC offers around 50% smaller file sizes than JPEG at the same quality, but requires Apple devices or special software to open.\n\nConvert iPhone photos to WebP for web-optimized output — small file sizes with great quality, supported by all modern browsers. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted WebP files immediately. No account, no upload, no waiting.",
+      fr: "HEIC est le format photo iPhone par défaut depuis iOS 11. HEIC offre environ 50 % de fichiers plus petits que JPEG à la même qualité, mais nécessite des appareils Apple ou un logiciel spécial.\n\nConvertissez des photos iPhone en WebP pour une sortie optimisée pour le web — petits fichiers avec excellente qualité. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers WebP convertis immédiatement. Sans compte, sans envoi, sans attente."
+    },
+    faqs: {
+      en: [
+        {
+          q: "Why convert HEIC to WebP?",
+          a: "Convert iPhone photos to WebP for web-optimized output — small file sizes with great quality, supported by all modern browsers."
+        },
+        {
+          q: "Does HEIC to WebP conversion affect quality?",
+          a: "WebP offers good compression with minimal visible quality loss. Files will be significantly smaller than the source HEIC at equivalent quality."
+        },
+        {
+          q: "Is the conversion done in my browser?",
+          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
+        },
+        {
+          q: "Can I convert multiple files at once?",
+          a: "Yes. The tool supports batch conversion of multiple HEIC files in a single upload."
+        },
+        {
+          q: "Is HEIC to WebP Converter free?",
+          a: "Yes. EverydayTools HEIC to WebP Converter is completely free, with no account required and no watermarks."
+        }
+      ],
+      fr: [
+        {
+          q: "Comment convertir HEIC en webp gratuitement ?",
+          a: "Téléversez votre fichier HEIC dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
+        },
+        {
+          q: "Pourquoi convertir HEIC en WebP ?",
+          a: "Convertissez des photos iPhone en WebP pour une sortie optimisée pour le web — petits fichiers avec excellente qualité."
+        },
+        {
+          q: "La conversion affecte-t-elle la qualité ?",
+          a: "WebP offre une bonne compression avec une perte de qualité visible minimale. Les fichiers seront nettement plus petits que le HEIC source."
+        },
+        {
+          q: "Puis-je convertir plusieurs fichiers à la fois ?",
+          a: "Oui. L'outil supporte la conversion par lot de plusieurs fichiers HEIC en un seul téléversement."
+        },
+        {
+          q: "Le convertisseur HEIC en WebP est-il gratuit ?",
+          a: "Oui. Le convertisseur HEIC en WebP d'EverydayTools est entièrement gratuit, sans compte requis et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    internalSlug: "jpg-to-avif",
+    slugs: {
+      en: "convert-jpg-to-avif",
+      fr: "convertir-jpg-en-avif"
+    },
+    title: {
+      en: "JPG to AVIF Converter — Free, Online | EverydayTools Hub",
+      fr: "Convertir JPG en AVIF — Gratuit, En Ligne | EverydayTools Hub"
+    },
+    h1: {
+      en: "JPG to AVIF Converter",
+      fr: "Convertisseur JPG en AVIF"
+    },
+    description: {
+      en: "Convert JPG images to AVIF format in your browser. Free, no upload, no account required. AVIF compresses JPEG images to roughly half the file size at the same visual quality — a significant improvement for web performance.",
+      fr: "Convertissez des images JPG en AVIF dans votre navigateur. Gratuit, sans envoi, sans compte. AVIF compresse les images JPEG à environ la moitié de la taille avec la même qualité visuelle — une amélioration significative pour la performance web."
+    },
+    keywords: {
+      en: [
+        "jpg to avif converter",
+        "convert jpg to avif online free",
+        "jpg to avif free",
+        "jpg avif online",
+        "free jpg to avif converter",
+        "jpg to avif no upload"
+      ],
+      fr: [
+        "convertir jpg en avif",
+        "jpg en avif gratuit",
+        "convertisseur jpg avif en ligne",
+        "jpg vers avif sans logiciel",
+        "jpg avif en ligne gratuit",
+        "convertir image jpg en avif"
+      ]
+    },
+    relatedTools: [
+      "jpg-to-webp",
+      "png-to-avif",
+      "image-converter",
+      "image-compress"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Upload your JPG file",
+          text: "Click the upload area or drag your .jpg / .jpeg file. Multiple files are supported for batch conversion."
+        },
+        {
+          name: "Convert automatically",
+          text: "EverydayTools converts your JPG to AVIF entirely in your browser — no image is ever sent to a server."
+        },
+        {
+          name: "Download the AVIF file",
+          text: "Your AVIF file downloads immediately — no quality reduction applied beyond the chosen format's own compression."
+        }
+      ],
+      fr: [
+        {
+          name: "Téléversez votre fichier JPG",
+          text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier .jpg / .jpeg. Plusieurs fichiers sont supportés pour la conversion par lot."
+        },
+        {
+          name: "Conversion automatique",
+          text: "EverydayTools convertit votre JPG en AVIF entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+        },
+        {
+          name: "Téléchargez le fichier AVIF",
+          text: "Votre fichier AVIF se télécharge immédiatement — sans réduction de qualité supplémentaire."
+        }
+      ]
+    },
+    about: {
+      en: "JPG is the most universally compatible image format, supported by every device, operating system, and application. JPEG uses lossy compression and is the standard for photos.\n\nAVIF compresses JPEG images to roughly half the file size at the same visual quality — a significant improvement for web performance. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted AVIF files immediately. No account, no upload, no waiting.",
+      fr: "JPG est le format d'image le plus universellement compatible, supporté par tous les appareils, systèmes d'exploitation et applications. JPEG utilise une compression avec perte.\n\nAVIF compresse les images JPEG à environ la moitié de la taille avec la même qualité visuelle — une amélioration significative pour la performance web. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers AVIF convertis immédiatement. Sans compte, sans envoi, sans attente."
+    },
+    faqs: {
+      en: [
+        {
+          q: "Why convert JPG to AVIF?",
+          a: "AVIF compresses JPEG images to roughly half the file size at the same visual quality — a significant improvement for web performance."
+        },
+        {
+          q: "Does JPG to AVIF conversion affect quality?",
+          a: "AVIF is more efficient than JPEG. Expect 40–60% smaller files at equivalent or better visual quality."
+        },
+        {
+          q: "Is the conversion done in my browser?",
+          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
+        },
+        {
+          q: "Can I convert multiple files at once?",
+          a: "Yes. The tool supports batch conversion of multiple JPG files in a single upload."
+        },
+        {
+          q: "Is JPG to AVIF Converter free?",
+          a: "Yes. EverydayTools JPG to AVIF Converter is completely free, with no account required and no watermarks."
+        }
+      ],
+      fr: [
+        {
+          q: "Comment convertir JPG en avif gratuitement ?",
+          a: "Téléversez votre fichier JPG dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
+        },
+        {
+          q: "Pourquoi convertir JPG en AVIF ?",
+          a: "AVIF compresse les images JPEG à environ la moitié de la taille avec la même qualité visuelle — une amélioration significative pour la performance web."
+        },
+        {
+          q: "La conversion affecte-t-elle la qualité ?",
+          a: "AVIF est plus efficace que JPEG. Attendez-vous à des fichiers 40 à 60 % plus petits à qualité visuelle équivalente ou meilleure."
+        },
+        {
+          q: "Puis-je convertir plusieurs fichiers à la fois ?",
+          a: "Oui. L'outil supporte la conversion par lot de plusieurs fichiers JPG en un seul téléversement."
+        },
+        {
+          q: "Le convertisseur JPG en AVIF est-il gratuit ?",
+          a: "Oui. Le convertisseur JPG en AVIF d'EverydayTools est entièrement gratuit, sans compte requis et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    internalSlug: "jpg-to-pdf",
+    slugs: {
+      en: "convert-jpg-to-pdf",
+      fr: "convertir-jpg-en-pdf"
+    },
+    title: {
+      en: "JPG to PDF Converter — Free, Online | EverydayTools Hub",
+      fr: "Convertir JPG en PDF — Gratuit, En Ligne | EverydayTools Hub"
+    },
+    h1: {
+      en: "JPG to PDF Converter",
+      fr: "Convertisseur JPG en PDF"
+    },
+    description: {
+      en: "Convert JPG images to PDF format in your browser. Free, no upload, no account required. Wrap one or more JPEG photos in a PDF for easy sharing, printing, or document archiving.",
+      fr: "Convertissez des images JPG en PDF dans votre navigateur. Gratuit, sans envoi, sans compte. Regroupez une ou plusieurs photos JPEG dans un PDF pour un partage, une impression ou un archivage de documents facile."
+    },
+    keywords: {
+      en: [
+        "jpg to pdf converter",
+        "convert jpg to pdf online free",
+        "jpg to pdf free",
+        "jpg pdf online",
+        "free jpg to pdf converter",
+        "jpg to pdf no upload"
+      ],
+      fr: [
+        "convertir jpg en pdf",
+        "jpg en pdf gratuit",
+        "convertisseur jpg pdf en ligne",
+        "jpg vers pdf sans logiciel",
+        "jpg pdf en ligne gratuit",
+        "convertir image jpg en pdf"
+      ]
+    },
+    relatedTools: [
+      "image-to-pdf",
+      "pdf-to-image",
+      "image-converter",
+      "image-compress"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Upload your JPG file",
+          text: "Click the upload area or drag your .jpg / .jpeg file. Multiple files are supported for batch conversion."
+        },
+        {
+          name: "Convert automatically",
+          text: "EverydayTools converts your JPG to PDF entirely in your browser — no image is ever sent to a server."
+        },
+        {
+          name: "Download the PDF file",
+          text: "Your PDF with all images as pages downloads immediately."
+        }
+      ],
+      fr: [
+        {
+          name: "Téléversez votre fichier JPG",
+          text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier .jpg / .jpeg. Plusieurs fichiers sont supportés pour la conversion par lot."
+        },
+        {
+          name: "Conversion automatique",
+          text: "EverydayTools convertit votre JPG en PDF entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+        },
+        {
+          name: "Téléchargez le fichier PDF",
+          text: "Votre PDF avec toutes les images en pages se télécharge immédiatement."
+        }
+      ]
+    },
+    about: {
+      en: "JPG is the most universally compatible image format, supported by every device, operating system, and application. JPEG uses lossy compression and is the standard for photos.\n\nWrap one or more JPEG photos in a PDF for easy sharing, printing, or document archiving. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted PDF files immediately. No account, no upload, no waiting.",
+      fr: "JPG est le format d'image le plus universellement compatible, supporté par tous les appareils, systèmes d'exploitation et applications. JPEG utilise une compression avec perte.\n\nRegroupez une ou plusieurs photos JPEG dans un PDF pour un partage, une impression ou un archivage de documents facile. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers PDF convertis immédiatement. Sans compte, sans envoi, sans attente."
+    },
+    faqs: {
+      en: [
+        {
+          q: "Why convert JPG to PDF?",
+          a: "Wrap one or more JPEG photos in a PDF for easy sharing, printing, or document archiving."
+        },
+        {
+          q: "Does JPG to PDF conversion affect quality?",
+          a: "Images are embedded in the PDF at full original resolution. No quality loss is applied during conversion."
+        },
+        {
+          q: "Is the conversion done in my browser?",
+          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
+        },
+        {
+          q: "Can I convert multiple files at once?",
+          a: "Yes. The tool supports batch conversion of multiple JPG files in a single upload."
+        },
+        {
+          q: "Is JPG to PDF Converter free?",
+          a: "Yes. EverydayTools JPG to PDF Converter is completely free, with no account required and no watermarks."
+        }
+      ],
+      fr: [
+        {
+          q: "Comment convertir JPG en pdf gratuitement ?",
+          a: "Téléversez votre fichier JPG dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
+        },
+        {
+          q: "Pourquoi convertir JPG en PDF ?",
+          a: "Regroupez une ou plusieurs photos JPEG dans un PDF pour un partage, une impression ou un archivage de documents facile."
+        },
+        {
+          q: "La conversion affecte-t-elle la qualité ?",
+          a: "Les images sont intégrées dans le PDF à leur résolution originale complète. Aucune perte de qualité n'est appliquée."
+        },
+        {
+          q: "Puis-je convertir plusieurs fichiers à la fois ?",
+          a: "Oui. L'outil supporte la conversion par lot de plusieurs fichiers JPG en un seul téléversement."
+        },
+        {
+          q: "Le convertisseur JPG en PDF est-il gratuit ?",
+          a: "Oui. Le convertisseur JPG en PDF d'EverydayTools est entièrement gratuit, sans compte requis et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    internalSlug: "jpg-to-webp",
+    slugs: {
+      en: "convert-jpg-to-webp",
+      fr: "convertir-jpg-en-webp"
+    },
+    title: {
+      en: "JPG to WebP Converter — Free, Online | EverydayTools Hub",
+      fr: "Convertir JPG en WebP — Gratuit, En Ligne | EverydayTools Hub"
+    },
+    h1: {
+      en: "JPG to WebP Converter",
+      fr: "Convertisseur JPG en WebP"
+    },
+    description: {
+      en: "Convert JPG images to WebP format in your browser. Free, no upload, no account required. WebP produces files 25–35% smaller than JPEG at the same visual quality — a direct improvement for web performance with no perceptible difference.",
+      fr: "Convertissez des images JPG en WebP dans votre navigateur. Gratuit, sans envoi, sans compte. WebP produit des fichiers 25 à 35 % plus petits que JPEG à la même qualité visuelle — une amélioration directe pour la performance web."
+    },
+    keywords: {
+      en: [
+        "jpg to webp converter",
+        "convert jpg to webp online free",
+        "jpg to webp free",
+        "jpg webp online",
+        "free jpg to webp converter",
+        "jpg to webp no upload"
+      ],
+      fr: [
+        "convertir jpg en webp",
+        "jpg en webp gratuit",
+        "convertisseur jpg webp en ligne",
+        "jpg vers webp sans logiciel",
+        "jpg webp en ligne gratuit",
+        "convertir image jpg en webp"
+      ]
+    },
+    relatedTools: [
+      "jpg-to-png",
+      "png-to-webp",
+      "image-converter",
+      "image-compress"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Upload your JPG file",
+          text: "Click the upload area or drag your .jpg / .jpeg file. Multiple files are supported for batch conversion."
+        },
+        {
+          name: "Convert automatically",
+          text: "EverydayTools converts your JPG to WebP entirely in your browser — no image is ever sent to a server."
+        },
+        {
+          name: "Download the WebP file",
+          text: "Your WebP file downloads immediately — no quality reduction applied beyond the chosen format's own compression."
+        }
+      ],
+      fr: [
+        {
+          name: "Téléversez votre fichier JPG",
+          text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier .jpg / .jpeg. Plusieurs fichiers sont supportés pour la conversion par lot."
+        },
+        {
+          name: "Conversion automatique",
+          text: "EverydayTools convertit votre JPG en WebP entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+        },
+        {
+          name: "Téléchargez le fichier WebP",
+          text: "Votre fichier WebP se télécharge immédiatement — sans réduction de qualité supplémentaire."
+        }
+      ]
+    },
+    about: {
+      en: "JPG is the most universally compatible image format, supported by every device, operating system, and application. JPEG uses lossy compression and is the standard for photos.\n\nWebP produces files 25–35% smaller than JPEG at the same visual quality — a direct improvement for web performance with no perceptible difference. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted WebP files immediately. No account, no upload, no waiting.",
+      fr: "JPG est le format d'image le plus universellement compatible, supporté par tous les appareils, systèmes d'exploitation et applications. JPEG utilise une compression avec perte.\n\nWebP produit des fichiers 25 à 35 % plus petits que JPEG à la même qualité visuelle — une amélioration directe pour la performance web. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers WebP convertis immédiatement. Sans compte, sans envoi, sans attente."
+    },
+    faqs: {
+      en: [
+        {
+          q: "Why convert JPG to WebP?",
+          a: "WebP produces files 25–35% smaller than JPEG at the same visual quality — a direct improvement for web performance with no perceptible difference."
+        },
+        {
+          q: "Does JPG to WebP conversion affect quality?",
+          a: "WebP is lossy by default and matches JPEG quality closely. Expect 25–35% smaller files at equivalent visual quality."
+        },
+        {
+          q: "Is the conversion done in my browser?",
+          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
+        },
+        {
+          q: "Can I convert multiple files at once?",
+          a: "Yes. The tool supports batch conversion of multiple JPG files in a single upload."
+        },
+        {
+          q: "Is JPG to WebP Converter free?",
+          a: "Yes. EverydayTools JPG to WebP Converter is completely free, with no account required and no watermarks."
+        }
+      ],
+      fr: [
+        {
+          q: "Comment convertir JPG en webp gratuitement ?",
+          a: "Téléversez votre fichier JPG dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
+        },
+        {
+          q: "Pourquoi convertir JPG en WebP ?",
+          a: "WebP produit des fichiers 25 à 35 % plus petits que JPEG à la même qualité visuelle — une amélioration directe pour la performance web."
+        },
+        {
+          q: "La conversion affecte-t-elle la qualité ?",
+          a: "WebP est avec perte par défaut et correspond étroitement à la qualité JPEG. Attendez-vous à des fichiers 25 à 35 % plus petits."
+        },
+        {
+          q: "Puis-je convertir plusieurs fichiers à la fois ?",
+          a: "Oui. L'outil supporte la conversion par lot de plusieurs fichiers JPG en un seul téléversement."
+        },
+        {
+          q: "Le convertisseur JPG en WebP est-il gratuit ?",
+          a: "Oui. Le convertisseur JPG en WebP d'EverydayTools est entièrement gratuit, sans compte requis et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    internalSlug: "png-to-avif",
+    slugs: {
+      en: "convert-png-to-avif",
+      fr: "convertir-png-en-avif"
+    },
+    title: {
+      en: "PNG to AVIF Converter — Free, Online | EverydayTools Hub",
+      fr: "Convertir PNG en AVIF — Gratuit, En Ligne | EverydayTools Hub"
+    },
+    h1: {
+      en: "PNG to AVIF Converter",
+      fr: "Convertisseur PNG en AVIF"
+    },
+    description: {
+      en: "Convert PNG images to AVIF format in your browser. Free, no upload, no account required. PNG files are large due to lossless storage. AVIF can compress the same image to a fraction of the size — typically 60–80% smaller — while preserving strong visual quality.",
+      fr: "Convertissez des images PNG en AVIF dans votre navigateur. Gratuit, sans envoi, sans compte. Les fichiers PNG sont grands en raison du stockage sans perte. AVIF peut comprimer la même image à une fraction de la taille — 60 à 80 % plus petite — tout en préservant une forte qualité."
+    },
+    keywords: {
+      en: [
+        "png to avif converter",
+        "convert png to avif online free",
+        "png to avif free",
+        "png avif online",
+        "free png to avif converter",
+        "png to avif no upload"
+      ],
+      fr: [
+        "convertir png en avif",
+        "png en avif gratuit",
+        "convertisseur png avif en ligne",
+        "png vers avif sans logiciel",
+        "png avif en ligne gratuit",
+        "convertir image png en avif"
+      ]
+    },
+    relatedTools: [
+      "png-to-webp",
+      "jpg-to-avif",
+      "image-converter",
+      "image-compress"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Upload your PNG file",
+          text: "Click the upload area or drag your .png file. Multiple files are supported for batch conversion."
+        },
+        {
+          name: "Convert automatically",
+          text: "EverydayTools converts your PNG to AVIF entirely in your browser — no image is ever sent to a server."
+        },
+        {
+          name: "Download the AVIF file",
+          text: "Your AVIF file downloads immediately — no quality reduction applied beyond the chosen format's own compression."
+        }
+      ],
+      fr: [
+        {
+          name: "Téléversez votre fichier PNG",
+          text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier .png. Plusieurs fichiers sont supportés pour la conversion par lot."
+        },
+        {
+          name: "Conversion automatique",
+          text: "EverydayTools convertit votre PNG en AVIF entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+        },
+        {
+          name: "Téléchargez le fichier AVIF",
+          text: "Votre fichier AVIF se télécharge immédiatement — sans réduction de qualité supplémentaire."
+        }
+      ]
+    },
+    about: {
+      en: "PNG is a lossless format that preserves every pixel exactly, with full transparency support. PNG is ideal for graphics, logos, and screenshots.\n\nPNG files are large due to lossless storage. AVIF can compress the same image to a fraction of the size — typically 60–80% smaller — while preserving strong visual quality. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted AVIF files immediately. No account, no upload, no waiting.",
+      fr: "PNG est un format sans perte qui préserve chaque pixel exactement, avec un support complet de la transparence. PNG est idéal pour les graphismes, logos et captures d'écran.\n\nLes fichiers PNG sont grands en raison du stockage sans perte. AVIF peut comprimer la même image à une fraction de la taille — 60 à 80 % plus petite — tout en préservant une forte qualité. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers AVIF convertis immédiatement. Sans compte, sans envoi, sans attente."
+    },
+    faqs: {
+      en: [
+        {
+          q: "Why convert PNG to AVIF?",
+          a: "PNG files are large due to lossless storage. AVIF can compress the same image to a fraction of the size — typically 60–80% smaller — while preserving strong visual quality."
+        },
+        {
+          q: "Does PNG to AVIF conversion affect quality?",
+          a: "AVIF uses lossy compression, so some data is discarded. For most images, the quality difference at standard settings is not visible."
+        },
+        {
+          q: "Is the conversion done in my browser?",
+          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
+        },
+        {
+          q: "Can I convert multiple files at once?",
+          a: "Yes. The tool supports batch conversion of multiple PNG files in a single upload."
+        },
+        {
+          q: "Is PNG to AVIF Converter free?",
+          a: "Yes. EverydayTools PNG to AVIF Converter is completely free, with no account required and no watermarks."
+        }
+      ],
+      fr: [
+        {
+          q: "Comment convertir PNG en avif gratuitement ?",
+          a: "Téléversez votre fichier PNG dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
+        },
+        {
+          q: "Pourquoi convertir PNG en AVIF ?",
+          a: "Les fichiers PNG sont grands en raison du stockage sans perte. AVIF peut comprimer la même image à une fraction de la taille — 60 à 80 % plus petite — tout en préservant une forte qualité."
+        },
+        {
+          q: "La conversion affecte-t-elle la qualité ?",
+          a: "AVIF utilise une compression avec perte, donc certaines données sont supprimées. Pour la plupart des images, la différence de qualité n'est pas visible."
+        },
+        {
+          q: "Puis-je convertir plusieurs fichiers à la fois ?",
+          a: "Oui. L'outil supporte la conversion par lot de plusieurs fichiers PNG en un seul téléversement."
+        },
+        {
+          q: "Le convertisseur PNG en AVIF est-il gratuit ?",
+          a: "Oui. Le convertisseur PNG en AVIF d'EverydayTools est entièrement gratuit, sans compte requis et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    internalSlug: "png-to-jpg",
+    slugs: {
+      en: "convert-png-to-jpg",
+      fr: "convertir-png-en-jpg"
+    },
+    title: {
+      en: "PNG to JPG Converter — Free, Online | EverydayTools Hub",
+      fr: "Convertir PNG en JPG — Gratuit, En Ligne | EverydayTools Hub"
+    },
+    h1: {
+      en: "PNG to JPG Converter",
+      fr: "Convertisseur PNG en JPG"
+    },
+    description: {
+      en: "Convert PNG images to JPG format in your browser. Free, no upload, no account required. PNG is a lossless format ideal for graphics, but PNG files are much larger than JPEG for the same photo. Convert to JPEG to reduce file size significantly.",
+      fr: "Convertissez des images PNG en JPG dans votre navigateur. Gratuit, sans envoi, sans compte. PNG est sans perte, idéal pour les graphismes, mais les fichiers PNG sont bien plus grands que JPEG pour la même photo. Convertissez en JPEG pour réduire significativement la taille."
+    },
+    keywords: {
+      en: [
+        "png to jpg converter",
+        "convert png to jpg online free",
+        "png to jpg free",
+        "png jpg online",
+        "free png to jpg converter",
+        "png to jpg no upload"
+      ],
+      fr: [
+        "convertir png en jpg",
+        "png en jpg gratuit",
+        "convertisseur png jpg en ligne",
+        "png vers jpg sans logiciel",
+        "png jpg en ligne gratuit",
+        "convertir image png en jpg"
+      ]
+    },
+    relatedTools: [
+      "jpg-to-png",
+      "png-to-webp",
+      "image-converter",
+      "image-compress"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Upload your PNG file",
+          text: "Click the upload area or drag your .png file. Multiple files are supported for batch conversion."
+        },
+        {
+          name: "Convert automatically",
+          text: "EverydayTools converts your PNG to JPG entirely in your browser — no image is ever sent to a server."
+        },
+        {
+          name: "Download the JPG file",
+          text: "Your JPG file downloads immediately — no quality reduction applied beyond the chosen format's own compression."
+        }
+      ],
+      fr: [
+        {
+          name: "Téléversez votre fichier PNG",
+          text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier .png. Plusieurs fichiers sont supportés pour la conversion par lot."
+        },
+        {
+          name: "Conversion automatique",
+          text: "EverydayTools convertit votre PNG en JPG entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+        },
+        {
+          name: "Téléchargez le fichier JPG",
+          text: "Votre fichier JPG se télécharge immédiatement — sans réduction de qualité supplémentaire."
+        }
+      ]
+    },
+    about: {
+      en: "PNG is a lossless format that preserves every pixel exactly, with full transparency support. PNG is ideal for graphics, logos, and screenshots.\n\nPNG is a lossless format ideal for graphics, but PNG files are much larger than JPEG for the same photo. Convert to JPEG to reduce file size significantly. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted JPG files immediately. No account, no upload, no waiting.",
+      fr: "PNG est un format sans perte qui préserve chaque pixel exactement, avec un support complet de la transparence. PNG est idéal pour les graphismes, logos et captures d'écran.\n\nPNG est sans perte, idéal pour les graphismes, mais les fichiers PNG sont bien plus grands que JPEG pour la même photo. Convertissez en JPEG pour réduire significativement la taille. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers JPG convertis immédiatement. Sans compte, sans envoi, sans attente."
+    },
+    faqs: {
+      en: [
+        {
+          q: "Why convert PNG to JPG?",
+          a: "PNG is a lossless format ideal for graphics, but PNG files are much larger than JPEG for the same photo. Convert to JPEG to reduce file size significantly."
+        },
+        {
+          q: "Does PNG to JPG conversion affect quality?",
+          a: "JPEG is lossy — some quality is lost. The tool uses high-quality JPEG encoding so the difference is minimal. Transparent PNG areas are filled with white."
+        },
+        {
+          q: "Is the conversion done in my browser?",
+          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
+        },
+        {
+          q: "Can I convert multiple files at once?",
+          a: "Yes. The tool supports batch conversion of multiple PNG files in a single upload."
+        },
+        {
+          q: "Is PNG to JPG Converter free?",
+          a: "Yes. EverydayTools PNG to JPG Converter is completely free, with no account required and no watermarks."
+        }
+      ],
+      fr: [
+        {
+          q: "Comment convertir PNG en jpg gratuitement ?",
+          a: "Téléversez votre fichier PNG dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
+        },
+        {
+          q: "Pourquoi convertir PNG en JPG ?",
+          a: "PNG est sans perte, idéal pour les graphismes, mais les fichiers PNG sont bien plus grands que JPEG pour la même photo. Convertissez en JPEG pour réduire significativement la taille."
+        },
+        {
+          q: "La conversion affecte-t-elle la qualité ?",
+          a: "JPEG est avec perte — une certaine qualité est perdue. L'outil utilise un encodage JPEG haute qualité. Les zones transparentes PNG sont remplies de blanc."
+        },
+        {
+          q: "Puis-je convertir plusieurs fichiers à la fois ?",
+          a: "Oui. L'outil supporte la conversion par lot de plusieurs fichiers PNG en un seul téléversement."
+        },
+        {
+          q: "Le convertisseur PNG en JPG est-il gratuit ?",
+          a: "Oui. Le convertisseur PNG en JPG d'EverydayTools est entièrement gratuit, sans compte requis et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    internalSlug: "png-to-pdf",
+    slugs: {
+      en: "convert-png-to-pdf",
+      fr: "convertir-png-en-pdf"
+    },
+    title: {
+      en: "PNG to PDF Converter — Free, Online | EverydayTools Hub",
+      fr: "Convertir PNG en PDF — Gratuit, En Ligne | EverydayTools Hub"
+    },
+    h1: {
+      en: "PNG to PDF Converter",
+      fr: "Convertisseur PNG en PDF"
+    },
+    description: {
+      en: "Convert PNG images to PDF format in your browser. Free, no upload, no account required. Wrap one or more PNG images in a PDF for easy sharing, printing, or embedding in documents.",
+      fr: "Convertissez des images PNG en PDF dans votre navigateur. Gratuit, sans envoi, sans compte. Regroupez une ou plusieurs images PNG dans un PDF pour un partage, une impression ou une intégration dans des documents facile."
+    },
+    keywords: {
+      en: [
+        "png to pdf converter",
+        "convert png to pdf online free",
+        "png to pdf free",
+        "png pdf online",
+        "free png to pdf converter",
+        "png to pdf no upload"
+      ],
+      fr: [
+        "convertir png en pdf",
+        "png en pdf gratuit",
+        "convertisseur png pdf en ligne",
+        "png vers pdf sans logiciel",
+        "png pdf en ligne gratuit",
+        "convertir image png en pdf"
+      ]
+    },
+    relatedTools: [
+      "image-to-pdf",
+      "pdf-to-image",
+      "png-to-webp",
+      "image-compress"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Upload your PNG file",
+          text: "Click the upload area or drag your .png file. Multiple files are supported for batch conversion."
+        },
+        {
+          name: "Convert automatically",
+          text: "EverydayTools converts your PNG to PDF entirely in your browser — no image is ever sent to a server."
+        },
+        {
+          name: "Download the PDF file",
+          text: "Your PDF with all images as pages downloads immediately."
+        }
+      ],
+      fr: [
+        {
+          name: "Téléversez votre fichier PNG",
+          text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier .png. Plusieurs fichiers sont supportés pour la conversion par lot."
+        },
+        {
+          name: "Conversion automatique",
+          text: "EverydayTools convertit votre PNG en PDF entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+        },
+        {
+          name: "Téléchargez le fichier PDF",
+          text: "Votre PDF avec toutes les images en pages se télécharge immédiatement."
+        }
+      ]
+    },
+    about: {
+      en: "PNG is a lossless format that preserves every pixel exactly, with full transparency support. PNG is ideal for graphics, logos, and screenshots.\n\nWrap one or more PNG images in a PDF for easy sharing, printing, or embedding in documents. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted PDF files immediately. No account, no upload, no waiting.",
+      fr: "PNG est un format sans perte qui préserve chaque pixel exactement, avec un support complet de la transparence. PNG est idéal pour les graphismes, logos et captures d'écran.\n\nRegroupez une ou plusieurs images PNG dans un PDF pour un partage, une impression ou une intégration dans des documents facile. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers PDF convertis immédiatement. Sans compte, sans envoi, sans attente."
+    },
+    faqs: {
+      en: [
+        {
+          q: "Why convert PNG to PDF?",
+          a: "Wrap one or more PNG images in a PDF for easy sharing, printing, or embedding in documents."
+        },
+        {
+          q: "Does PNG to PDF conversion affect quality?",
+          a: "Images are embedded in the PDF at full original resolution with no quality loss."
+        },
+        {
+          q: "Is the conversion done in my browser?",
+          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
+        },
+        {
+          q: "Can I convert multiple files at once?",
+          a: "Yes. The tool supports batch conversion of multiple PNG files in a single upload."
+        },
+        {
+          q: "Is PNG to PDF Converter free?",
+          a: "Yes. EverydayTools PNG to PDF Converter is completely free, with no account required and no watermarks."
+        }
+      ],
+      fr: [
+        {
+          q: "Comment convertir PNG en pdf gratuitement ?",
+          a: "Téléversez votre fichier PNG dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
+        },
+        {
+          q: "Pourquoi convertir PNG en PDF ?",
+          a: "Regroupez une ou plusieurs images PNG dans un PDF pour un partage, une impression ou une intégration dans des documents facile."
+        },
+        {
+          q: "La conversion affecte-t-elle la qualité ?",
+          a: "Les images sont intégrées dans le PDF à leur résolution originale complète sans perte de qualité."
+        },
+        {
+          q: "Puis-je convertir plusieurs fichiers à la fois ?",
+          a: "Oui. L'outil supporte la conversion par lot de plusieurs fichiers PNG en un seul téléversement."
+        },
+        {
+          q: "Le convertisseur PNG en PDF est-il gratuit ?",
+          a: "Oui. Le convertisseur PNG en PDF d'EverydayTools est entièrement gratuit, sans compte requis et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    internalSlug: "png-to-svg",
+    slugs: {
+      en: "convert-png-to-svg",
+      fr: "convertir-png-en-svg"
+    },
+    title: {
+      en: "PNG to SVG Converter — Free, Online | EverydayTools Hub",
+      fr: "Convertir PNG en SVG — Gratuit, En Ligne | EverydayTools Hub"
+    },
+    h1: {
+      en: "PNG to SVG Converter",
+      fr: "Convertisseur PNG en SVG"
+    },
+    description: {
+      en: "Convert PNG images to SVG format in your browser. Free, no upload, no account required. Convert a PNG image to an SVG vector graphic so it can scale to any size without becoming pixelated — ideal for logos and simple graphics.",
+      fr: "Convertissez des images PNG en SVG dans votre navigateur. Gratuit, sans envoi, sans compte. Convertissez une image PNG en graphique vectoriel SVG pour qu'il s'adapte à n'importe quelle taille sans pixellisation — idéal pour les logos et graphismes simples."
+    },
+    keywords: {
+      en: [
+        "png to svg converter",
+        "convert png to svg online free",
+        "png to svg free",
+        "png svg online",
+        "free png to svg converter",
+        "png to svg no upload"
+      ],
+      fr: [
+        "convertir png en svg",
+        "png en svg gratuit",
+        "convertisseur png svg en ligne",
+        "png vers svg sans logiciel",
+        "png svg en ligne gratuit",
+        "convertir image png en svg"
+      ]
+    },
+    relatedTools: [
+      "svg-to-png",
+      "png-to-webp",
+      "background-remover",
+      "image-converter"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Upload your PNG file",
+          text: "Click the upload area or drag your .png file. Multiple files are supported for batch conversion."
+        },
+        {
+          name: "Convert automatically",
+          text: "EverydayTools converts your PNG to SVG entirely in your browser — no image is ever sent to a server."
+        },
+        {
+          name: "Download the SVG file",
+          text: "Your SVG file downloads immediately — no quality reduction applied beyond the chosen format's own compression."
+        }
+      ],
+      fr: [
+        {
+          name: "Téléversez votre fichier PNG",
+          text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier .png. Plusieurs fichiers sont supportés pour la conversion par lot."
+        },
+        {
+          name: "Conversion automatique",
+          text: "EverydayTools convertit votre PNG en SVG entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+        },
+        {
+          name: "Téléchargez le fichier SVG",
+          text: "Votre fichier SVG se télécharge immédiatement — sans réduction de qualité supplémentaire."
+        }
+      ]
+    },
+    about: {
+      en: "PNG is a lossless format that preserves every pixel exactly, with full transparency support. PNG is ideal for graphics, logos, and screenshots.\n\nConvert a PNG image to an SVG vector graphic so it can scale to any size without becoming pixelated — ideal for logos and simple graphics. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted SVG files immediately. No account, no upload, no waiting.",
+      fr: "PNG est un format sans perte qui préserve chaque pixel exactement, avec un support complet de la transparence. PNG est idéal pour les graphismes, logos et captures d'écran.\n\nConvertissez une image PNG en graphique vectoriel SVG pour qu'il s'adapte à n'importe quelle taille sans pixellisation — idéal pour les logos et graphismes simples. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers SVG convertis immédiatement. Sans compte, sans envoi, sans attente."
+    },
+    faqs: {
+      en: [
+        {
+          q: "Why convert PNG to SVG?",
+          a: "Convert a PNG image to an SVG vector graphic so it can scale to any size without becoming pixelated — ideal for logos and simple graphics."
+        },
+        {
+          q: "Does PNG to SVG conversion affect quality?",
+          a: "PNG to SVG conversion works best on simple, flat-color images like logos, icons, and diagrams. Complex photos do not trace well to SVG — they produce very large files with poor results."
+        },
+        {
+          q: "Is the conversion done in my browser?",
+          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
+        },
+        {
+          q: "Can I convert multiple files at once?",
+          a: "Yes. The tool supports batch conversion of multiple PNG files in a single upload."
+        },
+        {
+          q: "Is PNG to SVG Converter free?",
+          a: "Yes. EverydayTools PNG to SVG Converter is completely free, with no account required and no watermarks."
+        }
+      ],
+      fr: [
+        {
+          q: "Comment convertir PNG en svg gratuitement ?",
+          a: "Téléversez votre fichier PNG dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
+        },
+        {
+          q: "Pourquoi convertir PNG en SVG ?",
+          a: "Convertissez une image PNG en graphique vectoriel SVG pour qu'il s'adapte à n'importe quelle taille sans pixellisation — idéal pour les logos et graphismes simples."
+        },
+        {
+          q: "La conversion affecte-t-elle la qualité ?",
+          a: "La conversion PNG vers SVG fonctionne mieux sur les images simples à couleurs plates comme les logos et icônes. Les photos complexes ne se convertissent pas bien en SVG."
+        },
+        {
+          q: "Puis-je convertir plusieurs fichiers à la fois ?",
+          a: "Oui. L'outil supporte la conversion par lot de plusieurs fichiers PNG en un seul téléversement."
+        },
+        {
+          q: "Le convertisseur PNG en SVG est-il gratuit ?",
+          a: "Oui. Le convertisseur PNG en SVG d'EverydayTools est entièrement gratuit, sans compte requis et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    internalSlug: "svg-to-png",
+    slugs: {
+      en: "convert-svg-to-png",
+      fr: "convertir-svg-en-png"
+    },
+    title: {
+      en: "SVG to PNG Converter — Free, Online | EverydayTools Hub",
+      fr: "Convertir SVG en PNG — Gratuit, En Ligne | EverydayTools Hub"
+    },
+    h1: {
+      en: "SVG to PNG Converter",
+      fr: "Convertisseur SVG en PNG"
+    },
+    description: {
+      en: "Convert SVG images to PNG format in your browser. Free, no upload, no account required. SVG is not supported by all apps and platforms. Convert to PNG to get a raster image at a fixed resolution that opens anywhere.",
+      fr: "Convertissez des images SVG en PNG dans votre navigateur. Gratuit, sans envoi, sans compte. SVG n'est pas supporté par toutes les applications. Convertissez en PNG pour obtenir une image raster à résolution fixe qui s'ouvre partout."
+    },
+    keywords: {
+      en: [
+        "svg to png converter",
+        "convert svg to png online free",
+        "svg to png free",
+        "svg png online",
+        "free svg to png converter",
+        "svg to png no upload"
+      ],
+      fr: [
+        "convertir svg en png",
+        "svg en png gratuit",
+        "convertisseur svg png en ligne",
+        "svg vers png sans logiciel",
+        "svg png en ligne gratuit",
+        "convertir image svg en png"
+      ]
+    },
+    relatedTools: [
+      "png-to-svg",
+      "image-resize",
+      "png-to-webp",
+      "image-converter"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Upload your SVG file",
+          text: "Click the upload area or drag your .svg file. Multiple files are supported for batch conversion."
+        },
+        {
+          name: "Convert automatically",
+          text: "EverydayTools converts your SVG to PNG entirely in your browser — no image is ever sent to a server."
+        },
+        {
+          name: "Download the PNG file",
+          text: "Your PNG file downloads immediately — no quality reduction applied beyond the chosen format's own compression."
+        }
+      ],
+      fr: [
+        {
+          name: "Téléversez votre fichier SVG",
+          text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier .svg. Plusieurs fichiers sont supportés pour la conversion par lot."
+        },
+        {
+          name: "Conversion automatique",
+          text: "EverydayTools convertit votre SVG en PNG entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+        },
+        {
+          name: "Téléchargez le fichier PNG",
+          text: "Votre fichier PNG se télécharge immédiatement — sans réduction de qualité supplémentaire."
+        }
+      ]
+    },
+    about: {
+      en: "SVG is a vector format defined in XML that scales to any size without losing quality. SVG is the standard for logos, icons, and illustrations on the web.\n\nSVG is not supported by all apps and platforms. Convert to PNG to get a raster image at a fixed resolution that opens anywhere. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted PNG files immediately. No account, no upload, no waiting.",
+      fr: "SVG est un format vectoriel défini en XML qui s'adapte à n'importe quelle taille sans perte de qualité. SVG est le standard pour les logos, icônes et illustrations.\n\nSVG n'est pas supporté par toutes les applications. Convertissez en PNG pour obtenir une image raster à résolution fixe qui s'ouvre partout. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers PNG convertis immédiatement. Sans compte, sans envoi, sans attente."
+    },
+    faqs: {
+      en: [
+        {
+          q: "Why convert SVG to PNG?",
+          a: "SVG is not supported by all apps and platforms. Convert to PNG to get a raster image at a fixed resolution that opens anywhere."
+        },
+        {
+          q: "Does SVG to PNG conversion affect quality?",
+          a: "PNG is lossless. The output quality depends on the rendering resolution you choose — higher resolution gives sharper results."
+        },
+        {
+          q: "Is the conversion done in my browser?",
+          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
+        },
+        {
+          q: "Can I convert multiple files at once?",
+          a: "Yes. The tool supports batch conversion of multiple SVG files in a single upload."
+        },
+        {
+          q: "Is SVG to PNG Converter free?",
+          a: "Yes. EverydayTools SVG to PNG Converter is completely free, with no account required and no watermarks."
+        }
+      ],
+      fr: [
+        {
+          q: "Comment convertir SVG en png gratuitement ?",
+          a: "Téléversez votre fichier SVG dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
+        },
+        {
+          q: "Pourquoi convertir SVG en PNG ?",
+          a: "SVG n'est pas supporté par toutes les applications. Convertissez en PNG pour obtenir une image raster à résolution fixe qui s'ouvre partout."
+        },
+        {
+          q: "La conversion affecte-t-elle la qualité ?",
+          a: "PNG est sans perte. La qualité de sortie dépend de la résolution de rendu choisie — une résolution plus élevée donne des résultats plus nets."
+        },
+        {
+          q: "Puis-je convertir plusieurs fichiers à la fois ?",
+          a: "Oui. L'outil supporte la conversion par lot de plusieurs fichiers SVG en un seul téléversement."
+        },
+        {
+          q: "Le convertisseur SVG en PNG est-il gratuit ?",
+          a: "Oui. Le convertisseur SVG en PNG d'EverydayTools est entièrement gratuit, sans compte requis et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    internalSlug: "tiff-to-jpg",
+    slugs: {
+      en: "convert-tiff-to-jpg",
+      fr: "convertir-tiff-en-jpg"
+    },
+    title: {
+      en: "TIFF to JPG Converter — Free, Online | EverydayTools Hub",
+      fr: "Convertir TIFF en JPG — Gratuit, En Ligne | EverydayTools Hub"
+    },
+    h1: {
+      en: "TIFF to JPG Converter",
+      fr: "Convertisseur TIFF en JPG"
+    },
+    description: {
+      en: "Convert TIFF images to JPG format in your browser. Free, no upload, no account required. TIFF files are enormous — a single image can be hundreds of megabytes. Converting to JPEG reduces file sizes by 95%+ for sharing and web use.",
+      fr: "Convertissez des images TIFF en JPG dans votre navigateur. Gratuit, sans envoi, sans compte. Les fichiers TIFF sont énormes — une seule image peut peser des centaines de mégaoctets. La conversion en JPEG réduit la taille de 95 %+ pour le partage."
+    },
+    keywords: {
+      en: [
+        "tiff to jpg converter",
+        "convert tiff to jpg online free",
+        "tiff to jpg free",
+        "tiff jpg online",
+        "free tiff to jpg converter",
+        "tiff to jpg no upload"
+      ],
+      fr: [
+        "convertir tiff en jpg",
+        "tiff en jpg gratuit",
+        "convertisseur tiff jpg en ligne",
+        "tiff vers jpg sans logiciel",
+        "tiff jpg en ligne gratuit",
+        "convertir image tiff en jpg"
+      ]
+    },
+    relatedTools: [
+      "tiff-to-png",
+      "tiff-to-webp",
+      "image-converter",
+      "image-compress"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Upload your TIFF file",
+          text: "Click the upload area or drag your .tiff file. Multiple files are supported for batch conversion."
+        },
+        {
+          name: "Convert automatically",
+          text: "EverydayTools converts your TIFF to JPG entirely in your browser — no image is ever sent to a server."
+        },
+        {
+          name: "Download the JPG file",
+          text: "Your JPG file downloads immediately — no quality reduction applied beyond the chosen format's own compression."
+        }
+      ],
+      fr: [
+        {
+          name: "Téléversez votre fichier TIFF",
+          text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier .tiff. Plusieurs fichiers sont supportés pour la conversion par lot."
+        },
+        {
+          name: "Conversion automatique",
+          text: "EverydayTools convertit votre TIFF en JPG entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+        },
+        {
+          name: "Téléchargez le fichier JPG",
+          text: "Votre fichier JPG se télécharge immédiatement — sans réduction de qualité supplémentaire."
+        }
+      ]
+    },
+    about: {
+      en: "TIFF is a professional lossless format used in printing, scanning, and archiving. TIFF files preserve every detail at full quality but can be hundreds of megabytes each.\n\nTIFF files are enormous — a single image can be hundreds of megabytes. Converting to JPEG reduces file sizes by 95%+ for sharing and web use. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted JPG files immediately. No account, no upload, no waiting.",
+      fr: "TIFF est un format professionnel sans perte utilisé en impression, numérisation et archivage. Les fichiers TIFF préservent chaque détail mais peuvent peser des centaines de mégaoctets.\n\nLes fichiers TIFF sont énormes — une seule image peut peser des centaines de mégaoctets. La conversion en JPEG réduit la taille de 95 %+ pour le partage. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers JPG convertis immédiatement. Sans compte, sans envoi, sans attente."
+    },
+    faqs: {
+      en: [
+        {
+          q: "Why convert TIFF to JPG?",
+          a: "TIFF files are enormous — a single image can be hundreds of megabytes. Converting to JPEG reduces file sizes by 95%+ for sharing and web use."
+        },
+        {
+          q: "Does TIFF to JPG conversion affect quality?",
+          a: "JPEG is lossy. Converting from lossless TIFF to JPEG introduces compression artifacts, but at high quality settings these are barely perceptible."
+        },
+        {
+          q: "Is the conversion done in my browser?",
+          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
+        },
+        {
+          q: "Can I convert multiple files at once?",
+          a: "Yes. The tool supports batch conversion of multiple TIFF files in a single upload."
+        },
+        {
+          q: "Is TIFF to JPG Converter free?",
+          a: "Yes. EverydayTools TIFF to JPG Converter is completely free, with no account required and no watermarks."
+        }
+      ],
+      fr: [
+        {
+          q: "Comment convertir TIFF en jpg gratuitement ?",
+          a: "Téléversez votre fichier TIFF dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
+        },
+        {
+          q: "Pourquoi convertir TIFF en JPG ?",
+          a: "Les fichiers TIFF sont énormes — une seule image peut peser des centaines de mégaoctets. La conversion en JPEG réduit la taille de 95 %+ pour le partage."
+        },
+        {
+          q: "La conversion affecte-t-elle la qualité ?",
+          a: "JPEG est avec perte. La conversion de TIFF sans perte en JPEG introduit des artefacts de compression, mais à haute qualité ces artefacts sont à peine perceptibles."
+        },
+        {
+          q: "Puis-je convertir plusieurs fichiers à la fois ?",
+          a: "Oui. L'outil supporte la conversion par lot de plusieurs fichiers TIFF en un seul téléversement."
+        },
+        {
+          q: "Le convertisseur TIFF en JPG est-il gratuit ?",
+          a: "Oui. Le convertisseur TIFF en JPG d'EverydayTools est entièrement gratuit, sans compte requis et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    internalSlug: "tiff-to-png",
+    slugs: {
+      en: "convert-tiff-to-png",
+      fr: "convertir-tiff-en-png"
+    },
+    title: {
+      en: "TIFF to PNG Converter — Free, Online | EverydayTools Hub",
+      fr: "Convertir TIFF en PNG — Gratuit, En Ligne | EverydayTools Hub"
+    },
+    h1: {
+      en: "TIFF to PNG Converter",
+      fr: "Convertisseur TIFF en PNG"
+    },
+    description: {
+      en: "Convert TIFF images to PNG format in your browser. Free, no upload, no account required. PNG preserves lossless quality like TIFF but at a much more manageable file size — typically 30–60% smaller — while retaining transparency support.",
+      fr: "Convertissez des images TIFF en PNG dans votre navigateur. Gratuit, sans envoi, sans compte. PNG préserve la qualité sans perte comme TIFF mais avec une taille de fichier bien plus gérable — 30 à 60 % plus petite — tout en conservant la transparence."
+    },
+    keywords: {
+      en: [
+        "tiff to png converter",
+        "convert tiff to png online free",
+        "tiff to png free",
+        "tiff png online",
+        "free tiff to png converter",
+        "tiff to png no upload"
+      ],
+      fr: [
+        "convertir tiff en png",
+        "tiff en png gratuit",
+        "convertisseur tiff png en ligne",
+        "tiff vers png sans logiciel",
+        "tiff png en ligne gratuit",
+        "convertir image tiff en png"
+      ]
+    },
+    relatedTools: [
+      "tiff-to-jpg",
+      "tiff-to-webp",
+      "image-converter",
+      "background-remover"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Upload your TIFF file",
+          text: "Click the upload area or drag your .tiff file. Multiple files are supported for batch conversion."
+        },
+        {
+          name: "Convert automatically",
+          text: "EverydayTools converts your TIFF to PNG entirely in your browser — no image is ever sent to a server."
+        },
+        {
+          name: "Download the PNG file",
+          text: "Your PNG file downloads immediately — no quality reduction applied beyond the chosen format's own compression."
+        }
+      ],
+      fr: [
+        {
+          name: "Téléversez votre fichier TIFF",
+          text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier .tiff. Plusieurs fichiers sont supportés pour la conversion par lot."
+        },
+        {
+          name: "Conversion automatique",
+          text: "EverydayTools convertit votre TIFF en PNG entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+        },
+        {
+          name: "Téléchargez le fichier PNG",
+          text: "Votre fichier PNG se télécharge immédiatement — sans réduction de qualité supplémentaire."
+        }
+      ]
+    },
+    about: {
+      en: "TIFF is a professional lossless format used in printing, scanning, and archiving. TIFF files preserve every detail at full quality but can be hundreds of megabytes each.\n\nPNG preserves lossless quality like TIFF but at a much more manageable file size — typically 30–60% smaller — while retaining transparency support. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted PNG files immediately. No account, no upload, no waiting.",
+      fr: "TIFF est un format professionnel sans perte utilisé en impression, numérisation et archivage. Les fichiers TIFF préservent chaque détail mais peuvent peser des centaines de mégaoctets.\n\nPNG préserve la qualité sans perte comme TIFF mais avec une taille de fichier bien plus gérable — 30 à 60 % plus petite — tout en conservant la transparence. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers PNG convertis immédiatement. Sans compte, sans envoi, sans attente."
+    },
+    faqs: {
+      en: [
+        {
+          q: "Why convert TIFF to PNG?",
+          a: "PNG preserves lossless quality like TIFF but at a much more manageable file size — typically 30–60% smaller — while retaining transparency support."
+        },
+        {
+          q: "Does TIFF to PNG conversion affect quality?",
+          a: "PNG is lossless. No quality is lost in the conversion — the output is a perfect pixel-for-pixel reproduction of the source TIFF."
+        },
+        {
+          q: "Is the conversion done in my browser?",
+          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
+        },
+        {
+          q: "Can I convert multiple files at once?",
+          a: "Yes. The tool supports batch conversion of multiple TIFF files in a single upload."
+        },
+        {
+          q: "Is TIFF to PNG Converter free?",
+          a: "Yes. EverydayTools TIFF to PNG Converter is completely free, with no account required and no watermarks."
+        }
+      ],
+      fr: [
+        {
+          q: "Comment convertir TIFF en png gratuitement ?",
+          a: "Téléversez votre fichier TIFF dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
+        },
+        {
+          q: "Pourquoi convertir TIFF en PNG ?",
+          a: "PNG préserve la qualité sans perte comme TIFF mais avec une taille de fichier bien plus gérable — 30 à 60 % plus petite — tout en conservant la transparence."
+        },
+        {
+          q: "La conversion affecte-t-elle la qualité ?",
+          a: "PNG est sans perte. Aucune qualité n'est perdue dans la conversion — la sortie est une reproduction parfaite pixel par pixel du TIFF source."
+        },
+        {
+          q: "Puis-je convertir plusieurs fichiers à la fois ?",
+          a: "Oui. L'outil supporte la conversion par lot de plusieurs fichiers TIFF en un seul téléversement."
+        },
+        {
+          q: "Le convertisseur TIFF en PNG est-il gratuit ?",
+          a: "Oui. Le convertisseur TIFF en PNG d'EverydayTools est entièrement gratuit, sans compte requis et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    internalSlug: "tiff-to-webp",
+    slugs: {
+      en: "convert-tiff-to-webp",
+      fr: "convertir-tiff-en-webp"
+    },
+    title: {
+      en: "TIFF to WebP Converter — Free, Online | EverydayTools Hub",
+      fr: "Convertir TIFF en WebP — Gratuit, En Ligne | EverydayTools Hub"
+    },
+    h1: {
+      en: "TIFF to WebP Converter",
+      fr: "Convertisseur TIFF en WebP"
+    },
+    description: {
+      en: "Convert TIFF images to WebP format in your browser. Free, no upload, no account required. Convert massive TIFF archival files to WebP for web use — typically 90%+ size reduction with excellent visual quality.",
+      fr: "Convertissez des images TIFF en WebP dans votre navigateur. Gratuit, sans envoi, sans compte. Convertissez des fichiers TIFF d'archivage massifs en WebP pour le web — réduction de taille de 90 %+ avec une excellente qualité visuelle."
+    },
+    keywords: {
+      en: [
+        "tiff to webp converter",
+        "convert tiff to webp online free",
+        "tiff to webp free",
+        "tiff webp online",
+        "free tiff to webp converter",
+        "tiff to webp no upload"
+      ],
+      fr: [
+        "convertir tiff en webp",
+        "tiff en webp gratuit",
+        "convertisseur tiff webp en ligne",
+        "tiff vers webp sans logiciel",
+        "tiff webp en ligne gratuit",
+        "convertir image tiff en webp"
+      ]
+    },
+    relatedTools: [
+      "tiff-to-jpg",
+      "tiff-to-png",
+      "image-converter",
+      "image-compress"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Upload your TIFF file",
+          text: "Click the upload area or drag your .tiff file. Multiple files are supported for batch conversion."
+        },
+        {
+          name: "Convert automatically",
+          text: "EverydayTools converts your TIFF to WebP entirely in your browser — no image is ever sent to a server."
+        },
+        {
+          name: "Download the WebP file",
+          text: "Your WebP file downloads immediately — no quality reduction applied beyond the chosen format's own compression."
+        }
+      ],
+      fr: [
+        {
+          name: "Téléversez votre fichier TIFF",
+          text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier .tiff. Plusieurs fichiers sont supportés pour la conversion par lot."
+        },
+        {
+          name: "Conversion automatique",
+          text: "EverydayTools convertit votre TIFF en WebP entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+        },
+        {
+          name: "Téléchargez le fichier WebP",
+          text: "Votre fichier WebP se télécharge immédiatement — sans réduction de qualité supplémentaire."
+        }
+      ]
+    },
+    about: {
+      en: "TIFF is a professional lossless format used in printing, scanning, and archiving. TIFF files preserve every detail at full quality but can be hundreds of megabytes each.\n\nConvert massive TIFF archival files to WebP for web use — typically 90%+ size reduction with excellent visual quality. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted WebP files immediately. No account, no upload, no waiting.",
+      fr: "TIFF est un format professionnel sans perte utilisé en impression, numérisation et archivage. Les fichiers TIFF préservent chaque détail mais peuvent peser des centaines de mégaoctets.\n\nConvertissez des fichiers TIFF d'archivage massifs en WebP pour le web — réduction de taille de 90 %+ avec une excellente qualité visuelle. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers WebP convertis immédiatement. Sans compte, sans envoi, sans attente."
+    },
+    faqs: {
+      en: [
+        {
+          q: "Why convert TIFF to WebP?",
+          a: "Convert massive TIFF archival files to WebP for web use — typically 90%+ size reduction with excellent visual quality."
+        },
+        {
+          q: "Does TIFF to WebP conversion affect quality?",
+          a: "WebP uses lossy compression. Converting from lossless TIFF to WebP introduces compression, but at standard settings results are visually near-indistinguishable from the original."
+        },
+        {
+          q: "Is the conversion done in my browser?",
+          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
+        },
+        {
+          q: "Can I convert multiple files at once?",
+          a: "Yes. The tool supports batch conversion of multiple TIFF files in a single upload."
+        },
+        {
+          q: "Is TIFF to WebP Converter free?",
+          a: "Yes. EverydayTools TIFF to WebP Converter is completely free, with no account required and no watermarks."
+        }
+      ],
+      fr: [
+        {
+          q: "Comment convertir TIFF en webp gratuitement ?",
+          a: "Téléversez votre fichier TIFF dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
+        },
+        {
+          q: "Pourquoi convertir TIFF en WebP ?",
+          a: "Convertissez des fichiers TIFF d'archivage massifs en WebP pour le web — réduction de taille de 90 %+ avec une excellente qualité visuelle."
+        },
+        {
+          q: "La conversion affecte-t-elle la qualité ?",
+          a: "WebP utilise une compression avec perte. La conversion de TIFF sans perte vers WebP introduit une compression, mais à des paramètres standards les résultats sont visuellement presque indistinguables."
+        },
+        {
+          q: "Puis-je convertir plusieurs fichiers à la fois ?",
+          a: "Oui. L'outil supporte la conversion par lot de plusieurs fichiers TIFF en un seul téléversement."
+        },
+        {
+          q: "Le convertisseur TIFF en WebP est-il gratuit ?",
+          a: "Oui. Le convertisseur TIFF en WebP d'EverydayTools est entièrement gratuit, sans compte requis et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    internalSlug: "webp-to-avif",
+    slugs: {
+      en: "convert-webp-to-avif",
+      fr: "convertir-webp-en-avif"
+    },
+    title: {
+      en: "WebP to AVIF Converter — Free, Online | EverydayTools Hub",
+      fr: "Convertir WebP en AVIF — Gratuit, En Ligne | EverydayTools Hub"
+    },
+    h1: {
+      en: "WebP to AVIF Converter",
+      fr: "Convertisseur WebP en AVIF"
+    },
+    description: {
+      en: "Convert WebP images to AVIF format in your browser. Free, no upload, no account required. AVIF offers even better compression than WebP — typically 20–30% smaller at the same visual quality — and is increasingly supported by browsers.",
+      fr: "Convertissez des images WebP en AVIF dans votre navigateur. Gratuit, sans envoi, sans compte. AVIF offre une compression encore meilleure que WebP — 20 à 30 % plus petite à la même qualité — et est de plus en plus supporté par les navigateurs."
+    },
+    keywords: {
+      en: [
+        "webp to avif converter",
+        "convert webp to avif online free",
+        "webp to avif free",
+        "webp avif online",
+        "free webp to avif converter",
+        "webp to avif no upload"
+      ],
+      fr: [
+        "convertir webp en avif",
+        "webp en avif gratuit",
+        "convertisseur webp avif en ligne",
+        "webp vers avif sans logiciel",
+        "webp avif en ligne gratuit",
+        "convertir image webp en avif"
+      ]
+    },
+    relatedTools: [
+      "webp-to-png",
+      "png-to-avif",
+      "image-converter",
+      "image-compress"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Upload your WebP file",
+          text: "Click the upload area or drag your .webp file. Multiple files are supported for batch conversion."
+        },
+        {
+          name: "Convert automatically",
+          text: "EverydayTools converts your WebP to AVIF entirely in your browser — no image is ever sent to a server."
+        },
+        {
+          name: "Download the AVIF file",
+          text: "Your AVIF file downloads immediately — no quality reduction applied beyond the chosen format's own compression."
+        }
+      ],
+      fr: [
+        {
+          name: "Téléversez votre fichier WebP",
+          text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier .webp. Plusieurs fichiers sont supportés pour la conversion par lot."
+        },
+        {
+          name: "Conversion automatique",
+          text: "EverydayTools convertit votre WebP en AVIF entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+        },
+        {
+          name: "Téléchargez le fichier AVIF",
+          text: "Votre fichier AVIF se télécharge immédiatement — sans réduction de qualité supplémentaire."
+        }
+      ]
+    },
+    about: {
+      en: "WebP is Google's modern web image format, offering 25–35% smaller file sizes than JPEG at the same visual quality. WebP supports both transparency and animation.\n\nAVIF offers even better compression than WebP — typically 20–30% smaller at the same visual quality — and is increasingly supported by browsers. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted AVIF files immediately. No account, no upload, no waiting.",
+      fr: "WebP est le format d'image web moderne de Google, offrant des fichiers 25 à 35 % plus petits que JPEG à la même qualité. WebP supporte la transparence et l'animation.\n\nAVIF offre une compression encore meilleure que WebP — 20 à 30 % plus petite à la même qualité — et est de plus en plus supporté par les navigateurs. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers AVIF convertis immédiatement. Sans compte, sans envoi, sans attente."
+    },
+    faqs: {
+      en: [
+        {
+          q: "Why convert WebP to AVIF?",
+          a: "AVIF offers even better compression than WebP — typically 20–30% smaller at the same visual quality — and is increasingly supported by browsers."
+        },
+        {
+          q: "Does WebP to AVIF conversion affect quality?",
+          a: "AVIF is lossy. Files will be 20–30% smaller than WebP at equivalent visual quality."
+        },
+        {
+          q: "Is the conversion done in my browser?",
+          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
+        },
+        {
+          q: "Can I convert multiple files at once?",
+          a: "Yes. The tool supports batch conversion of multiple WebP files in a single upload."
+        },
+        {
+          q: "Is WebP to AVIF Converter free?",
+          a: "Yes. EverydayTools WebP to AVIF Converter is completely free, with no account required and no watermarks."
+        }
+      ],
+      fr: [
+        {
+          q: "Comment convertir WebP en avif gratuitement ?",
+          a: "Téléversez votre fichier WebP dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
+        },
+        {
+          q: "Pourquoi convertir WebP en AVIF ?",
+          a: "AVIF offre une compression encore meilleure que WebP — 20 à 30 % plus petite à la même qualité — et est de plus en plus supporté par les navigateurs."
+        },
+        {
+          q: "La conversion affecte-t-elle la qualité ?",
+          a: "AVIF est avec perte. Les fichiers seront 20 à 30 % plus petits que WebP à qualité visuelle équivalente."
+        },
+        {
+          q: "Puis-je convertir plusieurs fichiers à la fois ?",
+          a: "Oui. L'outil supporte la conversion par lot de plusieurs fichiers WebP en un seul téléversement."
+        },
+        {
+          q: "Le convertisseur WebP en AVIF est-il gratuit ?",
+          a: "Oui. Le convertisseur WebP en AVIF d'EverydayTools est entièrement gratuit, sans compte requis et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    internalSlug: "webp-to-jpg",
+    slugs: {
+      en: "convert-webp-to-jpg",
+      fr: "convertir-webp-en-jpg"
+    },
+    title: {
+      en: "WebP to JPG Converter — Free, Online | EverydayTools Hub",
+      fr: "Convertir WebP en JPG — Gratuit, En Ligne | EverydayTools Hub"
+    },
+    h1: {
+      en: "WebP to JPG Converter",
+      fr: "Convertisseur WebP en JPG"
+    },
+    description: {
+      en: "Convert WebP images to JPG format in your browser. Free, no upload, no account required. JPEG has universal compatibility across all devices, operating systems, and apps. WebP may not open in older software.",
+      fr: "Convertissez des images WebP en JPG dans votre navigateur. Gratuit, sans envoi, sans compte. JPEG est universellement compatible sur tous les appareils, systèmes d'exploitation et applications. WebP peut ne pas s'ouvrir dans les anciens logiciels."
+    },
+    keywords: {
+      en: [
+        "webp to jpg converter",
+        "convert webp to jpg online free",
+        "webp to jpg free",
+        "webp jpg online",
+        "free webp to jpg converter",
+        "webp to jpg no upload"
+      ],
+      fr: [
+        "convertir webp en jpg",
+        "webp en jpg gratuit",
+        "convertisseur webp jpg en ligne",
+        "webp vers jpg sans logiciel",
+        "webp jpg en ligne gratuit",
+        "convertir image webp en jpg"
+      ]
+    },
+    relatedTools: [
+      "webp-to-png",
+      "jpg-to-webp",
+      "image-converter",
+      "image-compress"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Upload your WebP file",
+          text: "Click the upload area or drag your .webp file. Multiple files are supported for batch conversion."
+        },
+        {
+          name: "Convert automatically",
+          text: "EverydayTools converts your WebP to JPG entirely in your browser — no image is ever sent to a server."
+        },
+        {
+          name: "Download the JPG file",
+          text: "Your JPG file downloads immediately — no quality reduction applied beyond the chosen format's own compression."
+        }
+      ],
+      fr: [
+        {
+          name: "Téléversez votre fichier WebP",
+          text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier .webp. Plusieurs fichiers sont supportés pour la conversion par lot."
+        },
+        {
+          name: "Conversion automatique",
+          text: "EverydayTools convertit votre WebP en JPG entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+        },
+        {
+          name: "Téléchargez le fichier JPG",
+          text: "Votre fichier JPG se télécharge immédiatement — sans réduction de qualité supplémentaire."
+        }
+      ]
+    },
+    about: {
+      en: "WebP is Google's modern web image format, offering 25–35% smaller file sizes than JPEG at the same visual quality. WebP supports both transparency and animation.\n\nJPEG has universal compatibility across all devices, operating systems, and apps. WebP may not open in older software. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted JPG files immediately. No account, no upload, no waiting.",
+      fr: "WebP est le format d'image web moderne de Google, offrant des fichiers 25 à 35 % plus petits que JPEG à la même qualité. WebP supporte la transparence et l'animation.\n\nJPEG est universellement compatible sur tous les appareils, systèmes d'exploitation et applications. WebP peut ne pas s'ouvrir dans les anciens logiciels. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers JPG convertis immédiatement. Sans compte, sans envoi, sans attente."
+    },
+    faqs: {
+      en: [
+        {
+          q: "Why convert WebP to JPG?",
+          a: "JPEG has universal compatibility across all devices, operating systems, and apps. WebP may not open in older software."
+        },
+        {
+          q: "Does WebP to JPG conversion affect quality?",
+          a: "JPEG is lossy. Converting WebP to JPEG may introduce slight quality reduction at standard settings."
+        },
+        {
+          q: "Is the conversion done in my browser?",
+          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
+        },
+        {
+          q: "Can I convert multiple files at once?",
+          a: "Yes. The tool supports batch conversion of multiple WebP files in a single upload."
+        },
+        {
+          q: "Is WebP to JPG Converter free?",
+          a: "Yes. EverydayTools WebP to JPG Converter is completely free, with no account required and no watermarks."
+        }
+      ],
+      fr: [
+        {
+          q: "Comment convertir WebP en jpg gratuitement ?",
+          a: "Téléversez votre fichier WebP dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
+        },
+        {
+          q: "Pourquoi convertir WebP en JPG ?",
+          a: "JPEG est universellement compatible sur tous les appareils, systèmes d'exploitation et applications. WebP peut ne pas s'ouvrir dans les anciens logiciels."
+        },
+        {
+          q: "La conversion affecte-t-elle la qualité ?",
+          a: "JPEG est avec perte. La conversion de WebP en JPEG peut introduire une légère réduction de qualité à des paramètres standards."
+        },
+        {
+          q: "Puis-je convertir plusieurs fichiers à la fois ?",
+          a: "Oui. L'outil supporte la conversion par lot de plusieurs fichiers WebP en un seul téléversement."
+        },
+        {
+          q: "Le convertisseur WebP en JPG est-il gratuit ?",
+          a: "Oui. Le convertisseur WebP en JPG d'EverydayTools est entièrement gratuit, sans compte requis et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    internalSlug: "webp-to-pdf",
+    slugs: {
+      en: "convert-webp-to-pdf",
+      fr: "convertir-webp-en-pdf"
+    },
+    title: {
+      en: "WebP to PDF Converter — Free, Online | EverydayTools Hub",
+      fr: "Convertir WebP en PDF — Gratuit, En Ligne | EverydayTools Hub"
+    },
+    h1: {
+      en: "WebP to PDF Converter",
+      fr: "Convertisseur WebP en PDF"
+    },
+    description: {
+      en: "Convert WebP images to PDF format in your browser. Free, no upload, no account required. Wrap one or more WebP images in a PDF for easy sharing, printing, or document archiving.",
+      fr: "Convertissez des images WebP en PDF dans votre navigateur. Gratuit, sans envoi, sans compte. Regroupez une ou plusieurs images WebP dans un PDF pour un partage, une impression ou un archivage de documents facile."
+    },
+    keywords: {
+      en: [
+        "webp to pdf converter",
+        "convert webp to pdf online free",
+        "webp to pdf free",
+        "webp pdf online",
+        "free webp to pdf converter",
+        "webp to pdf no upload"
+      ],
+      fr: [
+        "convertir webp en pdf",
+        "webp en pdf gratuit",
+        "convertisseur webp pdf en ligne",
+        "webp vers pdf sans logiciel",
+        "webp pdf en ligne gratuit",
+        "convertir image webp en pdf"
+      ]
+    },
+    relatedTools: [
+      "image-to-pdf",
+      "pdf-to-image",
+      "webp-to-jpg",
+      "image-converter"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Upload your WebP file",
+          text: "Click the upload area or drag your .webp file. Multiple files are supported for batch conversion."
+        },
+        {
+          name: "Convert automatically",
+          text: "EverydayTools converts your WebP to PDF entirely in your browser — no image is ever sent to a server."
+        },
+        {
+          name: "Download the PDF file",
+          text: "Your PDF with all images as pages downloads immediately."
+        }
+      ],
+      fr: [
+        {
+          name: "Téléversez votre fichier WebP",
+          text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier .webp. Plusieurs fichiers sont supportés pour la conversion par lot."
+        },
+        {
+          name: "Conversion automatique",
+          text: "EverydayTools convertit votre WebP en PDF entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+        },
+        {
+          name: "Téléchargez le fichier PDF",
+          text: "Votre PDF avec toutes les images en pages se télécharge immédiatement."
+        }
+      ]
+    },
+    about: {
+      en: "WebP is Google's modern web image format, offering 25–35% smaller file sizes than JPEG at the same visual quality. WebP supports both transparency and animation.\n\nWrap one or more WebP images in a PDF for easy sharing, printing, or document archiving. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted PDF files immediately. No account, no upload, no waiting.",
+      fr: "WebP est le format d'image web moderne de Google, offrant des fichiers 25 à 35 % plus petits que JPEG à la même qualité. WebP supporte la transparence et l'animation.\n\nRegroupez une ou plusieurs images WebP dans un PDF pour un partage, une impression ou un archivage de documents facile. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers PDF convertis immédiatement. Sans compte, sans envoi, sans attente."
+    },
+    faqs: {
+      en: [
+        {
+          q: "Why convert WebP to PDF?",
+          a: "Wrap one or more WebP images in a PDF for easy sharing, printing, or document archiving."
+        },
+        {
+          q: "Does WebP to PDF conversion affect quality?",
+          a: "Images are embedded in the PDF at full original resolution. No quality loss is applied during conversion."
+        },
+        {
+          q: "Is the conversion done in my browser?",
+          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
+        },
+        {
+          q: "Can I convert multiple files at once?",
+          a: "Yes. The tool supports batch conversion of multiple WebP files in a single upload."
+        },
+        {
+          q: "Is WebP to PDF Converter free?",
+          a: "Yes. EverydayTools WebP to PDF Converter is completely free, with no account required and no watermarks."
+        }
+      ],
+      fr: [
+        {
+          q: "Comment convertir WebP en pdf gratuitement ?",
+          a: "Téléversez votre fichier WebP dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
+        },
+        {
+          q: "Pourquoi convertir WebP en PDF ?",
+          a: "Regroupez une ou plusieurs images WebP dans un PDF pour un partage, une impression ou un archivage de documents facile."
+        },
+        {
+          q: "La conversion affecte-t-elle la qualité ?",
+          a: "Les images sont intégrées dans le PDF à leur résolution originale complète. Aucune perte de qualité n'est appliquée."
+        },
+        {
+          q: "Puis-je convertir plusieurs fichiers à la fois ?",
+          a: "Oui. L'outil supporte la conversion par lot de plusieurs fichiers WebP en un seul téléversement."
+        },
+        {
+          q: "Le convertisseur WebP en PDF est-il gratuit ?",
+          a: "Oui. Le convertisseur WebP en PDF d'EverydayTools est entièrement gratuit, sans compte requis et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    internalSlug: "webp-to-png",
+    slugs: {
+      en: "convert-webp-to-png",
+      fr: "convertir-webp-en-png"
+    },
+    title: {
+      en: "WebP to PNG Converter — Free, Online | EverydayTools Hub",
+      fr: "Convertir WebP en PNG — Gratuit, En Ligne | EverydayTools Hub"
+    },
+    h1: {
+      en: "WebP to PNG Converter",
+      fr: "Convertisseur WebP en PNG"
+    },
+    description: {
+      en: "Convert WebP images to PNG format in your browser. Free, no upload, no account required. PNG is lossless and has near-universal compatibility for design work and apps that don't support WebP.",
+      fr: "Convertissez des images WebP en PNG dans votre navigateur. Gratuit, sans envoi, sans compte. PNG est sans perte et a une compatibilité quasi universelle pour le travail de design et les applications ne supportant pas WebP."
+    },
+    keywords: {
+      en: [
+        "webp to png converter",
+        "convert webp to png online free",
+        "webp to png free",
+        "webp png online",
+        "free webp to png converter",
+        "webp to png no upload"
+      ],
+      fr: [
+        "convertir webp en png",
+        "webp en png gratuit",
+        "convertisseur webp png en ligne",
+        "webp vers png sans logiciel",
+        "webp png en ligne gratuit",
+        "convertir image webp en png"
+      ]
+    },
+    relatedTools: [
+      "webp-to-jpg",
+      "png-to-webp",
+      "image-converter",
+      "background-remover"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Upload your WebP file",
+          text: "Click the upload area or drag your .webp file. Multiple files are supported for batch conversion."
+        },
+        {
+          name: "Convert automatically",
+          text: "EverydayTools converts your WebP to PNG entirely in your browser — no image is ever sent to a server."
+        },
+        {
+          name: "Download the PNG file",
+          text: "Your PNG file downloads immediately — no quality reduction applied beyond the chosen format's own compression."
+        }
+      ],
+      fr: [
+        {
+          name: "Téléversez votre fichier WebP",
+          text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier .webp. Plusieurs fichiers sont supportés pour la conversion par lot."
+        },
+        {
+          name: "Conversion automatique",
+          text: "EverydayTools convertit votre WebP en PNG entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+        },
+        {
+          name: "Téléchargez le fichier PNG",
+          text: "Votre fichier PNG se télécharge immédiatement — sans réduction de qualité supplémentaire."
+        }
+      ]
+    },
+    about: {
+      en: "WebP is Google's modern web image format, offering 25–35% smaller file sizes than JPEG at the same visual quality. WebP supports both transparency and animation.\n\nPNG is lossless and has near-universal compatibility for design work and apps that don't support WebP. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted PNG files immediately. No account, no upload, no waiting.",
+      fr: "WebP est le format d'image web moderne de Google, offrant des fichiers 25 à 35 % plus petits que JPEG à la même qualité. WebP supporte la transparence et l'animation.\n\nPNG est sans perte et a une compatibilité quasi universelle pour le travail de design et les applications ne supportant pas WebP. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers PNG convertis immédiatement. Sans compte, sans envoi, sans attente."
+    },
+    faqs: {
+      en: [
+        {
+          q: "Why convert WebP to PNG?",
+          a: "PNG is lossless and has near-universal compatibility for design work and apps that don't support WebP."
+        },
+        {
+          q: "Does WebP to PNG conversion affect quality?",
+          a: "PNG is lossless. Converting from WebP to PNG produces a full-quality output, though file sizes will be larger than the WebP source."
+        },
+        {
+          q: "Is the conversion done in my browser?",
+          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
+        },
+        {
+          q: "Can I convert multiple files at once?",
+          a: "Yes. The tool supports batch conversion of multiple WebP files in a single upload."
+        },
+        {
+          q: "Is WebP to PNG Converter free?",
+          a: "Yes. EverydayTools WebP to PNG Converter is completely free, with no account required and no watermarks."
+        }
+      ],
+      fr: [
+        {
+          q: "Comment convertir WebP en png gratuitement ?",
+          a: "Téléversez votre fichier WebP dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
+        },
+        {
+          q: "Pourquoi convertir WebP en PNG ?",
+          a: "PNG est sans perte et a une compatibilité quasi universelle pour le travail de design et les applications ne supportant pas WebP."
+        },
+        {
+          q: "La conversion affecte-t-elle la qualité ?",
+          a: "PNG est sans perte. La conversion de WebP en PNG produit une sortie pleine qualité, bien que les fichiers soient plus grands que la source WebP."
+        },
+        {
+          q: "Puis-je convertir plusieurs fichiers à la fois ?",
+          a: "Oui. L'outil supporte la conversion par lot de plusieurs fichiers WebP en un seul téléversement."
+        },
+        {
+          q: "Le convertisseur WebP en PNG est-il gratuit ?",
+          a: "Oui. Le convertisseur WebP en PNG d'EverydayTools est entièrement gratuit, sans compte requis et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    internalSlug: "tip-calculator",
+    slugs: {
+      en: "tip-calculator",
+      fr: "calculateur-pourboire"
+    },
+    title: {
+      en: "Tip & Percentage Calculator — Free | EverydayTools Hub",
+      fr: "Calculateur Pourboire & Pourcentage — Gratuit | EverydayTools Hub"
+    },
+    h1: {
+      en: "Tip & Percentage Calculator",
+      fr: "Calculateur de Pourboire & Pourcentage"
+    },
+    description: {
+      en: "Calculate tip amounts, split bills between people, and work out percentage changes instantly. Free, no account.",
+      fr: "Calculez les pourboires, répartissez une addition et calculez les variations de pourcentage instantanément. Gratuit, sans compte."
+    },
+    keywords: {
+      en: [
+        "tip calculator",
+        "tip calculator free online",
+        "bill split calculator",
+        "percentage calculator",
+        "how much to tip",
+        "restaurant tip calculator"
+      ],
+      fr: [
+        "calculateur pourboire",
+        "calculer pourboire gratuit",
+        "répartir addition",
+        "calculateur pourcentage",
+        "combien laisser de pourboire",
+        "calculateur pourboire restaurant"
+      ]
+    },
+    relatedTools: [
+      "percentage-calc",
+      "unit-converter",
+      "currency-converter"
+    ],
+    howItWorks: {
+      en: [
+        {
+          name: "Enter the bill amount",
+          text: "Type the total bill in the amount field."
+        },
+        {
+          name: "Set the tip percentage",
+          text: "Use the slider or quick-tap buttons (15%, 18%, 20%, 25%) to choose a tip percentage."
+        },
+        {
+          name: "See the results instantly",
+          text: "The tip amount, total, and per-person share (if splitting) update in real time. No button required."
+        }
+      ],
+      fr: [
+        {
+          name: "Entrez le montant de l'addition",
+          text: "Tapez le total de l'addition dans le champ de montant."
+        },
+        {
+          name: "Définissez le pourcentage de pourboire",
+          text: "Utilisez le curseur ou les boutons rapides (15 %, 18 %, 20 %, 25 %) pour choisir un pourcentage."
+        },
+        {
+          name: "Voyez les résultats instantanément",
+          text: "Le montant du pourboire, le total et la part par personne se mettent à jour en temps réel. Aucun bouton requis."
+        }
+      ]
+    },
+    about: {
+      en: "Calculate the right tip amount for any bill in seconds. Enter your bill total, choose a tip percentage, and optionally split the total between multiple people. The calculator updates as you type — no button press required.\n\nThe tool also includes a percentage calculator for more general use: find what percentage one number is of another, or calculate a percentage change between two values. Everything runs locally in your browser.",
+      fr: "Calculez le bon montant de pourboire pour n'importe quelle addition en quelques secondes. Entrez le total de votre addition, choisissez un pourcentage de pourboire et répartissez éventuellement le total entre plusieurs personnes. Le calculateur se met à jour au fur et à mesure que vous tapez.\n\nL'outil inclut aussi un calculateur de pourcentage général : trouvez quel pourcentage un nombre représente par rapport à un autre, ou calculez une variation de pourcentage entre deux valeurs. Tout s'exécute localement dans votre navigateur."
+    },
+    faqs: {
+      en: [
+        {
+          q: "What is the standard tip percentage?",
+          a: "In the United States, 15–20% is standard for table service. 15% is acceptable for average service, 18–20% for good service, and 25%+ for exceptional service. In many other countries, tipping is optional or at a lower rate."
+        },
+        {
+          q: "How do I split a bill between multiple people?",
+          a: "Enter the bill total and tip percentage, then drag the \"number of people\" slider. The calculator shows both the per-person tip and the per-person total."
+        },
+        {
+          q: "What is a percentage change?",
+          a: "Percentage change shows how much a value has increased or decreased relative to the original. Formula: ((new value − original value) ÷ original value) × 100. The tool calculates this automatically."
+        },
+        {
+          q: "Is the Tip Calculator free?",
+          a: "Yes. EverydayTools Tip & Percentage Calculator is completely free, with no account required."
+        }
+      ],
+      fr: [
+        {
+          q: "Quel est le pourcentage de pourboire standard ?",
+          a: "Aux États-Unis, 15–20 % est standard pour le service à table. En France, le service est généralement inclus dans l'addition, mais il est courant de laisser 1–5 % pour un bon service."
+        },
+        {
+          q: "Comment répartir une addition entre plusieurs personnes ?",
+          a: "Entrez le total de l'addition et le pourcentage de pourboire, puis ajustez le curseur \"nombre de personnes\". Le calculateur affiche la part de pourboire et le total par personne."
+        },
+        {
+          q: "Qu'est-ce qu'une variation de pourcentage ?",
+          a: "La variation de pourcentage indique de combien une valeur a augmenté ou diminué par rapport à l'original. Formule : ((nouvelle valeur − valeur originale) ÷ valeur originale) × 100."
+        },
+        {
+          q: "Le calculateur de pourboire est-il gratuit ?",
+          a: "Oui. Le calculateur de pourboire et pourcentage d'EverydayTools est entièrement gratuit, sans compte requis."
+        }
+      ]
+    }
+  },
 ];
 
 export type Locale = "en" | "fr";
