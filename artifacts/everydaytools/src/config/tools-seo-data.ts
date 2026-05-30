@@ -1659,8 +1659,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     },
     about: {
-      en: "AVIF is a next-generation format with superior compression — typically 50% smaller than JPEG — but with limited support in older software and non-browser apps.\n\nAVIF is not universally supported outside modern browsers. JPEG opens on every device, app, and platform. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted JPG files immediately. No account, no upload, no waiting.",
-      fr: "AVIF est un format nouvelle génération avec une compression supérieure — environ 50 % plus petit que JPEG — mais avec un support limité dans les anciens logiciels.\n\nAVIF n'est pas universellement supporté en dehors des navigateurs modernes. JPEG s'ouvre sur tous les appareils, applications et plateformes. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers JPG convertis immédiatement. Sans compte, sans envoi, sans attente."
+      en: "AVIF is a next-generation format with superior compression — typically 50% smaller than JPEG — but with limited support in older software and non-browser apps.",
+      fr: "AVIF est un format nouvelle génération avec une compression supérieure — environ 50 % plus petit que JPEG — mais avec un support limité dans les anciens logiciels."
     },
     faqs: {
       en: [
@@ -1673,10 +1673,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
           a: "JPEG is lossy, so minimal quality loss occurs. At high-quality settings the difference is imperceptible."
         },
         {
-          q: "Is the conversion done in my browser?",
-          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
-        },
-        {
           q: "Can I convert multiple files at once?",
           a: "Yes. The tool supports batch conversion of multiple AVIF files in a single upload."
         },
@@ -1686,10 +1682,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         }
       ],
       fr: [
-        {
-          q: "Comment convertir AVIF en jpg gratuitement ?",
-          a: "Téléversez votre fichier AVIF dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
-        },
         {
           q: "Pourquoi convertir AVIF en JPG ?",
           a: "AVIF n'est pas universellement supporté en dehors des navigateurs modernes. JPEG s'ouvre sur tous les appareils, applications et plateformes."
@@ -1782,8 +1774,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     },
     about: {
-      en: "AVIF is a next-generation format with superior compression — typically 50% smaller than JPEG — but with limited support in older software and non-browser apps.\n\nPNG is lossless and supports transparency, making it ideal for design work where pixel-perfect quality matters. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted PNG files immediately. No account, no upload, no waiting.",
-      fr: "AVIF est un format nouvelle génération avec une compression supérieure — environ 50 % plus petit que JPEG — mais avec un support limité dans les anciens logiciels.\n\nPNG est sans perte et supporte la transparence, ce qui le rend idéal pour le travail de design où la précision au pixel compte. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers PNG convertis immédiatement. Sans compte, sans envoi, sans attente."
+      en: "AVIF is a next-generation format with superior compression — typically 50% smaller than JPEG — but with limited support in older software and non-browser apps.",
+      fr: "AVIF est un format nouvelle génération avec une compression supérieure — environ 50 % plus petit que JPEG — mais avec un support limité dans les anciens logiciels."
     },
     faqs: {
       en: [
@@ -1796,10 +1788,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
           a: "PNG output is lossless — no quality loss. File sizes will be larger than the source AVIF."
         },
         {
-          q: "Is the conversion done in my browser?",
-          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
-        },
-        {
           q: "Can I convert multiple files at once?",
           a: "Yes. The tool supports batch conversion of multiple AVIF files in a single upload."
         },
@@ -1809,10 +1797,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         }
       ],
       fr: [
-        {
-          q: "Comment convertir AVIF en png gratuitement ?",
-          a: "Téléversez votre fichier AVIF dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
-        },
         {
           q: "Pourquoi convertir AVIF en PNG ?",
           a: "PNG est sans perte et supporte la transparence, ce qui le rend idéal pour le travail de design où la précision au pixel compte."
@@ -1905,8 +1889,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     },
     about: {
-      en: "BMP is an uncompressed Windows bitmap format. BMP stores every pixel without any compression, resulting in files that are typically 10–50× larger than the equivalent JPEG.\n\nBMP files are huge — often 10–50× larger than JPEG for the same image. Convert to JPEG for drastically smaller files with minimal visible quality loss. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted JPG files immediately. No account, no upload, no waiting.",
-      fr: "BMP est un format bitmap Windows non compressé. BMP stocke chaque pixel sans compression, donnant des fichiers 10 à 50 fois plus grands que le JPEG équivalent.\n\nLes fichiers BMP sont énormes — souvent 10 à 50 fois plus grands que JPEG. Convertissez en JPEG pour des fichiers bien plus petits avec une perte de qualité minime. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers JPG convertis immédiatement. Sans compte, sans envoi, sans attente."
+      en: "BMP is an uncompressed Windows bitmap format. BMP stores every pixel without any compression, resulting in files that are typically 10–50× larger than the equivalent JPEG.",
+      fr: "BMP est un format bitmap Windows non compressé. BMP stocke chaque pixel sans compression, donnant des fichiers 10 à 50 fois plus grands que le JPEG équivalent."
     },
     faqs: {
       en: [
@@ -1919,10 +1903,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
           a: "JPEG is lossy. The conversion from uncompressed BMP produces a file that is typically 90–95% smaller with minimal visible change."
         },
         {
-          q: "Is the conversion done in my browser?",
-          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
-        },
-        {
           q: "Can I convert multiple files at once?",
           a: "Yes. The tool supports batch conversion of multiple BMP files in a single upload."
         },
@@ -1932,10 +1912,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         }
       ],
       fr: [
-        {
-          q: "Comment convertir BMP en jpg gratuitement ?",
-          a: "Téléversez votre fichier BMP dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
-        },
         {
           q: "Pourquoi convertir BMP en JPG ?",
           a: "Les fichiers BMP sont énormes — souvent 10 à 50 fois plus grands que JPEG. Convertissez en JPEG pour des fichiers bien plus petits avec une perte de qualité minime."
@@ -2028,8 +2004,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     },
     about: {
-      en: "BMP is an uncompressed Windows bitmap format. BMP stores every pixel without any compression, resulting in files that are typically 10–50× larger than the equivalent JPEG.\n\nBMP is an uncompressed legacy format. WebP delivers modern compression ratios — typically 90%+ size reduction — ideal for web use. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted WebP files immediately. No account, no upload, no waiting.",
-      fr: "BMP est un format bitmap Windows non compressé. BMP stocke chaque pixel sans compression, donnant des fichiers 10 à 50 fois plus grands que le JPEG équivalent.\n\nBMP est un format non compressé obsolète. WebP offre une compression moderne — réduction de taille de 90 %+ — idéal pour le web. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers WebP convertis immédiatement. Sans compte, sans envoi, sans attente."
+      en: "BMP is an uncompressed Windows bitmap format. BMP stores every pixel without any compression, resulting in files that are typically 10–50× larger than the equivalent JPEG.",
+      fr: "BMP est un format bitmap Windows non compressé. BMP stocke chaque pixel sans compression, donnant des fichiers 10 à 50 fois plus grands que le JPEG équivalent."
     },
     faqs: {
       en: [
@@ -2042,10 +2018,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
           a: "WebP uses lossy compression by default. The file will be dramatically smaller than the source BMP with minimal visible quality difference."
         },
         {
-          q: "Is the conversion done in my browser?",
-          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
-        },
-        {
           q: "Can I convert multiple files at once?",
           a: "Yes. The tool supports batch conversion of multiple BMP files in a single upload."
         },
@@ -2055,10 +2027,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         }
       ],
       fr: [
-        {
-          q: "Comment convertir BMP en webp gratuitement ?",
-          a: "Téléversez votre fichier BMP dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
-        },
         {
           q: "Pourquoi convertir BMP en WebP ?",
           a: "BMP est un format non compressé obsolète. WebP offre une compression moderne — réduction de taille de 90 %+ — idéal pour le web."
@@ -2151,8 +2119,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     },
     about: {
-      en: "GIF is a format limited to 256 colors per frame, best known for its animation support. GIF's color restriction makes it a poor choice for photos.\n\nPNG is a lossless format with full 24-bit color, making it far superior to GIF for static images where quality matters. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted PNG files immediately. No account, no upload, no waiting.",
-      fr: "GIF est un format limité à 256 couleurs par image, surtout connu pour le support de l'animation. La restriction de couleurs de GIF en fait un mauvais choix pour les photos.\n\nPNG est sans perte avec 24 bits de couleur, le rendant bien supérieur à GIF pour les images statiques où la qualité compte. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers PNG convertis immédiatement. Sans compte, sans envoi, sans attente."
+      en: "GIF is a format limited to 256 colors per frame, best known for its animation support. GIF's color restriction makes it a poor choice for photos.",
+      fr: "GIF est un format limité à 256 couleurs par image, surtout connu pour le support de l'animation. La restriction de couleurs de GIF en fait un mauvais choix pour les photos."
     },
     faqs: {
       en: [
@@ -2165,10 +2133,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
           a: "PNG is lossless. Converting a GIF to PNG will improve color quality (24-bit vs. 256 colors) and is lossless from the PNG side."
         },
         {
-          q: "Is the conversion done in my browser?",
-          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
-        },
-        {
           q: "Can I convert multiple files at once?",
           a: "Yes. The tool supports batch conversion of multiple GIF files in a single upload."
         },
@@ -2178,10 +2142,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         }
       ],
       fr: [
-        {
-          q: "Comment convertir GIF en png gratuitement ?",
-          a: "Téléversez votre fichier GIF dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
-        },
         {
           q: "Pourquoi convertir GIF en PNG ?",
           a: "PNG est sans perte avec 24 bits de couleur, le rendant bien supérieur à GIF pour les images statiques où la qualité compte."
@@ -2274,8 +2234,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     },
     about: {
-      en: "GIF is a format limited to 256 colors per frame, best known for its animation support. GIF's color restriction makes it a poor choice for photos.\n\nWebP supports animation just like GIF, but with dramatically better compression — typically 50–80% smaller. Ideal for web use. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted WebP files immediately. No account, no upload, no waiting.",
-      fr: "GIF est un format limité à 256 couleurs par image, surtout connu pour le support de l'animation. La restriction de couleurs de GIF en fait un mauvais choix pour les photos.\n\nWebP supporte l'animation comme GIF, mais avec une compression nettement meilleure — typiquement 50 à 80 % plus petite. Idéal pour le web. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers WebP convertis immédiatement. Sans compte, sans envoi, sans attente."
+      en: "GIF is a format limited to 256 colors per frame, best known for its animation support. GIF's color restriction makes it a poor choice for photos.",
+      fr: "GIF est un format limité à 256 couleurs par image, surtout connu pour le support de l'animation. La restriction de couleurs de GIF en fait un mauvais choix pour les photos."
     },
     faqs: {
       en: [
@@ -2288,10 +2248,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
           a: "Animated WebP files are significantly smaller than animated GIFs. Static frames also compress better with WebP."
         },
         {
-          q: "Is the conversion done in my browser?",
-          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
-        },
-        {
           q: "Can I convert multiple files at once?",
           a: "Yes. The tool supports batch conversion of multiple GIF files in a single upload."
         },
@@ -2301,10 +2257,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         }
       ],
       fr: [
-        {
-          q: "Comment convertir GIF en webp gratuitement ?",
-          a: "Téléversez votre fichier GIF dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
-        },
         {
           q: "Pourquoi convertir GIF en WebP ?",
           a: "WebP supporte l'animation comme GIF, mais avec une compression nettement meilleure — typiquement 50 à 80 % plus petite. Idéal pour le web."
@@ -2397,8 +2349,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     },
     about: {
-      en: "HEIC is Apple's default iPhone photo format since iOS 11. HEIC offers around 50% smaller file sizes than JPEG at the same quality, but requires Apple devices or special software to open.\n\nWrap one or more iPhone photos in a PDF for easy sharing, printing, or document archiving — compatible with any device. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted PDF files immediately. No account, no upload, no waiting.",
-      fr: "HEIC est le format photo iPhone par défaut depuis iOS 11. HEIC offre environ 50 % de fichiers plus petits que JPEG à la même qualité, mais nécessite des appareils Apple ou un logiciel spécial.\n\nRegroupez une ou plusieurs photos iPhone dans un PDF pour un partage, une impression ou un archivage facile — compatible avec tous les appareils. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers PDF convertis immédiatement. Sans compte, sans envoi, sans attente."
+      en: "HEIC is Apple's default iPhone photo format since iOS 11. HEIC offers around 50% smaller file sizes than JPEG at the same quality, but requires Apple devices or special software to open.",
+      fr: "HEIC est le format photo iPhone par défaut depuis iOS 11. HEIC offre environ 50 % de fichiers plus petits que JPEG à la même qualité, mais nécessite des appareils Apple ou un logiciel spécial."
     },
     faqs: {
       en: [
@@ -2411,10 +2363,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
           a: "Images are embedded in the PDF at full resolution. No quality loss occurs during the conversion."
         },
         {
-          q: "Is the conversion done in my browser?",
-          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
-        },
-        {
           q: "Can I convert multiple files at once?",
           a: "Yes. The tool supports batch conversion of multiple HEIC files in a single upload."
         },
@@ -2424,10 +2372,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         }
       ],
       fr: [
-        {
-          q: "Comment convertir HEIC en pdf gratuitement ?",
-          a: "Téléversez votre fichier HEIC dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
-        },
         {
           q: "Pourquoi convertir HEIC en PDF ?",
           a: "Regroupez une ou plusieurs photos iPhone dans un PDF pour un partage, une impression ou un archivage facile — compatible avec tous les appareils."
@@ -2520,8 +2464,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     },
     about: {
-      en: "HEIC is Apple's default iPhone photo format since iOS 11. HEIC offers around 50% smaller file sizes than JPEG at the same quality, but requires Apple devices or special software to open.\n\nPNG is lossless and supports transparency — ideal for design work, editing, or when you need a pixel-perfect copy of your iPhone photo. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted PNG files immediately. No account, no upload, no waiting.",
-      fr: "HEIC est le format photo iPhone par défaut depuis iOS 11. HEIC offre environ 50 % de fichiers plus petits que JPEG à la même qualité, mais nécessite des appareils Apple ou un logiciel spécial.\n\nPNG est sans perte et supporte la transparence — idéal pour le design, l'édition ou lorsque vous avez besoin d'une copie exacte de votre photo iPhone. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers PNG convertis immédiatement. Sans compte, sans envoi, sans attente."
+      en: "HEIC is Apple's default iPhone photo format since iOS 11. HEIC offers around 50% smaller file sizes than JPEG at the same quality, but requires Apple devices or special software to open.",
+      fr: "HEIC est le format photo iPhone par défaut depuis iOS 11. HEIC offre environ 50 % de fichiers plus petits que JPEG à la même qualité, mais nécessite des appareils Apple ou un logiciel spécial."
     },
     faqs: {
       en: [
@@ -2534,10 +2478,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
           a: "PNG is lossless, so the output preserves full image quality. PNG files will be larger than the source HEIC."
         },
         {
-          q: "Is the conversion done in my browser?",
-          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
-        },
-        {
           q: "Can I convert multiple files at once?",
           a: "Yes. The tool supports batch conversion of multiple HEIC files in a single upload."
         },
@@ -2547,10 +2487,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         }
       ],
       fr: [
-        {
-          q: "Comment convertir HEIC en png gratuitement ?",
-          a: "Téléversez votre fichier HEIC dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
-        },
         {
           q: "Pourquoi convertir HEIC en PNG ?",
           a: "PNG est sans perte et supporte la transparence — idéal pour le design, l'édition ou lorsque vous avez besoin d'une copie exacte de votre photo iPhone."
@@ -2643,8 +2579,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     },
     about: {
-      en: "HEIC is Apple's default iPhone photo format since iOS 11. HEIC offers around 50% smaller file sizes than JPEG at the same quality, but requires Apple devices or special software to open.\n\nConvert iPhone photos to WebP for web-optimized output — small file sizes with great quality, supported by all modern browsers. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted WebP files immediately. No account, no upload, no waiting.",
-      fr: "HEIC est le format photo iPhone par défaut depuis iOS 11. HEIC offre environ 50 % de fichiers plus petits que JPEG à la même qualité, mais nécessite des appareils Apple ou un logiciel spécial.\n\nConvertissez des photos iPhone en WebP pour une sortie optimisée pour le web — petits fichiers avec excellente qualité. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers WebP convertis immédiatement. Sans compte, sans envoi, sans attente."
+      en: "HEIC is Apple's default iPhone photo format since iOS 11. HEIC offers around 50% smaller file sizes than JPEG at the same quality, but requires Apple devices or special software to open.",
+      fr: "HEIC est le format photo iPhone par défaut depuis iOS 11. HEIC offre environ 50 % de fichiers plus petits que JPEG à la même qualité, mais nécessite des appareils Apple ou un logiciel spécial."
     },
     faqs: {
       en: [
@@ -2657,10 +2593,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
           a: "WebP offers good compression with minimal visible quality loss. Files will be significantly smaller than the source HEIC at equivalent quality."
         },
         {
-          q: "Is the conversion done in my browser?",
-          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
-        },
-        {
           q: "Can I convert multiple files at once?",
           a: "Yes. The tool supports batch conversion of multiple HEIC files in a single upload."
         },
@@ -2670,10 +2602,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         }
       ],
       fr: [
-        {
-          q: "Comment convertir HEIC en webp gratuitement ?",
-          a: "Téléversez votre fichier HEIC dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
-        },
         {
           q: "Pourquoi convertir HEIC en WebP ?",
           a: "Convertissez des photos iPhone en WebP pour une sortie optimisée pour le web — petits fichiers avec excellente qualité."
@@ -2766,8 +2694,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     },
     about: {
-      en: "JPG is the most universally compatible image format, supported by every device, operating system, and application. JPEG uses lossy compression and is the standard for photos.\n\nAVIF compresses JPEG images to roughly half the file size at the same visual quality — a significant improvement for web performance. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted AVIF files immediately. No account, no upload, no waiting.",
-      fr: "JPG est le format d'image le plus universellement compatible, supporté par tous les appareils, systèmes d'exploitation et applications. JPEG utilise une compression avec perte.\n\nAVIF compresse les images JPEG à environ la moitié de la taille avec la même qualité visuelle — une amélioration significative pour la performance web. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers AVIF convertis immédiatement. Sans compte, sans envoi, sans attente."
+      en: "JPG is the most universally compatible image format, supported by every device, operating system, and application. JPEG uses lossy compression and is the standard for photos.",
+      fr: "JPG est le format d'image le plus universellement compatible, supporté par tous les appareils, systèmes d'exploitation et applications. JPEG utilise une compression avec perte."
     },
     faqs: {
       en: [
@@ -2780,10 +2708,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
           a: "AVIF is more efficient than JPEG. Expect 40–60% smaller files at equivalent or better visual quality."
         },
         {
-          q: "Is the conversion done in my browser?",
-          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
-        },
-        {
           q: "Can I convert multiple files at once?",
           a: "Yes. The tool supports batch conversion of multiple JPG files in a single upload."
         },
@@ -2793,10 +2717,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         }
       ],
       fr: [
-        {
-          q: "Comment convertir JPG en avif gratuitement ?",
-          a: "Téléversez votre fichier JPG dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
-        },
         {
           q: "Pourquoi convertir JPG en AVIF ?",
           a: "AVIF compresse les images JPEG à environ la moitié de la taille avec la même qualité visuelle — une amélioration significative pour la performance web."
@@ -2889,8 +2809,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     },
     about: {
-      en: "JPG is the most universally compatible image format, supported by every device, operating system, and application. JPEG uses lossy compression and is the standard for photos.\n\nWrap one or more JPEG photos in a PDF for easy sharing, printing, or document archiving. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted PDF files immediately. No account, no upload, no waiting.",
-      fr: "JPG est le format d'image le plus universellement compatible, supporté par tous les appareils, systèmes d'exploitation et applications. JPEG utilise une compression avec perte.\n\nRegroupez une ou plusieurs photos JPEG dans un PDF pour un partage, une impression ou un archivage de documents facile. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers PDF convertis immédiatement. Sans compte, sans envoi, sans attente."
+      en: "JPG is the most universally compatible image format, supported by every device, operating system, and application. JPEG uses lossy compression and is the standard for photos.",
+      fr: "JPG est le format d'image le plus universellement compatible, supporté par tous les appareils, systèmes d'exploitation et applications. JPEG utilise une compression avec perte."
     },
     faqs: {
       en: [
@@ -2903,10 +2823,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
           a: "Images are embedded in the PDF at full original resolution. No quality loss is applied during conversion."
         },
         {
-          q: "Is the conversion done in my browser?",
-          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
-        },
-        {
           q: "Can I convert multiple files at once?",
           a: "Yes. The tool supports batch conversion of multiple JPG files in a single upload."
         },
@@ -2916,10 +2832,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         }
       ],
       fr: [
-        {
-          q: "Comment convertir JPG en pdf gratuitement ?",
-          a: "Téléversez votre fichier JPG dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
-        },
         {
           q: "Pourquoi convertir JPG en PDF ?",
           a: "Regroupez une ou plusieurs photos JPEG dans un PDF pour un partage, une impression ou un archivage de documents facile."
@@ -3012,8 +2924,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     },
     about: {
-      en: "JPG is the most universally compatible image format, supported by every device, operating system, and application. JPEG uses lossy compression and is the standard for photos.\n\nWebP produces files 25–35% smaller than JPEG at the same visual quality — a direct improvement for web performance with no perceptible difference. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted WebP files immediately. No account, no upload, no waiting.",
-      fr: "JPG est le format d'image le plus universellement compatible, supporté par tous les appareils, systèmes d'exploitation et applications. JPEG utilise une compression avec perte.\n\nWebP produit des fichiers 25 à 35 % plus petits que JPEG à la même qualité visuelle — une amélioration directe pour la performance web. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers WebP convertis immédiatement. Sans compte, sans envoi, sans attente."
+      en: "JPG is the most universally compatible image format, supported by every device, operating system, and application. JPEG uses lossy compression and is the standard for photos.",
+      fr: "JPG est le format d'image le plus universellement compatible, supporté par tous les appareils, systèmes d'exploitation et applications. JPEG utilise une compression avec perte."
     },
     faqs: {
       en: [
@@ -3026,10 +2938,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
           a: "WebP is lossy by default and matches JPEG quality closely. Expect 25–35% smaller files at equivalent visual quality."
         },
         {
-          q: "Is the conversion done in my browser?",
-          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
-        },
-        {
           q: "Can I convert multiple files at once?",
           a: "Yes. The tool supports batch conversion of multiple JPG files in a single upload."
         },
@@ -3039,10 +2947,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         }
       ],
       fr: [
-        {
-          q: "Comment convertir JPG en webp gratuitement ?",
-          a: "Téléversez votre fichier JPG dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
-        },
         {
           q: "Pourquoi convertir JPG en WebP ?",
           a: "WebP produit des fichiers 25 à 35 % plus petits que JPEG à la même qualité visuelle — une amélioration directe pour la performance web."
@@ -3135,8 +3039,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     },
     about: {
-      en: "PNG is a lossless format that preserves every pixel exactly, with full transparency support. PNG is ideal for graphics, logos, and screenshots.\n\nPNG files are large due to lossless storage. AVIF can compress the same image to a fraction of the size — typically 60–80% smaller — while preserving strong visual quality. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted AVIF files immediately. No account, no upload, no waiting.",
-      fr: "PNG est un format sans perte qui préserve chaque pixel exactement, avec un support complet de la transparence. PNG est idéal pour les graphismes, logos et captures d'écran.\n\nLes fichiers PNG sont grands en raison du stockage sans perte. AVIF peut comprimer la même image à une fraction de la taille — 60 à 80 % plus petite — tout en préservant une forte qualité. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers AVIF convertis immédiatement. Sans compte, sans envoi, sans attente."
+      en: "PNG is a lossless format that preserves every pixel exactly, with full transparency support. PNG is ideal for graphics, logos, and screenshots.",
+      fr: "PNG est un format sans perte qui préserve chaque pixel exactement, avec un support complet de la transparence. PNG est idéal pour les graphismes, logos et captures d'écran."
     },
     faqs: {
       en: [
@@ -3149,10 +3053,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
           a: "AVIF uses lossy compression, so some data is discarded. For most images, the quality difference at standard settings is not visible."
         },
         {
-          q: "Is the conversion done in my browser?",
-          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
-        },
-        {
           q: "Can I convert multiple files at once?",
           a: "Yes. The tool supports batch conversion of multiple PNG files in a single upload."
         },
@@ -3162,10 +3062,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         }
       ],
       fr: [
-        {
-          q: "Comment convertir PNG en avif gratuitement ?",
-          a: "Téléversez votre fichier PNG dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
-        },
         {
           q: "Pourquoi convertir PNG en AVIF ?",
           a: "Les fichiers PNG sont grands en raison du stockage sans perte. AVIF peut comprimer la même image à une fraction de la taille — 60 à 80 % plus petite — tout en préservant une forte qualité."
@@ -3258,8 +3154,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     },
     about: {
-      en: "PNG is a lossless format that preserves every pixel exactly, with full transparency support. PNG is ideal for graphics, logos, and screenshots.\n\nPNG is a lossless format ideal for graphics, but PNG files are much larger than JPEG for the same photo. Convert to JPEG to reduce file size significantly. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted JPG files immediately. No account, no upload, no waiting.",
-      fr: "PNG est un format sans perte qui préserve chaque pixel exactement, avec un support complet de la transparence. PNG est idéal pour les graphismes, logos et captures d'écran.\n\nPNG est sans perte, idéal pour les graphismes, mais les fichiers PNG sont bien plus grands que JPEG pour la même photo. Convertissez en JPEG pour réduire significativement la taille. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers JPG convertis immédiatement. Sans compte, sans envoi, sans attente."
+      en: "PNG is a lossless format that preserves every pixel exactly, with full transparency support. PNG is ideal for graphics, logos, and screenshots.",
+      fr: "PNG est un format sans perte qui préserve chaque pixel exactement, avec un support complet de la transparence. PNG est idéal pour les graphismes, logos et captures d'écran."
     },
     faqs: {
       en: [
@@ -3272,10 +3168,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
           a: "JPEG is lossy — some quality is lost. The tool uses high-quality JPEG encoding so the difference is minimal. Transparent PNG areas are filled with white."
         },
         {
-          q: "Is the conversion done in my browser?",
-          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
-        },
-        {
           q: "Can I convert multiple files at once?",
           a: "Yes. The tool supports batch conversion of multiple PNG files in a single upload."
         },
@@ -3285,10 +3177,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         }
       ],
       fr: [
-        {
-          q: "Comment convertir PNG en jpg gratuitement ?",
-          a: "Téléversez votre fichier PNG dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
-        },
         {
           q: "Pourquoi convertir PNG en JPG ?",
           a: "PNG est sans perte, idéal pour les graphismes, mais les fichiers PNG sont bien plus grands que JPEG pour la même photo. Convertissez en JPEG pour réduire significativement la taille."
@@ -3381,8 +3269,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     },
     about: {
-      en: "PNG is a lossless format that preserves every pixel exactly, with full transparency support. PNG is ideal for graphics, logos, and screenshots.\n\nWrap one or more PNG images in a PDF for easy sharing, printing, or embedding in documents. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted PDF files immediately. No account, no upload, no waiting.",
-      fr: "PNG est un format sans perte qui préserve chaque pixel exactement, avec un support complet de la transparence. PNG est idéal pour les graphismes, logos et captures d'écran.\n\nRegroupez une ou plusieurs images PNG dans un PDF pour un partage, une impression ou une intégration dans des documents facile. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers PDF convertis immédiatement. Sans compte, sans envoi, sans attente."
+      en: "PNG is a lossless format that preserves every pixel exactly, with full transparency support. PNG is ideal for graphics, logos, and screenshots.",
+      fr: "PNG est un format sans perte qui préserve chaque pixel exactement, avec un support complet de la transparence. PNG est idéal pour les graphismes, logos et captures d'écran."
     },
     faqs: {
       en: [
@@ -3395,10 +3283,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
           a: "Images are embedded in the PDF at full original resolution with no quality loss."
         },
         {
-          q: "Is the conversion done in my browser?",
-          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
-        },
-        {
           q: "Can I convert multiple files at once?",
           a: "Yes. The tool supports batch conversion of multiple PNG files in a single upload."
         },
@@ -3408,10 +3292,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         }
       ],
       fr: [
-        {
-          q: "Comment convertir PNG en pdf gratuitement ?",
-          a: "Téléversez votre fichier PNG dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
-        },
         {
           q: "Pourquoi convertir PNG en PDF ?",
           a: "Regroupez une ou plusieurs images PNG dans un PDF pour un partage, une impression ou une intégration dans des documents facile."
@@ -3504,8 +3384,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     },
     about: {
-      en: "PNG is a lossless format that preserves every pixel exactly, with full transparency support. PNG is ideal for graphics, logos, and screenshots.\n\nConvert a PNG image to an SVG vector graphic so it can scale to any size without becoming pixelated — ideal for logos and simple graphics. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted SVG files immediately. No account, no upload, no waiting.",
-      fr: "PNG est un format sans perte qui préserve chaque pixel exactement, avec un support complet de la transparence. PNG est idéal pour les graphismes, logos et captures d'écran.\n\nConvertissez une image PNG en graphique vectoriel SVG pour qu'il s'adapte à n'importe quelle taille sans pixellisation — idéal pour les logos et graphismes simples. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers SVG convertis immédiatement. Sans compte, sans envoi, sans attente."
+      en: "PNG is a lossless format that preserves every pixel exactly, with full transparency support. PNG is ideal for graphics, logos, and screenshots.",
+      fr: "PNG est un format sans perte qui préserve chaque pixel exactement, avec un support complet de la transparence. PNG est idéal pour les graphismes, logos et captures d'écran."
     },
     faqs: {
       en: [
@@ -3518,10 +3398,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
           a: "PNG to SVG conversion works best on simple, flat-color images like logos, icons, and diagrams. Complex photos do not trace well to SVG — they produce very large files with poor results."
         },
         {
-          q: "Is the conversion done in my browser?",
-          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
-        },
-        {
           q: "Can I convert multiple files at once?",
           a: "Yes. The tool supports batch conversion of multiple PNG files in a single upload."
         },
@@ -3531,10 +3407,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         }
       ],
       fr: [
-        {
-          q: "Comment convertir PNG en svg gratuitement ?",
-          a: "Téléversez votre fichier PNG dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
-        },
         {
           q: "Pourquoi convertir PNG en SVG ?",
           a: "Convertissez une image PNG en graphique vectoriel SVG pour qu'il s'adapte à n'importe quelle taille sans pixellisation — idéal pour les logos et graphismes simples."
@@ -3627,8 +3499,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     },
     about: {
-      en: "SVG is a vector format defined in XML that scales to any size without losing quality. SVG is the standard for logos, icons, and illustrations on the web.\n\nSVG is not supported by all apps and platforms. Convert to PNG to get a raster image at a fixed resolution that opens anywhere. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted PNG files immediately. No account, no upload, no waiting.",
-      fr: "SVG est un format vectoriel défini en XML qui s'adapte à n'importe quelle taille sans perte de qualité. SVG est le standard pour les logos, icônes et illustrations.\n\nSVG n'est pas supporté par toutes les applications. Convertissez en PNG pour obtenir une image raster à résolution fixe qui s'ouvre partout. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers PNG convertis immédiatement. Sans compte, sans envoi, sans attente."
+      en: "SVG is a vector format defined in XML that scales to any size without losing quality. SVG is the standard for logos, icons, and illustrations on the web.",
+      fr: "SVG est un format vectoriel défini en XML qui s'adapte à n'importe quelle taille sans perte de qualité. SVG est le standard pour les logos, icônes et illustrations."
     },
     faqs: {
       en: [
@@ -3641,10 +3513,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
           a: "PNG is lossless. The output quality depends on the rendering resolution you choose — higher resolution gives sharper results."
         },
         {
-          q: "Is the conversion done in my browser?",
-          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
-        },
-        {
           q: "Can I convert multiple files at once?",
           a: "Yes. The tool supports batch conversion of multiple SVG files in a single upload."
         },
@@ -3654,10 +3522,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         }
       ],
       fr: [
-        {
-          q: "Comment convertir SVG en png gratuitement ?",
-          a: "Téléversez votre fichier SVG dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
-        },
         {
           q: "Pourquoi convertir SVG en PNG ?",
           a: "SVG n'est pas supporté par toutes les applications. Convertissez en PNG pour obtenir une image raster à résolution fixe qui s'ouvre partout."
@@ -3750,8 +3614,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     },
     about: {
-      en: "TIFF is a professional lossless format used in printing, scanning, and archiving. TIFF files preserve every detail at full quality but can be hundreds of megabytes each.\n\nTIFF files are enormous — a single image can be hundreds of megabytes. Converting to JPEG reduces file sizes by 95%+ for sharing and web use. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted JPG files immediately. No account, no upload, no waiting.",
-      fr: "TIFF est un format professionnel sans perte utilisé en impression, numérisation et archivage. Les fichiers TIFF préservent chaque détail mais peuvent peser des centaines de mégaoctets.\n\nLes fichiers TIFF sont énormes — une seule image peut peser des centaines de mégaoctets. La conversion en JPEG réduit la taille de 95 %+ pour le partage. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers JPG convertis immédiatement. Sans compte, sans envoi, sans attente."
+      en: "TIFF is a professional lossless format used in printing, scanning, and archiving. TIFF files preserve every detail at full quality but can be hundreds of megabytes each.",
+      fr: "TIFF est un format professionnel sans perte utilisé en impression, numérisation et archivage. Les fichiers TIFF préservent chaque détail mais peuvent peser des centaines de mégaoctets."
     },
     faqs: {
       en: [
@@ -3764,10 +3628,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
           a: "JPEG is lossy. Converting from lossless TIFF to JPEG introduces compression artifacts, but at high quality settings these are barely perceptible."
         },
         {
-          q: "Is the conversion done in my browser?",
-          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
-        },
-        {
           q: "Can I convert multiple files at once?",
           a: "Yes. The tool supports batch conversion of multiple TIFF files in a single upload."
         },
@@ -3777,10 +3637,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         }
       ],
       fr: [
-        {
-          q: "Comment convertir TIFF en jpg gratuitement ?",
-          a: "Téléversez votre fichier TIFF dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
-        },
         {
           q: "Pourquoi convertir TIFF en JPG ?",
           a: "Les fichiers TIFF sont énormes — une seule image peut peser des centaines de mégaoctets. La conversion en JPEG réduit la taille de 95 %+ pour le partage."
@@ -3873,8 +3729,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     },
     about: {
-      en: "TIFF is a professional lossless format used in printing, scanning, and archiving. TIFF files preserve every detail at full quality but can be hundreds of megabytes each.\n\nPNG preserves lossless quality like TIFF but at a much more manageable file size — typically 30–60% smaller — while retaining transparency support. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted PNG files immediately. No account, no upload, no waiting.",
-      fr: "TIFF est un format professionnel sans perte utilisé en impression, numérisation et archivage. Les fichiers TIFF préservent chaque détail mais peuvent peser des centaines de mégaoctets.\n\nPNG préserve la qualité sans perte comme TIFF mais avec une taille de fichier bien plus gérable — 30 à 60 % plus petite — tout en conservant la transparence. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers PNG convertis immédiatement. Sans compte, sans envoi, sans attente."
+      en: "TIFF is a professional lossless format used in printing, scanning, and archiving. TIFF files preserve every detail at full quality but can be hundreds of megabytes each.",
+      fr: "TIFF est un format professionnel sans perte utilisé en impression, numérisation et archivage. Les fichiers TIFF préservent chaque détail mais peuvent peser des centaines de mégaoctets."
     },
     faqs: {
       en: [
@@ -3887,10 +3743,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
           a: "PNG is lossless. No quality is lost in the conversion — the output is a perfect pixel-for-pixel reproduction of the source TIFF."
         },
         {
-          q: "Is the conversion done in my browser?",
-          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
-        },
-        {
           q: "Can I convert multiple files at once?",
           a: "Yes. The tool supports batch conversion of multiple TIFF files in a single upload."
         },
@@ -3900,10 +3752,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         }
       ],
       fr: [
-        {
-          q: "Comment convertir TIFF en png gratuitement ?",
-          a: "Téléversez votre fichier TIFF dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
-        },
         {
           q: "Pourquoi convertir TIFF en PNG ?",
           a: "PNG préserve la qualité sans perte comme TIFF mais avec une taille de fichier bien plus gérable — 30 à 60 % plus petite — tout en conservant la transparence."
@@ -3996,8 +3844,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     },
     about: {
-      en: "TIFF is a professional lossless format used in printing, scanning, and archiving. TIFF files preserve every detail at full quality but can be hundreds of megabytes each.\n\nConvert massive TIFF archival files to WebP for web use — typically 90%+ size reduction with excellent visual quality. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted WebP files immediately. No account, no upload, no waiting.",
-      fr: "TIFF est un format professionnel sans perte utilisé en impression, numérisation et archivage. Les fichiers TIFF préservent chaque détail mais peuvent peser des centaines de mégaoctets.\n\nConvertissez des fichiers TIFF d'archivage massifs en WebP pour le web — réduction de taille de 90 %+ avec une excellente qualité visuelle. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers WebP convertis immédiatement. Sans compte, sans envoi, sans attente."
+      en: "TIFF is a professional lossless format used in printing, scanning, and archiving. TIFF files preserve every detail at full quality but can be hundreds of megabytes each.",
+      fr: "TIFF est un format professionnel sans perte utilisé en impression, numérisation et archivage. Les fichiers TIFF préservent chaque détail mais peuvent peser des centaines de mégaoctets."
     },
     faqs: {
       en: [
@@ -4010,10 +3858,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
           a: "WebP uses lossy compression. Converting from lossless TIFF to WebP introduces compression, but at standard settings results are visually near-indistinguishable from the original."
         },
         {
-          q: "Is the conversion done in my browser?",
-          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
-        },
-        {
           q: "Can I convert multiple files at once?",
           a: "Yes. The tool supports batch conversion of multiple TIFF files in a single upload."
         },
@@ -4023,10 +3867,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         }
       ],
       fr: [
-        {
-          q: "Comment convertir TIFF en webp gratuitement ?",
-          a: "Téléversez votre fichier TIFF dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
-        },
         {
           q: "Pourquoi convertir TIFF en WebP ?",
           a: "Convertissez des fichiers TIFF d'archivage massifs en WebP pour le web — réduction de taille de 90 %+ avec une excellente qualité visuelle."
@@ -4119,8 +3959,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     },
     about: {
-      en: "WebP is Google's modern web image format, offering 25–35% smaller file sizes than JPEG at the same visual quality. WebP supports both transparency and animation.\n\nAVIF offers even better compression than WebP — typically 20–30% smaller at the same visual quality — and is increasingly supported by browsers. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted AVIF files immediately. No account, no upload, no waiting.",
-      fr: "WebP est le format d'image web moderne de Google, offrant des fichiers 25 à 35 % plus petits que JPEG à la même qualité. WebP supporte la transparence et l'animation.\n\nAVIF offre une compression encore meilleure que WebP — 20 à 30 % plus petite à la même qualité — et est de plus en plus supporté par les navigateurs. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers AVIF convertis immédiatement. Sans compte, sans envoi, sans attente."
+      en: "WebP is Google's modern web image format, offering 25–35% smaller file sizes than JPEG at the same visual quality. WebP supports both transparency and animation.",
+      fr: "WebP est le format d'image web moderne de Google, offrant des fichiers 25 à 35 % plus petits que JPEG à la même qualité. WebP supporte la transparence et l'animation."
     },
     faqs: {
       en: [
@@ -4133,10 +3973,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
           a: "AVIF is lossy. Files will be 20–30% smaller than WebP at equivalent visual quality."
         },
         {
-          q: "Is the conversion done in my browser?",
-          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
-        },
-        {
           q: "Can I convert multiple files at once?",
           a: "Yes. The tool supports batch conversion of multiple WebP files in a single upload."
         },
@@ -4146,10 +3982,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         }
       ],
       fr: [
-        {
-          q: "Comment convertir WebP en avif gratuitement ?",
-          a: "Téléversez votre fichier WebP dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
-        },
         {
           q: "Pourquoi convertir WebP en AVIF ?",
           a: "AVIF offre une compression encore meilleure que WebP — 20 à 30 % plus petite à la même qualité — et est de plus en plus supporté par les navigateurs."
@@ -4242,8 +4074,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     },
     about: {
-      en: "WebP is Google's modern web image format, offering 25–35% smaller file sizes than JPEG at the same visual quality. WebP supports both transparency and animation.\n\nJPEG has universal compatibility across all devices, operating systems, and apps. WebP may not open in older software. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted JPG files immediately. No account, no upload, no waiting.",
-      fr: "WebP est le format d'image web moderne de Google, offrant des fichiers 25 à 35 % plus petits que JPEG à la même qualité. WebP supporte la transparence et l'animation.\n\nJPEG est universellement compatible sur tous les appareils, systèmes d'exploitation et applications. WebP peut ne pas s'ouvrir dans les anciens logiciels. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers JPG convertis immédiatement. Sans compte, sans envoi, sans attente."
+      en: "WebP is Google's modern web image format, offering 25–35% smaller file sizes than JPEG at the same visual quality. WebP supports both transparency and animation.",
+      fr: "WebP est le format d'image web moderne de Google, offrant des fichiers 25 à 35 % plus petits que JPEG à la même qualité. WebP supporte la transparence et l'animation."
     },
     faqs: {
       en: [
@@ -4256,10 +4088,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
           a: "JPEG is lossy. Converting WebP to JPEG may introduce slight quality reduction at standard settings."
         },
         {
-          q: "Is the conversion done in my browser?",
-          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
-        },
-        {
           q: "Can I convert multiple files at once?",
           a: "Yes. The tool supports batch conversion of multiple WebP files in a single upload."
         },
@@ -4269,10 +4097,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         }
       ],
       fr: [
-        {
-          q: "Comment convertir WebP en jpg gratuitement ?",
-          a: "Téléversez votre fichier WebP dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
-        },
         {
           q: "Pourquoi convertir WebP en JPG ?",
           a: "JPEG est universellement compatible sur tous les appareils, systèmes d'exploitation et applications. WebP peut ne pas s'ouvrir dans les anciens logiciels."
@@ -4365,8 +4189,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     },
     about: {
-      en: "WebP is Google's modern web image format, offering 25–35% smaller file sizes than JPEG at the same visual quality. WebP supports both transparency and animation.\n\nWrap one or more WebP images in a PDF for easy sharing, printing, or document archiving. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted PDF files immediately. No account, no upload, no waiting.",
-      fr: "WebP est le format d'image web moderne de Google, offrant des fichiers 25 à 35 % plus petits que JPEG à la même qualité. WebP supporte la transparence et l'animation.\n\nRegroupez une ou plusieurs images WebP dans un PDF pour un partage, une impression ou un archivage de documents facile. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers PDF convertis immédiatement. Sans compte, sans envoi, sans attente."
+      en: "WebP is Google's modern web image format, offering 25–35% smaller file sizes than JPEG at the same visual quality. WebP supports both transparency and animation.",
+      fr: "WebP est le format d'image web moderne de Google, offrant des fichiers 25 à 35 % plus petits que JPEG à la même qualité. WebP supporte la transparence et l'animation."
     },
     faqs: {
       en: [
@@ -4379,10 +4203,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
           a: "Images are embedded in the PDF at full original resolution. No quality loss is applied during conversion."
         },
         {
-          q: "Is the conversion done in my browser?",
-          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
-        },
-        {
           q: "Can I convert multiple files at once?",
           a: "Yes. The tool supports batch conversion of multiple WebP files in a single upload."
         },
@@ -4392,10 +4212,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         }
       ],
       fr: [
-        {
-          q: "Comment convertir WebP en pdf gratuitement ?",
-          a: "Téléversez votre fichier WebP dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
-        },
         {
           q: "Pourquoi convertir WebP en PDF ?",
           a: "Regroupez une ou plusieurs images WebP dans un PDF pour un partage, une impression ou un archivage de documents facile."
@@ -4488,8 +4304,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ]
     },
     about: {
-      en: "WebP is Google's modern web image format, offering 25–35% smaller file sizes than JPEG at the same visual quality. WebP supports both transparency and animation.\n\nPNG is lossless and has near-universal compatibility for design work and apps that don't support WebP. The entire conversion runs locally in your browser — your files never leave your device. Drop in one file or a whole batch, and download your converted PNG files immediately. No account, no upload, no waiting.",
-      fr: "WebP est le format d'image web moderne de Google, offrant des fichiers 25 à 35 % plus petits que JPEG à la même qualité. WebP supporte la transparence et l'animation.\n\nPNG est sans perte et a une compatibilité quasi universelle pour le travail de design et les applications ne supportant pas WebP. La conversion s'effectue entièrement dans votre navigateur — vos fichiers ne quittent jamais votre appareil. Déposez un fichier ou un lot entier et téléchargez vos fichiers PNG convertis immédiatement. Sans compte, sans envoi, sans attente."
+      en: "WebP is Google's modern web image format, offering 25–35% smaller file sizes than JPEG at the same visual quality. WebP supports both transparency and animation.",
+      fr: "WebP est le format d'image web moderne de Google, offrant des fichiers 25 à 35 % plus petits que JPEG à la même qualité. WebP supporte la transparence et l'animation."
     },
     faqs: {
       en: [
@@ -4502,10 +4318,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
           a: "PNG is lossless. Converting from WebP to PNG produces a full-quality output, though file sizes will be larger than the WebP source."
         },
         {
-          q: "Is the conversion done in my browser?",
-          a: "Yes. The entire conversion runs locally in your browser. Your files are never uploaded to any server."
-        },
-        {
           q: "Can I convert multiple files at once?",
           a: "Yes. The tool supports batch conversion of multiple WebP files in a single upload."
         },
@@ -4515,10 +4327,6 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         }
       ],
       fr: [
-        {
-          q: "Comment convertir WebP en png gratuitement ?",
-          a: "Téléversez votre fichier WebP dans le convertisseur d'EverydayTools, cliquez sur Convertir et téléchargez le résultat — entièrement dans votre navigateur, sans compte."
-        },
         {
           q: "Pourquoi convertir WebP en PNG ?",
           a: "PNG est sans perte et a une compatibilité quasi universelle pour le travail de design et les applications ne supportant pas WebP."
