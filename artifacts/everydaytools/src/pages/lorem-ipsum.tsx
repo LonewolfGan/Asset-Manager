@@ -75,28 +75,28 @@ export default function LoremIpsum() {
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             {(['paragraphs', 'sentences', 'words', 'lists'] as Type[]).map((tp) => (
               <button key={tp} onClick={() => setType(tp)}
-                style={{ padding: '6px 14px', border: `1px solid ${type === tp ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 8, background: type === tp ? 'var(--accent-subtle,#fff4ef)' : 'transparent', color: type === tp ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: type === tp ? 600 : 400, cursor: 'pointer', textTransform: 'capitalize' }}>
-                {tp}
+                style={{ padding: '6px 14px', border: `1px solid ${type === tp ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 8, background: type === tp ? 'var(--accent-subtle,#fff4ef)' : 'transparent', color: type === tp ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: type === tp ? 600 : 400, cursor: 'pointer' }}>
+                {t.loremIpsum.types[tp]}
               </button>
             ))}
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <label style={{ fontFamily: 'var(--font-ui)', fontSize: 14, color: 'var(--text-secondary)' }}>Count:</label>
+              <label style={{ fontFamily: 'var(--font-ui)', fontSize: 14, color: 'var(--text-secondary)' }}>{t.loremIpsum.count}</label>
               <input type="number" min="1" max="50" value={count} onChange={(e) => setCount(Math.max(1, Math.min(50, +e.target.value)))}
                 style={{ width: 70, padding: '5px 10px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-mono)', fontSize: 14, background: 'var(--bg-base)', color: 'var(--text-primary)' }}
               />
             </div>
             <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontFamily: 'var(--font-ui)', fontSize: 14, color: 'var(--text-secondary)' }}>
               <input type="checkbox" checked={classic} onChange={(e) => setClassic(e.target.checked)} style={{ accentColor: 'var(--accent)' }} />
-              Start with classic Lorem ipsum
+              {t.loremIpsum.classicStart}
             </label>
           </div>
 
           <button onClick={generate}
             style={{ padding: '11px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 15, fontWeight: 500, cursor: 'pointer' }}>
-            Generate
+            {t.common.generate}
           </button>
         </div>
 

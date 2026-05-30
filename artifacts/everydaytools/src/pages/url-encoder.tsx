@@ -25,7 +25,7 @@ export default function UrlEncoder() {
     try {
       if (!input) return '';
       return mode === 'encode' ? encodeURIComponent(input) : decodeURIComponent(input);
-    } catch { return 'Invalid input'; }
+    } catch { return t.urlEncoder.invalidInput; }
   })();
 
   const copy = async () => { await navigator.clipboard.writeText(output); setCopied(true); setTimeout(() => setCopied(false), 1500); };
@@ -41,7 +41,7 @@ export default function UrlEncoder() {
           {(['encode', 'decode'] as Mode[]).map((m) => (
             <button key={m} onClick={() => { setMode(m); setInput(''); }}
               style={{ padding: '7px 18px', border: `1px solid ${mode === m ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius)', background: mode === m ? 'var(--accent-subtle,#fff4ef)' : 'var(--bg-surface)', color: mode === m ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: mode === m ? 600 : 400, cursor: 'pointer' }}>
-              {m === 'encode' ? 'Encode' : 'Decode'}
+              {m === 'encode' ? t.common.encode : t.common.decode}
             </button>
           ))}
         </div>
@@ -49,7 +49,7 @@ export default function UrlEncoder() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div>
             <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: 500, color: 'var(--text-primary)', marginBottom: 6 }}>
-              {mode === 'encode' ? 'Raw URL / text' : 'Encoded URL'}
+              {mode === 'encode' ? t.urlEncoder.rawUrlText : t.urlEncoder.encodedUrl}
             </p>
             <textarea value={input} onChange={(e) => setInput(e.target.value)}
               placeholder={mode === 'encode' ? 'https://example.com/path?q=hello world&lang=français' : 'https%3A%2F%2Fexample.com%3Fq%3Dhello%20world'}
@@ -59,7 +59,7 @@ export default function UrlEncoder() {
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
               <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: 500, color: 'var(--text-primary)', margin: 0 }}>
-                {mode === 'encode' ? 'Encoded output' : 'Decoded output'}
+                {mode === 'encode' ? t.urlEncoder.encodedOutput : t.urlEncoder.decodedOutput}
               </p>
               {output && <button onClick={copy} style={{ padding: '3px 10px', border: '1px solid var(--border)', borderRadius: 5, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 12, color: 'var(--text-secondary)', cursor: 'pointer' }}>{copied ? t.common.copied : t.common.copy}</button>}
             </div>
@@ -70,13 +70,13 @@ export default function UrlEncoder() {
         </div>
 
         <div style={{ marginTop: 24, padding: 16, background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
-          <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: 500, color: 'var(--text-primary)', margin: '0 0 8px' }}>Quick examples</p>
-          {[
-            ['Space', ' ', '%20'],
-            ['Ampersand', '&', '%26'],
-            ['Equals', '=', '%3D'],
-            ['Hash', '#', '%23'],
-          ].map(([label, raw, enc]) => (
+          <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: 500, color: 'var(--text-primary)', margin: '0 0 8px' }}>{t.urlEncoder.quickExamples}</p>
+          {([
+            [t.urlEncoder.examples.space, ' ', '%20'],
+            [t.urlEncoder.examples.ampersand, '&', '%26'],
+            [t.urlEncoder.examples.equals, '=', '%3D'],
+            [t.urlEncoder.examples.hash, '#', '%23'],
+          ] as [string, string, string][]).map(([label, raw, enc]) => (
             <div key={label} style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 4 }}>
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)', minWidth: 80 }}>{label}</span>
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-secondary)' }}>{raw}</span>

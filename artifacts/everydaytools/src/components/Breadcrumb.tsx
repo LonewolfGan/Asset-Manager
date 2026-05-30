@@ -12,13 +12,17 @@ export default function Breadcrumb({ items }: { items: string[] }) {
   const bc = t.nav.breadcrumb;
 
   const STATIC_MAP: Record<string, string> = {
-    Home:           bc.home,
-    "PDF Tools":    bc.pdf,
-    "Word Tools":   bc.word,
-    "Image Tools":  bc.image,
-    "Privacy Tools":bc.privacy,
-    Calculators:    bc.calculators,
-    Tools:          bc.tools,
+    Home:                  bc.home,
+    "PDF Tools":           bc.pdf,
+    "Word Tools":          bc.word,
+    "Image Tools":         bc.image,
+    "Privacy Tools":       bc.privacy,
+    Calculators:           bc.calculators,
+    Tools:                 bc.tools,
+    "Text & Code":         bc.textCode,
+    "Excel & Spreadsheets":bc.excelSpreadsheets,
+    Documents:             bc.documents,
+    Privacy:               bc.privacy,
   };
 
   const translate = (item: string): string => {

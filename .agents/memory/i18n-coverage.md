@@ -11,6 +11,7 @@ description: State of EN/FR translation coverage across all tool pages; what's w
 
 ## Sections in Translations type (all have EN+FR)
 - `nav`, `home`, `tools`, `ui`, `footer`, `cookie` — global/shared
+- `nav.breadcrumb` — includes textCode, excelSpreadsheets, documents (added); Breadcrumb STATIC_MAP handles "Text & Code", "Excel & Spreadsheets", "Documents", "Privacy"
 - `tipCalc`, `pctCalc` — tip/percentage calculators
 - `unitConverter`, `currencyConverter`, `passwordGenerator` — utility tools
 - `formatSelector` — search/no-results for FormatSelector component
@@ -22,6 +23,12 @@ description: State of EN/FR translation coverage across all tool pages; what's w
 - `imageCompress` — full: mode buttons, quality/resize/target labels, compress/download/remove buttons
 - `documentConverter` — full: all UI strings for the shadcn-based document converter page
 - `imageConverter` — full: all UI strings for the shadcn-based image converter page
+- `jsonFormatter` — inputLabel, formattedOutput, minifiedOutput, indent, stats fn, invalidJson
+- `htmlFormatter` — inputLabel, outputLabel, bytes fn
+- `urlEncoder` — rawUrlText, encodedUrl, encodedOutput, decodedOutput, quickExamples, invalidInput, examples object
+- `base64Encoder` — uploadFile, plainTextInput, base64Input, base64Output, decodedText, placeholders, chars fn, invalidInput
+- `loremIpsum` — types object (paragraphs/sentences/words/lists), count, classicStart
+- `common` — now also includes: format, minify, encode, decode, generate
 
 ## Pages still using inline isFR pattern (pre-existing, not yet migrated to t.*)
 - `qr-code-generator.tsx` — uses `const isFR = locale === 'FR'` inline throughout

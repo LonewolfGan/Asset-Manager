@@ -36,7 +36,7 @@ export default function Base64() {
       }
     } catch (e) {
       trackToolError('base64', 'general-error');
-      setError(e instanceof Error ? e.message : 'Invalid input');
+      setError(e instanceof Error ? e.message : t.base64Encoder.invalidInput);
     }
   };
 
@@ -78,13 +78,13 @@ export default function Base64() {
           {(['encode', 'decode'] as Mode[]).map((m) => (
             <button key={m} onClick={() => handleMode(m)}
               style={{ padding: '7px 18px', border: `1px solid ${mode === m ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius)', background: mode === m ? 'var(--accent-subtle,#fff4ef)' : 'var(--bg-surface)', color: mode === m ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: mode === m ? 600 : 400, cursor: 'pointer' }}>
-              {m === 'encode' ? 'Encode' : 'Decode'}
+              {m === 'encode' ? t.common.encode : t.common.decode}
             </button>
           ))}
           {mode === 'encode' && (
             <button onClick={() => inputRef.current?.click()}
               style={{ padding: '7px 14px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-surface)', color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 13, cursor: 'pointer' }}>
-              Upload file → Base64
+              {t.base64Encoder.uploadFile}
             </button>
           )}
           <input ref={inputRef} type="file" style={{ display: 'none' }} onChange={(e) => { if (e.target.files?.[0]) handleFile(e.target.files[0]); }} />
@@ -93,16 +93,16 @@ export default function Base64() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
           <div>
             <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: 500, color: 'var(--text-primary)', marginBottom: 6 }}>
-              {mode === 'encode' ? 'Plain text input' : 'Base64 input'}
+              {mode === 'encode' ? t.base64Encoder.plainTextInput : t.base64Encoder.base64Input}
             </p>
             {fileMode ? (
               <div style={{ height: 320, border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-elevated)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 8 }}>
                 <span style={{ fontFamily: 'var(--font-ui)', fontSize: 14, color: 'var(--text-primary)' }}>{fileName}</span>
-                <button onClick={() => { setFileMode(false); setFileName(''); setInput(''); setOutput(''); }} style={{ padding: '4px 12px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 12, color: 'var(--text-secondary)', cursor: 'pointer' }}>Clear</button>
+                <button onClick={() => { setFileMode(false); setFileName(''); setInput(''); setOutput(''); }} style={{ padding: '4px 12px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 12, color: 'var(--text-secondary)', cursor: 'pointer' }}>{t.common.clear}</button>
               </div>
             ) : (
               <textarea value={input} onChange={(e) => handleInput(e.target.value)}
-                placeholder={mode === 'encode' ? 'Type or paste text to encode…' : 'Paste Base64 to decode…'}
+                placeholder={mode === 'encode' ? t.base64Encoder.encodePlaceholder : t.base64Encoder.decodePlaceholder}
                 style={{ width: '100%', height: 320, padding: 14, border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 13, resize: 'vertical', boxSizing: 'border-box', lineHeight: 1.5 }}
               />
             )}
@@ -111,14 +111,14 @@ export default function Base64() {
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
               <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: 500, color: 'var(--text-primary)', margin: 0 }}>
-                {mode === 'encode' ? 'Base64 output' : 'Decoded text'}
+                {mode === 'encode' ? t.base64Encoder.base64Output : t.base64Encoder.decodedText}
               </p>
               {output && <button onClick={copy} style={{ padding: '3px 10px', border: '1px solid var(--border)', borderRadius: 5, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 12, color: 'var(--text-secondary)', cursor: 'pointer' }}>{copied ? t.common.copied : t.common.copy}</button>}
             </div>
             <textarea readOnly value={output} placeholder={t.common.outputAppearsHere}
               style={{ width: '100%', height: 320, padding: 14, border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-elevated)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 13, resize: 'vertical', boxSizing: 'border-box', lineHeight: 1.5, wordBreak: 'break-all' }}
             />
-            {output && <p style={{ color: 'var(--text-tertiary)', fontSize: 12, marginTop: 6, fontFamily: 'var(--font-mono)' }}>{output.length} chars</p>}
+            {output && <p style={{ color: 'var(--text-tertiary)', fontSize: 12, marginTop: 6, fontFamily: 'var(--font-mono)' }}>{t.base64Encoder.chars(output.length)}</p>}
           </div>
         </div>
         <AdSlot type="horizontal" />

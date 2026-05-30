@@ -60,12 +60,12 @@ export default function JsonFormatter() {
           {(['format', 'minify'] as Mode[]).map((m) => (
             <button key={m} onClick={() => handleMode(m)}
               style={{ padding: '6px 16px', borderRadius: 'var(--radius)', border: `1px solid ${mode === m ? 'var(--accent)' : 'var(--border)'}`, background: mode === m ? 'var(--accent-subtle,#fff4ef)' : 'var(--bg-surface)', color: mode === m ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: mode === m ? 600 : 400, cursor: 'pointer' }}>
-              {m === 'format' ? 'Format' : 'Minify'}
+              {m === 'format' ? t.common.format : t.common.minify}
             </button>
           ))}
           {mode === 'format' && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span style={{ fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-secondary)' }}>Indent:</span>
+              <span style={{ fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-secondary)' }}>{t.jsonFormatter.indent}</span>
               {[2, 4].map((n) => (
                 <button key={n} onClick={() => { setIndent(n); process(input, 'format'); }}
                   style={{ padding: '4px 10px', border: `1px solid ${indent === n ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 6, background: indent === n ? 'var(--accent-subtle,#fff4ef)' : 'transparent', color: indent === n ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-mono)', fontSize: 12, cursor: 'pointer' }}>
@@ -84,7 +84,7 @@ export default function JsonFormatter() {
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
           <div>
-            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: 500, color: 'var(--text-primary)', marginBottom: 6 }}>Input JSON</p>
+            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: 500, color: 'var(--text-primary)', marginBottom: 6 }}>{t.jsonFormatter.inputLabel}</p>
             <textarea value={input} onChange={(e) => handleInput(e.target.value)}
               placeholder='{"name":"Alice","age":30,"city":"Paris"}'
               style={{ width: '100%', height: 420, padding: 14, border: `1px solid ${error ? 'var(--danger,#dc2626)' : 'var(--border)'}`, borderRadius: 'var(--radius)', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 13, resize: 'vertical', boxSizing: 'border-box', lineHeight: 1.5 }}
@@ -92,11 +92,11 @@ export default function JsonFormatter() {
             {error && <p style={{ color: 'var(--danger,#dc2626)', fontSize: 12, marginTop: 6, fontFamily: 'var(--font-mono)' }}>{error}</p>}
           </div>
           <div>
-            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: 500, color: 'var(--text-primary)', marginBottom: 6 }}>{mode === 'format' ? 'Formatted Output' : 'Minified Output'}</p>
-            <textarea readOnly value={output} placeholder="Output will appear here as you type…"
+            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: 500, color: 'var(--text-primary)', marginBottom: 6 }}>{mode === 'format' ? t.jsonFormatter.formattedOutput : t.jsonFormatter.minifiedOutput}</p>
+            <textarea readOnly value={output} placeholder={t.common.outputAppearsHere}
               style={{ width: '100%', height: 420, padding: 14, border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-elevated)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 13, resize: 'vertical', boxSizing: 'border-box', lineHeight: 1.5 }}
             />
-            {output && <p style={{ color: 'var(--text-tertiary)', fontSize: 12, marginTop: 6, fontFamily: 'var(--font-mono)' }}>{output.length} chars · {new Blob([output]).size} bytes</p>}
+            {output && <p style={{ color: 'var(--text-tertiary)', fontSize: 12, marginTop: 6, fontFamily: 'var(--font-mono)' }}>{t.jsonFormatter.stats(output.length, new Blob([output]).size)}</p>}
           </div>
         </div>
         <AdSlot type="horizontal" />

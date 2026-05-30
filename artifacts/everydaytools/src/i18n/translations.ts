@@ -8,6 +8,7 @@ export type Translations = {
     breadcrumb: {
       home: string; pdf: string; word: string; image: string;
       privacy: string; calculators: string; tools: string;
+      textCode: string; excelSpreadsheets: string; documents: string;
     };
   };
   home: {
@@ -236,6 +237,49 @@ export type Translations = {
     errorGeneric: string;
     view: string;
     copyText: string;
+    format: string;
+    minify: string;
+    encode: string;
+    decode: string;
+    generate: string;
+  };
+  jsonFormatter: {
+    inputLabel: string;
+    formattedOutput: string;
+    minifiedOutput: string;
+    indent: string;
+    stats: (chars: number, bytes: number) => string;
+    invalidJson: string;
+  };
+  htmlFormatter: {
+    inputLabel: string;
+    outputLabel: string;
+    bytes: (n: number) => string;
+  };
+  urlEncoder: {
+    rawUrlText: string;
+    encodedUrl: string;
+    encodedOutput: string;
+    decodedOutput: string;
+    quickExamples: string;
+    invalidInput: string;
+    examples: { space: string; ampersand: string; equals: string; hash: string };
+  };
+  base64Encoder: {
+    uploadFile: string;
+    plainTextInput: string;
+    base64Input: string;
+    base64Output: string;
+    decodedText: string;
+    encodePlaceholder: string;
+    decodePlaceholder: string;
+    chars: (n: number) => string;
+    invalidInput: string;
+  };
+  loremIpsum: {
+    types: { paragraphs: string; sentences: string; words: string; lists: string };
+    count: string;
+    classicStart: string;
   };
 };
 
@@ -245,6 +289,7 @@ const EN: Translations = {
     breadcrumb: {
       home: "Home", pdf: "PDF Tools", word: "Word Tools", image: "Image Tools",
       privacy: "Privacy Tools", calculators: "Calculators", tools: "Tools",
+      textCode: "Text & Code", excelSpreadsheets: "Excel & Spreadsheets", documents: "Documents",
     },
     groups: {
       pdf: "PDF Tools",
@@ -738,6 +783,49 @@ const EN: Translations = {
     errorGeneric: "Something went wrong. Please try again.",
     view: "View",
     copyText: "Copy text",
+    format: "Format",
+    minify: "Minify",
+    encode: "Encode",
+    decode: "Decode",
+    generate: "Generate",
+  },
+  jsonFormatter: {
+    inputLabel: "Input JSON",
+    formattedOutput: "Formatted Output",
+    minifiedOutput: "Minified Output",
+    indent: "Indent:",
+    stats: (chars, bytes) => `${chars} chars · ${bytes} bytes`,
+    invalidJson: "Invalid JSON",
+  },
+  htmlFormatter: {
+    inputLabel: "Input HTML",
+    outputLabel: "Output",
+    bytes: (n) => `${n} bytes`,
+  },
+  urlEncoder: {
+    rawUrlText: "Raw URL / text",
+    encodedUrl: "Encoded URL",
+    encodedOutput: "Encoded output",
+    decodedOutput: "Decoded output",
+    quickExamples: "Quick examples",
+    invalidInput: "Invalid input",
+    examples: { space: "Space", ampersand: "Ampersand", equals: "Equals", hash: "Hash" },
+  },
+  base64Encoder: {
+    uploadFile: "Upload file → Base64",
+    plainTextInput: "Plain text input",
+    base64Input: "Base64 input",
+    base64Output: "Base64 output",
+    decodedText: "Decoded text",
+    encodePlaceholder: "Type or paste text to encode…",
+    decodePlaceholder: "Paste Base64 to decode…",
+    chars: (n) => `${n} chars`,
+    invalidInput: "Invalid input",
+  },
+  loremIpsum: {
+    types: { paragraphs: "Paragraphs", sentences: "Sentences", words: "Words", lists: "Lists" },
+    count: "Count:",
+    classicStart: "Start with classic Lorem ipsum",
   },
 };
 
@@ -747,6 +835,7 @@ const FR: Translations = {
     breadcrumb: {
       home: "Accueil", pdf: "Outils PDF", word: "Outils Word", image: "Outils Image",
       privacy: "Outils Confidentialité", calculators: "Calculateurs", tools: "Outils",
+      textCode: "Texte & Code", excelSpreadsheets: "Excel & Tableurs", documents: "Documents",
     },
     groups: {
       pdf: "Outils PDF",
@@ -1240,6 +1329,49 @@ const FR: Translations = {
     errorGeneric: "Une erreur est survenue. Veuillez réessayer.",
     view: "Afficher",
     copyText: "Copier le texte",
+    format: "Formater",
+    minify: "Minifier",
+    encode: "Encoder",
+    decode: "Décoder",
+    generate: "Générer",
+  },
+  jsonFormatter: {
+    inputLabel: "JSON d'entrée",
+    formattedOutput: "Résultat formaté",
+    minifiedOutput: "Résultat minifié",
+    indent: "Indentation :",
+    stats: (chars, bytes) => `${chars} caractères · ${bytes} octets`,
+    invalidJson: "JSON invalide",
+  },
+  htmlFormatter: {
+    inputLabel: "HTML d'entrée",
+    outputLabel: "Résultat",
+    bytes: (n) => `${n} octets`,
+  },
+  urlEncoder: {
+    rawUrlText: "URL brute / texte",
+    encodedUrl: "URL encodée",
+    encodedOutput: "Résultat encodé",
+    decodedOutput: "Résultat décodé",
+    quickExamples: "Exemples rapides",
+    invalidInput: "Entrée invalide",
+    examples: { space: "Espace", ampersand: "Esperluette", equals: "Égal", hash: "Dièse" },
+  },
+  base64Encoder: {
+    uploadFile: "Envoyer un fichier → Base64",
+    plainTextInput: "Texte brut",
+    base64Input: "Entrée Base64",
+    base64Output: "Résultat Base64",
+    decodedText: "Texte décodé",
+    encodePlaceholder: "Tapez ou collez le texte à encoder…",
+    decodePlaceholder: "Collez le Base64 à décoder…",
+    chars: (n) => `${n} caractères`,
+    invalidInput: "Entrée invalide",
+  },
+  loremIpsum: {
+    types: { paragraphs: "Paragraphes", sentences: "Phrases", words: "Mots", lists: "Listes" },
+    count: "Nombre :",
+    classicStart: "Commencer avec le Lorem ipsum classique",
   },
 };
 
