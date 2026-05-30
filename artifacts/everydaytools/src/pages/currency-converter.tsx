@@ -8,7 +8,7 @@ import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 
 export default function CurrencyConverter() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   type SourceInfo = { type: 'loading' } | { type: 'live'; age: number } | { type: 'offline'; date: string };
   const [rates, setRates] = useState<Record<string, number>>({});
   const [sourceInfo, setSourceInfo] = useState<SourceInfo>({ type: 'loading' });
@@ -83,7 +83,13 @@ export default function CurrencyConverter() {
     return;
   }, [amount, fromCurrency, toCurrency, result]);
 
-  const currencyOptions = CURRENCIES.map(c => ({ value: c.code, label: `${c.code} - ${c.name}` }));
+  const currencyDisplayNames = (() => {
+    try { return new Intl.DisplayNames([locale.toLowerCase()], { type: 'currency' }); } catch { return null; }
+  })();
+  const currencyOptions = CURRENCIES.map(c => ({
+    value: c.code,
+    label: `${c.code} - ${currencyDisplayNames?.of(c.code) || c.name}`
+  }));
 
   return (
     <>

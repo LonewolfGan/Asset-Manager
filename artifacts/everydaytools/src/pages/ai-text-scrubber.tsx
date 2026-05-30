@@ -13,6 +13,7 @@ export default function AiTextScrubber() {
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
   const [invisiblesCount, setInvisiblesCount] = useState<number | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const handleScanInvisibles = async () => {
     try {
@@ -59,6 +60,8 @@ export default function AiTextScrubber() {
 
   const handleCopy = () => {
     copyWithToast(outputText);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
   };
 
   const handleDownload = () => {
@@ -115,7 +118,7 @@ export default function AiTextScrubber() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
             <h3 style={{ fontSize: 16, fontWeight: 500, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{tc.cleanedOutput}</h3>
             <div style={{ display: 'flex', gap: 8 }}>
-              <button onClick={handleCopy} style={{ padding: '6px 12px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: 13, cursor: 'pointer', fontFamily: 'var(--font-ui)', color: 'var(--text-primary)' }}>{tc.copy}</button>
+              <button onClick={handleCopy} style={{ padding: '6px 12px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: 13, cursor: 'pointer', fontFamily: 'var(--font-ui)', color: copied ? 'var(--accent)' : 'var(--text-primary)', transition: 'color 150ms ease' }}>{copied ? '✓ ' + t.common.copied : tc.copy}</button>
               <button onClick={handleDownload} style={{ padding: '6px 12px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: 13, cursor: 'pointer', fontFamily: 'var(--font-ui)', color: 'var(--text-primary)' }}>{tc.downloadTxt}</button>
             </div>
           </div>

@@ -23,6 +23,7 @@ export default function Checksum() {
   const [progress, setProgress] = useState(0);
   const [expected, setExpected] = useState('');
   const [isDragging, setIsDragging] = useState(false);
+  const [copiedAlgo, setCopiedAlgo] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFile = async (f: File) => {
@@ -92,8 +93,8 @@ export default function Checksum() {
               <div key={algo} style={{ padding: '12px 16px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)', fontWeight: 600, textTransform: 'uppercase' }}>{algo}</span>
-                  <button onClick={() => copyWithToast(hashes[algo] ?? '')}
-                    style={{ padding: '2px 8px', border: '1px solid var(--border)', borderRadius: 4, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 11, color: 'var(--text-secondary)', cursor: 'pointer' }}>{t.common.copy}</button>
+                  <button onClick={() => { copyWithToast(hashes[algo] ?? ''); setCopiedAlgo(algo); setTimeout(() => setCopiedAlgo(null), 1500); }}
+                    style={{ padding: '2px 8px', border: '1px solid var(--border)', borderRadius: 4, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 11, color: copiedAlgo === algo ? 'var(--accent)' : 'var(--text-secondary)', cursor: 'pointer', transition: 'color 150ms ease' }}>{copiedAlgo === algo ? '✓ ' + t.common.copied : t.common.copy}</button>
                 </div>
                 <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: expected.trim() && hashes[algo]?.toLowerCase() === expected.trim().toLowerCase() ? 'var(--success,#16a34a)' : 'var(--text-primary)', margin: 0, wordBreak: 'break-all', lineHeight: 1.5 }}>
                   {hashes[algo]}

@@ -5,6 +5,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import FormatSelector from '@/components/FormatSelector';
 
 export default function PasswordGenerator() {
   const { t } = useLocale();
@@ -18,6 +19,7 @@ export default function PasswordGenerator() {
   
   const [passwords, setPasswords] = useState<string[]>([]);
   const [history, setHistory] = useState<string[]>([]);
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   useEffect(() => {
     const saved = sessionStorage.getItem('password_history');
@@ -98,8 +100,10 @@ export default function PasswordGenerator() {
     entropy < 80  ? "var(--text-primary)" :
                     "var(--accent)";
 
-  const handleCopy = (text: string) => {
+  const handleCopy = (text: string, key = 'main') => {
     copyWithToast(text);
+    setCopiedKey(key);
+    setTimeout(() => setCopiedKey(null), 1500);
   };
 
   return (
@@ -113,7 +117,7 @@ export default function PasswordGenerator() {
         
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
           <h2 style={{ fontSize: 24, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)', wordBreak: 'break-all', margin: 0 }}>{passwords[0] || ""}</h2>
-          <button onClick={() => handleCopy(passwords[0])} style={{ padding: '8px 16px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', cursor: 'pointer', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{pg.copy}</button>
+          <button onClick={() => handleCopy(passwords[0], 'main')} style={{ padding: '8px 16px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', cursor: 'pointer', color: copiedKey === 'main' ? 'var(--accent)' : 'var(--text-primary)', fontFamily: 'var(--font-ui)', transition: 'color 150ms ease' }}>{copiedKey === 'main' ? '✓ ' + pg.copy : pg.copy}</button>
         </div>
         
         <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 8 }}>
@@ -139,19 +143,19 @@ export default function PasswordGenerator() {
           </div>
           
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, cursor: 'pointer', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, cursor: 'pointer', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', padding: '5px 0' }}>
               <input type="checkbox" checked={uppercase} onChange={e => setUppercase(e.target.checked)} disabled={pronounceable} style={{ accentColor: 'var(--accent)' }} /> {pg.uppercase}
             </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, cursor: 'pointer', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, cursor: 'pointer', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', padding: '5px 0' }}>
               <input type="checkbox" checked={lowercase} onChange={e => setLowercase(e.target.checked)} disabled={pronounceable} style={{ accentColor: 'var(--accent)' }} /> {pg.lowercase}
             </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, cursor: 'pointer', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, cursor: 'pointer', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', padding: '5px 0' }}>
               <input type="checkbox" checked={numbers} onChange={e => setNumbers(e.target.checked)} disabled={pronounceable} style={{ accentColor: 'var(--accent)' }} /> {pg.numbers}
             </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, cursor: 'pointer', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, cursor: 'pointer', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', padding: '5px 0' }}>
               <input type="checkbox" checked={symbols} onChange={e => setSymbols(e.target.checked)} disabled={pronounceable} style={{ accentColor: 'var(--accent)' }} /> {pg.symbols}
             </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, cursor: 'pointer', gridColumn: '1 / -1', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, cursor: 'pointer', gridColumn: '1 / -1', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', padding: '5px 0' }}>
               <input type="checkbox" checked={pronounceable} onChange={e => setPronounceable(e.target.checked)} style={{ accentColor: 'var(--accent)' }} /> {pg.pronounceable}
             </label>
           </div>
@@ -159,12 +163,11 @@ export default function PasswordGenerator() {
           <div style={{ display: 'flex', gap: 16, alignItems: 'flex-end' }}>
             <div style={{ flex: 1 }}>
               <label htmlFor="pw-count" style={{ fontSize: 14, fontWeight: 500, display: 'block', marginBottom: 8, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{pg.count}</label>
-              <select id="pw-count" value={count} onChange={e => setCount(parseInt(e.target.value))} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', outline: 'none' }}>
-                <option value={1}>1</option>
-                <option value={5}>5</option>
-                <option value={10}>10</option>
-                <option value={25}>25</option>
-              </select>
+              <FormatSelector
+                options={[1, 5, 10, 25].map(n => ({ value: String(n), label: String(n) }))}
+                value={String(count)}
+                onChange={v => setCount(parseInt(v))}
+              />
             </div>
             <button onClick={generate} style={{ flex: 2, padding: '10px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontWeight: 500, cursor: 'pointer', fontFamily: 'var(--font-ui)' }}>
               {pg.regenerate}
@@ -179,7 +182,7 @@ export default function PasswordGenerator() {
           {passwords.map((p, i) => (
             <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid var(--border)' }}>
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: 14, color: 'var(--text-primary)' }}>{p}</span>
-              <button onClick={() => handleCopy(p)} style={{ background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer', fontSize: 13, fontFamily: 'var(--font-ui)' }}>{pg.copy}</button>
+              <button onClick={() => handleCopy(p, String(i))} style={{ background: 'none', border: 'none', color: copiedKey === String(i) ? 'var(--accent)' : 'var(--text-secondary)', cursor: 'pointer', fontSize: 13, fontFamily: 'var(--font-ui)', transition: 'color 150ms ease' }}>{copiedKey === String(i) ? '✓' : pg.copy}</button>
             </div>
           ))}
         </div>
@@ -189,7 +192,7 @@ export default function PasswordGenerator() {
         <div style={{ marginTop: 24 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
             <h3 style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{pg.history}</h3>
-            <button onClick={() => { setHistory([]); sessionStorage.removeItem('password_history'); }} style={{ background: 'none', border: 'none', color: 'var(--danger)', cursor: 'pointer', fontSize: 13, fontFamily: 'var(--font-ui)' }}>{pg.clearHistory}</button>
+            <button onClick={() => { setHistory([]); sessionStorage.removeItem('password_history'); }} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: 13, fontFamily: 'var(--font-ui)' }}>{pg.clearHistory}</button>
           </div>
           <div style={{ background: 'var(--surface)', borderRadius: 'var(--radius)', border: '1px solid var(--border)' }}>
             {history.map((p, i) => (

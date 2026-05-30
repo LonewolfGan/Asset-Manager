@@ -6,7 +6,6 @@ import { lazy, Suspense, useEffect } from "react";
 import TopNav from "@/components/TopNav";
 import Footer from "@/components/Footer";
 import CookieBanner from "@/components/CookieBanner";
-import CopyToast from "@/components/CopyToast";
 import NotFound from "@/pages/not-found";
 import { LocaleProvider } from "@/contexts/locale-context";
 import { HelmetProvider } from "react-helmet-async";
@@ -415,7 +414,6 @@ function App() {
             <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
               <Router />
             </WouterRouter>
-            <CopyToast />
             <Toaster />
           </LocaleProvider>
         </TooltipProvider>

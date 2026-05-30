@@ -193,14 +193,14 @@ export default function ResultPanel({ filename, sizeBefore, sizeAfter, blob, tex
                   borderRadius: 10,
                   fontFamily: 'var(--font-ui)',
                   fontSize: 'var(--text-xs)',
-                  color: 'var(--text-secondary)',
+                  color: copied ? 'var(--accent)' : 'var(--text-secondary)',
                   cursor: 'pointer',
                   transition: 'border-color 150ms ease, color 150ms ease',
                 }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; (e.currentTarget as HTMLElement).style.color = 'var(--accent)'; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)'; }}
               >
-                <Copy size={11} aria-hidden="true" />
+                {copied ? <CheckCircle2 size={11} aria-hidden="true" /> : <Copy size={11} aria-hidden="true" />}
                 {copied ? 'Copied' : 'Copy all'}
               </button>
               <button
