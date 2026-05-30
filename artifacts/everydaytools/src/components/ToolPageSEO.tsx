@@ -149,18 +149,20 @@ function HowItWorksSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en" 
         borderTop: "1px solid var(--border)",
       }}
     >
-      <p
+      <h2
         style={{
           fontSize: "11px",
           letterSpacing: "0.1em",
           textTransform: "uppercase",
-          color: "var(--text-tertiary)",
+          color: "var(--text-secondary)",
           marginBottom: "20px",
           fontFamily: "var(--font-ui)",
+          fontWeight: 600,
+          margin: "0 0 20px",
         }}
       >
         {label}
-      </p>
+      </h2>
       <ol style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
         {steps.map((step, i) => (
           <li
@@ -226,7 +228,9 @@ function HowItWorksSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en" 
 
 function AboutSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en" | "fr" }) {
   const label = locale === "fr" ? "À propos de cet outil" : "About this tool";
-  const paragraphs = tool.about[locale].split("\n\n").filter(Boolean);
+  const content = tool.about[locale]?.trim();
+  if (!content) return null;
+  const paragraphs = content.split("\n\n").filter(Boolean);
 
   return (
     <section
@@ -237,18 +241,19 @@ function AboutSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en" | "fr
         borderTop: "1px solid var(--border)",
       }}
     >
-      <p
+      <h2
         style={{
           fontSize: "11px",
           letterSpacing: "0.1em",
           textTransform: "uppercase",
-          color: "var(--text-tertiary)",
-          marginBottom: "20px",
+          color: "var(--text-secondary)",
           fontFamily: "var(--font-ui)",
+          fontWeight: 600,
+          margin: "0 0 20px",
         }}
       >
         {label}
-      </p>
+      </h2>
       <div style={{ fontSize: "14px", lineHeight: 1.75, color: "var(--text-secondary)" }}>
         {paragraphs.map((para, i) => (
           <p key={i} style={{ margin: "0 0 14px" }}>
@@ -273,18 +278,19 @@ function FaqSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en" | "fr" 
         borderTop: "1px solid var(--border)",
       }}
     >
-      <p
+      <h2
         style={{
           fontSize: "11px",
           letterSpacing: "0.1em",
           textTransform: "uppercase",
-          color: "var(--text-tertiary)",
-          marginBottom: "20px",
+          color: "var(--text-secondary)",
           fontFamily: "var(--font-ui)",
+          fontWeight: 600,
+          margin: "0 0 20px",
         }}
       >
         {label}
-      </p>
+      </h2>
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         {faqs.map((faq, i) => (
           <details
@@ -361,30 +367,32 @@ function RelatedToolsSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en
         borderTop: "1px solid var(--border)",
       }}
     >
-      <p
+      <h2
         style={{
           fontSize: "11px",
           letterSpacing: "0.1em",
           textTransform: "uppercase",
-          color: "var(--text-tertiary)",
-          marginBottom: "20px",
+          color: "var(--text-secondary)",
           fontFamily: "var(--font-ui)",
+          fontWeight: 600,
+          margin: "0 0 20px",
         }}
       >
         {label}
-      </p>
+      </h2>
       <div
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
           gap: "10px",
+          alignItems: "stretch",
         }}
       >
         {related.map((r) => (
           <Link
             key={r.href}
             href={r.href}
-            style={{ textDecoration: "none", display: "flex" }}
+            style={{ textDecoration: "none", display: "flex", flexDirection: "column" }}
             aria-label={r.title}
           >
             <div
@@ -397,6 +405,7 @@ function RelatedToolsSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en
                 flex: 1,
                 display: "flex",
                 flexDirection: "column",
+                boxSizing: "border-box",
               }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
@@ -410,7 +419,7 @@ function RelatedToolsSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en
                   fontSize: "13px",
                   fontWeight: 500,
                   color: "var(--text-primary)",
-                  margin: "0 0 4px",
+                  margin: "0 0 6px",
                   fontFamily: "var(--font-ui)",
                 }}
               >
@@ -422,10 +431,7 @@ function RelatedToolsSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en
                   color: "var(--text-secondary)",
                   margin: 0,
                   lineHeight: 1.5,
-                  display: "-webkit-box",
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: "vertical",
-                  overflow: "hidden",
+                  flex: 1,
                 }}
               >
                 {r.description}
