@@ -14,7 +14,7 @@ export type Translations = {
     title: string;
     subtitle: string;
     allTools: string;
-    allToolsSubtitle: (count: number) => string;
+    allToolsSubtitle: string;
     categories: Record<string, string>;
     toolCategory: Record<string, string>;
     sectionLabels: Record<string, string>;
@@ -351,7 +351,7 @@ const EN: Translations = {
     title: "EverydayTools",
     subtitle: "Browser-based document, image, and utility tools. No uploads. No accounts.",
     allTools: "All Tools",
-    allToolsSubtitle: (count) => `${count} browser-based utilities — nothing uploaded, everything private.`,
+    allToolsSubtitle: "Free tools that run entirely in your browser — no account, no uploads, no tracking.",
     categories: {
       pdf: "PDF Tools",
       word: "Word & Docs",
@@ -853,7 +853,7 @@ const FR: Translations = {
     title: "EverydayTools",
     subtitle: "Outils en ligne pour documents, images et utilitaires. Sans téléchargement. Sans compte.",
     allTools: "Tous les outils",
-    allToolsSubtitle: (count) => `${count} utilitaires dans le navigateur — aucun téléchargement, tout est privé.`,
+    allToolsSubtitle: "Des outils gratuits qui fonctionnent dans votre navigateur — sans compte, sans téléchargement.",
     categories: {
       pdf: "Outils PDF",
       word: "Word et Documents",
