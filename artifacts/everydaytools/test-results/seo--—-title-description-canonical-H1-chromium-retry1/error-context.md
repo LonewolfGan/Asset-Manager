@@ -1,0 +1,1202 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: seo.spec.ts >> / — title, description, canonical, H1
+- Location: tests/e2e/seo.spec.ts:14:3
+
+# Error details
+
+```
+Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+Expected: >= 1
+Received:    0
+```
+
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - link "Skip to main content" [ref=e4] [cursor=pointer]:
+      - /url: "#main-content"
+    - navigation [ref=e6]:
+      - generic [ref=e7]:
+        - link "EverydayTools" [ref=e8] [cursor=pointer]:
+          - /url: /
+          - img [ref=e9]
+          - generic [ref=e14]: EverydayTools
+        - generic [ref=e15]:
+          - button "PDF Tools" [ref=e17] [cursor=pointer]:
+            - text: PDF Tools
+            - img [ref=e18]
+          - button "Documents" [ref=e21] [cursor=pointer]:
+            - text: Documents
+            - img [ref=e22]
+          - button "Images" [ref=e25] [cursor=pointer]:
+            - text: Images
+            - img [ref=e26]
+          - button "Text & Code" [ref=e29] [cursor=pointer]:
+            - text: Text & Code
+            - img [ref=e30]
+          - button "Tools" [ref=e33] [cursor=pointer]:
+            - text: Tools
+            - img [ref=e34]
+        - generic [ref=e36]:
+          - img [ref=e37]
+          - searchbox "Search tools" [ref=e40]
+        - generic [ref=e41]:
+          - generic [ref=e42]:
+            - button "EN" [ref=e43] [cursor=pointer]
+            - button "FR" [ref=e44] [cursor=pointer]
+          - button "Toggle theme" [ref=e45] [cursor=pointer]:
+            - img [ref=e46]
+    - main [ref=e48]:
+      - generic [ref=e50]:
+        - generic [ref=e51]:
+          - heading "All Tools" [level=1] [ref=e52]
+          - paragraph [ref=e53]: 86 browser-based utilities — nothing uploaded, everything private.
+        - generic [ref=e54]:
+          - link [ref=e55] [cursor=pointer]:
+            - /url: /pdf-to-word
+            - article [ref=e56]:
+              - generic [ref=e57]:
+                - img [ref=e59]
+                - img [ref=e63]
+              - generic [ref=e66]: PDF to Word
+              - paragraph [ref=e67]: Convert PDF files to editable DOCX format
+              - generic [ref=e69]:
+                - text: PDF
+                - generic [ref=e70]: →
+                - text: DOCX
+          - link [ref=e71] [cursor=pointer]:
+            - /url: /pdf-to-text
+            - article [ref=e72]:
+              - generic [ref=e73]:
+                - img [ref=e75]
+                - img [ref=e77]
+              - generic [ref=e80]: PDF to Text
+              - paragraph [ref=e81]: Extract all text from a PDF file
+              - generic [ref=e83]:
+                - text: PDF
+                - generic [ref=e84]: →
+                - text: TXT
+          - link [ref=e85] [cursor=pointer]:
+            - /url: /pdf-to-html
+            - article [ref=e86]:
+              - generic [ref=e87]:
+                - img [ref=e89]
+                - img [ref=e94]
+              - generic [ref=e97]: PDF to HTML
+              - paragraph [ref=e98]: Convert PDF content to HTML markup
+              - generic [ref=e100]:
+                - text: PDF
+                - generic [ref=e101]: →
+                - text: HTML
+          - link [ref=e102] [cursor=pointer]:
+            - /url: /pdf-to-epub
+            - article [ref=e103]:
+              - generic [ref=e104]:
+                - img [ref=e106]
+                - img [ref=e109]
+              - generic [ref=e112]: PDF to EPUB
+              - paragraph [ref=e113]: Convert PDF to EPUB e-book format
+              - generic [ref=e115]:
+                - text: PDF
+                - generic [ref=e116]: →
+                - text: EPUB
+          - link [ref=e117] [cursor=pointer]:
+            - /url: /pdf-compress
+            - article [ref=e118]:
+              - generic [ref=e119]:
+                - img [ref=e121]
+                - img [ref=e127]
+              - generic [ref=e130]: Compress PDF
+              - paragraph [ref=e131]: Reduce PDF file size without visible quality loss
+              - generic [ref=e133]: PDF
+          - link [ref=e134] [cursor=pointer]:
+            - /url: /pdf-merge
+            - article [ref=e135]:
+              - generic [ref=e136]:
+                - img [ref=e138]
+                - img [ref=e143]
+              - generic [ref=e146]: Merge PDFs
+              - paragraph [ref=e147]: Combine multiple PDF files into one
+              - generic [ref=e149]: PDF
+          - link [ref=e150] [cursor=pointer]:
+            - /url: /pdf-split
+            - article [ref=e151]:
+              - generic [ref=e152]:
+                - img [ref=e154]
+                - img [ref=e161]
+              - generic [ref=e164]: Split PDF
+              - paragraph [ref=e165]: Split a PDF into separate pages or page ranges
+              - generic [ref=e167]: PDF
+          - link [ref=e168] [cursor=pointer]:
+            - /url: /pdf-rotate
+            - article [ref=e169]:
+              - generic [ref=e170]:
+                - img [ref=e172]
+                - img [ref=e176]
+              - generic [ref=e179]: Rotate PDF
+              - paragraph [ref=e180]: Rotate PDF pages 90, 180, or 270 degrees
+              - generic [ref=e182]: PDF
+          - link [ref=e183] [cursor=pointer]:
+            - /url: /pdf-unlock
+            - article [ref=e184]:
+              - generic [ref=e185]:
+                - img [ref=e187]
+                - img [ref=e191]
+              - generic [ref=e194]: Unlock PDF
+              - paragraph [ref=e195]: Remove owner password protection from a PDF
+              - generic [ref=e197]: PDF
+          - link [ref=e198] [cursor=pointer]:
+            - /url: /pdf-protect
+            - article [ref=e199]:
+              - generic [ref=e200]:
+                - img [ref=e202]
+                - img [ref=e206]
+              - generic [ref=e209]: Protect PDF
+              - paragraph [ref=e210]: Add password protection to a PDF
+              - generic [ref=e212]: PDF
+          - link [ref=e213] [cursor=pointer]:
+            - /url: /pdf-page-numbers
+            - article [ref=e214]:
+              - generic [ref=e215]:
+                - img [ref=e217]
+                - img [ref=e221]
+              - generic [ref=e224]: Add Page Numbers
+              - paragraph [ref=e225]: Add page numbers to every page of your PDF
+              - generic [ref=e227]: PDF
+          - link [ref=e228] [cursor=pointer]:
+            - /url: /pdf-watermark
+            - article [ref=e229]:
+              - generic [ref=e230]:
+                - img [ref=e232]
+                - img [ref=e236]
+              - generic [ref=e239]: Watermark PDF
+              - paragraph [ref=e240]: Add a text watermark to every PDF page
+              - generic [ref=e242]: PDF
+          - link [ref=e243] [cursor=pointer]:
+            - /url: /pdf-to-image
+            - article [ref=e244]:
+              - generic [ref=e245]:
+                - img [ref=e247]
+                - img [ref=e253]
+              - generic [ref=e256]: PDF to Image
+              - paragraph [ref=e257]: Export PDF pages as PNG or JPEG images
+              - generic [ref=e259]:
+                - text: PDF
+                - generic [ref=e260]: →
+                - text: PNG
+          - link [ref=e261] [cursor=pointer]:
+            - /url: /pdf-to-excel
+            - article [ref=e262]:
+              - generic [ref=e263]:
+                - img [ref=e265]
+                - img [ref=e268]
+              - generic [ref=e271]: PDF to Excel
+              - paragraph [ref=e272]: Extract tables from a PDF into an Excel spreadsheet
+              - generic [ref=e274]:
+                - text: PDF
+                - generic [ref=e275]: →
+                - text: XLSX
+          - link [ref=e276] [cursor=pointer]:
+            - /url: /reorder-pdf
+            - article [ref=e277]:
+              - generic [ref=e278]:
+                - img [ref=e280]
+                - img [ref=e284]
+              - generic [ref=e287]: Reorder PDF Pages
+              - paragraph [ref=e288]: Drag and drop to reorder, remove, and rearrange PDF pages
+              - generic [ref=e290]: PDF
+          - link [ref=e291] [cursor=pointer]:
+            - /url: /ocr
+            - article [ref=e292]:
+              - generic [ref=e293]:
+                - img [ref=e295]
+                - img [ref=e301]
+              - generic [ref=e304]: OCR — Image to Text
+              - paragraph [ref=e305]: Extract text from scanned images using Tesseract.js
+              - generic [ref=e307]:
+                - text: IMG
+                - generic [ref=e308]: →
+                - text: TXT
+          - link [ref=e309] [cursor=pointer]:
+            - /url: /word-to-pdf
+            - article [ref=e310]:
+              - generic [ref=e311]:
+                - img [ref=e313]
+                - img [ref=e318]
+              - generic [ref=e321]: Word to PDF
+              - paragraph [ref=e322]: Convert DOCX and DOC files to PDF in your browser
+              - generic [ref=e324]:
+                - text: DOCX
+                - generic [ref=e325]: →
+                - text: PDF
+          - link [ref=e326] [cursor=pointer]:
+            - /url: /word-to-text
+            - article [ref=e327]:
+              - generic [ref=e328]:
+                - img [ref=e330]
+                - img [ref=e333]
+              - generic [ref=e336]: Word to Text
+              - paragraph [ref=e337]: Extract plain text from DOCX files
+              - generic [ref=e339]:
+                - text: DOCX
+                - generic [ref=e340]: →
+                - text: TXT
+          - link [ref=e341] [cursor=pointer]:
+            - /url: /word-to-html
+            - article [ref=e342]:
+              - generic [ref=e343]:
+                - img [ref=e345]
+                - img [ref=e351]
+              - generic [ref=e354]: Word to HTML
+              - paragraph [ref=e355]: Convert DOCX to clean HTML markup
+              - generic [ref=e357]:
+                - text: DOCX
+                - generic [ref=e358]: →
+                - text: HTML
+          - link [ref=e359] [cursor=pointer]:
+            - /url: /word-to-epub
+            - article [ref=e360]:
+              - generic [ref=e361]:
+                - img [ref=e363]
+                - img [ref=e367]
+              - generic [ref=e370]: Word to EPUB
+              - paragraph [ref=e371]: Convert DOCX to EPUB e-book
+              - generic [ref=e373]:
+                - text: DOCX
+                - generic [ref=e374]: →
+                - text: EPUB
+          - link [ref=e375] [cursor=pointer]:
+            - /url: /word-to-markdown
+            - article [ref=e376]:
+              - generic [ref=e377]:
+                - img [ref=e379]
+                - img [ref=e383]
+              - generic [ref=e386]: Word to Markdown
+              - paragraph [ref=e387]: Convert DOCX files to clean Markdown
+              - generic [ref=e389]:
+                - text: DOCX
+                - generic [ref=e390]: →
+                - text: MD
+          - link [ref=e391] [cursor=pointer]:
+            - /url: /html-to-markdown
+            - article [ref=e392]:
+              - generic [ref=e393]:
+                - img [ref=e395]
+                - img [ref=e400]
+              - generic [ref=e403]: HTML to Markdown
+              - paragraph [ref=e404]: Convert HTML content to clean Markdown format
+              - generic [ref=e406]:
+                - text: HTML
+                - generic [ref=e407]: →
+                - text: MD
+          - link [ref=e408] [cursor=pointer]:
+            - /url: /markdown-to-pdf
+            - article [ref=e409]:
+              - generic [ref=e410]:
+                - img [ref=e412]
+                - img [ref=e417]
+              - generic [ref=e420]: Markdown to PDF
+              - paragraph [ref=e421]: Convert Markdown files to PDF
+              - generic [ref=e423]:
+                - text: MD
+                - generic [ref=e424]: →
+                - text: PDF
+          - link [ref=e425] [cursor=pointer]:
+            - /url: /markdown-to-docx
+            - article [ref=e426]:
+              - generic [ref=e427]:
+                - img [ref=e429]
+                - img [ref=e434]
+              - generic [ref=e437]: Markdown to Word
+              - paragraph [ref=e438]: Convert Markdown to a Word document
+              - generic [ref=e440]:
+                - text: MD
+                - generic [ref=e441]: →
+                - text: DOCX
+          - link [ref=e442] [cursor=pointer]:
+            - /url: /html-to-pdf
+            - article [ref=e443]:
+              - generic [ref=e444]:
+                - img [ref=e446]
+                - img [ref=e450]
+              - generic [ref=e453]: HTML to PDF
+              - paragraph [ref=e454]: Convert an HTML page or snippet to PDF
+              - generic [ref=e456]:
+                - text: HTML
+                - generic [ref=e457]: →
+                - text: PDF
+          - link [ref=e458] [cursor=pointer]:
+            - /url: /txt-to-pdf
+            - article [ref=e459]:
+              - generic [ref=e460]:
+                - img [ref=e462]
+                - img [ref=e466]
+              - generic [ref=e469]: Text to PDF
+              - paragraph [ref=e470]: Convert plain text to a PDF document
+              - generic [ref=e472]:
+                - text: TXT
+                - generic [ref=e473]: →
+                - text: PDF
+          - link [ref=e474] [cursor=pointer]:
+            - /url: /txt-to-docx
+            - article [ref=e475]:
+              - generic [ref=e476]:
+                - img [ref=e478]
+                - img [ref=e482]
+              - generic [ref=e485]: Text to Word
+              - paragraph [ref=e486]: Convert plain text to a Word document
+              - generic [ref=e488]:
+                - text: TXT
+                - generic [ref=e489]: →
+                - text: DOCX
+          - link [ref=e490] [cursor=pointer]:
+            - /url: /excel-to-pdf
+            - article [ref=e491]:
+              - generic [ref=e492]:
+                - img [ref=e494]
+                - img [ref=e498]
+              - generic [ref=e501]: Excel to PDF
+              - paragraph [ref=e502]: Convert Excel spreadsheets to PDF entirely in your browser
+              - generic [ref=e504]:
+                - text: XLSX
+                - generic [ref=e505]: →
+                - text: PDF
+          - link [ref=e506] [cursor=pointer]:
+            - /url: /excel-to-csv
+            - article [ref=e507]:
+              - generic [ref=e508]:
+                - img [ref=e510]
+                - img [ref=e513]
+              - generic [ref=e516]: Excel to CSV
+              - paragraph [ref=e517]: Convert Excel sheets to CSV format
+              - generic [ref=e519]:
+                - text: XLSX
+                - generic [ref=e520]: →
+                - text: CSV
+          - link [ref=e521] [cursor=pointer]:
+            - /url: /csv-to-excel
+            - article [ref=e522]:
+              - generic [ref=e523]:
+                - img [ref=e525]
+                - img [ref=e529]
+              - generic [ref=e532]: CSV to Excel
+              - paragraph [ref=e533]: Convert CSV files to Excel (.xlsx) in your browser
+              - generic [ref=e535]:
+                - text: CSV
+                - generic [ref=e536]: →
+                - text: XLSX
+          - link [ref=e537] [cursor=pointer]:
+            - /url: /csv-to-json
+            - article [ref=e538]:
+              - generic [ref=e539]:
+                - img [ref=e541]
+                - img [ref=e545]
+              - generic [ref=e548]: CSV ↔ JSON
+              - paragraph [ref=e549]: Convert between CSV and JSON formats instantly
+              - generic [ref=e551]:
+                - text: CSV
+                - generic [ref=e552]: →
+                - text: JSON
+          - link [ref=e553] [cursor=pointer]:
+            - /url: /csv-viewer
+            - article [ref=e554]:
+              - generic [ref=e555]:
+                - img [ref=e557]
+                - img [ref=e560]
+              - generic [ref=e563]: CSV Viewer
+              - paragraph [ref=e564]: View and sort CSV files as a table — no upload required
+              - generic [ref=e566]: CSV
+          - link [ref=e567] [cursor=pointer]:
+            - /url: /pptx-to-pdf
+            - article [ref=e568]:
+              - generic [ref=e569]:
+                - img [ref=e571]
+                - img [ref=e575]
+              - generic [ref=e578]: PowerPoint to PDF
+              - paragraph [ref=e579]: Convert PowerPoint presentations to PDF in your browser
+              - generic [ref=e581]:
+                - text: PPTX
+                - generic [ref=e582]: →
+                - text: PDF
+          - link [ref=e583] [cursor=pointer]:
+            - /url: /pptx-to-images
+            - article [ref=e584]:
+              - generic [ref=e585]:
+                - img [ref=e587]
+                - img [ref=e593]
+              - generic [ref=e596]: PowerPoint to Images
+              - paragraph [ref=e597]: Export each slide as a PNG image and download as ZIP
+              - generic [ref=e599]:
+                - text: PPTX
+                - generic [ref=e600]: →
+                - text: PNG
+          - link [ref=e601] [cursor=pointer]:
+            - /url: /pdf-to-pptx
+            - article [ref=e602]:
+              - generic [ref=e603]:
+                - img [ref=e605]
+                - img [ref=e609]
+              - generic [ref=e612]: PDF to PowerPoint
+              - paragraph [ref=e613]: Convert each PDF page into a PowerPoint slide
+              - generic [ref=e615]:
+                - text: PDF
+                - generic [ref=e616]: →
+                - text: PPTX
+          - link [ref=e617] [cursor=pointer]:
+            - /url: /image-converter
+            - article [ref=e618]:
+              - generic [ref=e619]:
+                - img [ref=e621]
+                - img [ref=e626]
+              - generic [ref=e629]: Image Converter
+              - paragraph [ref=e630]: Convert between PNG, JPEG, WEBP, AVIF, BMP, GIF, TIFF, ICO
+              - generic [ref=e631]:
+                - generic [ref=e632]:
+                  - text: PNG
+                  - generic [ref=e633]: →
+                  - text: JPG
+                - generic [ref=e634]: WEBP
+                - generic [ref=e635]: AVIF
+          - link [ref=e636] [cursor=pointer]:
+            - /url: /heic-to-jpg
+            - article [ref=e637]:
+              - generic [ref=e638]:
+                - img [ref=e640]
+                - img [ref=e643]
+              - generic [ref=e646]: HEIC to JPG
+              - paragraph [ref=e647]: Convert iPhone HEIC photos to JPEG or PNG
+              - generic [ref=e649]:
+                - text: HEIC
+                - generic [ref=e650]: →
+                - text: JPG
+          - link [ref=e651] [cursor=pointer]:
+            - /url: /heic-to-png
+            - article [ref=e652]:
+              - generic [ref=e653]:
+                - img [ref=e655]
+                - img [ref=e658]
+              - generic [ref=e661]: HEIC to PNG
+              - paragraph [ref=e662]: Convert HEIC/HEIF photos to PNG format
+              - generic [ref=e664]:
+                - text: HEIC
+                - generic [ref=e665]: →
+                - text: PNG
+          - link [ref=e666] [cursor=pointer]:
+            - /url: /heic-to-webp
+            - article [ref=e667]:
+              - generic [ref=e668]:
+                - img [ref=e670]
+                - img [ref=e673]
+              - generic [ref=e676]: HEIC to WebP
+              - paragraph [ref=e677]: Convert HEIC/HEIF photos to WebP format
+              - generic [ref=e679]:
+                - text: HEIC
+                - generic [ref=e680]: →
+                - text: WEBP
+          - link [ref=e681] [cursor=pointer]:
+            - /url: /heic-to-pdf
+            - article [ref=e682]:
+              - generic [ref=e683]:
+                - img [ref=e685]
+                - img [ref=e688]
+              - generic [ref=e691]: HEIC to PDF
+              - paragraph [ref=e692]: Convert HEIC/HEIF photos to PDF
+              - generic [ref=e694]:
+                - text: HEIC
+                - generic [ref=e695]: →
+                - text: PDF
+          - link [ref=e696] [cursor=pointer]:
+            - /url: /image-compress
+            - article [ref=e697]:
+              - generic [ref=e698]:
+                - img [ref=e700]
+                - img [ref=e704]
+              - generic [ref=e707]: Compress Image
+              - paragraph [ref=e708]: Reduce image file size with a quality slider
+              - generic [ref=e709]:
+                - generic [ref=e710]:
+                  - text: JPG
+                  - generic [ref=e711]: →
+                  - text: PNG
+                - generic [ref=e712]: WEBP
+          - link [ref=e713] [cursor=pointer]:
+            - /url: /image-resize
+            - article [ref=e714]:
+              - generic [ref=e715]:
+                - img [ref=e717]
+                - img [ref=e723]
+              - generic [ref=e726]: Resize Image
+              - paragraph [ref=e727]: Resize images by pixel dimensions or percentage
+              - generic [ref=e728]:
+                - generic [ref=e729]:
+                  - text: PNG
+                  - generic [ref=e730]: →
+                  - text: JPG
+                - generic [ref=e731]: WEBP
+          - link [ref=e732] [cursor=pointer]:
+            - /url: /image-crop
+            - article [ref=e733]:
+              - generic [ref=e734]:
+                - img [ref=e736]
+                - img [ref=e740]
+              - generic [ref=e743]: Crop Image
+              - paragraph [ref=e744]: Crop images with drag handles and aspect ratio presets
+              - generic [ref=e745]:
+                - generic [ref=e746]:
+                  - text: PNG
+                  - generic [ref=e747]: →
+                  - text: JPG
+                - generic [ref=e748]: WEBP
+          - link [ref=e749] [cursor=pointer]:
+            - /url: /image-to-pdf
+            - article [ref=e750]:
+              - generic [ref=e751]:
+                - img [ref=e753]
+                - img [ref=e758]
+              - generic [ref=e761]: Image to PDF
+              - paragraph [ref=e762]: Convert one or more images to a single PDF
+              - generic [ref=e764]:
+                - text: IMG
+                - generic [ref=e765]: →
+                - text: PDF
+          - link [ref=e766] [cursor=pointer]:
+            - /url: /background-remover
+            - article [ref=e767]:
+              - generic [ref=e768]:
+                - img [ref=e770]
+                - img [ref=e774]
+              - generic [ref=e776]:
+                - generic [ref=e777]: Background Remover
+                - generic [ref=e778]: AI
+              - paragraph [ref=e779]: Remove image backgrounds using on-device AI
+              - generic [ref=e781]:
+                - text: PNG
+                - generic [ref=e782]: →
+                - text: JPG
+          - link [ref=e783] [cursor=pointer]:
+            - /url: /flip-rotate-image
+            - article [ref=e784]:
+              - generic [ref=e785]:
+                - img [ref=e787]
+                - img [ref=e791]
+              - generic [ref=e794]: Flip & Rotate Image
+              - paragraph [ref=e795]: Flip horizontally, vertically, or rotate by any angle
+              - generic [ref=e796]:
+                - generic [ref=e797]:
+                  - text: PNG
+                  - generic [ref=e798]: →
+                  - text: JPG
+                - generic [ref=e799]: WEBP
+          - link [ref=e800] [cursor=pointer]:
+            - /url: /watermark-image
+            - article [ref=e801]:
+              - generic [ref=e802]:
+                - img [ref=e804]
+                - img [ref=e807]
+              - generic [ref=e810]: Add Watermark
+              - paragraph [ref=e811]: Add text watermark to images with custom position and opacity
+              - generic [ref=e812]:
+                - generic [ref=e813]:
+                  - text: PNG
+                  - generic [ref=e814]: →
+                  - text: JPG
+                - generic [ref=e815]: WEBP
+          - link [ref=e816] [cursor=pointer]:
+            - /url: /favicon-generator
+            - article [ref=e817]:
+              - generic [ref=e818]:
+                - img [ref=e820]
+                - img [ref=e823]
+              - generic [ref=e826]: Favicon Generator
+              - paragraph [ref=e827]: Generate favicons in all sizes from any image, download as ZIP
+              - generic [ref=e829]:
+                - text: PNG
+                - generic [ref=e830]: →
+                - text: ICO
+          - link [ref=e831] [cursor=pointer]:
+            - /url: /png-to-webp
+            - article [ref=e832]:
+              - generic [ref=e833]:
+                - img [ref=e835]
+                - img [ref=e839]
+              - generic [ref=e842]: PNG to WebP
+              - paragraph [ref=e843]: Convert PNG images to WebP format for smaller file sizes
+              - generic [ref=e845]:
+                - text: PNG
+                - generic [ref=e846]: →
+                - text: WEBP
+          - link [ref=e847] [cursor=pointer]:
+            - /url: /jpg-to-webp
+            - article [ref=e848]:
+              - generic [ref=e849]:
+                - img [ref=e851]
+                - img [ref=e855]
+              - generic [ref=e858]: JPG to WebP
+              - paragraph [ref=e859]: Convert JPEG images to WebP format for smaller file sizes
+              - generic [ref=e861]:
+                - text: JPG
+                - generic [ref=e862]: →
+                - text: WEBP
+          - link [ref=e863] [cursor=pointer]:
+            - /url: /gif-to-webp
+            - article [ref=e864]:
+              - generic [ref=e865]:
+                - img [ref=e867]
+                - img [ref=e871]
+              - generic [ref=e874]: GIF to WebP
+              - paragraph [ref=e875]: Convert GIF images to WebP format
+              - generic [ref=e877]:
+                - text: GIF
+                - generic [ref=e878]: →
+                - text: WEBP
+          - link [ref=e879] [cursor=pointer]:
+            - /url: /bmp-to-webp
+            - article [ref=e880]:
+              - generic [ref=e881]:
+                - img [ref=e883]
+                - img [ref=e887]
+              - generic [ref=e890]: BMP to WebP
+              - paragraph [ref=e891]: Convert BMP images to WebP format
+              - generic [ref=e893]:
+                - text: BMP
+                - generic [ref=e894]: →
+                - text: WEBP
+          - link [ref=e895] [cursor=pointer]:
+            - /url: /tiff-to-webp
+            - article [ref=e896]:
+              - generic [ref=e897]:
+                - img [ref=e899]
+                - img [ref=e903]
+              - generic [ref=e906]: TIFF to WebP
+              - paragraph [ref=e907]: Convert TIFF images to WebP format
+              - generic [ref=e909]:
+                - text: TIFF
+                - generic [ref=e910]: →
+                - text: WEBP
+          - link [ref=e911] [cursor=pointer]:
+            - /url: /webp-to-png
+            - article [ref=e912]:
+              - generic [ref=e913]:
+                - img [ref=e915]
+                - img [ref=e919]
+              - generic [ref=e922]: WebP to PNG
+              - paragraph [ref=e923]: Convert WebP images to PNG format
+              - generic [ref=e925]:
+                - text: WEBP
+                - generic [ref=e926]: →
+                - text: PNG
+          - link [ref=e927] [cursor=pointer]:
+            - /url: /webp-to-jpg
+            - article [ref=e928]:
+              - generic [ref=e929]:
+                - img [ref=e931]
+                - img [ref=e935]
+              - generic [ref=e938]: WebP to JPG
+              - paragraph [ref=e939]: Convert WebP images to JPEG format
+              - generic [ref=e941]:
+                - text: WEBP
+                - generic [ref=e942]: →
+                - text: JPG
+          - link [ref=e943] [cursor=pointer]:
+            - /url: /webp-to-pdf
+            - article [ref=e944]:
+              - generic [ref=e945]:
+                - img [ref=e947]
+                - img [ref=e951]
+              - generic [ref=e954]: WebP to PDF
+              - paragraph [ref=e955]: Convert WebP images to PDF
+              - generic [ref=e957]:
+                - text: WEBP
+                - generic [ref=e958]: →
+                - text: PDF
+          - link [ref=e959] [cursor=pointer]:
+            - /url: /webp-to-avif
+            - article [ref=e960]:
+              - generic [ref=e961]:
+                - img [ref=e963]
+                - img [ref=e967]
+              - generic [ref=e970]: WebP to AVIF
+              - paragraph [ref=e971]: Convert WebP images to AVIF format
+              - generic [ref=e973]:
+                - text: WEBP
+                - generic [ref=e974]: →
+                - text: AVIF
+          - link [ref=e975] [cursor=pointer]:
+            - /url: /jpg-to-avif
+            - article [ref=e976]:
+              - generic [ref=e977]:
+                - img [ref=e979]
+                - img [ref=e983]
+              - generic [ref=e986]: JPG to AVIF
+              - paragraph [ref=e987]: Convert JPEG images to AVIF format
+              - generic [ref=e989]:
+                - text: JPG
+                - generic [ref=e990]: →
+                - text: AVIF
+          - link [ref=e991] [cursor=pointer]:
+            - /url: /png-to-avif
+            - article [ref=e992]:
+              - generic [ref=e993]:
+                - img [ref=e995]
+                - img [ref=e999]
+              - generic [ref=e1002]: PNG to AVIF
+              - paragraph [ref=e1003]: Convert PNG images to AVIF format
+              - generic [ref=e1005]:
+                - text: PNG
+                - generic [ref=e1006]: →
+                - text: AVIF
+          - link [ref=e1007] [cursor=pointer]:
+            - /url: /avif-to-jpg
+            - article [ref=e1008]:
+              - generic [ref=e1009]:
+                - img [ref=e1011]
+                - img [ref=e1015]
+              - generic [ref=e1018]: AVIF to JPG
+              - paragraph [ref=e1019]: Convert AVIF images to JPEG format
+              - generic [ref=e1021]:
+                - text: AVIF
+                - generic [ref=e1022]: →
+                - text: JPG
+          - link [ref=e1023] [cursor=pointer]:
+            - /url: /avif-to-png
+            - article [ref=e1024]:
+              - generic [ref=e1025]:
+                - img [ref=e1027]
+                - img [ref=e1031]
+              - generic [ref=e1034]: AVIF to PNG
+              - paragraph [ref=e1035]: Convert AVIF images to PNG format
+              - generic [ref=e1037]:
+                - text: AVIF
+                - generic [ref=e1038]: →
+                - text: PNG
+          - link [ref=e1039] [cursor=pointer]:
+            - /url: /jpg-to-png
+            - article [ref=e1040]:
+              - generic [ref=e1041]:
+                - img [ref=e1043]
+                - img [ref=e1047]
+              - generic [ref=e1050]: JPG to PNG
+              - paragraph [ref=e1051]: Convert JPEG images to lossless PNG
+              - generic [ref=e1053]:
+                - text: JPG
+                - generic [ref=e1054]: →
+                - text: PNG
+          - link [ref=e1055] [cursor=pointer]:
+            - /url: /png-to-jpg
+            - article [ref=e1056]:
+              - generic [ref=e1057]:
+                - img [ref=e1059]
+                - img [ref=e1063]
+              - generic [ref=e1066]: PNG to JPG
+              - paragraph [ref=e1067]: Convert PNG images to JPEG format
+              - generic [ref=e1069]:
+                - text: PNG
+                - generic [ref=e1070]: →
+                - text: JPG
+          - link [ref=e1071] [cursor=pointer]:
+            - /url: /png-to-svg
+            - article [ref=e1072]:
+              - generic [ref=e1073]:
+                - img [ref=e1075]
+                - img [ref=e1079]
+              - generic [ref=e1082]: PNG to SVG
+              - paragraph [ref=e1083]: Embed a PNG image inside an SVG container
+              - generic [ref=e1085]:
+                - text: PNG
+                - generic [ref=e1086]: →
+                - text: SVG
+          - link [ref=e1087] [cursor=pointer]:
+            - /url: /svg-to-png
+            - article [ref=e1088]:
+              - generic [ref=e1089]:
+                - img [ref=e1091]
+                - img [ref=e1095]
+              - generic [ref=e1098]: SVG to PNG
+              - paragraph [ref=e1099]: Rasterize SVG graphics to PNG format
+              - generic [ref=e1101]:
+                - text: SVG
+                - generic [ref=e1102]: →
+                - text: PNG
+          - link [ref=e1103] [cursor=pointer]:
+            - /url: /gif-to-png
+            - article [ref=e1104]:
+              - generic [ref=e1105]:
+                - img [ref=e1107]
+                - img [ref=e1111]
+              - generic [ref=e1114]: GIF to PNG
+              - paragraph [ref=e1115]: Convert GIF images to PNG (first frame)
+              - generic [ref=e1117]:
+                - text: GIF
+                - generic [ref=e1118]: →
+                - text: PNG
+          - link [ref=e1119] [cursor=pointer]:
+            - /url: /bmp-to-jpg
+            - article [ref=e1120]:
+              - generic [ref=e1121]:
+                - img [ref=e1123]
+                - img [ref=e1127]
+              - generic [ref=e1130]: BMP to JPG
+              - paragraph [ref=e1131]: Convert BMP images to JPEG format
+              - generic [ref=e1133]:
+                - text: BMP
+                - generic [ref=e1134]: →
+                - text: JPG
+          - link [ref=e1135] [cursor=pointer]:
+            - /url: /tiff-to-jpg
+            - article [ref=e1136]:
+              - generic [ref=e1137]:
+                - img [ref=e1139]
+                - img [ref=e1143]
+              - generic [ref=e1146]: TIFF to JPG
+              - paragraph [ref=e1147]: Convert TIFF images to JPEG format
+              - generic [ref=e1149]:
+                - text: TIFF
+                - generic [ref=e1150]: →
+                - text: JPG
+          - link [ref=e1151] [cursor=pointer]:
+            - /url: /tiff-to-png
+            - article [ref=e1152]:
+              - generic [ref=e1153]:
+                - img [ref=e1155]
+                - img [ref=e1159]
+              - generic [ref=e1162]: TIFF to PNG
+              - paragraph [ref=e1163]: Convert TIFF images to PNG format
+              - generic [ref=e1165]:
+                - text: TIFF
+                - generic [ref=e1166]: →
+                - text: PNG
+          - link [ref=e1167] [cursor=pointer]:
+            - /url: /jpg-to-pdf
+            - article [ref=e1168]:
+              - generic [ref=e1169]:
+                - img [ref=e1171]
+                - img [ref=e1175]
+              - generic [ref=e1178]: JPG to PDF
+              - paragraph [ref=e1179]: Convert JPEG images to PDF format
+              - generic [ref=e1181]:
+                - text: JPG
+                - generic [ref=e1182]: →
+                - text: PDF
+          - link [ref=e1183] [cursor=pointer]:
+            - /url: /png-to-pdf
+            - article [ref=e1184]:
+              - generic [ref=e1185]:
+                - img [ref=e1187]
+                - img [ref=e1191]
+              - generic [ref=e1194]: PNG to PDF
+              - paragraph [ref=e1195]: Convert PNG images to PDF format
+              - generic [ref=e1197]:
+                - text: PNG
+                - generic [ref=e1198]: →
+                - text: PDF
+          - link [ref=e1199] [cursor=pointer]:
+            - /url: /metadata-cleaner
+            - article [ref=e1200]:
+              - generic [ref=e1201]:
+                - img [ref=e1203]
+                - img [ref=e1208]
+              - generic [ref=e1211]: Metadata Cleaner
+              - paragraph [ref=e1212]: Strip EXIF, XMP, and document metadata from files
+              - generic [ref=e1213]:
+                - generic [ref=e1214]:
+                  - text: PDF
+                  - generic [ref=e1215]: →
+                  - text: JPG
+                - generic [ref=e1216]: PNG
+          - link [ref=e1217] [cursor=pointer]:
+            - /url: /ai-text-scrubber
+            - article [ref=e1218]:
+              - generic [ref=e1219]:
+                - img [ref=e1221]
+                - img [ref=e1227]
+              - generic [ref=e1229]:
+                - generic [ref=e1230]: AI Text Scrubber
+                - generic [ref=e1231]: AI
+              - paragraph [ref=e1232]: Remove invisible characters and AI-detection patterns from text
+              - generic [ref=e1234]: TXT
+          - link [ref=e1235] [cursor=pointer]:
+            - /url: /checksum
+            - article [ref=e1236]:
+              - generic [ref=e1237]:
+                - img [ref=e1239]
+                - img [ref=e1243]
+              - generic [ref=e1246]: File Checksum
+              - paragraph [ref=e1247]: Verify file integrity with SHA-1, SHA-256, SHA-384, SHA-512
+          - link [ref=e1248] [cursor=pointer]:
+            - /url: /json-formatter
+            - article [ref=e1249]:
+              - generic [ref=e1250]:
+                - img [ref=e1252]
+                - img [ref=e1256]
+              - generic [ref=e1259]: JSON Formatter
+              - paragraph [ref=e1260]: Format, validate, and minify JSON in your browser
+              - generic [ref=e1262]: JSON
+          - link [ref=e1263] [cursor=pointer]:
+            - /url: /html-formatter
+            - article [ref=e1264]:
+              - generic [ref=e1265]:
+                - img [ref=e1267]
+                - img [ref=e1272]
+              - generic [ref=e1275]: HTML Formatter
+              - paragraph [ref=e1276]: Format or minify HTML code with a single click
+              - generic [ref=e1278]: HTML
+          - link [ref=e1279] [cursor=pointer]:
+            - /url: /base64
+            - article [ref=e1280]:
+              - generic [ref=e1281]:
+                - img [ref=e1283]
+                - img [ref=e1289]
+              - generic [ref=e1292]: Base64 Encoder / Decoder
+              - paragraph [ref=e1293]: Encode or decode text and files to/from Base64
+          - link [ref=e1294] [cursor=pointer]:
+            - /url: /url-encoder
+            - article [ref=e1295]:
+              - generic [ref=e1296]:
+                - img [ref=e1298]
+                - img [ref=e1302]
+              - generic [ref=e1305]: URL Encoder / Decoder
+              - paragraph [ref=e1306]: Encode and decode URL components in real time
+          - link [ref=e1307] [cursor=pointer]:
+            - /url: /word-counter
+            - article [ref=e1308]:
+              - generic [ref=e1309]:
+                - img [ref=e1311]
+                - img [ref=e1315]
+              - generic [ref=e1318]: Word & Character Counter
+              - paragraph [ref=e1319]: Count words, characters, sentences, and reading time
+          - link [ref=e1320] [cursor=pointer]:
+            - /url: /lorem-ipsum
+            - article [ref=e1321]:
+              - generic [ref=e1322]:
+                - img [ref=e1324]
+                - img [ref=e1328]
+              - generic [ref=e1331]: Lorem Ipsum Generator
+              - paragraph [ref=e1332]: Generate placeholder text for any design or prototype
+          - link [ref=e1333] [cursor=pointer]:
+            - /url: /password-generator
+            - article [ref=e1334]:
+              - generic [ref=e1335]:
+                - img [ref=e1337]
+                - img [ref=e1341]
+              - generic [ref=e1344]: Password Generator
+              - paragraph [ref=e1345]: Generate cryptographically secure passwords with entropy display
+          - link [ref=e1346] [cursor=pointer]:
+            - /url: /percentage-calc
+            - article [ref=e1347]:
+              - generic [ref=e1348]:
+                - img [ref=e1350]
+                - img [ref=e1355]
+              - generic [ref=e1358]: Percentage Calculator
+              - paragraph [ref=e1359]: Calculate percentages, discounts, tips, and markup instantly
+          - link [ref=e1360] [cursor=pointer]:
+            - /url: /unit-converter
+            - article [ref=e1361]:
+              - generic [ref=e1362]:
+                - img [ref=e1364]
+                - img [ref=e1368]
+              - generic [ref=e1371]: Unit Converter
+              - paragraph [ref=e1372]: Convert between 200+ units across 13 measurement categories
+          - link [ref=e1373] [cursor=pointer]:
+            - /url: /currency-converter
+            - article [ref=e1374]:
+              - generic [ref=e1375]:
+                - img [ref=e1377]
+                - img [ref=e1380]
+              - generic [ref=e1383]: Currency Converter
+              - paragraph [ref=e1384]: Convert between 170 currencies with live rates
+          - link [ref=e1385] [cursor=pointer]:
+            - /url: /qr-code-generator
+            - article [ref=e1386]:
+              - generic [ref=e1387]:
+                - img [ref=e1389]
+                - img [ref=e1396]
+              - generic [ref=e1399]: QR Code Generator
+              - paragraph [ref=e1400]: Generate QR codes from URLs, text, Wi-Fi credentials, or contact cards — entirely in your browser
+          - link [ref=e1401] [cursor=pointer]:
+            - /url: /tip-calculator
+            - article [ref=e1402]:
+              - generic [ref=e1403]:
+                - img [ref=e1405]
+                - img [ref=e1409]
+              - generic [ref=e1412]: Tip Calculator
+              - paragraph [ref=e1413]: Calculate tip and split the bill across any number of people
+    - contentinfo [ref=e1414]:
+      - generic [ref=e1415]:
+        - generic [ref=e1416]:
+          - link "EverydayTools" [ref=e1417] [cursor=pointer]:
+            - /url: /
+            - img [ref=e1418]
+            - generic [ref=e1423]: EverydayTools
+          - paragraph [ref=e1424]: A collection of browser-based tools for everyday file tasks. Fast, private, and free.
+        - generic [ref=e1425]:
+          - heading "PDF Tools" [level=3] [ref=e1426]
+          - list [ref=e1427]:
+            - listitem [ref=e1428]:
+              - link "PDF to Word" [ref=e1429] [cursor=pointer]:
+                - /url: /pdf-to-word
+            - listitem [ref=e1430]:
+              - link "PDF to Text" [ref=e1431] [cursor=pointer]:
+                - /url: /pdf-to-text
+            - listitem [ref=e1432]:
+              - link "Compress PDF" [ref=e1433] [cursor=pointer]:
+                - /url: /pdf-compress
+            - listitem [ref=e1434]:
+              - link "Merge PDFs" [ref=e1435] [cursor=pointer]:
+                - /url: /pdf-merge
+            - listitem [ref=e1436]:
+              - link "Split PDF" [ref=e1437] [cursor=pointer]:
+                - /url: /pdf-split
+            - listitem [ref=e1438]:
+              - link "Protect PDF" [ref=e1439] [cursor=pointer]:
+                - /url: /pdf-protect
+        - generic [ref=e1440]:
+          - heading "Image Tools" [level=3] [ref=e1441]
+          - list [ref=e1442]:
+            - listitem [ref=e1443]:
+              - link "Image Converter" [ref=e1444] [cursor=pointer]:
+                - /url: /image-converter
+            - listitem [ref=e1445]:
+              - link "Background Remover" [ref=e1446] [cursor=pointer]:
+                - /url: /background-remover
+            - listitem [ref=e1447]:
+              - link "Compress Image" [ref=e1448] [cursor=pointer]:
+                - /url: /image-compress
+            - listitem [ref=e1449]:
+              - link "Resize Image" [ref=e1450] [cursor=pointer]:
+                - /url: /image-resize
+            - listitem [ref=e1451]:
+              - link "HEIC to JPG" [ref=e1452] [cursor=pointer]:
+                - /url: /heic-to-jpg
+            - listitem [ref=e1453]:
+              - link "Image to PDF" [ref=e1454] [cursor=pointer]:
+                - /url: /image-to-pdf
+        - generic [ref=e1455]:
+          - heading "Utilities" [level=3] [ref=e1456]
+          - list [ref=e1457]:
+            - listitem [ref=e1458]:
+              - link "Metadata Cleaner" [ref=e1459] [cursor=pointer]:
+                - /url: /metadata-cleaner
+            - listitem [ref=e1460]:
+              - link "AI Text Scrubber" [ref=e1461] [cursor=pointer]:
+                - /url: /ai-text-scrubber
+            - listitem [ref=e1462]:
+              - link "Password Generator" [ref=e1463] [cursor=pointer]:
+                - /url: /password-generator
+            - listitem [ref=e1464]:
+              - link "Currency Converter" [ref=e1465] [cursor=pointer]:
+                - /url: /currency-converter
+            - listitem [ref=e1466]:
+              - link "Unit Converter" [ref=e1467] [cursor=pointer]:
+                - /url: /unit-converter
+            - listitem [ref=e1468]:
+              - link "Percentage Calculator" [ref=e1469] [cursor=pointer]:
+                - /url: /percentage-calc
+      - generic [ref=e1470]:
+        - generic [ref=e1471]: © 2026 EverydayTools Hub. All rights reserved.
+        - navigation [ref=e1472]:
+          - link "Privacy Policy" [ref=e1473] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Service" [ref=e1474] [cursor=pointer]:
+            - /url: /terms
+          - button "Cookie Preferences" [ref=e1475] [cursor=pointer]
+    - dialog "Cookie preferences" [ref=e1476]:
+      - paragraph [ref=e1477]:
+        - text: We use privacy-first analytics (no cookies, no personal data) and, with your consent, ads that help keep all tools free. Your files are
+        - strong [ref=e1478]: never uploaded
+        - text: —
+        - link "Privacy policy" [ref=e1479] [cursor=pointer]:
+          - /url: /privacy
+      - generic [ref=e1480]:
+        - button "Essential only" [ref=e1481] [cursor=pointer]
+        - button "Accept all" [ref=e1482] [cursor=pointer]
+  - region "Notifications (F8)":
+    - list
+```
+
+# Test source
+
+```ts
+  1  | import { test, expect } from '@playwright/test';
+  2  | 
+  3  | const ALL_TOOL_ROUTES = [
+  4  |   '/',
+  5  |   '/pdf-compress', '/pdf-merge', '/pdf-split', '/pdf-rotate',
+  6  |   '/pdf-unlock', '/pdf-protect', '/pdf-watermark', '/pdf-page-numbers',
+  7  |   '/pdf-to-word', '/pdf-to-text', '/pdf-to-image',
+  8  |   '/unit-converter', '/currency-converter', '/tip-calculator', '/percentage-calc',
+  9  |   '/password-generator',
+  10 |   '/png-to-webp', '/jpg-to-png', '/image-compress',
+  11 | ];
+  12 | 
+  13 | for (const route of ALL_TOOL_ROUTES) {
+  14 |   test(`${route} — title, description, canonical, H1`, async ({ page }) => {
+  15 |     await page.goto(route);
+  16 | 
+  17 |     // Title: non-empty, reasonable length
+  18 |     const title = await page.title();
+  19 |     expect(title.length).toBeGreaterThan(5);
+  20 |     expect(title.length).toBeLessThanOrEqual(70);
+  21 | 
+  22 |     // Meta description
+  23 |     const desc = await page.locator('meta[name="description"]').getAttribute('content');
+  24 |     expect(desc).not.toBeNull();
+  25 |     if (desc) {
+  26 |       expect(desc.length).toBeGreaterThan(20);
+  27 |     }
+  28 | 
+  29 |     // H1 — exactly one
+  30 |     const h1Count = await page.locator('h1').count();
+> 31 |     expect(h1Count).toBeGreaterThanOrEqual(1);
+     |                     ^ Error: expect(received).toBeGreaterThanOrEqual(expected)
+  32 |   });
+  33 | }
+  34 | 
+  35 | test('sitemap.xml exists and contains URLs', async ({ page }) => {
+  36 |   const response = await page.request.get('/sitemap.xml');
+  37 |   expect(response.status()).toBe(200);
+  38 |   const body = await response.text();
+  39 |   expect(body).toContain('<?xml');
+  40 |   expect(body).toContain('<urlset');
+  41 |   expect(body).toContain('<loc>');
+  42 | });
+  43 | 
+  44 | test('robots.txt exists and allows crawling', async ({ page }) => {
+  45 |   const response = await page.request.get('/robots.txt');
+  46 |   expect(response.status()).toBe(200);
+  47 |   const body = await response.text();
+  48 |   expect(body).toContain('User-agent');
+  49 |   expect(body).toContain('Sitemap');
+  50 | });
+  51 | 
+  52 | test('no two tool pages have the same title', async ({ page }) => {
+  53 |   const titles: string[] = [];
+  54 |   const routes = ALL_TOOL_ROUTES.filter(r => r !== '/');
+  55 |   for (const route of routes) {
+  56 |     await page.goto(route);
+  57 |     const title = await page.title();
+  58 |     expect(titles).not.toContain(title);
+  59 |     titles.push(title);
+  60 |   }
+  61 | });
+  62 | 
+  63 | test('JSON-LD schema present on tool pages', async ({ page }) => {
+  64 |   await page.goto('/pdf-compress');
+  65 |   const scripts = page.locator('script[type="application/ld+json"]');
+  66 |   expect(await scripts.count()).toBeGreaterThan(0);
+  67 |   const content = await scripts.first().textContent();
+  68 |   expect(() => JSON.parse(content!)).not.toThrow();
+  69 |   const schema = JSON.parse(content!);
+  70 |   expect(schema['@type']).toBeTruthy();
+  71 | });
+  72 | 
+```
