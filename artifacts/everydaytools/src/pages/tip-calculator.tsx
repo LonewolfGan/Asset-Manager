@@ -209,7 +209,7 @@ export default function TipCalculator() {
             <PercentCard
               label={tc.pctChange}
               result={pctChange === null ? '—' : `${pctChange > 0 ? '+' : ''}${fmtPct(pctChange)}%`}
-              resultColor={pctChange === null ? undefined : pctChange > 0 ? '#22c55e' : pctChange < 0 ? '#ef4444' : undefined}
+              resultColor={pctChange === null ? undefined : pctChange > 0 ? 'var(--success)' : pctChange < 0 ? 'var(--danger)' : undefined}
             >
               <span style={{ color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>{tc.pctChangeFrom}</span>
               <PctInput value={p3x} onChange={setP3x} w={80} />

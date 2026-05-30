@@ -227,8 +227,24 @@ const queryClient = new QueryClient();
 
 function PageLoader() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 300, color: 'var(--text-tertiary)', fontFamily: 'var(--font-ui)' }}>
-      Loading…
+    <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
+      {/* Breadcrumb skeleton */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 24 }}>
+        <div className="skeleton" style={{ width: 36, height: 12, borderRadius: 4 }} />
+        <div className="skeleton" style={{ width: 6, height: 6, borderRadius: '50%' }} />
+        <div className="skeleton" style={{ width: 70, height: 12, borderRadius: 4 }} />
+        <div className="skeleton" style={{ width: 6, height: 6, borderRadius: '50%' }} />
+        <div className="skeleton" style={{ width: 110, height: 12, borderRadius: 4 }} />
+      </div>
+      {/* Title skeleton */}
+      <div className="skeleton" style={{ width: '55%', height: 36, borderRadius: 8, marginBottom: 12 }} />
+      {/* Subtitle skeleton */}
+      <div className="skeleton" style={{ width: '80%', height: 14, borderRadius: 4, marginBottom: 6 }} />
+      <div className="skeleton" style={{ width: '60%', height: 14, borderRadius: 4, marginBottom: 32 }} />
+      {/* Upload area skeleton */}
+      <div className="skeleton" style={{ width: '100%', height: 180, borderRadius: 14 }} />
+      {/* Button skeleton */}
+      <div className="skeleton" style={{ width: '100%', height: 46, borderRadius: 14, marginTop: 16 }} />
     </div>
   );
 }

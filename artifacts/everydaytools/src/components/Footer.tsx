@@ -64,10 +64,10 @@ export default function Footer() {
         <div>
           <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: 9, textDecoration: "none", marginBottom: 16 }}>
             <svg width="26" height="26" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <rect width="64" height="64" rx="11" fill="#EDEDEE"/>
+              <rect width="64" height="64" rx="11" fill="#E7E7E7"/>
               <rect x="14" y="15" width="36" height="7" rx="2" fill="#FF6B35"/>
-              <rect x="14" y="28" width="28" height="7" rx="2" fill="#1A1916"/>
-              <rect x="14" y="41" width="36" height="7" rx="2" fill="#1A1916"/>
+              <rect x="14" y="28" width="28" height="7" rx="2" fill="#111111"/>
+              <rect x="14" y="41" width="36" height="7" rx="2" fill="#111111"/>
             </svg>
             <span style={{ fontFamily: "var(--font-display)", fontSize: 15, fontWeight: 600, color: "var(--text-primary)", letterSpacing: "-0.02em" }}>
               EverydayTools

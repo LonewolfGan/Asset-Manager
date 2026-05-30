@@ -435,13 +435,38 @@ button,
 
 /* ─── SKELETON LOADING ─── */
 .skeleton {
-  background: var(--bg-subtle);
+  position: relative;
+  overflow: hidden;
+  background: #EBEBEA;
   border-radius: 6px;
-  animation: skeleton-pulse 1.2s ease infinite;
 }
-@keyframes skeleton-pulse {
-  0%, 100% { opacity: 0.4; }
-  50%       { opacity: 0.7; }
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,255,255,0.6) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  animation: skeleton-shimmer 1.6s ease infinite;
+}
+@keyframes skeleton-shimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+[data-theme="dark"] .skeleton {
+  background: #1a1a20;
+}
+[data-theme="dark"] .skeleton::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,255,255,0.06) 50%,
+    transparent 100%
+  );
 }
 
 /* ─── FOOTER RESPONSIVE GRID ─── */
