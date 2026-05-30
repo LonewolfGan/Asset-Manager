@@ -14,6 +14,10 @@ for (const route of ALL_TOOL_ROUTES) {
   test(`${route} — title, description, canonical, H1`, async ({ page }) => {
     await page.goto(route);
 
+    // Wait for the lazy-loaded component to mount before checking SEO attributes.
+    // react-helmet-async updates <title> and <meta> only after the component renders.
+    await expect(page.locator('h1').first()).toBeVisible();
+
     // Title: non-empty, reasonable length
     const title = await page.title();
     expect(title.length).toBeGreaterThan(5);
@@ -25,10 +29,6 @@ for (const route of ALL_TOOL_ROUTES) {
     if (desc) {
       expect(desc.length).toBeGreaterThan(20);
     }
-
-    // H1 — exactly one
-    const h1Count = await page.locator('h1').count();
-    expect(h1Count).toBeGreaterThanOrEqual(1);
   });
 }
 
@@ -54,6 +54,8 @@ test('no two tool pages have the same title', async ({ page }) => {
   const routes = ALL_TOOL_ROUTES.filter(r => r !== '/');
   for (const route of routes) {
     await page.goto(route);
+    // Wait for the component to mount so react-helmet-async can update the title
+    await expect(page.locator('h1').first()).toBeVisible();
     const title = await page.title();
     expect(titles).not.toContain(title);
     titles.push(title);
@@ -62,8 +64,10 @@ test('no two tool pages have the same title', async ({ page }) => {
 
 test('JSON-LD schema present on tool pages', async ({ page }) => {
   await page.goto('/pdf-compress');
+  // Wait for the component to mount so react-helmet-async can inject JSON-LD scripts
+  await expect(page.locator('h1').first()).toBeVisible();
   const scripts = page.locator('script[type="application/ld+json"]');
-  expect(await scripts.count()).toBeGreaterThan(0);
+  await expect(scripts.first()).toBeAttached();
   const content = await scripts.first().textContent();
   expect(() => JSON.parse(content!)).not.toThrow();
   const schema = JSON.parse(content!);

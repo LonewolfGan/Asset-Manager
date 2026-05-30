@@ -264,7 +264,7 @@ export default function DashboardHome() {
               margin: 0,
               fontFamily: "var(--font-ui)",
             }}>
-              {t.home.allToolsSubtitle}
+              {t.home.allToolsSubtitle(DASH_TOOLS.length)}
             </p>
           </div>
         )}
