@@ -18,8 +18,16 @@ export interface ToolSeoEntry {
   relatedTools: string[];
   howItWorks: { en: HowItWorksStep[]; fr: HowItWorksStep[] };
   about: { en: string; fr: string };
-      en: "",
-      fr: ""
+  faqs: { en: FaqEntry[]; fr: FaqEntry[] };
+}
+
+export const SEO_TOOLS: ToolSeoEntry[] = [
+  {
+    internalSlug: "pdf-to-word",
+    slugs: { en: "convert-pdf-to-word", fr: "convertir-pdf-en-word" },
+    title: {
+      en: "PDF to Word Converter — Free, Online, No Signup | EverydayTools Hub",
+      fr: "Convertir PDF en Word — Gratuit, En Ligne, Sans Inscription | EverydayTools Hub",
     },
     h1: { en: "PDF to Word Converter", fr: "Convertisseur PDF en Word" },
     description: {
@@ -47,18 +55,20 @@ export interface ToolSeoEntry {
       en: "",
       fr: ""
     },
-    { q: "Will the Word document look exactly like the PDF?", a: "Text and basic paragraph structure are preserved accurately. However, complex layouts such as multi-column pages, precise positioning, decorative fonts, or embedded graphics may not transfer perfectly. This is a limitation of the PDF format itself — PDFs store visual positions, not document structure. A manual touch-up in Word is often needed." },
-    { q: "Can I convert a password-protected PDF to Word?", a: "If the PDF has an owner password restricting editing but no user password, the conversion will work normally. If the PDF requires a password to open, you will need to unlock it first. Use the Unlock PDF tool on EverydayTools Hub, then convert." },
-    { q: "What file size limit applies?", a: "The PDF to Word Converter accepts files up to 50 MB. Most PDFs are well under this limit. Very large PDFs with hundreds of high-resolution images may exceed the limit — in that case, use the Compress PDF tool to reduce the file size first." },
-    { q: "Is PDF to Word Converter free?", a: "Yes. EverydayTools Hub PDF to Word Converter is completely free to use with no usage limits, no account required, and no watermarks on the output. It will remain free forever." },
+    faqs: {
+      en: [
+        { q: "Will the Word document look exactly like the PDF?", a: "Text and basic paragraph structure are preserved accurately. However, complex layouts such as multi-column pages, precise positioning, decorative fonts, or embedded graphics may not transfer perfectly. This is a limitation of the PDF format itself — PDFs store visual positions, not document structure. A manual touch-up in Word is often needed." },
+        { q: "Can I convert a password-protected PDF to Word?", a: "If the PDF has an owner password restricting editing but no user password, the conversion will work normally. If the PDF requires a password to open, you will need to unlock it first. Use the Unlock PDF tool on EverydayTools Hub, then convert." },
+        { q: "What file size limit applies?", a: "The PDF to Word Converter accepts files up to 50 MB. Most PDFs are well under this limit. Very large PDFs with hundreds of high-resolution images may exceed the limit — in that case, use the Compress PDF tool to reduce the file size first." },
+        { q: "Is PDF to Word Converter free?", a: "Yes. EverydayTools Hub PDF to Word Converter is completely free to use with no usage limits, no account required, and no watermarks on the output. It will remain free forever." },
       ],
       fr: [
         { q: "Comment convertir un PDF en Word gratuitement en ligne ?", a: "Téléversez votre fichier PDF dans le convertisseur PDF en Word d'EverydayTools Hub et cliquez sur Convertir. L'outil s'exécute entièrement dans votre navigateur, extrait le texte de chaque page et génère un fichier DOCX téléchargeable instantanément. Sans compte, sans paiement." },
-    { q: "La conversion se fait-elle dans le navigateur ou sur un serveur ?", a: "Toute la conversion a lieu dans votre navigateur en JavaScript. Votre fichier PDF n'est jamais envoyé à un serveur. Vos données restent privées et l'outil fonctionne même hors connexion après le premier chargement de la page." },
-    { q: "Le document Word sera-t-il identique au PDF ?", a: "Le texte et la structure de base des paragraphes sont préservés fidèlement. Les mises en page complexes — colonnes multiples, positionnement précis, polices décoratives, images intégrées — peuvent ne pas être reproduites parfaitement. Une retouche manuelle dans Word est souvent nécessaire." },
-    { q: "Puis-je convertir un PDF protégé par mot de passe en Word ?", a: "Si le PDF a un mot de passe propriétaire restreignant la modification mais pas de mot de passe d'ouverture, la conversion fonctionne normalement. Si le PDF nécessite un mot de passe pour s'ouvrir, utilisez d'abord l'outil Déverrouiller PDF d'EverydayTools Hub." },
-    { q: "Quelle est la taille maximale des fichiers ?", a: "Le convertisseur accepte les fichiers jusqu'à 50 Mo. La plupart des PDF sont bien en dessous de cette limite. Pour les PDF très volumineux, utilisez d'abord l'outil Compresser PDF." },
-    { q: "Le convertisseur PDF en Word est-il gratuit ?", a: "Oui. Le convertisseur PDF en Word d'EverydayTools Hub est entièrement gratuit, sans limite d'utilisation, sans compte requis et sans filigrane sur le résultat. Il restera gratuit indéfiniment." },
+        { q: "La conversion se fait-elle dans le navigateur ou sur un serveur ?", a: "Toute la conversion a lieu dans votre navigateur en JavaScript. Votre fichier PDF n'est jamais envoyé à un serveur. Vos données restent privées et l'outil fonctionne même hors connexion après le premier chargement de la page." },
+        { q: "Le document Word sera-t-il identique au PDF ?", a: "Le texte et la structure de base des paragraphes sont préservés fidèlement. Les mises en page complexes — colonnes multiples, positionnement précis, polices décoratives, images intégrées — peuvent ne pas être reproduites parfaitement. Une retouche manuelle dans Word est souvent nécessaire." },
+        { q: "Puis-je convertir un PDF protégé par mot de passe en Word ?", a: "Si le PDF a un mot de passe propriétaire restreignant la modification mais pas de mot de passe d'ouverture, la conversion fonctionne normalement. Si le PDF nécessite un mot de passe pour s'ouvrir, utilisez d'abord l'outil Déverrouiller PDF d'EverydayTools Hub." },
+        { q: "Quelle est la taille maximale des fichiers ?", a: "Le convertisseur accepte les fichiers jusqu'à 50 Mo. La plupart des PDF sont bien en dessous de cette limite. Pour les PDF très volumineux, utilisez d'abord l'outil Compresser PDF." },
+        { q: "Le convertisseur PDF en Word est-il gratuit ?", a: "Oui. Le convertisseur PDF en Word d'EverydayTools Hub est entièrement gratuit, sans limite d'utilisation, sans compte requis et sans filigrane sur le résultat. Il restera gratuit indéfiniment." },
       ],
     },
   },
@@ -966,19 +976,21 @@ export interface ToolSeoEntry {
       en: "",
       fr: ""
     },
-    { q: "Why can't I open HEIC files on Windows?", a: "HEIC requires the HEVC/H.265 codec to decode, which Windows does not include by default. You can install the HEIC Image Extensions from the Microsoft Store ($0.99), or use a free converter like EverydayTools Hub to convert HEIC photos to JPEG before using them on Windows." },
-    { q: "Will HEIC to JPG conversion reduce photo quality?", a: "JPEG is a lossy format, so some quality loss is inherent. However, at high quality settings (the tool default), the difference is barely perceptible to the human eye. Converting to PNG instead produces a lossless output but with a larger file size." },
-    { q: "Can I convert multiple HEIC files at once?", a: "Yes. The converter supports batch conversion of multiple HEIC files in a single upload." },
-    { q: "What if my HEIC file contains multiple frames (Live Photo)?", a: "The converter extracts the still image from Live Photo .heic files. The motion video component of Live Photos is not extracted." },
-    { q: "Is HEIC to JPG Converter free?", a: "Yes. EverydayTools Hub HEIC to JPG Converter is completely free, with no account required and no watermarks on the output." },
+    faqs: {
+      en: [
+        { q: "Why can't I open HEIC files on Windows?", a: "HEIC requires the HEVC/H.265 codec to decode, which Windows does not include by default. You can install the HEIC Image Extensions from the Microsoft Store ($0.99), or use a free converter like EverydayTools Hub to convert HEIC photos to JPEG before using them on Windows." },
+        { q: "Will HEIC to JPG conversion reduce photo quality?", a: "JPEG is a lossy format, so some quality loss is inherent. However, at high quality settings (the tool default), the difference is barely perceptible to the human eye. Converting to PNG instead produces a lossless output but with a larger file size." },
+        { q: "Can I convert multiple HEIC files at once?", a: "Yes. The converter supports batch conversion of multiple HEIC files in a single upload." },
+        { q: "What if my HEIC file contains multiple frames (Live Photo)?", a: "The converter extracts the still image from Live Photo .heic files. The motion video component of Live Photos is not extracted." },
+        { q: "Is HEIC to JPG Converter free?", a: "Yes. EverydayTools Hub HEIC to JPG Converter is completely free, with no account required and no watermarks on the output." },
       ],
       fr: [
         { q: "Comment convertir HEIC en JPG gratuitement ?", a: "Téléversez vos fichiers HEIC dans le convertisseur HEIC en JPG d'EverydayTools Hub, sélectionnez JPEG comme format de sortie et cliquez sur Convertir. La conversion se fait entièrement dans votre navigateur." },
-    { q: "Pourquoi ne puis-je pas ouvrir les fichiers HEIC sur Windows ?", a: "HEIC nécessite le codec HEVC/H.265 pour le décodage, que Windows n'inclut pas par défaut. Vous pouvez installer les extensions d'images HEIC depuis le Microsoft Store, ou utiliser EverydayTools Hub pour convertir en JPEG." },
-    { q: "La conversion HEIC en JPG réduira-t-elle la qualité de la photo ?", a: "JPEG est un format avec perte, donc une certaine perte de qualité est inhérente. Cependant, avec des paramètres de haute qualité, la différence est à peine perceptible. La conversion en PNG produit une sortie sans perte mais avec une taille de fichier plus grande." },
-    { q: "Puis-je convertir plusieurs fichiers HEIC à la fois ?", a: "Oui. Le convertisseur supporte la conversion par lot de plusieurs fichiers HEIC en un seul téléversement." },
-    { q: "Que se passe-t-il si mon fichier HEIC contient plusieurs images (Live Photo) ?", a: "Le convertisseur extrait l'image fixe des fichiers .heic Live Photo. La composante vidéo en mouvement des Live Photos n'est pas extraite." },
-    { q: "Le convertisseur HEIC en JPG est-il gratuit ?", a: "Oui. Le convertisseur HEIC en JPG d'EverydayTools Hub est entièrement gratuit, sans compte requis et sans filigrane." },
+        { q: "Pourquoi ne puis-je pas ouvrir les fichiers HEIC sur Windows ?", a: "HEIC nécessite le codec HEVC/H.265 pour le décodage, que Windows n'inclut pas par défaut. Vous pouvez installer les extensions d'images HEIC depuis le Microsoft Store, ou utiliser EverydayTools Hub pour convertir en JPEG." },
+        { q: "La conversion HEIC en JPG réduira-t-elle la qualité de la photo ?", a: "JPEG est un format avec perte, donc une certaine perte de qualité est inhérente. Cependant, avec des paramètres de haute qualité, la différence est à peine perceptible. La conversion en PNG produit une sortie sans perte mais avec une taille de fichier plus grande." },
+        { q: "Puis-je convertir plusieurs fichiers HEIC à la fois ?", a: "Oui. Le convertisseur supporte la conversion par lot de plusieurs fichiers HEIC en un seul téléversement." },
+        { q: "Que se passe-t-il si mon fichier HEIC contient plusieurs images (Live Photo) ?", a: "Le convertisseur extrait l'image fixe des fichiers .heic Live Photo. La composante vidéo en mouvement des Live Photos n'est pas extraite." },
+        { q: "Le convertisseur HEIC en JPG est-il gratuit ?", a: "Oui. Le convertisseur HEIC en JPG d'EverydayTools Hub est entièrement gratuit, sans compte requis et sans filigrane." },
       ],
     },
   },
