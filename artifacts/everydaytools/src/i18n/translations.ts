@@ -397,7 +397,7 @@ const EN: Translations = {
     title: "EverydayTools",
     subtitle: "Browser-based document, image, and utility tools. No uploads. No accounts.",
     allTools: "All Tools",
-    allToolsSubtitle: (n: number) => `${n} free tools that run entirely in your browser — no account, no uploads, no tracking.`,
+    allToolsSubtitle: (_n: number) => `Free tools for documents, images, and everyday tasks. No account. No uploads.`,
     categories: {
       pdf: "PDF Tools",
       word: "Word & Docs",
@@ -944,7 +944,7 @@ const FR: Translations = {
     title: "EverydayTools",
     subtitle: "Outils en ligne pour documents, images et utilitaires. Sans téléchargement. Sans compte.",
     allTools: "Tous les outils",
-    allToolsSubtitle: (n: number) => `${n} outils gratuits qui fonctionnent dans votre navigateur — sans compte, sans téléchargement.`,
+    allToolsSubtitle: (_n: number) => `Outils gratuits pour les documents, images et tâches du quotidien. Sans compte. Sans téléchargement.`,
     categories: {
       pdf: "Outils PDF",
       word: "Word et Documents",

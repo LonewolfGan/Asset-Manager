@@ -446,10 +446,10 @@ export function ToolPageSEO({ internalSlug }: ToolPageSEOProps) {
           padding: "0 24px 64px",
         }}
       >
+        <RelatedToolsSection tool={tool} locale={locale} />
         <HowItWorksSection tool={tool} locale={locale} />
         <AboutSection tool={tool} locale={locale} />
         <FaqSection tool={tool} locale={locale} />
-        <RelatedToolsSection tool={tool} locale={locale} />
       </div>
     </>
   );

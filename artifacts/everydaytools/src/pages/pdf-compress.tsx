@@ -234,21 +234,6 @@ export default function PdfCompress() {
         </div>
       )}
 
-      <div
-        style={{
-          marginTop: 24,
-          padding: '12px 16px',
-          background: 'rgba(245,158,11,0.07)',
-          border: '1px solid var(--border)',
-          borderRadius: 'var(--radius)',
-          fontSize: 13,
-          color: 'var(--warning)',
-          fontFamily: 'var(--font-ui)',
-          lineHeight: 1.55,
-        }}
-      >
-        {tc.note}
-      </div>
       <AdSlot type="horizontal" />
     </div>
     <ToolPageSEO internalSlug="pdf-compress" />

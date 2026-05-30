@@ -57,10 +57,6 @@ export default function BackgroundRemover() {
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['background-remover']?.title ?? 'Background Remover'}</h1>
       <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['background-remover']?.description ?? 'Remove image backgrounds entirely in your browser using local AI.'}</p>
 
-      <div style={{ padding: 16, background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', marginBottom: 24, fontSize: 14, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)', lineHeight: 1.55 }}>
-        {tc.note}
-      </div>
-
       <FileUpload accept={['image/jpeg', 'image/png', 'image/webp']} maxSizeMB={10} onFiles={setFiles} />
 
       {files.length > 0 && !isProcessing && (
