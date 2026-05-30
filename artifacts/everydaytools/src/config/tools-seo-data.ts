@@ -1019,6 +1019,92 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     },
   },
   {
+    internalSlug: "png-to-webp",
+    slugs: { en: "convert-png-to-webp", fr: "convertir-png-en-webp" },
+    title: { en: "PNG to WebP Converter — Free, Online | EverydayTools Hub", fr: "Convertir PNG en WebP — Gratuit, En Ligne | EverydayTools Hub" },
+    h1: { en: "PNG to WebP Converter", fr: "Convertisseur PNG en WebP" },
+    description: { en: "Convert PNG images to WebP format instantly in your browser. Smaller files, same quality — free, no upload, no account required.", fr: "Convertissez des images PNG en WebP directement dans votre navigateur. Fichiers plus légers, même qualité — gratuit, sans envoi, sans compte." },
+    keywords: { en: ["png to webp converter", "convert png to webp online free", "png webp online", "reduce png file size webp", "png to webp no upload", "webp converter free"], fr: ["convertir png en webp", "png en webp gratuit", "convertisseur png webp en ligne", "png vers webp sans logiciel", "webp converter gratuit", "convertir image png webp"] },
+    relatedTools: ["image-converter", "image-compress", "jpg-to-png"],
+    howItWorks: {
+      en: [
+        { name: "Upload your PNG", text: "Click the upload area or drag your PNG file. Multiple files are supported (up to 20)." },
+        { name: "Convert automatically", text: "EverydayTools Hub converts your PNG to WebP using the browser's Canvas API — no data leaves your device." },
+        { name: "Download the WebP file", text: "Click Convert. Your WebP file downloads immediately, typically 25–35% smaller than the original PNG." },
+      ],
+      fr: [
+        { name: "Téléversez votre PNG", text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier PNG. Plusieurs fichiers sont supportés (jusqu'à 20)." },
+        { name: "Conversion automatique", text: "EverydayTools Hub convertit votre PNG en WebP via l'API Canvas du navigateur — aucune donnée ne quitte votre appareil." },
+        { name: "Téléchargez le fichier WebP", text: "Cliquez sur Convertir. Votre fichier WebP se télécharge immédiatement, généralement 25–35 % plus petit que le PNG original." },
+      ],
+    },
+    about: {
+      en: "EverydayTools Hub PNG to WebP Converter transforms PNG images to the modern WebP format — entirely in your browser, with no server uploads and no account required.\n\nWebP is a next-generation image format developed by Google that typically produces files 25–35% smaller than PNG at equivalent visual quality. All major modern browsers (Chrome, Firefox, Edge, Safari 14+) support WebP natively, making it the preferred format for web images.\n\nThe tool uses the HTML5 Canvas API to re-encode your PNG as WebP. No image data is sent to any server — conversion is fully client-side and private. Batch conversion of up to 20 files is supported.\n\nFor converting other formats to WebP, use the Image Converter tool. For further file-size reduction, use the Compress Image tool. EverydayTools Hub is free, browser-based, and no signup is required.",
+      fr: "Le convertisseur PNG en WebP d'EverydayTools Hub transforme les images PNG au format WebP moderne — entièrement dans votre navigateur, sans envoi à un serveur et sans compte requis.\n\nWebP est un format d'image de nouvelle génération développé par Google qui produit généralement des fichiers 25–35 % plus petits que PNG à qualité visuelle équivalente. Tous les navigateurs modernes majeurs supportent WebP nativement.\n\nL'outil utilise l'API Canvas HTML5 pour ré-encoder votre PNG en WebP. Aucune image n'est envoyée à un serveur — la conversion est entièrement côté client et privée. La conversion par lot jusqu'à 20 fichiers est supportée.\n\nEverydayTools Hub est gratuit, basé sur le navigateur et ne nécessite aucune inscription.",
+    },
+    faqs: {
+      en: [
+        { q: "How do I convert PNG to WebP online for free?", a: "Upload your PNG to EverydayTools Hub PNG to WebP Converter and click Convert. The WebP file downloads in your browser — no account required, no server upload." },
+        { q: "Why convert PNG to WebP?", a: "WebP typically produces files 25–35% smaller than PNG at the same visual quality. Smaller images improve website loading speed and reduce bandwidth consumption. All modern browsers support WebP." },
+        { q: "Is WebP better than PNG?", a: "WebP is generally smaller in file size than PNG for photos and complex images. PNG is better when you need guaranteed lossless quality or compatibility with older software. For web use, WebP is the modern recommendation." },
+        { q: "Does PNG to WebP conversion lose quality?", a: "By default, the converter uses high-quality WebP encoding, so quality loss is minimal. WebP supports both lossy and lossless modes; the converter uses lossless encoding for PNG transparency." },
+        { q: "Can I convert multiple PNG files at once?", a: "Yes. The tool supports batch conversion of up to 20 PNG files in a single upload." },
+        { q: "Is PNG to WebP Converter free?", a: "Yes. EverydayTools Hub PNG to WebP Converter is completely free, with no account required and no watermarks on the output." },
+      ],
+      fr: [
+        { q: "Comment convertir PNG en WebP gratuitement en ligne ?", a: "Téléversez votre PNG dans le convertisseur PNG en WebP d'EverydayTools Hub et cliquez sur Convertir. Le fichier WebP se télécharge dans votre navigateur — sans compte, sans envoi à un serveur." },
+        { q: "Pourquoi convertir PNG en WebP ?", a: "WebP produit généralement des fichiers 25–35 % plus petits que PNG à la même qualité visuelle. Des images plus légères améliorent la vitesse de chargement des sites web." },
+        { q: "WebP est-il meilleur que PNG ?", a: "WebP est généralement plus petit en taille de fichier que PNG pour les photos et images complexes. PNG est préférable pour une compatibilité maximale avec les anciens logiciels. Pour le web, WebP est la recommandation moderne." },
+        { q: "La conversion PNG en WebP perd-elle en qualité ?", a: "Par défaut, le convertisseur utilise un encodage WebP de haute qualité, donc la perte de qualité est minimale." },
+        { q: "Puis-je convertir plusieurs fichiers PNG à la fois ?", a: "Oui. L'outil supporte la conversion par lot de jusqu'à 20 fichiers PNG en un seul téléversement." },
+        { q: "Le convertisseur PNG en WebP est-il gratuit ?", a: "Oui. Le convertisseur PNG en WebP d'EverydayTools Hub est entièrement gratuit, sans compte requis et sans filigrane." },
+      ],
+    },
+  },
+  {
+    internalSlug: "jpg-to-png",
+    slugs: { en: "convert-jpg-to-png", fr: "convertir-jpg-en-png" },
+    title: { en: "JPG to PNG Converter — Free, Online | EverydayTools Hub", fr: "Convertir JPG en PNG — Gratuit, En Ligne | EverydayTools Hub" },
+    h1: { en: "JPG to PNG Converter", fr: "Convertisseur JPG en PNG" },
+    description: { en: "Convert JPG/JPEG images to PNG format instantly in your browser. Lossless output, transparent background support — free, no upload, no account.", fr: "Convertissez des images JPG/JPEG en PNG directement dans votre navigateur. Sortie sans perte, support de la transparence — gratuit, sans envoi, sans compte." },
+    keywords: { en: ["jpg to png converter", "convert jpg to png online free", "jpeg to png", "jpg png no background", "convert jpeg to png free", "jpg to png transparent"], fr: ["convertir jpg en png", "jpeg en png gratuit", "convertisseur jpg png en ligne", "jpg vers png sans logiciel", "jpeg png fond transparent", "convertir photo jpg en png"] },
+    relatedTools: ["image-converter", "png-to-webp", "image-compress"],
+    howItWorks: {
+      en: [
+        { name: "Upload your JPG/JPEG", text: "Click the upload area or drag your JPEG file. Batch conversion of up to 20 files is supported." },
+        { name: "Convert automatically", text: "EverydayTools Hub converts your JPEG to PNG using the browser's Canvas API — no data leaves your device." },
+        { name: "Download the PNG file", text: "Click Convert. Your PNG file downloads with full quality — no further compression is applied." },
+      ],
+      fr: [
+        { name: "Téléversez votre JPG/JPEG", text: "Cliquez sur la zone de dépôt ou faites glisser votre fichier JPEG. La conversion par lot jusqu'à 20 fichiers est supportée." },
+        { name: "Conversion automatique", text: "EverydayTools Hub convertit votre JPEG en PNG via l'API Canvas du navigateur — aucune donnée ne quitte votre appareil." },
+        { name: "Téléchargez le fichier PNG", text: "Cliquez sur Convertir. Votre fichier PNG se télécharge avec une qualité maximale." },
+      ],
+    },
+    about: {
+      en: "EverydayTools Hub JPG to PNG Converter transforms JPEG images to the lossless PNG format — entirely in your browser, with no server uploads and no account required.\n\nJPEG is ideal for photographs because its lossy compression shrinks file sizes significantly. However, when you need pixel-perfect quality, transparency support, or compatibility with tools that require PNG (such as image editors, design tools, and many web APIs), converting to PNG is the right choice.\n\nThe tool uses the HTML5 Canvas API to decode the JPEG and re-encode it as PNG. Because PNG is lossless, the output will be larger than the JPEG source — this is expected. No image data is sent to any server.\n\nFor converting PNG to WebP for web use, use the PNG to WebP tool. For batch conversion between many formats, use the Image Converter. EverydayTools Hub is free, browser-based, and no signup is required.",
+      fr: "Le convertisseur JPG en PNG d'EverydayTools Hub transforme les images JPEG au format PNG sans perte — entièrement dans votre navigateur, sans envoi à un serveur et sans compte requis.\n\nJPEG est idéal pour les photographies grâce à sa compression avec perte. Cependant, lorsque vous avez besoin d'une qualité parfaite au pixel près, du support de la transparence, ou d'une compatibilité avec des outils nécessitant du PNG, la conversion en PNG est le bon choix.\n\nL'outil utilise l'API Canvas HTML5 pour décoder le JPEG et le ré-encoder en PNG. Comme PNG est sans perte, la sortie sera plus grande que le JPEG source — c'est attendu.\n\nEverydayTools Hub est gratuit, basé sur le navigateur et ne nécessite aucune inscription.",
+    },
+    faqs: {
+      en: [
+        { q: "How do I convert JPG to PNG online for free?", a: "Upload your JPEG to EverydayTools Hub JPG to PNG Converter and click Convert. The PNG file downloads in your browser — no account required, no server upload." },
+        { q: "Why convert JPG to PNG?", a: "PNG is a lossless format that supports transparency, which JPEG does not. Convert to PNG when you need to preserve every pixel exactly, need a transparent background, or need compatibility with tools that require PNG files." },
+        { q: "Will the PNG file be larger than the original JPG?", a: "Yes. PNG uses lossless compression, so PNG files are typically larger than JPEG files of the same image. This is expected behaviour — the PNG contains more image information." },
+        { q: "Does JPG to PNG conversion improve image quality?", a: "No. Converting from JPEG to PNG does not recover quality lost during the original JPEG compression. The PNG output is a lossless copy of whatever quality the JPEG already has." },
+        { q: "Can I convert multiple JPG files at once?", a: "Yes. The tool supports batch conversion of up to 20 JPEG files in a single upload." },
+        { q: "Is JPG to PNG Converter free?", a: "Yes. EverydayTools Hub JPG to PNG Converter is completely free, with no account required and no watermarks on the output." },
+      ],
+      fr: [
+        { q: "Comment convertir JPG en PNG gratuitement en ligne ?", a: "Téléversez votre JPEG dans le convertisseur JPG en PNG d'EverydayTools Hub et cliquez sur Convertir. Le fichier PNG se télécharge dans votre navigateur — sans compte, sans envoi à un serveur." },
+        { q: "Pourquoi convertir JPG en PNG ?", a: "PNG est un format sans perte qui supporte la transparence, ce que JPEG ne fait pas. Convertissez en PNG pour préserver chaque pixel exactement ou pour la compatibilité avec des outils nécessitant des fichiers PNG." },
+        { q: "Le fichier PNG sera-t-il plus grand que le JPG original ?", a: "Oui. PNG utilise une compression sans perte, donc les fichiers PNG sont généralement plus grands que les fichiers JPEG de la même image. C'est un comportement attendu." },
+        { q: "La conversion JPG en PNG améliore-t-elle la qualité de l'image ?", a: "Non. La conversion de JPEG en PNG ne récupère pas la qualité perdue lors de la compression JPEG originale. La sortie PNG est une copie sans perte de la qualité que le JPEG avait déjà." },
+        { q: "Puis-je convertir plusieurs fichiers JPG à la fois ?", a: "Oui. L'outil supporte la conversion par lot de jusqu'à 20 fichiers JPEG en un seul téléversement." },
+        { q: "Le convertisseur JPG en PNG est-il gratuit ?", a: "Oui. Le convertisseur JPG en PNG d'EverydayTools Hub est entièrement gratuit, sans compte requis et sans filigrane." },
+      ],
+    },
+  },
+  {
     internalSlug: "image-compress",
     slugs: { en: "compress-image", fr: "compresser-image" },
     title: { en: "Compress Image Online Free — No Signup | EverydayTools Hub", fr: "Compresser Image en Ligne Gratuit — Sans Inscription | EverydayTools Hub" },
