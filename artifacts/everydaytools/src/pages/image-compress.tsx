@@ -266,6 +266,7 @@ export default function ImageCompress() {
 
       {/* Drop zone */}
       <div
+        data-testid="drop-zone"
         onDragOver={(e) => e.preventDefault()}
         onDrop={(e) => {
           e.preventDefault();

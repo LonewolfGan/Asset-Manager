@@ -378,7 +378,7 @@ export default function TopNav() {
           </Link>
 
           {/* Desktop nav dropdowns */}
-          <div className="hidden md:flex" style={{ alignItems: "center", gap: 24 }}>
+          <div className="hidden md:flex" style={{ alignItems: "center", gap: 16 }}>
             {GROUPS.map((group) => (
               <NavDropdown
                 key={group.id}

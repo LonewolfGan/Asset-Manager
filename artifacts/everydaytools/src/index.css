@@ -407,6 +407,20 @@ button,
   50%       { opacity: 0.7; }
 }
 
+/* ─── FOOTER RESPONSIVE GRID ─── */
+@media (max-width: 767px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 32px !important;
+  }
+}
+@media (max-width: 480px) {
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+}
+
 /* ─── RESPONSIVE TOOL LAYOUT ─── */
 /* Ensure all primary action buttons are full-width on mobile */
 @media (max-width: 480px) {

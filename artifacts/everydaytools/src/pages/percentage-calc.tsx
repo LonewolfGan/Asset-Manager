@@ -111,32 +111,32 @@ export default function PercentageCalc() {
         <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-card)', padding: 24, marginBottom: 16 }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
             {tab === 'of' && (<>
-              <div><label style={labelStyle}>{pc.labels.whatIsPct}</label><input type="number" value={x} onChange={e => setX(e.target.value)} style={inputStyle} /></div>
-              <div><label style={labelStyle}>{pc.labels.ofY}</label><input type="number" value={y} onChange={e => setY(e.target.value)} style={inputStyle} /></div>
+              <div><label htmlFor="pct-x" style={labelStyle}>{pc.labels.whatIsPct}</label><input id="pct-x" type="number" value={x} onChange={e => setX(e.target.value)} style={inputStyle} /></div>
+              <div><label htmlFor="pct-y" style={labelStyle}>{pc.labels.ofY}</label><input id="pct-y" type="number" value={y} onChange={e => setY(e.target.value)} style={inputStyle} /></div>
             </>)}
             {tab === 'isWhat' && (<>
-              <div><label style={labelStyle}>{pc.labels.xIsWhat}</label><input type="number" value={x} onChange={e => setX(e.target.value)} style={inputStyle} /></div>
-              <div><label style={labelStyle}>{pc.labels.ofY}</label><input type="number" value={y} onChange={e => setY(e.target.value)} style={inputStyle} /></div>
+              <div><label htmlFor="pct-x" style={labelStyle}>{pc.labels.xIsWhat}</label><input id="pct-x" type="number" value={x} onChange={e => setX(e.target.value)} style={inputStyle} /></div>
+              <div><label htmlFor="pct-y" style={labelStyle}>{pc.labels.ofY}</label><input id="pct-y" type="number" value={y} onChange={e => setY(e.target.value)} style={inputStyle} /></div>
             </>)}
             {tab === 'change' && (<>
-              <div><label style={labelStyle}>{pc.labels.changeFrom}</label><input type="number" value={x} onChange={e => setX(e.target.value)} style={inputStyle} /></div>
-              <div><label style={labelStyle}>{pc.labels.changeTo}</label><input type="number" value={y} onChange={e => setY(e.target.value)} style={inputStyle} /></div>
+              <div><label htmlFor="pct-x" style={labelStyle}>{pc.labels.changeFrom}</label><input id="pct-x" type="number" value={x} onChange={e => setX(e.target.value)} style={inputStyle} /></div>
+              <div><label htmlFor="pct-y" style={labelStyle}>{pc.labels.changeTo}</label><input id="pct-y" type="number" value={y} onChange={e => setY(e.target.value)} style={inputStyle} /></div>
             </>)}
             {tab === 'discount' && (<>
-              <div><label style={labelStyle}>{pc.labels.discountPct}</label><input type="number" value={x} onChange={e => setX(e.target.value)} style={inputStyle} /></div>
-              <div><label style={labelStyle}>{pc.labels.origPrice}</label><input type="number" value={y} onChange={e => setY(e.target.value)} style={inputStyle} /></div>
+              <div><label htmlFor="pct-x" style={labelStyle}>{pc.labels.discountPct}</label><input id="pct-x" type="number" value={x} onChange={e => setX(e.target.value)} style={inputStyle} /></div>
+              <div><label htmlFor="pct-y" style={labelStyle}>{pc.labels.origPrice}</label><input id="pct-y" type="number" value={y} onChange={e => setY(e.target.value)} style={inputStyle} /></div>
             </>)}
             {tab === 'tip' && (<>
-              <div><label style={labelStyle}>{pc.labels.tipPct}</label><input type="number" value={x} onChange={e => setX(e.target.value)} style={inputStyle} /></div>
-              <div><label style={labelStyle}>{pc.labels.billAmount}</label><input type="number" value={y} onChange={e => setY(e.target.value)} style={inputStyle} /></div>
+              <div><label htmlFor="pct-x" style={labelStyle}>{pc.labels.tipPct}</label><input id="pct-x" type="number" value={x} onChange={e => setX(e.target.value)} style={inputStyle} /></div>
+              <div><label htmlFor="pct-y" style={labelStyle}>{pc.labels.billAmount}</label><input id="pct-y" type="number" value={y} onChange={e => setY(e.target.value)} style={inputStyle} /></div>
               <div style={{ gridColumn: '1 / -1' }}>
-                <label style={labelStyle}>{pc.labels.splitBetween}</label>
-                <input type="number" value={n} onChange={e => setN(e.target.value)} style={inputStyle} />
+                <label htmlFor="pct-n" style={labelStyle}>{pc.labels.splitBetween}</label>
+                <input id="pct-n" type="number" value={n} onChange={e => setN(e.target.value)} style={inputStyle} />
               </div>
             </>)}
             {tab === 'markup' && (<>
-              <div><label style={labelStyle}>{pc.labels.marginPct}</label><input type="number" value={x} onChange={e => setX(e.target.value)} style={inputStyle} /></div>
-              <div><label style={labelStyle}>{pc.labels.cost}</label><input type="number" value={y} onChange={e => setY(e.target.value)} style={inputStyle} /></div>
+              <div><label htmlFor="pct-x" style={labelStyle}>{pc.labels.marginPct}</label><input id="pct-x" type="number" value={x} onChange={e => setX(e.target.value)} style={inputStyle} /></div>
+              <div><label htmlFor="pct-y" style={labelStyle}>{pc.labels.cost}</label><input id="pct-y" type="number" value={y} onChange={e => setY(e.target.value)} style={inputStyle} /></div>
             </>)}
           </div>
 

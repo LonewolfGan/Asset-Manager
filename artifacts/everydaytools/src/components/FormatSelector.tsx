@@ -7,9 +7,10 @@ interface FormatSelectorProps {
   value: string;
   onChange: (v: string) => void;
   placeholder?: string;
+  'aria-label'?: string;
 }
 
-export default function FormatSelector({ options, value, onChange, placeholder }: FormatSelectorProps) {
+export default function FormatSelector({ options, value, onChange, placeholder, 'aria-label': ariaLabel }: FormatSelectorProps) {
   const { t } = useLocale();
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -51,6 +52,7 @@ export default function FormatSelector({ options, value, onChange, placeholder }
     <div className="relative w-full" ref={containerRef} onKeyDown={handleKeyDown}>
       <button
         type="button"
+        aria-label={ariaLabel}
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex items-center justify-between border border-[var(--border)] rounded-md px-3 py-2 text-left focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent shadow-sm"
         style={{ background: 'var(--bg-surface)', color: 'var(--text-primary)' }}

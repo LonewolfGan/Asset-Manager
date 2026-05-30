@@ -96,19 +96,20 @@ export default function CurrencyConverter() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
             <div style={{ flex: 1 }}>
-              <label style={{ display: 'block', fontSize: 14, marginBottom: 8, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.currencyConverter.from}</label>
-              <FormatSelector options={currencyOptions} value={fromCurrency} onChange={setFromCurrency} />
+              <label htmlFor="currency-from-selector" style={{ display: 'block', fontSize: 14, marginBottom: 8, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.currencyConverter.from}</label>
+              <FormatSelector options={currencyOptions} value={fromCurrency} onChange={setFromCurrency} aria-label={t.currencyConverter.from} />
             </div>
             <button onClick={handleSwap} aria-label={t.unitConverter.swapAriaLabel} style={{ marginTop: 26, padding: '8px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '50%', cursor: 'pointer', color: 'var(--text-primary)', lineHeight: 1 }}>⇄</button>
             <div style={{ flex: 1 }}>
-              <label style={{ display: 'block', fontSize: 14, marginBottom: 8, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.currencyConverter.to}</label>
-              <FormatSelector options={currencyOptions} value={toCurrency} onChange={setToCurrency} />
+              <label htmlFor="currency-to-selector" style={{ display: 'block', fontSize: 14, marginBottom: 8, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.currencyConverter.to}</label>
+              <FormatSelector options={currencyOptions} value={toCurrency} onChange={setToCurrency} aria-label={t.currencyConverter.to} />
             </div>
           </div>
           
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40, marginTop: 16 }}>
             <div>
-              <input type="number" value={amount} onChange={e => setAmount(e.target.value)} style={{ width: '100%', padding: '16px', fontSize: 24, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)', border: 'none', borderBottom: '2px solid var(--accent)', outline: 'none', background: 'var(--bg)', borderRadius: 'var(--radius) var(--radius) 0 0' }} />
+              <label htmlFor="currency-amount" style={{ display: 'block', fontSize: 13, marginBottom: 6, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.currencyConverter.from}</label>
+              <input id="currency-amount" type="number" value={amount} onChange={e => setAmount(e.target.value)} style={{ width: '100%', padding: '16px', fontSize: 24, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)', border: 'none', borderBottom: '2px solid var(--accent)', outline: 'none', background: 'var(--bg)', borderRadius: 'var(--radius) var(--radius) 0 0' }} />
             </div>
             <div style={{ padding: '16px 0', fontSize: 24, fontFamily: 'var(--font-mono)', borderBottom: '2px solid var(--border)', color: result === "—" ? 'var(--text-tertiary)' : 'var(--text-primary)' }}>
               {result}

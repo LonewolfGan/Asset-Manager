@@ -123,9 +123,9 @@ export default function PasswordGenerator() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-              <label style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{pg.length(length)}</label>
+              <label htmlFor="pw-length" style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{pg.length(length)}</label>
             </div>
-            <input type="range" min="8" max="128" value={length} onChange={e => setLength(parseInt(e.target.value))} style={{ width: '100%', accentColor: 'var(--accent)' }} />
+            <input id="pw-length" type="range" min="8" max="128" value={length} onChange={e => setLength(parseInt(e.target.value))} style={{ width: '100%', accentColor: 'var(--accent)' }} />
           </div>
           
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
@@ -148,8 +148,8 @@ export default function PasswordGenerator() {
           
           <div style={{ display: 'flex', gap: 16, alignItems: 'flex-end' }}>
             <div style={{ flex: 1 }}>
-              <label style={{ fontSize: 14, fontWeight: 500, display: 'block', marginBottom: 8, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{pg.count}</label>
-              <select value={count} onChange={e => setCount(parseInt(e.target.value))} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg)', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', outline: 'none' }}>
+              <label htmlFor="pw-count" style={{ fontSize: 14, fontWeight: 500, display: 'block', marginBottom: 8, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{pg.count}</label>
+              <select id="pw-count" value={count} onChange={e => setCount(parseInt(e.target.value))} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg)', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', outline: 'none' }}>
                 <option value={1}>1</option>
                 <option value={5}>5</option>
                 <option value={10}>10</option>

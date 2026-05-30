@@ -52,7 +52,7 @@ export default function Footer() {
       marginTop: "auto",
     }}>
       {/* Main footer grid */}
-      <div style={{
+      <div className="footer-grid" style={{
         maxWidth: "var(--content-wide)",
         margin: "0 auto",
         padding: "56px 24px 48px",

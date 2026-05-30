@@ -119,19 +119,19 @@ export default function TipCalculator() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
             <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-card)', padding: 28, display: 'flex', flexDirection: 'column', gap: 24 }}>
               <div>
-                <label style={labelStyle}>{tc.billAmount}</label>
+                <label htmlFor="tip-bill" style={labelStyle}>{tc.billAmount}</label>
                 <div style={{ position: 'relative' }}>
                   <span style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-tertiary)', fontSize: 15, fontFamily: 'var(--font-mono)' }}>$</span>
-                  <input type="number" value={bill} min="0" step="0.01" onChange={e => { setBill(e.target.value); handleCalculate(); }} style={{ ...inputStyle, paddingLeft: 26 }} />
+                  <input id="tip-bill" type="number" value={bill} min="0" step="0.01" onChange={e => { setBill(e.target.value); handleCalculate(); }} style={{ ...inputStyle, paddingLeft: 26 }} />
                 </div>
               </div>
 
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-                  <label style={{ ...labelStyle, margin: 0 }}>{tc.tipPct}</label>
+                  <label htmlFor="tip-pct" style={{ ...labelStyle, margin: 0 }}>{tc.tipPct}</label>
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: 15, color: 'var(--text-primary)', fontWeight: 600 }}>{tipPercent}%</span>
                 </div>
-                <input type="range" min={0} max={50} step={1} value={tipPercent} onChange={e => { setTipPercent(Number(e.target.value)); handleCalculate(); }} style={{ width: '100%', accentColor: 'var(--accent)', marginBottom: 12 }} />
+                <input id="tip-pct" type="range" min={0} max={50} step={1} value={tipPercent} onChange={e => { setTipPercent(Number(e.target.value)); handleCalculate(); }} style={{ width: '100%', accentColor: 'var(--accent)', marginBottom: 12 }} />
                 <div style={{ display: 'flex', gap: 6 }}>
                   {QUICK_TIPS.map(p => (
                     <button key={p} onClick={() => { setTipPercent(p); handleCalculate(); }} style={{
@@ -147,10 +147,10 @@ export default function TipCalculator() {
 
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-                  <label style={{ ...labelStyle, margin: 0 }}>{tc.numPeople}</label>
+                  <label htmlFor="tip-people" style={{ ...labelStyle, margin: 0 }}>{tc.numPeople}</label>
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: 15, color: 'var(--text-primary)', fontWeight: 600 }}>{people}</span>
                 </div>
-                <input type="range" min={1} max={20} step={1} value={people} onChange={e => { setPeople(Number(e.target.value)); handleCalculate(); }} style={{ width: '100%', accentColor: 'var(--accent)' }} />
+                <input id="tip-people" type="range" min={1} max={20} step={1} value={people} onChange={e => { setPeople(Number(e.target.value)); handleCalculate(); }} style={{ width: '100%', accentColor: 'var(--accent)' }} />
               </div>
             </div>
 

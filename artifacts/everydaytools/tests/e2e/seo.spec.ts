@@ -19,8 +19,8 @@ for (const route of ALL_TOOL_ROUTES) {
     expect(title.length).toBeGreaterThan(5);
     expect(title.length).toBeLessThanOrEqual(70);
 
-    // Meta description
-    const desc = await page.locator('meta[name="description"]').getAttribute('content');
+    // Meta description — use .last() to pick the tool-specific one over the global fallback
+    const desc = await page.locator('meta[name="description"]').last().getAttribute('content');
     expect(desc).not.toBeNull();
     if (desc) {
       expect(desc.length).toBeGreaterThan(20);
