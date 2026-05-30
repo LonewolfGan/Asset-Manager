@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { copyWithToast } from '@/utils/copy';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -48,7 +49,7 @@ export default function HtmlFormatter() {
 
   const copy = async () => { 
     trackToolUsed('html-formatter', 'utilities');
-    await navigator.clipboard.writeText(output); 
+    await copyWithToast(output); 
     setCopied(true); 
     setTimeout(() => setCopied(false), 1500); 
   };

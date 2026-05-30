@@ -1,5 +1,6 @@
 import { CheckCircle2, Download, Copy } from 'lucide-react';
 import { useState } from 'react';
+import { copyWithToast } from '@/utils/copy';
 
 interface ResultPanelProps {
   filename: string;
@@ -31,7 +32,7 @@ export default function ResultPanel({ filename, sizeBefore, sizeAfter, blob, tex
 
   const handleCopy = async () => {
     if (textOutput) {
-      await navigator.clipboard.writeText(textOutput);
+      await copyWithToast(textOutput);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { copyWithToast } from '@/utils/copy';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -92,13 +93,13 @@ export default function PasswordGenerator() {
     entropy < 100 ? pg.strength.veryStrong :
                     pg.strength.exceptional;
   const strengthColor =
-    entropy < 40  ? "var(--danger)" :
-    entropy < 60  ? "#D97706" :
-    entropy < 80  ? "var(--success)" :
-    entropy < 100 ? "var(--accent)" : "#7C3AED";
+    entropy < 40  ? "var(--text-tertiary)" :
+    entropy < 60  ? "var(--text-secondary)" :
+    entropy < 80  ? "var(--text-primary)" :
+                    "var(--accent)";
 
   const handleCopy = (text: string) => {
-    navigator.clipboard.writeText(text);
+    copyWithToast(text);
   };
 
   return (

@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { copyWithToast } from '@/utils/copy';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -91,7 +92,7 @@ export default function Checksum() {
               <div key={algo} style={{ padding: '12px 16px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)', fontWeight: 600, textTransform: 'uppercase' }}>{algo}</span>
-                  <button onClick={() => navigator.clipboard.writeText(hashes[algo] ?? '')}
+                  <button onClick={() => copyWithToast(hashes[algo] ?? '')}
                     style={{ padding: '2px 8px', border: '1px solid var(--border)', borderRadius: 4, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 11, color: 'var(--text-secondary)', cursor: 'pointer' }}>{t.common.copy}</button>
                 </div>
                 <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: expected.trim() && hashes[algo]?.toLowerCase() === expected.trim().toLowerCase() ? 'var(--success,#16a34a)' : 'var(--text-primary)', margin: 0, wordBreak: 'break-all', lineHeight: 1.5 }}>

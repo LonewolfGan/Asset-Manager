@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { copyWithToast } from '@/utils/copy';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -57,7 +58,7 @@ export default function AiTextScrubber() {
   };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(outputText);
+    copyWithToast(outputText);
   };
 
   const handleDownload = () => {

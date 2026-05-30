@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { copyWithToast } from '@/utils/copy';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
@@ -33,7 +34,7 @@ export default function HtmlToMarkdown() {
     const text = await f.text(); setInput(text); convert(text);
   };
 
-  const copy = async () => { await navigator.clipboard.writeText(output); setCopied(true); setTimeout(() => setCopied(false), 1500); };
+  const copy = async () => { await copyWithToast(output); setCopied(true); setTimeout(() => setCopied(false), 1500); };
   const download = () => {
     const blob = new Blob([output], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);

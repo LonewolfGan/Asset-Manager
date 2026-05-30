@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { copyWithToast } from '@/utils/copy';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -56,7 +57,7 @@ export default function CsvToJson() {
     URL.revokeObjectURL(url);
   };
 
-  const copyOutput = () => { if (output) navigator.clipboard.writeText(output); };
+  const copyOutput = () => { if (output) copyWithToast(output); };
 
   return (
     <>

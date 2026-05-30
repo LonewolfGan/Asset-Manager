@@ -63,8 +63,8 @@ export default function PdfUnlock() {
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['pdf-unlock']?.title ?? 'Unlock PDF'}</h1>
       <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-unlock']?.description ?? 'Remove printing, copying, and editing restrictions from PDF files.'}</p>
       
-      <div style={{ padding: '16px', background: 'var(--danger)', color: 'white', borderRadius: 'var(--radius)', marginBottom: 24, fontSize: 14, opacity: 0.9 }}>
-        <strong>Note:</strong> This removes the owner password (print/copy restrictions). It does not bypass user (open) passwords.
+      <div style={{ padding: '14px 16px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', marginBottom: 24, fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.5, fontFamily: 'var(--font-ui)' }}>
+        <strong style={{ color: 'var(--text-primary)' }}>Note:</strong> This removes the owner password (print/copy restrictions). It does not bypass user (open) passwords.
       </div>
       
       <FileUpload accept={['.pdf']} maxSizeMB={50} onFiles={setFiles} />

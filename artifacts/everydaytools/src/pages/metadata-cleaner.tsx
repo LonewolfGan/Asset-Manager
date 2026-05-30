@@ -164,7 +164,7 @@ export default function MetadataCleaner() {
       {result && (
         <div>
           <ResultPanel {...result} />
-          <div style={{ marginTop: 16, padding: 12, background: 'var(--danger)', color: 'white', opacity: 0.9, borderRadius: 'var(--radius)', fontSize: 13, lineHeight: 1.5, fontFamily: 'var(--font-ui)' }}>
+          <div style={{ marginTop: 16, padding: '12px 14px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: 13, lineHeight: 1.5, fontFamily: 'var(--font-ui)', color: 'var(--text-secondary)' }}>
             {tc.disclaimer}
           </div>
         </div>
