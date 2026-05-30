@@ -1,5 +1,6 @@
 import { Link } from 'wouter';
 import { useLocale } from '@/hooks/use-locale';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const TOOL_COLUMNS_KEYS = [
   {
@@ -39,6 +40,7 @@ const TOOL_COLUMNS_KEYS = [
 
 export default function Footer() {
   const { t } = useLocale();
+  const isMobile = useIsMobile();
 
   const manageConsent = () => {
     window.dispatchEvent(new Event('et:show-consent'));
@@ -52,17 +54,17 @@ export default function Footer() {
       marginTop: "auto",
     }}>
       {/* Main footer grid */}
-      <div className="footer-grid" style={{
+      <div style={{
         maxWidth: "var(--content-wide)",
         margin: "0 auto",
-        padding: "56px 24px 48px",
-        display: "grid",
-        gridTemplateColumns: "1.4fr 1fr 1fr 1fr",
-        gap: 48,
+        padding: isMobile ? "40px 20px 32px" : "56px 24px 48px",
+        display: "flex",
+        flexDirection: "column",
+        gap: isMobile ? 32 : 0,
       }}>
         {/* Brand column */}
-        <div>
-          <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: 9, textDecoration: "none", marginBottom: 16 }}>
+        <div style={{ marginBottom: isMobile ? 0 : 40 }}>
+          <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: 9, textDecoration: "none", marginBottom: 12 }}>
             <svg width="26" height="26" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <rect width="64" height="64" rx="11" fill="#E7E7E7"/>
               <rect x="14" y="15" width="36" height="7" rx="2" fill="#FF6B35"/>
@@ -73,59 +75,65 @@ export default function Footer() {
               EverydayTools
             </span>
           </Link>
-          <p style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.65, margin: "0 0 20px", maxWidth: 240 }}>
+          <p style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.65, margin: 0, maxWidth: 260 }}>
             {t.footer.tagline}
           </p>
         </div>
 
         {/* Tool link columns */}
-        {TOOL_COLUMNS_KEYS.map((col) => (
-          <div key={col.key}>
-            <h3 style={{
-              fontFamily: "var(--font-ui)",
-              fontSize: 11,
-              fontWeight: 600,
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-              color: "var(--text-tertiary)",
-              margin: "0 0 14px",
-            }}>
-              {t.footer.columns[col.key]}
-            </h3>
-            <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 9 }}>
-              {col.links.map((l) => (
-                <li key={l.href}>
-                  <Link
-                    href={l.href}
-                    style={{ fontSize: 13, color: "var(--text-secondary)", textDecoration: "none", transition: "color 120ms ease" }}
-                    onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-primary)")}
-                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-secondary)")}
-                  >
-                    {t.nav.links[l.slug] ?? l.slug}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: isMobile ? "1fr 1fr" : "1fr 1fr 1fr",
+          gap: isMobile ? "28px 24px" : "0 48px",
+        }}>
+          {TOOL_COLUMNS_KEYS.map((col) => (
+            <div key={col.key}>
+              <h3 style={{
+                fontFamily: "var(--font-ui)",
+                fontSize: 11,
+                fontWeight: 600,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                color: "var(--text-tertiary)",
+                margin: "0 0 12px",
+              }}>
+                {t.footer.columns[col.key]}
+              </h3>
+              <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 9 }}>
+                {col.links.map((l) => (
+                  <li key={l.href}>
+                    <Link
+                      href={l.href}
+                      style={{ fontSize: 13, color: "var(--text-secondary)", textDecoration: "none", transition: "color 120ms ease" }}
+                      onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-primary)")}
+                      onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-secondary)")}
+                    >
+                      {t.nav.links[l.slug] ?? l.slug}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Bottom bar */}
       <div style={{
         borderTop: "1px solid var(--border)",
-        padding: "16px 24px",
+        padding: isMobile ? "14px 20px" : "16px 24px",
         maxWidth: "var(--content-wide)",
         margin: "0 auto",
         display: "flex",
-        alignItems: "center",
+        flexDirection: isMobile ? "column" : "row",
+        alignItems: isMobile ? "flex-start" : "center",
         justifyContent: "space-between",
-        flexWrap: "wrap",
-        gap: 12,
+        gap: isMobile ? 10 : 12,
       }}>
         <span style={{ fontSize: 12, color: "var(--text-tertiary)" }}>
           &copy; {new Date().getFullYear()} EverydayTools Hub. {t.footer.rights}
         </span>
-        <nav style={{ display: "flex", alignItems: "center", gap: 20 }}>
+        <nav style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: isMobile ? "8px 16px" : 20 }}>
           {[
             { label: t.footer.privacyPolicy, href: "/privacy" },
             { label: t.footer.termsOfService, href: "/terms" },
