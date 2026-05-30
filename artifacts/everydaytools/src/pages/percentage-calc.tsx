@@ -3,6 +3,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { trackToolUsed } from '@/lib/analytics';
 
 type TabId = 'of' | 'isWhat' | 'change' | 'discount' | 'tip' | 'markup';
@@ -22,6 +23,7 @@ const labelStyle: React.CSSProperties = {
 
 export default function PercentageCalc() {
   const { t } = useLocale();
+  const isMobile = useIsMobile();
   const pc = t.pctCalc;
   const [tab, setTab] = useState<TabId>('of');
   const [x, setX] = useState('');
@@ -109,7 +111,7 @@ export default function PercentageCalc() {
 
         {/* Input panel */}
         <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-card)', padding: 24, marginBottom: 16 }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 16, marginBottom: 24 }}>
             {tab === 'of' && (<>
               <div><label htmlFor="pct-x" style={labelStyle}>{pc.labels.whatIsPct}</label><input id="pct-x" type="number" value={x} onChange={e => setX(e.target.value)} style={inputStyle} /></div>
               <div><label htmlFor="pct-y" style={labelStyle}>{pc.labels.ofY}</label><input id="pct-y" type="number" value={y} onChange={e => setY(e.target.value)} style={inputStyle} /></div>

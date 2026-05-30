@@ -4,10 +4,12 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 
 export default function HtmlToMarkdown() {
   const { t } = useLocale();
+  const isMobile = useIsMobile();
   const title = t.tools['html-to-markdown']?.title ?? 'HTML to Markdown';
   const desc = t.tools['html-to-markdown']?.description ?? 'Convert HTML to clean Markdown. Paste HTML or upload an .html file.';
   const [input, setInput] = useState('');
@@ -55,7 +57,7 @@ export default function HtmlToMarkdown() {
           <input ref={inputRef} type="file" accept=".html,.htm" style={{ display: 'none' }} onChange={(e) => { if (e.target.files?.[0]) handleFile(e.target.files[0]); }} />
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 16 }}>
           <div>
             <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: 500, color: 'var(--text-primary)', marginBottom: 6 }}>HTML Input</p>
             <textarea value={input} onChange={(e) => { setInput(e.target.value); convert(e.target.value); }}

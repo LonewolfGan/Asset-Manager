@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { Helmet } from "react-helmet-async";
 import { tools } from "@/config/tools.config";
 import { useLocale } from "@/hooks/use-locale";
+import { useIsMobile } from "@/hooks/use-mobile";
 import type { LucideIcon } from "lucide-react";
 import { ArrowRight } from "lucide-react";
 
@@ -217,6 +218,7 @@ function ToolCard({ tool }: { tool: DashTool }) {
 /* ── Dashboard Home ──────────────────────────────────────────────────────── */
 export default function DashboardHome() {
   const { t } = useLocale();
+  const isMobile = useIsMobile();
   const [query, setQuery] = useState("");
 
   useEffect(() => {
@@ -301,7 +303,7 @@ export default function DashboardHome() {
         {filteredTools.length > 0 && (
           <div style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
+            gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(auto-fill, minmax(260px, 1fr))",
             gap: 16,
           }}>
             {filteredTools.map((tool) => (

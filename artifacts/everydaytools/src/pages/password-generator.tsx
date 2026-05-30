@@ -5,10 +5,12 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { useIsMobile } from '@/hooks/use-mobile';
 import FormatSelector from '@/components/FormatSelector';
 
 export default function PasswordGenerator() {
   const { t } = useLocale();
+  const isMobile = useIsMobile();
   const [length, setLength] = useState(16);
   const [uppercase, setUppercase] = useState(true);
   const [lowercase, setLowercase] = useState(true);
@@ -142,7 +144,7 @@ export default function PasswordGenerator() {
             <input id="pw-length" type="range" min="8" max="128" value={length} onChange={e => setLength(parseInt(e.target.value))} style={{ width: '100%' }} />
           </div>
           
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 16 }}>
             <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, cursor: 'pointer', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', padding: '5px 0' }}>
               <input type="checkbox" checked={uppercase} onChange={e => setUppercase(e.target.checked)} disabled={pronounceable} style={{ accentColor: 'var(--accent)' }} /> {pg.uppercase}
             </label>

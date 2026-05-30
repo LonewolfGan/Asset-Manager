@@ -4,6 +4,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface FileResult {
   id: string;
@@ -132,6 +133,7 @@ interface Props {
 
 export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMime, slug, breadcrumbParent = 'Image Tools', trackUsed, trackError }: Props) {
   const { t } = useLocale();
+  const isMobile = useIsMobile();
   const toolTitle = t.tools[slug]?.title ?? slug;
   const toolDesc = t.tools[slug]?.description ?? '';
   const toExt = extForMime(toMime);
@@ -264,8 +266,8 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
 
             {files.map((entry) => (
               <div key={entry.id} style={{ border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-surface)', overflow: 'hidden' }}>
-                <div style={{ display: 'flex' }}>
-                  <div style={{ flex: 1, padding: '12px 14px', borderRight: '1px solid var(--border)' }}>
+                <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row' }}>
+                  <div style={{ flex: 1, padding: '12px 14px', borderRight: isMobile ? 'none' : '1px solid var(--border)', borderBottom: isMobile ? '1px solid var(--border)' : 'none' }}>
                     <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-tertiary)', margin: '0 0 6px', textTransform: 'uppercase' }}>{t.common.original}</p>
                     {entry.file.type.startsWith('image/') || entry.file.type === '' ? (
                       <img src={entry.originalUrl} alt="original" style={{ width: '100%', maxHeight: 120, objectFit: 'contain', background: 'var(--bg-elevated)', display: 'block' }} />

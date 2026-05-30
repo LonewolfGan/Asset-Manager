@@ -5,10 +5,12 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { UNIT_CATEGORIES } from '@/config/units.config';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { trackToolUsed } from '@/lib/analytics';
 
 export default function UnitConverter() {
   const { t } = useLocale();
+  const isMobile = useIsMobile();
   const [activeCategory, setActiveCategory] = useState(UNIT_CATEGORIES[0].id);
   const category = UNIT_CATEGORIES.find(c => c.id === activeCategory)!;
   
@@ -106,19 +108,19 @@ export default function UnitConverter() {
       <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: 24, marginBottom: 24 }}>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: 16, alignItems: isMobile ? 'stretch' : 'center', flexDirection: isMobile ? 'column' : 'row' }}>
             <div style={{ flex: 1 }}>
               <label htmlFor="unit-from-selector" style={{ display: 'block', fontSize: 14, marginBottom: 8, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.unitConverter.from}</label>
               <FormatSelector options={unitOptions} value={fromUnit} onChange={setFromUnit} aria-label={t.unitConverter.from} />
             </div>
-            <button onClick={handleSwap} aria-label={t.unitConverter.swapAriaLabel} style={{ marginTop: 26, padding: '8px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '50%', cursor: 'pointer', color: 'var(--text-primary)', lineHeight: 1 }}>⇄</button>
+            <button onClick={handleSwap} aria-label={t.unitConverter.swapAriaLabel} style={{ marginTop: isMobile ? 0 : 26, alignSelf: isMobile ? 'center' : 'auto', padding: '8px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '50%', cursor: 'pointer', color: 'var(--text-primary)', lineHeight: 1 }}>⇄</button>
             <div style={{ flex: 1 }}>
               <label htmlFor="unit-to-selector" style={{ display: 'block', fontSize: 14, marginBottom: 8, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.unitConverter.to}</label>
               <FormatSelector options={unitOptions} value={toUnit} onChange={setToUnit} aria-label={t.unitConverter.to} />
             </div>
           </div>
           
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40, marginTop: 16 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 40, marginTop: 16 }}>
             <div>
               <label htmlFor="unit-amount" style={{ display: 'block', fontSize: 13, marginBottom: 6, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.unitConverter.from}</label>
               <input id="unit-amount" type="number" value={amount} onChange={e => setAmount(e.target.value)} style={{ width: '100%', padding: '16px', fontSize: 24, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)', border: 'none', borderBottom: '2px solid var(--accent)', outline: 'none', background: 'var(--bg)', borderRadius: 'var(--radius) var(--radius) 0 0' }} />

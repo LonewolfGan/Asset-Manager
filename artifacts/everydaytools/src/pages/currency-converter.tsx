@@ -6,9 +6,11 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { CURRENCIES, FALLBACK_RATES, FALLBACK_DATE } from '@/config/currencies.config';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function CurrencyConverter() {
   const { t, locale } = useLocale();
+  const isMobile = useIsMobile();
   type SourceInfo = { type: 'loading' } | { type: 'live'; age: number } | { type: 'offline'; date: string };
   const [rates, setRates] = useState<Record<string, number>>({});
   const [sourceInfo, setSourceInfo] = useState<SourceInfo>({ type: 'loading' });
@@ -101,19 +103,19 @@ export default function CurrencyConverter() {
       <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: 24, marginBottom: 24 }}>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: 16, alignItems: isMobile ? 'stretch' : 'center', flexDirection: isMobile ? 'column' : 'row' }}>
             <div style={{ flex: 1 }}>
               <label htmlFor="currency-from-selector" style={{ display: 'block', fontSize: 14, marginBottom: 8, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.currencyConverter.from}</label>
               <FormatSelector options={currencyOptions} value={fromCurrency} onChange={setFromCurrency} aria-label={t.currencyConverter.from} />
             </div>
-            <button onClick={handleSwap} aria-label={t.unitConverter.swapAriaLabel} style={{ marginTop: 26, padding: '8px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '50%', cursor: 'pointer', color: 'var(--text-primary)', lineHeight: 1 }}>⇄</button>
+            <button onClick={handleSwap} aria-label={t.unitConverter.swapAriaLabel} style={{ marginTop: isMobile ? 0 : 26, alignSelf: isMobile ? 'center' : 'auto', padding: '8px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '50%', cursor: 'pointer', color: 'var(--text-primary)', lineHeight: 1 }}>⇄</button>
             <div style={{ flex: 1 }}>
               <label htmlFor="currency-to-selector" style={{ display: 'block', fontSize: 14, marginBottom: 8, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.currencyConverter.to}</label>
               <FormatSelector options={currencyOptions} value={toCurrency} onChange={setToCurrency} aria-label={t.currencyConverter.to} />
             </div>
           </div>
           
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40, marginTop: 16 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 40, marginTop: 16 }}>
             <div>
               <label htmlFor="currency-amount" style={{ display: 'block', fontSize: 13, marginBottom: 6, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.currencyConverter.from}</label>
               <input id="currency-amount" type="number" value={amount} onChange={e => setAmount(e.target.value)} style={{ width: '100%', padding: '16px', fontSize: 24, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)', border: 'none', borderBottom: '2px solid var(--accent)', outline: 'none', background: 'var(--bg)', borderRadius: 'var(--radius) var(--radius) 0 0' }} />
@@ -133,7 +135,7 @@ export default function CurrencyConverter() {
         </div>
       </div>
       
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 32 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 24, marginBottom: 32 }}>
         <div style={{ background: 'var(--bg)', padding: 16, borderRadius: 'var(--radius)', border: '1px solid var(--border)' }}>
           <h3 style={{ fontSize: 14, fontWeight: 500, marginBottom: 12, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{t.currencyConverter.quickConversions}</h3>
           <table style={{ width: '100%', fontSize: 13, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>

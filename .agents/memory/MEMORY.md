@@ -8,4 +8,5 @@
 - [Accessibility baseline](a11y-baseline.md) — global CSS covers sr-only, skip-link, focus-visible, touch-action, user-select, reduced-motion, iOS input zoom fix; FileUpload has keyboard+ARIA; typecheck validation registered.
 - [Security hardening](security-hardening.md) — DOMPurify on all innerHTML/dangerouslySetInnerHTML, vercel.json CSP+HSTS headers, /security page, /.well-known/security.txt, rate-limit/sanitize/cleanup utils, threat_model.md, multer upgraded to v2.1.1.
 - [Range slider & select fixes](range-select-fixes.md) — range thumb needs margin-top:-7px + vertical-align:middle; remove accentColor inline style; fill via MutationObserver in App.tsx; select arrow needs backgroundColor not background shorthand.
+- [Responsive pattern](responsive-pattern.md) — all pages use inline styles (no Tailwind responsive); use `useIsMobile()` from `@/hooks/use-mobile` (breakpoint 768px) to toggle layouts; 13 files fixed.
 - [SEO content rules](seo-content-rules.md) — about/FAQ must NOT contain "runs locally in your browser", "files never leave your device", or any "local processing" boilerplate; user explicitly banned this phrasing.

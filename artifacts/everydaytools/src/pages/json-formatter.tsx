@@ -5,11 +5,13 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 type Mode = 'format' | 'minify';
 
 export default function JsonFormatter() {
   const { t } = useLocale();
+  const isMobile = useIsMobile();
   const title = t.tools['json-formatter']?.title ?? 'JSON Formatter';
   const desc = t.tools['json-formatter']?.description ?? 'Format, validate, and minify JSON instantly in your browser.';
   const [input, setInput] = useState('');
@@ -83,7 +85,7 @@ export default function JsonFormatter() {
           )}
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 16 }}>
           <div>
             <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: 500, color: 'var(--text-primary)', marginBottom: 6 }}>{t.jsonFormatter.inputLabel}</p>
             <textarea value={input} onChange={(e) => handleInput(e.target.value)}

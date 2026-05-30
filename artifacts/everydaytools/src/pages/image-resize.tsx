@@ -7,9 +7,11 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function ImageResize() {
   const { t } = useLocale();
+  const isMobile = useIsMobile();
   const [files, setFiles] = useState<File[]>([]);
   const [result, setResult] = useState<{blob: Blob, filename: string, sizeAfter: number, sizeBefore?: number} | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -130,7 +132,7 @@ export default function ImageResize() {
           </div>
 
           {mode === 'pixels' ? (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 16 }}>
               <div>
                 <label style={{ display: 'block', fontSize: 14, marginBottom: 6, fontWeight: 500 }}>Width (px)</label>
                 <input type="number" value={width} onChange={e => handleWidthChange(e.target.value)} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }} />

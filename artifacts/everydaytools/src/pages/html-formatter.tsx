@@ -5,6 +5,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 type Mode = 'format' | 'minify';
 
@@ -36,6 +37,7 @@ function minifyHtml(html: string): string {
 
 export default function HtmlFormatter() {
   const { t } = useLocale();
+  const isMobile = useIsMobile();
   const title = t.tools['html-formatter']?.title ?? 'HTML Formatter & Minifier';
   const desc = t.tools['html-formatter']?.description ?? 'Format or minify HTML with syntax highlighting and a copy button.';
   const [input, setInput] = useState('');
@@ -84,7 +86,7 @@ export default function HtmlFormatter() {
           )}
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 16 }}>
           <div>
             <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: 500, color: 'var(--text-primary)', marginBottom: 6 }}>{t.htmlFormatter.inputLabel}</p>
             <textarea value={input} onChange={(e) => setInput(e.target.value)}

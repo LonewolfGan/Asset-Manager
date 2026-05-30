@@ -4,6 +4,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { trackToolUsed } from '@/lib/analytics';
 
 const QUICK_TIPS = [15, 18, 20, 25];
@@ -49,6 +50,7 @@ function fmtPct(n: number) {
 
 export default function TipCalculator() {
   const { t } = useLocale();
+  const isMobile = useIsMobile();
   const tc = t.tipCalc;
 
   const [tab, setTab] = useState<'tip' | 'percent'>('tip');
@@ -122,7 +124,7 @@ export default function TipCalculator() {
         </div>
 
         {tab === 'tip' && (
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 24 }}>
             <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-card)', padding: 28, display: 'flex', flexDirection: 'column', gap: 24 }}>
               <div>
                 <label htmlFor="tip-bill" style={labelStyle}>{tc.billAmount}</label>

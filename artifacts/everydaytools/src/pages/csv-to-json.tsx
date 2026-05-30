@@ -5,11 +5,13 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 type Mode = 'csv-to-json' | 'json-to-csv';
 
 export default function CsvToJson() {
   const { t } = useLocale();
+  const isMobile = useIsMobile();
   const title = t.tools['csv-to-json']?.title ?? 'CSV ↔ JSON';
   const desc = t.tools['csv-to-json']?.description ?? 'Convert between CSV and JSON formats instantly in your browser.';
   const [mode, setMode] = useState<Mode>('csv-to-json');
@@ -76,7 +78,7 @@ export default function CsvToJson() {
           ))}
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 16 }}>
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
               <span style={{ fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: 500, color: 'var(--text-primary)' }}>{mode === 'csv-to-json' ? 'CSV Input' : 'JSON Input'}</span>
