@@ -38,7 +38,7 @@ export default function PdfRotate() {
       const pdfBytes = await pdfDoc.save();
       setProgress(100);
       
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
       setResult({ blob, filename: file.name.replace(/\.pdf$/i, '_rotated.pdf'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
       trackToolError('pdf-rotate', 'general-error');

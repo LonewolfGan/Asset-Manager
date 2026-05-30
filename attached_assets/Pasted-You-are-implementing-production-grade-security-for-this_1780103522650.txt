@@ -1,0 +1,676 @@
+You are implementing production-grade security for this SaaS.
+This site processes user files entirely in the browser.
+No files are sent to a server — but security still matters on every level.
+Follow every step. Do not skip. Do not summarize. Implement everything.
+
+PART 1 — CONTENT SECURITY POLICY (CSP)
+CSP is the most important browser security header. It tells the browser
+exactly which resources are allowed to load — blocking XSS attacks even
+if an attacker injects malicious code.
+1a. Build the CSP header
+Add to vercel.json headers section (replaces the generic /* header):
+json{
+  "key": "Content-Security-Policy",
+  "value": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://plausible.io; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; worker-src 'self' blob:; child-src 'self' blob:; connect-src 'self' https://plausible.io https://api.exchangerate.host; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests;"
+}
+Explanation of each directive:
+
+default-src 'self' → nothing loads by default unless explicitly allowed
+script-src 'wasm-unsafe-eval' → REQUIRED for WASM (Tesseract, AVIF, pdf.js)
+style-src 'unsafe-inline' → needed for CSS-in-JS libraries
+img-src data: blob: → needed for image previews and tool output
+worker-src blob: → needed for Web Workers (file processing)
+connect-src → only Plausible analytics and exchange rate API
+object-src 'none' → blocks Flash and plugins entirely
+frame-ancestors 'none' → nobody can embed your site in an iframe (clickjacking)
+upgrade-insecure-requests → forces HTTPS even if user types HTTP
+
+1b. Test your CSP
+After deploying, go to:
+
+https://csp-evaluator.withgoogle.com — paste your CSP and check for weaknesses
+https://observatory.mozilla.org — full security header audit
+
+Target: A+ rating on Mozilla Observatory.
+1c. CSP violation reporting (free)
+Add a report-uri to catch violations in production without blocking users:
+Content-Security-Policy-Report-Only: [same policy]; report-uri https://yourdomain.report-uri.com/r/d/csp/reportOnly
+Sign up free at report-uri.com — you get notified of any CSP violation.
+Start with Report-Only mode, fix all violations, then switch to enforcing.
+
+PART 2 — COMPLETE HTTP SECURITY HEADERS
+Update the vercel.json global headers ("source": "/(.*)") to include all of these:
+json[
+  {
+    "key": "Content-Security-Policy",
+    "value": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://plausible.io; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; worker-src 'self' blob:; child-src blob:; connect-src 'self' https://plausible.io https://api.exchangerate.host; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests;"
+  },
+  {
+    "key": "X-Frame-Options",
+    "value": "DENY"
+  },
+  {
+    "key": "X-Content-Type-Options",
+    "value": "nosniff"
+  },
+  {
+    "key": "X-XSS-Protection",
+    "value": "1; mode=block"
+  },
+  {
+    "key": "Referrer-Policy",
+    "value": "strict-origin-when-cross-origin"
+  },
+  {
+    "key": "Permissions-Policy",
+    "value": "accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), cross-origin-isolated=(), display-capture=(), document-domain=(), encrypted-media=(), execution-while-not-rendered=(), execution-while-out-of-viewport=(), fullscreen=(self), geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), midi=(), navigation-override=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(), usb=(), web-share=(), xr-spatial-tracking=()"
+  },
+  {
+    "key": "Strict-Transport-Security",
+    "value": "max-age=63072000; includeSubDomains; preload"
+  },
+  {
+    "key": "Cross-Origin-Embedder-Policy",
+    "value": "require-corp"
+  },
+  {
+    "key": "Cross-Origin-Opener-Policy",
+    "value": "same-origin"
+  },
+  {
+    "key": "Cross-Origin-Resource-Policy",
+    "value": "same-origin"
+  }
+]
+HSTS (Strict-Transport-Security):
+
+max-age=63072000 = 2 years
+includeSubDomains = HTTPS required on all subdomains
+preload = submit to browser preload list (do this after confirming HTTPS works perfectly)
+Submit at: https://hstspreload.org
+
+COEP + COOP + CORP (isolation headers):
+These three together enable SharedArrayBuffer — required by some WASM tools
+(Tesseract, ffmpeg.wasm). Without them, these tools may fail in Chrome.
+Test after adding — if any tool breaks, check browser console for COEP errors.
+Permissions-Policy:
+Explicitly deny every browser feature you don't use — camera, microphone,
+geolocation, payment, USB, etc. This prevents third-party scripts from
+accessing them even if injected via XSS.
+
+PART 3 — INPUT SANITIZATION & XSS PREVENTION
+Even though this is a client-side app, users input text in several tools
+(QR Code, Watermark, Password Generator, JSON Formatter, Word Counter, etc.)
+That text must never reach the DOM as raw HTML.
+3a. Install DOMPurify
+bashnpm install dompurify
+npm install --save-dev @types/dompurify
+3b. Sanitize everywhere user text touches the DOM
+javascript// src/utils/sanitize.js
+import DOMPurify from 'dompurify'
+
+// For rendering user text as HTML (e.g. Markdown preview)
+export const sanitizeHTML = (dirty) => {
+  return DOMPurify.sanitize(dirty, {
+    ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'a', 'code', 'pre', 'blockquote'],
+    ALLOWED_ATTR: ['href', 'target', 'rel'],
+    ALLOW_DATA_ATTR: false,
+    FORCE_BODY: true,
+  })
+}
+
+// For rendering plain text — never use innerHTML, always use textContent
+export const sanitizeText = (input) => {
+  if (typeof input !== 'string') return ''
+  return input
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+}
+
+// For filenames — strip dangerous characters
+export const sanitizeFilename = (filename) => {
+  if (typeof filename !== 'string') return 'file'
+  return filename
+    .replace(/[^a-zA-Z0-9.\-_\s]/g, '') // keep only safe chars
+    .replace(/\s+/g, '-')               // spaces to dashes
+    .replace(/\.{2,}/g, '.')            // no double dots (path traversal)
+    .slice(0, 255)                       // max filename length
+    || 'file'                            // fallback if empty after sanitize
+}
+3c. Audit every place user input touches the DOM
+Search the entire codebase for these patterns and replace:
+javascript// DANGEROUS — never do this with user input
+element.innerHTML = userInput
+document.write(userInput)
+eval(userInput)
+new Function(userInput)
+setTimeout(userInput, 0)  // string form of setTimeout
+
+// SAFE — always do this
+element.textContent = userInput          // plain text
+element.innerHTML = sanitizeHTML(input)  // HTML (DOMPurify filtered)
+3d. Dangerous filename display
+Never insert a filename directly into the DOM as HTML:
+javascript// WRONG
+fileNameDisplay.innerHTML = `<span>${file.name}</span>`
+
+// RIGHT
+fileNameDisplay.textContent = sanitizeFilename(file.name)
+3e. URL validation (QR Code Generator, Link tools)
+javascript// src/utils/validate-url.js
+export const isValidURL = (string) => {
+  try {
+    const url = new URL(string)
+    // Only allow http and https — not javascript:, data:, etc.
+    return url.protocol === 'http:' || url.protocol === 'https:'
+  } catch {
+    return false
+  }
+}
+
+// Usage in QR Code tool:
+if (!isValidURL(userInput) && !isValidURL('https://' + userInput)) {
+  showError('Please enter a valid URL starting with http:// or https://')
+  return
+}
+
+PART 4 — DEPENDENCY SECURITY
+Third-party packages are the #1 attack vector for modern web apps.
+4a. Audit existing dependencies
+bash# Check for known vulnerabilities
+npm audit
+
+# Fix automatically where safe
+npm audit fix
+
+# See detailed report
+npm audit --json > security-audit.json
+For every HIGH or CRITICAL vulnerability:
+
+Update the package: npm update [package-name]
+If no fix available: find an alternative package
+If no alternative: add a comment explaining the risk and mitigation
+
+4b. Add automated dependency updates
+Create .github/dependabot.yml:
+yamlversion: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "yourusername"
+    labels:
+      - "dependencies"
+      - "security"
+    # Auto-merge patch updates (bug fixes)
+    groups:
+      patch-updates:
+        update-types:
+          - "patch"
+4c. Lock dependency versions
+Ensure package-lock.json is committed to git — this guarantees
+the exact same dependency tree on every install.
+Add to .gitignore explicitly NOT to ignore it:
+# DO commit this:
+# package-lock.json
+4d. Subresource Integrity for any CDN resources
+If you load anything from a CDN (fonts, icons), add SRI hashes:
+html<!-- Example with a CDN script -->
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"
+  integrity="sha384-[HASH]"
+  crossorigin="anonymous"
+></script>
+Generate SRI hashes at: https://www.srihash.org
+
+PART 5 — PRIVACY & DATA PROTECTION
+This site processes potentially sensitive files (contracts, medical PDFs, financial Excel files).
+Privacy is a core feature — not an afterthought.
+5a. Verify zero data leaves the browser
+Audit the network tab during file processing for EVERY tool:
+javascript// Add this to development builds to intercept all fetch/XHR
+// and alert if any file data is being sent
+if (import.meta.env.DEV) {
+  const originalFetch = window.fetch
+  window.fetch = function(...args) {
+    const url = args[0]
+    const options = args[1]
+    if (options?.body && options.body instanceof ArrayBuffer) {
+      console.error('⚠️ Binary data being sent to:', url)
+      // This should never happen — investigate immediately
+    }
+    return originalFetch.apply(this, args)
+  }
+}
+Open browser DevTools → Network tab → filter by "Fetch/XHR" →
+upload a file in each tool → verify ZERO requests contain file data.
+5b. Implement automatic file cleanup
+Files must be cleared from memory after processing:
+javascript// src/utils/cleanup.js
+export const cleanupFile = (objectURL, arrayBuffer) => {
+  // Revoke object URLs
+  if (objectURL) {
+    URL.revokeObjectURL(objectURL)
+  }
+
+  // Clear ArrayBuffer reference
+  if (arrayBuffer && ArrayBuffer.isView(arrayBuffer)) {
+    // Fill with zeros before releasing (optional — extra paranoia)
+    new Uint8Array(arrayBuffer.buffer).fill(0)
+  }
+}
+
+// Cleanup when user resets tool
+// Cleanup when user navigates away
+window.addEventListener('beforeunload', () => {
+  // Call cleanup for any active tool
+  cleanupAll()
+})
+
+// Cleanup when page visibility changes (user switches tabs)
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') {
+    // Optional: clear sensitive data when tab is hidden
+  }
+})
+5c. No localStorage for file data
+javascript// VERIFY — search entire codebase for these and ensure no file content is stored:
+localStorage.setItem(...)   // should never store file content
+sessionStorage.setItem(...) // should never store file content
+indexedDB.open(...)         // if used, audit what is stored
+
+// Acceptable in localStorage:
+// - User preferences (language, theme)
+// - Tool settings (default compression level)
+// - NOT: file content, file names, processing history
+5d. Privacy policy page
+Create /privacy page with a real privacy policy. Required for GDPR compliance.
+Minimum required content:
+1. What data we collect
+   - Analytics: page views, tool usage (via Plausible — no personal data, no cookies)
+   - Error reports: browser type, error message only (via Sentry — no file content)
+   - No account creation, no email collection, no user profiles
+
+2. What we DON'T collect
+   - File content (never leaves your device)
+   - File names
+   - Personal information
+   - IP addresses (Plausible is cookieless and anonymizes IPs)
+
+3. Cookies
+   - We use zero tracking cookies
+   - We store only: your language preference and tool settings (localStorage)
+
+4. Third parties
+   - Plausible Analytics (EU-hosted, GDPR compliant, no cookies)
+   - Sentry (error tracking — no personal data, no file content)
+   - Exchange Rate API (currency converter — no personal data sent)
+
+5. Your rights (GDPR)
+   - Right to access: we have no personal data to provide
+   - Right to deletion: we have no personal data to delete
+   - Contact: [your email]
+
+6. Changes to this policy
+   - Last updated: [date]
+5e. Terms of Service page
+Create /terms page. Minimum required:
+1. Service description
+2. Acceptable use (no illegal content)
+3. No warranty (tools provided as-is)
+4. Limitation of liability
+5. Intellectual property (uploaded files remain yours)
+6. Governing law
+5f. Cookie banner — NOT needed
+Since you use Plausible (cookieless analytics) and no tracking cookies,
+you do NOT need a cookie consent banner. This is a competitive advantage —
+state it clearly: "No cookies. No tracking. No consent banner needed."
+Add to the homepage and privacy page:
+This site uses zero tracking cookies. 
+Your files never leave your browser.
+No signup. No data collection.
+
+PART 6 — RATE LIMITING & ANTI-ABUSE
+Even a client-side app can be abused. Large file processing can be used
+to DoS the user's own browser, or bots can scrape the site.
+6a. Client-side rate limiting
+javascript// src/utils/rate-limit.js
+class RateLimiter {
+  constructor(maxRequests, windowMs) {
+    this.maxRequests = maxRequests
+    this.windowMs = windowMs
+    this.requests = []
+  }
+
+  isAllowed() {
+    const now = Date.now()
+    // Remove old requests outside the window
+    this.requests = this.requests.filter(time => now - time < this.windowMs)
+
+    if (this.requests.length >= this.maxRequests) {
+      return false
+    }
+
+    this.requests.push(now)
+    return true
+  }
+
+  timeUntilReset() {
+    if (this.requests.length === 0) return 0
+    const oldest = Math.min(...this.requests)
+    return this.windowMs - (Date.now() - oldest)
+  }
+}
+
+// One limiter per tool — prevents repeated rapid processing
+export const toolRateLimiter = new RateLimiter(
+  10,       // max 10 operations
+  60000     // per 60 seconds
+)
+
+// Usage in every tool:
+if (!toolRateLimiter.isAllowed()) {
+  const waitSeconds = Math.ceil(toolRateLimiter.timeUntilReset() / 1000)
+  showError(`Too many operations. Please wait ${waitSeconds} seconds.`)
+  return
+}
+6b. File size hard limits
+Define and enforce these BEFORE any processing begins:
+javascript// src/config/limits.js
+export const FILE_LIMITS = {
+  pdf: {
+    maxSize: 50 * 1024 * 1024,        // 50MB
+    maxSizeLabel: '50MB',
+    maxPages: 500,                      // max pages for split/merge
+    maxMergeFiles: 20,                  // max files for merge
+  },
+  image: {
+    maxSize: 20 * 1024 * 1024,         // 20MB
+    maxSizeLabel: '20MB',
+    maxWidth: 10000,                    // max pixels (prevent memory explosion)
+    maxHeight: 10000,
+    maxBatchFiles: 50,                  // max files for batch conversion
+  },
+  excel: {
+    maxSize: 25 * 1024 * 1024,         // 25MB
+    maxSizeLabel: '25MB',
+    maxRows: 100000,                    // prevent memory issues
+  },
+  text: {
+    maxSize: 5 * 1024 * 1024,          // 5MB
+    maxSizeLabel: '5MB',
+    maxChars: 500000,
+  },
+  document: {
+    maxSize: 30 * 1024 * 1024,         // 30MB
+    maxSizeLabel: '30MB',
+  },
+}
+
+// Check dimensions for images to prevent memory bomb attacks
+export const checkImageDimensions = (width, height) => {
+  const maxPixels = FILE_LIMITS.image.maxWidth * FILE_LIMITS.image.maxHeight
+  if (width * height > maxPixels) {
+    throw new Error(`Image too large: ${width}x${height}px. Maximum is ${FILE_LIMITS.image.maxWidth}x${FILE_LIMITS.image.maxHeight}px.`)
+  }
+}
+6c. Zip bomb protection
+Compressed files can be tiny but expand to gigabytes. Check after decompression:
+javascript// When processing ZIP files or compressed formats
+export const checkDecompressedSize = (decompressedBytes, originalBytes) => {
+  const ratio = decompressedBytes / originalBytes
+  if (ratio > 100) {
+    // 100:1 compression ratio is suspicious
+    throw new Error('File rejected: suspicious compression ratio detected.')
+  }
+  if (decompressedBytes > 500 * 1024 * 1024) {
+    // Refuse anything that expands to > 500MB
+    throw new Error('Decompressed file is too large to process safely.')
+  }
+}
+6d. Vercel rate limiting for the site itself
+Add to vercel.json — limits requests from a single IP:
+json{
+  "functions": {},
+  "crons": []
+}
+For more advanced rate limiting at the edge (if needed later):
+
+Use Vercel Edge Middleware
+Or Cloudflare WAF rules (if you move to Cloudflare Pages)
+
+
+PART 7 — SECRETS & ENVIRONMENT SECURITY
+7a. Audit for exposed secrets
+bash# Install secret scanner
+npm install -g trufflesecurity/trufflehog
+
+# Scan git history for accidentally committed secrets
+trufflehog git file://. --only-verified
+
+# Also scan with gitleaks
+brew install gitleaks
+gitleaks detect --source . -v
+Common things accidentally committed:
+
+API keys
+Sentry DSN
+Analytics tokens
+Private keys
+
+If found: rotate the secret immediately (generate a new one), then remove
+from git history:
+bashgit filter-branch --force --index-filter \
+  "git rm --cached --ignore-unmatch path/to/file-with-secret" \
+  --prune-empty --tag-name-filter cat -- --all
+git push origin --force --all
+7b. .gitignore — verify critical files are excluded
+bash# Verify these are in .gitignore
+cat .gitignore | grep -E "\.env|secrets|private"
+.gitignore must include:
+.env
+.env.local
+.env.*.local
+.env.production
+*.pem
+*.key
+secrets/
+.vercel
+7c. Environment variable prefix discipline
+javascript// VITE_* = exposed to client bundle (public)
+VITE_PLAUSIBLE_DOMAIN=yourdomain.com     ✅ safe to expose
+VITE_APP_VERSION=1.0.0                   ✅ safe to expose
+
+// No prefix = server-only (NOT exposed in Vite)
+SENTRY_AUTH_TOKEN=xxx                    ✅ server only
+VERCEL_TOKEN=xxx                         ✅ server only
+
+// NEVER put these as VITE_* — they become public:
+VITE_STRIPE_SECRET_KEY=xxx              ❌ NEVER — exposed to anyone
+VITE_DATABASE_PASSWORD=xxx              ❌ NEVER — exposed to anyone
+
+PART 8 — LEGAL PAGES & COMPLIANCE
+8a. Required pages for SaaS
+Create these routes and add them to the footer:
+/privacy          Privacy Policy
+/terms            Terms of Service
+/security         Security page (shows your security practices)
+8b. Security disclosure page /security
+markdown# Security
+
+## Reporting a vulnerability
+
+If you discover a security vulnerability, please email:
+security@yourdomain.com
+
+Please include:
+- Description of the vulnerability
+- Steps to reproduce
+- Potential impact
+
+We will respond within 48 hours and keep you informed of the fix.
+We do not currently offer a bug bounty program, but we deeply appreciate
+responsible disclosure.
+
+## Our security practices
+
+- All file processing happens in your browser. Files never reach our servers.
+- We use Content Security Policy, HSTS, and all recommended security headers.
+- Dependencies are automatically scanned weekly for vulnerabilities.
+- Analytics are privacy-first (Plausible — no cookies, no personal data).
+- Error tracking captures no file content or personal data.
+
+## Security headers
+
+You can verify our security headers at:
+https://securityheaders.com/?q=yourdomain.com
+Create /.well-known/security.txt (standard security contact file):
+Contact: mailto:security@yourdomain.com
+Preferred-Languages: en, fr
+Canonical: https://yourdomain.com/.well-known/security.txt
+Policy: https://yourdomain.com/security
+Expires: 2026-12-31T00:00:00.000Z
+8c. GDPR compliance checklist
+✅ No personal data collected
+✅ No cookies requiring consent
+✅ Plausible Analytics (cookieless, EU-hosted)
+✅ Privacy policy page exists
+✅ Terms of service page exists
+✅ No email collection without explicit consent
+✅ Files never stored on servers
+✅ security.txt exists
+If you later add email collection (newsletter, waitlist):
+
+Use double opt-in
+Store in EU servers (or with a GDPR-compliant provider)
+Add unsubscribe link to every email
+Update privacy policy
+
+
+PART 9 — SECURITY AUDIT TOOLS
+Run these after implementing everything:
+Online audits (run after deploy):
+Mozilla Observatory:     https://observatory.mozilla.org
+Security Headers:        https://securityheaders.com
+SSL Labs:                https://ssllabs.com/ssltest
+CSP Evaluator:           https://csp-evaluator.withgoogle.com
+HSTS Preload Check:      https://hstspreload.org
+Target grades:
+Mozilla Observatory:     A+
+Security Headers:        A+
+SSL Labs:                A+
+Local audits (run before deploy):
+bash# Dependency audit
+npm audit --audit-level=high
+
+# Check for exposed secrets in code
+npx secretlint "**/*"
+
+# Check bundle for accidentally bundled secrets or large unintended files
+npm run build
+npx vite-bundle-visualizer
+# Inspect the treemap — nothing unexpected should be there
+
+# Verify CSP doesn't break the app
+# Open browser console after deploy — zero CSP errors should appear
+
+PART 10 — SECURITY MAINTENANCE ROUTINE
+Set up these ongoing checks:
+Weekly (automated via GitHub Actions):
+
+Dependabot checks npm dependencies for CVEs
+npm audit runs in CI and fails the build on HIGH/CRITICAL
+
+Add to .github/workflows/ci.yml:
+yaml  security-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: 'npm' }
+      - run: npm ci
+      - name: Audit dependencies
+        run: npm audit --audit-level=high
+      - name: Check for secrets
+        run: npx secretlint "src/**/*"
+Monthly (manual):
+
+Review Sentry for unusual error patterns
+Review Plausible for unusual traffic spikes (possible scraping)
+Run Mozilla Observatory again — scores can change as headers evolve
+Check if HSTS preload submission was accepted: hstspreload.org
+
+On every dependency update:
+
+Run npm audit after updating
+Re-run E2E tests — a library update can break WASM tools
+Check CSP still valid — new library versions sometimes require new sources
+
+
+FINAL SECURITY CHECKLIST
+HTTP HEADERS
+✅ Content-Security-Policy implemented and tested
+✅ Strict-Transport-Security with preload
+✅ X-Frame-Options: DENY
+✅ X-Content-Type-Options: nosniff
+✅ Referrer-Policy: strict-origin-when-cross-origin
+✅ Permissions-Policy: all unnecessary features denied
+✅ COEP + COOP + CORP isolation headers
+✅ A+ on Mozilla Observatory
+
+INPUT SECURITY
+✅ DOMPurify installed and used everywhere
+✅ No innerHTML with user input anywhere in codebase
+✅ Filenames sanitized before DOM insertion
+✅ URLs validated in QR code and link tools
+✅ XSS attack test passed (malicious filename doesn't execute)
+
+FILE PROCESSING
+✅ File type validated by MIME type (not extension)
+✅ File size limits enforced before processing
+✅ Image dimension limits enforced
+✅ Zip bomb protection implemented
+✅ Network audit confirms zero file data leaves the browser
+✅ Object URLs revoked after use
+✅ ArrayBuffers cleared after processing
+
+DEPENDENCIES
+✅ npm audit shows zero HIGH or CRITICAL vulnerabilities
+✅ Dependabot configured for weekly checks
+✅ package-lock.json committed to git
+✅ No CDN resources without SRI hashes
+
+SECRETS
+✅ No secrets in source code or git history
+✅ Secret scanner (trufflehog or gitleaks) run on full history
+✅ .gitignore covers all .env files
+✅ VITE_* prefix only used for public values
+
+PRIVACY & LEGAL
+✅ /privacy page live
+✅ /terms page live
+✅ /security page live
+✅ /.well-known/security.txt live
+✅ Zero tracking cookies
+✅ Plausible analytics (cookieless)
+✅ Sentry captures no personal data or file content
+✅ GDPR checklist complete
+
+RATE LIMITING
+✅ Client-side rate limiter on all tools
+✅ File size hard limits enforced per tool
+✅ Clear user-facing error messages for all limits
+
+ONGOING
+✅ Security audit in GitHub Actions CI
+✅ Dependabot weekly PRs configured
+✅ Monthly manual audit scheduled
+✅ security@yourdomain.com monitored

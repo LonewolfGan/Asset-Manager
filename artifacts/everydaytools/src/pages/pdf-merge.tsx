@@ -42,7 +42,7 @@ export default function PdfMerge() {
       }
 
       const pdfBytes = await mergedPdf.save();
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
       setResult({ blob, filename: 'merged_document.pdf', sizeAfter: blob.size, sizeBefore: totalSizeBefore });
     } catch (e) {
       trackToolError('pdf-merge', 'general-error');

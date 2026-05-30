@@ -47,7 +47,7 @@ export default function DocumentConverter() {
       } else if (file.type === "text/plain") {
         const text = await file.text();
         const pdfBytes = await convertTextToPdf(text, setProgress);
-        const blob = new Blob([pdfBytes], { type: "application/pdf" });
+        const blob = new Blob([pdfBytes as unknown as BlobPart], { type: "application/pdf" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
@@ -162,7 +162,7 @@ export default function DocumentConverter() {
                     const a = document.createElement("a");
                     trackToolUsed('document-converter', 'documents');
                     a.href = url;
-                    a.download = file.name.replace(/\.(pdf|docx)$/i, ".txt");
+                    a.download = file!.name.replace(/\.(pdf|docx)$/i, ".txt");
                     a.click();
                   }}>
                     <Download className="w-4 h-4 mr-2" />

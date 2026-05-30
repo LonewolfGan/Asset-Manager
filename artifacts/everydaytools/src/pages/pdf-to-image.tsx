@@ -44,7 +44,8 @@ export default function PdfToImage() {
         canvas.height = viewport.height;
         canvas.width = viewport.width;
         
-        await page.render({ canvasContext: ctx, viewport }).promise;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await page.render({ canvasContext: ctx, viewport } as any).promise;
         
         const blob = await new Promise<Blob>((resolve, reject) => {
           canvas.toBlob((b) => {

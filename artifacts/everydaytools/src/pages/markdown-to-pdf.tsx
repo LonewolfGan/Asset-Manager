@@ -79,7 +79,7 @@ export default function MarkdownToPdf() {
       setProgress(100);
       trackToolUsed('markdown-to-pdf', 'documents');
       
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
       setResult({ blob, filename: file.name.replace(/\.(md|txt)$/i, '.pdf'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
       trackToolError('markdown-to-pdf', 'general-error');

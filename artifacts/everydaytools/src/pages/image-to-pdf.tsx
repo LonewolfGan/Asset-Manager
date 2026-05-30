@@ -50,7 +50,7 @@ export default function ImageToPdf() {
       setProgress(100);
       trackToolUsed('image-to-pdf', 'images');
       
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
       setResult({ blob, filename: 'images_merged.pdf', sizeAfter: blob.size, sizeBefore: totalSizeBefore });
     } catch (e) {
       trackToolError('image-to-pdf', 'general-error');

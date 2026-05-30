@@ -31,7 +31,8 @@ export default function WordToEpub() {
       
       let blob;
       try {
-        const Epub = (await import('epub-gen-memory')).default;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const Epub = (await import('epub-gen-memory')).default as any;
         const epub = new Epub({
           title: file.name.replace(/\.docx?$/i, ''),
           author: 'EverydayTools',

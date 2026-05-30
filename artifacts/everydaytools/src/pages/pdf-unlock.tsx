@@ -32,7 +32,8 @@ export default function PdfUnlock() {
         // Fallback for some basic empty passwords
         if (err.message && err.message.includes('password')) {
            try {
-              pdfDoc = await PDFDocument.load(arrayBuffer, { password: '' });
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              pdfDoc = await PDFDocument.load(arrayBuffer, { password: '' } as any);
            } catch (e2) {
               throw new Error("This PDF requires a User Password to open. We can only remove Owner Passwords (print/copy restrictions).");
            }
@@ -47,7 +48,7 @@ export default function PdfUnlock() {
       const pdfBytes = await pdfDoc.save();
       setProgress(100);
       
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
       setResult({ blob, filename: file.name.replace(/\.pdf$/i, '_unlocked.pdf'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
       trackToolError('pdf-unlock', 'general-error');

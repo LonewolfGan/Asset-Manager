@@ -55,7 +55,7 @@ export default function PdfPageNumbers() {
       const pdfBytes = await pdfDoc.save();
       setProgress(100);
       
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
       setResult({ blob, filename: file.name.replace(/\.pdf$/i, '_numbered.pdf'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
       trackToolError('pdf-page-numbers', 'general-error');

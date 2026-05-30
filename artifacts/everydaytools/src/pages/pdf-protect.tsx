@@ -47,10 +47,11 @@ export default function PdfProtect() {
           copying: allowCopying,
           modifying: allowModifying,
         }
-      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
       setProgress(100);
       
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
       setResult({ blob, filename: file.name.replace(/\.pdf$/i, '_protected.pdf'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
       trackToolError('pdf-protect', 'general-error');

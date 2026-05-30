@@ -83,7 +83,7 @@ export default function HtmlToPdf() {
       const pdfBytes = await pdfDoc.save();
       setProgress(100);
       
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
       setResult({ blob, filename, sizeAfter: blob.size, sizeBefore });
       trackToolUsed('html-to-pdf', 'documents');
     } catch (e) {

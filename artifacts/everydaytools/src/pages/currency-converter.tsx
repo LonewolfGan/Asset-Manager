@@ -80,6 +80,7 @@ export default function CurrencyConverter() {
       const timer = setTimeout(saveHistory, 2000);
       return () => clearTimeout(timer);
     }
+    return;
   }, [amount, fromCurrency, toCurrency, result]);
 
   const currencyOptions = CURRENCIES.map(c => ({ value: c.code, label: `${c.code} - ${c.name}` }));

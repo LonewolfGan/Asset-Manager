@@ -76,7 +76,7 @@ export default function PdfSplit() {
         const copiedPages = await newPdf.copyPages(sourcePdf, rangesToExtract[0]);
         copiedPages.forEach(page => newPdf.addPage(page));
         const pdfBytes = await newPdf.save();
-        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
         setResult({ blob, filename: file.name.replace(/\.pdf$/i, '_extracted.pdf'), sizeAfter: blob.size, sizeBefore: file.size });
       } else {
         // ZIP output

@@ -112,9 +112,9 @@ function SeoMeta({ tool, locale }: { tool: ToolSeoEntry; locale: "en" | "fr" }) 
       <meta name="description" content={tool.description[locale]} />
       <meta name="keywords" content={keywords} />
       {canonical && <link rel="canonical" href={canonical} />}
-      {enUrl && <link rel="alternate" hreflang="en" href={enUrl} />}
-      {frUrl && <link rel="alternate" hreflang="fr" href={frUrl} />}
-      {enUrl && <link rel="alternate" hreflang="x-default" href={enUrl} />}
+      {enUrl && <link rel="alternate" hrefLang="en" href={enUrl} />}
+      {frUrl && <link rel="alternate" hrefLang="fr" href={frUrl} />}
+      {enUrl && <link rel="alternate" hrefLang="x-default" href={enUrl} />}
       <meta property="og:title" content={tool.title[locale]} />
       <meta property="og:description" content={tool.description[locale]} />
       {canonical && <meta property="og:url" content={canonical} />}

@@ -11,7 +11,7 @@ export interface UnitCategory {
   units: UnitDef[];
 }
 
-export const UNIT_CATEGORIES = [
+export const UNIT_CATEGORIES: UnitCategory[] = [
   {
     id: "length",
     name: "Length",

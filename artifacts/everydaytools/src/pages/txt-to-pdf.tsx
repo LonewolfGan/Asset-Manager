@@ -86,7 +86,7 @@ export default function TxtToPdf() {
       const pdfBytes = await pdfDoc.save();
       setProgress(100);
       
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
       setResult({ blob, filename, sizeAfter: blob.size, sizeBefore });
     } catch (e) {
       trackToolError('txt-to-pdf', 'general-error');

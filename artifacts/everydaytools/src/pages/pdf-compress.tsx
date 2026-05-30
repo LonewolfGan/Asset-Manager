@@ -47,7 +47,8 @@ async function compressPdf(
     canvas.width = Math.round(viewport.width);
     canvas.height = Math.round(viewport.height);
     const ctx = canvas.getContext('2d')!;
-    await page.render({ canvasContext: ctx as unknown as CanvasRenderingContext2D, viewport }).promise;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await page.render({ canvasContext: ctx, viewport } as any).promise;
 
     const blob = await new Promise<Blob>((resolve, reject) =>
       canvas.toBlob(
@@ -67,7 +68,7 @@ async function compressPdf(
 
   const bytes = await newPdf.save();
   onProgress(100);
-  return new Blob([bytes], { type: 'application/pdf' });
+  return new Blob([bytes as unknown as BlobPart], { type: 'application/pdf' });
 }
 
 export default function PdfCompress() {

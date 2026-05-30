@@ -30,6 +30,23 @@ description: Vercel deployment config, consent system, AdSense wiring, analytics
 - `/terms` → `src/pages/terms.tsx`
 - Both lazy-loaded, registered in App.tsx Switch
 
+## Build config (vite.config.ts)
+- `PORT` and `BASE_PATH` env vars have defaults (`"5000"` / `"/"`) — safe to run `pnpm run build` without them set; vercel.json injects them via buildCommand
+- `worker: { format: "es" }` is required — `@jsquash/avif` ships an IIFE worker; without this, Vite code-splitting mode crashes with "UMD and IIFE formats not supported"
+- `sourcemap: false` and `chunkSizeWarningLimit: 1500` set for production builds
+- **No manualChunks** — attempting Rollup manualChunks reintroduces the IIFE worker conflict
+
+## TypeScript fixes (TS 5.9 changes)
+- `Uint8Array<ArrayBufferLike>` is no longer assignable to `BlobPart` — cast with `bytes as unknown as BlobPart` for all pdf-lib `save()` outputs
+- `pdf-lib SaveOptions` no longer exposes `userPassword`/`ownerPassword` in types — use `as any` cast
+- `pdf-lib LoadOptions` no longer exposes `password` — use `as any` cast
+- `pdfjs-dist RenderParameters` changed — use `{ canvasContext: ctx, viewport } as any` for page.render() calls
+- `epub-gen-memory` default export has no constructor signature — cast with `as any`
+- `piexifjs` has no declaration file — created `src/types/piexifjs.d.ts` with manual declarations
+
+## vercel.json outputDirectory
+- Must be `artifacts/everydaytools/dist/public` — this matches vite.config.ts `outDir: path.resolve(import.meta.dirname, "dist/public")`; a value of `"public"` causes 404 on every page
+
 ## Known non-blocking warnings in build
 - `ejs` node module externalizes `fs`/`path` — from `mammoth` transitive dep, not our code
 - Chunk size warnings for `heic2any`, `ort.bundle.min`, `pdf.js` — expected for a rich client-side app

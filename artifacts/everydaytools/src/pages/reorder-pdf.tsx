@@ -78,7 +78,7 @@ export default function ReorderPdf() {
       for (const page of copied) dest.addPage(page);
       setProgress(80);
       const bytes = await dest.save();
-      const blob = new Blob([bytes], { type: 'application/pdf' });
+      const blob = new Blob([bytes as unknown as BlobPart], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
