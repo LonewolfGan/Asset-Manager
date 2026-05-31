@@ -114,7 +114,7 @@ export default function ImageResize() {
       <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Image Tools', 'Resize Image']} />
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['image-resize']?.title ?? 'Resize Image'}</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['image-resize']?.description ?? 'Change the dimensions of your image quickly.'}</p>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['image-resize']?.description ?? 'Change the dimensions of your image quickly.'}</p>
       
       <FileUpload accept={['image/jpeg', 'image/png', 'image/webp']} maxSizeMB={20} onFiles={setFiles} />
       
@@ -134,15 +134,15 @@ export default function ImageResize() {
           {mode === 'pixels' ? (
             <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 16 }}>
               <div>
-                <label style={{ display: 'block', fontSize: 14, marginBottom: 6, fontWeight: 500 }}>Width (px)</label>
+                <label style={{ display: 'block', fontSize: 'var(--text-sm)', marginBottom: 6, fontWeight: 500 }}>Width (px)</label>
                 <input type="number" value={width} onChange={e => handleWidthChange(e.target.value)} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }} />
               </div>
               <div>
-                <label style={{ display: 'block', fontSize: 14, marginBottom: 6, fontWeight: 500 }}>Height (px)</label>
+                <label style={{ display: 'block', fontSize: 'var(--text-sm)', marginBottom: 6, fontWeight: 500 }}>Height (px)</label>
                 <input type="number" value={height} onChange={e => handleHeightChange(e.target.value)} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }} />
               </div>
               <div style={{ gridColumn: '1 / -1' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 14 }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 'var(--text-sm)' }}>
                   <input type="checkbox" checked={lockRatio} onChange={e => setLockRatio(e.target.checked)} style={{ accentColor: 'var(--accent)' }} />
                   <span>Lock Aspect Ratio</span>
                 </label>
@@ -151,11 +151,11 @@ export default function ImageResize() {
           ) : (
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                <span style={{ fontSize: 14, fontWeight: 500 }}>Percentage</span>
-                <span style={{ fontSize: 14, fontFamily: 'var(--font-mono)' }}>{percentage}%</span>
+                <span style={{ fontSize: 'var(--text-sm)', fontWeight: 500 }}>Percentage</span>
+                <span style={{ fontSize: 'var(--text-sm)', fontFamily: 'var(--font-mono)' }}>{percentage}%</span>
               </div>
               <input type="range" min="1" max="200" value={percentage} onChange={e => setPercentage(e.target.value)} style={{ width: '100%' }} />
-              <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 8 }}>
+              <p style={{ fontSize: 'var(--text-xs)', color: 'var(--muted)', marginTop: 8 }}>
                 Output: {Math.round(origW * (parseInt(percentage)/100))} x {Math.round(origH * (parseInt(percentage)/100))} px
               </p>
             </div>
@@ -165,13 +165,13 @@ export default function ImageResize() {
 
       {files.length > 0 && !isProcessing && (
         <button onClick={handleConvert} disabled={isProcessing}
-          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 15, fontWeight: 500, cursor: 'pointer', width: '100%' }}>
+          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer', width: '100%' }}>
           Resize Image
         </button>
       )}
       
       {isProcessing && <ProgressBar progress={progress} label="Resizing..." />}
-      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
+      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 'var(--text-sm)' }}>{error}</p>}
       {result && <ResultPanel {...result} />}
       <AdSlot type="horizontal" />
     </div>

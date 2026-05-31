@@ -98,7 +98,7 @@ export default function HtmlToPdf() {
       <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Word Tools', 'HTML to PDF']} />
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['html-to-pdf']?.title ?? 'HTML to PDF'}</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['html-to-pdf']?.description ?? 'Convert HTML snippets or files into a PDF document visually.'}</p>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['html-to-pdf']?.description ?? 'Convert HTML snippets or files into a PDF document visually.'}</p>
       
       <div style={{ marginBottom: 24, display: 'flex', gap: 16, borderBottom: '1px solid var(--border)' }}>
         <button onClick={() => setMode('upload')} style={{ background: 'none', border: 'none', borderBottom: mode === 'upload' ? '2px solid var(--accent)' : '2px solid transparent', padding: '8px 16px', fontWeight: 500, cursor: 'pointer', color: mode === 'upload' ? 'var(--text)' : 'var(--muted)' }}>Upload File</button>
@@ -116,17 +116,17 @@ export default function HtmlToPdf() {
         />
       )}
       
-      <p style={{ fontSize: 13, color: 'var(--muted)', marginTop: 8 }}>Note: Complex CSS may not render perfectly client-side. The output is a visual rendering (not selectable text).</p>
+      <p style={{ fontSize: 'var(--text-sm)', color: 'var(--muted)', marginTop: 8 }}>Note: Complex CSS may not render perfectly client-side. The output is a visual rendering (not selectable text).</p>
       
       {((mode === 'upload' && files.length > 0) || (mode === 'paste' && htmlInput.trim())) && !isProcessing && (
         <button onClick={handleConvert} disabled={isProcessing}
-          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15, fontWeight: 500, cursor: 'pointer', width: '100%' }}>
+          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer', width: '100%' }}>
           Convert to PDF
         </button>
       )}
       
       {isProcessing && <ProgressBar progress={progress} label="Rendering HTML..." />}
-      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
+      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 'var(--text-sm)' }}>{error}</p>}
       {result && <ResultPanel {...result} />}
       <AdSlot type="horizontal" />
     </div>

@@ -80,7 +80,7 @@ export default function AiTextScrubber() {
       <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Privacy Tools', 'AI Text Scrubber']} />
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['ai-text-scrubber']?.title ?? 'AI Text Scrubber'}</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['ai-text-scrubber']?.description ?? 'Remove invisible trackers and common AI stylistic boilerplate from text.'}</p>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['ai-text-scrubber']?.description ?? 'Remove invisible trackers and common AI stylistic boilerplate from text.'}</p>
 
       <div style={{ display: 'flex', borderBottom: '1px solid var(--border)', marginBottom: 24 }}>
         <button onClick={() => setTab('invisible')} style={{ flex: 1, padding: '12px', background: 'none', border: 'none', borderBottom: tab === 'invisible' ? '2px solid var(--accent)' : '2px solid transparent', fontWeight: 500, cursor: 'pointer', color: tab === 'invisible' ? 'var(--text-primary)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{tc.tabInvisible}</button>
@@ -108,7 +108,7 @@ export default function AiTextScrubber() {
       )}
 
       {invisiblesCount !== null && tab === 'invisible' && (
-        <p style={{ marginTop: 16, fontSize: 14, color: invisiblesCount > 0 ? 'var(--danger)' : 'var(--success)', fontFamily: 'var(--font-ui)' }}>
+        <p style={{ marginTop: 16, fontSize: 'var(--text-sm)', color: invisiblesCount > 0 ? 'var(--danger)' : 'var(--success)', fontFamily: 'var(--font-ui)' }}>
           {tc.foundCount(invisiblesCount)}
         </p>
       )}
@@ -116,10 +116,10 @@ export default function AiTextScrubber() {
       {outputText && (
         <div style={{ marginTop: 32 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-            <h3 style={{ fontSize: 16, fontWeight: 500, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{tc.cleanedOutput}</h3>
+            <h3 style={{ fontSize: 'var(--text-base)', fontWeight: 500, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{tc.cleanedOutput}</h3>
             <div style={{ display: 'flex', gap: 8 }}>
-              <button onClick={handleCopy} style={{ padding: '6px 12px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: 13, cursor: 'pointer', fontFamily: 'var(--font-ui)', color: copied ? 'var(--accent)' : 'var(--text-primary)', transition: 'color 150ms ease' }}>{copied ? '✓ ' + t.common.copied : tc.copy}</button>
-              <button onClick={handleDownload} style={{ padding: '6px 12px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: 13, cursor: 'pointer', fontFamily: 'var(--font-ui)', color: 'var(--text-primary)' }}>{tc.downloadTxt}</button>
+              <button onClick={handleCopy} style={{ padding: '6px 12px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: 'var(--text-sm)', cursor: 'pointer', fontFamily: 'var(--font-ui)', color: copied ? 'var(--accent)' : 'var(--text-primary)', transition: 'color 150ms ease' }}>{copied ? '✓ ' + t.common.copied : tc.copy}</button>
+              <button onClick={handleDownload} style={{ padding: '6px 12px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: 'var(--text-sm)', cursor: 'pointer', fontFamily: 'var(--font-ui)', color: 'var(--text-primary)' }}>{tc.downloadTxt}</button>
             </div>
           </div>
           <textarea
@@ -130,7 +130,7 @@ export default function AiTextScrubber() {
         </div>
       )}
 
-      <p style={{ marginTop: 24, fontSize: 13, color: 'var(--text-tertiary)', textAlign: 'center', padding: '0 24px', fontFamily: 'var(--font-ui)' }}>
+      <p style={{ marginTop: 24, fontSize: 'var(--text-sm)', color: 'var(--text-tertiary)', textAlign: 'center', padding: '0 24px', fontFamily: 'var(--font-ui)' }}>
         {tc.disclaimer}
       </p>
       <AdSlot type="horizontal" />

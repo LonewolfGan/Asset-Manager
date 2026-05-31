@@ -35,7 +35,7 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
         background: active ? 'rgba(255,107,53,0.08)' : 'transparent',
         color: active ? 'var(--accent)' : 'var(--text-secondary)',
         fontFamily: 'var(--font-ui)',
-        fontSize: 13,
+        fontSize: 'var(--text-sm)',
         fontWeight: active ? 600 : 400,
         cursor: 'pointer',
         transition: 'all 120ms ease',
@@ -49,7 +49,7 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', marginBottom: 6, fontFamily: 'var(--font-ui)' }}>
+      <label style={{ display: 'block', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-secondary)', marginBottom: 6, fontFamily: 'var(--font-ui)' }}>
         {label}
       </label>
       {children}
@@ -64,7 +64,7 @@ const INPUT_STYLE: React.CSSProperties = {
   borderRadius: 'var(--radius-input)',
   background: 'var(--bg-base)',
   fontFamily: 'var(--font-ui)',
-  fontSize: 14,
+  fontSize: 'var(--text-sm)',
   color: 'var(--text-primary)',
   outline: 'none',
   boxSizing: 'border-box',
@@ -182,7 +182,7 @@ export default function QrCodeGenerator() {
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)', lineHeight: 1.15 }}>
           {title}
         </h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>
           {description}
         </p>
 
@@ -193,7 +193,7 @@ export default function QrCodeGenerator() {
 
             {/* Mode tabs */}
             <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-card)', padding: 20 }}>
-              <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 12, fontFamily: 'var(--font-ui)' }}>
+              <p style={{ fontSize: 'var(--text-xs)', fontWeight: 600, color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 12, fontFamily: 'var(--font-ui)' }}>
                 {isFR ? 'TYPE DE CONTENU' : 'CONTENT TYPE'}
               </p>
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -207,7 +207,7 @@ export default function QrCodeGenerator() {
 
             {/* Content inputs */}
             <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-card)', padding: 20, display: 'flex', flexDirection: 'column', gap: 14 }}>
-              <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4, fontFamily: 'var(--font-ui)' }}>
+              <p style={{ fontSize: 'var(--text-xs)', fontWeight: 600, color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4, fontFamily: 'var(--font-ui)' }}>
                 {isFR ? 'CONTENU' : 'CONTENT'}
               </p>
 
@@ -272,7 +272,7 @@ export default function QrCodeGenerator() {
 
             {/* Options */}
             <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-card)', padding: 20, display: 'flex', flexDirection: 'column', gap: 18 }}>
-              <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.06em', fontFamily: 'var(--font-ui)' }}>
+              <p style={{ fontSize: 'var(--text-xs)', fontWeight: 600, color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.06em', fontFamily: 'var(--font-ui)' }}>
                 {isFR ? 'OPTIONS' : 'OPTIONS'}
               </p>
 
@@ -303,7 +303,7 @@ export default function QrCodeGenerator() {
                     </Chip>
                   ))}
                 </div>
-                <p style={{ fontSize: 12, color: 'var(--text-tertiary)', marginTop: 6, fontFamily: 'var(--font-ui)' }}>
+                <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', marginTop: 6, fontFamily: 'var(--font-ui)' }}>
                   {ERROR_LEVELS.find((el) => el.id === errLevel)?.desc}
                 </p>
               </Field>
@@ -314,14 +314,14 @@ export default function QrCodeGenerator() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10, border: '1px solid var(--border)', borderRadius: 'var(--radius-input)', padding: '8px 12px', background: 'var(--bg-base)' }}>
                     <input type="color" value={fgColor} onChange={(e) => setFgColor(e.target.value)}
                       style={{ width: 28, height: 28, border: 'none', background: 'none', padding: 0, cursor: 'pointer', borderRadius: 4 }} />
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13, color: 'var(--text-secondary)' }}>{fgColor}</span>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>{fgColor}</span>
                   </div>
                 </Field>
                 <Field label={isFR ? 'Couleur fond' : 'Background'}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10, border: '1px solid var(--border)', borderRadius: 'var(--radius-input)', padding: '8px 12px', background: 'var(--bg-base)' }}>
                     <input type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)}
                       style={{ width: 28, height: 28, border: 'none', background: 'none', padding: 0, cursor: 'pointer', borderRadius: 4 }} />
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13, color: 'var(--text-secondary)' }}>{bgColor}</span>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>{bgColor}</span>
                   </div>
                 </Field>
               </div>
@@ -331,7 +331,7 @@ export default function QrCodeGenerator() {
           {/* ── Right: preview + download ── */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16, position: 'sticky', top: 76 }}>
             <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-card)', padding: 24, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
-              <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.06em', alignSelf: 'flex-start', fontFamily: 'var(--font-ui)' }}>
+              <p style={{ fontSize: 'var(--text-xs)', fontWeight: 600, color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.06em', alignSelf: 'flex-start', fontFamily: 'var(--font-ui)' }}>
                 {isFR ? 'APERÇU' : 'PREVIEW'}
               </p>
 
@@ -348,7 +348,7 @@ export default function QrCodeGenerator() {
                 flexShrink: 0,
               }}>
                 {empty ? (
-                  <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-tertiary)', textAlign: 'center', padding: '0 24px' }}>
+                  <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-tertiary)', textAlign: 'center', padding: '0 24px' }}>
                     {isFR ? 'Entrez du contenu pour générer un QR code' : 'Enter content to generate a QR code'}
                   </p>
                 ) : null}
@@ -364,7 +364,7 @@ export default function QrCodeGenerator() {
               </div>
 
               {genError && (
-                <p style={{ fontSize: 13, color: 'var(--danger, #DC2626)', fontFamily: 'var(--font-ui)', textAlign: 'center' }}>
+                <p style={{ fontSize: 'var(--text-sm)', color: 'var(--danger, #DC2626)', fontFamily: 'var(--font-ui)', textAlign: 'center' }}>
                   {genError}
                 </p>
               )}
@@ -381,7 +381,7 @@ export default function QrCodeGenerator() {
                   border: 'none',
                   borderRadius: 'var(--radius-btn)',
                   fontFamily: 'var(--font-ui)',
-                  fontSize: 14,
+                  fontSize: 'var(--text-sm)',
                   fontWeight: 600,
                   cursor: empty || genError ? 'not-allowed' : 'pointer',
                   transition: 'background 120ms ease',
@@ -402,7 +402,7 @@ export default function QrCodeGenerator() {
                   border: '1px solid var(--border)',
                   borderRadius: 'var(--radius-btn)',
                   fontFamily: 'var(--font-ui)',
-                  fontSize: 14,
+                  fontSize: 'var(--text-sm)',
                   fontWeight: 500,
                   cursor: empty || genError ? 'not-allowed' : 'pointer',
                   transition: 'color 120ms ease, border-color 120ms ease',
@@ -416,7 +416,7 @@ export default function QrCodeGenerator() {
 
             {/* Info pill */}
             <div style={{ background: 'var(--bg-subtle, var(--bg-elevated))', border: '1px solid var(--border)', borderRadius: 12, padding: '12px 14px' }}>
-              <p style={{ fontSize: 12, color: 'var(--text-tertiary)', fontFamily: 'var(--font-ui)', lineHeight: 1.6, margin: 0 }}>
+              <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', fontFamily: 'var(--font-ui)', lineHeight: 1.6, margin: 0 }}>
                 {isFR
                   ? 'Tout est généré localement dans votre navigateur. Aucune donnée n\'est envoyée à nos serveurs.'
                   : 'Everything is generated locally in your browser. No data is sent to our servers.'}

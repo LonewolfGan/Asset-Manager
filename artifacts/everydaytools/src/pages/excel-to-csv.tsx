@@ -63,7 +63,7 @@ export default function ExcelToCsv() {
       <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
         <Breadcrumb items={['Home', 'Excel & Spreadsheets', title]} />
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{title}</h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{desc}</p>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{desc}</p>
 
         <div
           onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
@@ -74,22 +74,22 @@ export default function ExcelToCsv() {
         >
           <input ref={inputRef} type="file" accept=".xlsx,.xls" style={{ display: 'none' }}
             onChange={(e) => { if (e.target.files?.[0]) handleFile(e.target.files[0]); }} />
-          <p style={{ fontFamily: 'var(--font-ui)', fontSize: 15, color: 'var(--text-secondary)', margin: 0 }}>{t.common.dropFileHere}</p>
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)', marginTop: 6 }}>.xlsx · .xls · max 25 MB</p>
+          <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', margin: 0 }}>{t.common.dropFileHere}</p>
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', marginTop: 6 }}>.xlsx · .xls · max 25 MB</p>
         </div>
 
         {file && (
           <div style={{ marginTop: 16, padding: '12px 16px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
-            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, margin: '0 0 8px', color: 'var(--text-primary)' }}>{file.name}</p>
+            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, margin: '0 0 8px', color: 'var(--text-primary)' }}>{file.name}</p>
             {sheets.length > 0 && (
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-                <label style={{ fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-secondary)' }}>{t.common.exportSheet}</label>
+                <label style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>{t.common.exportSheet}</label>
                 <select value={selectedSheet} onChange={(e) => setSelectedSheet(e.target.value)}
-                  style={{ padding: '5px 10px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 13, background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
+                  style={{ padding: '5px 10px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
                   {sheets.map((s) => <option key={s} value={s}>{s}</option>)}
                 </select>
                 <button onClick={convert}
-                  style={{ padding: '6px 16px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: 500, cursor: 'pointer' }}>
+                  style={{ padding: '6px 16px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer' }}>
                   {t.common.convertBtn}
                 </button>
               </div>
@@ -97,21 +97,21 @@ export default function ExcelToCsv() {
           </div>
         )}
 
-        {error && <p style={{ color: 'var(--danger,#dc2626)', marginTop: 12, fontFamily: 'var(--font-ui)', fontSize: 14 }}>{error}</p>}
+        {error && <p style={{ color: 'var(--danger,#dc2626)', marginTop: 12, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)' }}>{error}</p>}
 
         {status === 'done' && csvContent && (
           <div style={{ marginTop: 20 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-              <span style={{ fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, color: 'var(--text-primary)' }}>
+              <span style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-primary)' }}>
                 {t.common.preview(csvContent.split('\n').length)}
               </span>
               <button onClick={download}
-                style={{ padding: '7px 16px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: 500, cursor: 'pointer' }}>
+                style={{ padding: '7px 16px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer' }}>
                 {t.common.downloadCsv}
               </button>
             </div>
             <textarea readOnly value={csvContent.slice(0, 3000) + (csvContent.length > 3000 ? '\n…' : '')}
-              style={{ width: '100%', height: 280, padding: 12, border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 12, resize: 'vertical', boxSizing: 'border-box' }} />
+              style={{ width: '100%', height: 280, padding: 12, border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', resize: 'vertical', boxSizing: 'border-box' }} />
           </div>
         )}
         <AdSlot type="horizontal" />

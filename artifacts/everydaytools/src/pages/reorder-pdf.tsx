@@ -99,7 +99,7 @@ export default function ReorderPdf() {
       <div style={{ maxWidth: 900, margin: '0 auto', padding: '24px 24px 80px' }}>
         <Breadcrumb items={['Home', 'PDF Tools', title]} />
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{title}</h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{desc}</p>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{desc}</p>
 
         {pages.length === 0 && (
           <div
@@ -110,14 +110,14 @@ export default function ReorderPdf() {
             style={{ border: `2px dashed ${isDragging ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius)', padding: '48px 24px', textAlign: 'center', cursor: 'pointer', background: isDragging ? 'var(--bg-elevated)' : 'var(--bg-surface)' }}
           >
             <input ref={inputRef} type="file" accept=".pdf" style={{ display: 'none' }} onChange={(e) => { if (e.target.files?.[0]) loadPdf(e.target.files[0]); }} />
-            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 15, color: 'var(--text-secondary)', margin: 0 }}>{t.common.dropFileHere}</p>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)', marginTop: 6 }}>.pdf · max 50 MB</p>
+            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', margin: 0 }}>{t.common.dropFileHere}</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', marginTop: 6 }}>.pdf · max 50 MB</p>
           </div>
         )}
 
         {status === 'loading' && (
           <div style={{ padding: 16, background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', marginTop: 20 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-secondary)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>
               <span>Loading pages…</span><span style={{ fontFamily: 'var(--font-mono)' }}>{progress}%</span>
             </div>
             <div style={{ height: 6, background: 'var(--bg-elevated)', borderRadius: 3, overflow: 'hidden' }}>
@@ -126,21 +126,21 @@ export default function ReorderPdf() {
           </div>
         )}
 
-        {status === 'error' && <p style={{ color: 'var(--danger,#dc2626)', fontFamily: 'var(--font-ui)', fontSize: 14, marginTop: 16 }}>{error}</p>}
+        {status === 'error' && <p style={{ color: 'var(--danger,#dc2626)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', marginTop: 16 }}>{error}</p>}
 
         {pages.length > 0 && (
           <>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, flexWrap: 'wrap', gap: 8 }}>
-              <span style={{ fontFamily: 'var(--font-ui)', fontSize: 14, color: 'var(--text-secondary)' }}>
+              <span style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>
                 {pages.length} page{pages.length !== 1 ? 's' : ''} — drag to reorder, click × to remove
               </span>
               <div style={{ display: 'flex', gap: 8 }}>
                 <button onClick={() => { setPages([]); setFile(null); setStatus('idle'); }}
-                  style={{ padding: '6px 14px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-secondary)', cursor: 'pointer' }}>
+                  style={{ padding: '6px 14px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', cursor: 'pointer' }}>
                   Load different PDF
                 </button>
                 <button onClick={save} disabled={status === 'saving'}
-                  style={{ padding: '6px 18px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: 500, cursor: status === 'saving' ? 'not-allowed' : 'pointer' }}>
+                  style={{ padding: '6px 18px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: status === 'saving' ? 'not-allowed' : 'pointer' }}>
                   {status === 'saving' ? 'Saving…' : 'Save Reordered PDF'}
                 </button>
               </div>
@@ -168,8 +168,8 @@ export default function ReorderPdf() {
                 >
                   <img src={page.dataUrl} alt={`Page ${idx + 1}`} style={{ width: '100%', display: 'block' }} />
                   <div style={{ padding: '4px 6px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--bg-elevated)', borderTop: '1px solid var(--border)' }}>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-secondary)' }}>{idx + 1}</span>
-                    <button onClick={() => removePage(idx)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0 2px', color: 'var(--text-tertiary)', fontSize: 14, lineHeight: 1 }}>×</button>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>{idx + 1}</span>
+                    <button onClick={() => removePage(idx)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0 2px', color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)', lineHeight: 1 }}>×</button>
                   </div>
                 </div>
               ))}

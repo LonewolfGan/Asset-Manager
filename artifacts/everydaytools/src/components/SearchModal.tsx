@@ -300,7 +300,7 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
             gap: 16,
             padding: "8px 16px",
             borderTop: "1px solid var(--border)",
-            fontSize: 11,
+            fontSize: 'var(--text-xs)',
             fontFamily: "var(--font-mono)",
             color: "var(--text-tertiary)",
           }}

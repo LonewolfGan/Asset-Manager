@@ -142,7 +142,7 @@ function ToolCard({ tool }: { tool: DashTool }) {
         {/* Name + AI badge */}
         <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 7, flexWrap: "wrap" }}>
           <span style={{
-            fontSize: 15,
+            fontSize: 'var(--text-sm)',
             fontWeight: 600,
             color: "var(--text-primary)",
             fontFamily: "var(--font-ui)",
@@ -170,7 +170,7 @@ function ToolCard({ tool }: { tool: DashTool }) {
 
         {/* Description */}
         <p style={{
-          fontSize: 13,
+          fontSize: 'var(--text-sm)',
           color: "var(--text-secondary)",
           lineHeight: 1.55,
           margin: 0,
@@ -192,7 +192,7 @@ function ToolCard({ tool }: { tool: DashTool }) {
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 4,
-                fontSize: 11,
+                fontSize: 'var(--text-xs)',
                 fontWeight: 600,
                 fontFamily: "var(--font-mono, 'IBM Plex Mono', monospace)",
                 color: colors.icon,
@@ -269,7 +269,7 @@ export default function DashboardHome() {
               {t.home.allTools}
             </h1>
             <p style={{
-              fontSize: 15,
+              fontSize: 'var(--text-sm)',
               color: "var(--text-secondary)",
               margin: 0,
               fontFamily: "var(--font-ui)",
@@ -282,7 +282,7 @@ export default function DashboardHome() {
         {/* Search results header */}
         {isSearching && (
           <div style={{ marginBottom: 32 }}>
-            <p style={{ fontSize: 14, color: "var(--text-secondary)", margin: 0, fontFamily: "var(--font-ui)" }}>
+            <p style={{ fontSize: 'var(--text-sm)', color: "var(--text-secondary)", margin: 0, fontFamily: "var(--font-ui)" }}>
               {t.home.resultCount(filteredTools.length)} {t.home.resultsFor} &ldquo;<strong style={{ color: "var(--text-primary)" }}>{query}</strong>&rdquo;
             </p>
           </div>
@@ -291,7 +291,7 @@ export default function DashboardHome() {
         {/* No results */}
         {filteredTools.length === 0 && (
           <div style={{ textAlign: "center", padding: "80px 0" }}>
-            <p style={{ fontSize: 15, fontWeight: 500, color: "var(--text-secondary)", margin: "0 0 12px", fontFamily: "var(--font-ui)" }}>
+            <p style={{ fontSize: 'var(--text-sm)', fontWeight: 500, color: "var(--text-secondary)", margin: "0 0 12px", fontFamily: "var(--font-ui)" }}>
               {t.home.noResults(query)}
             </p>
             <button
@@ -300,7 +300,7 @@ export default function DashboardHome() {
                 setQuery("");
                 window.dispatchEvent(new CustomEvent("et:search", { detail: "" }));
               }}
-              style={{ fontSize: 13, color: "var(--accent)", background: "none", border: "none", cursor: "pointer", fontFamily: "var(--font-ui)", padding: 0 }}
+              style={{ fontSize: 'var(--text-sm)', color: "var(--accent)", background: "none", border: "none", cursor: "pointer", fontFamily: "var(--font-ui)", padding: 0 }}
             >
               {t.home.clearSearch}
             </button>

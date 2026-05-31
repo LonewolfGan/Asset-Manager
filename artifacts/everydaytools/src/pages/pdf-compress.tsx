@@ -122,13 +122,13 @@ export default function PdfCompress() {
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>
         {t.tools['pdf-compress']?.title ?? 'PDF Compressor'}
       </h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-compress']?.description ?? 'Reduce PDF file size by re-rendering pages at a target DPI and quality. All processing runs in your browser.'}</p>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-compress']?.description ?? 'Reduce PDF file size by re-rendering pages at a target DPI and quality. All processing runs in your browser.'}</p>
 
       <FileUpload accept={['.pdf', 'application/pdf']} maxSizeMB={50} onFiles={setFiles} />
 
       {files.length > 0 && (
         <div style={{ marginTop: 24 }}>
-          <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-tertiary)', marginBottom: 10, fontFamily: 'var(--font-ui)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          <p style={{ fontSize: 'var(--text-xs)', fontWeight: 600, color: 'var(--text-tertiary)', marginBottom: 10, fontFamily: 'var(--font-ui)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             {tc.compressionLevel}
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -156,13 +156,13 @@ export default function PdfCompress() {
                   style={{ accentColor: 'var(--accent)', width: 16, height: 16, flexShrink: 0 }}
                 />
                 <div>
-                  <span style={{ fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>
+                  <span style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--text-primary)' }}>
                     {isFR ? l.labelFR : l.label}
                   </span>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)', marginLeft: 8 }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', marginLeft: 8 }}>
                     {l.dpi} DPI · quality {Math.round(l.quality * 100)}%
                   </span>
-                  <p style={{ margin: '2px 0 0', fontSize: 13, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>
+                  <p style={{ margin: '2px 0 0', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>
                     {isFR ? l.descriptionFR : l.description}
                   </p>
                 </div>
@@ -184,7 +184,7 @@ export default function PdfCompress() {
             border: 'none',
             borderRadius: 'var(--radius)',
             fontFamily: 'var(--font-ui)',
-            fontSize: 15,
+            fontSize: 'var(--text-sm)',
             fontWeight: 500,
             cursor: 'pointer',
           }}
@@ -194,7 +194,7 @@ export default function PdfCompress() {
       )}
 
       {isProcessing && <ProgressBar progress={progress} label={tc.compressingLabel} />}
-      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14, fontFamily: 'var(--font-ui)' }}>{error}</p>}
+      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{error}</p>}
 
       {result && (
         <div style={{ marginTop: 24, padding: 20, border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-surface)' }}>
@@ -208,7 +208,7 @@ export default function PdfCompress() {
                 <p style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 600, color: s.label === tc.statsReduction && reduction > 0 ? 'var(--success)' : 'var(--text-primary)', margin: 0 }}>
                   {s.value}
                 </p>
-                <p style={{ fontFamily: 'var(--font-ui)', fontSize: 12, color: 'var(--text-tertiary)', margin: '2px 0 0' }}>
+                <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', margin: '2px 0 0' }}>
                   {s.label}
                 </p>
               </div>
@@ -224,7 +224,7 @@ export default function PdfCompress() {
               border: 'none',
               borderRadius: 'var(--radius)',
               fontFamily: 'var(--font-ui)',
-              fontSize: 14,
+              fontSize: 'var(--text-sm)',
               fontWeight: 500,
               cursor: 'pointer',
             }}

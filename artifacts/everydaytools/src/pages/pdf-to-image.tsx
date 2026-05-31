@@ -81,7 +81,7 @@ export default function PdfToImage() {
       <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Image Tools', 'PDF to Image']} />
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['pdf-to-image']?.title ?? 'PDF to Image'}</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-to-image']?.description ?? 'Convert PDF pages into high-quality JPEG or PNG images.'}</p>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-to-image']?.description ?? 'Convert PDF pages into high-quality JPEG or PNG images.'}</p>
       
       <FileUpload accept={['.pdf']} maxSizeMB={50} onFiles={setFiles} />
       
@@ -89,32 +89,32 @@ export default function PdfToImage() {
         <div style={{ marginTop: 24, padding: 24, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
             <div>
-              <h3 style={{ fontSize: 14, fontWeight: 500, marginBottom: 12 }}>Format</h3>
+              <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 500, marginBottom: 12 }}>Format</h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
                   <input type="radio" checked={format === 'image/jpeg'} onChange={() => setFormat('image/jpeg')} style={{ accentColor: 'var(--accent)' }} />
-                  <span style={{ fontSize: 14 }}>JPEG</span>
+                  <span style={{ fontSize: 'var(--text-sm)' }}>JPEG</span>
                 </label>
                 <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
                   <input type="radio" checked={format === 'image/png'} onChange={() => setFormat('image/png')} style={{ accentColor: 'var(--accent)' }} />
-                  <span style={{ fontSize: 14 }}>PNG</span>
+                  <span style={{ fontSize: 'var(--text-sm)' }}>PNG</span>
                 </label>
               </div>
             </div>
             <div>
-              <h3 style={{ fontSize: 14, fontWeight: 500, marginBottom: 12 }}>Resolution</h3>
+              <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 500, marginBottom: 12 }}>Resolution</h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
                   <input type="radio" checked={scale === 1} onChange={() => setScale(1)} style={{ accentColor: 'var(--accent)' }} />
-                  <span style={{ fontSize: 14 }}>Standard (72 DPI)</span>
+                  <span style={{ fontSize: 'var(--text-sm)' }}>Standard (72 DPI)</span>
                 </label>
                 <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
                   <input type="radio" checked={scale === 2} onChange={() => setScale(2)} style={{ accentColor: 'var(--accent)' }} />
-                  <span style={{ fontSize: 14 }}>High (144 DPI)</span>
+                  <span style={{ fontSize: 'var(--text-sm)' }}>High (144 DPI)</span>
                 </label>
                 <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
                   <input type="radio" checked={scale === 3} onChange={() => setScale(3)} style={{ accentColor: 'var(--accent)' }} />
-                  <span style={{ fontSize: 14 }}>Maximum (216 DPI)</span>
+                  <span style={{ fontSize: 'var(--text-sm)' }}>Maximum (216 DPI)</span>
                 </label>
               </div>
             </div>
@@ -124,13 +124,13 @@ export default function PdfToImage() {
 
       {files.length > 0 && !isProcessing && (
         <button onClick={handleConvert} disabled={isProcessing}
-          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15, fontWeight: 500, cursor: 'pointer', width: '100%' }}>
+          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer', width: '100%' }}>
           Extract Images
         </button>
       )}
       
       {isProcessing && <ProgressBar progress={progress} label="Rendering pages..." />}
-      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
+      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 'var(--text-sm)' }}>{error}</p>}
       {result && <ResultPanel {...result} />}
       <AdSlot type="horizontal" />
     </div>

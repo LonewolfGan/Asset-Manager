@@ -112,13 +112,13 @@ export default function PdfSplit() {
       <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'PDF Tools', 'Split PDF']} />
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['pdf-split']?.title ?? 'Split PDF'}</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-split']?.description ?? 'Extract pages or split a PDF document into multiple files.'}</p>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-split']?.description ?? 'Extract pages or split a PDF document into multiple files.'}</p>
       
       <FileUpload accept={['.pdf']} maxSizeMB={50} onFiles={setFiles} />
       
       {files.length > 0 && (
         <div style={{ marginTop: 24, padding: 20, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
-          <h3 style={{ fontSize: 16, fontWeight: 500, marginBottom: 16 }}>Split Options</h3>
+          <h3 style={{ fontSize: 'var(--text-base)', fontWeight: 500, marginBottom: 16 }}>Split Options</h3>
           
           <label style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12, cursor: 'pointer' }}>
             <input type="radio" checked={mode === 'every'} onChange={() => setMode('every')} style={{ accentColor: 'var(--accent)' }} />
@@ -146,13 +146,13 @@ export default function PdfSplit() {
 
       {files.length > 0 && !isProcessing && (
         <button onClick={handleConvert} disabled={isProcessing || (mode === 'range' && !ranges.trim())}
-          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15, fontWeight: 500, cursor: 'pointer', width: '100%' }}>
+          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer', width: '100%' }}>
           Split PDF
         </button>
       )}
       
       {isProcessing && <ProgressBar progress={progress} label="Splitting PDF..." />}
-      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
+      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 'var(--text-sm)' }}>{error}</p>}
       {result && <ResultPanel {...result} />}
       <AdSlot type="horizontal" />
     </div>

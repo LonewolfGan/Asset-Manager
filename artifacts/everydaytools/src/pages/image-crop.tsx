@@ -145,18 +145,18 @@ export default function ImageCrop() {
       <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Image Tools', 'Crop Image']} />
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['image-crop']?.title ?? 'Crop Image'}</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['image-crop']?.description ?? 'Crop images easily with aspect ratio presets.'}</p>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['image-crop']?.description ?? 'Crop images easily with aspect ratio presets.'}</p>
       
       {!imgObj && <FileUpload accept={['image/jpeg', 'image/png', 'image/webp']} maxSizeMB={20} onFiles={setFiles} />}
       
       {imgObj && (
         <div style={{ marginTop: 24 }}>
           <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
-            <button onClick={() => setAspectRatio(null)} style={{ padding: '6px 12px', background: aspectRatio === null ? 'var(--accent)' : 'var(--bg)', color: aspectRatio === null ? '#fff' : 'var(--text)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', cursor: 'pointer', fontSize: 13 }}>Free</button>
-            <button onClick={() => setAspectRatio(1)} style={{ padding: '6px 12px', background: aspectRatio === 1 ? 'var(--accent)' : 'var(--bg)', color: aspectRatio === 1 ? '#fff' : 'var(--text)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', cursor: 'pointer', fontSize: 13 }}>1:1 (Square)</button>
-            <button onClick={() => setAspectRatio(4/3)} style={{ padding: '6px 12px', background: aspectRatio === 4/3 ? 'var(--accent)' : 'var(--bg)', color: aspectRatio === 4/3 ? '#fff' : 'var(--text)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', cursor: 'pointer', fontSize: 13 }}>4:3</button>
-            <button onClick={() => setAspectRatio(16/9)} style={{ padding: '6px 12px', background: aspectRatio === 16/9 ? 'var(--accent)' : 'var(--bg)', color: aspectRatio === 16/9 ? '#fff' : 'var(--text)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', cursor: 'pointer', fontSize: 13 }}>16:9</button>
-            <button onClick={() => setAspectRatio(3/2)} style={{ padding: '6px 12px', background: aspectRatio === 3/2 ? 'var(--accent)' : 'var(--bg)', color: aspectRatio === 3/2 ? '#fff' : 'var(--text)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', cursor: 'pointer', fontSize: 13 }}>3:2</button>
+            <button onClick={() => setAspectRatio(null)} style={{ padding: '6px 12px', background: aspectRatio === null ? 'var(--accent)' : 'var(--bg)', color: aspectRatio === null ? '#fff' : 'var(--text)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', cursor: 'pointer', fontSize: 'var(--text-sm)' }}>Free</button>
+            <button onClick={() => setAspectRatio(1)} style={{ padding: '6px 12px', background: aspectRatio === 1 ? 'var(--accent)' : 'var(--bg)', color: aspectRatio === 1 ? '#fff' : 'var(--text)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', cursor: 'pointer', fontSize: 'var(--text-sm)' }}>1:1 (Square)</button>
+            <button onClick={() => setAspectRatio(4/3)} style={{ padding: '6px 12px', background: aspectRatio === 4/3 ? 'var(--accent)' : 'var(--bg)', color: aspectRatio === 4/3 ? '#fff' : 'var(--text)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', cursor: 'pointer', fontSize: 'var(--text-sm)' }}>4:3</button>
+            <button onClick={() => setAspectRatio(16/9)} style={{ padding: '6px 12px', background: aspectRatio === 16/9 ? 'var(--accent)' : 'var(--bg)', color: aspectRatio === 16/9 ? '#fff' : 'var(--text)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', cursor: 'pointer', fontSize: 'var(--text-sm)' }}>16:9</button>
+            <button onClick={() => setAspectRatio(3/2)} style={{ padding: '6px 12px', background: aspectRatio === 3/2 ? 'var(--accent)' : 'var(--bg)', color: aspectRatio === 3/2 ? '#fff' : 'var(--text)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', cursor: 'pointer', fontSize: 'var(--text-sm)' }}>3:2</button>
           </div>
           
           <div ref={containerRef} style={{ width: '100%', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', display: 'flex', justifyContent: 'center', overflow: 'hidden' }}>
@@ -171,16 +171,16 @@ export default function ImageCrop() {
           </div>
           
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 16 }}>
-            <span style={{ fontSize: 13, color: 'var(--muted)', fontFamily: 'IBM Plex Mono, monospace' }}>
+            <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted)', fontFamily: 'IBM Plex Mono, monospace' }}>
               {cropRect && canvasRef.current ? 
                 `Selection: ${Math.round(cropRect.w * (imgObj.width / canvasRef.current.width))} x ${Math.round(cropRect.h * (imgObj.height / canvasRef.current.height))} px` 
                 : 'Click and drag to select area'}
             </span>
-            <button onClick={() => { setImgObj(null); setFiles([]); setResult(null); }} style={{ background: 'none', border: 'none', color: 'var(--danger)', fontSize: 14, cursor: 'pointer' }}>Cancel</button>
+            <button onClick={() => { setImgObj(null); setFiles([]); setResult(null); }} style={{ background: 'none', border: 'none', color: 'var(--danger)', fontSize: 'var(--text-sm)', cursor: 'pointer' }}>Cancel</button>
           </div>
 
           <button onClick={handleCrop} disabled={!cropRect || cropRect.w === 0}
-            style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15, fontWeight: 500, cursor: (!cropRect || cropRect.w === 0) ? 'not-allowed' : 'pointer', width: '100%', opacity: (!cropRect || cropRect.w === 0) ? 0.5 : 1 }}>
+            style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: (!cropRect || cropRect.w === 0) ? 'not-allowed' : 'pointer', width: '100%', opacity: (!cropRect || cropRect.w === 0) ? 0.5 : 1 }}>
             Crop & Download
           </button>
         </div>

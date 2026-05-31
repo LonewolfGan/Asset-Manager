@@ -59,7 +59,7 @@ export default function Checksum() {
       <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
         <Breadcrumb items={['Home', 'Privacy', title]} />
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{title}</h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{desc}</p>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{desc}</p>
 
         <div
           onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
@@ -69,8 +69,8 @@ export default function Checksum() {
           style={{ border: `2px dashed ${isDragging ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius)', padding: '40px 24px', textAlign: 'center', cursor: 'pointer', background: isDragging ? 'var(--bg-elevated)' : 'var(--bg-surface)' }}
         >
           <input ref={inputRef} type="file" style={{ display: 'none' }} onChange={(e) => { if (e.target.files?.[0]) handleFile(e.target.files[0]); }} />
-          <p style={{ fontFamily: 'var(--font-ui)', fontSize: 15, color: 'var(--text-secondary)', margin: 0 }}>{t.common.dropFileHere}</p>
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)', marginTop: 6 }}>Any file type · all hashes computed in your browser</p>
+          <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', margin: 0 }}>{t.common.dropFileHere}</p>
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', marginTop: 6 }}>Any file type · all hashes computed in your browser</p>
         </div>
 
         {status === 'processing' && (
@@ -78,38 +78,38 @@ export default function Checksum() {
             <div style={{ height: 6, background: 'var(--bg-elevated)', borderRadius: 3, overflow: 'hidden' }}>
               <div style={{ width: `${progress}%`, height: '100%', background: 'var(--accent)', transition: 'width 0.3s' }} />
             </div>
-            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-secondary)', marginTop: 8, margin: '8px 0 0' }}>Computing hashes…</p>
+            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginTop: 8, margin: '8px 0 0' }}>Computing hashes…</p>
           </div>
         )}
 
         {status === 'done' && file && (
           <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
             <div style={{ padding: '12px 16px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ fontFamily: 'var(--font-ui)', fontSize: 14, color: 'var(--text-primary)', fontWeight: 500 }}>{file.name}</span>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13, color: 'var(--text-secondary)' }}>{formatBytes(file.size)}</span>
+              <span style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', fontWeight: 500 }}>{file.name}</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>{formatBytes(file.size)}</span>
             </div>
 
             {ALGOS.map((algo) => (
               <div key={algo} style={{ padding: '12px 16px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)', fontWeight: 600, textTransform: 'uppercase' }}>{algo}</span>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', fontWeight: 600, textTransform: 'uppercase' }}>{algo}</span>
                   <button onClick={() => { copyWithToast(hashes[algo] ?? ''); setCopiedAlgo(algo); setTimeout(() => setCopiedAlgo(null), 1500); }}
-                    style={{ padding: '2px 8px', border: '1px solid var(--border)', borderRadius: 4, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 11, color: copiedAlgo === algo ? 'var(--accent)' : 'var(--text-secondary)', cursor: 'pointer', transition: 'color 150ms ease' }}>{copiedAlgo === algo ? '✓ ' + t.common.copied : t.common.copy}</button>
+                    style={{ padding: '2px 8px', border: '1px solid var(--border)', borderRadius: 4, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: copiedAlgo === algo ? 'var(--accent)' : 'var(--text-secondary)', cursor: 'pointer', transition: 'color 150ms ease' }}>{copiedAlgo === algo ? '✓ ' + t.common.copied : t.common.copy}</button>
                 </div>
-                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: expected.trim() && hashes[algo]?.toLowerCase() === expected.trim().toLowerCase() ? 'var(--success,#16a34a)' : 'var(--text-primary)', margin: 0, wordBreak: 'break-all', lineHeight: 1.5 }}>
+                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: expected.trim() && hashes[algo]?.toLowerCase() === expected.trim().toLowerCase() ? 'var(--success,#16a34a)' : 'var(--text-primary)', margin: 0, wordBreak: 'break-all', lineHeight: 1.5 }}>
                   {hashes[algo]}
                 </p>
               </div>
             ))}
 
             <div style={{ padding: '16px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
-              <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: 500, color: 'var(--text-primary)', marginBottom: 8 }}>Verify — paste expected hash</p>
+              <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-primary)', marginBottom: 8 }}>Verify — paste expected hash</p>
               <input value={expected} onChange={(e) => setExpected(e.target.value)}
                 placeholder="Paste expected SHA-256, SHA-512, etc."
-                style={{ width: '100%', padding: '8px 12px', border: `1px solid ${expected.trim() && !matchAlgo ? 'var(--danger,#dc2626)' : expected.trim() && matchAlgo ? 'var(--success,#16a34a)' : 'var(--border)'}`, borderRadius: 6, fontFamily: 'var(--font-mono)', fontSize: 12, background: 'var(--bg-base)', color: 'var(--text-primary)', boxSizing: 'border-box' }}
+                style={{ width: '100%', padding: '8px 12px', border: `1px solid ${expected.trim() && !matchAlgo ? 'var(--danger,#dc2626)' : expected.trim() && matchAlgo ? 'var(--success,#16a34a)' : 'var(--border)'}`, borderRadius: 6, fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', background: 'var(--bg-base)', color: 'var(--text-primary)', boxSizing: 'border-box' }}
               />
               {expected.trim() && (
-                <p style={{ marginTop: 8, fontFamily: 'var(--font-ui)', fontSize: 13, color: matchAlgo ? 'var(--success,#16a34a)' : 'var(--danger,#dc2626)' }}>
+                <p style={{ marginTop: 8, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: matchAlgo ? 'var(--success,#16a34a)' : 'var(--danger,#dc2626)' }}>
                   {matchAlgo ? `Match — ${matchAlgo}` : 'No match for any hash'}
                 </p>
               )}

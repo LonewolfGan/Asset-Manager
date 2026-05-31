@@ -87,7 +87,7 @@ export default function WatermarkImage() {
       <div style={{ maxWidth: 820, margin: '0 auto', padding: '24px 24px 80px' }}>
         <Breadcrumb items={['Home', 'Image Tools', title]} />
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{title}</h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{desc}</p>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{desc}</p>
 
         {!file && (
           <div
@@ -98,7 +98,7 @@ export default function WatermarkImage() {
             style={{ border: `2px dashed ${isDragging ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius)', padding: '48px 24px', textAlign: 'center', cursor: 'pointer', background: 'var(--bg-surface)' }}
           >
             <input ref={inputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={(e) => { if (e.target.files?.[0]) handleFile(e.target.files[0]); }} />
-            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 15, color: 'var(--text-secondary)', margin: 0 }}>Drop an image here, or click to browse</p>
+            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', margin: 0 }}>Drop an image here, or click to browse</p>
           </div>
         )}
 
@@ -108,30 +108,30 @@ export default function WatermarkImage() {
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
               <div>
-                <label style={{ fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Watermark text</label>
+                <label style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Watermark text</label>
                 <input value={text} onChange={(e) => setText(e.target.value)}
-                  style={{ width: '100%', padding: '7px 10px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 14, background: 'var(--bg-base)', color: 'var(--text-primary)', boxSizing: 'border-box' }} />
+                  style={{ width: '100%', padding: '7px 10px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', background: 'var(--bg-base)', color: 'var(--text-primary)', boxSizing: 'border-box' }} />
               </div>
               <div>
-                <label style={{ fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Font size: {fontSize}px</label>
+                <label style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Font size: {fontSize}px</label>
                 <input type="range" min="12" max="120" value={fontSize} onChange={(e) => setFontSize(+e.target.value)} style={{ width: '100%' }} />
               </div>
               <div>
-                <label style={{ fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Color</label>
+                <label style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Color</label>
                 <input type="color" value={color} onChange={(e) => setColor(e.target.value)} style={{ width: 48, height: 32, border: '1px solid var(--border)', borderRadius: 6, cursor: 'pointer', padding: 2 }} />
               </div>
               <div>
-                <label style={{ fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Opacity: {opacity}%</label>
+                <label style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Opacity: {opacity}%</label>
                 <input type="range" min="5" max="100" value={opacity} onChange={(e) => setOpacity(+e.target.value)} style={{ width: '100%' }} />
               </div>
             </div>
 
             <div>
-              <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-secondary)', marginBottom: 8 }}>Position</p>
+              <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 8 }}>Position</p>
               <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                 {POSITIONS.map((p) => (
                   <button key={p.id} onClick={() => setPosition(p.id)}
-                    style={{ padding: '5px 12px', border: `1px solid ${position === p.id ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 6, background: position === p.id ? 'var(--accent-subtle,#fff4ef)' : 'transparent', color: position === p.id ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 12, cursor: 'pointer' }}>
+                    style={{ padding: '5px 12px', border: `1px solid ${position === p.id ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 6, background: position === p.id ? 'var(--accent-subtle,#fff4ef)' : 'transparent', color: position === p.id ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>
                     {p.label}
                   </button>
                 ))}
@@ -139,8 +139,8 @@ export default function WatermarkImage() {
             </div>
 
             <div style={{ display: 'flex', gap: 8 }}>
-              <button onClick={download} style={{ flex: 1, padding: '11px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}>Download with Watermark</button>
-              <button onClick={() => { setFile(null); imgRef.current = null; }} style={{ padding: '11px 16px', background: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 14, cursor: 'pointer' }}>Change image</button>
+              <button onClick={download} style={{ flex: 1, padding: '11px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer' }}>Download with Watermark</button>
+              <button onClick={() => { setFile(null); imgRef.current = null; }} style={{ padding: '11px 16px', background: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', cursor: 'pointer' }}>Change image</button>
             </div>
           </div>
         )}

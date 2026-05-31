@@ -79,7 +79,7 @@ export default function CsvViewer() {
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '24px 24px 80px' }}>
         <Breadcrumb items={['Home', 'Excel & Spreadsheets', title]} />
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{title}</h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{desc}</p>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{desc}</p>
 
         {rows.length === 0 && (
           <div
@@ -91,46 +91,46 @@ export default function CsvViewer() {
           >
             <input ref={inputRef} type="file" accept=".csv,text/csv" style={{ display: 'none' }}
               onChange={(e) => { if (e.target.files?.[0]) handleFile(e.target.files[0]); }} />
-            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 15, color: 'var(--text-secondary)', margin: 0 }}>{t.common.dropFileHere}</p>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)', marginTop: 6 }}>.csv · max 25 MB</p>
+            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', margin: 0 }}>{t.common.dropFileHere}</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', marginTop: 6 }}>.csv · max 25 MB</p>
           </div>
         )}
 
         {rows.length === 0 && (
           <>
-            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-secondary)', marginBottom: 6 }}>{t.common.orPasteDirectly}</p>
+            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 6 }}>{t.common.orPasteDirectly}</p>
             <div style={{ display: 'flex', gap: 10 }}>
               <textarea
                 value={csvText}
                 onChange={(e) => setCsvText(e.target.value)}
                 placeholder="name,age,city&#10;Alice,30,Paris&#10;Bob,25,Lyon"
-                style={{ flex: 1, height: 120, padding: 10, border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 12, resize: 'vertical', boxSizing: 'border-box' }}
+                style={{ flex: 1, height: 120, padding: 10, border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', resize: 'vertical', boxSizing: 'border-box' }}
               />
               <button onClick={() => parse(csvText)}
-                style={{ padding: '0 20px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, cursor: 'pointer', alignSelf: 'stretch' }}>
+                style={{ padding: '0 20px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer', alignSelf: 'stretch' }}>
                 {t.common.view}
               </button>
             </div>
           </>
         )}
 
-        {error && <p style={{ color: 'var(--danger,#dc2626)', fontFamily: 'var(--font-ui)', fontSize: 14, marginTop: 12 }}>{error}</p>}
+        {error && <p style={{ color: 'var(--danger,#dc2626)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', marginTop: 12 }}>{error}</p>}
 
         {rows.length > 0 && (
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12, flexWrap: 'wrap', gap: 8 }}>
               <div style={{ display: 'flex', gap: 16 }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13, color: 'var(--text-secondary)' }}>{rows.length} rows</span>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13, color: 'var(--text-secondary)' }}>{headers.length} columns</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>{rows.length} rows</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>{headers.length} columns</span>
               </div>
               <div style={{ display: 'flex', gap: 8 }}>
                 <button onClick={() => { setRows([]); setHeaders([]); setCsvText(''); setFile(null); setError(''); }}
-                  style={{ padding: '5px 12px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 12, color: 'var(--text-secondary)', cursor: 'pointer' }}>
+                  style={{ padding: '5px 12px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', cursor: 'pointer' }}>
                   {t.common.clear}
                 </button>
                 {csvText && (
                   <button onClick={downloadCsv}
-                    style={{ padding: '5px 12px', border: '1px solid var(--border)', borderRadius: 6, background: 'var(--text-primary)', color: 'var(--bg-base)', fontFamily: 'var(--font-ui)', fontSize: 12, cursor: 'pointer' }}>
+                    style={{ padding: '5px 12px', border: '1px solid var(--border)', borderRadius: 6, background: 'var(--text-primary)', color: 'var(--bg-base)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>
                     {t.common.downloadCsv}
                   </button>
                 )}
@@ -138,10 +138,10 @@ export default function CsvViewer() {
             </div>
 
             <div style={{ overflowX: 'auto', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: 'var(--font-ui)', fontSize: 13 }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)' }}>
                 <thead>
                   <tr style={{ background: 'var(--bg-elevated)' }}>
-                    <th style={{ padding: '8px 12px', borderBottom: '1px solid var(--border)', textAlign: 'left', color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 400, width: 40, whiteSpace: 'nowrap' }}>#</th>
+                    <th style={{ padding: '8px 12px', borderBottom: '1px solid var(--border)', textAlign: 'left', color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', fontWeight: 400, width: 40, whiteSpace: 'nowrap' }}>#</th>
                     {headers.map((h, i) => (
                       <th key={i} onClick={() => handleSort(i)} style={{ padding: '8px 12px', borderBottom: '1px solid var(--border)', textAlign: 'left', color: 'var(--text-primary)', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap', userSelect: 'none' }}>
                         {h}
@@ -155,7 +155,7 @@ export default function CsvViewer() {
                     <tr key={ri} style={{ borderBottom: '1px solid var(--border)' }}
                       onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-elevated)')}
                       onMouseLeave={(e) => (e.currentTarget.style.background = '')}>
-                      <td style={{ padding: '6px 12px', color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>{ri + 1}</td>
+                      <td style={{ padding: '6px 12px', color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)' }}>{ri + 1}</td>
                       {headers.map((_, ci) => (
                         <td key={ci} style={{ padding: '6px 12px', color: 'var(--text-primary)', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                           {row[ci] ?? ''}
@@ -166,7 +166,7 @@ export default function CsvViewer() {
                 </tbody>
               </table>
               {sortedRows.length > 500 && (
-                <p style={{ padding: '8px 12px', fontFamily: 'var(--font-ui)', fontSize: 12, color: 'var(--text-tertiary)', borderTop: '1px solid var(--border)', margin: 0 }}>
+                <p style={{ padding: '8px 12px', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', borderTop: '1px solid var(--border)', margin: 0 }}>
                   Showing 500 of {sortedRows.length} rows
                 </p>
               )}

@@ -68,7 +68,7 @@ export default function PdfPageNumbers() {
       <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'PDF Tools', 'Add Page Numbers']} />
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['pdf-page-numbers']?.title ?? 'Add Page Numbers'}</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-page-numbers']?.description ?? 'Insert page numbers into your PDF document easily.'}</p>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-page-numbers']?.description ?? 'Insert page numbers into your PDF document easily.'}</p>
       
       <FileUpload accept={['.pdf']} maxSizeMB={50} onFiles={setFiles} />
       
@@ -76,7 +76,7 @@ export default function PdfPageNumbers() {
         <div style={{ marginTop: 24, padding: 24, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
             <div>
-              <label style={{ display: 'block', fontSize: 14, marginBottom: 6, fontWeight: 500 }}>Position (Bottom)</label>
+              <label style={{ display: 'block', fontSize: 'var(--text-sm)', marginBottom: 6, fontWeight: 500 }}>Position (Bottom)</label>
               <select value={position} onChange={(e) => setPosition(e.target.value as any)} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)' }}>
                 <option value="left">Left</option>
                 <option value="center">Center</option>
@@ -84,11 +84,11 @@ export default function PdfPageNumbers() {
               </select>
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: 14, marginBottom: 6, fontWeight: 500 }}>Start Number</label>
+              <label style={{ display: 'block', fontSize: 'var(--text-sm)', marginBottom: 6, fontWeight: 500 }}>Start Number</label>
               <input type="number" min="1" value={startNum} onChange={(e) => setStartNum(parseInt(e.target.value) || 1)} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }} />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: 14, marginBottom: 6, fontWeight: 500 }}>Font Size</label>
+              <label style={{ display: 'block', fontSize: 'var(--text-sm)', marginBottom: 6, fontWeight: 500 }}>Font Size</label>
               <input type="number" min="8" max="24" value={fontSize} onChange={(e) => setFontSize(parseInt(e.target.value) || 12)} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }} />
             </div>
           </div>
@@ -97,13 +97,13 @@ export default function PdfPageNumbers() {
 
       {files.length > 0 && !isProcessing && (
         <button onClick={handleConvert} disabled={isProcessing}
-          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15, fontWeight: 500, cursor: 'pointer', width: '100%' }}>
+          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer', width: '100%' }}>
           Add Numbers
         </button>
       )}
       
       {isProcessing && <ProgressBar progress={progress} label="Applying page numbers..." />}
-      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
+      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 'var(--text-sm)' }}>{error}</p>}
       {result && <ResultPanel {...result} />}
       <AdSlot type="horizontal" />
     </div>

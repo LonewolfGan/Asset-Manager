@@ -77,7 +77,7 @@ export default function PdfWatermark() {
       <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'PDF Tools', 'Watermark PDF']} />
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['pdf-watermark']?.title ?? 'Watermark PDF'}</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-watermark']?.description ?? 'Add a diagonal text watermark to all pages of a PDF.'}</p>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-watermark']?.description ?? 'Add a diagonal text watermark to all pages of a PDF.'}</p>
       
       <FileUpload accept={['.pdf']} maxSizeMB={50} onFiles={setFiles} />
       
@@ -85,22 +85,22 @@ export default function PdfWatermark() {
         <div style={{ marginTop: 24, padding: 24, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 16 }}>
             <div>
-              <label style={{ display: 'block', fontSize: 14, marginBottom: 6, fontWeight: 500 }}>Watermark Text</label>
+              <label style={{ display: 'block', fontSize: 'var(--text-sm)', marginBottom: 6, fontWeight: 500 }}>Watermark Text</label>
               <input type="text" value={text} onChange={(e) => setText(e.target.value)} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }} />
             </div>
           </div>
           
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginTop: 16 }}>
             <div>
-              <label style={{ display: 'block', fontSize: 14, marginBottom: 6, fontWeight: 500 }}>Font Size ({fontSize})</label>
+              <label style={{ display: 'block', fontSize: 'var(--text-sm)', marginBottom: 6, fontWeight: 500 }}>Font Size ({fontSize})</label>
               <input type="range" min="12" max="120" value={fontSize} onChange={(e) => setFontSize(parseInt(e.target.value))} style={{ width: '100%' }} />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: 14, marginBottom: 6, fontWeight: 500 }}>Opacity ({Math.round(opacity*100)}%)</label>
+              <label style={{ display: 'block', fontSize: 'var(--text-sm)', marginBottom: 6, fontWeight: 500 }}>Opacity ({Math.round(opacity*100)}%)</label>
               <input type="range" min="0.1" max="1" step="0.1" value={opacity} onChange={(e) => setOpacity(parseFloat(e.target.value))} style={{ width: '100%' }} />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: 14, marginBottom: 6, fontWeight: 500 }}>Color</label>
+              <label style={{ display: 'block', fontSize: 'var(--text-sm)', marginBottom: 6, fontWeight: 500 }}>Color</label>
               <select value={colorStr} onChange={(e) => setColorStr(e.target.value)} style={{ width: '100%', padding: '8px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)' }}>
                 <option value="gray">Gray</option>
                 <option value="black">Black</option>
@@ -114,13 +114,13 @@ export default function PdfWatermark() {
 
       {files.length > 0 && !isProcessing && (
         <button onClick={handleConvert} disabled={isProcessing || !text}
-          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 15, fontWeight: 500, cursor: 'pointer', width: '100%' }}>
+          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer', width: '100%' }}>
           Add Watermark
         </button>
       )}
       
       {isProcessing && <ProgressBar progress={progress} label="Applying watermark..." />}
-      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14 }}>{error}</p>}
+      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 'var(--text-sm)' }}>{error}</p>}
       {result && <ResultPanel {...result} />}
       <AdSlot type="horizontal" />
     </div>

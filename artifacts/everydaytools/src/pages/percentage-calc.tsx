@@ -12,12 +12,12 @@ const inputStyle: React.CSSProperties = {
   width: '100%', padding: 10,
   border: '1px solid var(--border)', borderRadius: 'var(--radius)',
   background: 'var(--bg-base)', color: 'var(--text-primary)',
-  fontFamily: 'var(--font-mono)', fontSize: 14, outline: 'none', boxSizing: 'border-box',
+  fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', outline: 'none', boxSizing: 'border-box',
 };
 
 const labelStyle: React.CSSProperties = {
   display: 'block', marginBottom: 8,
-  fontSize: 12, fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase',
+  fontSize: 'var(--text-xs)', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase',
   color: 'var(--text-tertiary)',
 };
 
@@ -85,7 +85,7 @@ export default function PercentageCalc() {
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 6px', letterSpacing: '-0.02em' }}>
           {t.tools['percentage-calc']?.title ?? 'Percentage Calculator'}
         </h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>
           {t.tools['percentage-calc']?.description ?? 'Instantly calculate percentages, discounts, tips, and margins.'}
         </p>
 
@@ -100,7 +100,7 @@ export default function PercentageCalc() {
                 background: tab === tb.id ? 'var(--accent)' : 'transparent',
                 color: tab === tb.id ? 'var(--accent-text)' : 'var(--text-secondary)',
                 border: '1px solid var(--border)', borderRadius: 'var(--radius)',
-                cursor: 'pointer', fontSize: 13, fontFamily: 'var(--font-ui)', fontWeight: 500,
+                cursor: 'pointer', fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)', fontWeight: 500,
                 transition: 'background 120ms, color 120ms',
               }}
             >
@@ -143,7 +143,7 @@ export default function PercentageCalc() {
           </div>
 
           <div style={{ background: 'var(--bg-base)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: 24, textAlign: 'center' }}>
-            <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-tertiary)', marginBottom: 10 }}>
+            <div style={{ fontSize: 'var(--text-xs)', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-tertiary)', marginBottom: 10 }}>
               {pc.result}
             </div>
             <div style={{ fontSize: 32, fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--text-primary)' }}>

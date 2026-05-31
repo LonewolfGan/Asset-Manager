@@ -75,18 +75,18 @@ export default function Base64() {
       <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
         <Breadcrumb items={['Home', 'Text & Code', title]} />
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{title}</h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 24, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{desc}</p>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: 24, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{desc}</p>
 
         <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
           {(['encode', 'decode'] as Mode[]).map((m) => (
             <button key={m} onClick={() => handleMode(m)}
-              style={{ padding: '7px 18px', border: `1px solid ${mode === m ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius)', background: mode === m ? 'var(--accent-subtle,#fff4ef)' : 'var(--bg-surface)', color: mode === m ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: mode === m ? 600 : 400, cursor: 'pointer' }}>
+              style={{ padding: '7px 18px', border: `1px solid ${mode === m ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius)', background: mode === m ? 'var(--accent-subtle,#fff4ef)' : 'var(--bg-surface)', color: mode === m ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: mode === m ? 600 : 400, cursor: 'pointer' }}>
               {m === 'encode' ? t.common.encode : t.common.decode}
             </button>
           ))}
           {mode === 'encode' && (
             <button onClick={() => inputRef.current?.click()}
-              style={{ padding: '7px 14px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-surface)', color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 13, cursor: 'pointer' }}>
+              style={{ padding: '7px 14px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-surface)', color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', cursor: 'pointer' }}>
               {t.base64Encoder.uploadFile}
             </button>
           )}
@@ -95,33 +95,33 @@ export default function Base64() {
 
         <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 16 }}>
           <div>
-            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: 500, color: 'var(--text-primary)', marginBottom: 6 }}>
+            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-primary)', marginBottom: 6 }}>
               {mode === 'encode' ? t.base64Encoder.plainTextInput : t.base64Encoder.base64Input}
             </p>
             {fileMode ? (
               <div style={{ height: 320, border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-elevated)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 8 }}>
-                <span style={{ fontFamily: 'var(--font-ui)', fontSize: 14, color: 'var(--text-primary)' }}>{fileName}</span>
-                <button onClick={() => { setFileMode(false); setFileName(''); setInput(''); setOutput(''); }} style={{ padding: '4px 12px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 12, color: 'var(--text-secondary)', cursor: 'pointer' }}>{t.common.clear}</button>
+                <span style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)' }}>{fileName}</span>
+                <button onClick={() => { setFileMode(false); setFileName(''); setInput(''); setOutput(''); }} style={{ padding: '4px 12px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', cursor: 'pointer' }}>{t.common.clear}</button>
               </div>
             ) : (
               <textarea value={input} onChange={(e) => handleInput(e.target.value)}
                 placeholder={mode === 'encode' ? t.base64Encoder.encodePlaceholder : t.base64Encoder.decodePlaceholder}
-                style={{ width: '100%', height: 320, padding: 14, border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 13, resize: 'vertical', boxSizing: 'border-box', lineHeight: 1.5 }}
+                style={{ width: '100%', height: 320, padding: 14, border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', resize: 'vertical', boxSizing: 'border-box', lineHeight: 1.5 }}
               />
             )}
-            {error && <p style={{ color: 'var(--danger,#dc2626)', fontSize: 12, marginTop: 6, fontFamily: 'var(--font-mono)' }}>{error}</p>}
+            {error && <p style={{ color: 'var(--danger,#dc2626)', fontSize: 'var(--text-xs)', marginTop: 6, fontFamily: 'var(--font-mono)' }}>{error}</p>}
           </div>
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-              <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: 500, color: 'var(--text-primary)', margin: 0 }}>
+              <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-primary)', margin: 0 }}>
                 {mode === 'encode' ? t.base64Encoder.base64Output : t.base64Encoder.decodedText}
               </p>
-              {output && <button onClick={copy} style={{ padding: '3px 10px', border: '1px solid var(--border)', borderRadius: 5, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 12, color: copied ? 'var(--accent)' : 'var(--text-secondary)', cursor: 'pointer', transition: 'color 150ms ease' }}>{copied ? '✓ ' + t.common.copied : t.common.copy}</button>}
+              {output && <button onClick={copy} style={{ padding: '3px 10px', border: '1px solid var(--border)', borderRadius: 5, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: copied ? 'var(--accent)' : 'var(--text-secondary)', cursor: 'pointer', transition: 'color 150ms ease' }}>{copied ? '✓ ' + t.common.copied : t.common.copy}</button>}
             </div>
             <textarea readOnly value={output} placeholder={t.common.outputAppearsHere}
-              style={{ width: '100%', height: 320, padding: 14, border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-elevated)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 13, resize: 'vertical', boxSizing: 'border-box', lineHeight: 1.5, wordBreak: 'break-all' }}
+              style={{ width: '100%', height: 320, padding: 14, border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-elevated)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', resize: 'vertical', boxSizing: 'border-box', lineHeight: 1.5, wordBreak: 'break-all' }}
             />
-            {output && <p style={{ color: 'var(--text-tertiary)', fontSize: 12, marginTop: 6, fontFamily: 'var(--font-mono)' }}>{t.base64Encoder.chars(output.length)}</p>}
+            {output && <p style={{ color: 'var(--text-tertiary)', fontSize: 'var(--text-xs)', marginTop: 6, fontFamily: 'var(--font-mono)' }}>{t.base64Encoder.chars(output.length)}</p>}
           </div>
         </div>
         <AdSlot type="horizontal" />

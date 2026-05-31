@@ -116,7 +116,7 @@ export default function WordToPdf() {
       <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
         <Breadcrumb items={['Home', 'Documents', title]} />
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{title}</h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{desc}</p>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{desc}</p>
 
         <div
           onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
@@ -127,20 +127,20 @@ export default function WordToPdf() {
         >
           <input ref={inputRef} type="file" accept=".docx,.doc" style={{ display: 'none' }}
             onChange={(e) => { if (e.target.files?.[0]) handleFile(e.target.files[0]); }} />
-          <p style={{ fontFamily: 'var(--font-ui)', fontSize: 15, color: 'var(--text-secondary)', margin: 0 }}>
+          <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', margin: 0 }}>
             Drop DOCX or DOC file here, or click to browse
           </p>
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)', marginTop: 6 }}>.docx · .doc · max 25 MB</p>
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', marginTop: 6 }}>.docx · .doc · max 25 MB</p>
         </div>
 
         {file && (
           <div style={{ marginTop: 16, padding: '12px 16px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', display: 'flex', alignItems: 'center', gap: 12 }}>
             <div style={{ flex: 1 }}>
-              <p style={{ fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, margin: 0, color: 'var(--text-primary)' }}>{file.name}</p>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-secondary)', margin: '2px 0 0' }}>{formatBytes(file.size)}</p>
+              <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, margin: 0, color: 'var(--text-primary)' }}>{file.name}</p>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', margin: '2px 0 0' }}>{formatBytes(file.size)}</p>
             </div>
             <button onClick={() => { setFile(null); setStatus('idle'); setPdfBlob(null); }}
-              style={{ padding: '4px 10px', border: '1px solid var(--border)', borderRadius: 5, background: 'transparent', color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 12, cursor: 'pointer' }}>
+              style={{ padding: '4px 10px', border: '1px solid var(--border)', borderRadius: 5, background: 'transparent', color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>
               Remove
             </button>
           </div>
@@ -148,14 +148,14 @@ export default function WordToPdf() {
 
         {file && status !== 'processing' && (
           <button onClick={convert}
-            style={{ marginTop: 16, width: '100%', padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 15, fontWeight: 500, cursor: 'pointer' }}>
+            style={{ marginTop: 16, width: '100%', padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer' }}>
             Convert to PDF
           </button>
         )}
 
         {status === 'processing' && (
           <div style={{ marginTop: 16, padding: 16, background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-secondary)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>
               <span>Converting…</span><span style={{ fontFamily: 'var(--font-mono)' }}>{progress}%</span>
             </div>
             <div style={{ height: 6, background: 'var(--bg-elevated)', borderRadius: 3, overflow: 'hidden' }}>
@@ -165,7 +165,7 @@ export default function WordToPdf() {
         )}
 
         {status === 'error' && (
-          <div style={{ marginTop: 16, padding: 14, background: 'var(--bg-surface)', border: '1px solid var(--danger, #dc2626)', borderRadius: 'var(--radius)', color: 'var(--danger, #dc2626)', fontFamily: 'var(--font-ui)', fontSize: 14 }}>
+          <div style={{ marginTop: 16, padding: 14, background: 'var(--bg-surface)', border: '1px solid var(--danger, #dc2626)', borderRadius: 'var(--radius)', color: 'var(--danger, #dc2626)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)' }}>
             {error}
           </div>
         )}
@@ -173,11 +173,11 @@ export default function WordToPdf() {
         {status === 'done' && pdfBlob && (
           <div style={{ marginTop: 16, padding: '16px 20px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
             <div>
-              <p style={{ fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, margin: 0, color: 'var(--text-primary)' }}>PDF ready</p>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-secondary)', margin: '2px 0 0' }}>{formatBytes(pdfBlob.size)}</p>
+              <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, margin: 0, color: 'var(--text-primary)' }}>PDF ready</p>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', margin: '2px 0 0' }}>{formatBytes(pdfBlob.size)}</p>
             </div>
             <button onClick={download}
-              style={{ padding: '10px 20px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}>
+              style={{ padding: '10px 20px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer' }}>
               Download PDF
             </button>
           </div>

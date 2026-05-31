@@ -55,29 +55,29 @@ export default function BackgroundRemover() {
       <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Image Tools', 'Background Remover']} />
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['background-remover']?.title ?? 'Background Remover'}</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['background-remover']?.description ?? 'Remove image backgrounds entirely in your browser using local AI.'}</p>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['background-remover']?.description ?? 'Remove image backgrounds entirely in your browser using local AI.'}</p>
 
       <FileUpload accept={['image/jpeg', 'image/png', 'image/webp']} maxSizeMB={10} onFiles={setFiles} />
 
       {files.length > 0 && !isProcessing && (
         <button onClick={handleConvert} disabled={isProcessing}
-          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 15, fontWeight: 500, cursor: 'pointer', width: '100%' }}>
+          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer', width: '100%' }}>
           {tc.removeBtn}
         </button>
       )}
 
       {isProcessing && <ProgressBar progress={progress} label={loadingEngine ? tc.loadingModel : tc.processingImage} />}
-      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 14, fontFamily: 'var(--font-ui)' }}>{error}</p>}
+      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{error}</p>}
 
       {result && (
         <div style={{ marginTop: 24 }}>
           <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
             <div style={{ flex: 1 }}>
-              <p style={{ fontSize: 14, fontWeight: 500, marginBottom: 8, fontFamily: 'var(--font-ui)', color: 'var(--text-primary)' }}>{tc.original}</p>
+              <p style={{ fontSize: 'var(--text-sm)', fontWeight: 500, marginBottom: 8, fontFamily: 'var(--font-ui)', color: 'var(--text-primary)' }}>{tc.original}</p>
               <img src={URL.createObjectURL(files[0])} style={{ width: '100%', borderRadius: 'var(--radius)', border: '1px solid var(--border)' }} alt={tc.original} />
             </div>
             <div style={{ flex: 1 }}>
-              <p style={{ fontSize: 14, fontWeight: 500, marginBottom: 8, fontFamily: 'var(--font-ui)', color: 'var(--text-primary)' }}>{tc.result}</p>
+              <p style={{ fontSize: 'var(--text-sm)', fontWeight: 500, marginBottom: 8, fontFamily: 'var(--font-ui)', color: 'var(--text-primary)' }}>{tc.result}</p>
               <div style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 0h10v10H0zm10 10h10v10H10z\' fill=\'%23e5e5e5\' fill-rule=\'evenodd\'/%3E%3C/svg%3E")', borderRadius: 'var(--radius)', border: '1px solid var(--border)', overflow: 'hidden' }}>
                 <img src={URL.createObjectURL(result.blob)} style={{ width: '100%', display: 'block' }} alt={tc.result} />
               </div>

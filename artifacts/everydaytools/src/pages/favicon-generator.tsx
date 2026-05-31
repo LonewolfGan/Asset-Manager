@@ -72,7 +72,7 @@ export default function FaviconGenerator() {
       <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
         <Breadcrumb items={['Home', 'Image Tools', title]} />
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{title}</h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{desc}</p>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{desc}</p>
 
         <div
           onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
@@ -86,23 +86,23 @@ export default function FaviconGenerator() {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
               <img src={previewUrl} alt="preview" style={{ width: 64, height: 64, objectFit: 'contain', borderRadius: 8, border: '1px solid var(--border)' }} />
               <div style={{ textAlign: 'left' }}>
-                <p style={{ fontFamily: 'var(--font-ui)', fontSize: 14, color: 'var(--text-primary)', margin: 0, fontWeight: 500 }}>{file?.name}</p>
-                <p style={{ fontFamily: 'var(--font-ui)', fontSize: 12, color: 'var(--text-secondary)', margin: '4px 0 0' }}>Click to change</p>
+                <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', margin: 0, fontWeight: 500 }}>{file?.name}</p>
+                <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', margin: '4px 0 0' }}>Click to change</p>
               </div>
             </div>
           ) : (
             <>
-              <p style={{ fontFamily: 'var(--font-ui)', fontSize: 15, color: 'var(--text-secondary)', margin: 0 }}>Drop PNG, JPG, or SVG, or click to browse</p>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)', marginTop: 6 }}>Best results with a square image</p>
+              <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', margin: 0 }}>Drop PNG, JPG, or SVG, or click to browse</p>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', marginTop: 6 }}>Best results with a square image</p>
             </>
           )}
         </div>
 
         <div style={{ padding: 16, background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', marginBottom: 20 }}>
-          <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, fontWeight: 500, color: 'var(--text-primary)', marginBottom: 12 }}>Sizes generated:</p>
+          <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-primary)', marginBottom: 12 }}>Sizes generated:</p>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             {SIZES.map((s) => (
-              <span key={s} style={{ padding: '3px 10px', background: 'var(--bg-elevated)', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-secondary)' }}>
+              <span key={s} style={{ padding: '3px 10px', background: 'var(--bg-elevated)', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>
                 {s === 180 ? 'Apple 180×180' : s === 192 ? 'Android 192×192' : `${s}×${s}`}
               </span>
             ))}
@@ -110,12 +110,12 @@ export default function FaviconGenerator() {
         </div>
 
         <button onClick={generate} disabled={!file || status === 'processing'}
-          style={{ width: '100%', padding: '12px 24px', background: !file || status === 'processing' ? 'var(--bg-elevated)' : 'var(--accent)', color: !file || status === 'processing' ? 'var(--text-tertiary)' : 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 15, fontWeight: 500, cursor: !file || status === 'processing' ? 'not-allowed' : 'pointer' }}>
+          style={{ width: '100%', padding: '12px 24px', background: !file || status === 'processing' ? 'var(--bg-elevated)' : 'var(--accent)', color: !file || status === 'processing' ? 'var(--text-tertiary)' : 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: !file || status === 'processing' ? 'not-allowed' : 'pointer' }}>
           {status === 'processing' ? 'Generating…' : 'Generate & Download ZIP'}
         </button>
 
         {status === 'done' && (
-          <p style={{ marginTop: 14, fontFamily: 'var(--font-ui)', fontSize: 14, color: 'var(--text-secondary)', textAlign: 'center' }}>
+          <p style={{ marginTop: 14, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', textAlign: 'center' }}>
             All favicon sizes generated and downloaded.
           </p>
         )}

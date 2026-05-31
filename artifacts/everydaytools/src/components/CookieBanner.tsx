@@ -43,7 +43,7 @@ export default function CookieBanner() {
         fontFamily: 'var(--font-ui)',
       }}
     >
-      <p style={{ margin: 0, fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.55, maxWidth: 680 }}>
+      <p style={{ margin: 0, fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', lineHeight: 1.55, maxWidth: 680 }}>
         {t.cookie.message}{' '}
         <strong style={{ color: 'var(--text-primary)', fontWeight: 500 }}>{t.cookie.neverUploaded}</strong>
         {' — '}
@@ -61,7 +61,7 @@ export default function CookieBanner() {
             borderRadius: 'var(--radius)',
             color: 'var(--text-secondary)',
             fontFamily: 'var(--font-ui)',
-            fontSize: 13,
+            fontSize: 'var(--text-sm)',
             fontWeight: 500,
             cursor: 'pointer',
             whiteSpace: 'nowrap',
@@ -78,7 +78,7 @@ export default function CookieBanner() {
             borderRadius: 'var(--radius)',
             color: 'var(--accent-text)',
             fontFamily: 'var(--font-ui)',
-            fontSize: 13,
+            fontSize: 'var(--text-sm)',
             fontWeight: 500,
             cursor: 'pointer',
             whiteSpace: 'nowrap',

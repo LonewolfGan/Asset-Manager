@@ -95,11 +95,11 @@ export default function UnitConverter() {
       <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Calculators', 'Unit Converter']} />
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['unit-converter']?.title ?? 'Unit Converter'}</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['unit-converter']?.description ?? 'Convert between 200+ units across 13 measurement categories.'}</p>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['unit-converter']?.description ?? 'Convert between 200+ units across 13 measurement categories.'}</p>
       
       <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 16, marginBottom: 16, borderBottom: '1px solid var(--border)' }}>
         {UNIT_CATEGORIES.map(c => (
-          <button key={c.id} onClick={() => setActiveCategory(c.id)} style={{ padding: '8px 16px', background: activeCategory === c.id ? 'var(--accent)' : 'var(--bg)', color: activeCategory === c.id ? 'var(--accent-text)' : 'var(--text-primary)', border: 'none', borderRadius: 'var(--radius)', cursor: 'pointer', fontSize: 14, whiteSpace: 'nowrap' }}>
+          <button key={c.id} onClick={() => setActiveCategory(c.id)} style={{ padding: '8px 16px', background: activeCategory === c.id ? 'var(--accent)' : 'var(--bg)', color: activeCategory === c.id ? 'var(--accent-text)' : 'var(--text-primary)', border: 'none', borderRadius: 'var(--radius)', cursor: 'pointer', fontSize: 'var(--text-sm)', whiteSpace: 'nowrap' }}>
             {t.unitConverter.categoryNames[c.id] ?? c.name}
           </button>
         ))}
@@ -110,19 +110,19 @@ export default function UnitConverter() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div style={{ display: 'flex', gap: 16, alignItems: isMobile ? 'stretch' : 'center', flexDirection: isMobile ? 'column' : 'row' }}>
             <div style={{ flex: 1 }}>
-              <label htmlFor="unit-from-selector" style={{ display: 'block', fontSize: 14, marginBottom: 8, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.unitConverter.from}</label>
+              <label htmlFor="unit-from-selector" style={{ display: 'block', fontSize: 'var(--text-sm)', marginBottom: 8, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.unitConverter.from}</label>
               <FormatSelector options={unitOptions} value={fromUnit} onChange={setFromUnit} aria-label={t.unitConverter.from} />
             </div>
             <button onClick={handleSwap} aria-label={t.unitConverter.swapAriaLabel} style={{ marginTop: isMobile ? 0 : 26, alignSelf: isMobile ? 'center' : 'auto', padding: '8px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '50%', cursor: 'pointer', color: 'var(--text-primary)', lineHeight: 1 }}>⇄</button>
             <div style={{ flex: 1 }}>
-              <label htmlFor="unit-to-selector" style={{ display: 'block', fontSize: 14, marginBottom: 8, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.unitConverter.to}</label>
+              <label htmlFor="unit-to-selector" style={{ display: 'block', fontSize: 'var(--text-sm)', marginBottom: 8, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.unitConverter.to}</label>
               <FormatSelector options={unitOptions} value={toUnit} onChange={setToUnit} aria-label={t.unitConverter.to} />
             </div>
           </div>
           
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 40, marginTop: 16 }}>
             <div>
-              <label htmlFor="unit-amount" style={{ display: 'block', fontSize: 13, marginBottom: 6, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.unitConverter.from}</label>
+              <label htmlFor="unit-amount" style={{ display: 'block', fontSize: 'var(--text-sm)', marginBottom: 6, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.unitConverter.from}</label>
               <input id="unit-amount" type="number" value={amount} onChange={e => setAmount(e.target.value)} style={{ width: '100%', padding: '16px', fontSize: 24, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)', border: 'none', borderBottom: '2px solid var(--accent)', outline: 'none', background: 'var(--bg)', borderRadius: 'var(--radius) var(--radius) 0 0' }} />
             </div>
             <div style={{ padding: '16px 0', fontSize: 24, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)', borderBottom: '2px solid var(--border)' }}>
@@ -131,10 +131,10 @@ export default function UnitConverter() {
           </div>
           
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 16 }}>
-            <span style={{ fontSize: 14, color: 'var(--muted)' }}>
+            <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted)' }}>
               1 {category.units.find(u => u.id === fromUnit)?.symbol} = {calculate("1")} {category.units.find(u => u.id === toUnit)?.symbol}
             </span>
-            <button onClick={toggleFavorite} aria-label={favorites.includes(`${activeCategory}:${fromUnit}:${toUnit}`) ? t.unitConverter.pinned : t.unitConverter.pin} style={{ padding: '6px 12px', background: 'none', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: 13, cursor: 'pointer', color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>
+            <button onClick={toggleFavorite} aria-label={favorites.includes(`${activeCategory}:${fromUnit}:${toUnit}`) ? t.unitConverter.pinned : t.unitConverter.pin} style={{ padding: '6px 12px', background: 'none', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: 'var(--text-sm)', cursor: 'pointer', color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>
               {favorites.includes(`${activeCategory}:${fromUnit}:${toUnit}`) ? `★ ${t.unitConverter.pinned}` : `☆ ${t.unitConverter.pin}`}
             </button>
           </div>
@@ -143,7 +143,7 @@ export default function UnitConverter() {
       
       {favorites.length > 0 && (
         <div style={{ marginBottom: 32 }}>
-          <h3 style={{ fontSize: 14, fontWeight: 500, marginBottom: 12, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{t.unitConverter.pinnedConversions}</h3>
+          <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 500, marginBottom: 12, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{t.unitConverter.pinnedConversions}</h3>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             {favorites.map(fav => {
               const [cat, from, to] = fav.split(':');
@@ -151,7 +151,7 @@ export default function UnitConverter() {
               const fName = c?.units.find(u => u.id === from)?.symbol;
               const tName = c?.units.find(u => u.id === to)?.symbol;
               return (
-                <button key={fav} onClick={() => loadFavorite(fav)} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', cursor: 'pointer', fontSize: 13 }}>
+                <button key={fav} onClick={() => loadFavorite(fav)} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', cursor: 'pointer', fontSize: 'var(--text-sm)' }}>
                   {fName} → {tName}
                 </button>
               )

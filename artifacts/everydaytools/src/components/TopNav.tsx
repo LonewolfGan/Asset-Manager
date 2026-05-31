@@ -259,7 +259,7 @@ function MobileDrawer({ open, onClose, currentPath }: { open: boolean; onClose: 
               <rect x="14" y="28" width="28" height="7" rx="2" fill="#111111"/>
               <rect x="14" y="41" width="36" height="7" rx="2" fill="#111111"/>
             </svg>
-            <span style={{ fontFamily: "var(--font-display)", fontSize: 15, fontWeight: 600, color: "var(--text-primary)", letterSpacing: "-0.02em" }}>EverydayTools</span>
+            <span style={{ fontFamily: "var(--font-display)", fontSize: 'var(--text-sm)', fontWeight: 600, color: "var(--text-primary)", letterSpacing: "-0.02em" }}>EverydayTools</span>
           </div>
           <button onClick={onClose} aria-label="Close menu" style={{ background: "none", border: "none", cursor: "pointer", padding: 4, color: "var(--text-secondary)" }}>
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 3l12 12M15 3L3 15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>
@@ -279,7 +279,7 @@ function MobileDrawer({ open, onClose, currentPath }: { open: boolean; onClose: 
             <input
               type="search"
               placeholder={t.nav.searchPlaceholder}
-              style={{ background: "transparent", border: "none", outline: "none", fontSize: 13, color: "var(--text-primary)", width: "100%", fontFamily: "var(--font-ui)" }}
+              style={{ background: "transparent", border: "none", outline: "none", fontSize: 'var(--text-sm)', color: "var(--text-primary)", width: "100%", fontFamily: "var(--font-ui)" }}
               onChange={(e) => {
                 window.dispatchEvent(new CustomEvent("et:search", { detail: e.target.value }));
               }}
@@ -323,7 +323,7 @@ function MobileDrawer({ open, onClose, currentPath }: { open: boolean; onClose: 
           </button>
           <div style={{ display: "flex", border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
             {(["EN", "FR"] as const).map((lang, i) => (
-              <button key={lang} onClick={() => { setLocale(lang); trackLanguageChanged(lang.toLowerCase()); }} style={{ background: lang === locale ? "var(--bg-subtle)" : "transparent", color: lang === locale ? "var(--text-primary)" : "var(--text-secondary)", border: "none", borderLeft: i === 1 ? "1px solid var(--border)" : "none", padding: "6px 12px", fontFamily: "var(--font-mono)", fontSize: 11, fontWeight: 500, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <button key={lang} onClick={() => { setLocale(lang); trackLanguageChanged(lang.toLowerCase()); }} style={{ background: lang === locale ? "var(--bg-subtle)" : "transparent", color: lang === locale ? "var(--text-primary)" : "var(--text-secondary)", border: "none", borderLeft: i === 1 ? "1px solid var(--border)" : "none", padding: "6px 12px", fontFamily: "var(--font-mono)", fontSize: 'var(--text-xs)', fontWeight: 500, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 {lang}
               </button>
             ))}
@@ -383,7 +383,7 @@ export default function TopNav() {
               <rect x="14" y="28" width="28" height="7" rx="2" fill="#111111"/>
               <rect x="14" y="41" width="36" height="7" rx="2" fill="#111111"/>
             </svg>
-            <span style={{ fontFamily: "var(--font-display)", fontSize: 16, fontWeight: 600, color: "var(--text-primary)", letterSpacing: "-0.02em", lineHeight: 1 }}>
+            <span style={{ fontFamily: "var(--font-display)", fontSize: 'var(--text-base)', fontWeight: 600, color: "var(--text-primary)", letterSpacing: "-0.02em", lineHeight: 1 }}>
               EverydayTools
             </span>
           </Link>
@@ -436,7 +436,7 @@ export default function TopNav() {
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0 }}>
               <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
             </svg>
-            <span style={{ flex: 1, fontSize: 13, color: "var(--text-tertiary)", fontFamily: "var(--font-ui)" }}>
+            <span style={{ flex: 1, fontSize: 'var(--text-sm)', color: "var(--text-tertiary)", fontFamily: "var(--font-ui)" }}>
               {t.nav.searchPlaceholder}
             </span>
             <kbd style={{
@@ -471,7 +471,7 @@ export default function TopNav() {
                     borderLeft: i === 1 ? "1px solid var(--border)" : "none",
                     padding: "5px 10px",
                     fontFamily: "var(--font-mono)",
-                    fontSize: 11,
+                    fontSize: 'var(--text-xs)',
                     fontWeight: 500,
                     cursor: "pointer",
                     transition: "background 120ms ease, color 120ms ease",

@@ -33,7 +33,7 @@ export default function WordCounter() {
   const stat = (label: string, value: string | number) => (
     <div style={{ padding: '14px 16px', background: 'var(--bg-elevated)', borderRadius: 10, textAlign: 'center' }}>
       <p style={{ fontFamily: 'var(--font-mono)', fontSize: 26, fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 4px' }}>{value}</p>
-      <p style={{ fontFamily: 'var(--font-ui)', fontSize: 12, color: 'var(--text-tertiary)', margin: 0, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{label}</p>
+      <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', margin: 0, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{label}</p>
     </div>
   );
 
@@ -42,7 +42,7 @@ export default function WordCounter() {
       <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
         <Breadcrumb items={['Home', 'Text & Code', title]} />
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{title}</h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 24, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{desc}</p>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: 24, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{desc}</p>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 20 }}>
           {stat(t.wordCounter.words, stats.words)}
@@ -57,13 +57,13 @@ export default function WordCounter() {
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder={t.wordCounter.pasteHere}
-          style={{ width: '100%', height: 340, padding: 16, border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', fontSize: 14, lineHeight: 1.6, resize: 'vertical', boxSizing: 'border-box' }}
+          style={{ width: '100%', height: 340, padding: 16, border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', lineHeight: 1.6, resize: 'vertical', boxSizing: 'border-box' }}
         />
 
         {text && (
           <div style={{ marginTop: 12, display: 'flex', gap: 8 }}>
-            <button onClick={() => setText('')} style={{ padding: '5px 14px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 12, color: 'var(--text-secondary)', cursor: 'pointer' }}>{t.wordCounter.clear}</button>
-            <button onClick={() => navigator.clipboard.writeText(text)} style={{ padding: '5px 14px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 12, color: 'var(--text-secondary)', cursor: 'pointer' }}>{t.wordCounter.copyText}</button>
+            <button onClick={() => setText('')} style={{ padding: '5px 14px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', cursor: 'pointer' }}>{t.wordCounter.clear}</button>
+            <button onClick={() => navigator.clipboard.writeText(text)} style={{ padding: '5px 14px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', cursor: 'pointer' }}>{t.wordCounter.copyText}</button>
           </div>
         )}
         <AdSlot type="horizontal" />

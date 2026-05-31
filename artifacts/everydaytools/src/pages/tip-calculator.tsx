@@ -17,13 +17,13 @@ const inputStyle: React.CSSProperties = {
   borderRadius: 'var(--radius)',
   color: 'var(--text-primary)',
   fontFamily: 'var(--font-mono)',
-  fontSize: 15,
+  fontSize: 'var(--text-sm)',
   outline: 'none',
   boxSizing: 'border-box',
 };
 
 const labelStyle: React.CSSProperties = {
-  fontSize: 12,
+  fontSize: 'var(--text-xs)',
   fontWeight: 600,
   letterSpacing: '0.06em',
   textTransform: 'uppercase',
@@ -95,7 +95,7 @@ export default function TipCalculator() {
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 6px', letterSpacing: '-0.02em' }}>
           {t.tools['tip-calculator']?.title}
         </h1>
-        <p style={{ fontSize: 15, color: 'var(--text-secondary)', margin: '0 0 32px' }}>
+        <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', margin: '0 0 32px' }}>
           {t.tools['tip-calculator']?.description}
         </p>
 
@@ -112,7 +112,7 @@ export default function TipCalculator() {
                 color: tab === tabKey ? 'var(--accent-text)' : 'var(--text-secondary)',
                 border: 'none',
                 fontFamily: 'var(--font-ui)',
-                fontSize: 13,
+                fontSize: 'var(--text-sm)',
                 fontWeight: 500,
                 cursor: 'pointer',
                 transition: 'background 120ms, color 120ms',
@@ -129,7 +129,7 @@ export default function TipCalculator() {
               <div>
                 <label htmlFor="tip-bill" style={labelStyle}>{tc.billAmount}</label>
                 <div style={{ position: 'relative' }}>
-                  <span style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-tertiary)', fontSize: 15, fontFamily: 'var(--font-mono)' }}>$</span>
+                  <span style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)', fontFamily: 'var(--font-mono)' }}>$</span>
                   <input id="tip-bill" type="number" value={bill} min="0" step="0.01" onChange={e => { setBill(e.target.value); handleCalculate(); }} style={{ ...inputStyle, paddingLeft: 26 }} />
                 </div>
               </div>
@@ -137,7 +137,7 @@ export default function TipCalculator() {
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
                   <label htmlFor="tip-pct" style={{ ...labelStyle, margin: 0 }}>{tc.tipPct}</label>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 15, color: 'var(--text-primary)', fontWeight: 600 }}>{tipPercent}%</span>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', fontWeight: 600 }}>{tipPercent}%</span>
                 </div>
                 <input id="tip-pct" type="range" min={0} max={50} step={1} value={tipPercent} onChange={e => { setTipPercent(Number(e.target.value)); handleCalculate(); }} style={{ width: '100%', marginBottom: 12 }} />
                 <div style={{ display: 'flex', gap: 6 }}>
@@ -147,7 +147,7 @@ export default function TipCalculator() {
                       background: tipPercent === p ? 'var(--accent)' : 'transparent',
                       color: tipPercent === p ? 'var(--accent-text)' : 'var(--text-secondary)',
                       border: '1px solid', borderColor: tipPercent === p ? 'var(--accent)' : 'var(--border)',
-                      borderRadius: 'var(--radius)', fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 500, cursor: 'pointer', transition: 'all 120ms',
+                      borderRadius: 'var(--radius)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer', transition: 'all 120ms',
                     }}>{p}%</button>
                   ))}
                 </div>
@@ -156,7 +156,7 @@ export default function TipCalculator() {
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
                   <label htmlFor="tip-people" style={{ ...labelStyle, margin: 0 }}>{tc.numPeople}</label>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 15, color: 'var(--text-primary)', fontWeight: 600 }}>{people}</span>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', fontWeight: 600 }}>{people}</span>
                 </div>
                 <input id="tip-people" type="range" min={1} max={20} step={1} value={people} onChange={e => { setPeople(Number(e.target.value)); handleCalculate(); }} style={{ width: '100%' }} />
               </div>
@@ -164,26 +164,26 @@ export default function TipCalculator() {
 
             <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-card)', padding: 28, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
               <div style={resultRowStyle}>
-                <span style={{ fontSize: 14, color: 'var(--text-secondary)' }}>{tc.bill}</span>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 18, color: 'var(--text-primary)' }}>${fmt(numBill)}</span>
+                <span style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>{tc.bill}</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-lg)', color: 'var(--text-primary)' }}>${fmt(numBill)}</span>
               </div>
               <div style={resultRowStyle}>
-                <span style={{ fontSize: 14, color: 'var(--text-secondary)' }}>{tc.tip(tipPercent)}</span>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 18, color: 'var(--text-primary)' }}>${fmt(tipAmount)}</span>
+                <span style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>{tc.tip(tipPercent)}</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-lg)', color: 'var(--text-primary)' }}>${fmt(tipAmount)}</span>
               </div>
               <div style={{ ...resultRowStyle, borderBottom: 'none', paddingBottom: 0 }}>
-                <span style={{ fontSize: 16, fontWeight: 600, color: 'var(--text-primary)' }}>{tc.total}</span>
+                <span style={{ fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--text-primary)' }}>{tc.total}</span>
                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: 28, fontWeight: 700, color: 'var(--accent)' }}>${fmt(total)}</span>
               </div>
 
               {people > 1 && (
                 <div style={{ marginTop: 24, paddingTop: 24, borderTop: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: 12 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{tc.tipPerPerson}</span>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 15, color: 'var(--text-primary)' }}>${fmt(tipPerPerson)}</span>
+                    <span style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>{tc.tipPerPerson}</span>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)' }}>${fmt(tipPerPerson)}</span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-primary)' }}>{tc.totalPerPerson}</span>
+                    <span style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--text-primary)' }}>{tc.totalPerPerson}</span>
                     <span style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 700, color: 'var(--accent)' }}>${fmt(perPerson)}</span>
                   </div>
                 </div>
@@ -245,13 +245,13 @@ function PctInput({ value, onChange, w, suffix }: { value: string; onChange: (v:
           borderRadius: 'var(--radius)',
           color: 'var(--text-primary)',
           fontFamily: 'var(--font-mono)',
-          fontSize: 14,
+          fontSize: 'var(--text-sm)',
           outline: 'none',
           boxSizing: 'border-box',
         }}
       />
       {suffix && (
-        <span style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-tertiary)', fontSize: 13 }}>
+        <span style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)' }}>
           {suffix}
         </span>
       )}
@@ -267,7 +267,7 @@ function PercentCard({ label, children, result, resultColor }: {
       background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-card)',
       padding: '20px 24px', display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap',
     }}>
-      <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase', color: 'var(--text-tertiary)', marginRight: 4, flexShrink: 0, minWidth: 140 }}>
+      <span style={{ fontSize: 'var(--text-xs)', fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase', color: 'var(--text-tertiary)', marginRight: 4, flexShrink: 0, minWidth: 140 }}>
         {label}
       </span>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', flex: 1 }}>
@@ -275,7 +275,7 @@ function PercentCard({ label, children, result, resultColor }: {
       </div>
       <div style={{
         background: 'var(--bg-base)', border: '1px solid var(--border)', borderRadius: 'var(--radius)',
-        padding: '8px 18px', fontFamily: 'var(--font-mono)', fontSize: 18, fontWeight: 600,
+        padding: '8px 18px', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-lg)', fontWeight: 600,
         color: resultColor ?? 'var(--text-primary)', minWidth: 100, textAlign: 'right', flexShrink: 0,
       }}>
         {result}

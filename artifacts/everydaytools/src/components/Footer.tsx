@@ -71,11 +71,11 @@ export default function Footer() {
               <rect x="14" y="28" width="28" height="7" rx="2" fill="#111111"/>
               <rect x="14" y="41" width="36" height="7" rx="2" fill="#111111"/>
             </svg>
-            <span style={{ fontFamily: "var(--font-display)", fontSize: 15, fontWeight: 600, color: "var(--text-primary)", letterSpacing: "-0.02em" }}>
+            <span style={{ fontFamily: "var(--font-display)", fontSize: 'var(--text-sm)', fontWeight: 600, color: "var(--text-primary)", letterSpacing: "-0.02em" }}>
               EverydayTools
             </span>
           </Link>
-          <p style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.65, margin: 0, maxWidth: 260 }}>
+          <p style={{ fontSize: 'var(--text-sm)', color: "var(--text-secondary)", lineHeight: 1.65, margin: 0, maxWidth: 260 }}>
             {t.footer.tagline}
           </p>
         </div>
@@ -90,7 +90,7 @@ export default function Footer() {
             <div key={col.key}>
               <h3 style={{
                 fontFamily: "var(--font-ui)",
-                fontSize: 11,
+                fontSize: 'var(--text-xs)',
                 fontWeight: 600,
                 letterSpacing: "0.08em",
                 textTransform: "uppercase",
@@ -104,7 +104,7 @@ export default function Footer() {
                   <li key={l.href}>
                     <Link
                       href={l.href}
-                      style={{ fontSize: 13, color: "var(--text-secondary)", textDecoration: "none", transition: "color 120ms ease" }}
+                      style={{ fontSize: 'var(--text-sm)', color: "var(--text-secondary)", textDecoration: "none", transition: "color 120ms ease" }}
                       onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-primary)")}
                       onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-secondary)")}
                     >
@@ -130,7 +130,7 @@ export default function Footer() {
         justifyContent: "space-between",
         gap: isMobile ? 10 : 12,
       }}>
-        <span style={{ fontSize: 12, color: "var(--text-tertiary)" }}>
+        <span style={{ fontSize: 'var(--text-xs)', color: "var(--text-tertiary)" }}>
           &copy; {new Date().getFullYear()} EverydayTools Hub. {t.footer.rights}
         </span>
         <nav style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: isMobile ? "8px 16px" : 20 }}>
@@ -142,7 +142,7 @@ export default function Footer() {
             <Link
               key={l.href}
               href={l.href}
-              style={{ fontSize: 12, color: "var(--text-tertiary)", textDecoration: "none", transition: "color 120ms ease" }}
+              style={{ fontSize: 'var(--text-xs)', color: "var(--text-tertiary)", textDecoration: "none", transition: "color 120ms ease" }}
               onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-primary)")}
               onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-tertiary)")}
             >
@@ -151,7 +151,7 @@ export default function Footer() {
           ))}
           <button
             onClick={manageConsent}
-            style={{ fontSize: 12, color: "var(--text-tertiary)", background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: "var(--font-ui)", transition: "color 120ms ease" }}
+            style={{ fontSize: 'var(--text-xs)', color: "var(--text-tertiary)", background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: "var(--font-ui)", transition: "color 120ms ease" }}
             onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-primary)")}
             onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-tertiary)")}
           >

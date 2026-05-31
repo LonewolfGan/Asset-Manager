@@ -35,7 +35,7 @@ export default function CopyToast() {
         color: 'var(--bg-surface)',
         padding: '10px 20px',
         borderRadius: 100,
-        fontSize: 13,
+        fontSize: 'var(--text-sm)',
         fontWeight: 500,
         fontFamily: 'var(--font-ui)',
         letterSpacing: '0.01em',

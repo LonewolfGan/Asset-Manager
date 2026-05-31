@@ -221,7 +221,7 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
       <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
         <Breadcrumb items={['Home', breadcrumbParent, toolTitle]} />
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{toolTitle}</h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{toolDesc || `Convert ${fromLabel} files to ${toExt.toUpperCase()} — all in your browser.`}</p>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{toolDesc || `Convert ${fromLabel} files to ${toExt.toUpperCase()} — all in your browser.`}</p>
 
         <div
           data-testid="drop-zone"
@@ -238,10 +238,10 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
         >
           <input ref={inputRef} type="file" multiple accept={fromExts.join(',')} style={{ display: 'none' }}
             onChange={(e) => addFiles(Array.from(e.target.files ?? []))} />
-          <p style={{ fontFamily: 'var(--font-ui)', fontSize: 15, color: 'var(--text-secondary)', margin: 0 }}>
+          <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', margin: 0 }}>
             {t.common.dropFilesHere(fromLabel)}
           </p>
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)', marginTop: 6 }}>
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', marginTop: 6 }}>
             {fromExts.join(' · ').toUpperCase()} · up to 20 files · max 50 MB each
           </p>
         </div>
@@ -250,16 +250,16 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
           <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 14 }}>
             {showQuality && (
               <div style={{ padding: '14px 16px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', display: 'flex', alignItems: 'center', gap: 14 }}>
-                <span style={{ fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, color: 'var(--text-primary)', minWidth: 60 }}>{t.common.quality}</span>
+                <span style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-primary)', minWidth: 60 }}>{t.common.quality}</span>
                 <input type="range" min="1" max="100" value={quality} onChange={(e) => setQuality(+e.target.value)} style={{ flex: 1, accentColor: 'var(--accent)' }} />
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 14, color: 'var(--text-primary)', minWidth: 36 }}>{quality}%</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', minWidth: 36 }}>{quality}%</span>
               </div>
             )}
 
             <button
               onClick={processAll}
               disabled={isProcessing}
-              style={{ padding: '12px 24px', background: isProcessing ? 'var(--bg-elevated)' : 'var(--accent)', color: isProcessing ? 'var(--text-tertiary)' : 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 15, fontWeight: 500, cursor: isProcessing ? 'not-allowed' : 'pointer' }}
+              style={{ padding: '12px 24px', background: isProcessing ? 'var(--bg-elevated)' : 'var(--accent)', color: isProcessing ? 'var(--text-tertiary)' : 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: isProcessing ? 'not-allowed' : 'pointer' }}
             >
               {isProcessing ? t.common.converting : t.common.convertFiles(files.length, toExt.toUpperCase())}
             </button>
@@ -268,55 +268,55 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
               <div key={entry.id} style={{ border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-surface)', overflow: 'hidden' }}>
                 <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row' }}>
                   <div style={{ flex: 1, padding: '12px 14px', borderRight: isMobile ? 'none' : '1px solid var(--border)', borderBottom: isMobile ? '1px solid var(--border)' : 'none' }}>
-                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-tertiary)', margin: '0 0 6px', textTransform: 'uppercase' }}>{t.common.original}</p>
+                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', margin: '0 0 6px', textTransform: 'uppercase' }}>{t.common.original}</p>
                     {entry.file.type.startsWith('image/') || entry.file.type === '' ? (
                       <img src={entry.originalUrl} alt="original" style={{ width: '100%', maxHeight: 120, objectFit: 'contain', background: 'var(--bg-elevated)', display: 'block' }} />
                     ) : (
                       <div style={{ height: 80, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-elevated)', borderRadius: 4 }}>
-                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-secondary)' }}>{entry.file.type || 'image'}</span>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>{entry.file.type || 'image'}</span>
                       </div>
                     )}
-                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-secondary)', margin: '6px 0 0' }}>{formatBytes(entry.file.size)}</p>
+                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', margin: '6px 0 0' }}>{formatBytes(entry.file.size)}</p>
                   </div>
                   <div style={{ flex: 1, padding: '12px 14px' }}>
-                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-tertiary)', margin: '0 0 6px', textTransform: 'uppercase' }}>{t.common.converted}</p>
+                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', margin: '0 0 6px', textTransform: 'uppercase' }}>{t.common.converted}</p>
                     {entry.status === 'done' && entry.compressedUrl && entry.blob ? (
                       <>
                         {toMime.startsWith('image/') && toMime !== 'image/svg+xml' ? (
                           <img src={entry.compressedUrl} alt="converted" style={{ width: '100%', maxHeight: 120, objectFit: 'contain', background: 'var(--bg-elevated)', display: 'block' }} />
                         ) : (
                           <div style={{ height: 80, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-elevated)', borderRadius: 4 }}>
-                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-primary)' }}>{toExt.toUpperCase()}</span>
+                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-primary)' }}>{toExt.toUpperCase()}</span>
                           </div>
                         )}
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6 }}>
-                          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-secondary)' }}>{formatBytes(entry.blob.size)}</span>
-                          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, fontWeight: 600, color: sizeDelta(entry.file.size, entry.blob.size).color }}>
+                          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>{formatBytes(entry.blob.size)}</span>
+                          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', fontWeight: 600, color: sizeDelta(entry.file.size, entry.blob.size).color }}>
                             {sizeDelta(entry.file.size, entry.blob.size).label}
                           </span>
                         </div>
                       </>
                     ) : entry.status === 'processing' ? (
-                      <div role="status" aria-live="polite" style={{ height: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', fontSize: 13, fontFamily: 'var(--font-ui)' }}>{t.common.converting}</div>
+                      <div role="status" aria-live="polite" style={{ height: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.common.converting}</div>
                     ) : entry.status === 'error' ? (
-                      <div role="alert" style={{ height: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--danger, #dc2626)', fontSize: 13, padding: 8, textAlign: 'center', fontFamily: 'var(--font-ui)' }}>{entry.error}</div>
+                      <div role="alert" style={{ height: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--danger, #dc2626)', fontSize: 'var(--text-sm)', padding: 8, textAlign: 'center', fontFamily: 'var(--font-ui)' }}>{entry.error}</div>
                     ) : (
-                      <div style={{ height: 100, background: 'var(--bg-elevated)', borderRadius: 4, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-tertiary)', fontSize: 13, fontFamily: 'var(--font-ui)' }}>—</div>
+                      <div style={{ height: 100, background: 'var(--bg-elevated)', borderRadius: 4, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>—</div>
                     )}
                   </div>
                 </div>
                 <div style={{ padding: '8px 14px', borderTop: '1px solid var(--border)', background: 'var(--bg-elevated)', display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ flex: 1, fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={entry.file.name}>{entry.file.name}</span>
+                  <span style={{ flex: 1, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={entry.file.name}>{entry.file.name}</span>
                   {entry.status === 'done' && (
-                    <button aria-label={`Download ${entry.file.name}`} onClick={() => downloadOne(entry)} style={{ padding: '4px 12px', background: 'var(--text-primary)', color: 'var(--bg-base)', border: 'none', borderRadius: 5, fontFamily: 'var(--font-ui)', fontSize: 12, cursor: 'pointer' }}>{t.common.download}</button>
+                    <button aria-label={`Download ${entry.file.name}`} onClick={() => downloadOne(entry)} style={{ padding: '4px 12px', background: 'var(--text-primary)', color: 'var(--bg-base)', border: 'none', borderRadius: 5, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>{t.common.download}</button>
                   )}
-                  <button aria-label={`Remove ${entry.file.name}`} onClick={() => removeFile(entry.id)} style={{ padding: '4px 10px', background: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--border)', borderRadius: 5, fontFamily: 'var(--font-ui)', fontSize: 12, cursor: 'pointer' }}>{t.common.remove}</button>
+                  <button aria-label={`Remove ${entry.file.name}`} onClick={() => removeFile(entry.id)} style={{ padding: '4px 10px', background: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--border)', borderRadius: 5, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>{t.common.remove}</button>
                 </div>
               </div>
             ))}
 
             {doneCount > 1 && (
-              <button onClick={downloadAll} style={{ padding: '10px 24px', background: 'var(--bg-surface)', color: 'var(--text-primary)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}>
+              <button onClick={downloadAll} style={{ padding: '10px 24px', background: 'var(--bg-surface)', color: 'var(--text-primary)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer' }}>
                 {t.common.downloadAll(doneCount)}
               </button>
             )}

@@ -262,7 +262,7 @@ export default function ImageCompress() {
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>
         {t.tools['image-compress']?.title ?? 'Image Compressor'}
       </h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['image-compress']?.description ?? 'Compress up to 20 images at once. Quality slider or target file size. All processing runs in your browser.'}</p>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['image-compress']?.description ?? 'Compress up to 20 images at once. Quality slider or target file size. All processing runs in your browser.'}</p>
 
       {/* Drop zone */}
       <div
@@ -293,10 +293,10 @@ export default function ImageCompress() {
           style={{ display: 'none' }}
           onChange={(e) => addFiles(Array.from(e.target.files ?? []))}
         />
-        <p style={{ fontFamily: 'var(--font-ui)', fontSize: 15, color: 'var(--text-secondary)', margin: 0 }}>
+        <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', margin: 0 }}>
           {tc.dropHint}
         </p>
-        <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)', marginTop: 6 }}>
+        <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', marginTop: 6 }}>
           JPEG · PNG · WEBP · AVIF
         </p>
       </div>
@@ -326,8 +326,8 @@ export default function ImageCompress() {
           {mode === 'quality' ? (
             <div style={{ padding: '16px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                <span style={{ fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, color: 'var(--text-primary)' }}>{tc.quality}</span>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 14, color: 'var(--text-primary)' }}>{quality}%</span>
+                <span style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-primary)' }}>{tc.quality}</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)' }}>{quality}%</span>
               </div>
               <input
                 type="range"
@@ -338,13 +338,13 @@ export default function ImageCompress() {
                 style={{ width: '100%' }}
               />
               <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4 }}>
-                <span style={{ fontSize: 11, color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>{tc.smallest}</span>
-                <span style={{ fontSize: 11, color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>{tc.original100}</span>
+                <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>{tc.smallest}</span>
+                <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>{tc.original100}</span>
               </div>
             </div>
           ) : (
             <div style={{ padding: '16px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', display: 'flex', alignItems: 'center', gap: 12 }}>
-              <label style={{ fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, whiteSpace: 'nowrap', color: 'var(--text-primary)' }}>
+              <label style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, whiteSpace: 'nowrap', color: 'var(--text-primary)' }}>
                 {tc.targetSizeLabel}
               </label>
               <input
@@ -352,15 +352,15 @@ export default function ImageCompress() {
                 min="1"
                 value={targetKB}
                 onChange={(e) => setTargetKB(e.target.value)}
-                style={{ width: 90, padding: '6px 10px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-mono)', fontSize: 14, background: 'var(--bg-base)', color: 'var(--text-primary)' }}
+                style={{ width: 90, padding: '6px 10px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', background: 'var(--bg-base)', color: 'var(--text-primary)' }}
               />
-              <span style={{ fontFamily: 'var(--font-ui)', fontSize: 14, color: 'var(--text-secondary)' }}>{tc.kbPerFile}</span>
+              <span style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>{tc.kbPerFile}</span>
             </div>
           )}
 
           {/* Resize */}
           <div style={{ padding: '16px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
-            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, margin: '0 0 10px', color: 'var(--text-primary)' }}>{tc.resize}</p>
+            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, margin: '0 0 10px', color: 'var(--text-primary)' }}>{tc.resize}</p>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               {(['none', 'percent', 'dimensions'] as ResizeMode[]).map((rm) => (
                 <button
@@ -373,7 +373,7 @@ export default function ImageCompress() {
                     background: resizeMode === rm ? 'var(--accent-subtle)' : 'transparent',
                     color: resizeMode === rm ? 'var(--accent)' : 'var(--text-secondary)',
                     fontFamily: 'var(--font-ui)',
-                    fontSize: 13,
+                    fontSize: 'var(--text-sm)',
                     cursor: 'pointer',
                   }}
                 >
@@ -392,7 +392,7 @@ export default function ImageCompress() {
                   onChange={(e) => setResizePct(+e.target.value)}
                   style={{ flex: 1 }}
                 />
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 14, minWidth: 40, color: 'var(--text-primary)' }}>{resizePct}%</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', minWidth: 40, color: 'var(--text-primary)' }}>{resizePct}%</span>
               </div>
             )}
 
@@ -403,17 +403,17 @@ export default function ImageCompress() {
                   placeholder="Max width"
                   value={resizeW}
                   onChange={(e) => setResizeW(e.target.value)}
-                  style={{ width: 120, padding: '6px 10px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-mono)', fontSize: 13, background: 'var(--bg-base)', color: 'var(--text-primary)' }}
+                  style={{ width: 120, padding: '6px 10px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', background: 'var(--bg-base)', color: 'var(--text-primary)' }}
                 />
-                <span style={{ color: 'var(--text-secondary)', fontSize: 13 }}>×</span>
+                <span style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)' }}>×</span>
                 <input
                   type="number"
                   placeholder="Max height"
                   value={resizeH}
                   onChange={(e) => setResizeH(e.target.value)}
-                  style={{ width: 120, padding: '6px 10px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-mono)', fontSize: 13, background: 'var(--bg-base)', color: 'var(--text-primary)' }}
+                  style={{ width: 120, padding: '6px 10px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', background: 'var(--bg-base)', color: 'var(--text-primary)' }}
                 />
-                <span style={{ fontSize: 12, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{tc.pxKeepsAspect}</span>
+                <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{tc.pxKeepsAspect}</span>
               </div>
             )}
           </div>
@@ -426,7 +426,7 @@ export default function ImageCompress() {
               onChange={(e) => setStripMeta(e.target.checked)}
               style={{ width: 16, height: 16, accentColor: 'var(--accent)', flexShrink: 0 }}
             />
-            <span style={{ fontFamily: 'var(--font-ui)', fontSize: 14, color: 'var(--text-primary)' }}>
+            <span style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)' }}>
               {tc.stripExif}
             </span>
           </label>
@@ -442,7 +442,7 @@ export default function ImageCompress() {
               border: 'none',
               borderRadius: 'var(--radius)',
               fontFamily: 'var(--font-ui)',
-              fontSize: 15,
+              fontSize: 'var(--text-sm)',
               fontWeight: 500,
               cursor: isProcessing ? 'not-allowed' : 'pointer',
               transition: 'background 0.15s',
@@ -469,7 +469,7 @@ export default function ImageCompress() {
               <div style={{ display: 'flex', gap: 0 }}>
                 {/* Original */}
                 <div style={{ flex: 1, padding: '12px 14px', borderRight: '1px solid var(--border)' }}>
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-tertiary)', margin: '0 0 6px', textTransform: 'uppercase' }}>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', margin: '0 0 6px', textTransform: 'uppercase' }}>
                     {tc.originalLabel}
                   </p>
                   <img
@@ -477,14 +477,14 @@ export default function ImageCompress() {
                     alt="original"
                     style={{ width: '100%', maxHeight: 120, objectFit: 'contain', display: 'block', background: 'var(--bg-elevated)' }}
                   />
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-secondary)', margin: '6px 0 0' }}>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', margin: '6px 0 0' }}>
                     {formatBytes(entry.file.size)}
                   </p>
                 </div>
 
                 {/* Compressed */}
                 <div style={{ flex: 1, padding: '12px 14px' }}>
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-tertiary)', margin: '0 0 6px', textTransform: 'uppercase' }}>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', margin: '0 0 6px', textTransform: 'uppercase' }}>
                     {tc.compressedLabel}
                   </p>
                   {entry.status === 'done' && entry.compressedUrl && entry.blob ? (
@@ -495,13 +495,13 @@ export default function ImageCompress() {
                         style={{ width: '100%', maxHeight: 120, objectFit: 'contain', display: 'block', background: 'var(--bg-elevated)' }}
                       />
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 6 }}>
-                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-secondary)' }}>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>
                           {formatBytes(entry.blob.size)}
                         </span>
                         <span
                           style={{
                             fontFamily: 'var(--font-mono)',
-                            fontSize: 12,
+                            fontSize: 'var(--text-xs)',
                             fontWeight: 600,
                             color: entry.blob.size < entry.file.size ? 'var(--success)' : 'var(--danger)',
                           }}
@@ -511,15 +511,15 @@ export default function ImageCompress() {
                       </div>
                     </>
                   ) : entry.status === 'processing' ? (
-                    <div style={{ height: 120, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', fontSize: 13, fontFamily: 'var(--font-ui)' }}>
+                    <div style={{ height: 120, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>
                       {tc.processing}
                     </div>
                   ) : entry.status === 'error' ? (
-                    <div style={{ height: 120, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--danger)', fontSize: 13, fontFamily: 'var(--font-ui)', padding: 8, textAlign: 'center' }}>
+                    <div style={{ height: 120, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--danger)', fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)', padding: 8, textAlign: 'center' }}>
                       {entry.error}
                     </div>
                   ) : (
-                    <div style={{ height: 120, background: 'var(--bg-elevated)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-tertiary)', fontSize: 13, fontFamily: 'var(--font-ui)' }}>
+                    <div style={{ height: 120, background: 'var(--bg-elevated)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>
                       —
                     </div>
                   )}
@@ -541,7 +541,7 @@ export default function ImageCompress() {
                 <span
                   style={{
                     fontFamily: 'var(--font-ui)',
-                    fontSize: 13,
+                    fontSize: 'var(--text-sm)',
                     color: 'var(--text-primary)',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
@@ -563,7 +563,7 @@ export default function ImageCompress() {
                         border: 'none',
                         borderRadius: 5,
                         fontFamily: 'var(--font-ui)',
-                        fontSize: 12,
+                        fontSize: 'var(--text-xs)',
                         cursor: 'pointer',
                       }}
                     >
@@ -579,7 +579,7 @@ export default function ImageCompress() {
                       border: '1px solid var(--border)',
                       borderRadius: 5,
                       fontFamily: 'var(--font-ui)',
-                      fontSize: 12,
+                      fontSize: 'var(--text-xs)',
                       cursor: 'pointer',
                     }}
                   >
@@ -600,7 +600,7 @@ export default function ImageCompress() {
                 border: '1px solid var(--border)',
                 borderRadius: 'var(--radius)',
                 fontFamily: 'var(--font-ui)',
-                fontSize: 14,
+                fontSize: 'var(--text-sm)',
                 fontWeight: 500,
                 cursor: 'pointer',
               }}

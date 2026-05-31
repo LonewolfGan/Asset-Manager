@@ -110,7 +110,7 @@ export default function ExcelToPdf() {
       <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
         <Breadcrumb items={['Home', 'Excel & Spreadsheets', title]} />
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{title}</h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{desc}</p>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{desc}</p>
 
         <div
           onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
@@ -121,19 +121,19 @@ export default function ExcelToPdf() {
         >
           <input ref={inputRef} type="file" accept=".xlsx,.xls" style={{ display: 'none' }}
             onChange={(e) => { if (e.target.files?.[0]) handleFile(e.target.files[0]); }} />
-          <p style={{ fontFamily: 'var(--font-ui)', fontSize: 15, color: 'var(--text-secondary)', margin: 0 }}>{t.common.dropFileHere}</p>
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)', marginTop: 6 }}>.xlsx · .xls · max 25 MB</p>
+          <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', margin: 0 }}>{t.common.dropFileHere}</p>
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', marginTop: 6 }}>.xlsx · .xls · max 25 MB</p>
         </div>
 
         {file && (
           <div style={{ marginTop: 16, padding: '12px 16px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', display: 'flex', alignItems: 'center', gap: 12 }}>
             <div style={{ flex: 1 }}>
-              <p style={{ fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, margin: 0, color: 'var(--text-primary)' }}>{file.name}</p>
+              <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, margin: 0, color: 'var(--text-primary)' }}>{file.name}</p>
               {sheets.length > 1 && (
                 <div style={{ marginTop: 8 }}>
-                  <label style={{ fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-secondary)', marginRight: 8 }}>Sheet:</label>
+                  <label style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginRight: 8 }}>Sheet:</label>
                   <select value={selectedSheet} onChange={(e) => setSelectedSheet(e.target.value)}
-                    style={{ padding: '4px 8px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 13, background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
+                    style={{ padding: '4px 8px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
                     {sheets.map((s) => <option key={s} value={s}>{s}</option>)}
                   </select>
                 </div>
@@ -144,14 +144,14 @@ export default function ExcelToPdf() {
 
         {file && status !== 'processing' && (
           <button onClick={convert}
-            style={{ marginTop: 16, width: '100%', padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 15, fontWeight: 500, cursor: 'pointer' }}>
+            style={{ marginTop: 16, width: '100%', padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer' }}>
             {t.common.convertToPdf}
           </button>
         )}
 
         {status === 'processing' && (
           <div style={{ marginTop: 16, padding: 16, background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--text-secondary)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>
               <span>{t.common.converting}</span><span style={{ fontFamily: 'var(--font-mono)' }}>{progress}%</span>
             </div>
             <div style={{ height: 6, background: 'var(--bg-elevated)', borderRadius: 3, overflow: 'hidden' }}>
@@ -161,13 +161,13 @@ export default function ExcelToPdf() {
         )}
 
         {status === 'error' && (
-          <div style={{ marginTop: 16, padding: 14, background: 'var(--bg-surface)', border: '1px solid var(--danger,#dc2626)', borderRadius: 'var(--radius)', color: 'var(--danger,#dc2626)', fontFamily: 'var(--font-ui)', fontSize: 14 }}>{error}</div>
+          <div style={{ marginTop: 16, padding: 14, background: 'var(--bg-surface)', border: '1px solid var(--danger,#dc2626)', borderRadius: 'var(--radius)', color: 'var(--danger,#dc2626)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)' }}>{error}</div>
         )}
 
         {status === 'done' && pdfBlob && (
           <div style={{ marginTop: 16, padding: '16px 20px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, margin: 0, color: 'var(--text-primary)' }}>{t.common.pdfReady((pdfBlob.size / 1024).toFixed(1))}</p>
-            <button onClick={download} style={{ padding: '10px 20px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}>{t.common.downloadPdf}</button>
+            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, margin: 0, color: 'var(--text-primary)' }}>{t.common.pdfReady((pdfBlob.size / 1024).toFixed(1))}</p>
+            <button onClick={download} style={{ padding: '10px 20px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer' }}>{t.common.downloadPdf}</button>
           </div>
         )}
         <AdSlot type="horizontal" />
