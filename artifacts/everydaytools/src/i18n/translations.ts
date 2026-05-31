@@ -50,6 +50,11 @@ export type Translations = {
     essentialOnly: string;
     acceptAll: string;
   };
+  notFound: {
+    title: string;
+    description: string;
+    backHome: string;
+  };
   tipCalc: {
     tabTip: string; tabPercent: string;
     billAmount: string; tipPct: string; numPeople: string;
@@ -549,6 +554,11 @@ const EN: Translations = {
     privacyPolicy: "Privacy policy",
     essentialOnly: "Essential only",
     acceptAll: "Accept all",
+  },
+  notFound: {
+    title: "Page not found",
+    description: "The page you're looking for doesn't exist or has been moved.",
+    backHome: "Back to all tools",
   },
   tipCalc: {
     tabTip: "Tip Calculator", tabPercent: "Percentages",
@@ -1096,6 +1106,11 @@ const FR: Translations = {
     privacyPolicy: "Politique de confidentialité",
     essentialOnly: "Essentiel seulement",
     acceptAll: "Tout accepter",
+  },
+  notFound: {
+    title: "Page introuvable",
+    description: "La page que vous cherchez n'existe pas ou a été déplacée.",
+    backHome: "Retour aux outils",
   },
   tipCalc: {
     tabTip: "Calculateur de Pourboire", tabPercent: "Pourcentages",
