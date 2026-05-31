@@ -98,19 +98,19 @@ function sharedCss(): string {
   return `
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
-      --bg:#0A0A0A;--surface:#111111;--elevated:#1A1A1A;--border:#2A2A2A;
-      --text:#EDEDED;--muted:#888888;--accent:#E8FF47;--accent-text:#0A0A0A;
-      --font-display:'Fraunces',Georgia,serif;
-      --font-ui:'Geist',system-ui,-apple-system,sans-serif;
+      --bg:#F7F6F3;--surface:#FFFFFF;--elevated:#EFEDE6;--border:#E2DFD5;
+      --text:#1A1916;--muted:#6B6860;--accent:#1A6BFF;--accent-text:#FFFFFF;
+      --font-display:'DM Serif Display',Georgia,serif;
+      --font-ui:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
     }
     html{font-size:16px;-webkit-text-size-adjust:100%}
     body{background:var(--bg);color:var(--text);font-family:var(--font-ui);line-height:1.625;-webkit-font-smoothing:antialiased;min-height:100vh}
-    h1,h2,h3{font-family:var(--font-display);font-weight:400;letter-spacing:-0.03em;color:var(--text)}
+    h1,h2,h3{font-family:var(--font-display);font-weight:400;letter-spacing:-0.02em;color:var(--text)}
     a{color:var(--accent);text-decoration:none}
     a:hover{text-decoration:underline}
     p{color:var(--muted);line-height:1.7;margin-bottom:1rem}
     /* Nav */
-    .site-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:100}
+    .site-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:100}
     .site-nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
     .site-nav-logo{width:28px;height:28px;background:var(--accent);border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:14px;color:var(--accent-text);font-weight:400;flex-shrink:0}
     .site-nav-name{font-family:var(--font-ui);font-size:15px;font-weight:500;color:var(--text)}
@@ -123,13 +123,13 @@ function sharedCss(): string {
     .breadcrumb{display:flex;align-items:center;gap:6px;margin-bottom:24px;font-size:12px;color:var(--muted)}
     .breadcrumb a{color:var(--muted);text-decoration:none}
     .breadcrumb a:hover{color:var(--text)}
-    .breadcrumb-sep{color:#444}
+    .breadcrumb-sep{color:var(--muted)}
     /* Hero */
     .tool-h1{font-size:clamp(28px,5vw,42px);margin-bottom:12px;line-height:1.2}
     .tool-description{font-size:16px;color:var(--muted);margin-bottom:32px;max-width:600px;line-height:1.6}
     /* CTA */
-    .cta-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:var(--accent-text);padding:14px 28px;border-radius:4px;font-family:var(--font-ui);font-size:15px;font-weight:500;text-decoration:none;margin-bottom:48px;transition:opacity 120ms}
-    .cta-btn:hover{opacity:0.9;text-decoration:none}
+    .cta-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:var(--accent-text);padding:14px 28px;border-radius:6px;font-family:var(--font-ui);font-size:15px;font-weight:500;text-decoration:none;margin-bottom:48px;transition:opacity 120ms}
+    .cta-btn:hover{opacity:0.85;text-decoration:none}
     .cta-arrow{font-size:18px}
     /* Sections */
     .section{margin-bottom:48px}
@@ -137,32 +137,32 @@ function sharedCss(): string {
     .section h2{font-size:20px;margin-bottom:20px}
     /* How it works */
     .hiw-list{list-style:none;counter-reset:hiw}
-    .hiw-item{counter-increment:hiw;display:flex;gap:16px;margin-bottom:20px;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:4px}
+    .hiw-item{counter-increment:hiw;display:flex;gap:16px;margin-bottom:12px;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:6px}
     .hiw-num{width:28px;height:28px;background:var(--elevated);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted);flex-shrink:0;margin-top:2px}
     .hiw-body strong{display:block;color:var(--text);font-size:14px;font-weight:500;margin-bottom:4px;font-family:var(--font-ui)}
     .hiw-body p{font-size:13px;color:var(--muted);margin:0}
     /* About */
     .about-text{font-size:15px;color:var(--muted);line-height:1.75}
     .about-text p{margin-bottom:16px}
-    .freshness{font-size:12px;color:#555;margin-top:16px}
+    .freshness{font-size:12px;color:var(--muted);margin-top:16px}
     /* FAQ */
-    .faq-list{display:flex;flex-direction:column;gap:16px}
-    .faq-item{border:1px solid var(--border);border-radius:4px;overflow:hidden}
-    .faq-q{padding:16px;font-size:14px;font-weight:500;color:var(--text);background:var(--surface);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
-    .faq-q::after{content:'+'  ;color:var(--muted);font-size:18px;font-weight:300;flex-shrink:0;margin-left:12px}
+    .faq-list{display:flex;flex-direction:column;gap:8px}
+    .faq-item{border:1px solid var(--border);border-radius:6px;overflow:hidden}
+    .faq-q{padding:14px 16px;font-size:14px;font-weight:500;color:var(--text);background:var(--surface);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+    .faq-q::after{content:'+';color:var(--muted);font-size:18px;font-weight:300;flex-shrink:0;margin-left:12px}
     details[open] .faq-q::after{content:'-'}
-    .faq-a{padding:16px;font-size:14px;color:var(--muted);line-height:1.7;background:var(--bg);border-top:1px solid var(--border)}
+    .faq-a{padding:14px 16px;font-size:13px;color:var(--muted);line-height:1.7;background:var(--bg);border-top:1px solid var(--border)}
     /* Ad slot */
-    .ad-slot{width:100%;min-height:90px;background:var(--surface);border:1px dashed var(--border);border-radius:4px;margin:24px 0;display:flex;align-items:center;justify-content:center}
-    .ad-slot-label{font-size:11px;color:#444;font-family:monospace}
+    .ad-slot{width:100%;min-height:90px;background:var(--surface);border:1px dashed var(--border);border-radius:6px;margin:24px 0;display:flex;align-items:center;justify-content:center}
+    .ad-slot-label{font-size:11px;color:var(--muted);font-family:monospace}
     /* Related */
-    .related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:16px}
-    .related-card{padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:4px;text-decoration:none;display:block;transition:border-color 120ms}
+    .related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:16px}
+    .related-card{padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:6px;text-decoration:none;display:block;transition:border-color 120ms}
     .related-card:hover{border-color:var(--accent);text-decoration:none}
     .related-card-name{font-size:13px;color:var(--text);font-weight:500;display:block;margin-bottom:4px;font-family:var(--font-ui)}
     .related-card-desc{font-size:12px;color:var(--muted)}
     /* Footer */
-    .site-footer{border-top:1px solid var(--border);padding:32px 24px;text-align:center;font-size:12px;color:#555}
+    .site-footer{border-top:1px solid var(--border);padding:32px 24px;text-align:center;font-size:12px;color:var(--muted)}
     @media(max-width:600px){
       .site-nav-links{display:none}
       .container{padding:32px 16px 60px}
@@ -295,9 +295,9 @@ export function generateToolPageHtml(localeSlug: string, locale: Locale): string
   ${schemas}
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Geist:wght@400;500&display=swap" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Geist:wght@400;500&display=swap" media="print" onload="this.media='all'" />
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Geist:wght@400;500&display=swap" /></noscript>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" /></noscript>
   <style>${sharedCss()}</style>
 </head>
 <body>
@@ -429,9 +429,9 @@ export function generateHomepageHtml(locale: Locale): string {
   <script type="application/ld+json">${JSON.stringify(websiteSchema)}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Geist:wght@400;500&display=swap" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Geist:wght@400;500&display=swap" media="print" onload="this.media='all'" />
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Geist:wght@400;500&display=swap" /></noscript>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" /></noscript>
   <style>${sharedCss()}
   .hero{padding:64px 0 48px;max-width:600px}
   .hero h1{font-size:clamp(32px,6vw,52px);margin-bottom:16px;line-height:1.15}

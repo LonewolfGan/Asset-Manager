@@ -324,7 +324,6 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
         )}
         <AdSlot type="horizontal" />
       </div>
-      <ToolPageSEO internalSlug={slug} />
     </>
   );
 }
