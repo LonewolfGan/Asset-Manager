@@ -4,8 +4,8 @@ import { trackToolUsed, trackToolError } from '@/lib/analytics';
 export default function JpgToPng() {
   return (
     <>
-      <ToolPageSEO internalSlug="jpg-to-png" />
       <ImageConvertPage fromLabel="JPG/JPEG" fromExts={['.jpg','.jpeg']} fromMimes={['image/jpeg']} toMime="image/png" slug="jpg-to-png" />
+      <ToolPageSEO internalSlug="jpg-to-png" />
     </>
   );
 }

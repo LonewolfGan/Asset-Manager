@@ -4,8 +4,8 @@ import { trackToolUsed, trackToolError } from '@/lib/analytics';
 export default function PngToWebp() {
   return (
     <>
-      <ToolPageSEO internalSlug="png-to-webp" />
       <ImageConvertPage fromLabel="PNG" fromExts={['.png']} fromMimes={['image/png']} toMime="image/webp" slug="png-to-webp" />
+      <ToolPageSEO internalSlug="png-to-webp" />
     </>
   );
 }

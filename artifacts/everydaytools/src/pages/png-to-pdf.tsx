@@ -3,8 +3,8 @@ import ToolPageSEO from '@/components/ToolPageSEO';
 export default function PngToPdf() {
   return (
     <>
-      <ToolPageSEO internalSlug="png-to-pdf" />
       <ImageConvertPage fromLabel="PNG" fromExts={['.png']} fromMimes={['image/png']} toMime="application/pdf" slug="png-to-pdf" />
+      <ToolPageSEO internalSlug="png-to-pdf" />
     </>
   );
 }
