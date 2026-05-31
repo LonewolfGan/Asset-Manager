@@ -117,7 +117,7 @@ export default function PdfCompress() {
 
   return (
     <>
-      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
+      <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'PDF Tools', 'Compress PDF']} />
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>
         {t.tools['pdf-compress']?.title ?? 'PDF Compressor'}

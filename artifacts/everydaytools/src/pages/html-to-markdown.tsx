@@ -47,7 +47,7 @@ export default function HtmlToMarkdown() {
 
   return (
     <>
-      <div style={{ maxWidth: 960, margin: '0 auto', padding: '24px 24px 80px' }}>
+      <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
         <Breadcrumb items={['Home', 'Documents', title]} />
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{title}</h1>
         <p style={{ color: 'var(--text-secondary)', marginBottom: 24, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{desc}</p>

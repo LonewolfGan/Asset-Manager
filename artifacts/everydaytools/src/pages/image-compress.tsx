@@ -257,7 +257,7 @@ export default function ImageCompress() {
 
   return (
     <>
-      <div style={{ maxWidth: 800, margin: '0 auto', padding: '24px 24px 80px' }}>
+      <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Tools', 'Image Compressor']} />
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>
         {t.tools['image-compress']?.title ?? 'Image Compressor'}

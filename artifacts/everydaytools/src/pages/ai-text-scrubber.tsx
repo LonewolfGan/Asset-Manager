@@ -77,7 +77,7 @@ export default function AiTextScrubber() {
 
   return (
     <>
-      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
+      <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Privacy Tools', 'AI Text Scrubber']} />
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['ai-text-scrubber']?.title ?? 'AI Text Scrubber'}</h1>
       <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['ai-text-scrubber']?.description ?? 'Remove invisible trackers and common AI stylistic boilerplate from text.'}</p>

@@ -123,7 +123,7 @@ export default function MetadataCleaner() {
 
   return (
     <>
-      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
+      <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
       <Breadcrumb items={['Home', 'Privacy Tools', 'Metadata Cleaner']} />
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['metadata-cleaner']?.title ?? 'Metadata Cleaner'}</h1>
       <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 15, fontFamily: 'var(--font-ui)' }}>{t.tools['metadata-cleaner']?.description ?? 'Strip EXIF, XMP, and document properties from your files to protect your privacy.'}</p>

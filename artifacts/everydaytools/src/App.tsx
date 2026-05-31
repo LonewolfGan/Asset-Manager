@@ -227,7 +227,7 @@ const queryClient = new QueryClient();
 
 function PageLoader() {
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
+    <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
       {/* Breadcrumb skeleton */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 24 }}>
         <div className="skeleton" style={{ width: 36, height: 12, borderRadius: 4 }} />
