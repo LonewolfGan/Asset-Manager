@@ -100,25 +100,21 @@ function useOutsideClick(ref: React.RefObject<HTMLElement | null>, handler: () =
 }
 
 function NavDropdown({
-  group, isOpen, onOpen, onClose, currentPath,
+  group, isOpen, onOpen, onClose, clearTimer, currentPath,
 }: {
   group: (typeof GROUPS)[number];
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
+  clearTimer: () => void;
   currentPath: string;
 }) {
   const { t } = useLocale();
-  const leaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const allLinks = group.pairs.flatMap((p) => p.filter(Boolean)) as { href: string }[];
   const isActive = allLinks.some((l) => l.href === currentPath);
   const groupLabel = (t.nav.groups as Record<string, string>)[group.id] ?? group.id;
-
-  const clearLeave = () => { if (leaveTimer.current) clearTimeout(leaveTimer.current); };
-  const scheduleClose = () => { clearLeave(); leaveTimer.current = setTimeout(onClose, 250); };
-  useEffect(() => clearLeave, []);
 
   const handlePanelKeyDown = (e: React.KeyboardEvent) => {
     const links = Array.from(panelRef.current?.querySelectorAll("a") ?? []);
@@ -133,8 +129,7 @@ function NavDropdown({
   return (
     <div
       style={{ position: "relative" }}
-      onMouseEnter={() => { clearLeave(); onOpen(); }}
-      onMouseLeave={scheduleClose}
+      onMouseEnter={() => { clearTimer(); onOpen(); }}
     >
       <button
         ref={buttonRef}
@@ -344,8 +339,12 @@ export default function TopNav() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const navRef = useRef<HTMLDivElement>(null);
+  const navLeaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { theme, toggle } = useTheme();
   const { locale, setLocale, t } = useLocale();
+
+  const clearNavTimer = () => { if (navLeaveTimer.current) clearTimeout(navLeaveTimer.current); };
+  const scheduleNavClose = () => { clearNavTimer(); navLeaveTimer.current = setTimeout(() => setOpenGroup(null), 200); };
 
   useOutsideClick(navRef, () => setOpenGroup(null));
 
@@ -377,7 +376,12 @@ export default function TopNav() {
           </Link>
 
           {/* Desktop nav dropdowns */}
-          <div className="hidden lg:flex" style={{ alignItems: "center", gap: 16 }}>
+          <div
+            className="hidden lg:flex"
+            style={{ alignItems: "center", gap: 16 }}
+            onMouseLeave={scheduleNavClose}
+            onMouseEnter={clearNavTimer}
+          >
             {GROUPS.map((group) => (
               <NavDropdown
                 key={group.id}
@@ -385,6 +389,7 @@ export default function TopNav() {
                 isOpen={openGroup === group.id}
                 onOpen={() => setOpenGroup(group.id)}
                 onClose={() => setOpenGroup(null)}
+                clearTimer={clearNavTimer}
                 currentPath={location}
               />
             ))}
