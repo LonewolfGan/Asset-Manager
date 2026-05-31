@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import { useTheme } from "@/hooks/use-theme";
 import { useLocale } from "@/hooks/use-locale";
 import { trackLanguageChanged } from "@/lib/analytics";
+import SearchModal from "@/components/SearchModal";
 
 type NavEntry = { href: string } | null;
 type NavPair = [NavEntry, NavEntry];
@@ -338,6 +339,7 @@ export default function TopNav() {
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchModalOpen, setSearchModalOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
   const navLeaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { theme, toggle } = useTheme();
@@ -349,6 +351,17 @@ export default function TopNav() {
   useOutsideClick(navRef, () => setOpenGroup(null));
 
   useEffect(() => { setOpenGroup(null); setMobileOpen(false); }, [location]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setSearchModalOpen((v) => !v);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   const handleSearch = (value: string) => {
     setSearchQuery(value);
@@ -398,46 +411,49 @@ export default function TopNav() {
           {/* Spacer */}
           <div style={{ flex: 1 }} />
 
-          {/* Search — desktop */}
-          <label
+          {/* Search trigger — desktop */}
+          <button
             className="hidden lg:flex"
+            onClick={() => setSearchModalOpen(true)}
+            aria-label="Search tools (⌘K)"
+            data-testid="search-input"
             style={{
-              width: 212,
+              width: 220,
               alignItems: "center",
               gap: 8,
               background: "var(--bg-elevated)",
               border: "1px solid var(--border)",
               borderRadius: "var(--radius-input)",
-              padding: "7px 14px",
-              cursor: "text",
-              transition: "border-color 150ms ease, box-shadow 150ms ease",
+              padding: "7px 10px 7px 12px",
+              cursor: "pointer",
+              transition: "border-color 120ms ease",
+              fontFamily: "var(--font-ui)",
+              textAlign: "left",
             }}
-            onFocus={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 3px rgba(255,107,53,0.12)"; }}
-            onBlur={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border-strong)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; }}
           >
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0 }}>
               <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
             </svg>
-            <input
-              type="search"
-              placeholder={t.nav.searchPlaceholder}
-              value={searchQuery}
-              onChange={(e) => handleSearch(e.target.value)}
-              aria-label="Search tools"
-              data-testid="search-input"
-              style={{ background: "transparent", border: "none", outline: "none", fontSize: 13, color: "var(--text-primary)", width: "100%", fontFamily: "var(--font-ui)" }}
-            />
-            {searchQuery && (
-              <button
-                type="button"
-                onClick={() => handleSearch("")}
-                aria-label="Clear search"
-                style={{ background: "none", border: "none", cursor: "pointer", padding: 0, color: "var(--text-tertiary)", display: "flex", alignItems: "center", flexShrink: 0 }}
-              >
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 2l8 8M10 2L2 10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
-              </button>
-            )}
-          </label>
+            <span style={{ flex: 1, fontSize: 13, color: "var(--text-tertiary)", fontFamily: "var(--font-ui)" }}>
+              {t.nav.searchPlaceholder}
+            </span>
+            <kbd style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 1,
+              padding: "1px 5px",
+              background: "var(--bg-surface)",
+              border: "1px solid var(--border-strong)",
+              borderRadius: "var(--radius-sm)",
+              fontSize: 10,
+              fontFamily: "var(--font-mono)",
+              color: "var(--text-tertiary)",
+              lineHeight: 1.6,
+              flexShrink: 0,
+            }}>⌘K</kbd>
+          </button>
 
           {/* Right actions */}
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: 8 }}>
@@ -495,6 +511,7 @@ export default function TopNav() {
       </nav>
 
       <MobileDrawer open={mobileOpen} onClose={() => setMobileOpen(false)} currentPath={location} />
+      <SearchModal open={searchModalOpen} onClose={() => setSearchModalOpen(false)} />
     </>
   );
 }
