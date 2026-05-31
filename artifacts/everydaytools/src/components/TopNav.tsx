@@ -155,14 +155,13 @@ function NavDropdown({
           fontFamily: "var(--font-ui)",
           fontSize: "var(--text-sm)",
           fontWeight: 500,
-          color: isActive ? "var(--text-primary)" : "var(--text-secondary)",
+          color: (isActive || isOpen) ? "var(--text-primary)" : "var(--text-secondary)",
           display: "flex",
           alignItems: "center",
           gap: 5,
+          whiteSpace: "nowrap",
           transition: "color 120ms ease, border-color 120ms ease",
         }}
-        onMouseEnter={(e) => { if (!isActive) (e.currentTarget as HTMLElement).style.color = "var(--text-primary)"; }}
-        onMouseLeave={(e) => { if (!isActive && !isOpen) (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)"; }}
       >
         {groupLabel}
         <svg width="9" height="5" viewBox="0 0 9 5" fill="none" style={{ transform: isOpen ? "rotate(180deg)" : "none", transition: "transform 120ms ease", flexShrink: 0 }}>
@@ -378,7 +377,7 @@ export default function TopNav() {
           </Link>
 
           {/* Desktop nav dropdowns */}
-          <div className="hidden md:flex" style={{ alignItems: "center", gap: 16 }}>
+          <div className="hidden lg:flex" style={{ alignItems: "center", gap: 16 }}>
             {GROUPS.map((group) => (
               <NavDropdown
                 key={group.id}
@@ -396,7 +395,7 @@ export default function TopNav() {
 
           {/* Search — desktop */}
           <label
-            className="hidden md:flex"
+            className="hidden lg:flex"
             style={{
               width: 212,
               alignItems: "center",
@@ -438,7 +437,7 @@ export default function TopNav() {
           {/* Right actions */}
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: 8 }}>
             {/* Locale */}
-            <div className="hidden md:flex" data-testid="lang-switcher" style={{ alignItems: "center", border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
+            <div className="hidden lg:flex" data-testid="lang-switcher" style={{ alignItems: "center", border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
               {(["EN", "FR"] as const).map((lang, i) => (
                 <button
                   key={lang}
@@ -466,7 +465,7 @@ export default function TopNav() {
             <button
               onClick={toggle}
               aria-label="Toggle theme"
-              className="hidden md:flex"
+              className="hidden lg:flex"
               style={{ width: 34, height: 34, alignItems: "center", justifyContent: "center", background: "none", border: "1px solid var(--border)", borderRadius: 10, cursor: "pointer", color: "var(--text-secondary)", transition: "background 150ms ease, color 150ms ease, border-color 150ms ease" }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--bg-elevated)"; (e.currentTarget as HTMLElement).style.color = "var(--text-primary)"; (e.currentTarget as HTMLElement).style.borderColor = "var(--border-strong)"; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "none"; (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)"; (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; }}
@@ -483,7 +482,7 @@ export default function TopNav() {
             </button>
 
             {/* Mobile hamburger */}
-            <button className="flex md:hidden" data-testid="hamburger-menu" onClick={() => setMobileOpen(true)} aria-label="Open menu" style={{ background: "none", border: "1px solid var(--border)", borderRadius: 10, cursor: "pointer", padding: "7px", color: "var(--text-secondary)" }}>
+            <button className="flex lg:hidden" data-testid="hamburger-menu" onClick={() => setMobileOpen(true)} aria-label="Open menu" style={{ background: "none", border: "1px solid var(--border)", borderRadius: 10, cursor: "pointer", padding: "7px", color: "var(--text-secondary)" }}>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 5h12M2 8h12M2 11h12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>
             </button>
           </div>
