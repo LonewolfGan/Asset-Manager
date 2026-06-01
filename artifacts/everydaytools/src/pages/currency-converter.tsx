@@ -131,7 +131,15 @@ export default function CurrencyConverter() {
             <div>
               <div style={{ fontSize: 'var(--text-sm)', marginBottom: 6, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.currencyConverter.to}</div>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '2px solid var(--border)', gap: 8 }}>
-                <div style={{ padding: '16px 0', fontSize: 24, fontFamily: 'var(--font-mono)', color: result === "—" ? 'var(--text-tertiary)' : 'var(--text-primary)' }}>
+                <div
+                  className="result-copyable"
+                  tabIndex={result !== "—" ? 0 : -1}
+                  role={result !== "—" ? "button" : undefined}
+                  aria-label={result !== "—" ? `${result} ${toCurrency} — press Enter or Ctrl+C to copy` : undefined}
+                  onClick={result !== "—" ? copyResult : undefined}
+                  onKeyDown={result !== "—" ? (e) => { if (e.key === 'Enter' || e.key === ' ' || ((e.ctrlKey || e.metaKey) && e.key === 'c')) { e.preventDefault(); copyResult(); } } : undefined}
+                  style={{ padding: '16px 0', fontSize: 24, fontFamily: 'var(--font-mono)', color: result === "—" ? 'var(--text-tertiary)' : 'var(--text-primary)' }}
+                >
                   {result}
                 </div>
                 {result !== "—" && (

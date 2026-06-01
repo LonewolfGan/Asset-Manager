@@ -181,7 +181,15 @@ export default function TipCalculator() {
               <div style={{ ...resultRowStyle, borderBottom: 'none', paddingBottom: 0 }}>
                 <span style={{ fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--text-primary)' }}>{tc.total}</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 28, fontWeight: 700, color: 'var(--accent)' }}>${fmt(total)}</span>
+                  <span
+                    className="result-copyable"
+                    tabIndex={0}
+                    role="button"
+                    aria-label={`$${fmt(total)} — press Enter or Ctrl+C to copy`}
+                    onClick={copyTotal}
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ' || ((e.ctrlKey || e.metaKey) && e.key === 'c')) { e.preventDefault(); copyTotal(); } }}
+                    style={{ fontFamily: 'var(--font-mono)', fontSize: 28, fontWeight: 700, color: 'var(--accent)' }}
+                  >${fmt(total)}</span>
                   <button
                     onClick={copyTotal}
                     aria-label="Copy total"

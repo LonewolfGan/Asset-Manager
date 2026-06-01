@@ -138,7 +138,15 @@ export default function UnitConverter() {
             <div>
               <div style={{ fontSize: 'var(--text-sm)', marginBottom: 6, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.unitConverter.to}</div>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '2px solid var(--border)', gap: 8 }}>
-                <div style={{ padding: '16px 0', fontSize: 24, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>
+                <div
+                  className="result-copyable"
+                  tabIndex={0}
+                  role="button"
+                  aria-label={`${result} — press Enter or Ctrl+C to copy`}
+                  onClick={copyResult}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ' || ((e.ctrlKey || e.metaKey) && e.key === 'c')) { e.preventDefault(); copyResult(); } }}
+                  style={{ padding: '16px 0', fontSize: 24, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}
+                >
                   {result}
                 </div>
                 <button

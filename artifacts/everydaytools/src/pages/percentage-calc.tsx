@@ -154,7 +154,15 @@ export default function PercentageCalc() {
             <div style={{ fontSize: 'var(--text-xs)', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-tertiary)', marginBottom: 10 }}>
               {pc.result}
             </div>
-            <div style={{ fontSize: 32, fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--text-primary)', marginBottom: 16 }}>
+            <div
+              className={getResult() !== '—' ? 'result-copyable' : undefined}
+              tabIndex={getResult() !== '—' ? 0 : -1}
+              role={getResult() !== '—' ? 'button' : undefined}
+              aria-label={getResult() !== '—' ? `${getResult()} — press Enter or Ctrl+C to copy` : undefined}
+              onClick={getResult() !== '—' ? () => copyResult(getResult()) : undefined}
+              onKeyDown={getResult() !== '—' ? (e) => { if (e.key === 'Enter' || e.key === ' ' || ((e.ctrlKey || e.metaKey) && e.key === 'c')) { e.preventDefault(); copyResult(getResult()); } } : undefined}
+              style={{ fontSize: 32, fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--text-primary)', marginBottom: 16 }}
+            >
               {getResult()}
             </div>
             {getResult() !== '—' && (

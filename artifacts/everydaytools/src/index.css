@@ -483,6 +483,18 @@ button,
   }
 }
 
+/* ─── FOCUSABLE RESULT VALUE ─── */
+.result-copyable {
+  cursor: pointer;
+  border-radius: 4px;
+  outline: none;
+}
+.result-copyable:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
 /* ─── CUSTOM RADIO ─── */
 input[type="radio"] {
   appearance: none;
