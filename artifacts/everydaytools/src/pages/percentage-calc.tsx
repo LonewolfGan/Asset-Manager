@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Copy, CheckCircle2 } from 'lucide-react';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
@@ -29,6 +30,13 @@ export default function PercentageCalc() {
   const [x, setX] = useState('');
   const [y, setY] = useState('');
   const [n, setN] = useState('1');
+  const [copied, setCopied] = useState(false);
+  const copyResult = (val: string) => {
+    if (val === '—') return;
+    navigator.clipboard.writeText(val);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   const vx = parseFloat(x);
   const vy = parseFloat(y);
@@ -146,9 +154,21 @@ export default function PercentageCalc() {
             <div style={{ fontSize: 'var(--text-xs)', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-tertiary)', marginBottom: 10 }}>
               {pc.result}
             </div>
-            <div style={{ fontSize: 32, fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--text-primary)' }}>
+            <div style={{ fontSize: 32, fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--text-primary)', marginBottom: 16 }}>
               {getResult()}
             </div>
+            {getResult() !== '—' && (
+              <button
+                onClick={() => copyResult(getResult())}
+                aria-label="Copy result"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '5px 14px', background: 'none', border: '1px solid var(--border)', borderRadius: 10, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: copied ? 'var(--accent)' : 'var(--text-secondary)', cursor: 'pointer', transition: 'border-color 150ms, color 150ms' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; (e.currentTarget as HTMLElement).style.color = 'var(--accent)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLElement).style.color = copied ? 'var(--accent)' : 'var(--text-secondary)'; }}
+              >
+                {copied ? <CheckCircle2 size={11} /> : <Copy size={11} />}
+                {copied ? 'Copied' : 'Copy result'}
+              </button>
+            )}
           </div>
         </div>
 

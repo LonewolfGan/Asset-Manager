@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Copy, CheckCircle2 } from 'lucide-react';
 import FormatSelector from '@/components/FormatSelector';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -18,6 +19,15 @@ export default function UnitConverter() {
   const [toUnit, setToUnit] = useState(category.units[1].id);
   const [amount, setAmount] = useState("1");
   const [favorites, setFavourites] = useState<string[]>([]);
+  const [copied, setCopied] = useState(false);
+  const copyResult = () => {
+    const toSymbol = category.units.find(u => u.id === toUnit)?.symbol ?? toUnit;
+    const val = calculate(amount);
+    if (!val || val === '—') return;
+    navigator.clipboard.writeText(`${val} ${toSymbol}`);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   useEffect(() => {
     if (amount !== "") {
@@ -127,8 +137,20 @@ export default function UnitConverter() {
             </div>
             <div>
               <div style={{ fontSize: 'var(--text-sm)', marginBottom: 6, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.unitConverter.to}</div>
-              <div style={{ padding: '16px 0', fontSize: 24, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)', borderBottom: '2px solid var(--border)' }}>
-                {result}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '2px solid var(--border)', gap: 8 }}>
+                <div style={{ padding: '16px 0', fontSize: 24, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>
+                  {result}
+                </div>
+                <button
+                  onClick={copyResult}
+                  aria-label="Copy result"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '5px 12px', background: 'none', border: '1px solid var(--border)', borderRadius: 10, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: copied ? 'var(--accent)' : 'var(--text-secondary)', cursor: 'pointer', flexShrink: 0, transition: 'border-color 150ms, color 150ms' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; (e.currentTarget as HTMLElement).style.color = 'var(--accent)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLElement).style.color = copied ? 'var(--accent)' : 'var(--text-secondary)'; }}
+                >
+                  {copied ? <CheckCircle2 size={11} /> : <Copy size={11} />}
+                  {copied ? 'Copied' : 'Copy'}
+                </button>
               </div>
             </div>
           </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Copy, CheckCircle2 } from 'lucide-react';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import FormatSelector from '@/components/FormatSelector';
 import AdSlot from '@/components/AdSlot';
@@ -18,6 +19,13 @@ export default function CurrencyConverter() {
   const [toCurrency, setToCurrency] = useState('EUR');
   const [amount, setAmount] = useState('1');
   const [history, setHistory] = useState<string[]>([]);
+  const [copied, setCopied] = useState(false);
+  const copyResult = () => {
+    if (result === '—') return;
+    navigator.clipboard.writeText(`${result} ${toCurrency}`);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   useEffect(() => {
     const fetchRates = async () => {
@@ -122,8 +130,22 @@ export default function CurrencyConverter() {
             </div>
             <div>
               <div style={{ fontSize: 'var(--text-sm)', marginBottom: 6, color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{t.currencyConverter.to}</div>
-              <div style={{ padding: '16px 0', fontSize: 24, fontFamily: 'var(--font-mono)', borderBottom: '2px solid var(--border)', color: result === "—" ? 'var(--text-tertiary)' : 'var(--text-primary)' }}>
-                {result}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '2px solid var(--border)', gap: 8 }}>
+                <div style={{ padding: '16px 0', fontSize: 24, fontFamily: 'var(--font-mono)', color: result === "—" ? 'var(--text-tertiary)' : 'var(--text-primary)' }}>
+                  {result}
+                </div>
+                {result !== "—" && (
+                  <button
+                    onClick={copyResult}
+                    aria-label="Copy result"
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '5px 12px', background: 'none', border: '1px solid var(--border)', borderRadius: 10, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: copied ? 'var(--accent)' : 'var(--text-secondary)', cursor: 'pointer', flexShrink: 0, transition: 'border-color 150ms, color 150ms' }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; (e.currentTarget as HTMLElement).style.color = 'var(--accent)'; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLElement).style.color = copied ? 'var(--accent)' : 'var(--text-secondary)'; }}
+                  >
+                    {copied ? <CheckCircle2 size={11} /> : <Copy size={11} />}
+                    {copied ? 'Copied' : 'Copy'}
+                  </button>
+                )}
               </div>
             </div>
           </div>
