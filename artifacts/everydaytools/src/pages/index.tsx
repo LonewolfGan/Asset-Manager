@@ -134,41 +134,14 @@ function ToolCard({ tool, isPinned, onTogglePin }: { tool: DashTool; isPinned?: 
             <Icon size={24} strokeWidth={1.6} />
           </div>
 
-          {/* Right cluster: pin + arrow — siblings, colors are independent */}
-          <div style={{ display: "flex", alignItems: "center", gap: 2, paddingTop: 2 }}>
-            {onTogglePin !== undefined && (
-              <button
-                className="card-pin"
-                onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }}
-                aria-label={isPinned ? "Unpin tool" : "Pin tool"}
-                style={{
-                  background: "none",
-                  border: "none",
-                  padding: "3px 4px",
-                  cursor: "pointer",
-                  color: isPinned ? "var(--accent)" : "var(--text-tertiary)",
-                  opacity: isPinned ? 1 : 0,
-                  transition: "opacity 150ms ease, color 150ms ease",
-                  display: "flex",
-                  alignItems: "center",
-                  borderRadius: 4,
-                  lineHeight: 0,
-                  flexShrink: 0,
-                }}
-              >
-                {isPinned
-                  ? <BookmarkCheck size={14} strokeWidth={2} />
-                  : <Bookmark size={14} strokeWidth={1.8} />}
-              </button>
-            )}
-            <div className="card-arrow" style={{
-              color: colors.icon,
-              opacity: 0,
-              transform: "translateX(-4px)",
-              transition: "opacity 160ms ease, transform 160ms ease",
-            }}>
-              <ArrowRight size={17} strokeWidth={2} />
-            </div>
+          <div className="card-arrow" style={{
+            color: colors.icon,
+            opacity: 0,
+            paddingTop: 4,
+            transform: "translateX(-4px)",
+            transition: "opacity 160ms ease, transform 160ms ease",
+          }}>
+            <ArrowRight size={17} strokeWidth={2} />
           </div>
         </div>
 
@@ -217,8 +190,8 @@ function ToolCard({ tool, isPinned, onTogglePin }: { tool: DashTool; isPinned?: 
           {description}
         </p>
 
-        {/* Format pills */}
-        {formatPairs.length > 0 && (
+        {/* Bottom row: format pills + pin button */}
+        {(formatPairs.length > 0 || onTogglePin !== undefined) && (
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 16, alignItems: "center" }}>
             {formatPairs.map((pair, i) => (
               <span key={i} style={{
@@ -241,6 +214,32 @@ function ToolCard({ tool, isPinned, onTogglePin }: { tool: DashTool; isPinned?: 
                 }
               </span>
             ))}
+            {onTogglePin !== undefined && (
+              <button
+                className="card-pin"
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }}
+                aria-label={isPinned ? "Unpin tool" : "Pin tool"}
+                style={{
+                  marginLeft: "auto",
+                  flexShrink: 0,
+                  background: "none",
+                  border: "none",
+                  padding: "3px 4px",
+                  cursor: "pointer",
+                  color: isPinned ? "var(--accent)" : "var(--text-tertiary)",
+                  opacity: isPinned ? 1 : 0,
+                  transition: "opacity 150ms ease, color 150ms ease",
+                  display: "flex",
+                  alignItems: "center",
+                  borderRadius: 4,
+                  lineHeight: 0,
+                }}
+              >
+                {isPinned
+                  ? <BookmarkCheck size={14} strokeWidth={2} />
+                  : <Bookmark size={14} strokeWidth={1.8} />}
+              </button>
+            )}
           </div>
         )}
       </article>
