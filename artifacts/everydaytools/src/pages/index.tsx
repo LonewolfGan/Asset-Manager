@@ -226,7 +226,7 @@ function ToolCard({ tool, isPinned, onTogglePin }: { tool: DashTool; isPinned?: 
                   border: "none",
                   padding: "3px 4px",
                   cursor: "pointer",
-                  color: isPinned ? "var(--accent)" : "var(--text-tertiary)",
+                  color: isPinned ? colors.icon : "var(--text-tertiary)",
                   opacity: isPinned ? 1 : 0,
                   transition: "opacity 150ms ease, color 150ms ease",
                   display: "flex",
