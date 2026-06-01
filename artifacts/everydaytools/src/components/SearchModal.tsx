@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "wouter";
 import { tools } from "@/config/tools.config";
 
@@ -6,6 +6,9 @@ interface SearchModalProps {
   open: boolean;
   onClose: () => void;
 }
+
+const HISTORY_KEY = "et:search-history";
+const MAX_HISTORY = 5;
 
 const kbdStyle: React.CSSProperties = {
   display: "inline-flex",
@@ -28,9 +31,24 @@ const SUGGESTED_SLUGS = [
   "password-generator", "metadata-cleaner", "unit-converter",
 ];
 
+function readHistory(): string[] {
+  try { return JSON.parse(localStorage.getItem(HISTORY_KEY) ?? "[]"); } catch { return []; }
+}
+
+function saveToHistory(q: string) {
+  const trimmed = q.trim();
+  if (!trimmed) return;
+  try {
+    const prev = readHistory();
+    const next = [trimmed, ...prev.filter((s) => s !== trimmed)].slice(0, MAX_HISTORY);
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(next));
+  } catch {}
+}
+
 export default function SearchModal({ open, onClose }: SearchModalProps) {
   const [query, setQuery] = useState("");
   const [activeIdx, setActiveIdx] = useState(0);
+  const [history, setHistory] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -50,18 +68,25 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
     if (!open) return;
     setQuery("");
     setActiveIdx(0);
+    setHistory(readHistory());
     const t = setTimeout(() => inputRef.current?.focus(), 30);
     return () => clearTimeout(t);
   }, [open]);
 
-  useEffect(() => {
-    setActiveIdx(0);
-  }, [query]);
+  useEffect(() => { setActiveIdx(0); }, [query]);
 
   useEffect(() => {
     const el = listRef.current?.children[activeIdx] as HTMLElement | undefined;
     el?.scrollIntoView({ block: "nearest" });
   }, [activeIdx]);
+
+  const handleNavigate = useCallback(() => {
+    if (query.trim()) {
+      saveToHistory(query);
+      setHistory(readHistory());
+    }
+    onClose();
+  }, [query, onClose]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowDown") {
@@ -77,9 +102,25 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
     }
   };
 
+  const removeFromHistory = (q: string) => {
+    try {
+      const next = history.filter((s) => s !== q);
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(next));
+      setHistory(next);
+    } catch {}
+  };
+
+  const clearHistory = () => {
+    try { localStorage.removeItem(HISTORY_KEY); } catch {}
+    setHistory([]);
+  };
+
   if (!open) return null;
 
-  const sectionLabel = trimmed ? `${results.length} result${results.length !== 1 ? "s" : ""}` : "Suggestions";
+  const showHistory = !trimmed && history.length > 0;
+  const sectionLabel = trimmed
+    ? `${results.length} result${results.length !== 1 ? "s" : ""}`
+    : "Suggestions";
 
   return (
     <>
@@ -165,6 +206,99 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
           <kbd style={kbdStyle}>Esc</kbd>
         </div>
 
+        {/* Search history chips */}
+        {showHistory && (
+          <div style={{ padding: "10px 16px 8px", borderBottom: "1px solid var(--border)" }}>
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginBottom: 8,
+            }}>
+              <span style={{
+                fontSize: 10,
+                fontFamily: "var(--font-mono)",
+                color: "var(--text-tertiary)",
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+              }}>
+                Recent searches
+              </span>
+              <button
+                onClick={clearHistory}
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  fontSize: 10,
+                  fontFamily: "var(--font-ui)",
+                  color: "var(--text-tertiary)",
+                  padding: "1px 0",
+                  transition: "color 120ms",
+                }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-primary)"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-tertiary)"; }}
+              >
+                Clear all
+              </button>
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+              {history.map((q) => (
+                <div
+                  key={q}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 4,
+                    padding: "4px 6px 4px 11px",
+                    background: "var(--bg-elevated)",
+                    border: "1px solid var(--border)",
+                    borderRadius: 20,
+                    fontSize: "var(--text-xs)",
+                    fontFamily: "var(--font-ui)",
+                    color: "var(--text-primary)",
+                    cursor: "pointer",
+                    transition: "border-color 120ms, background 120ms",
+                    userSelect: "none",
+                  }}
+                  onClick={() => setQuery(q)}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor = "var(--border-strong)";
+                    (e.currentTarget as HTMLElement).style.background = "var(--bg-hover)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
+                    (e.currentTarget as HTMLElement).style.background = "var(--bg-elevated)";
+                  }}
+                >
+                  {q}
+                  <button
+                    aria-label={`Remove "${q}" from history`}
+                    onClick={(e) => { e.stopPropagation(); removeFromHistory(q); }}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      padding: "0 2px",
+                      cursor: "pointer",
+                      color: "var(--text-tertiary)",
+                      fontSize: 13,
+                      lineHeight: 1,
+                      display: "flex",
+                      alignItems: "center",
+                      borderRadius: 3,
+                      transition: "color 100ms",
+                    }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-primary)"; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-tertiary)"; }}
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Section label */}
         <div
           style={{
@@ -196,7 +330,7 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
                   data-testid="search-result-item"
                   role="option"
                   aria-selected={isActive}
-                  onClick={onClose}
+                  onClick={handleNavigate}
                   onMouseEnter={() => setActiveIdx(i)}
                   style={{
                     display: "flex",
