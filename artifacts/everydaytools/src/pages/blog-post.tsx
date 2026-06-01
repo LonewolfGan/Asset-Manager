@@ -283,9 +283,6 @@ export default function BlogPost({ params }: BlogPostPageProps) {
               {ctaLabel} →
             </div>
           </Link>
-          <Link href={`/${lang}/blog`} style={{ fontSize: 14, color: "var(--text-tertiary)", textDecoration: "none" }}>
-            ← {lang === "fr" ? "Tous les guides" : "All guides"}
-          </Link>
         </div>
       </div>
     </>
