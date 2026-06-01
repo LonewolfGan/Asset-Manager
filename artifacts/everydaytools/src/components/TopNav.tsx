@@ -400,6 +400,24 @@ export default function TopNav() {
                 currentPath={location}
               />
             ))}
+            <Link
+              href="/en/blog"
+              style={{
+                fontFamily: "var(--font-ui)",
+                fontSize: "var(--text-sm)",
+                fontWeight: 500,
+                color: location.includes("/blog") ? "var(--text-primary)" : "var(--text-secondary)",
+                textDecoration: "none",
+                padding: "6px 0",
+                borderBottom: location.includes("/blog") ? "2px solid var(--accent)" : "2px solid transparent",
+                whiteSpace: "nowrap",
+                transition: "color 120ms ease, border-color 120ms ease",
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-primary)"; }}
+              onMouseLeave={(e) => { if (!location.includes("/blog")) (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)"; }}
+            >
+              Blog
+            </Link>
           </div>
 
           {/* Spacer */}

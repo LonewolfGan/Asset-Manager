@@ -123,6 +123,10 @@ const CurrencyConverter = lazy(() => import("@/pages/currency-converter"));
 const QrCodeGenerator = lazy(() => import("@/pages/qr-code-generator"));
 const TipCalculator = lazy(() => import("@/pages/tip-calculator"));
 
+// Blog
+const BlogIndex = lazy(() => import("@/pages/blog-index"));
+const BlogPost = lazy(() => import("@/pages/blog-post"));
+
 // Legal
 const Privacy = lazy(() => import("@/pages/privacy"));
 const Terms = lazy(() => import("@/pages/terms"));
@@ -338,6 +342,12 @@ function Router() {
         <Suspense fallback={<PageLoader />}>
           <Switch>
             <Route path="/" component={Home} />
+
+            {/* Blog routes — must be before /en/:slug to avoid conflict */}
+            <Route path="/en/blog" component={BlogIndex} />
+            <Route path="/fr/blog" component={BlogIndex} />
+            <Route path="/en/blog/:slug" component={BlogPost} />
+            <Route path="/fr/blog/:slug" component={BlogPost} />
 
             {/* Locale-aware SEO routes */}
             <Route path="/en/:slug" component={LocaleToolRoute} />

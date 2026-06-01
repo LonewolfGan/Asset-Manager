@@ -469,6 +469,15 @@ const toolCategoryMap: Record<string, string> = {
   "unit-converter": "calculators", "currency-converter": "calculators",
 };
 
+const BLOG_POSTS_STATIC = [
+  { en: "how-to-convert-pdf-to-word", fr: "comment-convertir-pdf-en-word", date: "2025-05-15" },
+  { en: "how-to-compress-pdf", fr: "comment-compresser-un-pdf", date: "2025-05-20" },
+  { en: "how-to-remove-image-background", fr: "comment-supprimer-fond-image", date: "2025-05-25" },
+  { en: "how-to-convert-heic-to-jpg", fr: "comment-convertir-heic-en-jpg", date: "2025-06-01" },
+  { en: "how-to-generate-strong-password", fr: "comment-creer-mot-de-passe-fort", date: "2025-06-01" },
+  { en: "webp-vs-jpeg-vs-png", fr: "webp-vs-jpeg-vs-png", date: "2025-06-01" },
+];
+
 export function generateSitemapXml(): string {
   const now = new Date().toISOString().split("T")[0];
   const urls: string[] = [];
@@ -481,6 +490,14 @@ export function generateSitemapXml(): string {
     urls.push(`  <url><loc>${BASE_URL}/fr/${tool.slugs.fr}</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`);
   }
 
+  urls.push(`  <url><loc>${BASE_URL}/en/blog</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>`);
+  urls.push(`  <url><loc>${BASE_URL}/fr/blog</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>`);
+
+  for (const post of BLOG_POSTS_STATIC) {
+    urls.push(`  <url><loc>${BASE_URL}/en/blog/${post.en}</loc><lastmod>${post.date}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>`);
+    urls.push(`  <url><loc>${BASE_URL}/fr/blog/${post.fr}</loc><lastmod>${post.date}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>`);
+  }
+
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>`;
 }
 
@@ -488,23 +505,52 @@ export function generateRobotsTxt(): string {
   return `User-agent: *
 Allow: /
 Disallow: /api/
+Disallow: /.well-known/
+Crawl-delay: 2
+
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+Crawl-delay: 1
+
+User-agent: Googlebot-Image
+Allow: /
 
 User-agent: GPTBot
-Allow: /
+Allow: /en/blog/
+Allow: /fr/blog/
+Allow: /en/
+Allow: /fr/
+Disallow: /api/
 
 User-agent: OAI-SearchBot
 Allow: /
 
 User-agent: ClaudeBot
-Allow: /
+Allow: /en/blog/
+Allow: /fr/blog/
+Allow: /en/
+Allow: /fr/
+Disallow: /api/
 
 User-agent: PerplexityBot
 Allow: /
 
-User-agent: Googlebot-Image
-Allow: /
-
 User-agent: Bytespider
+Disallow: /
+
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+User-agent: DotBot
 Disallow: /
 
 Sitemap: ${BASE_URL}/sitemap.xml
