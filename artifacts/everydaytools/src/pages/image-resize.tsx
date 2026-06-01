@@ -120,15 +120,21 @@ export default function ImageResize() {
       
       {files.length > 0 && (
         <div style={{ marginTop: 24, padding: 24, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
-          <div style={{ display: 'flex', gap: 16, marginBottom: 20 }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-              <input type="radio" checked={mode === 'pixels'} onChange={() => setMode('pixels')} style={{ accentColor: 'var(--accent)' }} />
-              <span>By Pixels</span>
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-              <input type="radio" checked={mode === 'percentage'} onChange={() => setMode('percentage')} style={{ accentColor: 'var(--accent)' }} />
-              <span>By Percentage</span>
-            </label>
+          <div style={{ display: 'flex', gap: 4, marginBottom: 16, flexWrap: 'wrap' }}>
+            {([
+              { value: 'pixels',     label: 'By Pixels' },
+              { value: 'percentage', label: 'By Percentage' },
+            ] as const).map(({ value, label }) => (
+              <label
+                key={value}
+                style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', padding: '10px 12px', borderRadius: 8, transition: 'background 120ms ease' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-elevated)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+              >
+                <input type="radio" checked={mode === value} onChange={() => setMode(value)} style={{ width: 15, height: 15 }} />
+                <span>{label}</span>
+              </label>
+            ))}
           </div>
 
           {mode === 'pixels' ? (

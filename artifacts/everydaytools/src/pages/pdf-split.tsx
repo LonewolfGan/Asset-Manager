@@ -120,15 +120,20 @@ export default function PdfSplit() {
         <div style={{ marginTop: 24, padding: 20, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
           <h3 style={{ fontSize: 'var(--text-base)', fontWeight: 500, marginBottom: 16 }}>Split Options</h3>
           
-          <label style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12, cursor: 'pointer' }}>
-            <input type="radio" checked={mode === 'every'} onChange={() => setMode('every')} style={{ accentColor: 'var(--accent)' }} />
-            <span>Extract every page into individual PDFs (ZIP)</span>
-          </label>
-          
-          <label style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12, cursor: 'pointer' }}>
-            <input type="radio" checked={mode === 'range'} onChange={() => setMode('range')} style={{ accentColor: 'var(--accent)' }} />
-            <span>Extract specific pages or ranges</span>
-          </label>
+          {([
+            { value: 'every', label: 'Extract every page into individual PDFs (ZIP)' },
+            { value: 'range', label: 'Extract specific pages or ranges' },
+          ] as const).map(({ value, label }) => (
+            <label
+              key={value}
+              style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', padding: '10px 12px', borderRadius: 8, marginBottom: 4, transition: 'background 120ms ease' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-elevated)'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+            >
+              <input type="radio" checked={mode === value} onChange={() => setMode(value)} style={{ width: 15, height: 15 }} />
+              <span>{label}</span>
+            </label>
+          ))}
           
           {mode === 'range' && (
             <div style={{ paddingLeft: 28, marginTop: 8 }}>

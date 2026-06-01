@@ -90,15 +90,21 @@ export default function PdfToImage() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
             <div>
               <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 500, marginBottom: 12 }}>Format</h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-                  <input type="radio" checked={format === 'image/jpeg'} onChange={() => setFormat('image/jpeg')} style={{ accentColor: 'var(--accent)' }} />
-                  <span style={{ fontSize: 'var(--text-sm)' }}>JPEG</span>
-                </label>
-                <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-                  <input type="radio" checked={format === 'image/png'} onChange={() => setFormat('image/png')} style={{ accentColor: 'var(--accent)' }} />
-                  <span style={{ fontSize: 'var(--text-sm)' }}>PNG</span>
-                </label>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                {([
+                  { value: 'image/jpeg', label: 'JPEG' },
+                  { value: 'image/png',  label: 'PNG' },
+                ] as const).map(({ value, label }) => (
+                  <label
+                    key={value}
+                    style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', padding: '8px 12px', borderRadius: 8, transition: 'background 120ms ease' }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-elevated)'; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+                  >
+                    <input type="radio" checked={format === value} onChange={() => setFormat(value)} style={{ width: 15, height: 15 }} />
+                    <span>{label}</span>
+                  </label>
+                ))}
               </div>
             </div>
             <div>

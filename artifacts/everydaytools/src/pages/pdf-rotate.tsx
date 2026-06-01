@@ -58,19 +58,22 @@ export default function PdfRotate() {
       {files.length > 0 && (
         <div style={{ marginTop: 24, padding: 20, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
           <h3 style={{ fontSize: 'var(--text-base)', fontWeight: 500, marginBottom: 16 }}>Rotation Angle</h3>
-          <div style={{ display: 'flex', gap: 16 }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-              <input type="radio" checked={rotation === 90} onChange={() => setRotation(90)} style={{ accentColor: 'var(--accent)' }} />
-              <span>Right (90°)</span>
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-              <input type="radio" checked={rotation === 180} onChange={() => setRotation(180)} style={{ accentColor: 'var(--accent)' }} />
-              <span>Upside Down (180°)</span>
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-              <input type="radio" checked={rotation === 270} onChange={() => setRotation(270)} style={{ accentColor: 'var(--accent)' }} />
-              <span>Left (270°)</span>
-            </label>
+          <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+            {([
+              { value: 90,  label: 'Right (90°)' },
+              { value: 180, label: 'Upside Down (180°)' },
+              { value: 270, label: 'Left (270°)' },
+            ] as const).map(({ value, label }) => (
+              <label
+                key={value}
+                style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', padding: '10px 12px', borderRadius: 8, transition: 'background 120ms ease' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-elevated)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+              >
+                <input type="radio" checked={rotation === value} onChange={() => setRotation(value)} style={{ width: 15, height: 15 }} />
+                <span>{label}</span>
+              </label>
+            ))}
           </div>
         </div>
       )}
