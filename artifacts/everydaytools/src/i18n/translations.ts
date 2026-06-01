@@ -26,6 +26,7 @@ export type Translations = {
     noResults: (q: string) => string;
     clearSearch: string;
     recentlyUsed: string;
+    pinned: string;
   };
   tools: Record<string, { title: string; description: string }>;
   ui: {
@@ -436,6 +437,7 @@ const EN: Translations = {
     noResults: (q) => `No tools match "${q}"`,
     clearSearch: "Clear search",
     recentlyUsed: "Recently used",
+    pinned: "Pinned",
   },
   tools: {
     "pdf-to-word": { title: "PDF to Word", description: "Convert PDF files to editable DOCX format" },
@@ -989,6 +991,7 @@ const FR: Translations = {
     noResults: (q) => `Aucun outil ne correspond à « ${q} »`,
     clearSearch: "Effacer la recherche",
     recentlyUsed: "Récemment utilisés",
+    pinned: "Épinglés",
   },
   tools: {
     "pdf-to-word": { title: "PDF en Word", description: "Convertir des fichiers PDF en format DOCX modifiable" },

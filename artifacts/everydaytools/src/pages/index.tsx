@@ -1,11 +1,11 @@
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import { Link } from "wouter";
 import { Helmet } from "react-helmet-async";
 import { tools } from "@/config/tools.config";
 import { useLocale } from "@/hooks/use-locale";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { LucideIcon } from "lucide-react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Bookmark, BookmarkCheck } from "lucide-react";
 
 const WEBSITE_SCHEMA = {
   "@context": "https://schema.org",
@@ -63,7 +63,7 @@ const CATEGORY_COLORS: Record<DashCategory, { icon: string; bg: string; badgeBg:
 };
 
 /* ── ToolCard ────────────────────────────────────────────────────────────── */
-function ToolCard({ tool }: { tool: DashTool }) {
+function ToolCard({ tool, isPinned, onTogglePin }: { tool: DashTool; isPinned?: boolean; onTogglePin?: () => void }) {
   const { t } = useLocale();
   const { Icon } = tool;
   const colors = CATEGORY_COLORS[tool.category];
@@ -104,6 +104,8 @@ function ToolCard({ tool }: { tool: DashTool }) {
           el.style.boxShadow = `0 4px 16px rgba(0,0,0,0.08)`;
           const arrow = el.querySelector<HTMLElement>(".card-arrow");
           if (arrow) { arrow.style.opacity = "1"; arrow.style.transform = "translateX(0)"; }
+          const pin = el.querySelector<HTMLElement>(".card-pin");
+          if (pin && !isPinned) pin.style.opacity = "1";
         }}
         onMouseLeave={(e) => {
           const el = e.currentTarget as HTMLElement;
@@ -111,6 +113,8 @@ function ToolCard({ tool }: { tool: DashTool }) {
           el.style.boxShadow = "0 1px 3px rgba(0,0,0,0.04)";
           const arrow = el.querySelector<HTMLElement>(".card-arrow");
           if (arrow) { arrow.style.opacity = "0"; arrow.style.transform = "translateX(-4px)"; }
+          const pin = el.querySelector<HTMLElement>(".card-pin");
+          if (pin && !isPinned) pin.style.opacity = "0";
         }}
       >
         {/* Header row: icon + arrow */}
@@ -128,14 +132,36 @@ function ToolCard({ tool }: { tool: DashTool }) {
           }}>
             <Icon size={24} strokeWidth={1.6} />
           </div>
-          <div className="card-arrow" style={{
-            color: colors.icon,
-            opacity: 0,
-            transform: "translateX(-4px)",
-            transition: "opacity 160ms ease, transform 160ms ease",
-            paddingTop: 4,
-          }}>
-            <ArrowRight size={17} strokeWidth={2} />
+          <div style={{ display: "flex", alignItems: "center", gap: 2, paddingTop: 4 }}>
+            {onTogglePin !== undefined && (
+              <button
+                className="card-pin"
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }}
+                aria-label={isPinned ? "Unpin tool" : "Pin tool"}
+                style={{
+                  background: "none",
+                  border: "none",
+                  padding: "3px 4px",
+                  cursor: "pointer",
+                  color: isPinned ? "var(--accent)" : "var(--text-tertiary)",
+                  opacity: isPinned ? 1 : 0,
+                  transition: "opacity 150ms, color 150ms",
+                  display: "flex",
+                  alignItems: "center",
+                  borderRadius: 4,
+                }}
+              >
+                {isPinned ? <BookmarkCheck size={15} strokeWidth={2} /> : <Bookmark size={15} strokeWidth={1.8} />}
+              </button>
+            )}
+            <div className="card-arrow" style={{
+              color: colors.icon,
+              opacity: 0,
+              transform: "translateX(-4px)",
+              transition: "opacity 160ms ease, transform 160ms ease",
+            }}>
+              <ArrowRight size={17} strokeWidth={2} />
+            </div>
           </div>
         </div>
 
@@ -243,6 +269,29 @@ export default function DashboardHome() {
     [recentSlugs]
   );
 
+  const [pinnedSlugs, setPinnedSlugs] = useState<string[]>(() => {
+    try { return JSON.parse(localStorage.getItem('et:pinned') ?? '[]'); } catch { return []; }
+  });
+  useEffect(() => {
+    const onPinned = () => {
+      try { setPinnedSlugs(JSON.parse(localStorage.getItem('et:pinned') ?? '[]')); } catch { setPinnedSlugs([]); }
+    };
+    window.addEventListener('et:pinned', onPinned);
+    return () => window.removeEventListener('et:pinned', onPinned);
+  }, []);
+  const pinnedTools = useMemo(
+    () => pinnedSlugs.map(s => DASH_TOOLS.find(t => t.slug === s)).filter((t): t is DashTool => t !== undefined),
+    [pinnedSlugs]
+  );
+  const togglePin = useCallback((slug: string) => {
+    try {
+      const prev: string[] = JSON.parse(localStorage.getItem('et:pinned') ?? '[]');
+      const next = prev.includes(slug) ? prev.filter(s => s !== slug) : [slug, ...prev];
+      localStorage.setItem('et:pinned', JSON.stringify(next));
+      window.dispatchEvent(new Event('et:pinned'));
+    } catch {}
+  }, []);
+
   const filteredTools = useMemo(() => {
     if (!query.trim()) return DASH_TOOLS;
     const q = query.toLowerCase();
@@ -285,6 +334,35 @@ export default function DashboardHome() {
           </div>
         )}
 
+        {/* Pinned */}
+        {!isSearching && pinnedTools.length > 0 && (
+          <div style={{ marginBottom: 40 }}>
+            <p style={{
+              fontSize: 'var(--text-xs)',
+              fontWeight: 600,
+              letterSpacing: '0.07em',
+              textTransform: 'uppercase',
+              color: 'var(--text-tertiary)',
+              margin: '0 0 14px',
+              fontFamily: 'var(--font-ui)',
+            }}>
+              {t.home.pinned}
+            </p>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: isMobile
+                ? 'repeat(2, 1fr)'
+                : `repeat(${Math.min(pinnedTools.length, 4)}, minmax(0, 260px))`,
+              gap: 12,
+            }}>
+              {pinnedTools.map((tool) => (
+                <ToolCard key={tool.slug} tool={tool} isPinned={true} onTogglePin={() => togglePin(tool.slug)} />
+              ))}
+            </div>
+            <div style={{ marginTop: 28, borderTop: '1px solid var(--border)' }} />
+          </div>
+        )}
+
         {/* Recently used */}
         {!isSearching && recentTools.length > 0 && (
           <div style={{ marginBottom: 40 }}>
@@ -307,7 +385,7 @@ export default function DashboardHome() {
               gap: 12,
             }}>
               {recentTools.map((tool) => (
-                <ToolCard key={tool.slug} tool={tool} />
+                <ToolCard key={tool.slug} tool={tool} isPinned={pinnedSlugs.includes(tool.slug)} onTogglePin={() => togglePin(tool.slug)} />
               ))}
             </div>
             <div style={{ marginTop: 28, borderTop: '1px solid var(--border)' }} />
@@ -350,7 +428,7 @@ export default function DashboardHome() {
             gap: 16,
           }}>
             {filteredTools.map((tool) => (
-              <ToolCard key={tool.slug} tool={tool} />
+              <ToolCard key={tool.slug} tool={tool} isPinned={pinnedSlugs.includes(tool.slug)} onTogglePin={() => togglePin(tool.slug)} />
             ))}
           </div>
         )}
