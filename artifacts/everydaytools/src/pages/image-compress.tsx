@@ -419,12 +419,16 @@ export default function ImageCompress() {
           </div>
 
           {/* Strip metadata */}
-          <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', userSelect: 'none' }}>
+          <label
+            style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', userSelect: 'none', padding: '10px 12px', borderRadius: 8, transition: 'background 120ms ease' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-elevated)'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+          >
             <input
               type="checkbox"
               checked={stripMeta}
               onChange={(e) => setStripMeta(e.target.checked)}
-              style={{ width: 16, height: 16, accentColor: 'var(--accent)', flexShrink: 0 }}
+              style={{ width: 15, height: 15, accentColor: 'var(--accent)', flexShrink: 0 }}
             />
             <span style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)' }}>
               {tc.stripExif}

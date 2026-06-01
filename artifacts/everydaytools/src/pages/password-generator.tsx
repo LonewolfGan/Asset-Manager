@@ -144,21 +144,30 @@ export default function PasswordGenerator() {
             <input id="pw-length" type="range" min="8" max="128" value={length} onChange={e => setLength(parseInt(e.target.value))} style={{ width: '100%' }} />
           </div>
           
-          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 16 }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 'var(--text-sm)', cursor: 'pointer', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', padding: '5px 0' }}>
-              <input type="checkbox" checked={uppercase} onChange={e => setUppercase(e.target.checked)} disabled={pronounceable} style={{ accentColor: 'var(--accent)' }} /> {pg.uppercase}
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 'var(--text-sm)', cursor: 'pointer', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', padding: '5px 0' }}>
-              <input type="checkbox" checked={lowercase} onChange={e => setLowercase(e.target.checked)} disabled={pronounceable} style={{ accentColor: 'var(--accent)' }} /> {pg.lowercase}
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 'var(--text-sm)', cursor: 'pointer', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', padding: '5px 0' }}>
-              <input type="checkbox" checked={numbers} onChange={e => setNumbers(e.target.checked)} disabled={pronounceable} style={{ accentColor: 'var(--accent)' }} /> {pg.numbers}
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 'var(--text-sm)', cursor: 'pointer', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', padding: '5px 0' }}>
-              <input type="checkbox" checked={symbols} onChange={e => setSymbols(e.target.checked)} disabled={pronounceable} style={{ accentColor: 'var(--accent)' }} /> {pg.symbols}
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 'var(--text-sm)', cursor: 'pointer', gridColumn: '1 / -1', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', padding: '5px 0' }}>
-              <input type="checkbox" checked={pronounceable} onChange={e => setPronounceable(e.target.checked)} style={{ accentColor: 'var(--accent)' }} /> {pg.pronounceable}
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 4 }}>
+            {([
+              { checked: uppercase, onChange: (v: boolean) => setUppercase(v), label: pg.uppercase, disabled: pronounceable },
+              { checked: lowercase, onChange: (v: boolean) => setLowercase(v), label: pg.lowercase, disabled: pronounceable },
+              { checked: numbers,   onChange: (v: boolean) => setNumbers(v),   label: pg.numbers,   disabled: pronounceable },
+              { checked: symbols,   onChange: (v: boolean) => setSymbols(v),   label: pg.symbols,   disabled: pronounceable },
+            ] as const).map(({ checked, onChange, label, disabled }) => (
+              <label
+                key={label}
+                style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 'var(--text-sm)', cursor: disabled ? 'not-allowed' : 'pointer', color: disabled ? 'var(--text-tertiary)' : 'var(--text-primary)', fontFamily: 'var(--font-ui)', padding: '10px 12px', borderRadius: 8, transition: 'background 120ms ease' }}
+                onMouseEnter={e => { if (!disabled) (e.currentTarget as HTMLElement).style.background = 'var(--bg-elevated)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+              >
+                <input type="checkbox" checked={checked} onChange={ev => onChange(ev.target.checked)} disabled={disabled} style={{ accentColor: 'var(--accent)', width: 15, height: 15, flexShrink: 0 }} />
+                {label}
+              </label>
+            ))}
+            <label
+              style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 'var(--text-sm)', cursor: 'pointer', gridColumn: '1 / -1', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', padding: '10px 12px', borderRadius: 8, transition: 'background 120ms ease' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-elevated)'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+            >
+              <input type="checkbox" checked={pronounceable} onChange={e => setPronounceable(e.target.checked)} style={{ accentColor: 'var(--accent)', width: 15, height: 15, flexShrink: 0 }} />
+              {pg.pronounceable}
             </label>
           </div>
           

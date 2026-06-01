@@ -85,19 +85,22 @@ export default function PdfProtect() {
           </div>
           
           <h3 style={{ fontSize: 'var(--text-base)', fontWeight: 500, marginBottom: 16 }}>Permissions</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-              <input type="checkbox" checked={allowPrinting} onChange={e => setAllowPrinting(e.target.checked)} style={{ accentColor: 'var(--accent)' }} />
-              <span>Allow Printing</span>
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-              <input type="checkbox" checked={allowCopying} onChange={e => setAllowCopying(e.target.checked)} style={{ accentColor: 'var(--accent)' }} />
-              <span>Allow Copying Text</span>
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-              <input type="checkbox" checked={allowModifying} onChange={e => setAllowModifying(e.target.checked)} style={{ accentColor: 'var(--accent)' }} />
-              <span>Allow Editing</span>
-            </label>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            {([
+              { checked: allowPrinting,  onChange: setAllowPrinting,  label: 'Allow Printing' },
+              { checked: allowCopying,   onChange: setAllowCopying,   label: 'Allow Copying Text' },
+              { checked: allowModifying, onChange: setAllowModifying, label: 'Allow Editing' },
+            ] as const).map(({ checked, onChange, label }) => (
+              <label
+                key={label}
+                style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', padding: '10px 12px', borderRadius: 8, transition: 'background 120ms ease' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-elevated)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+              >
+                <input type="checkbox" checked={checked} onChange={ev => onChange(ev.target.checked)} style={{ accentColor: 'var(--accent)', width: 15, height: 15, flexShrink: 0 }} />
+                <span>{label}</span>
+              </label>
+            ))}
           </div>
         </div>
       )}
