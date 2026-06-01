@@ -233,7 +233,7 @@ function NavDropdown({
   );
 }
 
-function MobileDrawer({ open, onClose, currentPath }: { open: boolean; onClose: () => void; currentPath: string }) {
+function MobileDrawer({ open, onClose, onOpenSearch, currentPath }: { open: boolean; onClose: () => void; onOpenSearch: () => void; currentPath: string }) {
   const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
   const { theme, toggle } = useTheme();
   const { locale, setLocale, t } = useLocale();
@@ -268,23 +268,23 @@ function MobileDrawer({ open, onClose, currentPath }: { open: boolean; onClose: 
 
         {/* Mobile search */}
         <div style={{ padding: "12px 16px", borderBottom: "1px solid var(--border)" }}>
-          <label style={{
-            display: "flex", alignItems: "center", gap: 8,
-            background: "var(--bg-elevated)", border: "1px solid var(--border)",
-            borderRadius: 12, padding: "8px 12px", cursor: "text", width: "100%",
-          }}>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <button
+            onClick={() => { onOpenSearch(); onClose(); }}
+            aria-label={t.nav.searchPlaceholder}
+            style={{
+              display: "flex", alignItems: "center", gap: 8,
+              background: "var(--bg-elevated)", border: "1px solid var(--border)",
+              borderRadius: 12, padding: "8px 12px", cursor: "pointer", width: "100%",
+              textAlign: "left",
+            }}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
             </svg>
-            <input
-              type="search"
-              placeholder={t.nav.searchPlaceholder}
-              style={{ background: "transparent", border: "none", outline: "none", fontSize: 'var(--text-sm)', color: "var(--text-primary)", width: "100%", fontFamily: "var(--font-ui)" }}
-              onChange={(e) => {
-                window.dispatchEvent(new CustomEvent("et:search", { detail: e.target.value }));
-              }}
-            />
-          </label>
+            <span style={{ fontSize: 'var(--text-sm)', color: "var(--text-tertiary)", fontFamily: "var(--font-ui)" }}>
+              {t.nav.searchPlaceholder}
+            </span>
+          </button>
         </div>
 
         <div style={{ flex: 1 }}>
@@ -338,7 +338,6 @@ export default function TopNav() {
   const [location] = useLocation();
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
   const navLeaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -363,17 +362,12 @@ export default function TopNav() {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  const handleSearch = (value: string) => {
-    setSearchQuery(value);
-    window.dispatchEvent(new CustomEvent("et:search", { detail: value }));
-  };
-
   return (
     <>
       <nav style={{ position: "sticky", top: 0, zIndex: 50, background: "var(--bg-surface)", borderBottom: "1px solid var(--border)" }}>
         <div
           ref={navRef}
-          style={{ maxWidth: "var(--content-wide)", margin: "0 auto", padding: "0 24px", height: 56, display: "flex", alignItems: "center", gap: 0 }}
+          style={{ maxWidth: "var(--content-wide)", margin: "0 auto", padding: "0 clamp(16px, 4vw, 24px)", height: 56, display: "flex", alignItems: "center", gap: 0 }}
         >
           {/* Logo */}
           <Link href="/" style={{ display: "flex", alignItems: "center", gap: 9, textDecoration: "none", flexShrink: 0, marginRight: 32 }}>
@@ -415,7 +409,7 @@ export default function TopNav() {
           <button
             className="hidden lg:flex"
             onClick={() => setSearchModalOpen(true)}
-            aria-label="Search tools (⌘K)"
+            aria-label="Search tools"
             data-testid="search-input"
             style={{
               width: 220,
@@ -424,7 +418,7 @@ export default function TopNav() {
               background: "var(--bg-elevated)",
               border: "1px solid var(--border)",
               borderRadius: "var(--radius-input)",
-              padding: "7px 10px 7px 12px",
+              padding: "7px 12px",
               cursor: "pointer",
               transition: "border-color 120ms ease",
               fontFamily: "var(--font-ui)",
@@ -439,20 +433,6 @@ export default function TopNav() {
             <span style={{ flex: 1, fontSize: 'var(--text-sm)', color: "var(--text-tertiary)", fontFamily: "var(--font-ui)" }}>
               {t.nav.searchPlaceholder}
             </span>
-            <kbd style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 1,
-              padding: "1px 5px",
-              background: "var(--bg-surface)",
-              border: "1px solid var(--border-strong)",
-              borderRadius: "var(--radius-sm)",
-              fontSize: 10,
-              fontFamily: "var(--font-mono)",
-              color: "var(--text-tertiary)",
-              lineHeight: 1.6,
-              flexShrink: 0,
-            }}>⌘K</kbd>
           </button>
 
           {/* Right actions */}
@@ -510,7 +490,7 @@ export default function TopNav() {
         </div>
       </nav>
 
-      <MobileDrawer open={mobileOpen} onClose={() => setMobileOpen(false)} currentPath={location} />
+      <MobileDrawer open={mobileOpen} onClose={() => setMobileOpen(false)} onOpenSearch={() => setSearchModalOpen(true)} currentPath={location} />
       <SearchModal open={searchModalOpen} onClose={() => setSearchModalOpen(false)} />
     </>
   );

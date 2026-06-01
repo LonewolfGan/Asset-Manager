@@ -13,10 +13,11 @@ test.describe('Navigation', () => {
   test('search filters tools', async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
-    const searchInput = page.locator('[data-testid="search-input"]');
-    await searchInput.fill('compress');
+    await page.locator('[data-testid="search-input"]').click();
+    await page.locator('[data-testid="search-modal-input"]').waitFor({ state: 'visible' });
+    await page.locator('[data-testid="search-modal-input"]').fill('compress');
     await page.waitForTimeout(300);
-    const visible = await page.locator('[data-testid="tool-card"]:visible').count();
+    const visible = await page.locator('[data-testid="search-result-item"]').count();
     expect(visible).toBeGreaterThan(0);
   });
 

@@ -144,6 +144,7 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
           <input
             ref={inputRef}
             type="search"
+            data-testid="search-modal-input"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -192,6 +193,7 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
                 <Link
                   key={tool.slug}
                   href={`/${tool.slug}`}
+                  data-testid="search-result-item"
                   role="option"
                   aria-selected={isActive}
                   onClick={onClose}
