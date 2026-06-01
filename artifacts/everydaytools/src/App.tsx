@@ -2,7 +2,7 @@ import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import TopNav from "@/components/TopNav";
 import Footer from "@/components/Footer";
 import CookieBanner from "@/components/CookieBanner";
@@ -264,10 +264,59 @@ function ScrollToTop() {
   return null;
 }
 
+function BackToTop() {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > 300);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  return (
+    <button
+      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      aria-label="Back to top"
+      style={{
+        position: 'fixed',
+        bottom: 28,
+        right: 28,
+        width: 44,
+        height: 44,
+        borderRadius: '50%',
+        background: 'var(--accent)',
+        color: '#fff',
+        border: 'none',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxShadow: '0 4px 20px rgba(255,107,53,0.4)',
+        opacity: visible ? 1 : 0,
+        transform: visible ? 'translateY(0) scale(1)' : 'translateY(10px) scale(0.9)',
+        transition: 'opacity 220ms ease, transform 220ms ease, box-shadow 120ms ease',
+        pointerEvents: visible ? 'auto' : 'none',
+        zIndex: 50,
+      }}
+      onMouseEnter={e => {
+        (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 6px 28px rgba(255,107,53,0.55)';
+        (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-2px) scale(1.05)';
+      }}
+      onMouseLeave={e => {
+        (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 20px rgba(255,107,53,0.4)';
+        (e.currentTarget as HTMLButtonElement).style.transform = visible ? 'translateY(0) scale(1)' : 'translateY(10px) scale(0.9)';
+      }}
+    >
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 13V5M9 5L5 9M9 5L13 9" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    </button>
+  );
+}
+
 function Router() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-base)', fontFamily: 'var(--font-ui)', display: 'flex', flexDirection: 'column' }}>
       <ScrollToTop />
+      <BackToTop />
       <a href="#main-content" className="skip-link">Skip to main content</a>
       <div id="status-announcer" aria-live="polite" aria-atomic="true" className="sr-only" />
       <TopNav />
