@@ -13,6 +13,9 @@ import {
   SLUG_MAP_EN_TO_INTERNAL,
   SLUG_MAP_FR_TO_INTERNAL,
 } from "@/config/tools-seo-data";
+import { tools as allTools } from "@/config/tools.config";
+
+const TOOL_SLUGS = new Set(allTools.map((t) => t.slug));
 
 const Home = lazy(() => import("@/pages/index"));
 
@@ -260,7 +263,18 @@ function LocaleToolRoute({ params }: { params: { slug: string } }) {
 
 function ScrollToTop() {
   const [location] = useLocation();
-  useEffect(() => { window.scrollTo(0, 0); }, [location]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const slug = location.slice(1);
+    if (TOOL_SLUGS.has(slug)) {
+      try {
+        const prev: string[] = JSON.parse(localStorage.getItem('et:recent') ?? '[]');
+        const next = [slug, ...prev.filter((s) => s !== slug)].slice(0, 5);
+        localStorage.setItem('et:recent', JSON.stringify(next));
+        window.dispatchEvent(new Event('et:recent'));
+      } catch {}
+    }
+  }, [location]);
   return null;
 }
 

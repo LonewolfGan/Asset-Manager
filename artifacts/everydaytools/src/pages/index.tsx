@@ -228,6 +228,21 @@ export default function DashboardHome() {
     return () => window.removeEventListener("et:search", handler);
   }, []);
 
+  const [recentSlugs, setRecentSlugs] = useState<string[]>(() => {
+    try { return JSON.parse(localStorage.getItem('et:recent') ?? '[]'); } catch { return []; }
+  });
+  useEffect(() => {
+    const onRecent = () => {
+      try { setRecentSlugs(JSON.parse(localStorage.getItem('et:recent') ?? '[]')); } catch { setRecentSlugs([]); }
+    };
+    window.addEventListener('et:recent', onRecent);
+    return () => window.removeEventListener('et:recent', onRecent);
+  }, []);
+  const recentTools = useMemo(
+    () => recentSlugs.map(s => DASH_TOOLS.find(t => t.slug === s)).filter((t): t is DashTool => t !== undefined).slice(0, 4),
+    [recentSlugs]
+  );
+
   const filteredTools = useMemo(() => {
     if (!query.trim()) return DASH_TOOLS;
     const q = query.toLowerCase();
@@ -267,6 +282,35 @@ export default function DashboardHome() {
             }}>
               {t.home.allToolsSubtitle(DASH_TOOLS.length)}
             </p>
+          </div>
+        )}
+
+        {/* Recently used */}
+        {!isSearching && recentTools.length > 0 && (
+          <div style={{ marginBottom: 40 }}>
+            <p style={{
+              fontSize: 'var(--text-xs)',
+              fontWeight: 600,
+              letterSpacing: '0.07em',
+              textTransform: 'uppercase',
+              color: 'var(--text-tertiary)',
+              margin: '0 0 14px',
+              fontFamily: 'var(--font-ui)',
+            }}>
+              {t.home.recentlyUsed}
+            </p>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: isMobile
+                ? 'repeat(2, 1fr)'
+                : `repeat(${recentTools.length}, minmax(0, 260px))`,
+              gap: 12,
+            }}>
+              {recentTools.map((tool) => (
+                <ToolCard key={tool.slug} tool={tool} />
+              ))}
+            </div>
+            <div style={{ marginTop: 28, borderTop: '1px solid var(--border)' }} />
           </div>
         )}
 
