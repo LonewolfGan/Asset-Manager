@@ -87,6 +87,7 @@ function ToolCard({ tool, isPinned, onTogglePin }: { tool: DashTool; isPinned?: 
         ref={ref}
         data-testid="tool-card"
         style={{
+          position: "relative",
           padding: "22px 22px 20px",
           borderRadius: "var(--radius-card)",
           border: "1px solid var(--border)",
@@ -132,38 +133,46 @@ function ToolCard({ tool, isPinned, onTogglePin }: { tool: DashTool; isPinned?: 
           }}>
             <Icon size={24} strokeWidth={1.6} />
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 2, paddingTop: 4 }}>
-            {onTogglePin !== undefined && (
-              <button
-                className="card-pin"
-                onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }}
-                aria-label={isPinned ? "Unpin tool" : "Pin tool"}
-                style={{
-                  background: "none",
-                  border: "none",
-                  padding: "3px 4px",
-                  cursor: "pointer",
-                  color: isPinned ? "var(--accent)" : "var(--text-tertiary)",
-                  opacity: isPinned ? 1 : 0,
-                  transition: "opacity 150ms, color 150ms",
-                  display: "flex",
-                  alignItems: "center",
-                  borderRadius: 4,
-                }}
-              >
-                {isPinned ? <BookmarkCheck size={15} strokeWidth={2} /> : <Bookmark size={15} strokeWidth={1.8} />}
-              </button>
-            )}
-            <div className="card-arrow" style={{
-              color: colors.icon,
-              opacity: 0,
-              transform: "translateX(-4px)",
-              transition: "opacity 160ms ease, transform 160ms ease",
-            }}>
-              <ArrowRight size={17} strokeWidth={2} />
-            </div>
+          <div className="card-arrow" style={{
+            color: colors.icon,
+            opacity: 0,
+            transform: "translateX(-4px)",
+            transition: "opacity 160ms ease, transform 160ms ease",
+            paddingTop: 4,
+          }}>
+            <ArrowRight size={17} strokeWidth={2} />
           </div>
         </div>
+
+        {/* Pin button — absolute top-right, isolated from card color */}
+        {onTogglePin !== undefined && (
+          <button
+            className="card-pin"
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }}
+            aria-label={isPinned ? "Unpin tool" : "Pin tool"}
+            style={{
+              position: "absolute",
+              top: 12,
+              right: 12,
+              background: "none",
+              border: "none",
+              padding: 5,
+              cursor: "pointer",
+              color: isPinned ? "var(--accent)" : "var(--text-tertiary)",
+              opacity: isPinned ? 1 : 0,
+              transition: "opacity 150ms ease, color 150ms ease",
+              display: "flex",
+              alignItems: "center",
+              borderRadius: 5,
+              lineHeight: 0,
+              zIndex: 1,
+            }}
+          >
+            {isPinned
+              ? <BookmarkCheck size={14} strokeWidth={2} />
+              : <Bookmark size={14} strokeWidth={1.8} />}
+          </button>
+        )}
 
         {/* Name + AI badge */}
         <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 7, flexWrap: "wrap" }}>
