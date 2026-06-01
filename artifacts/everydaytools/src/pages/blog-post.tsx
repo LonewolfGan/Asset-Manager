@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "wouter";
-import { getBlogPostBySlug, type ContentBlock } from "@/config/blog-data";
+import { getBlogPostByEitherSlug, type ContentBlock } from "@/config/blog-data";
 import { useLocale } from "@/hooks/use-locale";
 import NotFound from "@/pages/not-found";
 
@@ -132,7 +132,7 @@ export default function BlogPost({ params }: BlogPostPageProps) {
   const { locale } = useLocale();
   const lang: "en" | "fr" = locale?.toLowerCase().startsWith("fr") ? "fr" : "en";
   const slug = params?.slug ?? "";
-  const post = getBlogPostBySlug(slug, lang);
+  const post = getBlogPostByEitherSlug(slug);
 
   if (!post) return <NotFound />;
 

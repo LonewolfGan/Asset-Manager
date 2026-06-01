@@ -317,7 +317,7 @@ function MobileDrawer({ open, onClose, onOpenSearch, currentPath }: { open: bool
           })}
           <div style={{ borderBottom: "1px solid var(--border)" }}>
             <Link
-              href="/en/blog"
+              href={locale === "FR" ? "/fr/blog" : "/en/blog"}
               onClick={onClose}
               style={{
                 display: "block",
@@ -418,7 +418,7 @@ export default function TopNav() {
               />
             ))}
             <Link
-              href="/en/blog"
+              href={locale === "FR" ? "/fr/blog" : "/en/blog"}
               style={{
                 fontFamily: "var(--font-ui)",
                 fontSize: "var(--text-sm)",
