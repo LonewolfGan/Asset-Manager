@@ -315,6 +315,23 @@ function MobileDrawer({ open, onClose, onOpenSearch, currentPath }: { open: bool
               </div>
             );
           })}
+          <div style={{ borderBottom: "1px solid var(--border)" }}>
+            <Link
+              href="/en/blog"
+              onClick={onClose}
+              style={{
+                display: "block",
+                padding: "13px 20px",
+                fontFamily: "var(--font-ui)",
+                fontSize: "var(--text-sm)",
+                fontWeight: 500,
+                color: currentPath.includes("/blog") ? "var(--accent)" : "var(--text-primary)",
+                textDecoration: "none",
+              }}
+            >
+              Blog
+            </Link>
+          </div>
         </div>
 
         <div style={{ padding: "16px 20px", borderTop: "1px solid var(--border)", display: "flex", gap: 8 }}>

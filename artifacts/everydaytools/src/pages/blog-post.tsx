@@ -111,9 +111,8 @@ function renderBlock(block: ContentBlock, idx: number) {
         <div
           key={idx}
           style={{
-            background: "var(--bg-elevated)",
-            border: "1px solid var(--border)",
-            borderLeft: "3px solid var(--accent)",
+            background: "var(--bg-subtle)",
+            border: "1px solid var(--border-strong)",
             borderRadius: "var(--radius-md)",
             padding: "16px 20px",
             margin: "24px 0",

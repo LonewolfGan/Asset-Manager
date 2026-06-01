@@ -48,22 +48,6 @@ export default function CookieBanner() {
         fontFamily: 'var(--font-ui)',
       }}
     >
-      <div style={{
-        width: 32,
-        height: 32,
-        borderRadius: 8,
-        background: 'var(--accent)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexShrink: 0,
-        opacity: 0.9,
-      }}>
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M8 1C5.8 1 4 2.8 4 5v1H3a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-1V5c0-2.2-1.8-4-4-4zm0 1.5c1.38 0 2.5 1.12 2.5 2.5v1h-5V5c0-1.38 1.12-2.5 2.5-2.5zm0 7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" fill="white"/>
-        </svg>
-      </div>
-
       <p style={{
         margin: 0,
         flex: 1,
