@@ -220,15 +220,6 @@ export default function DashboardHome() {
   const { t } = useLocale();
   const isMobile = useIsMobile();
   const [query, setQuery] = useState("");
-  const [showScrollTop, setShowScrollTop] = useState(false);
-
-  useEffect(() => {
-    if (!isMobile) return;
-    const onScroll = () => setShowScrollTop(window.scrollY > 320);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [isMobile]);
-
   useEffect(() => {
     const handler = (e: Event) => {
       setQuery((e as CustomEvent<string>).detail ?? "");
@@ -322,38 +313,6 @@ export default function DashboardHome() {
       </div>
     </div>
 
-    {/* Scroll to top — mobile only */}
-    {isMobile && (
-      <button
-        aria-label="Scroll to top"
-        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        style={{
-          position: "fixed",
-          bottom: 24,
-          right: 20,
-          zIndex: 40,
-          width: 44,
-          height: 44,
-          borderRadius: "50%",
-          background: "var(--text-primary)",
-          color: "var(--bg-surface)",
-          border: "none",
-          cursor: "pointer",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          boxShadow: "0 4px 16px rgba(0,0,0,0.18)",
-          opacity: showScrollTop ? 1 : 0,
-          transform: showScrollTop ? "translateY(0)" : "translateY(12px)",
-          transition: "opacity 220ms ease, transform 220ms ease",
-          pointerEvents: showScrollTop ? "auto" : "none",
-        }}
-      >
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M8 12V4M4 7.5l4-4 4 4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      </button>
-    )}
     </>
   );
 }
