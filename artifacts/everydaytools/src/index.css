@@ -505,14 +505,14 @@ input[type="checkbox"]:checked {
 input[type="checkbox"]:checked::after {
   content: '';
   position: absolute;
-  left: 3px;
-  top: 0px;
-  width: 5px;
-  height: 9px;
+  left: 50%;
+  top: 46%;
+  width: 4px;
+  height: 8px;
   border: 2px solid #fff;
   border-top: none;
   border-left: none;
-  transform: rotate(45deg);
+  transform: translate(-50%, -50%) rotate(45deg);
 }
 input[type="checkbox"]:disabled {
   opacity: 0.4;
