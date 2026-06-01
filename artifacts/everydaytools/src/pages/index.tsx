@@ -11,14 +11,39 @@ const WEBSITE_SCHEMA = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: "EverydayTools Hub",
-  url: "https://everydaytoolshub.com",
+  url: "https://everydaytools.qzz.io",
   description:
     "Free browser-based tools — convert PDF, images, documents. Generate passwords, calculate units and currencies. No signup. Files stay in your browser.",
   potentialAction: {
     "@type": "SearchAction",
-    target: "https://everydaytoolshub.com/?q={search_term_string}",
+    target: "https://everydaytools.qzz.io/?q={search_term_string}",
     "query-input": "required name=search_term_string",
   },
+};
+
+const ORGANIZATION_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "EverydayTools Hub",
+  url: "https://everydaytools.qzz.io",
+  logo: "https://everydaytools.qzz.io/favicon.svg",
+  sameAs: [],
+};
+
+const ITEM_LIST_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Free Online Tools",
+  description: "A collection of free browser-based utility tools for documents, images, and everyday tasks.",
+  url: "https://everydaytools.qzz.io",
+  numberOfItems: 34,
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "PDF to Word Converter", url: "https://everydaytools.qzz.io/en/convert-pdf-to-word" },
+    { "@type": "ListItem", position: 2, name: "Image Converter", url: "https://everydaytools.qzz.io/en/convert-images" },
+    { "@type": "ListItem", position: 3, name: "AI Background Remover", url: "https://everydaytools.qzz.io/en/remove-background" },
+    { "@type": "ListItem", position: 4, name: "Password Generator", url: "https://everydaytools.qzz.io/en/generate-password" },
+    { "@type": "ListItem", position: 5, name: "Currency Converter", url: "https://everydaytools.qzz.io/en/currency-converter" },
+  ],
 };
 
 type DashCategory = "Documents" | "Images" | "Privacy" | "Calculators";
@@ -296,6 +321,12 @@ export default function DashboardHome() {
       <Helmet>
         <script type="application/ld+json">
           {JSON.stringify(WEBSITE_SCHEMA)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(ORGANIZATION_SCHEMA)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(ITEM_LIST_SCHEMA)}
         </script>
       </Helmet>
       <div style={{ flex: 1, background: "var(--bg-base)" }}>

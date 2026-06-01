@@ -6,7 +6,7 @@ import {
   type ToolSeoEntry,
 } from "@/config/tools-seo-data";
 
-const BASE_URL = "https://everydaytoolshub.com";
+const BASE_URL = "https://everydaytools.qzz.io";
 
 const CONVERTER_INTERNAL_SLUGS = new Set([
   "pdf-to-word","pdf-to-text","pdf-to-html","pdf-to-epub","pdf-compress",

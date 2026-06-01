@@ -9,7 +9,7 @@ import {
   type ToolSeoEntry,
 } from "@/config/tools-seo-data";
 
-const BASE_URL = "https://everydaytoolshub.com";
+const BASE_URL = "https://everydaytools.qzz.io";
 const OG_IMAGE = `${BASE_URL}/opengraph.jpg`;
 
 const CALCULATOR_SLUGS = new Set([
