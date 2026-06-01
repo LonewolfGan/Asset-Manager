@@ -236,8 +236,8 @@ function ToolCard({ tool, isPinned, onTogglePin }: { tool: DashTool; isPinned?: 
                 }}
               >
                 {isPinned
-                  ? <BookmarkCheck size={14} strokeWidth={2} />
-                  : <Bookmark size={14} strokeWidth={1.8} />}
+                  ? <BookmarkCheck size={17} strokeWidth={2} />
+                  : <Bookmark size={17} strokeWidth={1.8} />}
               </button>
             )}
           </div>
