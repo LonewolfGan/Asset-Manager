@@ -20,4 +20,4 @@ Allow: /
 User-agent: Bytespider
 Disallow: /
 
-Sitemap: https://everydaytoolshub.com/sitemap.xml
+Sitemap: https://everydaytools.qzz.io/sitemap.xml
