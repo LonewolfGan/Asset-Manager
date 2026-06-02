@@ -72,7 +72,8 @@ export default function Security() {
       <Helmet>
         <title>Security — EverydayTools Hub</title>
         <meta name="description" content="Our security practices, responsible disclosure policy, and how to report a vulnerability." />
-        <link rel="canonical" href="https://everydaytools.app/security" />
+        <link rel="canonical" href="https://everydaytools.qzz.io/security" />
+        <link rel="alternate" hrefLang="x-default" href="https://everydaytools.qzz.io/security" />
       </Helmet>
 
       <div style={S.page}>

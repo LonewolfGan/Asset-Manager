@@ -56,6 +56,8 @@ export default function Terms() {
         <title>Terms of Service — EverydayTools Hub</title>
         <meta name="description" content="Terms of service for EverydayTools Hub — free browser-based file conversion and productivity tools." />
         <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://everydaytools.qzz.io/terms" />
+        <link rel="alternate" hrefLang="x-default" href="https://everydaytools.qzz.io/terms" />
       </Helmet>
       <div style={S.page}>
         <h1 style={S.h1}>Terms of Service</h1>

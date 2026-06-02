@@ -66,6 +66,8 @@ export default function Privacy() {
         <title>Privacy Policy — EverydayTools Hub</title>
         <meta name="description" content="How EverydayTools Hub handles your data. All file processing runs in your browser — nothing is uploaded." />
         <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://everydaytools.qzz.io/privacy" />
+        <link rel="alternate" hrefLang="x-default" href="https://everydaytools.qzz.io/privacy" />
       </Helmet>
       <div style={S.page}>
         <h1 style={S.h1}>Privacy Policy</h1>

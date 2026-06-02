@@ -274,7 +274,7 @@ function ToolCard({ tool, isPinned, onTogglePin }: { tool: DashTool; isPinned?: 
 
 /* ── Dashboard Home ──────────────────────────────────────────────────────── */
 export default function DashboardHome() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const isMobile = useIsMobile();
   const [query, setQuery] = useState("");
   useEffect(() => {
@@ -319,6 +319,10 @@ export default function DashboardHome() {
   return (
     <>
       <Helmet>
+        <link rel="canonical" href={`https://everydaytools.qzz.io/${locale.toLowerCase()}`} />
+        <link rel="alternate" hrefLang="en" href="https://everydaytools.qzz.io/en" />
+        <link rel="alternate" hrefLang="fr" href="https://everydaytools.qzz.io/fr" />
+        <link rel="alternate" hrefLang="x-default" href="https://everydaytools.qzz.io/en" />
         <script type="application/ld+json">
           {JSON.stringify(WEBSITE_SCHEMA)}
         </script>
