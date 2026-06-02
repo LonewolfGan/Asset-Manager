@@ -37,18 +37,8 @@
     <!-- Plausible Analytics — privacy-first, no cookies, no consent required -->
     <script defer data-domain="everydaytools.qzz.io" src="https://plausible.io/js/plausible.js"></script>
 
-    <!-- Geist Mono only — non-blocking, display:optional prevents layout shift -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=optional"
-      media="print"
-      onload="this.media='all'"
-    />
-    <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=optional" />
-    </noscript>
+    <!-- Critical CSS: page structure + colors before Vite bundle loads -->
+    <style>html,body{margin:0;padding:0;background:#F7F7F5;color:#111111;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}[data-theme="dark"]{background:#08090a;color:#f4f4f5}#root{display:flex;flex-direction:column;min-height:100vh}</style>
     <!-- Theme: apply before first paint to prevent flash -->
     <script>
       (function(){try{var t=localStorage.getItem('et:theme');if(t==='dark'||t==='light'){document.documentElement.setAttribute('data-theme',t);}else if(window.matchMedia('(prefers-color-scheme: dark)').matches){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();
