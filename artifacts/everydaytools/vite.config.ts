@@ -138,6 +138,12 @@ export default defineConfig({
     sourcemap: false,
     chunkSizeWarningLimit: 1500,
     rollupOptions: {
+      output: {
+        manualChunks: {
+          "vendor-react": ["react", "react-dom", "react-helmet-async"],
+          "vendor-router": ["wouter"],
+        },
+      },
       onwarn(warning, warn) {
         if (
           warning.code === "SOURCEMAP_ERROR" ||

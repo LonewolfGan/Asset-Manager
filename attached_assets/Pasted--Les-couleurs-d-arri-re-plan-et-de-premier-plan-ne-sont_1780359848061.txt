@@ -1,0 +1,372 @@
+ Les couleurs d'arrière-plan et de premier plan ne sont pas suffisamment contrastées
+Un texte faiblement contrasté est difficile, voire impossible à lire pour de nombreux utilisateurs. Découvrez comment fournir un contraste suffisant des couleurs.
+Éléments non conformes
+PDF → DOCX
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+PDF to Word Convert PDF files to editable DOCX format PDF → DOCX
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PDF → TXT
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+PDF to Text Extract all text from a PDF file PDF → TXT
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PDF → HTML
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+PDF to HTML Convert PDF content to HTML markup PDF → HTML
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PDF → EPUB
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+PDF to EPUB Convert PDF to EPUB e-book format PDF → EPUB
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PDF
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Compress PDF Reduce PDF file size without visible quality loss PDF
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PDF
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Merge PDFs Combine multiple PDF files into one PDF
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PDF
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Split PDF Split a PDF into separate pages or page ranges PDF
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PDF
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Rotate PDF Rotate PDF pages 90, 180, or 270 degrees PDF
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PDF
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Unlock PDF Remove owner password protection from a PDF PDF
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PDF
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Protect PDF Add password protection to a PDF PDF
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PDF
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Add Page Numbers Add page numbers to every page of your PDF PDF
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PDF
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Watermark PDF Add a text watermark to every PDF page PDF
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PDF → PNG
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+PDF to Image Export PDF pages as PNG or JPEG images PDF → PNG
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PDF → XLSX
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+PDF to Excel Extract tables from a PDF into an Excel spreadsheet PDF → XLSX
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PDF
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Reorder PDF Pages Drag and drop to reorder, remove, and rearrange PDF pages P…
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+IMG → TXT
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+OCR — Image to Text Extract text from scanned images using Tesseract.js IMG →…
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+DOCX → PDF
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Word to PDF Convert DOCX and DOC files to PDF in your browser DOCX → PDF
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+DOCX → TXT
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Word to Text Extract plain text from DOCX files DOCX → TXT
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+DOCX → HTML
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Word to HTML Convert DOCX to clean HTML markup DOCX → HTML
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+DOCX → EPUB
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Word to EPUB Convert DOCX to EPUB e-book DOCX → EPUB
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+DOCX → MD
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Word to Markdown Convert DOCX files to clean Markdown DOCX → MD
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+HTML → MD
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+HTML to Markdown Convert HTML content to clean Markdown format HTML → MD
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+MD → PDF
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Markdown to PDF Convert Markdown files to PDF MD → PDF
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+MD → DOCX
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Markdown to Word Convert Markdown to a Word document MD → DOCX
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+HTML → PDF
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+HTML to PDF Convert an HTML page or snippet to PDF HTML → PDF
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+TXT → PDF
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Text to PDF Convert plain text to a PDF document TXT → PDF
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+TXT → DOCX
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Text to Word Convert plain text to a Word document TXT → DOCX
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+XLSX → PDF
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Excel to PDF Convert Excel spreadsheets to PDF entirely in your browser XLSX …
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+XLSX → CSV
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Excel to CSV Convert Excel sheets to CSV format XLSX → CSV
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+CSV → XLSX
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+CSV to Excel Convert CSV files to Excel (.xlsx) in your browser CSV → XLSX
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+CSV → JSON
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+CSV ↔ JSON Convert between CSV and JSON formats instantly CSV → JSON
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+CSV
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+CSV Viewer View and sort CSV files as a table — no upload required CSV
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PPTX → PDF
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+PowerPoint to PDF Convert PowerPoint presentations to PDF in your browser PPT…
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PPTX → PNG
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+PowerPoint to Images Export each slide as a PNG image and download as ZIP PPT…
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PDF → PPTX
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+PDF to PowerPoint Convert each PDF page into a PowerPoint slide PDF → PPTX
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PNG → JPG
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Image Converter Convert between PNG, JPEG, WEBP, AVIF, BMP, GIF, TIFF, ICO PN…
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+WEBP
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Image Converter Convert between PNG, JPEG, WEBP, AVIF, BMP, GIF, TIFF, ICO PN…
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+AVIF
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Image Converter Convert between PNG, JPEG, WEBP, AVIF, BMP, GIF, TIFF, ICO PN…
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+HEIC → JPG
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+HEIC to JPG Convert iPhone HEIC photos to JPEG or PNG HEIC → JPG
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+HEIC → PNG
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+HEIC to PNG Convert HEIC/HEIF photos to PNG format HEIC → PNG
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+HEIC → WEBP
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+HEIC to WebP Convert HEIC/HEIF photos to WebP format HEIC → WEBP
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+HEIC → PDF
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+HEIC to PDF Convert HEIC/HEIF photos to PDF HEIC → PDF
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+JPG → PNG
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Compress Image Reduce image file size with a quality slider JPG → PNG WEBP
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+WEBP
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Compress Image Reduce image file size with a quality slider JPG → PNG WEBP
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PNG → JPG
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Resize Image Resize images by pixel dimensions or percentage PNG → JPG WEBP
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+WEBP
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Resize Image Resize images by pixel dimensions or percentage PNG → JPG WEBP
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PNG → JPG
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Crop Image Crop images with drag handles and aspect ratio presets PNG → JPG W…
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+WEBP
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Crop Image Crop images with drag handles and aspect ratio presets PNG → JPG W…
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+IMG → PDF
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Image to PDF Convert one or more images to a single PDF IMG → PDF
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+AI
+<span style="font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 5px;">
+Background Remover AI Remove image backgrounds using on-device AI PNG → JPG
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PNG → JPG
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Background Remover AI Remove image backgrounds using on-device AI PNG → JPG
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PNG → JPG
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Flip & Rotate Image Flip horizontally, vertically, or rotate by any angle PNG…
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+WEBP
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Flip & Rotate Image Flip horizontally, vertically, or rotate by any angle PNG…
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PNG → JPG
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Add Watermark Add text watermark to images with custom position and opacity P…
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+WEBP
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Add Watermark Add text watermark to images with custom position and opacity P…
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PNG → ICO
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+Favicon Generator Generate favicons in all sizes from any image, download as Z…
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PNG → WEBP
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+PNG to WebP Convert PNG images to WebP format for smaller file sizes PNG → WE…
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+JPG → WEBP
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+JPG to WebP Convert JPEG images to WebP format for smaller file sizes JPG → W…
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+GIF → WEBP
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+GIF to WebP Convert GIF images to WebP format GIF → WEBP
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+BMP → WEBP
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+BMP to WebP Convert BMP images to WebP format BMP → WEBP
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+TIFF → WEBP
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+TIFF to WebP Convert TIFF images to WebP format TIFF → WEBP
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+WEBP → PNG
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+WebP to PNG Convert WebP images to PNG format WEBP → PNG
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+WEBP → JPG
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+WebP to JPG Convert WebP images to JPEG format WEBP → JPG
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+WEBP → PDF
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+WebP to PDF Convert WebP images to PDF WEBP → PDF
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+WEBP → AVIF
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+WebP to AVIF Convert WebP images to AVIF format WEBP → AVIF
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+JPG → AVIF
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+JPG to AVIF Convert JPEG images to AVIF format JPG → AVIF
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PNG → AVIF
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+PNG to AVIF Convert PNG images to AVIF format PNG → AVIF
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+AVIF → JPG
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+AVIF to JPG Convert AVIF images to JPEG format AVIF → JPG
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+AVIF → PNG
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+AVIF to PNG Convert AVIF images to PNG format AVIF → PNG
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+JPG → PNG
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+JPG to PNG Convert JPEG images to lossless PNG JPG → PNG
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PNG → JPG
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+PNG to JPG Convert PNG images to JPEG format PNG → JPG
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PNG → SVG
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+PNG to SVG Embed a PNG image inside an SVG container PNG → SVG
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+SVG → PNG
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+SVG to PNG Rasterize SVG graphics to PNG format SVG → PNG
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+GIF → PNG
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+GIF to PNG Convert GIF images to PNG (first frame) GIF → PNG
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+BMP → JPG
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+BMP to JPG Convert BMP images to JPEG format BMP → JPG
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+TIFF → JPG
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+TIFF to JPG Convert TIFF images to JPEG format TIFF → JPG
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+TIFF → PNG
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+TIFF to PNG Convert TIFF images to PNG format TIFF → PNG
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+JPG → PDF
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+JPG to PDF Convert JPEG images to PDF format JPG → PDF
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PNG → PDF
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+PNG to PDF Convert PNG images to PDF format PNG → PDF
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+JSON
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+JSON Formatter Format, validate, and minify JSON in your browser JSON
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+HTML
+<span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--text…;">
+HTML Formatter Format or minify HTML code with a single click HTML
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+PDF TOOLS
+<h3 style="font-family: var(--font-ui); font-size: var(--text-xs); font-weight: 600;">
+EverydayTools A collection of browser-based tools for everyday file tasks. Fas…
+<footer style="border-top: 1px solid var(--border); background: var(--bg-surface);">
+IMAGE TOOLS
+<h3 style="font-family: var(--font-ui); font-size: var(--text-xs); font-weight: 600;">
+EverydayTools A collection of browser-based tools for everyday file tasks. Fas…
+<footer style="border-top: 1px solid var(--border); background: var(--bg-surface);">
+UTILITIES
+<h3 style="font-family: var(--font-ui); font-size: var(--text-xs); font-weight: 600;">
+EverydayTools A collection of browser-based tools for everyday file tasks. Fas…
+<footer style="border-top: 1px solid var(--border); background: var(--bg-surface);">
+© 2026 EverydayTools Hub. All rights reserved.
+<span style="font-size: var(--text-xs); color: var(--text-tertiary);">
+EverydayTools A collection of browser-based tools for everyday file tasks. Fas…
+<footer style="border-top: 1px solid var(--border); background: var(--bg-surface);">
+Privacy Policy
+<a href="/privacy" style="font-size: var(--text-xs); color: var(--text-tertiary);">
+EverydayTools A collection of browser-based tools for everyday file tasks. Fas…
+<footer style="border-top: 1px solid var(--border); background: var(--bg-surface);">
+Terms of Service
+<a href="/terms" style="font-size: var(--text-xs); color: var(--text-tertiary);">
+EverydayTools A collection of browser-based tools for everyday file tasks. Fas…
+<footer style="border-top: 1px solid var(--border); background: var(--bg-surface);">
+Security
+<a href="/security" style="font-size: var(--text-xs); color: var(--text-tertiary);">
+EverydayTools A collection of browser-based tools for everyday file tasks. Fas…
+<footer style="border-top: 1px solid var(--border); background: var(--bg-surface);">
+Cookie Preferences
+<button style="font-size: var(--text-xs); color: var(--text-tertiary); background: none;">
+EverydayTools A collection of browser-based tools for everyday file tasks. Fas…
+<footer style="border-top: 1px solid var(--border); background: var(--bg-surface);">
+Privacy policy
+<a href="/privacy" style="color: var(--accent); text-decoration: none; font-weight: 500;">
+We use privacy-first analytics (no cookies, no personal data) and, with your co…
+<div role="dialog" aria-label="Cookie preferences" style="position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);">
+Accept all
+<button style="padding: 8px 18px; background: var(--accent); border: none;">
+Servez-vous de ces indications pour améliorer la lisibilité de votre contenu.
+Navigation
+Les éléments d'en-tête ne sont pas classés séquentiellement par ordre décroissant
+Les en-têtes correctement classés qui respectent les niveaux transmettent la structure sémantique de la page, ce qui garantit une navigation plus aisée et permet d'identifier plus facilement dans quels cas utiliser les technologies d'assistance. En savoir plus sur l'ordre des titres
+Éléments non conformes
+PDF TOOLS
+<h3 style="font-family: var(--font-ui); font-size: var(--text-xs); font-weight: 600;">

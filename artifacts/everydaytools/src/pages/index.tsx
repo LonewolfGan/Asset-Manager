@@ -80,11 +80,11 @@ const DASH_TOOLS: DashTool[] = tools.map((t) => ({
   formats:     t.formats ?? [],
 }));
 
-const CATEGORY_COLORS: Record<DashCategory, { icon: string; bg: string; badgeBg: string }> = {
-  Documents:   { icon: "#D97706", bg: "rgba(217,119,6,0.10)",   badgeBg: "rgba(217,119,6,0.10)" },
-  Images:      { icon: "#0D9488", bg: "rgba(13,148,136,0.10)",  badgeBg: "rgba(13,148,136,0.10)" },
-  Privacy:     { icon: "#7C3AED", bg: "rgba(124,58,237,0.10)",  badgeBg: "rgba(124,58,237,0.10)" },
-  Calculators: { icon: "#1A6BFF", bg: "rgba(26,107,255,0.10)",  badgeBg: "rgba(26,107,255,0.10)" },
+const CATEGORY_COLORS: Record<DashCategory, { icon: string; bg: string; badgeBg: string; text: string }> = {
+  Documents:   { icon: "#D97706", bg: "rgba(217,119,6,0.10)",   badgeBg: "rgba(217,119,6,0.10)",   text: "#92400E" },
+  Images:      { icon: "#0D9488", bg: "rgba(13,148,136,0.10)",  badgeBg: "rgba(13,148,136,0.10)",  text: "#0F4F4A" },
+  Privacy:     { icon: "#7C3AED", bg: "rgba(124,58,237,0.10)",  badgeBg: "rgba(124,58,237,0.10)",  text: "#4C1D95" },
+  Calculators: { icon: "#1A6BFF", bg: "rgba(26,107,255,0.10)",  badgeBg: "rgba(26,107,255,0.10)",  text: "#1239A5" },
 };
 
 /* ── ToolCard ────────────────────────────────────────────────────────────── */
@@ -188,7 +188,7 @@ function ToolCard({ tool, isPinned, onTogglePin }: { tool: DashTool; isPinned?: 
               padding: "2px 7px",
               borderRadius: 5,
               background: colors.badgeBg,
-              color: colors.icon,
+              color: colors.text,
               lineHeight: 1.3,
               letterSpacing: "0.06em",
               textTransform: "uppercase",
@@ -226,7 +226,7 @@ function ToolCard({ tool, isPinned, onTogglePin }: { tool: DashTool; isPinned?: 
                 fontSize: 'var(--text-xs)',
                 fontWeight: 600,
                 fontFamily: "var(--font-mono, 'IBM Plex Mono', monospace)",
-                color: colors.icon,
+                color: colors.text,
                 background: colors.bg,
                 padding: "3px 9px",
                 borderRadius: 5,

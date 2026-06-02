@@ -1,0 +1,205 @@
+
+Requêtes de blocage du rendu Économies estimées : 980 ms
+Les requêtes bloquent le rendu initial de la page, ce qui peut causer un retard LCP. Le report ou l'intégration de ces requêtes réseau peut les écarter du chemin critique.LCPFCPNon noté
+URL
+	
+Taille de transfert
+	
+Durée
+qzz.io
+Propriétaire
+	10,0 KiB
+	170 ms
+/assets/index-BbI8bUP7.css(everydaytools.qzz.io)
+	
+10,0 KiB
+	
+170 ms
+Google Fonts
+cdn
+	1,8 KiB
+	590 ms
+/css2?family=…(fonts.googleapis.com)
+	
+1,8 KiB
+	
+590 ms
+Causes des décalages de mise en page
+Les décalages de mise en page se produisent lorsque des éléments se déplacent sans aucune interaction de l'utilisateur. Étudiez les causes des décalages de mise en page, comme l'ajout ou la suppression d'éléments, ou le changement de polices lors du chargement de la page.CLSNon noté
+Élément
+	
+Score de décalage de mise en page
+Total
+	
+0,735
+PDF to Text Extract all text from a PDF file PDF → TXT
+<article data-testid="tool-card" style="position: relative; padding: 22px 22px 20px; border-radius: var(--radius-c…;">
+	
+0,407
+EverydayTools A collection of browser-based tools for everyday file tasks. Fas…
+<footer style="border-top: 1px solid var(--border); background: var(--bg-surface);">
+	
+0,328
+Ajustement forcé de la mise en page
+Un ajustement de la mise en page forcé se produit lorsque JavaScript interroge des propriétés géométriques (comme offsetWidth) après que les styles ont été invalidés par une modification de l'état du DOM. Cela peut entraîner de mauvaises performances. En savoir plus sur les ajustements de la mise en page forcés et les stratégies d'atténuation possiblesNon noté
+Appel de fonction le plus fréquent
+	
+Temps total d'ajustement de la mise en page
+/assets/index-C9YvFZTZ.js:3:3664(everydaytools.qzz.io)
+	
+121 ms
+Source
+	
+Temps total d'ajustement de la mise en page
+/assets/index-C9YvFZTZ.js:10:253240(everydaytools.qzz.io)
+	
+121 ms
+[non attribué]
+	
+13 ms
+Arborescence du réseau
+Évitez les chaînes de requêtes critiques en réduisant la longueur des chaînes ou la taille de téléchargement des ressources, ou en reportant le téléchargement de ressources inutiles, afin d'améliorer le chargement des pages.LCPNon noté
+Latence de chemin d'accès critique maximale : 1 137 ms
+Navigation initiale
+https://everydaytools.qzz.io
+- 446 ms, 1,97 KiB
+/assets/index-C9YvFZTZ.js(everydaytools.qzz.io)
+- 578 ms, 230,98 KiB
+/assets/index-BWiHNxdJ.js(everydaytools.qzz.io)
+- 1 137 ms, 4,21 KiB
+/assets/index-BbI8bUP7.css(everydaytools.qzz.io)
+- 620 ms, 9,96 KiB
+/css2?family=…(fonts.googleapis.com)
+- 653 ms, 1,79 KiB
+…v20/UcC73FwrK….woff2(fonts.gstatic.com)
+- 1 023 ms, 48,09 KiB
+…v22/V8mDoQDjQ….woff2(fonts.gstatic.com)
+- 1 022 ms, 22,59 KiB
+Origines préconnectées
+Les hints de préconnexion aident le navigateur à établir une connexion plus tôt dans le chargement de page, ce qui permet de gagner du temps lors de la première requête pour cette origine. Voici les origines auxquelles la page s'est préconnectée.
+Origine
+	
+Source
+https://fonts.googleapis.com/
+	
+head > link
+<link rel="preconnect" href="https://fonts.googleapis.com">
+https://fonts.gstatic.com/
+	
+head > link
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+Candidats pour la préconnexion
+Ajoutez des hints de préconnexion à vos origines les plus importantes, mais essayez de ne pas en utiliser plus de quatre.
+Aucune autre origine n'est un bon candidat pour la préconnexion
+Optimiser la taille du DOM
+Un grand DOM peut allonger la durée des calculs de style et des ajustements de la mise en page, ce qui impacte la réactivité de la page. Un grand DOM sollicite davantage la mémoire. Découvrez comment éviter une taille de DOM excessive.Non noté
+Statistique
+	
+Élément
+	
+Valeur
+Nombre total d'éléments
+		
+1 972
+Profondeur DOM
+	
+div > div > svg.lucide > path
+<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z">
+	
+13
+La plupart des enfants
+	
+PDF to Word Convert PDF files to editable DOCX format PDF → DOCX PDF to Text …
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+	
+86
+Répartition du LCP
+Chaque sous-partie comporte des stratégies d'amélioration spécifiques. Idéalement, la plupart du temps LCP devrait être consacré au chargement des ressources et non aux délais.LCPNon noté
+Sous-partie
+	
+Durée
+Time to First Byte
+	
+10 ms
+Délai d'affichage de l'élément
+	
+1 140 ms
+We use privacy-first analytics (no cookies, no personal data) and, with your co…
+<p style="margin: 0px; flex: 1 1 0%; font-size: var(--text-sm); color: var(--text-se…;">
+Tiers
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+Ces insights sont également disponibles dans le panneau "Performances" des Outils pour les développeurs Chrome. Enregistrez une trace pour afficher des informations plus détaillées.
+Diagnostic
+Réduisez les ressources JavaScript inutilisées Économies estimées : 47 Kio
+Réduisez les ressources JavaScript inutilisées et différez le chargement des scripts tant qu'ils ne sont pas requis afin de réduire la quantité d'octets consommés par l'activité réseau. Découvrez comment réduire les ressources JavaScript inutilisées.LCPFCPNon noté
+URL
+	
+Taille de transfert
+	
+Économies estimées
+qzz.io
+Propriétaire
+	228,7 KiB
+	47,3 KiB
+/assets/index-C9YvFZTZ.js(everydaytools.qzz.io)
+	
+228,7 KiB
+	
+47,3 KiB
+Évitez les tâches longues dans le thread principal 5 tâches longues trouvées
+Indique les tâches les plus longues du thread principal, ce qui est utile pour identifier celles qui entraînent le plus de retard. Découvrez comment éviter les longues tâches du thread principal.TBTNon noté
+URL
+	
+Heure de début
+	
+Durée
+qzz.io
+Propriétaire
+		350 ms
+/assets/index-C9YvFZTZ.js(everydaytools.qzz.io)
+	
+3 610 ms
+	
+142 ms
+/assets/index-C9YvFZTZ.js(everydaytools.qzz.io)
+	
+830 ms
+	
+81 ms
+/assets/index-C9YvFZTZ.js(everydaytools.qzz.io)
+	
+3 541 ms
+	
+69 ms
+/assets/index-C9YvFZTZ.js(everydaytools.qzz.io)
+	
+4 075 ms
+	
+58 ms
+Plausible
+analytics
+		117 ms
+/js/plausible.js(plausible.io)
+	
+1 586 ms
+	
+117 ms
