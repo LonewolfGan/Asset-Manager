@@ -278,10 +278,10 @@ function MobileDrawer({ open, onClose, onOpenSearch, currentPath }: { open: bool
               textAlign: "left",
             }}
           >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
             </svg>
-            <span style={{ fontSize: 'var(--text-sm)', color: "var(--text-tertiary)", fontFamily: "var(--font-ui)" }}>
+            <span style={{ fontSize: 'var(--text-sm)', color: "var(--text-secondary)", fontFamily: "var(--font-ui)" }}>
               {t.nav.searchPlaceholder}
             </span>
           </button>
@@ -462,10 +462,10 @@ export default function TopNav() {
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border-strong)"; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; }}
           >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0 }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0 }}>
               <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
             </svg>
-            <span style={{ flex: 1, fontSize: 'var(--text-sm)', color: "var(--text-tertiary)", fontFamily: "var(--font-ui)" }}>
+            <span style={{ flex: 1, fontSize: 'var(--text-sm)', color: "var(--text-secondary)", fontFamily: "var(--font-ui)" }}>
               {t.nav.searchPlaceholder}
             </span>
           </button>

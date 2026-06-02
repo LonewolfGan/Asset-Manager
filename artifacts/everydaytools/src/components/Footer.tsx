@@ -88,17 +88,17 @@ export default function Footer() {
         }}>
           {TOOL_COLUMNS_KEYS.map((col) => (
             <div key={col.key}>
-              <h3 style={{
+              <h2 style={{
                 fontFamily: "var(--font-ui)",
                 fontSize: 'var(--text-xs)',
                 fontWeight: 600,
                 letterSpacing: "0.08em",
                 textTransform: "uppercase",
-                color: "var(--text-tertiary)",
+                color: "var(--text-secondary)",
                 margin: "0 0 12px",
               }}>
                 {t.footer.columns[col.key]}
-              </h3>
+              </h2>
               <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 9 }}>
                 {col.links.map((l) => (
                   <li key={l.href}>
@@ -130,7 +130,7 @@ export default function Footer() {
         justifyContent: "space-between",
         gap: isMobile ? 10 : 12,
       }}>
-        <span style={{ fontSize: 'var(--text-xs)', color: "var(--text-tertiary)" }}>
+        <span style={{ fontSize: 'var(--text-xs)', color: "var(--text-secondary)" }}>
           &copy; {new Date().getFullYear()} EverydayTools Hub. {t.footer.rights}
         </span>
         <nav style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: isMobile ? "8px 16px" : 20 }}>
@@ -142,18 +142,18 @@ export default function Footer() {
             <Link
               key={l.href}
               href={l.href}
-              style={{ fontSize: 'var(--text-xs)', color: "var(--text-tertiary)", textDecoration: "none", transition: "color 120ms ease" }}
+              style={{ fontSize: 'var(--text-xs)', color: "var(--text-secondary)", textDecoration: "none", transition: "color 120ms ease" }}
               onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-primary)")}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-tertiary)")}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-secondary)")}
             >
               {l.label}
             </Link>
           ))}
           <button
             onClick={manageConsent}
-            style={{ fontSize: 'var(--text-xs)', color: "var(--text-tertiary)", background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: "var(--font-ui)", transition: "color 120ms ease" }}
+            style={{ fontSize: 'var(--text-xs)', color: "var(--text-secondary)", background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: "var(--font-ui)", transition: "color 120ms ease" }}
             onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-primary)")}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-tertiary)")}
+            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-secondary)")}
           >
             {t.footer.cookiePreferences}
           </button>

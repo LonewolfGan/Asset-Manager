@@ -62,12 +62,12 @@ export default function CookieBanner() {
         <a
           href="/privacy"
           style={{
-            color: 'var(--accent)',
-            textDecoration: 'none',
+            color: 'var(--text-primary)',
+            textDecoration: 'underline',
             fontWeight: 500,
           }}
-          onMouseEnter={e => (e.currentTarget.style.textDecoration = 'underline')}
-          onMouseLeave={e => (e.currentTarget.style.textDecoration = 'none')}
+          onMouseEnter={e => (e.currentTarget.style.opacity = '0.75')}
+          onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
         >
           {t.cookie.privacyPolicy}
         </a>
@@ -107,7 +107,7 @@ export default function CookieBanner() {
             background: 'var(--accent)',
             border: 'none',
             borderRadius: 'var(--radius-btn)',
-            color: 'var(--accent-text)',
+            color: '#1A1916',
             fontFamily: 'var(--font-ui)',
             fontSize: 'var(--text-sm)',
             fontWeight: 600,
