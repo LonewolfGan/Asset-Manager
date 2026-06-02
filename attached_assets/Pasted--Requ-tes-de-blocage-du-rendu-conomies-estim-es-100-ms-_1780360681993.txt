@@ -1,0 +1,131 @@
+
+Requêtes de blocage du rendu Économies estimées : 100 ms
+Les requêtes bloquent le rendu initial de la page, ce qui peut causer un retard LCP. Le report ou l'intégration de ces requêtes réseau peut les écarter du chemin critique.LCPFCPNon noté
+URL
+	
+Taille de transfert
+	
+Durée
+qzz.io
+Propriétaire
+	10,0 KiB
+	50 ms
+/assets/index-BbI8bUP7.css(everydaytools.qzz.io)
+	
+10,0 KiB
+	
+50 ms
+Google Fonts
+cdn
+	1,8 KiB
+	150 ms
+/css2?family=…(fonts.googleapis.com)
+	
+1,8 KiB
+	
+150 ms
+Causes des décalages de mise en page
+Les décalages de mise en page se produisent lorsque des éléments se déplacent sans aucune interaction de l'utilisateur. Étudiez les causes des décalages de mise en page, comme l'ajout ou la suppression d'éléments, ou le changement de polices lors du chargement de la page.CLSNon noté
+Élément
+	
+Score de décalage de mise en page
+Total
+	
+0,421
+EverydayTools A collection of browser-based tools for everyday file tasks. Fas…
+<footer style="border-top: 1px solid var(--border); background: var(--bg-surface);">
+	
+0,412
+never uploaded
+<strong style="color: var(--text-primary); font-weight: 600;">
+	
+0,010
+…v20/UcC73FwrK….woff2(fonts.gstatic.com)
+	
+Police Web
+PDF Tools Documents Images Text & Code Tools Blog
+<div class="hidden lg:flex" style="align-items: center; gap: 16px;">
+	
+0,000
+…v5/or3nQ6H-1….woff2(fonts.gstatic.com)
+	
+Police Web
+…v22/V8mDoQDjQ….woff2(fonts.gstatic.com)
+	
+Police Web
+Arborescence du réseau
+Évitez les chaînes de requêtes critiques en réduisant la longueur des chaînes ou la taille de téléchargement des ressources, ou en reportant le téléchargement de ressources inutiles, afin d'améliorer le chargement des pages.LCPNon noté
+Latence de chemin d'accès critique maximale : 1 275 ms
+Navigation initiale
+https://everydaytools.qzz.io
+- 373 ms, 1,92 KiB
+/assets/index-Dd0x6RNp.js(everydaytools.qzz.io)
+- 1 195 ms, 219,52 KiB
+/assets/index-BbI8bUP7.css(everydaytools.qzz.io)
+- 702 ms, 9,96 KiB
+/css2?family=…(fonts.googleapis.com)
+- 716 ms, 1,79 KiB
+…v20/UcC73FwrK….woff2(fonts.gstatic.com)
+- 1 275 ms, 48,09 KiB
+…v22/V8mDoQDjQ….woff2(fonts.gstatic.com)
+- 1 270 ms, 22,59 KiB
+Origines préconnectées
+Les hints de préconnexion aident le navigateur à établir une connexion plus tôt dans le chargement de page, ce qui permet de gagner du temps lors de la première requête pour cette origine. Voici les origines auxquelles la page s'est préconnectée.
+Origine
+	
+Source
+https://fonts.googleapis.com/
+	
+head > link
+<link rel="preconnect" href="https://fonts.googleapis.com">
+https://fonts.gstatic.com/
+	
+head > link
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+Candidats pour la préconnexion
+Ajoutez des hints de préconnexion à vos origines les plus importantes, mais essayez de ne pas en utiliser plus de quatre.
+Aucune autre origine n'est un bon candidat pour la préconnexion
+Répartition du LCP
+	
+	
+	
+Tiers
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+Ces insights sont également disponibles dans le panneau "Performances" des Outils pour les développeurs Chrome. Enregistrez une trace pour afficher des informations plus détaillées.
+Diagnostic
+Réduisez les ressources JavaScript inutilisées Économies estimées : 42 Kio
+Réduisez les ressources JavaScript inutilisées et différez le chargement des scripts tant qu'ils ne sont pas requis afin de réduire la quantité d'octets consommés par l'activité réseau. Découvrez comment réduire les ressources JavaScript inutilisées.LCPFCPNon noté
+URL
+	
+Taille de transfert
+	
+Économies estimées
+qzz.io
+Propriétaire
+	217,3 KiB
+	41,6 KiB
+/assets/index-Dd0x6RNp.js(everydaytools.qzz.io)
+	
+217,3 KiB
+	
+41,6 KiB
+Plus d'informations sur les performances de votre application. Ces chiffres n'ont pas d'incidence directe sur le score lié aux performances.
