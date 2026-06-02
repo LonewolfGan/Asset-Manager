@@ -474,6 +474,13 @@ const BLOG_POSTS_STATIC = [
   { en: "how-to-convert-heic-to-jpg", fr: "comment-convertir-heic-en-jpg", date: "2025-06-01" },
   { en: "how-to-generate-strong-password", fr: "comment-creer-mot-de-passe-fort", date: "2025-06-01" },
   { en: "webp-vs-jpeg-vs-png", fr: "webp-vs-jpeg-vs-png", date: "2025-06-01" },
+  { en: "how-to-merge-pdf-files", fr: "comment-fusionner-des-fichiers-pdf", date: "2025-06-05" },
+  { en: "how-to-convert-word-to-pdf", fr: "comment-convertir-word-en-pdf", date: "2025-06-05" },
+  { en: "how-to-split-a-pdf", fr: "comment-diviser-un-fichier-pdf", date: "2025-06-08" },
+  { en: "how-to-convert-jpg-to-pdf", fr: "comment-convertir-jpg-en-pdf", date: "2025-06-08" },
+  { en: "how-to-password-protect-a-pdf", fr: "comment-proteger-un-pdf-par-mot-de-passe", date: "2025-06-10" },
+  { en: "how-to-extract-text-from-an-image", fr: "comment-extraire-texte-dune-image", date: "2025-06-10" },
+  { en: "how-to-convert-images-online", fr: "comment-convertir-des-images-en-ligne", date: "2025-06-12" },
 ];
 
 export function generateSitemapXml(): string {

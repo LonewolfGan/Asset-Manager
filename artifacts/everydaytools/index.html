@@ -37,6 +37,9 @@
     <!-- Plausible Analytics — privacy-first, no cookies, no consent required -->
     <script defer data-domain="everydaytools.qzz.io" src="https://plausible.io/js/plausible.js"></script>
 
+    <!-- Preconnect to always-used external origins -->
+    <link rel="preconnect" href="https://plausible.io" crossorigin />
+    <link rel="dns-prefetch" href="https://open.er-api.com" />
     <!-- Critical CSS: page structure + colors before Vite bundle loads -->
     <style>html,body{margin:0;padding:0;background:#F7F7F5;color:#111111;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}[data-theme="dark"]{background:#08090a;color:#f4f4f5}#root{display:flex;flex-direction:column;min-height:100vh}</style>
     <!-- Theme: apply before first paint to prevent flash -->

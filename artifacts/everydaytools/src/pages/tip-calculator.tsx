@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Copy, CheckCircle2 } from 'lucide-react';
-import { Helmet } from 'react-helmet-async';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
@@ -92,10 +91,6 @@ export default function TipCalculator() {
 
   return (
     <>
-      <Helmet>
-        <title>Tip &amp; Percentage Calculator — Free | EverydayTools Hub</title>
-        <meta name="description" content="Calculate tip amounts, split bills between people, and work out percentage changes — free, instant, no signup required." />
-      </Helmet>
       <div style={{ maxWidth: 'var(--content-tool)', margin: '0 auto', padding: '32px 24px 64px' }}>
         <Breadcrumb items={['Home', 'Calculators', 'Tip Calculator']} />
 
