@@ -80,12 +80,11 @@ const DASH_TOOLS: DashTool[] = tools.map((t) => ({
   formats:     t.formats ?? [],
 }));
 
-// All colors reference CSS variables defined in index.css for both light and dark themes.
 const CATEGORY_COLORS: Record<DashCategory, { icon: string; bg: string; badgeBg: string; text: string }> = {
-  Documents:   { icon: "var(--cat-docs-icon)",    bg: "var(--cat-docs-bg)",    badgeBg: "var(--cat-docs-bg)",    text: "var(--cat-docs-text)"    },
-  Images:      { icon: "var(--cat-images-icon)",  bg: "var(--cat-images-bg)",  badgeBg: "var(--cat-images-bg)",  text: "var(--cat-images-text)"  },
-  Privacy:     { icon: "var(--cat-privacy-icon)", bg: "var(--cat-privacy-bg)", badgeBg: "var(--cat-privacy-bg)", text: "var(--cat-privacy-text)" },
-  Calculators: { icon: "var(--cat-calc-icon)",    bg: "var(--cat-calc-bg)",    badgeBg: "var(--cat-calc-bg)",    text: "var(--cat-calc-text)"    },
+  Documents:   { icon: "#D97706", bg: "rgba(217,119,6,0.10)",   badgeBg: "rgba(217,119,6,0.10)",   text: "#D97706" },
+  Images:      { icon: "#0D9488", bg: "rgba(13,148,136,0.10)",  badgeBg: "rgba(13,148,136,0.10)",  text: "#0D9488" },
+  Privacy:     { icon: "#7C3AED", bg: "rgba(124,58,237,0.10)",  badgeBg: "rgba(124,58,237,0.10)",  text: "#7C3AED" },
+  Calculators: { icon: "#1A6BFF", bg: "rgba(26,107,255,0.10)",  badgeBg: "rgba(26,107,255,0.10)",  text: "#1A6BFF" },
 };
 
 /* ── ToolCard ────────────────────────────────────────────────────────────── */

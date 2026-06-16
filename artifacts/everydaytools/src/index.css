@@ -75,26 +75,6 @@
   --shadow-card:    0 1px 2px rgba(0,0,0,0.04);
   --shadow-hover:   0 4px 12px rgba(0,0,0,0.06);
 
-  /* Category accent colors (light mode) */
-  --cat-docs-icon:    #D97706;
-  --cat-docs-bg:      rgba(217,119,6,0.10);
-  --cat-docs-text:    #92400E;
-  --cat-images-icon:  #0D9488;
-  --cat-images-bg:    rgba(13,148,136,0.10);
-  --cat-images-text:  #0F4F4A;
-  --cat-privacy-icon: #7C3AED;
-  --cat-privacy-bg:   rgba(124,58,237,0.10);
-  --cat-privacy-text: #4C1D95;
-  --cat-calc-icon:    #1A6BFF;
-  --cat-calc-bg:      rgba(26,107,255,0.10);
-  --cat-calc-text:    #1239A5;
-  --cat-excel-icon:   #16A34A;
-  --cat-excel-bg:     rgba(22,163,74,0.10);
-  --cat-excel-text:   #14532D;
-  --cat-pptx-icon:    #EA580C;
-  --cat-pptx-bg:      rgba(234,88,12,0.10);
-  --cat-pptx-text:    #7C2D12;
-
   /* Backward-compat aliases */
   --bg:       var(--bg-base);
   --surface:  var(--bg-surface);
@@ -188,20 +168,6 @@
   --surface:  var(--bg-surface);
   --text:     var(--text-primary);
   --muted:    var(--text-secondary);
-
-  /* Category accent colors — brighter text + slightly stronger bg for dark backgrounds */
-  --cat-docs-text:    #FCD34D;
-  --cat-images-text:  #5EEAD4;
-  --cat-privacy-text: #C4B5FD;
-  --cat-calc-text:    #93C5FD;
-  --cat-excel-text:   #86EFAC;
-  --cat-pptx-text:    #FDBA74;
-  --cat-docs-bg:      rgba(217,119,6,0.14);
-  --cat-images-bg:    rgba(13,148,136,0.14);
-  --cat-privacy-bg:   rgba(124,58,237,0.14);
-  --cat-calc-bg:      rgba(26,107,255,0.14);
-  --cat-excel-bg:     rgba(22,163,74,0.14);
-  --cat-pptx-bg:      rgba(234,88,12,0.14);
 
   /* Pure-neutral Tailwind HSL slots — no blue hue */
   --background: 0 0% 7%;

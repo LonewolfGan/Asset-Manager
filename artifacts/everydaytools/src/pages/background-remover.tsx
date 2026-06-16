@@ -20,75 +20,110 @@ export default function BackgroundRemover() {
 
   const handleConvert = async () => {
     if (!files[0]) return;
-    setError(null); setIsProcessing(true); setProgress(0); setLoadingEngine(true);
+    setError(null); setResult(null); setIsProcessing(true); setProgress(0); setLoadingEngine(true);
     try {
       const file = files[0];
+
+      // Dynamically import the browser-native AI engine on first use
+      const { removeBackground } = await import('@imgly/background-removal');
       setLoadingEngine(false);
       setProgress(10);
 
-      const fd = new FormData();
-      fd.append('file', file);
+      const blob = await removeBackground(file, {
+        model: 'medium',
+        output: { format: 'image/png' },
+        progress: (_key: string, current: number, total: number) => {
+          if (total > 0) setProgress(10 + Math.round((current / total) * 85));
+        },
+      });
 
-      setProgress(20);
-      const res = await fetch('/api/remove-background', { method: 'POST', body: fd });
-      setProgress(90);
-
-      if (!res.ok) {
-        trackToolError('background-remover', 'general-error');
-        const err = await res.json().catch(() => ({ error: 'Server error' }));
-        throw new Error(err.error ?? 'Background removal failed');
-      }
-
-      const arrayBuffer = await res.arrayBuffer();
-      const blob = new Blob([arrayBuffer], { type: 'image/png' });
       setProgress(100);
       trackToolUsed('background-remover', 'images');
-      setResult({ blob, filename: file.name.replace(/\.[^/.]+$/, '_nobg.png'), sizeAfter: blob.size, sizeBefore: file.size });
+      setResult({
+        blob,
+        filename: file.name.replace(/\.[^/.]+$/, '_nobg.png'),
+        sizeAfter: blob.size,
+        sizeBefore: file.size,
+      });
     } catch (e) {
       trackToolError('background-remover', 'general-error');
-      setError(e instanceof Error ? e.message : 'Conversion failed. Please try again.');
-    } finally { setIsProcessing(false); setLoadingEngine(false); }
+      setError(e instanceof Error ? e.message : 'Background removal failed. Please try again.');
+    } finally {
+      setIsProcessing(false);
+      setLoadingEngine(false);
+    }
   };
 
   return (
     <>
       <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
-      <Breadcrumb items={['Home', 'Image Tools', 'Background Remover']} />
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['background-remover']?.title ?? 'Background Remover'}</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['background-remover']?.description ?? 'Remove image backgrounds entirely in your browser using local AI.'}</p>
+        <Breadcrumb items={['Home', 'Image Tools', 'Background Remover']} />
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>
+          {t.tools['background-remover']?.title ?? 'Background Remover'}
+        </h1>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>
+          {t.tools['background-remover']?.description ?? 'Remove image backgrounds entirely in your browser using local AI.'}
+        </p>
 
-      <FileUpload accept={['image/jpeg', 'image/png', 'image/webp']} maxSizeMB={10} onFiles={setFiles} />
+        <FileUpload accept={['image/jpeg', 'image/png', 'image/webp']} maxSizeMB={10} onFiles={setFiles} />
 
-      {files.length > 0 && !isProcessing && (
-        <button onClick={handleConvert} disabled={isProcessing}
-          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer', width: '100%' }}>
-          {tc.removeBtn}
-        </button>
-      )}
+        {files.length > 0 && !isProcessing && (
+          <button
+            onClick={handleConvert}
+            disabled={isProcessing}
+            style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer', width: '100%' }}
+          >
+            {tc.removeBtn}
+          </button>
+        )}
 
-      {isProcessing && <ProgressBar progress={progress} label={loadingEngine ? tc.loadingModel : tc.processingImage} />}
-      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{error}</p>}
+        {isProcessing && (
+          <ProgressBar progress={progress} label={loadingEngine ? tc.loadingModel : tc.processingImage} />
+        )}
 
-      {result && (
-        <div style={{ marginTop: 24 }}>
-          <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
-            <div style={{ flex: 1 }}>
-              <p style={{ fontSize: 'var(--text-sm)', fontWeight: 500, marginBottom: 8, fontFamily: 'var(--font-ui)', color: 'var(--text-primary)' }}>{tc.original}</p>
-              <img src={URL.createObjectURL(files[0])} style={{ width: '100%', borderRadius: 'var(--radius)', border: '1px solid var(--border)' }} alt={tc.original} />
-            </div>
-            <div style={{ flex: 1 }}>
-              <p style={{ fontSize: 'var(--text-sm)', fontWeight: 500, marginBottom: 8, fontFamily: 'var(--font-ui)', color: 'var(--text-primary)' }}>{tc.result}</p>
-              <div style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 0h10v10H0zm10 10h10v10H10z\' fill=\'%23e5e5e5\' fill-rule=\'evenodd\'/%3E%3C/svg%3E")', borderRadius: 'var(--radius)', border: '1px solid var(--border)', overflow: 'hidden' }}>
-                <img src={URL.createObjectURL(result.blob)} style={{ width: '100%', display: 'block' }} alt={tc.result} />
+        {error && (
+          <div style={{
+            marginTop: 16,
+            padding: '14px 16px',
+            background: 'rgba(239,68,68,0.07)',
+            border: '1px solid rgba(239,68,68,0.22)',
+            borderRadius: 'var(--radius)',
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: 10,
+          }}>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: 2 }}>
+              <circle cx="8" cy="8" r="7" stroke="var(--danger)" strokeWidth="1.5" />
+              <path d="M8 4.5v4" stroke="var(--danger)" strokeWidth="1.5" strokeLinecap="round" />
+              <circle cx="8" cy="11" r="0.75" fill="var(--danger)" />
+            </svg>
+            <span style={{ color: 'var(--danger)', fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)', lineHeight: 1.55 }}>
+              {error}
+            </span>
+          </div>
+        )}
+
+        {result && (
+          <div style={{ marginTop: 24 }}>
+            <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: 'var(--text-sm)', fontWeight: 500, marginBottom: 8, fontFamily: 'var(--font-ui)', color: 'var(--text-primary)' }}>{tc.original}</p>
+                <img src={URL.createObjectURL(files[0])} style={{ width: '100%', borderRadius: 'var(--radius)', border: '1px solid var(--border)' }} alt={tc.original} />
+              </div>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: 'var(--text-sm)', fontWeight: 500, marginBottom: 8, fontFamily: 'var(--font-ui)', color: 'var(--text-primary)' }}>{tc.result}</p>
+                <div style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 0h10v10H0zm10 10h10v10H10z\' fill=\'%23e5e5e5\' fill-rule=\'evenodd\'/%3E%3C/svg%3E")', borderRadius: 'var(--radius)', border: '1px solid var(--border)', overflow: 'hidden' }}>
+                  <img src={URL.createObjectURL(result.blob)} style={{ width: '100%', display: 'block' }} alt={tc.result} />
+                </div>
               </div>
             </div>
+            <ResultPanel {...result} />
           </div>
-          <ResultPanel {...result} />
-        </div>
-      )}
-      <AdSlot type="horizontal" />
-    </div>
-    <ToolPageSEO internalSlug="background-remover" />
-  </>
+        )}
+
+        <AdSlot type="horizontal" />
+      </div>
+      <ToolPageSEO internalSlug="background-remover" />
+    </>
   );
 }
