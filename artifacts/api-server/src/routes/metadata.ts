@@ -1,11 +1,11 @@
 import { Router, type IRouter } from "express";
 import { PDFDocument } from "pdf-lib";
 import piexif from "piexifjs";
-import { upload } from "../middlewares/upload.js";
+import { upload, guardMetadata } from "../middlewares/upload.js";
 
 const router: IRouter = Router();
 
-router.post("/metadata/read", upload.single("file"), async (req, res) => {
+router.post("/metadata/read", upload.single("file"), guardMetadata, async (req, res) => {
   if (!req.file) {
     res.status(400).json({ error: "No file uploaded" });
     return;
@@ -41,7 +41,7 @@ router.post("/metadata/read", upload.single("file"), async (req, res) => {
   }
 });
 
-router.post("/metadata/clean", upload.single("file"), async (req, res) => {
+router.post("/metadata/clean", upload.single("file"), guardMetadata, async (req, res) => {
   if (!req.file) {
     res.status(400).json({ error: "No file uploaded" });
     return;

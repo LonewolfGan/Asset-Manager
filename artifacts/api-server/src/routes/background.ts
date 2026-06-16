@@ -1,33 +1,52 @@
 import { Router, type IRouter } from "express";
-import { upload } from "../middlewares/upload.js";
+import { upload, guardBackground } from "../middlewares/upload.js";
 
 const router: IRouter = Router();
 
-router.post("/remove-background", upload.single("file"), async (req, res) => {
-  if (!req.file) {
-    res.status(400).json({ error: "No file uploaded" });
-    return;
+// Cache the removeBackground function after first import to avoid
+// reloading the ONNX model and WASM runtime on every request.
+type RemoveBgFn = typeof import("@imgly/background-removal-node").removeBackground;
+let removeBgFn: RemoveBgFn | null = null;
+
+async function getRemoveBackground(): Promise<RemoveBgFn> {
+  if (!removeBgFn) {
+    const mod = await import("@imgly/background-removal-node");
+    removeBgFn = mod.removeBackground;
   }
+  return removeBgFn;
+}
 
-  try {
-    const { removeBackground } = await import("@imgly/background-removal-node");
+router.post(
+  "/remove-background",
+  upload.single("file"),
+  guardBackground,
+  async (req, res) => {
+    if (!req.file) {
+      res.status(400).json({ error: "No file uploaded" });
+      return;
+    }
 
-    const inputBuffer = req.file.buffer;
-    const resultBlob = await removeBackground(inputBuffer, {
-      model: "medium",
-      output: { format: "image/png" },
-    });
+    try {
+      const removeBackground = await getRemoveBackground();
 
-    const arrayBuffer = await resultBlob.arrayBuffer();
-    const outBuffer = Buffer.from(arrayBuffer);
+      const resultBlob = await removeBackground(req.file.buffer, {
+        model: "medium",
+        output: { format: "image/png" },
+      });
 
-    res.set("Content-Type", "image/png");
-    res.set("Content-Disposition", `attachment; filename="no-bg.png"`);
-    res.send(outBuffer);
-  } catch (err) {
-    const message = err instanceof Error ? err.message : "Background removal failed";
-    res.status(500).json({ error: message });
-  }
-});
+      const arrayBuffer = await resultBlob.arrayBuffer();
+      const outBuffer = Buffer.from(arrayBuffer);
+
+      res.set("Content-Type", "image/png");
+      res.set("Content-Disposition", `attachment; filename="no-bg.png"`);
+      res.set("Cache-Control", "no-store");
+      res.send(outBuffer);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Background removal failed";
+      res.status(500).json({ error: message });
+    }
+  },
+);
 
 export default router;
