@@ -107,7 +107,7 @@ export default function CookieBanner() {
             background: 'var(--accent)',
             border: 'none',
             borderRadius: 'var(--radius-btn)',
-            color: '#1A1916',
+            color: 'var(--accent-text)',
             fontFamily: 'var(--font-ui)',
             fontSize: 'var(--text-sm)',
             fontWeight: 600,

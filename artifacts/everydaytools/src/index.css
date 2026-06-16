@@ -75,6 +75,26 @@
   --shadow-card:    0 1px 2px rgba(0,0,0,0.04);
   --shadow-hover:   0 4px 12px rgba(0,0,0,0.06);
 
+  /* Category accent colors (light mode) */
+  --cat-docs-icon:    #D97706;
+  --cat-docs-bg:      rgba(217,119,6,0.10);
+  --cat-docs-text:    #92400E;
+  --cat-images-icon:  #0D9488;
+  --cat-images-bg:    rgba(13,148,136,0.10);
+  --cat-images-text:  #0F4F4A;
+  --cat-privacy-icon: #7C3AED;
+  --cat-privacy-bg:   rgba(124,58,237,0.10);
+  --cat-privacy-text: #4C1D95;
+  --cat-calc-icon:    #1A6BFF;
+  --cat-calc-bg:      rgba(26,107,255,0.10);
+  --cat-calc-text:    #1239A5;
+  --cat-excel-icon:   #16A34A;
+  --cat-excel-bg:     rgba(22,163,74,0.10);
+  --cat-excel-text:   #14532D;
+  --cat-pptx-icon:    #EA580C;
+  --cat-pptx-bg:      rgba(234,88,12,0.10);
+  --cat-pptx-text:    #7C2D12;
+
   /* Backward-compat aliases */
   --bg:       var(--bg-base);
   --surface:  var(--bg-surface);
@@ -136,10 +156,10 @@
 
 /* ─── DARK THEME ─── */
 [data-theme="dark"] {
-  --bg-base:        #08090a;
-  --bg-surface:     #111116;
-  --bg-elevated:    #1a1a20;
-  --bg-hover:       #222228;
+  --bg-base:        #0c0c0c;
+  --bg-surface:     #111111;
+  --bg-elevated:    #1a1a1a;
+  --bg-hover:       #222222;
   --bg-subtle:      var(--bg-hover);
   --border:         rgba(255,255,255,0.10);
   --border-strong:  rgba(255,255,255,0.18);
@@ -169,32 +189,47 @@
   --text:     var(--text-primary);
   --muted:    var(--text-secondary);
 
-  --background: 240 3% 7%;
-  --foreground: 0 0% 94%;
+  /* Category accent colors — brighter text + slightly stronger bg for dark backgrounds */
+  --cat-docs-text:    #FCD34D;
+  --cat-images-text:  #5EEAD4;
+  --cat-privacy-text: #C4B5FD;
+  --cat-calc-text:    #93C5FD;
+  --cat-excel-text:   #86EFAC;
+  --cat-pptx-text:    #FDBA74;
+  --cat-docs-bg:      rgba(217,119,6,0.14);
+  --cat-images-bg:    rgba(13,148,136,0.14);
+  --cat-privacy-bg:   rgba(124,58,237,0.14);
+  --cat-calc-bg:      rgba(26,107,255,0.14);
+  --cat-excel-bg:     rgba(22,163,74,0.14);
+  --cat-pptx-bg:      rgba(234,88,12,0.14);
+
+  /* Pure-neutral Tailwind HSL slots — no blue hue */
+  --background: 0 0% 7%;
+  --foreground: 0 0% 96%;
   --primary: 16 100% 60%;
   --primary-foreground: 0 0% 100%;
-  --card: 240 3% 10%;
-  --card-foreground: 0 0% 94%;
-  --border-hsl: 240 4% 18%;
-  --input: 240 4% 18%;
-  --muted-tw: 240 3% 14%;
-  --muted-foreground: 240 3% 55%;
+  --card: 0 0% 10%;
+  --card-foreground: 0 0% 96%;
+  --border-hsl: 0 0% 16%;
+  --input: 0 0% 16%;
+  --muted-tw: 0 0% 13%;
+  --muted-foreground: 0 0% 58%;
   --accent-tw: 16 100% 60%;
   --accent-foreground: 0 0% 100%;
-  --secondary: 240 3% 14%;
-  --secondary-foreground: 0 0% 94%;
+  --secondary: 0 0% 13%;
+  --secondary-foreground: 0 0% 96%;
   --destructive: 0 100% 63%;
   --destructive-foreground: 0 0% 100%;
   --ring: 16 100% 60%;
-  --popover: 240 3% 10%;
-  --popover-foreground: 0 0% 94%;
-  --sidebar: 240 3% 10%;
-  --sidebar-foreground: 0 0% 94%;
-  --sidebar-border: 240 4% 18%;
+  --popover: 0 0% 10%;
+  --popover-foreground: 0 0% 96%;
+  --sidebar: 0 0% 10%;
+  --sidebar-foreground: 0 0% 96%;
+  --sidebar-border: 0 0% 16%;
   --sidebar-primary: 16 100% 60%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 240 3% 14%;
-  --sidebar-accent-foreground: 0 0% 94%;
+  --sidebar-accent: 0 0% 13%;
+  --sidebar-accent-foreground: 0 0% 96%;
   --sidebar-ring: 16 100% 60%;
 }
 
@@ -437,7 +472,7 @@ button,
 .skeleton {
   position: relative;
   overflow: hidden;
-  background: #EBEBEA;
+  background: var(--bg-elevated);
   border-radius: 6px;
 }
 .skeleton::after {
@@ -456,9 +491,6 @@ button,
 @keyframes skeleton-shimmer {
   0%   { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
-}
-[data-theme="dark"] .skeleton {
-  background: #1a1a20;
 }
 [data-theme="dark"] .skeleton::after {
   background: linear-gradient(
