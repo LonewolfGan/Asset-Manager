@@ -170,6 +170,12 @@ export default function BackgroundRemover() {
               </div>
             </div>
             <ResultPanel {...result} />
+            <button
+              onClick={() => { setResult(null); setFiles([]); setError(null); }}
+              style={{ marginTop: 12, width: '100%', padding: '10px 24px', background: 'none', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', cursor: 'pointer' }}
+            >
+              Try a different image
+            </button>
           </div>
         )}
 
