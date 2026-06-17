@@ -15,29 +15,49 @@ export default function BackgroundRemover() {
   const [result, setResult] = useState<{blob: Blob, filename: string, sizeAfter: number, sizeBefore?: number} | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
+  const [statusLabel, setStatusLabel] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-  const [loadingEngine, setLoadingEngine] = useState(false);
 
   const handleConvert = async () => {
     if (!files[0]) return;
-    setError(null); setResult(null); setIsProcessing(true); setProgress(0); setLoadingEngine(true);
+    setError(null);
+    setResult(null);
+    setIsProcessing(true);
+    setProgress(0);
+    setStatusLabel('Loading...');
+
     try {
       const file = files[0];
 
-      // Dynamically import the browser-native AI engine on first use
       const { removeBackground } = await import('@imgly/background-removal');
-      setLoadingEngine(false);
-      setProgress(10);
+
+      setProgress(5);
+      setStatusLabel('Downloading model...');
+
+      let fetchDone = false;
 
       const blob = await removeBackground(file, {
-        model: 'isnet',
+        model: 'isnet_quint8',
         output: { format: 'image/png' },
-        progress: (_key: string, current: number, total: number) => {
-          if (total > 0) setProgress(10 + Math.round((current / total) * 85));
+        progress: (key: string, current: number, total: number) => {
+          if (key.startsWith('fetch:')) {
+            if (!fetchDone) {
+              const pct = total > 0 ? Math.round((current / total) * 50) : 0;
+              setProgress(5 + pct);
+              setStatusLabel('Downloading model...');
+              if (current >= total && total > 0) fetchDone = true;
+            }
+          } else if (key.startsWith('compute:')) {
+            if (!fetchDone) { fetchDone = true; }
+            const pct = total > 0 ? Math.round((current / total) * 44) : 0;
+            setProgress(55 + pct);
+            setStatusLabel('Processing...');
+          }
         },
       });
 
       setProgress(100);
+      setStatusLabel('Done');
       trackToolUsed('background-remover', 'images');
       setResult({
         blob,
@@ -50,7 +70,7 @@ export default function BackgroundRemover() {
       setError(e instanceof Error ? e.message : 'Background removal failed. Please try again.');
     } finally {
       setIsProcessing(false);
-      setLoadingEngine(false);
+      setStatusLabel('');
     }
   };
 
@@ -78,7 +98,14 @@ export default function BackgroundRemover() {
         )}
 
         {isProcessing && (
-          <ProgressBar progress={progress} />
+          <div style={{ marginTop: 16 }}>
+            <ProgressBar progress={progress} />
+            {statusLabel && (
+              <p style={{ marginTop: 8, fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', fontFamily: 'var(--font-ui)', textAlign: 'center' }}>
+                {statusLabel}
+              </p>
+            )}
+          </div>
         )}
 
         {error && (
