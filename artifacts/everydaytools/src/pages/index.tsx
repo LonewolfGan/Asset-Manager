@@ -110,14 +110,12 @@ function ToolCard({
   const description = tl?.description ?? tool.description;
 
   return (
-    <Link href={tool.route} style={{ textDecoration: "none", display: "block" }}>
+    <Link href={tool.route} style={{ textDecoration: "none", display: "block", height: "100%" }}>
       <article
         data-testid="tool-card"
         style={{
           position: "relative",
-          display: "flex",
-          alignItems: "center",
-          gap: 0,
+          padding: "16px 16px 14px",
           borderRadius: "var(--radius-card)",
           border: "1px solid var(--border)",
           background: "var(--bg-surface)",
@@ -125,11 +123,15 @@ function ToolCard({
           overflow: "hidden",
           transition: "border-color 150ms ease, box-shadow 150ms ease",
           boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          gap: 10,
         }}
         onMouseEnter={(e) => {
           const el = e.currentTarget as HTMLElement;
           el.style.borderColor = cat.border;
-          el.style.boxShadow = `0 2px 12px rgba(0,0,0,0.07)`;
+          el.style.boxShadow = `0 4px 16px rgba(0,0,0,0.07)`;
           const tint = el.querySelector<HTMLElement>(".card-tint");
           if (tint) tint.style.opacity = "1";
           const pin = el.querySelector<HTMLElement>(".card-pin");
@@ -158,38 +160,58 @@ function ToolCard({
           }}
         />
 
-        {/* Icon zone */}
-        <div style={{
-          width: 64,
-          alignSelf: "stretch",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: cat.bg,
-          flexShrink: 0,
-          color: cat.color,
-          position: "relative",
-        }}>
-          <Icon size={22} strokeWidth={1.6} />
+        {/* Icon row */}
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", position: "relative" }}>
+          <div style={{
+            width: 42,
+            height: 42,
+            borderRadius: 11,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: cat.bg,
+            color: cat.color,
+            flexShrink: 0,
+          }}>
+            <Icon size={20} strokeWidth={1.6} />
+          </div>
+
+          {onTogglePin !== undefined && (
+            <button
+              className="card-pin"
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }}
+              aria-label={isPinned ? "Unpin tool" : "Pin tool"}
+              style={{
+                background: "none",
+                border: "none",
+                padding: "3px 2px",
+                cursor: "pointer",
+                color: isPinned ? cat.color : "var(--text-tertiary)",
+                opacity: isPinned ? 1 : 0,
+                transition: "opacity 150ms ease, color 150ms ease",
+                display: "flex",
+                alignItems: "center",
+                borderRadius: 4,
+                lineHeight: 0,
+                flexShrink: 0,
+              }}
+            >
+              {isPinned
+                ? <BookmarkCheck size={15} strokeWidth={2} />
+                : <Bookmark size={15} strokeWidth={1.8} />}
+            </button>
+          )}
         </div>
 
-        {/* Text zone */}
-        <div style={{
-          flex: 1,
-          minWidth: 0,
-          padding: "13px 14px 13px 14px",
-          position: "relative",
-        }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2 }}>
+        {/* Name + description */}
+        <div style={{ position: "relative" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", marginBottom: 4 }}>
             <span style={{
-              fontSize: "13px",
+              fontSize: "13.5px",
               fontWeight: 600,
               color: "var(--text-primary)",
               fontFamily: "var(--font-ui)",
               lineHeight: 1.3,
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
             }}>
               {name}
             </span>
@@ -197,8 +219,8 @@ function ToolCard({
               <span style={{
                 fontSize: 9,
                 fontWeight: 700,
-                padding: "2px 5px",
-                borderRadius: 3,
+                padding: "2px 6px",
+                borderRadius: 4,
                 background: cat.bg,
                 color: cat.color,
                 lineHeight: 1.4,
@@ -211,47 +233,19 @@ function ToolCard({
             )}
           </div>
           <p style={{
-            fontSize: "11.5px",
+            fontSize: "12px",
             color: "var(--text-secondary)",
-            lineHeight: 1.45,
+            lineHeight: 1.5,
             margin: 0,
-            whiteSpace: "nowrap",
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
             overflow: "hidden",
-            textOverflow: "ellipsis",
             fontFamily: "var(--font-ui)",
           }}>
             {description}
           </p>
         </div>
-
-        {/* Pin button */}
-        {onTogglePin !== undefined && (
-          <button
-            className="card-pin"
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }}
-            aria-label={isPinned ? "Unpin tool" : "Pin tool"}
-            style={{
-              background: "none",
-              border: "none",
-              padding: "0 14px",
-              cursor: "pointer",
-              color: isPinned ? cat.color : "var(--text-tertiary)",
-              opacity: isPinned ? 1 : 0,
-              transition: "opacity 150ms ease, color 150ms ease",
-              display: "flex",
-              alignItems: "center",
-              alignSelf: "stretch",
-              borderRadius: 0,
-              lineHeight: 0,
-              flexShrink: 0,
-              position: "relative",
-            }}
-          >
-            {isPinned
-              ? <BookmarkCheck size={15} strokeWidth={2} />
-              : <Bookmark size={15} strokeWidth={1.8} />}
-          </button>
-        )}
       </article>
     </Link>
   );
@@ -310,8 +304,10 @@ function CategorySection({
       </div>
       <div style={{
         display: "grid",
-        gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
-        gap: 6,
+        gridTemplateColumns: isMobile
+          ? "repeat(2, 1fr)"
+          : "repeat(auto-fill, minmax(180px, 1fr))",
+        gap: 8,
       }}>
         {tools.map((tool) => (
           <ToolCard
@@ -450,8 +446,10 @@ export default function DashboardHome() {
               </div>
               <div style={{
                 display: "grid",
-                gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
-                gap: 6,
+                gridTemplateColumns: isMobile
+                  ? "repeat(2, 1fr)"
+                  : "repeat(auto-fill, minmax(180px, 1fr))",
+                gap: 8,
               }}>
                 {pinnedTools.map((tool) => {
                   const cat = CATEGORY_MAP[tool.categoryKey] ?? CATEGORIES[0];
@@ -502,8 +500,10 @@ export default function DashboardHome() {
           {isSearching && filteredTools.length > 0 && (
             <div style={{
               display: "grid",
-              gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
-              gap: 6,
+              gridTemplateColumns: isMobile
+                ? "repeat(2, 1fr)"
+                : "repeat(auto-fill, minmax(180px, 1fr))",
+              gap: 8,
             }}>
               {filteredTools.map((tool) => {
                 const cat = CATEGORY_MAP[tool.categoryKey] ?? CATEGORIES[0];
