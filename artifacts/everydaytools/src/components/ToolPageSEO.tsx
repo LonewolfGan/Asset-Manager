@@ -462,8 +462,8 @@ export function ToolPageSEO({ internalSlug }: ToolPageSEOProps) {
         }}
       >
         <RelatedToolsSection tool={tool} locale={locale} />
-        <HowItWorksSection tool={tool} locale={locale} />
         <AboutSection tool={tool} locale={locale} />
+        <HowItWorksSection tool={tool} locale={locale} />
         <FaqSection tool={tool} locale={locale} />
       </div>
     </>

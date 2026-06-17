@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { Link } from 'wouter';
 import JSZip from 'jszip';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import FileUpload from '@/components/FileUpload';
@@ -51,6 +52,37 @@ function downloadBlob(blob: Blob, filename: string) {
   a.download = filename;
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+
+const NEXT_STEPS = [
+  { href: '/image-converter', label: 'Convert format', desc: 'Export as JPG, WEBP, AVIF or PNG' },
+  { href: '/image-compress', label: 'Compress image', desc: 'Shrink file size without quality loss' },
+  { href: '/image-resize', label: 'Resize image', desc: 'Change dimensions to any pixel size' },
+  { href: '/watermark-image', label: 'Add watermark', desc: 'Protect your image with text or logo' },
+];
+
+function WhatsNext() {
+  return (
+    <div style={{ marginTop: 32, paddingTop: 24, borderTop: '1px solid var(--border)' }}>
+      <p style={{ fontFamily: 'var(--font-ui)', fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', margin: '0 0 14px' }}>
+        What's next?
+      </p>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 10 }}>
+        {NEXT_STEPS.map(step => (
+          <Link key={step.href} href={step.href} style={{ textDecoration: 'none' }}>
+            <div
+              style={{ padding: '14px 16px', border: '1px solid var(--border)', borderRadius: 'var(--radius-card)', background: 'var(--bg-surface)', cursor: 'pointer', transition: 'border-color 140ms ease' }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'}
+            >
+              <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-primary)', margin: '0 0 4px' }}>{step.label}</p>
+              <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.5 }}>{step.desc}</p>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default function BackgroundRemover() {
@@ -304,10 +336,12 @@ export default function BackgroundRemover() {
               onClick={handleReset}
               style={{ flex: hasResults ? '0 0 auto' : 1, padding: '12px 20px', background: 'none', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', cursor: 'pointer' }}
             >
-              New batch
+              {queue.length === 1 ? 'Try another image' : 'New batch'}
             </button>
           </div>
         )}
+
+        {allFinished && hasResults && <WhatsNext />}
 
         <AdSlot type="horizontal" />
       </div>
