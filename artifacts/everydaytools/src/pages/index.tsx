@@ -110,28 +110,28 @@ function ToolCard({
   const description = tl?.description ?? tool.description;
 
   return (
-    <Link href={tool.route} style={{ textDecoration: "none", display: "block", height: "100%" }}>
+    <Link href={tool.route} style={{ textDecoration: "none", display: "block" }}>
       <article
         data-testid="tool-card"
         style={{
           position: "relative",
-          padding: "18px 18px 16px",
+          display: "flex",
+          alignItems: "center",
+          gap: 0,
           borderRadius: "var(--radius-card)",
           border: "1px solid var(--border)",
           background: "var(--bg-surface)",
           cursor: "pointer",
-          transition: "border-color 150ms ease, box-shadow 150ms ease, background 150ms ease",
+          overflow: "hidden",
+          transition: "border-color 150ms ease, box-shadow 150ms ease",
           boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          gap: 10,
         }}
         onMouseEnter={(e) => {
           const el = e.currentTarget as HTMLElement;
           el.style.borderColor = cat.border;
-          el.style.boxShadow = `0 4px 20px rgba(0,0,0,0.07)`;
-          el.style.background = "var(--bg-elevated)";
+          el.style.boxShadow = `0 2px 12px rgba(0,0,0,0.07)`;
+          const tint = el.querySelector<HTMLElement>(".card-tint");
+          if (tint) tint.style.opacity = "1";
           const pin = el.querySelector<HTMLElement>(".card-pin");
           if (pin && !isPinned) pin.style.opacity = "1";
         }}
@@ -139,63 +139,57 @@ function ToolCard({
           const el = e.currentTarget as HTMLElement;
           el.style.borderColor = "var(--border)";
           el.style.boxShadow = "0 1px 2px rgba(0,0,0,0.04)";
-          el.style.background = "var(--bg-surface)";
+          const tint = el.querySelector<HTMLElement>(".card-tint");
+          if (tint) tint.style.opacity = "0";
           const pin = el.querySelector<HTMLElement>(".card-pin");
           if (pin && !isPinned) pin.style.opacity = "0";
         }}
       >
-        {/* Icon row */}
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
-          <div style={{
-            width: 42,
-            height: 42,
-            borderRadius: 11,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+        {/* Hover tint overlay */}
+        <div
+          className="card-tint"
+          style={{
+            position: "absolute",
+            inset: 0,
             background: cat.bg,
-            color: cat.color,
-            flexShrink: 0,
-          }}>
-            <Icon size={20} strokeWidth={1.6} />
-          </div>
+            opacity: 0,
+            transition: "opacity 150ms ease",
+            pointerEvents: "none",
+          }}
+        />
 
-          {onTogglePin !== undefined && (
-            <button
-              className="card-pin"
-              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }}
-              aria-label={isPinned ? "Unpin tool" : "Pin tool"}
-              style={{
-                background: "none",
-                border: "none",
-                padding: "3px 2px",
-                cursor: "pointer",
-                color: isPinned ? cat.color : "var(--text-tertiary)",
-                opacity: isPinned ? 1 : 0,
-                transition: "opacity 150ms ease, color 150ms ease",
-                display: "flex",
-                alignItems: "center",
-                borderRadius: 4,
-                lineHeight: 0,
-                flexShrink: 0,
-              }}
-            >
-              {isPinned
-                ? <BookmarkCheck size={15} strokeWidth={2} />
-                : <Bookmark size={15} strokeWidth={1.8} />}
-            </button>
-          )}
+        {/* Icon zone */}
+        <div style={{
+          width: 64,
+          alignSelf: "stretch",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: cat.bg,
+          flexShrink: 0,
+          color: cat.color,
+          position: "relative",
+        }}>
+          <Icon size={22} strokeWidth={1.6} />
         </div>
 
-        {/* Name */}
-        <div>
-          <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", marginBottom: 4 }}>
+        {/* Text zone */}
+        <div style={{
+          flex: 1,
+          minWidth: 0,
+          padding: "13px 14px 13px 14px",
+          position: "relative",
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2 }}>
             <span style={{
-              fontSize: "13.5px",
+              fontSize: "13px",
               fontWeight: 600,
               color: "var(--text-primary)",
               fontFamily: "var(--font-ui)",
               lineHeight: 1.3,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
             }}>
               {name}
             </span>
@@ -203,8 +197,8 @@ function ToolCard({
               <span style={{
                 fontSize: 9,
                 fontWeight: 700,
-                padding: "2px 6px",
-                borderRadius: 4,
+                padding: "2px 5px",
+                borderRadius: 3,
                 background: cat.bg,
                 color: cat.color,
                 lineHeight: 1.4,
@@ -217,19 +211,47 @@ function ToolCard({
             )}
           </div>
           <p style={{
-            fontSize: "12px",
+            fontSize: "11.5px",
             color: "var(--text-secondary)",
-            lineHeight: 1.5,
+            lineHeight: 1.45,
             margin: 0,
-            display: "-webkit-box",
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: "vertical",
+            whiteSpace: "nowrap",
             overflow: "hidden",
+            textOverflow: "ellipsis",
             fontFamily: "var(--font-ui)",
           }}>
             {description}
           </p>
         </div>
+
+        {/* Pin button */}
+        {onTogglePin !== undefined && (
+          <button
+            className="card-pin"
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }}
+            aria-label={isPinned ? "Unpin tool" : "Pin tool"}
+            style={{
+              background: "none",
+              border: "none",
+              padding: "0 14px",
+              cursor: "pointer",
+              color: isPinned ? cat.color : "var(--text-tertiary)",
+              opacity: isPinned ? 1 : 0,
+              transition: "opacity 150ms ease, color 150ms ease",
+              display: "flex",
+              alignItems: "center",
+              alignSelf: "stretch",
+              borderRadius: 0,
+              lineHeight: 0,
+              flexShrink: 0,
+              position: "relative",
+            }}
+          >
+            {isPinned
+              ? <BookmarkCheck size={15} strokeWidth={2} />
+              : <Bookmark size={15} strokeWidth={1.8} />}
+          </button>
+        )}
       </article>
     </Link>
   );
@@ -288,10 +310,8 @@ function CategorySection({
       </div>
       <div style={{
         display: "grid",
-        gridTemplateColumns: isMobile
-          ? "repeat(2, 1fr)"
-          : "repeat(auto-fill, minmax(190px, 1fr))",
-        gap: 10,
+        gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
+        gap: 6,
       }}>
         {tools.map((tool) => (
           <ToolCard
@@ -430,10 +450,8 @@ export default function DashboardHome() {
               </div>
               <div style={{
                 display: "grid",
-                gridTemplateColumns: isMobile
-                  ? "repeat(2, 1fr)"
-                  : `repeat(${Math.min(pinnedTools.length, 5)}, minmax(0, 1fr))`,
-                gap: 10,
+                gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
+                gap: 6,
               }}>
                 {pinnedTools.map((tool) => {
                   const cat = CATEGORY_MAP[tool.categoryKey] ?? CATEGORIES[0];
@@ -484,8 +502,8 @@ export default function DashboardHome() {
           {isSearching && filteredTools.length > 0 && (
             <div style={{
               display: "grid",
-              gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(auto-fill, minmax(190px, 1fr))",
-              gap: 10,
+              gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
+              gap: 6,
             }}>
               {filteredTools.map((tool) => {
                 const cat = CATEGORY_MAP[tool.categoryKey] ?? CATEGORIES[0];
