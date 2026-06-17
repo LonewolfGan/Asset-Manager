@@ -271,6 +271,11 @@ function CategoryFilterBar({
     window.scrollTo({ top, behavior: "smooth" });
   };
 
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
+  const allLabel = locale.toLowerCase().startsWith("fr") ? "Tous" : "All";
+  const isAllActive = activeKey === null;
+
   if (isMobile) return null;
 
   return (
@@ -281,6 +286,44 @@ function CategoryFilterBar({
       flexWrap: "wrap",
       marginBottom: 36,
     }}>
+      {/* All pill */}
+      <button
+        onClick={scrollToTop}
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 7,
+          padding: "6px 13px",
+          borderRadius: 100,
+          border: `1px solid ${isAllActive ? "var(--text-primary)" : "var(--border)"}`,
+          background: isAllActive ? "var(--text-primary)" : "var(--bg-surface)",
+          color: isAllActive ? "var(--bg-base)" : "var(--text-secondary)",
+          fontFamily: "var(--font-ui)",
+          fontSize: "12px",
+          fontWeight: isAllActive ? 600 : 500,
+          cursor: "pointer",
+          transition: "all 120ms ease",
+          whiteSpace: "nowrap",
+        }}
+        onMouseEnter={(e) => {
+          if (!isAllActive) {
+            (e.currentTarget as HTMLElement).style.borderColor = "var(--text-primary)";
+            (e.currentTarget as HTMLElement).style.color = "var(--text-primary)";
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (!isAllActive) {
+            (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
+            (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)";
+          }
+        }}
+      >
+        {allLabel}
+      </button>
+
+      {/* Divider */}
+      <div style={{ width: 1, height: 16, background: "var(--border)", flexShrink: 0, marginRight: 2 }} />
+
       {categories.map((cat) => {
         const label = locale.toLowerCase().startsWith("fr") ? cat.labelFr : cat.label;
         const isActive = activeKey === cat.key;
