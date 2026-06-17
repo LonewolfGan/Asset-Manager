@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
@@ -17,9 +17,18 @@ export default function BackgroundRemover() {
   const [progress, setProgress] = useState(0);
   const [statusLabel, setStatusLabel] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const cancelledRef = useRef(false);
+
+  const handleCancel = () => {
+    cancelledRef.current = true;
+    setIsProcessing(false);
+    setProgress(0);
+    setStatusLabel('');
+  };
 
   const handleConvert = async () => {
     if (!files[0]) return;
+    cancelledRef.current = false;
     setError(null);
     setResult(null);
     setIsProcessing(true);
@@ -31,6 +40,8 @@ export default function BackgroundRemover() {
 
       const { removeBackground } = await import('@imgly/background-removal');
 
+      if (cancelledRef.current) return;
+
       setProgress(5);
       setStatusLabel('Downloading model...');
 
@@ -41,6 +52,7 @@ export default function BackgroundRemover() {
         model: 'isnet_quint8',
         output: { format: 'image/png' },
         progress: (key: string, current: number, total: number) => {
+          if (cancelledRef.current) return;
           if (key.startsWith('fetch:')) {
             if (!fetchDone) {
               const pct = total > 0 ? Math.round((current / total) * 50) : 0;
@@ -57,6 +69,8 @@ export default function BackgroundRemover() {
         },
       });
 
+      if (cancelledRef.current) return;
+
       setProgress(100);
       setStatusLabel('Done');
       trackToolUsed('background-remover', 'images');
@@ -67,11 +81,14 @@ export default function BackgroundRemover() {
         sizeBefore: file.size,
       });
     } catch (e) {
+      if (cancelledRef.current) return;
       trackToolError('background-remover', 'general-error');
       setError(e instanceof Error ? e.message : 'Background removal failed. Please try again.');
     } finally {
-      setIsProcessing(false);
-      setStatusLabel('');
+      if (!cancelledRef.current) {
+        setIsProcessing(false);
+        setStatusLabel('');
+      }
     }
   };
 
@@ -91,7 +108,6 @@ export default function BackgroundRemover() {
         {files.length > 0 && !isProcessing && (
           <button
             onClick={handleConvert}
-            disabled={isProcessing}
             style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer', width: '100%' }}
           >
             {tc.removeBtn}
@@ -101,11 +117,19 @@ export default function BackgroundRemover() {
         {isProcessing && (
           <div style={{ marginTop: 16 }}>
             <ProgressBar progress={progress} />
-            {statusLabel && (
-              <p style={{ marginTop: 8, fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', fontFamily: 'var(--font-ui)', textAlign: 'center' }}>
-                {statusLabel}
-              </p>
-            )}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 }}>
+              {statusLabel ? (
+                <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', fontFamily: 'var(--font-ui)', margin: 0 }}>
+                  {statusLabel}
+                </p>
+              ) : <span />}
+              <button
+                onClick={handleCancel}
+                style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '4px 12px', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-ui)', color: 'var(--text-secondary)', cursor: 'pointer', flexShrink: 0 }}
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         )}
 
