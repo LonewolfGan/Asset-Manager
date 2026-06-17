@@ -91,10 +91,10 @@ export default function Footer() {
               <h2 style={{
                 fontFamily: "var(--font-ui)",
                 fontSize: 'var(--text-xs)',
-                fontWeight: 600,
+                fontWeight: 700,
                 letterSpacing: "0.08em",
                 textTransform: "uppercase",
-                color: "var(--text-secondary)",
+                color: "var(--text-primary)",
                 margin: "0 0 12px",
               }}>
                 {t.footer.columns[col.key]}
