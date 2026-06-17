@@ -29,7 +29,9 @@ router.post(
     try {
       const removeBackground = await getRemoveBackground();
 
-      const resultBlob = await removeBackground(req.file.buffer, {
+      const inputBlob = new Blob([req.file.buffer], { type: req.file.mimetype });
+
+      const resultBlob = await removeBackground(inputBlob, {
         model: "medium",
         output: { format: "image/png" },
       });
