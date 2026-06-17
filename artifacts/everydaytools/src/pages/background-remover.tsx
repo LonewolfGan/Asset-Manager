@@ -30,7 +30,7 @@ export default function BackgroundRemover() {
       setProgress(10);
 
       const blob = await removeBackground(file, {
-        model: 'medium',
+        model: 'isnet',
         output: { format: 'image/png' },
         progress: (_key: string, current: number, total: number) => {
           if (total > 0) setProgress(10 + Math.round((current / total) * 85));
@@ -62,7 +62,7 @@ export default function BackgroundRemover() {
           {t.tools['background-remover']?.title ?? 'Background Remover'}
         </h1>
         <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>
-          {t.tools['background-remover']?.description ?? 'Remove image backgrounds entirely in your browser using local AI.'}
+          {t.tools['background-remover']?.description ?? 'Remove backgrounds from photos instantly. Free, no account required.'}
         </p>
 
         <FileUpload accept={['image/jpeg', 'image/png', 'image/webp']} maxSizeMB={10} onFiles={setFiles} />
@@ -78,7 +78,7 @@ export default function BackgroundRemover() {
         )}
 
         {isProcessing && (
-          <ProgressBar progress={progress} label={loadingEngine ? tc.loadingModel : tc.processingImage} />
+          <ProgressBar progress={progress} />
         )}
 
         {error && (

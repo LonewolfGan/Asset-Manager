@@ -28,24 +28,41 @@ export default function CurrencyConverter() {
   };
 
   useEffect(() => {
+    const CACHE_KEY = 'et_currency_rates_v2';
+    const TTL_MS = 3_600_000; // 1 hour
+
     const fetchRates = async () => {
+      // Try localStorage cache first
       try {
-        const res = await fetch('/api/rates');
-        if (!res.ok) throw new Error("API error");
-        const data = await res.json();
-        if (data && data.rates) {
-          setRates(data.rates);
-          const age = data.ageMinutes ?? 0;
-          setSourceInfo({ type: 'live', age });
-        } else {
-          throw new Error("Invalid response");
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+          const { rates: cachedRates, timestamp } = JSON.parse(cached) as { rates: Record<string, number>; timestamp: number };
+          if (Date.now() - timestamp < TTL_MS) {
+            setRates(cachedRates);
+            const ageMinutes = Math.round((Date.now() - timestamp) / 60_000);
+            setSourceInfo({ type: 'live', age: ageMinutes });
+            return;
+          }
         }
-      } catch (e) {
+      } catch { /* ignore */ }
+
+      // Fetch directly from the public exchange rate API (no key required, CORS-enabled)
+      try {
+        const res = await fetch('https://open.er-api.com/v6/latest/USD');
+        if (!res.ok) throw new Error("Upstream error");
+        const data = await res.json() as { rates: Record<string, number> };
+        if (!data?.rates) throw new Error("Invalid response");
+        setRates(data.rates);
+        setSourceInfo({ type: 'live', age: 0 });
+        try {
+          localStorage.setItem(CACHE_KEY, JSON.stringify({ rates: data.rates, timestamp: Date.now() }));
+        } catch { /* quota exceeded — non-fatal */ }
+      } catch {
         setRates(FALLBACK_RATES);
         setSourceInfo({ type: 'offline', date: FALLBACK_DATE });
       }
     };
-    
+
     fetchRates();
     
     const h = localStorage.getItem('currency_history');
