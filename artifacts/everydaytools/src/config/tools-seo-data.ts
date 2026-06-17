@@ -38,7 +38,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["pdf to word converter", "convert pdf to docx online", "free pdf to word", "pdf to word without software", "pdf to docx free", "how to convert pdf to word"],
       fr: ["convertir pdf en word", "pdf en docx gratuit", "convertisseur pdf word en ligne", "transformer pdf en word", "pdf vers word sans logiciel", "convertir pdf en docx"],
     },
-    relatedTools: ["pdf-compress", "pdf-to-text", "txt-to-docx"],
+    relatedTools: ["pdf-compress", "pdf-to-text", "txt-to-docx", "pdf-merge", "word-to-pdf"],
     howItWorks: {
       en: [
         { name: "Upload your PDF", text: "Click the upload area or drag your PDF file into the drop zone. Files up to 50 MB are supported." },
@@ -88,7 +88,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["pdf to text converter", "extract text from pdf", "pdf to txt online free", "convert pdf to text without software", "pdf text extraction", "pdf to plaintext"],
       fr: ["convertir pdf en texte", "extraire texte pdf", "pdf en txt gratuit", "extraction texte pdf", "pdf vers texte en ligne", "convertir pdf en txt"],
     },
-    relatedTools: ["pdf-to-word", "pdf-to-html", "txt-to-pdf"],
+    relatedTools: ["pdf-to-word", "pdf-to-html", "txt-to-pdf", "pdf-compress", "word-to-text"],
     howItWorks: {
       en: [
         { name: "Upload your PDF", text: "Click the upload area or drag your PDF. Files up to 50 MB are supported." },
@@ -139,7 +139,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["pdf to html converter", "convert pdf to html online", "pdf to html free", "pdf to web page", "export pdf as html", "pdf html conversion"],
       fr: ["convertir pdf en html", "pdf en html gratuit", "convertisseur pdf html en ligne", "pdf vers html", "exporter pdf en html", "pdf to html"],
     },
-    relatedTools: ["pdf-to-text", "pdf-to-word", "html-to-pdf"],
+    relatedTools: ["pdf-to-text", "pdf-to-word", "html-to-pdf", "html-to-markdown", "word-to-html"],
     howItWorks: {
       en: [
         { name: "Upload your PDF", text: "Click the upload area or drag your PDF file. Files up to 50 MB are supported." },
@@ -190,7 +190,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["pdf to epub converter", "convert pdf to epub online free", "pdf to epub free", "pdf to ebook converter", "pdf to kindle", "pdf epub conversion"],
       fr: ["convertir pdf en epub", "pdf en epub gratuit", "convertisseur pdf epub en ligne", "pdf vers liseuse", "pdf en ebook", "pdf to epub"],
     },
-    relatedTools: ["pdf-to-word", "word-to-epub", "pdf-to-text"],
+    relatedTools: ["pdf-to-word", "word-to-epub", "pdf-to-text", "markdown-to-pdf", "word-to-markdown"],
     howItWorks: {
       en: [
         { name: "Upload your PDF", text: "Click the upload area or drag your PDF file. Files up to 50 MB are supported." },
@@ -241,7 +241,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["compress pdf online free", "reduce pdf file size", "pdf compressor", "shrink pdf online", "make pdf smaller", "pdf size reducer"],
       fr: ["compresser pdf en ligne gratuit", "réduire taille pdf", "compresseur pdf", "réduire poids pdf", "alléger pdf en ligne", "diminuer taille pdf"],
     },
-    relatedTools: ["pdf-to-word", "pdf-merge", "pdf-split"],
+    relatedTools: ["pdf-to-word", "pdf-merge", "pdf-split", "pdf-rotate", "image-compress"],
     howItWorks: {
       en: [
         { name: "Upload your PDF", text: "Click the upload area or drag your PDF. Files up to 50 MB are supported." },
@@ -283,7 +283,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Merge PDFs", fr: "Fusionner des PDFs" },
     description: { en: "Combine multiple PDF files into one document instantly in your browser. No upload, no account. Free PDF merger online.", fr: "Combinez plusieurs fichiers PDF en un seul document dans votre navigateur. Sans envoi, sans compte. Fusionneur PDF gratuit en ligne." },
     keywords: { en: ["merge pdf online free", "combine pdf files", "pdf merger", "join pdf files", "merge multiple pdfs", "pdf combiner free"], fr: ["fusionner pdf en ligne gratuit", "combiner fichiers pdf", "fusionneur pdf", "assembler pdf", "réunir plusieurs pdf", "pdf merger gratuit"] },
-    relatedTools: ["pdf-split", "pdf-compress", "pdf-rotate"],
+    relatedTools: ["pdf-split", "pdf-compress", "pdf-rotate", "reorder-pdf", "pdf-page-numbers"],
     howItWorks: {
       en: [
         { name: "Upload your PDFs", text: "Click the upload area or drag multiple PDF files. You can add up to 20 files at once." },
@@ -325,7 +325,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Split PDF", fr: "Diviser un PDF" },
     description: { en: "Split a PDF into individual pages or custom page ranges in your browser. Free, no upload to servers, no account needed.", fr: "Divisez un PDF en pages individuelles ou en plages personnalisées dans votre navigateur. Gratuit, sans envoi serveur, sans compte." },
     keywords: { en: ["split pdf online free", "split pdf into pages", "pdf splitter", "extract pages from pdf", "separate pdf pages", "cut pdf online free"], fr: ["diviser pdf en ligne gratuit", "séparer pages pdf", "diviseur pdf", "extraire pages pdf", "couper pdf en ligne", "fractionner pdf"] },
-    relatedTools: ["pdf-merge", "pdf-compress", "pdf-rotate"],
+    relatedTools: ["pdf-merge", "pdf-compress", "pdf-rotate", "reorder-pdf", "pdf-page-numbers"],
     howItWorks: {
       en: [
         { name: "Upload your PDF", text: "Click the upload area or drag your PDF. Files up to 50 MB are supported." },
@@ -367,7 +367,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Rotate PDF Pages", fr: "Pivoter les pages d'un PDF" },
     description: { en: "Rotate PDF pages 90, 180, or 270 degrees in your browser. Free, no upload, no account. Fix upside-down or sideways PDF pages instantly.", fr: "Faites pivoter les pages PDF de 90, 180 ou 270 degrés dans votre navigateur. Gratuit, sans envoi, sans compte." },
     keywords: { en: ["rotate pdf online free", "rotate pdf pages", "pdf rotator", "fix upside down pdf", "turn pdf pages", "rotate pdf 90 degrees"], fr: ["pivoter pdf en ligne gratuit", "faire pivoter pages pdf", "rotation pdf", "redresser pdf", "corriger orientation pdf", "tourner pages pdf"] },
-    relatedTools: ["pdf-merge", "pdf-split", "pdf-compress"],
+    relatedTools: ["pdf-merge", "pdf-split", "pdf-compress", "reorder-pdf", "pdf-page-numbers"],
     howItWorks: {
       en: [
         { name: "Upload your PDF", text: "Click the upload area or drag your PDF file into the drop zone." },
@@ -409,7 +409,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Unlock PDF", fr: "Déverrouiller un PDF" },
     description: { en: "Remove owner password restrictions from PDF files in your browser. Free, no upload, no account. Unlock PDFs for editing and copying.", fr: "Supprimez les restrictions de mot de passe propriétaire des PDF dans votre navigateur. Gratuit, sans envoi, sans compte." },
     keywords: { en: ["unlock pdf online free", "remove pdf password", "pdf unlocker", "pdf password remover", "unlock pdf for editing", "remove pdf restrictions"], fr: ["déverrouiller pdf en ligne gratuit", "supprimer mot de passe pdf", "déverrouilleur pdf", "enlever protection pdf", "débloquer pdf", "pdf sans restriction"] },
-    relatedTools: ["pdf-protect", "pdf-to-word", "pdf-compress"],
+    relatedTools: ["pdf-protect", "pdf-to-word", "pdf-compress", "metadata-cleaner", "checksum"],
     howItWorks: {
       en: [
         { name: "Upload your PDF", text: "Click the upload area or drag your locked PDF. The PDF must not require a password to open." },
@@ -451,7 +451,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Protect PDF with Password", fr: "Protéger un PDF par Mot de Passe" },
     description: { en: "Add password protection to a PDF in your browser. No upload, no account, free. Secure your PDF files instantly.", fr: "Ajoutez une protection par mot de passe à un PDF dans votre navigateur. Sans envoi, sans compte, gratuit. Sécurisez vos PDF instantanément." },
     keywords: { en: ["protect pdf with password", "add password to pdf", "pdf password protection", "encrypt pdf online free", "lock pdf online", "secure pdf free"], fr: ["protéger pdf mot de passe", "ajouter mot de passe pdf", "chiffrer pdf en ligne", "sécuriser pdf gratuit", "verrouiller pdf en ligne", "protection pdf"] },
-    relatedTools: ["pdf-unlock", "pdf-to-word", "metadata-cleaner"],
+    relatedTools: ["pdf-unlock", "pdf-to-word", "metadata-cleaner", "checksum", "ai-text-scrubber"],
     howItWorks: {
       en: [
         { name: "Upload your PDF", text: "Click the upload area or drag your PDF into the drop zone." },
@@ -493,7 +493,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Add Page Numbers to PDF", fr: "Ajouter des Numéros de Page à un PDF" },
     description: { en: "Add page numbers to every page of your PDF in your browser. Free, no upload, no account. Choose position, font, and starting number.", fr: "Ajoutez des numéros de page à chaque page de votre PDF dans votre navigateur. Gratuit, sans envoi, sans compte." },
     keywords: { en: ["add page numbers to pdf", "pdf page numbering", "number pdf pages online free", "insert page numbers pdf", "pdf header footer numbers", "paginate pdf"], fr: ["ajouter numéros de page pdf", "numérotation pages pdf", "numéroter pdf en ligne gratuit", "insérer numéros page pdf", "paginer pdf", "pagination pdf"] },
-    relatedTools: ["pdf-watermark", "pdf-merge", "pdf-rotate"],
+    relatedTools: ["pdf-watermark", "pdf-merge", "pdf-rotate", "pdf-protect", "pdf-compress"],
     howItWorks: {
       en: [
         { name: "Upload your PDF", text: "Click the upload area or drag your PDF into the drop zone." },
@@ -535,7 +535,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Watermark PDF", fr: "Ajouter un Filigrane à un PDF" },
     description: { en: "Add a custom text watermark to every page of your PDF in your browser. Free, no upload, no account. Mark drafts or confidential documents.", fr: "Ajoutez un filigrane texte personnalisé à chaque page de votre PDF dans votre navigateur. Gratuit, sans envoi, sans compte." },
     keywords: { en: ["add watermark to pdf", "pdf watermark online free", "watermark pdf text", "stamp pdf confidential", "pdf draft watermark", "text watermark pdf"], fr: ["ajouter filigrane pdf", "filigrane pdf en ligne gratuit", "filigrane texte pdf", "tamponnage pdf confidentiel", "pdf brouillon filigrane", "watermark pdf"] },
-    relatedTools: ["pdf-page-numbers", "pdf-protect", "pdf-compress"],
+    relatedTools: ["pdf-page-numbers", "pdf-protect", "pdf-compress", "watermark-image", "pdf-merge"],
     howItWorks: {
       en: [
         { name: "Upload your PDF", text: "Click the upload area or drag your PDF into the drop zone." },
@@ -579,7 +579,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Word to Text Converter", fr: "Convertisseur Word en Texte" },
     description: { en: "Extract plain text from Word (DOCX) files in your browser. Free, no upload, no account. Download as TXT instantly.", fr: "Extrayez le texte brut de fichiers Word (DOCX) dans votre navigateur. Gratuit, sans envoi, sans compte. Téléchargez en TXT instantanément." },
     keywords: { en: ["word to text converter", "extract text from docx", "docx to txt online free", "convert word to plain text", "word to txt", "docx text extraction"], fr: ["convertir word en texte", "extraire texte docx", "word en txt gratuit", "word vers texte brut", "docx to txt", "extraction texte word"] },
-    relatedTools: ["pdf-to-text", "word-to-html", "txt-to-docx"],
+    relatedTools: ["pdf-to-text", "word-to-html", "txt-to-docx", "word-to-pdf", "word-to-markdown"],
     howItWorks: {
       en: [
         { name: "Upload your DOCX", text: "Click the upload area or drag your Word file. .docx format is supported." },
@@ -621,7 +621,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Word to HTML Converter", fr: "Convertisseur Word en HTML" },
     description: { en: "Convert Word (DOCX) documents to clean HTML markup in your browser. Free, no upload, no account. Ideal for web publishing.", fr: "Convertissez des documents Word (DOCX) en HTML propre dans votre navigateur. Gratuit, sans envoi, sans compte. Idéal pour la publication web." },
     keywords: { en: ["word to html converter", "docx to html online free", "convert word to html", "word document to web page", "docx html conversion", "word to html free"], fr: ["convertir word en html", "docx en html gratuit", "word vers html en ligne", "document word en page web", "word html conversion", "docx to html"] },
-    relatedTools: ["pdf-to-html", "word-to-text", "html-to-pdf"],
+    relatedTools: ["pdf-to-html", "word-to-text", "html-to-pdf", "word-to-markdown", "html-formatter"],
     howItWorks: {
       en: [
         { name: "Upload your DOCX", text: "Click the upload area or drag your Word file into the drop zone." },
@@ -663,7 +663,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Word to EPUB Converter", fr: "Convertisseur Word en EPUB" },
     description: { en: "Convert Word (DOCX) documents to EPUB e-book format in your browser. Free, no upload, no account. Read your Word docs on any e-reader.", fr: "Convertissez des documents Word (DOCX) en e-books EPUB dans votre navigateur. Gratuit, sans envoi, sans compte." },
     keywords: { en: ["word to epub converter", "docx to epub online free", "convert word to epub", "word to ebook", "docx epub conversion", "word to kindle"], fr: ["convertir word en epub", "docx en epub gratuit", "word vers epub en ligne", "word en ebook", "docx epub conversion", "word to epub"] },
-    relatedTools: ["pdf-to-epub", "word-to-text", "word-to-html"],
+    relatedTools: ["pdf-to-epub", "word-to-text", "word-to-html", "word-to-markdown", "markdown-to-pdf"],
     howItWorks: {
       en: [
         { name: "Upload your DOCX", text: "Click the upload area or drag your Word file into the drop zone." },
@@ -705,7 +705,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Markdown to PDF Converter", fr: "Convertisseur Markdown en PDF" },
     description: { en: "Convert Markdown (.md) files to PDF in your browser. Free, no upload, no account. Render your Markdown as a clean, printable PDF.", fr: "Convertissez des fichiers Markdown (.md) en PDF dans votre navigateur. Gratuit, sans envoi, sans compte." },
     keywords: { en: ["markdown to pdf converter", "md to pdf online free", "convert markdown to pdf", "markdown pdf generator", "render markdown as pdf", "md pdf free"], fr: ["convertir markdown en pdf", "md en pdf gratuit", "markdown vers pdf en ligne", "générateur pdf markdown", "rendre markdown en pdf", "markdown pdf"] },
-    relatedTools: ["txt-to-pdf", "markdown-to-docx", "html-to-pdf"],
+    relatedTools: ["txt-to-pdf", "markdown-to-docx", "html-to-pdf", "word-to-markdown", "html-to-markdown"],
     howItWorks: {
       en: [
         { name: "Upload your Markdown file", text: "Click the upload area or drag your .md file into the drop zone." },
@@ -747,7 +747,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Markdown to Word Converter", fr: "Convertisseur Markdown en Word" },
     description: { en: "Convert Markdown (.md) to Word (DOCX) in your browser. Free, no upload, no account. Edit your Markdown in Microsoft Word instantly.", fr: "Convertissez du Markdown (.md) en Word (DOCX) dans votre navigateur. Gratuit, sans envoi, sans compte." },
     keywords: { en: ["markdown to word converter", "md to docx online free", "convert markdown to docx", "markdown word document", "md to word free", "markdown docx conversion"], fr: ["convertir markdown en word", "md en docx gratuit", "markdown vers word", "markdown document word", "md to docx", "markdown word gratuit"] },
-    relatedTools: ["markdown-to-pdf", "txt-to-docx", "word-to-text"],
+    relatedTools: ["markdown-to-pdf", "txt-to-docx", "word-to-text", "word-to-markdown", "html-to-markdown"],
     howItWorks: {
       en: [
         { name: "Upload your Markdown file", text: "Click the upload area or drag your .md file." },
@@ -789,7 +789,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "HTML to PDF Converter", fr: "Convertisseur HTML en PDF" },
     description: { en: "Convert HTML code or snippets to PDF in your browser. Free, no upload, no account. Export web content as a printable PDF.", fr: "Convertissez du code HTML en PDF dans votre navigateur. Gratuit, sans envoi, sans compte. Exportez du contenu web en PDF imprimable." },
     keywords: { en: ["html to pdf converter", "convert html to pdf online free", "html pdf generator", "save html as pdf", "web page to pdf", "html to pdf free"], fr: ["convertir html en pdf", "html en pdf gratuit", "générateur pdf html", "enregistrer html en pdf", "page web en pdf", "html vers pdf en ligne"] },
-    relatedTools: ["word-to-html", "pdf-to-html", "markdown-to-pdf"],
+    relatedTools: ["word-to-html", "pdf-to-html", "markdown-to-pdf", "html-formatter", "html-to-markdown"],
     howItWorks: {
       en: [
         { name: "Paste or upload your HTML", text: "Paste HTML code into the editor or upload an .html file." },
@@ -831,7 +831,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Text to PDF Converter", fr: "Convertisseur Texte en PDF" },
     description: { en: "Convert plain text files (.txt) to PDF in your browser. Free, no upload, no account. Create a clean PDF from any text file instantly.", fr: "Convertissez des fichiers texte brut (.txt) en PDF dans votre navigateur. Gratuit, sans envoi, sans compte." },
     keywords: { en: ["text to pdf converter", "txt to pdf online free", "convert text to pdf", "plain text to pdf", "txt pdf generator", "text file to pdf free"], fr: ["convertir texte en pdf", "txt en pdf gratuit", "texte vers pdf en ligne", "fichier texte en pdf", "txt pdf générateur", "texte brut en pdf"] },
-    relatedTools: ["markdown-to-pdf", "txt-to-docx", "pdf-to-text"],
+    relatedTools: ["markdown-to-pdf", "txt-to-docx", "pdf-to-text", "word-to-pdf", "pdf-compress"],
     howItWorks: {
       en: [
         { name: "Upload your text file", text: "Click the upload area or drag your .txt file. You can also paste text directly." },
@@ -873,7 +873,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Text to Word Converter", fr: "Convertisseur Texte en Word" },
     description: { en: "Convert plain text (.txt) to Word (DOCX) in your browser. Free, no upload, no account. Turn any text file into an editable Word document.", fr: "Convertissez du texte brut (.txt) en Word (DOCX) dans votre navigateur. Gratuit, sans envoi, sans compte." },
     keywords: { en: ["text to word converter", "txt to docx online free", "convert text to word", "plain text to docx", "txt word document", "text to word free"], fr: ["convertir texte en word", "txt en docx gratuit", "texte vers word", "texte brut en docx", "txt word document", "texte to word"] },
-    relatedTools: ["txt-to-pdf", "word-to-text", "markdown-to-docx"],
+    relatedTools: ["txt-to-pdf", "word-to-text", "markdown-to-docx", "word-to-pdf", "markdown-to-pdf"],
     howItWorks: {
       en: [
         { name: "Upload your text file", text: "Click the upload area or drag your .txt file, or paste text directly." },
@@ -917,7 +917,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Image Format Converter", fr: "Convertisseur de Format Image" },
     description: { en: "Convert images between PNG, JPEG, WEBP, AVIF, BMP, GIF, and more in your browser. Free, no upload, batch up to 20 files.", fr: "Convertissez des images entre PNG, JPEG, WEBP, AVIF, BMP, GIF et plus dans votre navigateur. Gratuit, sans envoi, lot de 20 fichiers." },
     keywords: { en: ["image converter online free", "convert image format", "png to jpg converter", "webp to jpg free", "image format changer", "batch image converter"], fr: ["convertisseur image gratuit", "convertir format image", "png en jpg", "webp en jpg gratuit", "changer format image en ligne", "convertisseur image lot"] },
-    relatedTools: ["image-compress", "image-resize", "heic-to-jpg"],
+    relatedTools: ["image-compress", "image-resize", "heic-to-jpg", "background-remover", "image-crop"],
     howItWorks: {
       en: [
         { name: "Upload your images", text: "Click the upload area or drag up to 20 image files. PNG, JPEG, WEBP, AVIF, BMP, GIF, TIFF, and ICO are supported." },
@@ -959,7 +959,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "HEIC to JPG Converter", fr: "Convertisseur HEIC en JPG" },
     description: { en: "Convert iPhone HEIC photos to JPEG or PNG in your browser. Free, no upload, no account. Open iPhone photos on Windows and Android.", fr: "Convertissez des photos HEIC iPhone en JPEG ou PNG dans votre navigateur. Gratuit, sans envoi, sans compte." },
     keywords: { en: ["heic to jpg converter", "convert heic to jpg online free", "heic to jpeg", "iphone heic converter", "open heic on windows", "heic to png free"], fr: ["convertir heic en jpg", "heic en jpeg gratuit", "convertisseur heic en ligne", "ouvrir heic sur windows", "photo iphone heic converter", "heic png gratuit"] },
-    relatedTools: ["image-converter", "image-compress", "background-remover"],
+    relatedTools: ["image-converter", "image-compress", "background-remover", "heic-to-png", "heic-to-webp"],
     howItWorks: {
       en: [
         { name: "Upload your HEIC files", text: "Click the upload area or drag your iPhone HEIC photos. Multiple files are supported." },
@@ -1001,7 +1001,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "PNG to WebP Converter", fr: "Convertisseur PNG en WebP" },
     description: { en: "Convert PNG images to WebP format instantly in your browser. Smaller files, same quality — free, no upload, no account required.", fr: "Convertissez des images PNG en WebP directement dans votre navigateur. Fichiers plus légers, même qualité — gratuit, sans envoi, sans compte." },
     keywords: { en: ["png to webp converter", "convert png to webp online free", "png webp online", "reduce png file size webp", "png to webp no upload", "webp converter free"], fr: ["convertir png en webp", "png en webp gratuit", "convertisseur png webp en ligne", "png vers webp sans logiciel", "webp converter gratuit", "convertir image png webp"] },
-    relatedTools: ["image-converter", "image-compress", "jpg-to-png"],
+    relatedTools: ["image-converter", "image-compress", "jpg-to-png", "jpg-to-webp", "image-resize"],
     howItWorks: {
       en: [
         { name: "Upload your PNG", text: "Click the upload area or drag your PNG file. Multiple files are supported (up to 20)." },
@@ -1043,7 +1043,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "JPG to PNG Converter", fr: "Convertisseur JPG en PNG" },
     description: { en: "Convert JPG/JPEG images to PNG format instantly in your browser. Lossless output, transparent background support — free, no upload, no account.", fr: "Convertissez des images JPG/JPEG en PNG directement dans votre navigateur. Sortie sans perte, support de la transparence — gratuit, sans envoi, sans compte." },
     keywords: { en: ["jpg to png converter", "convert jpg to png online free", "jpeg to png", "jpg png no background", "convert jpeg to png free", "jpg to png transparent"], fr: ["convertir jpg en png", "jpeg en png gratuit", "convertisseur jpg png en ligne", "jpg vers png sans logiciel", "jpeg png fond transparent", "convertir photo jpg en png"] },
-    relatedTools: ["image-converter", "png-to-webp", "image-compress"],
+    relatedTools: ["image-converter", "png-to-webp", "image-compress", "jpg-to-webp", "jpg-to-pdf"],
     howItWorks: {
       en: [
         { name: "Upload your JPG/JPEG", text: "Click the upload area or drag your JPEG file. Batch conversion of up to 20 files is supported." },
@@ -1085,7 +1085,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Compress Image", fr: "Compresser une Image" },
     description: { en: "Reduce image file size online for free in your browser. Adjust quality with a slider. No upload, no account, supports JPG, PNG, and WEBP.", fr: "Réduisez la taille des images en ligne gratuitement dans votre navigateur. Ajustez la qualité. Sans envoi, sans compte." },
     keywords: { en: ["compress image online free", "reduce image file size", "image compressor", "shrink image online", "jpeg compressor free", "png compressor online"], fr: ["compresser image en ligne gratuit", "réduire taille image", "compresseur image", "alléger image en ligne", "compresseur jpeg gratuit", "compresseur png en ligne"] },
-    relatedTools: ["image-converter", "image-resize", "heic-to-jpg"],
+    relatedTools: ["image-converter", "image-resize", "heic-to-jpg", "image-crop", "background-remover"],
     howItWorks: {
       en: [
         { name: "Upload your image", text: "Click the upload area or drag your image file. JPEG, PNG, and WEBP are supported." },
@@ -1127,7 +1127,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Resize Image", fr: "Redimensionner une Image" },
     description: { en: "Resize images by pixel dimensions or percentage in your browser. Free, no upload, no account. Change image size instantly for web or print.", fr: "Redimensionnez des images par dimensions en pixels ou pourcentage dans votre navigateur. Gratuit, sans envoi, sans compte." },
     keywords: { en: ["resize image online free", "change image size", "image resizer", "resize photo online", "scale image online free", "reduce image dimensions"], fr: ["redimensionner image en ligne gratuit", "changer taille image", "outil redimensionnement image", "redimensionner photo en ligne", "mettre à l'échelle image", "réduire dimensions image"] },
-    relatedTools: ["image-compress", "image-crop", "image-converter"],
+    relatedTools: ["image-compress", "image-crop", "image-converter", "image-to-pdf", "flip-rotate-image"],
     howItWorks: {
       en: [
         { name: "Upload your image", text: "Click the upload area or drag your image. PNG, JPEG, and WEBP are supported." },
@@ -1169,7 +1169,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Crop Image", fr: "Recadrer une Image" },
     description: { en: "Crop images with drag handles and aspect ratio presets in your browser. Free, no upload, no account. Trim, square, or custom-crop any photo.", fr: "Recadrez des images avec des poignées et des préréglages de proportions dans votre navigateur. Gratuit, sans envoi, sans compte." },
     keywords: { en: ["crop image online free", "image cropper", "crop photo online", "trim image online free", "square crop image", "crop image to size"], fr: ["recadrer image en ligne gratuit", "outil recadrage image", "recadrer photo en ligne", "rogner image gratuit", "recadrage carré image", "recadrer image"] },
-    relatedTools: ["image-resize", "image-compress", "background-remover"],
+    relatedTools: ["image-resize", "image-compress", "background-remover", "flip-rotate-image", "watermark-image"],
     howItWorks: {
       en: [
         { name: "Upload your image", text: "Click the upload area or drag your image file." },
@@ -1211,7 +1211,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Image to PDF Converter", fr: "Convertisseur Image en PDF" },
     description: { en: "Convert one or more images to a single PDF in your browser. Free, no upload, no account. PNG, JPEG, WEBP all supported.", fr: "Convertissez une ou plusieurs images en un seul PDF dans votre navigateur. Gratuit, sans envoi, sans compte." },
     keywords: { en: ["image to pdf converter", "convert image to pdf online free", "jpg to pdf", "png to pdf free", "multiple images to pdf", "photos to pdf"], fr: ["convertir image en pdf", "image en pdf gratuit", "jpg en pdf", "png en pdf gratuit", "plusieurs images en pdf", "photos en pdf en ligne"] },
-    relatedTools: ["pdf-to-image", "image-compress", "pdf-merge"],
+    relatedTools: ["pdf-to-image", "image-compress", "pdf-merge", "image-converter", "jpg-to-pdf"],
     howItWorks: {
       en: [
         { name: "Upload your images", text: "Click the upload area or drag one or more images. PNG, JPEG, and WEBP are supported." },
@@ -1253,7 +1253,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "PDF to Image Converter", fr: "Convertisseur PDF en Image" },
     description: { en: "Export PDF pages as PNG or JPEG images in your browser. Free, no upload, no account. Convert each PDF page to a high-quality image.", fr: "Exportez des pages PDF en images PNG ou JPEG dans votre navigateur. Gratuit, sans envoi, sans compte." },
     keywords: { en: ["pdf to image converter", "convert pdf to png online free", "pdf to jpg free", "pdf page to image", "export pdf as image", "pdf to jpeg converter"], fr: ["convertir pdf en image", "pdf en png gratuit", "pdf en jpg en ligne", "page pdf en image", "exporter pdf en image", "pdf to jpeg"] },
-    relatedTools: ["image-to-pdf", "image-converter", "pdf-to-text"],
+    relatedTools: ["image-to-pdf", "image-converter", "pdf-to-text", "pdf-compress", "image-compress"],
     howItWorks: {
       en: [
         { name: "Upload your PDF", text: "Click the upload area or drag your PDF file." },
@@ -1295,7 +1295,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Background Remover", fr: "Supprimer le Fond d'une Image" },
     description: { en: "Remove image backgrounds using on-device AI — free, no upload, no account. Get a transparent PNG in seconds. Powered by on-device AI.", fr: "Supprimez les fonds d'images avec l'IA sur l'appareil — gratuit, sans envoi, sans compte. PNG transparent en quelques secondes." },
     keywords: { en: ["remove image background free", "background remover online", "remove background from photo", "transparent background free", "ai background removal", "remove bg free"], fr: ["supprimer fond image gratuit", "supprimer arrière-plan photo", "fond transparent gratuit", "suppression fond ia", "enlever fond image en ligne", "remove background gratuit"] },
-    relatedTools: ["image-converter", "image-crop", "metadata-cleaner"],
+    relatedTools: ["image-converter", "image-crop", "metadata-cleaner", "image-compress", "watermark-image"],
     howItWorks: {
       en: [
         { name: "Upload your image", text: "Click the upload area or drag a PNG or JPEG photo. The subject can be a person, product, or object." },
@@ -1339,7 +1339,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Metadata Cleaner", fr: "Nettoyeur de Métadonnées" },
     description: { en: "Strip EXIF, XMP, and document metadata from photos and PDFs in your browser. Free, no upload, no account. Remove GPS, camera data, and author info.", fr: "Supprimez les métadonnées EXIF, XMP et de document des photos et PDF dans votre navigateur. Gratuit, sans envoi, sans compte." },
     keywords: { en: ["metadata cleaner", "remove exif data from photo", "strip exif online free", "remove gps from photo", "pdf metadata remover", "clean image metadata free"], fr: ["nettoyeur métadonnées", "supprimer données exif photo", "supprimer exif en ligne gratuit", "enlever gps photo", "supprimer métadonnées pdf", "nettoyer métadonnées image"] },
-    relatedTools: ["ai-text-scrubber", "pdf-protect", "background-remover"],
+    relatedTools: ["ai-text-scrubber", "pdf-protect", "background-remover", "checksum", "pdf-unlock"],
     howItWorks: {
       en: [
         { name: "Upload your file", text: "Click the upload area or drag a JPEG, PNG, or PDF file." },
@@ -1381,7 +1381,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "AI Text Scrubber", fr: "Nettoyeur de Texte IA" },
     description: { en: "Remove invisible characters and AI-detection watermarks from text in your browser. Free, no upload, no account. Clean AI text watermarks.", fr: "Supprimez les caractères invisibles et filigranes de détection IA du texte dans votre navigateur. Gratuit, sans envoi, sans compte." },
     keywords: { en: ["ai text watermark remover", "remove invisible characters from text", "ai detection remover", "clean ai generated text", "unicode zero width character remover", "ai watermark scrubber"], fr: ["supprimer filigrane texte ia", "enlever caractères invisibles texte", "nettoyeur détection ia", "nettoyer texte généré ia", "supprimer caractères zéro largeur", "scrubber texte ia"] },
-    relatedTools: ["metadata-cleaner", "pdf-to-text", "txt-to-pdf"],
+    relatedTools: ["metadata-cleaner", "pdf-to-text", "txt-to-pdf", "checksum", "pdf-protect"],
     howItWorks: {
       en: [
         { name: "Paste or upload your text", text: "Paste text directly or upload a .txt file containing the text to clean." },
@@ -1425,7 +1425,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Password Generator", fr: "Générateur de Mot de Passe" },
     description: { en: "Generate cryptographically secure passwords with entropy display. Free, no signup. Customise length, symbols, and character sets in your browser.", fr: "Générez des mots de passe cryptographiquement sécurisés avec affichage d'entropie. Gratuit, sans inscription. Personnalisez longueur et caractères." },
     keywords: { en: ["password generator", "secure password generator", "random password generator", "strong password creator", "cryptographic password generator", "free password generator"], fr: ["générateur mot de passe", "générateur mot de passe sécurisé", "créer mot de passe aléatoire", "générateur mot de passe fort", "mot de passe cryptographique", "générateur mot de passe gratuit"] },
-    relatedTools: ["pdf-protect", "metadata-cleaner", "percentage-calc"],
+    relatedTools: ["pdf-protect", "metadata-cleaner", "percentage-calc", "checksum", "unit-converter"],
     howItWorks: {
       en: [
         { name: "Configure your options", text: "Choose the password length (4–128 characters), and toggle character sets: uppercase, lowercase, numbers, and symbols." },
@@ -1467,7 +1467,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Percentage Calculator", fr: "Calculateur de Pourcentage" },
     description: { en: "Calculate percentages, discounts, tips, and markup instantly in your browser. Free, no account. Solve any percentage problem in one click.", fr: "Calculez des pourcentages, remises, pourboires et marges instantanément dans votre navigateur. Gratuit, sans compte." },
     keywords: { en: ["percentage calculator", "calculate percentage online", "percent calculator free", "discount calculator", "tip calculator online", "markup calculator"], fr: ["calculateur pourcentage", "calculer pourcentage en ligne", "calculatrice pourcentage gratuit", "calculateur remise", "calculateur pourboire", "calculateur marge"] },
-    relatedTools: ["unit-converter", "currency-converter", "password-generator"],
+    relatedTools: ["unit-converter", "currency-converter", "password-generator", "tip-calculator", "qr-code-generator"],
     howItWorks: {
       en: [
         { name: "Choose the calculation type", text: "Select the percentage problem you need to solve: basic percentage, discount, tip, markup, or percentage change." },
@@ -1509,7 +1509,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Unit Converter", fr: "Convertisseur d'Unités" },
     description: { en: "Convert between 200+ units across 13 measurement categories in your browser. Free, no account. Length, weight, temperature, volume, and more.", fr: "Convertissez entre 200+ unités dans 13 catégories dans votre navigateur. Gratuit, sans compte. Longueur, poids, température, volume et plus." },
     keywords: { en: ["unit converter online free", "measurement converter", "metric to imperial converter", "length converter", "weight converter online", "temperature converter"], fr: ["convertisseur d'unités en ligne gratuit", "convertisseur de mesures", "convertisseur métrique impérial", "convertisseur de longueur", "convertisseur de poids", "convertisseur de température"] },
-    relatedTools: ["currency-converter", "percentage-calc", "password-generator"],
+    relatedTools: ["currency-converter", "percentage-calc", "password-generator", "tip-calculator", "qr-code-generator"],
     howItWorks: {
       en: [
         { name: "Select a category", text: "Choose from 13 categories: length, weight, temperature, volume, area, speed, time, digital storage, energy, pressure, power, angle, or frequency." },
@@ -1551,7 +1551,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     h1: { en: "Currency Converter", fr: "Convertisseur de Devises" },
     description: { en: "Convert between 170 currencies with live exchange rates in your browser. Free, no account. Rates cached for 1 hour from open.er-api.com.", fr: "Convertissez entre 170 devises avec des taux de change en direct dans votre navigateur. Gratuit, sans compte. Taux mis à jour toutes les heures." },
     keywords: { en: ["currency converter online free", "live exchange rate converter", "real time currency converter", "usd to eur converter", "forex calculator free", "money converter online"], fr: ["convertisseur de devises en ligne gratuit", "convertisseur taux de change", "taux de change en direct", "calculateur forex gratuit", "convertisseur monnaie en ligne", "taux de change temps réel"] },
-    relatedTools: ["unit-converter", "percentage-calc", "password-generator"],
+    relatedTools: ["unit-converter", "percentage-calc", "password-generator", "tip-calculator", "qr-code-generator"],
     howItWorks: {
       en: [
         { name: "Select currencies", text: "Choose the source currency and target currency from the dropdown. 170 currencies are available." },
@@ -1626,7 +1626,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       "avif-to-png",
       "image-converter",
       "image-compress",
-      "jpg-to-png"
+      "jpg-to-png",
+      "jpg-to-webp"
     ],
     howItWorks: {
       en: [
@@ -1741,7 +1742,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       "avif-to-jpg",
       "png-to-webp",
       "image-converter",
-      "background-remover"
+      "background-remover",
+      "png-to-jpg"
     ],
     howItWorks: {
       en: [
@@ -1856,7 +1858,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       "bmp-to-webp",
       "image-converter",
       "image-compress",
-      "jpg-to-png"
+      "jpg-to-png",
+      "jpg-to-webp"
     ],
     howItWorks: {
       en: [
@@ -1971,7 +1974,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       "bmp-to-jpg",
       "png-to-webp",
       "image-converter",
-      "image-compress"
+      "image-compress",
+      "jpg-to-webp"
     ],
     howItWorks: {
       en: [
@@ -2086,7 +2090,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       "gif-to-webp",
       "png-to-webp",
       "image-converter",
-      "image-compress"
+      "image-compress",
+      "png-to-jpg"
     ],
     howItWorks: {
       en: [
@@ -2201,7 +2206,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       "gif-to-png",
       "png-to-webp",
       "image-converter",
-      "image-compress"
+      "image-compress",
+      "jpg-to-webp"
     ],
     howItWorks: {
       en: [
@@ -2316,7 +2322,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       "heic-to-jpg",
       "image-to-pdf",
       "pdf-to-image",
-      "image-converter"
+      "image-converter",
+      "heic-to-png"
     ],
     howItWorks: {
       en: [
@@ -2431,7 +2438,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       "heic-to-jpg",
       "heic-to-webp",
       "png-to-webp",
-      "background-remover"
+      "background-remover",
+      "heic-to-pdf"
     ],
     howItWorks: {
       en: [
@@ -2546,7 +2554,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       "heic-to-jpg",
       "heic-to-png",
       "png-to-webp",
-      "image-converter"
+      "image-converter",
+      "heic-to-pdf"
     ],
     howItWorks: {
       en: [
@@ -2661,7 +2670,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       "jpg-to-webp",
       "png-to-avif",
       "image-converter",
-      "image-compress"
+      "image-compress",
+      "jpg-to-png"
     ],
     howItWorks: {
       en: [
@@ -2776,7 +2786,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       "image-to-pdf",
       "pdf-to-image",
       "image-converter",
-      "image-compress"
+      "image-compress",
+      "jpg-to-png"
     ],
     howItWorks: {
       en: [
@@ -2891,7 +2902,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       "jpg-to-png",
       "png-to-webp",
       "image-converter",
-      "image-compress"
+      "image-compress",
+      "background-remover"
     ],
     howItWorks: {
       en: [
@@ -3006,7 +3018,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       "png-to-webp",
       "jpg-to-avif",
       "image-converter",
-      "image-compress"
+      "image-compress",
+      "png-to-jpg"
     ],
     howItWorks: {
       en: [
@@ -3121,7 +3134,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       "jpg-to-png",
       "png-to-webp",
       "image-converter",
-      "image-compress"
+      "image-compress",
+      "background-remover"
     ],
     howItWorks: {
       en: [
@@ -3236,7 +3250,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       "image-to-pdf",
       "pdf-to-image",
       "png-to-webp",
-      "image-compress"
+      "image-compress",
+      "jpg-to-pdf"
     ],
     howItWorks: {
       en: [
@@ -3351,7 +3366,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       "svg-to-png",
       "png-to-webp",
       "background-remover",
-      "image-converter"
+      "image-converter",
+      "favicon-generator"
     ],
     howItWorks: {
       en: [
@@ -3466,7 +3482,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       "png-to-svg",
       "image-resize",
       "png-to-webp",
-      "image-converter"
+      "image-converter",
+      "favicon-generator"
     ],
     howItWorks: {
       en: [
@@ -3581,7 +3598,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       "tiff-to-png",
       "tiff-to-webp",
       "image-converter",
-      "image-compress"
+      "image-compress",
+      "jpg-to-png"
     ],
     howItWorks: {
       en: [
@@ -3696,7 +3714,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       "tiff-to-jpg",
       "tiff-to-webp",
       "image-converter",
-      "background-remover"
+      "background-remover",
+      "png-to-webp"
     ],
     howItWorks: {
       en: [
@@ -3811,7 +3830,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       "tiff-to-jpg",
       "tiff-to-png",
       "image-converter",
-      "image-compress"
+      "image-compress",
+      "png-to-webp"
     ],
     howItWorks: {
       en: [
@@ -3926,7 +3946,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       "webp-to-png",
       "png-to-avif",
       "image-converter",
-      "image-compress"
+      "image-compress",
+      "webp-to-jpg"
     ],
     howItWorks: {
       en: [
@@ -4041,7 +4062,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       "webp-to-png",
       "jpg-to-webp",
       "image-converter",
-      "image-compress"
+      "image-compress",
+      "background-remover"
     ],
     howItWorks: {
       en: [
@@ -4156,7 +4178,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       "image-to-pdf",
       "pdf-to-image",
       "webp-to-jpg",
-      "image-converter"
+      "image-converter",
+      "webp-to-png"
     ],
     howItWorks: {
       en: [
@@ -4271,7 +4294,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       "webp-to-jpg",
       "png-to-webp",
       "image-converter",
-      "background-remover"
+      "background-remover",
+      "image-compress"
     ],
     howItWorks: {
       en: [
@@ -4385,7 +4409,9 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     relatedTools: [
       "percentage-calc",
       "unit-converter",
-      "currency-converter"
+      "currency-converter",
+      "qr-code-generator",
+      "password-generator"
     ],
     howItWorks: {
       en: [
@@ -4470,7 +4496,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["base64 encoder decoder online", "encode text to base64", "decode base64 string", "base64 converter free", "base64 encode file"],
       fr: ["encodeur decodeur base64 en ligne", "encoder texte base64", "decoder base64", "convertisseur base64 gratuit"],
     },
-    relatedTools: ["url-encoder", "json-formatter", "checksum"],
+    relatedTools: ["url-encoder", "json-formatter", "checksum", "html-formatter", "qr-code-generator"],
     howItWorks: {
       en: [
         { name: "Enter or paste text", text: "Type or paste your text, or switch to File mode to upload a binary file for encoding." },
@@ -4511,7 +4537,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["file checksum calculator", "sha256 hash online", "verify file integrity", "sha512 checksum", "md5 sha1 sha256 online", "hash generator"],
       fr: ["calculateur checksum fichier", "sha256 en ligne", "verifier integrite fichier", "hash sha256 gratuit", "generateur hash"],
     },
-    relatedTools: ["metadata-cleaner", "pdf-protect", "base64"],
+    relatedTools: ["metadata-cleaner", "pdf-protect", "base64", "ai-text-scrubber", "url-encoder"],
     howItWorks: {
       en: [
         { name: "Drop your file", text: "Drag any file into the upload area or click to browse. The file is read entirely in your browser." },
@@ -4551,7 +4577,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["csv to excel converter", "convert csv to xlsx online", "csv to spreadsheet free", "csv to xls online", "import csv excel"],
       fr: ["convertir csv en excel", "csv en xlsx en ligne gratuit", "csv vers tableur", "importer csv excel"],
     },
-    relatedTools: ["excel-to-csv", "csv-viewer", "csv-to-json"],
+    relatedTools: ["excel-to-csv", "csv-viewer", "csv-to-json", "excel-to-pdf", "json-formatter"],
     howItWorks: {
       en: [
         { name: "Paste or upload your CSV", text: "Paste CSV text directly or upload a .csv file. The tool automatically detects the delimiter (comma, semicolon, tab)." },
@@ -4591,7 +4617,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["csv to json converter", "convert csv to json online", "json to csv free", "csv json transform", "parse csv online"],
       fr: ["convertir csv en json", "csv en json en ligne gratuit", "json en csv", "transformer csv json"],
     },
-    relatedTools: ["csv-to-excel", "csv-viewer", "json-formatter"],
+    relatedTools: ["csv-to-excel", "csv-viewer", "json-formatter", "excel-to-csv", "base64"],
     howItWorks: {
       en: [
         { name: "Paste or upload your data", text: "Switch between CSV→JSON and JSON→CSV modes. Paste text directly or upload a file." },
@@ -4631,7 +4657,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["csv viewer online", "view csv file online", "csv table viewer free", "open csv online", "csv file reader"],
       fr: ["visualiseur csv en ligne", "afficher fichier csv", "lecteur csv gratuit", "ouvrir csv en ligne"],
     },
-    relatedTools: ["csv-to-excel", "csv-to-json", "excel-to-csv"],
+    relatedTools: ["csv-to-excel", "csv-to-json", "excel-to-csv", "excel-to-pdf", "json-formatter"],
     howItWorks: {
       en: [
         { name: "Upload or paste your CSV", text: "Drop a .csv file into the upload area, or paste CSV text directly into the editor. The first row is treated as column headers." },
@@ -4671,7 +4697,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["excel to csv converter", "convert xlsx to csv online", "xls to csv free", "excel spreadsheet to csv", "export excel as csv"],
       fr: ["convertir excel en csv", "xlsx en csv en ligne gratuit", "xls vers csv", "exporter excel en csv"],
     },
-    relatedTools: ["csv-to-excel", "excel-to-pdf", "csv-viewer"],
+    relatedTools: ["csv-to-excel", "excel-to-pdf", "csv-viewer", "csv-to-json", "json-formatter"],
     howItWorks: {
       en: [
         { name: "Upload your Excel file", text: "Drag a .xlsx or .xls file into the upload area. Multi-sheet workbooks are detected automatically." },
@@ -4711,7 +4737,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["excel to pdf converter", "convert xlsx to pdf online", "xls to pdf free", "excel spreadsheet to pdf", "print excel as pdf"],
       fr: ["convertir excel en pdf", "xlsx en pdf en ligne gratuit", "xls vers pdf", "imprimer excel en pdf"],
     },
-    relatedTools: ["excel-to-csv", "pdf-compress", "pdf-merge"],
+    relatedTools: ["excel-to-csv", "pdf-compress", "pdf-merge", "csv-to-excel", "pdf-to-excel"],
     howItWorks: {
       en: [
         { name: "Upload your Excel file", text: "Drop a .xlsx or .xls file. The spreadsheet is parsed and rendered for PDF output." },
@@ -4751,7 +4777,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["favicon generator", "create favicon online", "favicon ico generator", "favicon from image", "website favicon maker", "apple touch icon generator"],
       fr: ["générateur favicon", "créer favicon en ligne", "favicon ico", "favicon depuis image", "favicon site web"],
     },
-    relatedTools: ["image-converter", "image-resize", "image-crop"],
+    relatedTools: ["image-converter", "image-resize", "image-crop", "png-to-webp", "svg-to-png"],
     howItWorks: {
       en: [
         { name: "Upload your image", text: "Drop a PNG, JPG, or SVG. Square images produce the best results — the tool crops to a square automatically if needed." },
@@ -4791,7 +4817,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["flip image online", "rotate image free", "mirror image horizontally", "rotate image 90 degrees", "flip photo vertically online"],
       fr: ["retourner image en ligne", "pivoter image gratuit", "miroir horizontal image", "rotation image 90 degrés"],
     },
-    relatedTools: ["image-crop", "image-resize", "watermark-image"],
+    relatedTools: ["image-crop", "image-resize", "watermark-image", "image-compress", "background-remover"],
     howItWorks: {
       en: [
         { name: "Upload your image", text: "Drop or select a PNG, JPEG, or WebP file. A preview appears immediately." },
@@ -4831,7 +4857,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["html formatter online", "beautify html code", "html minifier free", "html indenter", "pretty print html", "html beautifier"],
       fr: ["formateur html en ligne", "embellir code html", "minificateur html gratuit", "indenter html", "html beautifier gratuit"],
     },
-    relatedTools: ["json-formatter", "html-to-markdown", "html-to-pdf"],
+    relatedTools: ["json-formatter", "html-to-markdown", "html-to-pdf", "url-encoder", "word-to-html"],
     howItWorks: {
       en: [
         { name: "Paste your HTML", text: "Paste raw or minified HTML into the left editor. Any valid HTML — full pages or fragments — is accepted." },
@@ -4871,7 +4897,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["html to markdown converter", "convert html to markdown online", "html to md free", "html markdown transform", "paste html get markdown"],
       fr: ["convertir html en markdown", "html en markdown en ligne gratuit", "transformateur html markdown"],
     },
-    relatedTools: ["html-formatter", "markdown-to-pdf", "markdown-to-docx"],
+    relatedTools: ["html-formatter", "markdown-to-pdf", "markdown-to-docx", "word-to-html", "html-to-pdf"],
     howItWorks: {
       en: [
         { name: "Paste your HTML", text: "Paste HTML content into the left panel. Full pages or fragments are both accepted." },
@@ -4911,7 +4937,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["json formatter online", "validate json free", "json beautifier", "json minifier", "pretty print json", "json syntax checker"],
       fr: ["formateur json en ligne", "valider json gratuit", "json beautifier", "json minificateur", "pretty print json"],
     },
-    relatedTools: ["csv-to-json", "base64", "html-formatter"],
+    relatedTools: ["csv-to-json", "base64", "html-formatter", "url-encoder", "csv-viewer"],
     howItWorks: {
       en: [
         { name: "Paste your JSON", text: "Paste raw or minified JSON into the input panel. Syntax errors are highlighted in red immediately." },
@@ -4951,7 +4977,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["lorem ipsum generator", "placeholder text generator", "dummy text online", "lorem ipsum paragraphs", "design placeholder text"],
       fr: ["générateur lorem ipsum", "générateur texte placeholder", "texte factice en ligne", "lorem ipsum paragraphes"],
     },
-    relatedTools: ["word-counter", "url-encoder", "json-formatter"],
+    relatedTools: ["word-counter", "url-encoder", "json-formatter", "html-formatter", "base64"],
     howItWorks: {
       en: [
         { name: "Set the output type", text: "Choose whether to generate by words, sentences, or paragraphs." },
@@ -4991,7 +5017,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["ocr online free", "extract text from image", "image to text converter", "tesseract ocr online", "scan text from photo", "ocr jpg png"],
       fr: ["ocr en ligne gratuit", "extraire texte image", "convertisseur image en texte", "tesseract ocr", "scanner texte photo"],
     },
-    relatedTools: ["pdf-to-text", "metadata-cleaner", "pdf-to-word"],
+    relatedTools: ["pdf-to-text", "metadata-cleaner", "pdf-to-word", "image-converter", "pdf-to-image"],
     howItWorks: {
       en: [
         { name: "Upload your image", text: "Drop a PNG, JPG, TIFF, or BMP image. Photos of printed text, scanned documents, or screenshots all work." },
@@ -5031,7 +5057,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["pdf to excel converter", "extract table from pdf", "convert pdf to xlsx online", "pdf table extractor free", "pdf to spreadsheet"],
       fr: ["convertir pdf en excel", "extraire tableau pdf", "pdf en xlsx gratuit", "extracteur tableau pdf"],
     },
-    relatedTools: ["excel-to-pdf", "pdf-to-text", "csv-to-excel"],
+    relatedTools: ["excel-to-pdf", "pdf-to-text", "csv-to-excel", "pdf-to-word", "excel-to-csv"],
     howItWorks: {
       en: [
         { name: "Upload your PDF", text: "Drop a PDF containing tables. The tool scans each page for table-like structures." },
@@ -5071,7 +5097,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["pdf to powerpoint converter", "convert pdf to pptx online", "pdf to slides free", "pdf page to powerpoint slide"],
       fr: ["convertir pdf en powerpoint", "pdf en pptx gratuit", "pdf en diapositives", "convertir page pdf en slide"],
     },
-    relatedTools: ["pptx-to-pdf", "pdf-to-word", "pptx-to-images"],
+    relatedTools: ["pptx-to-pdf", "pdf-to-word", "pptx-to-images", "pdf-compress", "reorder-pdf"],
     howItWorks: {
       en: [
         { name: "Upload your PDF", text: "Drop a PDF file. Each page will become one slide in the output presentation." },
@@ -5111,7 +5137,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["powerpoint to images", "convert pptx to png", "export slides as images", "pptx to jpg free", "screenshot presentation slides"],
       fr: ["powerpoint en images", "convertir pptx en png", "exporter diapositives en images", "pptx en jpg gratuit"],
     },
-    relatedTools: ["pptx-to-pdf", "image-converter", "pdf-to-image"],
+    relatedTools: ["pptx-to-pdf", "image-converter", "pdf-to-image", "image-compress", "pdf-to-pptx"],
     howItWorks: {
       en: [
         { name: "Upload your PPTX", text: "Drop a .pptx file. The presentation is parsed and each slide is rendered." },
@@ -5151,7 +5177,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["powerpoint to pdf", "convert pptx to pdf online", "pptx pdf free", "presentation to pdf", "slides to pdf converter"],
       fr: ["powerpoint en pdf", "convertir pptx en pdf gratuit", "présentation en pdf", "diapositives en pdf"],
     },
-    relatedTools: ["pptx-to-images", "pdf-compress", "pdf-merge"],
+    relatedTools: ["pptx-to-images", "pdf-compress", "pdf-merge", "pdf-to-pptx", "reorder-pdf"],
     howItWorks: {
       en: [
         { name: "Upload your PPTX file", text: "Drop a .pptx file. Each slide is rendered and queued for PDF output." },
@@ -5191,7 +5217,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["qr code generator free", "create qr code online", "wifi qr code generator", "url to qr code", "vcard qr code", "qr code download"],
       fr: ["générateur qr code gratuit", "créer qr code en ligne", "qr code wifi", "url en qr code", "qr code téléchargement"],
     },
-    relatedTools: ["url-encoder", "base64", "password-generator"],
+    relatedTools: ["url-encoder", "base64", "password-generator", "percentage-calc", "unit-converter"],
     howItWorks: {
       en: [
         { name: "Choose content type", text: "Select URL, plain text, Wi-Fi (SSID + password + security type), or Contact (vCard with name, phone, email)." },
@@ -5231,7 +5257,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["reorder pdf pages", "rearrange pdf pages online", "drag drop pdf pages", "delete pdf pages free", "pdf page manager"],
       fr: ["réorganiser pages pdf", "déplacer pages pdf en ligne", "glisser déposer pages pdf", "supprimer pages pdf gratuit"],
     },
-    relatedTools: ["pdf-split", "pdf-merge", "pdf-rotate"],
+    relatedTools: ["pdf-split", "pdf-merge", "pdf-rotate", "pdf-compress", "pdf-page-numbers"],
     howItWorks: {
       en: [
         { name: "Upload your PDF", text: "Drop a PDF file. All pages are rendered as thumbnails so you can see what each contains." },
@@ -5271,7 +5297,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["url encoder decoder online", "percent encoding online", "encode url free", "decode url online", "urlencode urldecode", "url escape characters"],
       fr: ["encodeur decodeur url en ligne", "encodage pourcent", "encoder url gratuit", "decoder url en ligne", "urlencode urldecode"],
     },
-    relatedTools: ["base64", "json-formatter", "qr-code-generator"],
+    relatedTools: ["base64", "json-formatter", "qr-code-generator", "html-formatter", "word-counter"],
     howItWorks: {
       en: [
         { name: "Paste your URL or text", text: "Paste a full URL or just a text value into the input field." },
@@ -5311,7 +5337,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["add watermark to image online", "image watermark free", "text watermark photo", "watermark picture online", "custom watermark photo"],
       fr: ["ajouter filigrane image en ligne", "filigrane photo gratuit", "filigrane texte image", "watermark photo en ligne"],
     },
-    relatedTools: ["flip-rotate-image", "image-resize", "image-compress"],
+    relatedTools: ["flip-rotate-image", "image-resize", "image-compress", "image-crop", "background-remover"],
     howItWorks: {
       en: [
         { name: "Upload your image", text: "Drop or select a PNG, JPEG, or WebP image. A live preview shows the watermark position." },
@@ -5351,7 +5377,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["word counter online", "character counter free", "count words online", "word count tool", "reading time calculator", "sentence counter"],
       fr: ["compteur de mots en ligne", "compteur de caractères gratuit", "compter mots en ligne", "outil de comptage de mots", "calculateur temps de lecture"],
     },
-    relatedTools: ["lorem-ipsum", "url-encoder", "word-to-pdf"],
+    relatedTools: ["lorem-ipsum", "url-encoder", "word-to-pdf", "html-formatter", "json-formatter"],
     howItWorks: {
       en: [
         { name: "Paste or type your text", text: "Drop text directly into the editor. Word, character, sentence, and paragraph counts update as you type." },
@@ -5391,7 +5417,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["word to markdown converter", "docx to markdown online", "convert word to md", "docx md free", "word document to markdown"],
       fr: ["convertir word en markdown", "docx en markdown en ligne", "word en md gratuit", "document word en markdown"],
     },
-    relatedTools: ["html-to-markdown", "markdown-to-pdf", "word-to-text"],
+    relatedTools: ["html-to-markdown", "markdown-to-pdf", "word-to-text", "word-to-html", "markdown-to-docx"],
     howItWorks: {
       en: [
         { name: "Upload your DOCX", text: "Drop a .docx file. The document is parsed for its structural content." },
@@ -5431,7 +5457,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: ["word to pdf converter", "convert docx to pdf online", "doc to pdf free", "word document to pdf", "docx pdf online"],
       fr: ["convertir word en pdf", "docx en pdf en ligne gratuit", "doc en pdf", "document word en pdf", "convertisseur word pdf"],
     },
-    relatedTools: ["word-to-text", "pdf-compress", "txt-to-pdf"],
+    relatedTools: ["word-to-text", "pdf-compress", "txt-to-pdf", "pdf-merge", "markdown-to-pdf"],
     howItWorks: {
       en: [
         { name: "Upload your Word document", text: "Drop a .docx or .doc file. The document content is extracted." },
