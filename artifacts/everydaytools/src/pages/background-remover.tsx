@@ -37,6 +37,7 @@ export default function BackgroundRemover() {
       let fetchDone = false;
 
       const blob = await removeBackground(file, {
+        publicPath: 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/dist/',
         model: 'isnet_quint8',
         output: { format: 'image/png' },
         progress: (key: string, current: number, total: number) => {
