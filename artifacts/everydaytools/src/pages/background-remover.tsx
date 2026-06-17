@@ -17,10 +17,10 @@ export default function BackgroundRemover() {
   const [progress, setProgress] = useState(0);
   const [statusLabel, setStatusLabel] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-  const cancelledRef = useRef(false);
+  const abortRef = useRef<AbortController | null>(null);
 
   const handleCancel = () => {
-    cancelledRef.current = true;
+    abortRef.current?.abort();
     setIsProcessing(false);
     setProgress(0);
     setStatusLabel('');
@@ -28,48 +28,42 @@ export default function BackgroundRemover() {
 
   const handleConvert = async () => {
     if (!files[0]) return;
-    cancelledRef.current = false;
     setError(null);
     setResult(null);
     setIsProcessing(true);
-    setProgress(0);
-    setStatusLabel('Loading...');
+    setProgress(10);
+    setStatusLabel('Uploading...');
+
+    const controller = new AbortController();
+    abortRef.current = controller;
 
     try {
       const file = files[0];
+      const formData = new FormData();
+      formData.append('file', file);
 
-      const { removeBackground } = await import('@imgly/background-removal');
+      setProgress(30);
+      setStatusLabel('Processing...');
 
-      if (cancelledRef.current) return;
-
-      setProgress(5);
-      setStatusLabel('Downloading model...');
-
-      let fetchDone = false;
-
-      const blob = await removeBackground(file, {
-        publicPath: 'https://staticimgly.com/@imgly/background-removal-data/1.7.0/dist/',
-        model: 'isnet_quint8',
-        output: { format: 'image/png' },
-        progress: (key: string, current: number, total: number) => {
-          if (cancelledRef.current) return;
-          if (key.startsWith('fetch:')) {
-            if (!fetchDone) {
-              const pct = total > 0 ? Math.round((current / total) * 50) : 0;
-              setProgress(5 + pct);
-              setStatusLabel('Downloading model...');
-              if (current >= total && total > 0) fetchDone = true;
-            }
-          } else if (key.startsWith('compute:')) {
-            if (!fetchDone) { fetchDone = true; }
-            const pct = total > 0 ? Math.round((current / total) * 44) : 0;
-            setProgress(55 + pct);
-            setStatusLabel('Processing...');
-          }
-        },
+      const response = await fetch('/api/remove-background', {
+        method: 'POST',
+        body: formData,
+        signal: controller.signal,
       });
 
-      if (cancelledRef.current) return;
+      if (!response.ok) {
+        let msg = 'Background removal failed. Please try again.';
+        try {
+          const json = await response.json();
+          if (json?.error) msg = json.error;
+        } catch {}
+        throw new Error(msg);
+      }
+
+      setProgress(90);
+      setStatusLabel('Finalizing...');
+
+      const blob = await response.blob();
 
       setProgress(100);
       setStatusLabel('Done');
@@ -81,14 +75,12 @@ export default function BackgroundRemover() {
         sizeBefore: file.size,
       });
     } catch (e) {
-      if (cancelledRef.current) return;
+      if ((e as Error).name === 'AbortError') return;
       trackToolError('background-remover', 'general-error');
       setError(e instanceof Error ? e.message : 'Background removal failed. Please try again.');
     } finally {
-      if (!cancelledRef.current) {
-        setIsProcessing(false);
-        setStatusLabel('');
-      }
+      setIsProcessing(false);
+      setStatusLabel('');
     }
   };
 
@@ -103,7 +95,7 @@ export default function BackgroundRemover() {
           {t.tools['background-remover']?.description ?? 'Remove backgrounds from photos instantly. Free, no account required.'}
         </p>
 
-        <FileUpload accept={['image/jpeg', 'image/png', 'image/webp']} maxSizeMB={10} onFiles={setFiles} />
+        <FileUpload accept={['image/jpeg', 'image/png', 'image/webp']} maxSizeMB={20} onFiles={setFiles} />
 
         {files.length > 0 && !isProcessing && (
           <button
