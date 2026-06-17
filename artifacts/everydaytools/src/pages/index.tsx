@@ -251,6 +251,87 @@ function ToolCard({
   );
 }
 
+/* ── Category Filter Bar ──────────────────────────────────────────────────── */
+function CategoryFilterBar({
+  categories,
+  activeKey,
+  isMobile,
+}: {
+  categories: CategoryDef[];
+  activeKey: string | null;
+  isMobile: boolean;
+}) {
+  const { locale } = useLocale();
+
+  const scrollTo = (key: string) => {
+    const el = document.getElementById(`cat-${key}`);
+    if (!el) return;
+    const offset = 80;
+    const top = el.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top, behavior: "smooth" });
+  };
+
+  if (isMobile) return null;
+
+  return (
+    <div style={{
+      display: "flex",
+      alignItems: "center",
+      gap: 6,
+      flexWrap: "wrap",
+      marginBottom: 36,
+    }}>
+      {categories.map((cat) => {
+        const label = locale.toLowerCase().startsWith("fr") ? cat.labelFr : cat.label;
+        const isActive = activeKey === cat.key;
+        return (
+          <button
+            key={cat.key}
+            onClick={() => scrollTo(cat.key)}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 7,
+              padding: "6px 13px",
+              borderRadius: 100,
+              border: `1px solid ${isActive ? cat.border : "var(--border)"}`,
+              background: isActive ? cat.bg : "var(--bg-surface)",
+              color: isActive ? cat.color : "var(--text-secondary)",
+              fontFamily: "var(--font-ui)",
+              fontSize: "12px",
+              fontWeight: isActive ? 600 : 500,
+              cursor: "pointer",
+              transition: "all 120ms ease",
+              whiteSpace: "nowrap",
+            }}
+            onMouseEnter={(e) => {
+              if (!isActive) {
+                (e.currentTarget as HTMLElement).style.borderColor = cat.border;
+                (e.currentTarget as HTMLElement).style.color = cat.color;
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!isActive) {
+                (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
+                (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)";
+              }
+            }}
+          >
+            <span style={{
+              width: 7,
+              height: 7,
+              borderRadius: "50%",
+              background: cat.color,
+              flexShrink: 0,
+            }} />
+            {label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 /* ── Category Section ─────────────────────────────────────────────────────── */
 function CategorySection({
   cat,
@@ -269,7 +350,7 @@ function CategorySection({
   const label = locale.toLowerCase().startsWith("fr") ? cat.labelFr : cat.label;
 
   return (
-    <section style={{ marginBottom: 40 }}>
+    <section id={`cat-${cat.key}`} style={{ marginBottom: 40 }}>
       <div style={{
         display: "flex",
         alignItems: "center",
@@ -328,6 +409,7 @@ export default function DashboardHome() {
   const { t, locale } = useLocale();
   const isMobile = useIsMobile();
   const [query, setQuery] = useState("");
+  const [activeKey, setActiveKey] = useState<string | null>(null);
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -335,6 +417,24 @@ export default function DashboardHome() {
     };
     window.addEventListener("et:search", handler);
     return () => window.removeEventListener("et:search", handler);
+  }, []);
+
+  // Track active category via IntersectionObserver
+  useEffect(() => {
+    const observers: IntersectionObserver[] = [];
+    CATEGORIES.forEach((cat) => {
+      const el = document.getElementById(`cat-${cat.key}`);
+      if (!el) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setActiveKey(cat.key);
+        },
+        { rootMargin: "-20% 0px -60% 0px", threshold: 0 }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+    return () => observers.forEach((o) => o.disconnect());
   }, []);
 
   const [pinnedSlugs, setPinnedSlugs] = useState<string[]>(() => {
@@ -402,7 +502,7 @@ export default function DashboardHome() {
 
           {/* Page header */}
           {!isSearching && (
-            <div style={{ marginBottom: 48 }}>
+            <div style={{ marginBottom: 28 }}>
               <h1 style={{
                 fontSize: "2rem",
                 fontWeight: 700,
@@ -422,6 +522,15 @@ export default function DashboardHome() {
                 {t.home.allToolsSubtitle(DASH_TOOLS.length)}
               </p>
             </div>
+          )}
+
+          {/* Category filter bar */}
+          {!isSearching && (
+            <CategoryFilterBar
+              categories={CATEGORIES}
+              activeKey={activeKey}
+              isMobile={isMobile}
+            />
           )}
 
           {/* Pinned */}
