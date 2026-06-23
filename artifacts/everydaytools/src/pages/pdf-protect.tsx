@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
-import ProgressBar from '@/components/ProgressBar';
-import AdSlot from '@/components/AdSlot';
-import Breadcrumb from '@/components/Breadcrumb';
 import { PDFDocument } from 'pdf-lib';
-import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
+import ToolPageLayout from '@/components/ToolPageLayout';
+import {
+  ToolWorkspace, ToolCard, ToolButton, ToolBadge,
+  ToolStat, ToolProgressBar, ToolEmptyState,
+} from '@/components/ToolContent';
 
 export default function PdfProtect() {
   const { t } = useLocale();
@@ -16,7 +17,7 @@ export default function PdfProtect() {
   const [error, setError] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
-  
+
   const [userPassword, setUserPassword] = useState("");
   const [ownerPassword, setOwnerPassword] = useState("");
   const [allowPrinting, setAllowPrinting] = useState(true);
@@ -36,7 +37,7 @@ export default function PdfProtect() {
       const arrayBuffer = await file.arrayBuffer();
       const pdfDoc = await PDFDocument.load(arrayBuffer);
       setProgress(50);
-      
+
       // Note: pdf-lib uses RC4 128-bit encryption
       const pdfBytes = await pdfDoc.save({
         useObjectStreams: false,
@@ -50,7 +51,7 @@ export default function PdfProtect() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any);
       setProgress(100);
-      
+
       const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
       setResult({ blob, filename: file.name.replace(/\.pdf$/i, '_protected.pdf'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
@@ -60,64 +61,60 @@ export default function PdfProtect() {
   };
 
   return (
-    <>
-      <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
-      <Breadcrumb items={['Home', 'PDF Tools', 'Protect PDF']} />
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['pdf-protect']?.title ?? 'Protect PDF'}</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-protect']?.description ?? 'Encrypt your PDF and restrict printing or copying.'}</p>
-      
-      <FileUpload accept={['.pdf']} maxSizeMB={50} onFiles={setFiles} />
-      
-      {files.length > 0 && (
-        <div style={{ marginTop: 24, padding: 24, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
-          <h3 style={{ fontSize: 'var(--text-base)', fontWeight: 500, marginBottom: 16 }}>Passwords</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 24 }}>
-            <div>
-              <label style={{ display: 'block', fontSize: 'var(--text-sm)', marginBottom: 6, fontWeight: 500 }}>User Password (Required to Open)</label>
-              <input type="text" placeholder="Enter password to open" value={userPassword} onChange={e => setUserPassword(e.target.value)}
-                style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', outline: 'none' }} />
-            </div>
-            <div>
-              <label style={{ display: 'block', fontSize: 'var(--text-sm)', marginBottom: 6, fontWeight: 500 }}>Owner Password (Required to change permissions)</label>
-              <input type="text" placeholder="Enter owner password (optional)" value={ownerPassword} onChange={e => setOwnerPassword(e.target.value)}
-                style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', outline: 'none' }} />
-            </div>
-          </div>
-          
-          <h3 style={{ fontSize: 'var(--text-base)', fontWeight: 500, marginBottom: 16 }}>Permissions</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            {([
-              { checked: allowPrinting,  onChange: setAllowPrinting,  label: 'Allow Printing' },
-              { checked: allowCopying,   onChange: setAllowCopying,   label: 'Allow Copying Text' },
-              { checked: allowModifying, onChange: setAllowModifying, label: 'Allow Editing' },
-            ] as const).map(({ checked, onChange, label }) => (
-              <label
-                key={label}
-                style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', padding: '10px 12px', borderRadius: 8, transition: 'background 120ms ease' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-elevated)'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
-              >
-                <input type="checkbox" checked={checked} onChange={ev => onChange(ev.target.checked)} style={{ accentColor: 'var(--accent)', width: 15, height: 15, flexShrink: 0 }} />
-                <span>{label}</span>
-              </label>
-            ))}
-          </div>
-        </div>
-      )}
+    <ToolPageLayout
+      breadcrumb={['Home', 'PDF Tools', 'Protect PDF']}
+      title={t.tools['pdf-protect']?.title ?? 'Protect PDF'}
+      description={t.tools['pdf-protect']?.description ?? 'Encrypt your PDF and restrict printing or copying.'}
+      seoSlug="pdf-protect"
+    >
+      <ToolWorkspace>
+        <FileUpload accept={['.pdf']} maxSizeMB={50} onFiles={setFiles} />
 
-      {files.length > 0 && !isProcessing && (
-        <button onClick={handleConvert} disabled={isProcessing}
-          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer', width: '100%' }}>
-          Apply Protection
-        </button>
-      )}
-      
-      {isProcessing && <ProgressBar progress={progress} label="Encrypting PDF..." />}
-      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 'var(--text-sm)' }}>{error}</p>}
-      {result && <ResultPanel {...result} />}
-      <AdSlot type="horizontal" />
-    </div>
-    <ToolPageSEO internalSlug="pdf-protect" />
-  </>
+        {files.length > 0 && (
+          <ToolCard title="PASSWORDS & PERMISSIONS">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 24 }}>
+              <div>
+                <label style={{ display: 'block', fontSize: 'var(--text-sm)', marginBottom: 6, fontWeight: 500 }}>User Password (Required to Open)</label>
+                <input type="text" placeholder="Enter password to open" value={userPassword} onChange={e => setUserPassword(e.target.value)}
+                  style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', outline: 'none' }} />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: 'var(--text-sm)', marginBottom: 6, fontWeight: 500 }}>Owner Password (Required to change permissions)</label>
+                <input type="text" placeholder="Enter owner password (optional)" value={ownerPassword} onChange={e => setOwnerPassword(e.target.value)}
+                  style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', outline: 'none' }} />
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+              {([
+                { checked: allowPrinting,  onChange: setAllowPrinting,  label: 'Allow Printing' },
+                { checked: allowCopying,   onChange: setAllowCopying,   label: 'Allow Copying Text' },
+                { checked: allowModifying, onChange: setAllowModifying, label: 'Allow Editing' },
+              ] as const).map(({ checked, onChange, label }) => (
+                <label
+                  key={label}
+                  style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', padding: '10px 12px', borderRadius: 8, transition: 'background 120ms ease' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-elevated)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+                >
+                  <input type="checkbox" checked={checked} onChange={ev => onChange(ev.target.checked)} style={{ accentColor: 'var(--accent)', width: 15, height: 15, flexShrink: 0 }} />
+                  <span>{label}</span>
+                </label>
+              ))}
+            </div>
+          </ToolCard>
+        )}
+
+        {files.length > 0 && !isProcessing && (
+          <ToolButton variant="primary" fullWidth onClick={handleConvert} disabled={isProcessing}>
+            Apply Protection
+          </ToolButton>
+        )}
+
+        {isProcessing && <ToolProgressBar progress={progress} label="Encrypting PDF..." />}
+        {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{error}</p>}
+        {result && <ResultPanel {...result} />}
+      </ToolWorkspace>
+    </ToolPageLayout>
   );
 }

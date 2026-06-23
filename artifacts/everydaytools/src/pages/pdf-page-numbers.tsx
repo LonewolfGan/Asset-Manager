@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
-import ProgressBar from '@/components/ProgressBar';
-import AdSlot from '@/components/AdSlot';
-import Breadcrumb from '@/components/Breadcrumb';
 import { PDFDocument, StandardFonts } from 'pdf-lib';
-import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
+import ToolPageLayout from '@/components/ToolPageLayout';
+import {
+  ToolWorkspace, ToolCard, ToolButton, ToolBadge,
+  ToolStat, ToolProgressBar, ToolEmptyState,
+} from '@/components/ToolContent';
 
 export default function PdfPageNumbers() {
   const { t } = useLocale();
@@ -16,7 +17,7 @@ export default function PdfPageNumbers() {
   const [error, setError] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
-  
+
   const [position, setPosition] = useState<'left'|'center'|'right'>('center');
   const [startNum, setStartNum] = useState(1);
   const [fontSize, setFontSize] = useState(12);
@@ -30,19 +31,19 @@ export default function PdfPageNumbers() {
       const arrayBuffer = await file.arrayBuffer();
       const pdfDoc = await PDFDocument.load(arrayBuffer);
       const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
-      
+
       const pages = pdfDoc.getPages();
-      
+
       for (let i = 0; i < pages.length; i++) {
         const page = pages[i];
         const { width, height } = page.getSize();
         const text = String(startNum + i);
         const textWidth = helveticaFont.widthOfTextAtSize(text, fontSize);
-        
+
         let x = width / 2 - textWidth / 2; // center
         if (position === 'left') x = 30;
         if (position === 'right') x = width - 30 - textWidth;
-        
+
         page.drawText(text, {
           x,
           y: 30, // near bottom
@@ -51,10 +52,10 @@ export default function PdfPageNumbers() {
         });
         setProgress(Math.round(((i + 1) / pages.length) * 50));
       }
-      
+
       const pdfBytes = await pdfDoc.save();
       setProgress(100);
-      
+
       const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
       setResult({ blob, filename: file.name.replace(/\.pdf$/i, '_numbered.pdf'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
@@ -64,50 +65,48 @@ export default function PdfPageNumbers() {
   };
 
   return (
-    <>
-      <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
-      <Breadcrumb items={['Home', 'PDF Tools', 'Add Page Numbers']} />
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['pdf-page-numbers']?.title ?? 'Add Page Numbers'}</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-page-numbers']?.description ?? 'Insert page numbers into your PDF document easily.'}</p>
-      
-      <FileUpload accept={['.pdf']} maxSizeMB={50} onFiles={setFiles} />
-      
-      {files.length > 0 && (
-        <div style={{ marginTop: 24, padding: 24, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
-            <div>
-              <label style={{ display: 'block', fontSize: 'var(--text-sm)', marginBottom: 6, fontWeight: 500 }}>Position (Bottom)</label>
-              <select value={position} onChange={(e) => setPosition(e.target.value as any)} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)' }}>
-                <option value="left">Left</option>
-                <option value="center">Center</option>
-                <option value="right">Right</option>
-              </select>
-            </div>
-            <div>
-              <label style={{ display: 'block', fontSize: 'var(--text-sm)', marginBottom: 6, fontWeight: 500 }}>Start Number</label>
-              <input type="number" min="1" value={startNum} onChange={(e) => setStartNum(parseInt(e.target.value) || 1)} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }} />
-            </div>
-            <div>
-              <label style={{ display: 'block', fontSize: 'var(--text-sm)', marginBottom: 6, fontWeight: 500 }}>Font Size</label>
-              <input type="number" min="8" max="24" value={fontSize} onChange={(e) => setFontSize(parseInt(e.target.value) || 12)} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }} />
-            </div>
-          </div>
-        </div>
-      )}
+    <ToolPageLayout
+      breadcrumb={['Home', 'PDF Tools', 'Add Page Numbers']}
+      title={t.tools['pdf-page-numbers']?.title ?? 'Add Page Numbers'}
+      description={t.tools['pdf-page-numbers']?.description ?? 'Insert page numbers into your PDF document easily.'}
+      seoSlug="pdf-page-numbers"
+    >
+      <ToolWorkspace>
+        <FileUpload accept={['.pdf']} maxSizeMB={50} onFiles={setFiles} />
 
-      {files.length > 0 && !isProcessing && (
-        <button onClick={handleConvert} disabled={isProcessing}
-          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer', width: '100%' }}>
-          Add Numbers
-        </button>
-      )}
-      
-      {isProcessing && <ProgressBar progress={progress} label="Applying page numbers..." />}
-      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 'var(--text-sm)' }}>{error}</p>}
-      {result && <ResultPanel {...result} />}
-      <AdSlot type="horizontal" />
-    </div>
-    <ToolPageSEO internalSlug="pdf-page-numbers" />
-  </>
+        {files.length > 0 && (
+          <ToolCard title="PAGE NUMBER SETTINGS">
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+              <div>
+                <label style={{ display: 'block', fontSize: 'var(--text-sm)', marginBottom: 6, fontWeight: 500 }}>Position (Bottom)</label>
+                <select value={position} onChange={(e) => setPosition(e.target.value as any)} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)' }}>
+                  <option value="left">Left</option>
+                  <option value="center">Center</option>
+                  <option value="right">Right</option>
+                </select>
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: 'var(--text-sm)', marginBottom: 6, fontWeight: 500 }}>Start Number</label>
+                <input type="number" min="1" value={startNum} onChange={(e) => setStartNum(parseInt(e.target.value) || 1)} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }} />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: 'var(--text-sm)', marginBottom: 6, fontWeight: 500 }}>Font Size</label>
+                <input type="number" min="8" max="24" value={fontSize} onChange={(e) => setFontSize(parseInt(e.target.value) || 12)} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }} />
+              </div>
+            </div>
+          </ToolCard>
+        )}
+
+        {files.length > 0 && !isProcessing && (
+          <ToolButton variant="primary" fullWidth onClick={handleConvert} disabled={isProcessing}>
+            Add Numbers
+          </ToolButton>
+        )}
+
+        {isProcessing && <ToolProgressBar progress={progress} label="Applying page numbers..." />}
+        {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{error}</p>}
+        {result && <ResultPanel {...result} />}
+      </ToolWorkspace>
+    </ToolPageLayout>
   );
 }

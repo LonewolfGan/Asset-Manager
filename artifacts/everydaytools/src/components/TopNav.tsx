@@ -4,6 +4,13 @@ import { useTheme } from "@/hooks/use-theme";
 import { useLocale } from "@/hooks/use-locale";
 import { trackLanguageChanged } from "@/lib/analytics";
 import SearchModal from "@/components/SearchModal";
+import { tools } from "@/config/tools.config";
+import type { LucideIcon } from "lucide-react";
+
+const SLUG_ICON_MAP: Record<string, LucideIcon> = {};
+for (const tool of tools) {
+  SLUG_ICON_MAP[tool.slug] = tool.icon as LucideIcon;
+}
 
 type NavEntry = { href: string } | null;
 type NavPair = [NavEntry, NavEntry];
@@ -198,6 +205,7 @@ function NavDropdown({
                       style={{
                         display: "flex",
                         alignItems: "center",
+                        gap: 8,
                         height: 34,
                         padding: "0 10px",
                         fontFamily: "var(--font-ui)",
@@ -218,6 +226,10 @@ function NavDropdown({
                         (e.currentTarget as HTMLElement).style.color = currentPath === entry.href ? "var(--accent)" : "var(--text-secondary)";
                       }}
                     >
+                      {(() => {
+                        const IconComp = SLUG_ICON_MAP[entry.href.slice(1)];
+                        return IconComp ? <IconComp size={14} strokeWidth={1.5} style={{ flexShrink: 0 }} /> : null;
+                      })()}
                       {linkLabel(entry.href)}
                     </Link>
                   ) : (
@@ -305,11 +317,15 @@ function MobileDrawer({ open, onClose, onOpenSearch, currentPath }: { open: bool
                 </button>
                 {isExpanded && (
                   <div style={{ paddingBottom: 6 }}>
-                    {allLinks.map((entry) => (
-                      <Link key={entry.href} href={entry.href} onClick={onClose} style={{ display: "block", padding: "8px 28px", fontFamily: "var(--font-ui)", fontSize: "var(--text-sm)", color: currentPath === entry.href ? "var(--accent)" : "var(--text-secondary)", textDecoration: "none", fontWeight: currentPath === entry.href ? 500 : 400 }}>
-                        {linkLabel(entry.href)}
-                      </Link>
-                    ))}
+                    {allLinks.map((entry) => {
+                      const IconComp = SLUG_ICON_MAP[entry.href.slice(1)];
+                      return (
+                        <Link key={entry.href} href={entry.href} onClick={onClose} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 28px", fontFamily: "var(--font-ui)", fontSize: "var(--text-sm)", color: currentPath === entry.href ? "var(--accent)" : "var(--text-secondary)", textDecoration: "none", fontWeight: currentPath === entry.href ? 500 : 400 }}>
+                          {IconComp ? <IconComp size={15} strokeWidth={1.5} style={{ flexShrink: 0 }} /> : null}
+                          {linkLabel(entry.href)}
+                        </Link>
+                      );
+                    })}
                   </div>
                 )}
               </div>
@@ -384,7 +400,7 @@ export default function TopNav() {
       <nav style={{ position: "sticky", top: 0, zIndex: 50, background: "var(--bg-surface)", borderBottom: "1px solid var(--border)" }}>
         <div
           ref={navRef}
-          style={{ maxWidth: "var(--content-wide)", margin: "0 auto", padding: "0 clamp(16px, 4vw, 24px)", height: 56, display: "flex", alignItems: "center", gap: 0 }}
+          style={{ padding: "0 clamp(16px, 4vw, 24px)", height: 56, display: "flex", alignItems: "center", gap: 0 }}
         >
           {/* Logo */}
           <Link href="/" style={{ display: "flex", alignItems: "center", gap: 9, textDecoration: "none", flexShrink: 0, marginRight: 32 }}>

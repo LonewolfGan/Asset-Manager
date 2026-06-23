@@ -71,6 +71,111 @@ const CATEGORY_MAP = Object.fromEntries(CATEGORIES.map(c => [c.key, c]));
 
 const BADGE_SLUGS = new Set(["background-remover", "ai-text-scrubber"]);
 
+/* ── Humanized descriptions ───────────────────────────────────────────────── */
+const HUMAN_DESC: Record<string, string> = {
+  // PDF Tools
+  "pdf-to-word": "Turn your PDFs into Word documents you can actually edit — perfect for repurposing old reports and contracts.",
+  "pdf-to-text": "Pull every word out of any PDF and get clean, copyable plain text in seconds.",
+  "pdf-to-html": "Transform your PDF into a proper web page with clean, semantic HTML markup.",
+  "pdf-to-epub": "Convert your PDFs into EPUB e-books for reading on your Kindle, phone, or tablet.",
+  "pdf-compress": "Shrink PDF file sizes without visible quality loss — send faster, store less.",
+  "pdf-merge": "Combine several PDFs into one single document. Easy as dragging files into a folder.",
+  "pdf-split": "Break a large PDF into smaller pieces — extract only the pages you actually need.",
+  "pdf-rotate": "Fix sideways scans or rotate pages to the right orientation in a single click.",
+  "pdf-unlock": "Remove password restrictions from your PDF so you can actually work with it.",
+  "pdf-protect": "Lock your PDF with a password to keep sensitive content safe from prying eyes.",
+  "pdf-page-numbers": "Add page numbers to every page of your PDF — simple, clean, and customizable.",
+  "pdf-watermark": "Stamp your PDF with a custom watermark — claim ownership or mark it as draft.",
+  "pdf-to-image": "Export PDF pages as high-quality PNG or JPEG images in just a couple clicks.",
+  "pdf-to-excel": "Extract tables from your PDF and turn them into real, editable Excel spreadsheets.",
+  "reorder-pdf": "Rearrange, remove, and reorder PDF pages with simple drag and drop — just like rearranging photos.",
+  "ocr": "Turn scanned images into real, selectable text using on-device AI — your files never leave your computer.",
+
+  // Word & Docs
+  "word-to-pdf": "Convert your Word documents to PDF with perfect formatting preserved — sharing made simple.",
+  "word-to-text": "Strip all formatting from a DOCX and get clean plain text — no surprises, just words.",
+  "word-to-html": "Turn Word documents into clean, production-ready HTML code in one click.",
+  "word-to-epub": "Convert your Word docs into EPUB e-books for reading on any device.",
+  "word-to-markdown": "Transform Word documents into clean Markdown — a lifesaver for developers and writers.",
+  "html-to-markdown": "Convert any HTML into clean, readable Markdown without the tag soup.",
+  "markdown-to-pdf": "Turn your Markdown files into polished PDF documents with proper formatting.",
+  "markdown-to-docx": "Convert Markdown into a proper Word document — formatting included, frustration excluded.",
+  "html-to-pdf": "Turn any HTML page or code snippet into a downloadable PDF in seconds.",
+  "txt-to-pdf": "Transform plain text into a proper PDF document — great for sharing notes and drafts.",
+  "txt-to-docx": "Convert your text files into Word documents you can open, edit, and format.",
+
+  // Excel & Spreadsheets
+  "excel-to-pdf": "Turn your spreadsheets into PDFs while keeping every table, chart, and layout intact.",
+  "excel-to-csv": "Convert Excel sheets into universal CSV format — works with any tool on the planet.",
+  "csv-to-excel": "Turn your CSV data into a proper Excel spreadsheet with real columns and formatting.",
+  "csv-to-json": "Switch between CSV and JSON formats seamlessly — no data loss, no headache.",
+  "csv-viewer": "Preview and sort CSV files in a clean table view without uploading anything anywhere.",
+
+  // PowerPoint
+  "pptx-to-pdf": "Convert your PowerPoint slides into PDF documents that anyone can open.",
+  "pptx-to-images": "Export every slide as a PNG image and download them all as a handy ZIP file.",
+  "pdf-to-pptx": "Turn PDF pages into editable PowerPoint slides — great for reusing content.",
+
+  // Image Tools
+  "image-converter": "Convert any image between PNG, JPEG, WebP, AVIF, and more — all in your browser.",
+  "heic-to-jpg": "Open those iPhone HEIC photos on any device by converting them to standard JPEG.",
+  "heic-to-png": "Convert your HEIC photos to PNG for broader compatibility everywhere.",
+  "heic-to-webp": "Turn HEIC photos into lightweight WebP images — perfect for the modern web.",
+  "heic-to-pdf": "Convert one or more HEIC photos into a single PDF document.",
+  "image-compress": "Compress images without sacrificing quality — make your photos web-ready in seconds.",
+  "image-resize": "Resize images to exact pixel dimensions or by percentage — perfect for social media and blogs.",
+  "image-crop": "Crop images precisely with drag handles and preset aspect ratios — no guessing, just perfect framing.",
+  "image-to-pdf": "Combine several images into a single PDF — ideal for scanning batches or sharing photos.",
+  "background-remover": "Remove image backgrounds with on-device AI magic — no green screen needed, no upload required.",
+  "flip-rotate-image": "Flip horizontally, vertically, or rotate to any angle — fix any image orientation.",
+  "watermark-image": "Add custom text watermarks to protect your photos or brand them with your name.",
+  "favicon-generator": "Generate favicons in every size you'll ever need — download everything as a ZIP.",
+  "png-to-webp": "Convert your PNG images to modern WebP format — smaller files, same great quality.",
+  "jpg-to-webp": "Turn JPEG images into WebP for faster loading without visible quality loss.",
+  "gif-to-webp": "Convert GIF images to WebP — smaller size and modern browser support.",
+  "bmp-to-webp": "Convert BMP files to WebP — leave that old format behind.",
+  "tiff-to-webp": "Turn TIFF images into WebP — great for photographers moving to the web.",
+  "webp-to-png": "Convert WebP back to PNG when you need a format everyone can open.",
+  "webp-to-jpg": "Turn WebP images into JPEG — handy for maximum compatibility.",
+  "webp-to-pdf": "Convert WebP images to PDF documents — one image or many.",
+  "webp-to-avif": "Convert WebP to next-gen AVIF format for even better compression.",
+  "jpg-to-avif": "Turn your JPEGs into AVIF — superior quality at smaller file sizes.",
+  "png-to-avif": "Convert PNG images to AVIF — the next big leap in image compression.",
+  "avif-to-jpg": "Convert AVIF images back to JPEG when you need that extra compatibility.",
+  "avif-to-png": "Turn AVIF images back into PNG format.",
+  "jpg-to-png": "Convert JPEG to PNG for lossless quality with transparency support.",
+  "png-to-jpg": "Convert PNG to JPEG when you need smaller files for email or sharing.",
+  "png-to-svg": "Embed your PNG image inside an SVG — useful for design mockups.",
+  "svg-to-png": "Rasterize SVG graphics into crisp PNG images — pixel-perfect every time.",
+  "gif-to-png": "Extract the first frame of a GIF as a clean PNG still image.",
+  "bmp-to-jpg": "Convert old BMP files to modern JPEG — reclaim that disk space.",
+  "tiff-to-jpg": "Turn TIFF images into JPEG — great for sharing high-res photos online.",
+  "tiff-to-png": "Convert TIFF images to PNG for better web compatibility.",
+  "jpg-to-pdf": "Turn JPEG images into a PDF — one click, one document.",
+  "png-to-pdf": "Convert PNG images into PDF format with perfect quality.",
+
+  // Privacy
+  "metadata-cleaner": "Strip hidden EXIF and document metadata from your files — your camera settings are nobody's business.",
+  "ai-text-scrubber": "Remove invisible characters and AI-detection patterns from your text — clean and natural.",
+  "checksum": "Verify file integrity with SHA-1, SHA-256, or SHA-512 — confirm your downloads are legit.",
+
+  // Text & Code
+  "json-formatter": "Format, validate, and minify JSON in your browser — instantly, no server needed.",
+  "html-formatter": "Format or minify HTML code with a single click — keep your markup tidy.",
+  "base64": "Encode or decode text and files to and from Base64 in real time — handy for data URIs.",
+  "url-encoder": "Encode and decode URL components on the fly — no more broken query strings.",
+  "word-counter": "Count words, characters, sentences, and estimate reading time — essential for writers.",
+  "lorem-ipsum": "Generate placeholder text for wireframes, mockups, and design prototypes in any amount.",
+
+  // Calculators
+  "password-generator": "Generate rock-solid passwords with real-time entropy display — security you can see.",
+  "percentage-calc": "Calculate percentages, discounts, tips, and markups instantly — no mental math required.",
+  "unit-converter": "Convert between hundreds of units across 13 measurement categories — from parsecs to picometers.",
+  "currency-converter": "Convert between world currencies with live exchange rates — always up to date.",
+  "qr-code-generator": "Generate QR codes for URLs, text, Wi-Fi networks or contact cards in one click.",
+  "tip-calculator": "Split the bill and calculate tips — no more awkward math at the restaurant table.",
+};
+
 interface DashTool {
   slug: string;
   name: string;
@@ -84,14 +189,15 @@ interface DashTool {
 const DASH_TOOLS: DashTool[] = tools.map((t) => ({
   slug: t.slug,
   name: t.title,
-  description: t.description,
+  description: HUMAN_DESC[t.slug] ?? t.description,
   categoryKey: t.category,
   Icon: t.icon as LucideIcon,
   badge: BADGE_SLUGS.has(t.slug) ? "AI" : undefined,
   route: `/${t.slug}`,
 }));
 
-/* ── ToolCard ────────────────────────────────────────────────────────────── */
+
+/* ── Hero Section ──────────────────────────────────────────────────────────── */
 function ToolCard({
   tool,
   cat,
@@ -110,12 +216,12 @@ function ToolCard({
   const description = tl?.description ?? tool.description;
 
   return (
-    <Link href={tool.route} style={{ textDecoration: "none", display: "block", height: "100%" }}>
+    <Link href={tool.route} style={{ textDecoration: "none", display: "block" }}>
       <article
         data-testid="tool-card"
         style={{
           position: "relative",
-          padding: "16px 16px 14px",
+          padding: "20px 16px",
           borderRadius: "var(--radius-card)",
           border: "1px solid var(--border)",
           background: "var(--bg-surface)",
@@ -123,10 +229,13 @@ function ToolCard({
           overflow: "hidden",
           transition: "border-color 150ms ease, box-shadow 150ms ease",
           boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
-          height: "100%",
+          aspectRatio: "1 / 1",
           display: "flex",
           flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
           gap: 10,
+          textAlign: "center",
         }}
         onMouseEnter={(e) => {
           const el = e.currentTarget as HTMLElement;
@@ -160,78 +269,84 @@ function ToolCard({
           }}
         />
 
-        {/* Icon row */}
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", position: "relative" }}>
-          <div style={{
-            width: 42,
-            height: 42,
-            borderRadius: 11,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            background: cat.bg,
-            color: cat.color,
-            flexShrink: 0,
-          }}>
-            <Icon size={20} strokeWidth={1.6} />
-          </div>
-
-          {onTogglePin !== undefined && (
-            <button
-              className="card-pin"
-              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }}
-              aria-label={isPinned ? "Unpin tool" : "Pin tool"}
-              style={{
-                background: "none",
-                border: "none",
-                padding: "3px 2px",
-                cursor: "pointer",
-                color: isPinned ? cat.color : "var(--text-tertiary)",
-                opacity: isPinned ? 1 : 0,
-                transition: "opacity 150ms ease, color 150ms ease",
-                display: "flex",
-                alignItems: "center",
-                borderRadius: 4,
-                lineHeight: 0,
-                flexShrink: 0,
-              }}
-            >
-              {isPinned
-                ? <BookmarkCheck size={15} strokeWidth={2} />
-                : <Bookmark size={15} strokeWidth={1.8} />}
-            </button>
-          )}
+        {/* Icon — bigger, centered */}
+        <div style={{
+          width: 56,
+          height: 56,
+          borderRadius: 14,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: cat.bg,
+          color: cat.color,
+          flexShrink: 0,
+          position: "relative",
+        }}>
+          <Icon size={24} strokeWidth={1.5} />
         </div>
 
-        {/* Name + description */}
+        {/* Pin button */}
+        {onTogglePin !== undefined && (
+          <button
+            className="card-pin"
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); onTogglePin(); }}
+            aria-label={isPinned ? "Unpin tool" : "Pin tool"}
+            style={{
+              position: "absolute",
+              top: 10,
+              right: 10,
+              background: "none",
+              border: "none",
+              padding: "3px 2px",
+              cursor: "pointer",
+              color: isPinned ? cat.color : "var(--text-tertiary)",
+              opacity: isPinned ? 1 : 0,
+              transition: "opacity 150ms ease, color 150ms ease",
+              display: "flex",
+              alignItems: "center",
+              borderRadius: 4,
+              lineHeight: 0,
+              flexShrink: 0,
+              zIndex: 2,
+            }}
+          >
+            {isPinned
+              ? <BookmarkCheck size={15} strokeWidth={2} />
+              : <Bookmark size={15} strokeWidth={1.8} />}
+          </button>
+        )}
+
+        {/* Name + description — centered */}
         <div style={{ position: "relative" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", marginBottom: 4 }}>
+          <span style={{
+            fontSize: "14px",
+            fontWeight: 600,
+            color: "var(--text-primary)",
+            fontFamily: "var(--font-ui)",
+            lineHeight: 1.25,
+            display: "block",
+            marginBottom: 4,
+          }}>
+            {name}
+          </span>
+          {tool.badge && (
             <span style={{
-              fontSize: "13.5px",
-              fontWeight: 600,
-              color: "var(--text-primary)",
-              fontFamily: "var(--font-ui)",
-              lineHeight: 1.3,
+              fontSize: 9,
+              fontWeight: 700,
+              padding: "2px 6px",
+              borderRadius: 4,
+              background: cat.bg,
+              color: cat.color,
+              lineHeight: 1.4,
+              letterSpacing: "0.07em",
+              textTransform: "uppercase",
+              flexShrink: 0,
+              display: "inline-block",
+              marginBottom: 4,
             }}>
-              {name}
+              {tool.badge}
             </span>
-            {tool.badge && (
-              <span style={{
-                fontSize: 9,
-                fontWeight: 700,
-                padding: "2px 6px",
-                borderRadius: 4,
-                background: cat.bg,
-                color: cat.color,
-                lineHeight: 1.4,
-                letterSpacing: "0.07em",
-                textTransform: "uppercase",
-                flexShrink: 0,
-              }}>
-                {tool.badge}
-              </span>
-            )}
-          </div>
+          )}
           <p style={{
             fontSize: "12px",
             color: "var(--text-secondary)",
@@ -251,27 +366,238 @@ function ToolCard({
   );
 }
 
+/* ── Hero Section ──────────────────────────────────────────────────────────── */
+/* Clean, light-themed hero — iLovePDF-inspired minimal design */
+
+const HERO_TAGS = [
+  { label: "CSV ↔ JSON", route: "/csv-to-json" },
+  { label: "Markdown to PDF", route: "/markdown-to-pdf" },
+  { label: "HTML to PDF", route: "/html-to-pdf" },
+  { label: "Word to PDF", route: "/word-to-pdf" },
+  { label: "PDF to Text", route: "/pdf-to-text" },
+  { label: "Excel to PDF", route: "/excel-to-pdf" },
+  { label: "Image to PDF", route: "/image-to-pdf" },
+  { label: "Word to Markdown", route: "/word-to-markdown" },
+  { label: "PDF to Word", route: "/pdf-to-word" },
+  { label: "PDF to EPUB", route: "/pdf-to-epub" },
+  { label: "PDF to HTML", route: "/pdf-to-html" },
+  { label: "HTML to Markdown", route: "/html-to-markdown" },
+  { label: "TXT to PDF", route: "/txt-to-pdf" },
+  { label: "TXT to DOCX", route: "/txt-to-docx" },
+  { label: "Word to HTML", route: "/word-to-html" },
+  { label: "Word to EPUB", route: "/word-to-epub" },
+];
+
+function HomeHero() {
+  const { t, locale } = useLocale();
+  const isFR = locale.toLowerCase().startsWith("fr");
+
+  return (
+    <div
+      style={{
+        position: "relative",
+        overflow: "hidden",
+        textAlign: "center",
+        padding: "clamp(60px, 8vw, 90px) 24px clamp(48px, 6vw, 60px)",
+        marginLeft: "calc(-50vw + 50%)",
+        marginRight: "calc(-50vw + 50%)",
+        background: "var(--hero-bg)",
+      }}
+    >
+      {/* Subtle diagonal geometric pattern */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: `repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 40px,
+            rgba(128,128,128,0.03) 40px,
+            rgba(128,128,128,0.03) 41px
+          )`,
+          pointerEvents: "none",
+        }}
+      />
+
+      <style>{`
+        @keyframes hero-fade-in-up {
+          from { opacity: 0; transform: translateY(14px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes et-scroll-left {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        @keyframes et-scroll-right {
+          0%   { transform: translateX(-50%); }
+          100% { transform: translateX(0); }
+        }
+        .hero-title {
+          animation: hero-fade-in-up 0.5s ease both;
+        }
+        .hero-subtitle {
+          animation: hero-fade-in-up 0.5s ease 0.1s both;
+        }
+        .hero-scroll {
+          animation: hero-fade-in-up 0.5s ease 0.2s both;
+        }
+      `}</style>
+
+      <div style={{ maxWidth: 720, margin: "0 auto", position: "relative", zIndex: 1 }}>
+        {/* Title: "EVERYDAY" as faint watermark line, "Tools" huge bold below */}
+        <h1 className="hero-title" style={{ marginBottom: 20, lineHeight: 1 }}>
+          <span
+            aria-hidden="true"
+            style={{
+              display: "block",
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(48px, 9vw, 120px)",
+              fontWeight: 900,
+              color: "var(--hero-watermark)",
+              letterSpacing: "0.04em",
+              lineHeight: 1.1,
+              userSelect: "none",
+            }}
+          >
+            EVERYDAY
+          </span>
+          <span
+            style={{
+              display: "block",
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(72px, 16vw, 180px)",
+              fontWeight: 900,
+              color: "var(--hero-title)",
+              letterSpacing: "-0.04em",
+              lineHeight: 1,
+            }}
+          >
+            {isFR ? "Outils" : "Tools"}
+          </span>
+        </h1>
+
+        {/* Subtitle */}
+        <p
+          className="hero-subtitle"
+          style={{
+            fontFamily: "var(--font-ui)",
+            fontSize: "clamp(14px, 1.2vw, 17px)",
+            color: "var(--hero-subtitle)",
+            margin: "0 auto 32px",
+            lineHeight: 1.65,
+            maxWidth: 580,
+          }}
+        >
+          {isFR
+            ? "Votre navigateur amélioré — plus de 86 outils gratuits pour vos tâches quotidiennes. Convertissez des PDF, éditez des images, formatez du code, sécurisez vos mots de passe — le tout sans quitter votre navigateur. Pas d'inscription, pas de téléchargement. Vos données restent les vôtres."
+            : "Your browser, upgraded — 86+ free tools for everyday tasks. Convert PDFs, edit images, format code, secure passwords, crunch numbers — all without leaving your browser. No sign-up, no uploads. Your data stays yours."}
+        </p>
+
+      </div>
+
+      {/* Infinite scroll pills — 2 rows scrolling in opposite directions */}
+      <div className="hero-scroll" style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        {/* Row 1 — scrolls left */}
+        <div style={{ overflow: "hidden" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: 8,
+              width: "fit-content",
+              animation: "et-scroll-left 35s linear infinite",
+            }}
+          >
+            {[...HERO_TAGS, ...HERO_TAGS].map((tag, i) => (
+              <Link key={`r1-${i}`} href={tag.route} style={{ textDecoration: "none", flexShrink: 0 }}>
+                <span
+                  style={{
+                    display: "inline-block",
+                    padding: "6px 14px",
+                    borderRadius: 100,
+                    background: "var(--hero-tag-bg)",
+                    color: "var(--hero-tag-text)",
+                    fontFamily: "var(--font-ui)",
+                    fontSize: "12px",
+                    fontWeight: 500,
+                    whiteSpace: "nowrap",
+                    cursor: "pointer",
+                    transition: "background 150ms ease",
+                    lineHeight: 1.4,
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.background = "var(--hero-tag-hover)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.background = "var(--hero-tag-bg)";
+                  }}
+                >
+                  {tag.label}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Row 2 — scrolls right */}
+        <div style={{ overflow: "hidden" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: 8,
+              width: "fit-content",
+              animation: "et-scroll-right 40s linear infinite",
+            }}
+          >
+            {[...HERO_TAGS, ...HERO_TAGS].map((tag, i) => (
+              <Link key={`r2-${i}`} href={tag.route} style={{ textDecoration: "none", flexShrink: 0 }}>
+                <span
+                  style={{
+                    display: "inline-block",
+                    padding: "6px 14px",
+                    borderRadius: 100,
+                    background: "var(--hero-tag-bg)",
+                    color: "var(--hero-tag-text)",
+                    fontFamily: "var(--font-ui)",
+                    fontSize: "12px",
+                    fontWeight: 500,
+                    whiteSpace: "nowrap",
+                    cursor: "pointer",
+                    transition: "background 150ms ease",
+                    lineHeight: 1.4,
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.background = "var(--hero-tag-hover)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.background = "var(--hero-tag-bg)";
+                  }}
+                >
+                  {tag.label}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ── Category Filter Bar ──────────────────────────────────────────────────── */
 function CategoryFilterBar({
   categories,
   activeKey,
   isMobile,
+  onSelect,
 }: {
   categories: CategoryDef[];
   activeKey: string | null;
   isMobile: boolean;
+  onSelect: (key: string | null) => void;
 }) {
   const { locale } = useLocale();
-
-  const scrollTo = (key: string) => {
-    const el = document.getElementById(`cat-${key}`);
-    if (!el) return;
-    const offset = 80;
-    const top = el.getBoundingClientRect().top + window.scrollY - offset;
-    window.scrollTo({ top, behavior: "smooth" });
-  };
-
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   const allLabel = locale.toLowerCase().startsWith("fr") ? "Tous" : "All";
   const isAllActive = activeKey === null;
@@ -288,7 +614,7 @@ function CategoryFilterBar({
     }}>
       {/* All pill */}
       <button
-        onClick={scrollToTop}
+        onClick={() => onSelect(null)}
         style={{
           display: "inline-flex",
           alignItems: "center",
@@ -330,7 +656,7 @@ function CategoryFilterBar({
         return (
           <button
             key={cat.key}
-            onClick={() => scrollTo(cat.key)}
+            onClick={() => onSelect(cat.key)}
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -430,8 +756,8 @@ function CategorySection({
         display: "grid",
         gridTemplateColumns: isMobile
           ? "repeat(2, 1fr)"
-          : "repeat(auto-fill, minmax(180px, 1fr))",
-        gap: 8,
+          : "repeat(auto-fill, minmax(280px, 1fr))",
+        gap: 12,
       }}>
         {tools.map((tool) => (
           <ToolCard
@@ -460,24 +786,6 @@ export default function DashboardHome() {
     };
     window.addEventListener("et:search", handler);
     return () => window.removeEventListener("et:search", handler);
-  }, []);
-
-  // Track active category via IntersectionObserver
-  useEffect(() => {
-    const observers: IntersectionObserver[] = [];
-    CATEGORIES.forEach((cat) => {
-      const el = document.getElementById(`cat-${cat.key}`);
-      if (!el) return;
-      const obs = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveKey(cat.key);
-        },
-        { rootMargin: "-20% 0px -60% 0px", threshold: 0 }
-      );
-      obs.observe(el);
-      observers.push(obs);
-    });
-    return () => observers.forEach((o) => o.disconnect());
   }, []);
 
   const [pinnedSlugs, setPinnedSlugs] = useState<string[]>(() => {
@@ -541,31 +849,15 @@ export default function DashboardHome() {
       </Helmet>
 
       <div style={{ flex: 1, background: "var(--bg-base)" }}>
-        <div style={{ maxWidth: "var(--content-wide)", margin: "0 auto", padding: "40px 24px 80px" }}>
 
-          {/* Page header */}
-          {!isSearching && (
-            <div style={{ marginBottom: 28 }}>
-              <h1 style={{
-                fontSize: "2rem",
-                fontWeight: 700,
-                margin: "0 0 8px",
-                fontFamily: "var(--font-display)",
-                color: "var(--text-primary)",
-                letterSpacing: "-0.03em",
-              }}>
-                {t.home.allTools}
-              </h1>
-              <p style={{
-                fontSize: "var(--text-sm)",
-                color: "var(--text-secondary)",
-                margin: 0,
-                fontFamily: "var(--font-ui)",
-              }}>
-                {t.home.allToolsSubtitle(DASH_TOOLS.length)}
-              </p>
-            </div>
-          )}
+        {/* Hero section — full width */}
+        {!isSearching && (
+          <HomeHero />
+        )}
+
+        {/* Tools area — full width with side padding */}
+        <div style={{ padding: "40px 24px 80px" }}>
+
 
           {/* Category filter bar */}
           {!isSearching && (
@@ -573,6 +865,13 @@ export default function DashboardHome() {
               categories={CATEGORIES}
               activeKey={activeKey}
               isMobile={isMobile}
+              onSelect={(key) => {
+                setActiveKey(key);
+                if (key !== null) {
+                  const el = document.getElementById(`cat-${key}`);
+                  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+              }}
             />
           )}
 
@@ -600,8 +899,8 @@ export default function DashboardHome() {
                 display: "grid",
                 gridTemplateColumns: isMobile
                   ? "repeat(2, 1fr)"
-                  : "repeat(auto-fill, minmax(180px, 1fr))",
-                gap: 8,
+                  : "repeat(auto-fill, minmax(280px, 1fr))",
+                gap: 12,
               }}>
                 {pinnedTools.map((tool) => {
                   const cat = CATEGORY_MAP[tool.categoryKey] ?? CATEGORIES[0];
@@ -654,8 +953,8 @@ export default function DashboardHome() {
               display: "grid",
               gridTemplateColumns: isMobile
                 ? "repeat(2, 1fr)"
-                : "repeat(auto-fill, minmax(180px, 1fr))",
-              gap: 8,
+                : "repeat(auto-fill, minmax(280px, 1fr))",
+              gap: 12,
             }}>
               {filteredTools.map((tool) => {
                 const cat = CATEGORY_MAP[tool.categoryKey] ?? CATEGORIES[0];
@@ -672,17 +971,43 @@ export default function DashboardHome() {
             </div>
           )}
 
-          {/* Grouped by category */}
-          {!isSearching && groupedTools.map(({ cat, tools }) => (
-            <CategorySection
-              key={cat.key}
-              cat={cat}
-              tools={tools}
-              isMobile={isMobile}
-              pinnedSlugs={pinnedSlugs}
-              onTogglePin={togglePin}
-            />
-          ))}
+          {/* All tools flat grid (no category sections) */}
+          {!isSearching && activeKey === null && (
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: isMobile
+                ? "repeat(2, 1fr)"
+                : "repeat(auto-fill, minmax(280px, 1fr))",
+              gap: 12,
+            }}>
+              {DASH_TOOLS.map((tool) => {
+                const cat = CATEGORY_MAP[tool.categoryKey] ?? CATEGORIES[0];
+                return (
+                  <ToolCard
+                    key={tool.slug}
+                    tool={tool}
+                    cat={cat}
+                    isPinned={pinnedSlugs.includes(tool.slug)}
+                    onTogglePin={() => togglePin(tool.slug)}
+                  />
+                );
+              })}
+            </div>
+          )}
+
+          {/* Single category section */}
+          {!isSearching && activeKey !== null && groupedTools
+            .filter(g => g.cat.key === activeKey)
+            .map(({ cat, tools }) => (
+              <CategorySection
+                key={cat.key}
+                cat={cat}
+                tools={tools}
+                isMobile={isMobile}
+                pinnedSlugs={pinnedSlugs}
+                onTogglePin={togglePin}
+              />
+            ))}
         </div>
       </div>
     </>

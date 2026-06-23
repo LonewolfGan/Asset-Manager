@@ -1,9 +1,11 @@
 import { useState, useRef } from 'react';
-import AdSlot from '@/components/AdSlot';
-import Breadcrumb from '@/components/Breadcrumb';
-import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
+import ToolPageLayout from '@/components/ToolPageLayout';
+import {
+  ToolWorkspace, ToolCard, ToolButton, ToolBadge,
+  ToolStat, ToolProgressBar, ToolEmptyState,
+} from '@/components/ToolContent';
 
 export default function WordToMarkdown() {
   const { t } = useLocale();
@@ -51,12 +53,13 @@ export default function WordToMarkdown() {
   const copy = async () => { await navigator.clipboard.writeText(output); setCopied(true); setTimeout(() => setCopied(false), 1500); };
 
   return (
-    <>
-      <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
-        <Breadcrumb items={['Home', 'Documents', title]} />
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{title}</h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{desc}</p>
-
+    <ToolPageLayout
+      breadcrumb={['Home', 'Documents', title]}
+      title={title}
+      description={desc}
+      seoSlug="word-to-markdown"
+    >
+      <ToolWorkspace>
         <div
           onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
           onDragLeave={() => setIsDragging(false)}
@@ -86,9 +89,7 @@ export default function WordToMarkdown() {
             />
           </div>
         )}
-        <AdSlot type="horizontal" />
-      </div>
-      <ToolPageSEO internalSlug="word-to-markdown" />
-    </>
+      </ToolWorkspace>
+    </ToolPageLayout>
   );
 }

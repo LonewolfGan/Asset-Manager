@@ -1,11 +1,13 @@
 import { useState, useRef } from 'react';
 import { copyWithToast } from '@/utils/copy';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
-import AdSlot from '@/components/AdSlot';
-import Breadcrumb from '@/components/Breadcrumb';
-import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { useIsMobile } from '@/hooks/use-mobile';
+import ToolPageLayout from '@/components/ToolPageLayout';
+import {
+  ToolWorkspace, ToolCard, ToolButton, ToolBadge,
+  ToolStat, ToolProgressBar, ToolEmptyState,
+} from '@/components/ToolContent';
 
 type Mode = 'csv-to-json' | 'json-to-csv';
 
@@ -63,12 +65,13 @@ export default function CsvToJson() {
   const copyOutput = () => { if (output) { copyWithToast(output); setCopied(true); setTimeout(() => setCopied(false), 1500); } };
 
   return (
-    <>
-      <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
-        <Breadcrumb items={['Home', 'Excel & Spreadsheets', title]} />
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{title}</h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 24, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{desc}</p>
-
+    <ToolPageLayout
+      breadcrumb={['Home', 'Excel & Spreadsheets', title]}
+      title={title}
+      description={desc}
+      seoSlug="csv-to-json"
+    >
+      <ToolWorkspace>
         <div style={{ display: 'flex', gap: 8, marginBottom: 24 }}>
           {(['csv-to-json', 'json-to-csv'] as Mode[]).map((m) => (
             <button key={m} onClick={() => { setMode(m); setInput(''); setOutput(''); setError(''); }}
@@ -115,13 +118,10 @@ export default function CsvToJson() {
           </div>
         </div>
 
-        <button onClick={convert} disabled={!input.trim()}
-          style={{ marginTop: 16, width: '100%', padding: '11px 24px', background: input.trim() ? 'var(--accent)' : 'var(--bg-elevated)', color: input.trim() ? 'var(--accent-text)' : 'var(--text-tertiary)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: input.trim() ? 'pointer' : 'not-allowed' }}>
+        <ToolButton variant="primary" fullWidth onClick={convert} disabled={!input.trim()}>
           {mode === 'csv-to-json' ? 'Convert CSV → JSON' : 'Convert JSON → CSV'}
-        </button>
-        <AdSlot type="horizontal" />
-      </div>
-      <ToolPageSEO internalSlug="csv-to-json" />
-    </>
+        </ToolButton>
+      </ToolWorkspace>
+    </ToolPageLayout>
   );
 }

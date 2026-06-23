@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
-import ProgressBar from '@/components/ProgressBar';
-import AdSlot from '@/components/AdSlot';
-import Breadcrumb from '@/components/Breadcrumb';
-import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
+import ToolPageLayout from '@/components/ToolPageLayout';
+import {
+  ToolWorkspace, ToolCard, ToolButton, ToolBadge,
+  ToolStat, ToolProgressBar, ToolEmptyState,
+} from '@/components/ToolContent';
 
 export default function PdfToText() {
   const { t } = useLocale();
@@ -21,18 +22,18 @@ export default function PdfToText() {
     setError(null);
     setIsProcessing(true);
     setProgress(0);
-    
+
     try {
       trackToolUsed('pdf-to-text', 'pdf');
       const pdfjsLib = await import('pdfjs-dist');
       pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.mjs', import.meta.url).href;
-      
+
       const file = files[0];
       const arrayBuffer = await file.arrayBuffer();
       const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
       const numPages = pdf.numPages;
       let fullText = '';
-      
+
       for (let i = 1; i <= numPages; i++) {
         const page = await pdf.getPage(i);
         const textContent = await page.getTextContent();
@@ -40,7 +41,7 @@ export default function PdfToText() {
         fullText += pageText + '\n\n';
         setProgress(Math.round((i / numPages) * 100));
       }
-      
+
       const blob = new Blob([fullText], { type: 'text/plain;charset=utf-8' });
       setResult({
         blob,
@@ -58,27 +59,25 @@ export default function PdfToText() {
   };
 
   return (
-    <>
-      <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
-      <Breadcrumb items={['Home', 'PDF Tools', 'PDF to Text']} />
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['pdf-to-text']?.title ?? 'PDF to Text'}</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-to-text']?.description ?? 'Instantly extract plain text from any PDF document securely in your browser.'}</p>
-      
-      <FileUpload accept={['.pdf', 'application/pdf']} maxSizeMB={50} onFiles={setFiles} />
-      
-      {files.length > 0 && !isProcessing && (
-        <button onClick={handleConvert} disabled={isProcessing}
-          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer', width: '100%' }}>
-          Extract Text
-        </button>
-      )}
-      
-      {isProcessing && <ProgressBar progress={progress} label="Extracting text..." />}
-      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 'var(--text-sm)' }}>{error}</p>}
-      {result && <ResultPanel {...result} />}
-      <AdSlot type="horizontal" />
-    </div>
-    <ToolPageSEO internalSlug="pdf-to-text" />
-  </>
+    <ToolPageLayout
+      breadcrumb={['Home', 'PDF Tools', 'PDF to Text']}
+      title={t.tools['pdf-to-text']?.title ?? 'PDF to Text'}
+      description={t.tools['pdf-to-text']?.description ?? 'Instantly extract plain text from any PDF document securely in your browser.'}
+      seoSlug="pdf-to-text"
+    >
+      <ToolWorkspace>
+        <FileUpload accept={['.pdf', 'application/pdf']} maxSizeMB={50} onFiles={setFiles} />
+
+        {files.length > 0 && !isProcessing && (
+          <ToolButton variant="primary" fullWidth onClick={handleConvert} disabled={isProcessing}>
+            Extract Text
+          </ToolButton>
+        )}
+
+        {isProcessing && <ToolProgressBar progress={progress} label="Extracting text..." />}
+        {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{error}</p>}
+        {result && <ResultPanel {...result} />}
+      </ToolWorkspace>
+    </ToolPageLayout>
   );
 }

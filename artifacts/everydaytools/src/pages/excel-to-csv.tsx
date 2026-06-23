@@ -1,9 +1,11 @@
 import { useState, useRef } from 'react';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
-import AdSlot from '@/components/AdSlot';
-import Breadcrumb from '@/components/Breadcrumb';
-import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import ToolPageLayout from '@/components/ToolPageLayout';
+import {
+  ToolWorkspace, ToolCard, ToolButton, ToolBadge,
+  ToolStat, ToolProgressBar, ToolEmptyState,
+} from '@/components/ToolContent';
 
 export default function ExcelToCsv() {
   const { t } = useLocale();
@@ -59,12 +61,13 @@ export default function ExcelToCsv() {
   };
 
   return (
-    <>
-      <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
-        <Breadcrumb items={['Home', 'Excel & Spreadsheets', title]} />
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{title}</h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{desc}</p>
-
+    <ToolPageLayout
+      breadcrumb={['Home', 'Excel & Spreadsheets', title]}
+      title={title}
+      description={desc}
+      seoSlug="excel-to-csv"
+    >
+      <ToolWorkspace>
         <div
           onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
           onDragLeave={() => setIsDragging(false)}
@@ -88,10 +91,7 @@ export default function ExcelToCsv() {
                   style={{ padding: '5px 10px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
                   {sheets.map((s) => <option key={s} value={s}>{s}</option>)}
                 </select>
-                <button onClick={convert}
-                  style={{ padding: '6px 16px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer' }}>
-                  {t.common.convertBtn}
-                </button>
+                <ToolButton variant="primary" onClick={convert}>{t.common.convertBtn}</ToolButton>
               </div>
             )}
           </div>
@@ -114,9 +114,7 @@ export default function ExcelToCsv() {
               style={{ width: '100%', height: 280, padding: 12, border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', resize: 'vertical', boxSizing: 'border-box' }} />
           </div>
         )}
-        <AdSlot type="horizontal" />
-      </div>
-      <ToolPageSEO internalSlug="excel-to-csv" />
-    </>
+      </ToolWorkspace>
+    </ToolPageLayout>
   );
 }

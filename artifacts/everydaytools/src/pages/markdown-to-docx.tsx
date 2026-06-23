@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
-import ProgressBar from '@/components/ProgressBar';
-import AdSlot from '@/components/AdSlot';
-import Breadcrumb from '@/components/Breadcrumb';
 import { marked } from 'marked';
-import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import ToolPageLayout from '@/components/ToolPageLayout';
+import {
+  ToolWorkspace, ToolCard, ToolButton, ToolBadge,
+  ToolStat, ToolProgressBar, ToolEmptyState,
+} from '@/components/ToolContent';
 
 async function markdownToDocxBlob(markdown: string): Promise<Blob> {
   const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } = await import('docx');
@@ -72,7 +73,7 @@ async function markdownToDocxBlob(markdown: string): Promise<Blob> {
       const isOrdered = tag === 'ol';
       let idx = 1;
       for (const li of node.querySelectorAll(':scope > li')) {
-        const prefix = isOrdered ? `${idx++}. ` : '\u2022 ';
+        const prefix = isOrdered ? `${idx++}. ` : '• ';
         paragraphs.push(new Paragraph({
           children: [new TextRun({ text: prefix + (li.textContent || '') })],
           indent: { left: 720 },
@@ -137,27 +138,25 @@ export default function MarkdownToDocx() {
   };
 
   return (
-    <>
-      <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
-      <Breadcrumb items={['Home', 'Word Tools', 'Markdown to Word']} />
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['markdown-to-docx']?.title ?? 'Markdown to Word'}</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['markdown-to-docx']?.description ?? 'Convert Markdown files to Microsoft Word (.docx) format.'}</p>
+    <ToolPageLayout
+      breadcrumb={['Home', 'Word Tools', 'Markdown to Word']}
+      title={t.tools['markdown-to-docx']?.title ?? 'Markdown to Word'}
+      description={t.tools['markdown-to-docx']?.description ?? 'Convert Markdown files to Microsoft Word (.docx) format.'}
+      seoSlug="markdown-to-docx"
+    >
+      <ToolWorkspace>
+        <FileUpload accept={['.md', '.txt', 'text/markdown', 'text/plain']} maxSizeMB={10} onFiles={setFiles} />
 
-      <FileUpload accept={['.md', '.txt', 'text/markdown', 'text/plain']} maxSizeMB={10} onFiles={setFiles} />
+        {files.length > 0 && !isProcessing && (
+          <ToolButton variant="primary" fullWidth onClick={handleConvert} disabled={isProcessing}>
+            Convert to DOCX
+          </ToolButton>
+        )}
 
-      {files.length > 0 && !isProcessing && (
-        <button onClick={handleConvert} disabled={isProcessing}
-          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer', width: '100%' }}>
-          Convert to DOCX
-        </button>
-      )}
-
-      {isProcessing && <ProgressBar progress={progress} label="Converting..." />}
-      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 'var(--text-sm)' }}>{error}</p>}
-      {result && <ResultPanel {...result} />}
-      <AdSlot type="horizontal" />
-    </div>
-    <ToolPageSEO internalSlug="markdown-to-docx" />
-  </>
+        {isProcessing && <ToolProgressBar progress={progress} label="Converting..." />}
+        {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{error}</p>}
+        {result && <ResultPanel {...result} />}
+      </ToolWorkspace>
+    </ToolPageLayout>
   );
 }

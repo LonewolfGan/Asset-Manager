@@ -1,9 +1,11 @@
 import { useState, useRef } from 'react';
-import AdSlot from '@/components/AdSlot';
-import Breadcrumb from '@/components/Breadcrumb';
-import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
+import ToolPageLayout from '@/components/ToolPageLayout';
+import {
+  ToolWorkspace, ToolCard, ToolButton, ToolBadge,
+  ToolStat, ToolProgressBar, ToolEmptyState,
+} from '@/components/ToolContent';
 
 export default function PptxToImages() {
   const { t } = useLocale();
@@ -100,12 +102,13 @@ export default function PptxToImages() {
   };
 
   return (
-    <>
-      <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
-        <Breadcrumb items={['Home', 'PowerPoint', title]} />
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{title}</h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{desc}</p>
-
+    <ToolPageLayout
+      breadcrumb={['Home', 'PowerPoint', title]}
+      title={title}
+      description={desc}
+      seoSlug="pptx-to-images"
+    >
+      <ToolWorkspace>
         {slides.length === 0 && (
           <div
             onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
@@ -120,16 +123,7 @@ export default function PptxToImages() {
           </div>
         )}
 
-        {status === 'processing' && (
-          <div style={{ padding: 16, background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', marginTop: 20 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>
-              <span>Rendering slides…</span><span style={{ fontFamily: 'var(--font-mono)' }}>{progress}%</span>
-            </div>
-            <div style={{ height: 6, background: 'var(--bg-elevated)', borderRadius: 3, overflow: 'hidden' }}>
-              <div style={{ width: `${progress}%`, height: '100%', background: 'var(--accent)', transition: 'width 0.3s' }} />
-            </div>
-          </div>
-        )}
+        {status === 'processing' && <ToolProgressBar progress={progress} label="Rendering slides..." />}
 
         {status === 'error' && <p style={{ color: 'var(--danger,#dc2626)', marginTop: 16, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)' }}>{error}</p>}
 
@@ -155,9 +149,7 @@ export default function PptxToImages() {
             </div>
           </div>
         )}
-        <AdSlot type="horizontal" />
-      </div>
-      <ToolPageSEO internalSlug="pptx-to-images" />
-    </>
+      </ToolWorkspace>
+    </ToolPageLayout>
   );
 }

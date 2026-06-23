@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
-import ProgressBar from '@/components/ProgressBar';
-import AdSlot from '@/components/AdSlot';
-import Breadcrumb from '@/components/Breadcrumb';
 import JSZip from 'jszip';
-import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
+import ToolPageLayout from '@/components/ToolPageLayout';
+import {
+  ToolWorkspace, ToolCard, ToolButton, ToolBadge,
+  ToolStat, ToolProgressBar, ToolEmptyState,
+} from '@/components/ToolContent';
 
 export default function PdfToImage() {
   const { t } = useLocale();
@@ -16,7 +17,7 @@ export default function PdfToImage() {
   const [error, setError] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
-  
+
   const [format, setFormat] = useState<'image/jpeg' | 'image/png'>('image/jpeg');
   const [scale, setScale] = useState(2); // 2x roughly 144dpi
 
@@ -28,45 +29,45 @@ export default function PdfToImage() {
       const file = files[0];
       const pdfjsLib = await import('pdfjs-dist');
       pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.mjs', import.meta.url).href;
-      
+
       const arrayBuffer = await file.arrayBuffer();
       const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
       const numPages = pdf.numPages;
-      
+
       const zip = new JSZip();
-      
+
       for (let i = 1; i <= numPages; i++) {
         const page = await pdf.getPage(i);
         const viewport = page.getViewport({ scale });
-        
+
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d')!;
         canvas.height = viewport.height;
         canvas.width = viewport.width;
-        
+
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         await page.render({ canvasContext: ctx, viewport } as any).promise;
-        
+
         const blob = await new Promise<Blob>((resolve, reject) => {
           canvas.toBlob((b) => {
             if (b) resolve(b);
             else reject(new Error("Canvas toBlob failed"));
           }, format, 0.95);
         });
-        
+
         const ext = format === 'image/jpeg' ? '.jpg' : '.png';
         const name = `${file.name.replace(/\.pdf$/i, '')}_page_${i}${ext}`;
-        
+
         if (numPages === 1) {
           setResult({ blob, filename: name, sizeAfter: blob.size, sizeBefore: file.size });
           setProgress(100);
           return; // Exit early for single page
         }
-        
+
         zip.file(name, blob);
         setProgress(Math.round((i / numPages) * 80));
       }
-      
+
       const zipBlob = await zip.generateAsync({ type: "blob" });
       setProgress(100);
       setResult({ blob: zipBlob, filename: file.name.replace(/\.pdf$/i, '_images.zip'), sizeAfter: zipBlob.size, sizeBefore: file.size });
@@ -77,70 +78,68 @@ export default function PdfToImage() {
   };
 
   return (
-    <>
-      <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
-      <Breadcrumb items={['Home', 'Image Tools', 'PDF to Image']} />
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['pdf-to-image']?.title ?? 'PDF to Image'}</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-to-image']?.description ?? 'Convert PDF pages into high-quality JPEG or PNG images.'}</p>
-      
-      <FileUpload accept={['.pdf']} maxSizeMB={50} onFiles={setFiles} />
-      
-      {files.length > 0 && (
-        <div style={{ marginTop: 24, padding: 24, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
-            <div>
-              <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 500, marginBottom: 12 }}>Format</h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                {([
-                  { value: 'image/jpeg', label: 'JPEG' },
-                  { value: 'image/png',  label: 'PNG' },
-                ] as const).map(({ value, label }) => (
-                  <label
-                    key={value}
-                    style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', padding: '8px 12px', borderRadius: 8, transition: 'background 120ms ease' }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-elevated)'; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
-                  >
-                    <input type="radio" checked={format === value} onChange={() => setFormat(value)} style={{ width: 15, height: 15 }} />
-                    <span>{label}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-            <div>
-              <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 500, marginBottom: 12 }}>Resolution</h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-                  <input type="radio" checked={scale === 1} onChange={() => setScale(1)} style={{ accentColor: 'var(--accent)' }} />
-                  <span style={{ fontSize: 'var(--text-sm)' }}>Standard (72 DPI)</span>
-                </label>
-                <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-                  <input type="radio" checked={scale === 2} onChange={() => setScale(2)} style={{ accentColor: 'var(--accent)' }} />
-                  <span style={{ fontSize: 'var(--text-sm)' }}>High (144 DPI)</span>
-                </label>
-                <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-                  <input type="radio" checked={scale === 3} onChange={() => setScale(3)} style={{ accentColor: 'var(--accent)' }} />
-                  <span style={{ fontSize: 'var(--text-sm)' }}>Maximum (216 DPI)</span>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+    <ToolPageLayout
+      breadcrumb={['Home', 'Image Tools', 'PDF to Image']}
+      title={t.tools['pdf-to-image']?.title ?? 'PDF to Image'}
+      description={t.tools['pdf-to-image']?.description ?? 'Convert PDF pages into high-quality JPEG or PNG images.'}
+      seoSlug="pdf-to-image"
+    >
+      <ToolWorkspace>
+        <FileUpload accept={['.pdf']} maxSizeMB={50} onFiles={setFiles} />
 
-      {files.length > 0 && !isProcessing && (
-        <button onClick={handleConvert} disabled={isProcessing}
-          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer', width: '100%' }}>
-          Extract Images
-        </button>
-      )}
-      
-      {isProcessing && <ProgressBar progress={progress} label="Rendering pages..." />}
-      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 'var(--text-sm)' }}>{error}</p>}
-      {result && <ResultPanel {...result} />}
-      <AdSlot type="horizontal" />
-    </div>
-    <ToolPageSEO internalSlug="pdf-to-image" />
-  </>
+        {files.length > 0 && (
+          <ToolCard title="FORMAT & RESOLUTION">
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+              <div>
+                <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 500, marginBottom: 12 }}>Format</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                  {([
+                    { value: 'image/jpeg', label: 'JPEG' },
+                    { value: 'image/png',  label: 'PNG' },
+                  ] as const).map(({ value, label }) => (
+                    <label
+                      key={value}
+                      style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', padding: '8px 12px', borderRadius: 8, transition: 'background 120ms ease' }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-elevated)'; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+                    >
+                      <input type="radio" checked={format === value} onChange={() => setFormat(value)} style={{ width: 15, height: 15 }} />
+                      <span>{label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 500, marginBottom: 12 }}>Resolution</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+                    <input type="radio" checked={scale === 1} onChange={() => setScale(1)} style={{ accentColor: 'var(--accent)' }} />
+                    <span style={{ fontSize: 'var(--text-sm)' }}>Standard (72 DPI)</span>
+                  </label>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+                    <input type="radio" checked={scale === 2} onChange={() => setScale(2)} style={{ accentColor: 'var(--accent)' }} />
+                    <span style={{ fontSize: 'var(--text-sm)' }}>High (144 DPI)</span>
+                  </label>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+                    <input type="radio" checked={scale === 3} onChange={() => setScale(3)} style={{ accentColor: 'var(--accent)' }} />
+                    <span style={{ fontSize: 'var(--text-sm)' }}>Maximum (216 DPI)</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </ToolCard>
+        )}
+
+        {files.length > 0 && !isProcessing && (
+          <ToolButton variant="primary" fullWidth onClick={handleConvert} disabled={isProcessing}>
+            Extract Images
+          </ToolButton>
+        )}
+
+        {isProcessing && <ToolProgressBar progress={progress} label="Rendering pages..." />}
+        {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{error}</p>}
+        {result && <ResultPanel {...result} />}
+      </ToolWorkspace>
+    </ToolPageLayout>
   );
 }

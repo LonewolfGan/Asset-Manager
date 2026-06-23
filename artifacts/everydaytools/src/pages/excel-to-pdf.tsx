@@ -1,10 +1,12 @@
 import { useState, useRef } from 'react';
-import AdSlot from '@/components/AdSlot';
-import Breadcrumb from '@/components/Breadcrumb';
-import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { sanitizeHTML } from '@/utils/sanitize';
+import ToolPageLayout from '@/components/ToolPageLayout';
+import {
+  ToolWorkspace, ToolCard, ToolButton, ToolBadge,
+  ToolStat, ToolProgressBar, ToolEmptyState,
+} from '@/components/ToolContent';
 
 export default function ExcelToPdf() {
   const { t } = useLocale();
@@ -106,12 +108,13 @@ export default function ExcelToPdf() {
   };
 
   return (
-    <>
-      <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
-        <Breadcrumb items={['Home', 'Excel & Spreadsheets', title]} />
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{title}</h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{desc}</p>
-
+    <ToolPageLayout
+      breadcrumb={['Home', 'Excel & Spreadsheets', title]}
+      title={title}
+      description={desc}
+      seoSlug="excel-to-pdf"
+    >
+      <ToolWorkspace>
         <div
           onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
           onDragLeave={() => setIsDragging(false)}
@@ -143,22 +146,10 @@ export default function ExcelToPdf() {
         )}
 
         {file && status !== 'processing' && (
-          <button onClick={convert}
-            style={{ marginTop: 16, width: '100%', padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer' }}>
-            {t.common.convertToPdf}
-          </button>
+          <ToolButton variant="primary" fullWidth onClick={convert}>{t.common.convertToPdf}</ToolButton>
         )}
 
-        {status === 'processing' && (
-          <div style={{ marginTop: 16, padding: 16, background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>
-              <span>{t.common.converting}</span><span style={{ fontFamily: 'var(--font-mono)' }}>{progress}%</span>
-            </div>
-            <div style={{ height: 6, background: 'var(--bg-elevated)', borderRadius: 3, overflow: 'hidden' }}>
-              <div style={{ width: `${progress}%`, height: '100%', background: 'var(--accent)', transition: 'width 0.3s' }} />
-            </div>
-          </div>
-        )}
+        {status === 'processing' && <ToolProgressBar progress={progress} label={t.common.converting} />}
 
         {status === 'error' && (
           <div style={{ marginTop: 16, padding: 14, background: 'var(--bg-surface)', border: '1px solid var(--danger,#dc2626)', borderRadius: 'var(--radius)', color: 'var(--danger,#dc2626)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)' }}>{error}</div>
@@ -170,9 +161,7 @@ export default function ExcelToPdf() {
             <button onClick={download} style={{ padding: '10px 20px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer' }}>{t.common.downloadPdf}</button>
           </div>
         )}
-        <AdSlot type="horizontal" />
-      </div>
-      <ToolPageSEO internalSlug="excel-to-pdf" />
-    </>
+      </ToolWorkspace>
+    </ToolPageLayout>
   );
 }

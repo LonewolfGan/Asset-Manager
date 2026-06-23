@@ -44,9 +44,19 @@ Thumbs.db
 .cursor/rules/nx-rules.mdc
 .github/instructions/nx.instructions.md
 
+# Python cache (generated in some tool projects)
+__pycache__/
+*.pyc
+
 # Replit
 .cache/
 .local/
+
+# Playwright MCP artifacts (screenshots, logs)
+.playwright-mcp/
+
+# Claude Code worktrees (auto-generated agent isolation)
+.claude/worktrees/
 
 # Environment & secrets — never commit these
 .env
