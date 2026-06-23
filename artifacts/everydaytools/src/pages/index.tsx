@@ -434,7 +434,7 @@ function HomeHero() {
               display: "block",
               fontFamily: "var(--font-hero)",
               fontSize: "clamp(44px, 10.5vw, 124px)",
-              fontWeight: 300,
+              fontWeight: 450,
               color: "var(--hero-watermark)",
               letterSpacing: "0.12em",
               lineHeight: 1.05,
@@ -502,7 +502,7 @@ function HomeHero() {
                   className="hero-pill"
                   style={{
                     display: "inline-block",
-                    padding: "6px 14px",
+                    padding: "9px 20px",
                     borderRadius: 100,
                     background: "var(--hero-tag-bg)",
                     color: "var(--hero-tag-text)",
@@ -531,7 +531,7 @@ function HomeHero() {
                   className="hero-pill"
                   style={{
                     display: "inline-block",
-                    padding: "6px 14px",
+                    padding: "9px 20px",
                     borderRadius: 100,
                     background: "var(--hero-tag-bg)",
                     color: "var(--hero-tag-text)",
