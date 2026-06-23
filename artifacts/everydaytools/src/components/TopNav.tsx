@@ -5,25 +5,11 @@ import { useLocale } from "@/hooks/use-locale";
 import { trackLanguageChanged } from "@/lib/analytics";
 import SearchModal from "@/components/SearchModal";
 import { tools } from "@/config/tools.config";
-import { FormatIcon } from "@/components/FormatIcon";
-import { ACTION_SLUGS } from "@/lib/tool-icon-data";
 import type { LucideIcon } from "lucide-react";
 
 const SLUG_ICON_MAP: Record<string, LucideIcon> = {};
-const SLUG_FORMATS_MAP: Record<string, string[]> = {};
 for (const tool of tools) {
   SLUG_ICON_MAP[tool.slug] = tool.icon as LucideIcon;
-  SLUG_FORMATS_MAP[tool.slug] = (tool.formats ?? []) as string[];
-}
-
-function NavToolIcon({ slug, size }: { slug: string; size: "sm" }) {
-  const formats = SLUG_FORMATS_MAP[slug] ?? [];
-  const isConversion = !ACTION_SLUGS.has(slug) && formats.length >= 2;
-  if (isConversion) {
-    return <FormatIcon sourceFormat={formats[0]} targetFormat={formats[1]} size={size} />;
-  }
-  const IconComp = SLUG_ICON_MAP[slug];
-  return IconComp ? <IconComp size={14} strokeWidth={1.5} style={{ flexShrink: 0 }} /> : null;
 }
 
 type NavEntry = { href: string } | null;
@@ -241,7 +227,7 @@ function NavDropdown({
                         (e.currentTarget as HTMLElement).style.color = currentPath === entry.href ? "var(--accent)" : "var(--text-secondary)";
                       }}
                     >
-                      <NavToolIcon slug={entry.href.slice(1)} size="sm" />
+                      {(() => { const I = SLUG_ICON_MAP[entry.href.slice(1)]; return I ? <I size={14} strokeWidth={1.5} style={{ flexShrink: 0 }} /> : null; })()}
                       {linkLabel(entry.href)}
                     </Link>
                   ) : (
@@ -331,7 +317,7 @@ function MobileDrawer({ open, onClose, onOpenSearch, currentPath }: { open: bool
                   <div style={{ paddingBottom: 6 }}>
                     {allLinks.map((entry) => (
                       <Link key={entry.href} href={entry.href} onClick={onClose} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 28px", fontFamily: "var(--font-ui)", fontSize: "var(--text-sm)", color: currentPath === entry.href ? "var(--accent)" : "var(--text-secondary)", textDecoration: "none", fontWeight: currentPath === entry.href ? 500 : 400, overflow: "visible" }}>
-                        <NavToolIcon slug={entry.href.slice(1)} size="sm" />
+                        {(() => { const I = SLUG_ICON_MAP[entry.href.slice(1)]; return I ? <I size={15} strokeWidth={1.5} style={{ flexShrink: 0 }} /> : null; })()}
                         {linkLabel(entry.href)}
                       </Link>
                     ))}

@@ -4,8 +4,6 @@ import { Helmet } from "react-helmet-async";
 import { tools } from "@/config/tools.config";
 import { useLocale } from "@/hooks/use-locale";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { FormatIcon } from "@/components/FormatIcon";
-import { ACTION_SLUGS } from "@/lib/tool-icon-data";
 import type { LucideIcon } from "lucide-react";
 import {
   Bookmark, BookmarkCheck,
@@ -204,21 +202,10 @@ const DASH_TOOLS: DashTool[] = tools.map((t) => ({
   formats: (t.formats ?? []) as string[],
 }));
 
-/* ── Icon renderer: Lucide for actions, FormatIcon overlay for conversions */
+/* ── Icon renderer ─────────────────────────────────────────────────────────── */
 function ToolIconContent({ tool }: { tool: DashTool }) {
-  const { Icon, slug, formats } = tool;
-
-  if (ACTION_SLUGS.has(slug) || formats.length === 0) {
-    return <Icon size={22} strokeWidth={1.6} />;
-  }
-
-  return (
-    <FormatIcon
-      sourceFormat={formats[0]}
-      targetFormat={formats[1] ?? ""}
-      size="md"
-    />
-  );
+  const { Icon } = tool;
+  return <Icon size={22} strokeWidth={1.6} />;
 }
 
 
@@ -470,7 +457,7 @@ function HomeHero() {
               lineHeight: 0.88,
             }}
           >
-            {isFR ? "Outils" : "Tools"}
+            {"Tools"}
           </span>
         </h1>
 
