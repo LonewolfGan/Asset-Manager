@@ -464,16 +464,18 @@ export default function TopNav() {
             data-testid="search-input"
             style={{
               width: 220,
+              height: 34,
               alignItems: "center",
               gap: 8,
               background: "var(--bg-elevated)",
               border: "1px solid var(--border)",
               borderRadius: "var(--radius-input)",
-              padding: "7px 12px",
+              padding: "0 12px",
               cursor: "pointer",
               transition: "border-color 120ms ease",
               fontFamily: "var(--font-ui)",
               textAlign: "left",
+              boxSizing: "border-box",
             }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border-strong)"; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; }}
@@ -489,7 +491,7 @@ export default function TopNav() {
           {/* Right actions */}
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: 8 }}>
             {/* Locale */}
-            <div className="hidden lg:flex" data-testid="lang-switcher" style={{ alignItems: "center", border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
+            <div className="hidden lg:flex" data-testid="lang-switcher" style={{ alignItems: "center", height: 34, border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden", boxSizing: "border-box" }}>
               {(["EN", "FR"] as const).map((lang, i) => (
                 <button
                   key={lang}
@@ -500,7 +502,8 @@ export default function TopNav() {
                     color: lang === locale ? "var(--text-primary)" : "var(--text-secondary)",
                     border: "none",
                     borderLeft: i === 1 ? "1px solid var(--border)" : "none",
-                    padding: "5px 10px",
+                    padding: "0 10px",
+                    height: "100%",
                     fontFamily: "var(--font-mono)",
                     fontSize: 'var(--text-xs)',
                     fontWeight: 500,
