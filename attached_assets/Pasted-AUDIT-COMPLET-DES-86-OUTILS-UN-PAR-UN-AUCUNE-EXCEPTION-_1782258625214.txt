@@ -1,0 +1,107 @@
+AUDIT COMPLET DES 86 OUTILS — UN PAR UN, AUCUNE EXCEPTION
+
+Objectif : que les 86 outils soient prêts pour de vrais utilisateurs dès 
+aujourd'hui, sans aucune erreur, avec une expérience rapide et fiable. 
+Procède outil par outil, pas par lot global, pour ne rien manquer.
+
+MÉTHODE DE TRAVAIL
+
+1. Fais d'abord la liste complète des 86 outils (chemin de fichier / route 
+   pour chacun), et travaille-les dans cet ordre, un par un, en cochant 
+   chaque outil une fois validé. Ne passe au suivant qu'une fois le 
+   précédent confirmé fonctionnel.
+
+2. Pour CHAQUE outil, vérifie dans cet ordre :
+   
+   a) Fonctionnel de base
+      - L'upload/input fonctionne (drag & drop ET bouton classique)
+      - Le traitement (conversion, compression, etc.) aboutit à un 
+        résultat correct
+      - Le téléchargement du résultat fonctionne
+      - Teste avec un fichier valide ET un cas limite (fichier vide, 
+        fichier corrompu, fichier trop gros) pour vérifier la gestion 
+        d'erreur
+   
+   b) Gestion d'erreur
+      - Si le fichier est dans le mauvais format → message d'erreur clair, 
+        pas de crash silencieux ni d'écran blanc
+      - Si le traitement échoue → message d'erreur explicite à 
+        l'utilisateur avec une action possible (réessayer, choisir un 
+        autre fichier)
+      - Aucune erreur ne doit apparaître seulement dans la console sans 
+        retour visuel à l'utilisateur
+   
+   c) Performance
+      - Mesure le temps de traitement réel pour un fichier de taille 
+        moyenne (ex: PDF de 5-10 pages, image de quelques Mo)
+      - Identifie et corrige les goulots d'étranglement évidents 
+        (traitement bloquant le thread principal, absence de web worker 
+        pour les tâches lourdes côté client, requêtes réseau redondantes)
+      - L'objectif est un traitement aussi rapide que possible côté 
+        client sans dégrader la qualité du résultat — n'invente pas de 
+        chiffre de comparaison avec la concurrence, optimise et mesure 
+        seulement ce qui est mesurable chez nous
+   
+   d) UI/UX pendant le traitement
+      - Branche le composant de loading state (voir section suivante) 
+        sur cet outil
+      - Vérifie que l'utilisateur ne peut pas double-cliquer / relancer 
+        le traitement pendant qu'il est en cours (désactive le bouton)
+
+3. Note chaque outil testé dans un résumé final : statut (OK / corrigé / 
+   bug trouvé et fixé), avec une ligne par outil.
+
+SYSTÈME DE LOADING STATE RÉUTILISABLE
+
+Crée un composant unique <ToolLoadingState> (ou équivalent dans la stack 
+du projet) qui sera utilisé par TOUS les outils nécessitant un traitement, 
+au lieu que chaque outil ait son propre loader codé en dur.
+
+Spécifications du composant :
+- Spinner animé (cohérent avec le design system du site, couleur d'accent 
+  déjà définie)
+- Progress bar si le traitement le permet (ex: compression, conversion 
+  multi-pages) — sinon une barre indéterminée animée si on ne peut pas 
+  calculer un vrai pourcentage
+- Messages d'étape qui changent dynamiquement pendant le traitement, par 
+  exemple :
+  1. "Lecture du fichier..."
+  2. "Conversion en cours..."
+  3. "Finalisation..."
+  4. "Presque terminé..."
+  Le composant doit accepter une liste de messages en props, pour que 
+  chaque outil puisse personnaliser ses propres étapes selon son 
+  traitement réel (ex: OCR aura "Analyse du texte..." plutôt que 
+  "Conversion en cours...")
+- État d'erreur intégré au même composant : si le traitement échoue, le 
+  composant doit pouvoir afficher un état d'erreur clair avec un bouton 
+  "Réessayer", plutôt que de devoir gérer ça séparément dans chaque outil
+- Le composant doit être accessible (aria-live pour annoncer les 
+  changements d'état aux lecteurs d'écran, aria-busy pendant le chargement)
+
+Exemple de structure de props attendue :
+<ToolLoadingState 
+  status="loading" // "idle" | "loading" | "success" | "error"
+  progress={45} // optionnel, 0-100, undefined = barre indéterminée
+  steps={["Lecture du fichier...", "Conversion en cours...", "Finalisation..."]}
+  currentStep={1}
+  errorMessage="Le fichier n'a pas pu être traité."
+  onRetry={() => {}}
+/>
+
+INTÉGRATION
+
+Une fois le composant créé, intègre-le dans CHAQUE outil qui a un 
+traitement asynchrone (donc probablement la majorité des 86), en 
+remplaçant tout loader existant codé en dur par ce composant unique. 
+Adapte juste les "steps" (messages d'étape) selon la logique propre à 
+chaque outil.
+
+LIVRABLE FINAL
+
+À la fin, donne-moi :
+1. La liste des 86 outils avec leur statut (OK / corrigé / bug trouvé)
+2. La liste des bugs trouvés et corrigés, avec une ligne de description 
+   par bug
+3. Confirmation que le composant <ToolLoadingState> est bien intégré 
+   partout où un traitement asynchrone existe
