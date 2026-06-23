@@ -682,38 +682,6 @@ function CategorySection({
   return (
     <section id={`cat-${cat.key}`} style={{ marginBottom: 40 }}>
       <div style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 10,
-        marginBottom: 14,
-      }}>
-        <div style={{
-          width: 3,
-          height: 16,
-          borderRadius: 2,
-          background: cat.color,
-          flexShrink: 0,
-        }} />
-        <h2 style={{
-          fontSize: "11px",
-          fontWeight: 700,
-          letterSpacing: "0.1em",
-          textTransform: "uppercase",
-          color: "var(--text-secondary)",
-          margin: 0,
-          fontFamily: "var(--font-ui)",
-        }}>
-          {label}
-        </h2>
-        <span style={{
-          fontSize: "11px",
-          color: "var(--text-tertiary)",
-          fontFamily: "var(--font-mono)",
-        }}>
-          {tools.length}
-        </span>
-      </div>
-      <div style={{
         display: "grid",
         gridTemplateColumns: isMobile
           ? "repeat(2, 1fr)"
