@@ -226,7 +226,7 @@ function ToolCard({
         data-testid="tool-card"
         style={{
           position: "relative",
-          padding: isMobile ? "18px 16px" : "28px",
+          padding: isMobile ? "14px 12px" : "22px",
           borderRadius: "var(--radius-card)",
           border: "1px solid var(--border)",
           background: "var(--bg-surface)",
@@ -682,13 +682,7 @@ function CategorySection({
 
   return (
     <section id={`cat-${cat.key}`} style={{ marginBottom: 40 }}>
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: isMobile
-          ? "repeat(2, 1fr)"
-          : "repeat(auto-fill, minmax(280px, 1fr))",
-        gap: 24,
-      }}>
+      <div className="tool-grid">
         {tools.map((tool) => (
           <ToolCard
             key={tool.slug}
@@ -787,6 +781,7 @@ export default function DashboardHome() {
 
         {/* Tools area — full width with side padding */}
         <div style={{ padding: "40px 24px 80px" }}>
+        <div className="tool-grid-wrap">
 
 
           {/* Category filter bar */}
@@ -825,13 +820,7 @@ export default function DashboardHome() {
                   {pinnedTools.length}
                 </span>
               </div>
-              <div style={{
-                display: "grid",
-                gridTemplateColumns: isMobile
-                  ? "repeat(2, 1fr)"
-                  : "repeat(auto-fill, minmax(280px, 1fr))",
-                gap: 24,
-              }}>
+              <div className="tool-grid">
                 {pinnedTools.map((tool) => {
                   const cat = CATEGORY_MAP[tool.categoryKey] ?? CATEGORIES[0];
                   return (
@@ -879,13 +868,7 @@ export default function DashboardHome() {
 
           {/* Flat search grid */}
           {isSearching && filteredTools.length > 0 && (
-            <div style={{
-              display: "grid",
-              gridTemplateColumns: isMobile
-                ? "repeat(2, 1fr)"
-                : "repeat(auto-fill, minmax(280px, 1fr))",
-              gap: 24,
-            }}>
+            <div className="tool-grid">
               {filteredTools.map((tool) => {
                 const cat = CATEGORY_MAP[tool.categoryKey] ?? CATEGORIES[0];
                 return (
@@ -903,13 +886,7 @@ export default function DashboardHome() {
 
           {/* All tools flat grid (no category sections) */}
           {!isSearching && activeKey === null && (
-            <div style={{
-              display: "grid",
-              gridTemplateColumns: isMobile
-                ? "repeat(2, 1fr)"
-                : "repeat(auto-fill, minmax(280px, 1fr))",
-              gap: 24,
-            }}>
+            <div className="tool-grid">
               {DASH_TOOLS.map((tool) => {
                 const cat = CATEGORY_MAP[tool.categoryKey] ?? CATEGORIES[0];
                 return (
@@ -938,6 +915,7 @@ export default function DashboardHome() {
                 onTogglePin={togglePin}
               />
             ))}
+        </div>{/* tool-grid-wrap */}
         </div>
       </div>
     </>

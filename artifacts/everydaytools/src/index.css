@@ -603,3 +603,29 @@ input[type="checkbox"]:focus-visible {
     flex-direction: column;
   }
 }
+
+/* Tool card grid — 6 columns desktop, 3 tablet, 2 mobile */
+.tool-grid-wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 1023px) {
+  .tool-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 639px) {
+  .tool-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
