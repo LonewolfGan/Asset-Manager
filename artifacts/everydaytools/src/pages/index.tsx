@@ -424,52 +424,52 @@ function HomeHero() {
         .hero-pill:hover { background: var(--hero-tag-hover) !important; }
       `}</style>
 
-      {/* Title block — constrained width */}
-      <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1 }}>
-        <h1 className="hero-title" style={{ margin: "0 0 0", lineHeight: 1, userSelect: "none" }}>
-          {/* EVERYDAY — ghost/watermark line */}
+      {/* Title block — constrained, centered */}
+      <div style={{ margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1 }}>
+        <h1 className="hero-title" style={{ margin: 0, lineHeight: 1, userSelect: "none" }}>
+          {/* EVERYDAY — ghost line, measured at ~10.5vw in reference */}
           <span
             aria-hidden="true"
             style={{
               display: "block",
               fontFamily: "var(--font-hero)",
-              fontSize: "clamp(38px, 6.5vw, 82px)",
+              fontSize: "clamp(44px, 10.5vw, 124px)",
               fontWeight: 800,
               color: "var(--hero-watermark)",
-              letterSpacing: "0.14em",
-              lineHeight: 1.1,
+              letterSpacing: "0.12em",
+              lineHeight: 1.05,
               textTransform: "uppercase",
             }}
           >
             EVERYDAY
           </span>
 
-          {/* Tools — dominant bold */}
+          {/* Tools — dominant, measured at ~15vw in reference */}
           <span
             style={{
               display: "block",
               fontFamily: "var(--font-hero)",
-              fontSize: "clamp(60px, 12vw, 148px)",
+              fontSize: "clamp(72px, 15vw, 178px)",
               fontWeight: 900,
               color: "var(--hero-title)",
               letterSpacing: "-0.02em",
-              lineHeight: 0.9,
+              lineHeight: 0.88,
             }}
           >
             {isFR ? "Outils" : "Tools"}
           </span>
         </h1>
 
-        {/* Subtitle */}
+        {/* Subtitle — wider, centered, matches reference paragraph width */}
         <p
           className="hero-sub"
           style={{
             fontFamily: "var(--font-ui)",
-            fontSize: "clamp(14px, 1.15vw, 16px)",
+            fontSize: "clamp(13px, 1.1vw, 15px)",
             color: "var(--hero-subtitle)",
-            margin: "20px auto 0",
+            margin: "22px auto 0",
             lineHeight: 1.7,
-            maxWidth: 660,
+            maxWidth: 520,
           }}
         >
           {isFR
@@ -478,19 +478,17 @@ function HomeHero() {
         </p>
       </div>
 
-      {/* Infinite scroll pills — 2 rows, constrained width + edge fade */}
+      {/* Infinite scroll pills — full viewport width with CSS mask fade on edges */}
       <div
         className="hero-scroll"
         style={{
-          marginTop: 36,
+          marginTop: 32,
           display: "flex",
           flexDirection: "column",
           gap: 8,
-          maxWidth: 860,
-          margin: "36px auto 0",
-          /* CSS mask: fade in from both edges — works in light & dark */
-          WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 9%, black 91%, transparent 100%)",
-          maskImage: "linear-gradient(to right, transparent 0%, black 9%, black 91%, transparent 100%)",
+          /* Edge fade via CSS mask — works equally in light + dark mode */
+          WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%)",
+          maskImage: "linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%)",
           overflow: "hidden",
         }}
       >
