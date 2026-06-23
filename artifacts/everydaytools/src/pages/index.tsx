@@ -434,7 +434,7 @@ function HomeHero() {
               display: "block",
               fontFamily: "var(--font-hero)",
               fontSize: "clamp(44px, 10.5vw, 124px)",
-              fontWeight: 900,
+              fontWeight: 300,
               color: "var(--hero-watermark)",
               letterSpacing: "0.12em",
               lineHeight: 1.05,
@@ -478,17 +478,18 @@ function HomeHero() {
         </p>
       </div>
 
-      {/* Infinite scroll pills — full viewport width with CSS mask fade on edges */}
+      {/* Infinite scroll pills — 90% width, centered, with edge fade */}
       <div
         className="hero-scroll"
         style={{
-          marginTop: 32,
+          marginTop: 48,
           display: "flex",
           flexDirection: "column",
-          gap: 8,
-          /* Edge fade via CSS mask — works equally in light + dark mode */
-          WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%)",
-          maskImage: "linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%)",
+          gap: 10,
+          width: "90%",
+          margin: "48px auto 0",
+          WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)",
+          maskImage: "linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)",
           overflow: "hidden",
         }}
       >
