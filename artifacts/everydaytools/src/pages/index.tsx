@@ -397,6 +397,7 @@ function HomeHero() {
 
   return (
     <div
+      className="container-wide"
       style={{
         position: "relative",
         overflow: "hidden",
@@ -784,9 +785,9 @@ export default function DashboardHome() {
           <HomeHero />
         )}
 
-        {/* Tools area — vertical padding only; horizontal handled by .tool-grid-wrap */}
+        {/* Tools area — vertical padding only; horizontal handled by container-wide */}
         <div style={{ paddingTop: 40, paddingBottom: 80 }}>
-        <div className="tool-grid-wrap">
+        <div className="container-wide">
 
 
           {/* Category filter bar */}

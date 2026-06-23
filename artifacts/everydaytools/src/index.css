@@ -111,10 +111,6 @@
   /* Spacing scale */
   --content-narrow: 640px;
   --content-mid:    800px;
-  --content-tool:   900px;
-  --content-wide:   1200px;
-  --content-full:   1400px;
-  --tool-padding-x: clamp(32px, 5vw, 80px);
 
   /* Tailwind HSL slots */
   --background:  40 5% 97%;
@@ -590,6 +586,24 @@ input[type="checkbox"]:focus-visible {
   outline-offset: 2px;
 }
 
+/* ─── CONTAINER SYSTEM ─── */
+.container-wide {
+  width: 100%;
+  padding: 0 48px;
+  box-sizing: border-box;
+}
+@media (max-width: 1440px) { .container-wide { padding: 0 32px; } }
+@media (max-width: 768px)  { .container-wide { padding: 0 24px; } }
+
+.container-reading {
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+  box-sizing: border-box;
+}
+
 /* ─── RESPONSIVE TOOL LAYOUT ─── */
 /* Ensure all primary action buttons are full-width on mobile */
 @media (max-width: 480px) {
@@ -605,13 +619,6 @@ input[type="checkbox"]:focus-visible {
 }
 
 /* Tool card grid — fixed columns per breakpoint, iLovePDF-style */
-.tool-grid-wrap {
-  width: 100%;
-  padding: 0 48px;
-}
-@media (max-width: 1440px) { .tool-grid-wrap { padding: 0 32px; } }
-@media (max-width: 768px)  { .tool-grid-wrap { padding: 0 24px; } }
-
 .tool-grid {
   display: grid;
   gap: 16px;

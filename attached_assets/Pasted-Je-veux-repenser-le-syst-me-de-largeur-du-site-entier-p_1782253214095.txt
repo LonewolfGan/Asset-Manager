@@ -1,0 +1,70 @@
+Je veux repenser le système de largeur du site entier pour passer en 
+"full width contrôlé" — pas de max-width qui bride le contenu sur grand 
+écran, mais avec une distinction claire selon le TYPE de contenu.
+
+PRINCIPE GÉNÉRAL
+
+Crée deux variantes de container réutilisables dans tout le site :
+
+1. .container-wide (full width réel)
+   - Pour : grilles de tool cards, listes d'outils, sections avec plusieurs 
+     colonnes, la hero section, les bannières
+   - width: 100%, PAS de max-width
+   - padding latéral responsive (reprend le système qu'on a déjà défini 
+     pour la grille de cards) :
+     padding: 0 48px;  /* ≥1600px */
+     @media (max-width: 1440px) { padding: 0 32px; }
+     @media (max-width: 1024px) { padding: 0 32px; }
+     @media (max-width: 768px)  { padding: 0 24px; }
+
+2. .container-reading (largeur de lecture confortable, centré)
+   - Pour : paragraphes de texte long, descriptions d'outils, contenu 
+     éditorial, blog posts
+   - max-width: 720px (ou 760px selon ce qui rend mieux avec la typo 
+     actuelle)
+   - margin: 0 auto
+   - padding latéral : 0 24px sur mobile pour éviter que le texte touche 
+     les bords
+
+PAGES OUTILS INDIVIDUELLES (ex: /pdf-to-word, /jpg-to-png, etc.)
+
+Ces pages doivent aussi passer en full width, mais avec un layout MIXTE 
+à l'intérieur :
+- Le header de la page outil (titre, description courte, breadcrumb) : 
+  utilise .container-wide pour que le fond/background de la section 
+  s'étende sur toute la largeur, mais le TEXTE à l'intérieur peut être 
+  dans un sous-container de lecture centré si la description est longue
+- La zone d'upload / zone d'action de l'outil (drag & drop, bouton 
+  d'upload) : doit utiliser .container-wide — c'est une zone d'interaction 
+  principale, elle doit profiter de tout l'espace disponible, pas être 
+  coincée dans 720px
+- Si la page a une section FAQ ou "comment ça marche" en texte long : 
+  cette section spécifique peut repasser en .container-reading pour 
+  rester lisible, même si le reste de la page est full width
+
+IMPORTANT — distinction à appliquer partout sur le site :
+- Grilles, listes, zones d'upload/action, hero sections, bannières → 
+  TOUJOURS .container-wide (full width)
+- Blocs de texte long (paragraphes, FAQ, descriptions détaillées, blog) → 
+  TOUJOURS .container-reading (largeur contenue, centré)
+
+IMPLÉMENTATION
+
+Crée ces deux classes/composants une seule fois dans le design system du 
+site (ex: dans un fichier layout.css ou comme composants <ContainerWide> 
+et <ContainerReading> si la stack est en composants React), puis remplace 
+TOUS les containers existants sur TOUTES les pages par l'un des deux, 
+selon la logique ci-dessus. Ne laisse aucun container avec un max-width 
+"orphelin" codé en dur ailleurs dans le CSS.
+
+Pages à vérifier et corriger :
+- Page d'accueil (hero, grille de tool cards, footer)
+- Toutes les pages outils individuelles (zone d'upload, description, FAQ)
+- Pages de listing par catégorie (PDF Tools, Images, etc.) si elles existent
+- Footer (probablement déjà bien, mais vérifier qu'il n'a pas un max-width 
+  qui contredit le nouveau système)
+
+Une fois fait, fais une passe de vérification visuelle sur au moins 3 
+pages différentes (accueil, une page outil avec upload, une page outil 
+avec FAQ longue) à 1920px et 768px de large pour confirmer que le système 
+hybride fonctionne bien partout.

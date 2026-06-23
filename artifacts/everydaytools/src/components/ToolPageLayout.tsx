@@ -32,10 +32,9 @@ export default function ToolPageLayout({
   return (
     <>
       <div
+        className="container-wide"
         style={{
-          width: '100%',
-          padding: `40px var(--tool-padding-x) 0`,
-          boxSizing: 'border-box',
+          paddingTop: '40px',
         }}
       >
           <Breadcrumb items={breadcrumb} />

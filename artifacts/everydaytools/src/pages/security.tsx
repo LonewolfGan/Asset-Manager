@@ -2,9 +2,7 @@ import { Helmet } from 'react-helmet-async';
 
 const S = {
   page: {
-    maxWidth: '720px',
-    margin: '0 auto',
-    padding: '48px 24px 80px',
+    padding: '48px 0 80px',
     fontFamily: 'var(--font-ui)',
     color: 'var(--text-primary)',
   } as React.CSSProperties,
@@ -76,7 +74,7 @@ export default function Security() {
         <link rel="alternate" hrefLang="x-default" href="https://everydaytools.qzz.io/security" />
       </Helmet>
 
-      <div style={S.page}>
+      <div className="container-reading" style={S.page}>
         <h1 style={S.h1}>Security</h1>
         <p style={S.date}>Updated May 2026</p>
 

@@ -72,7 +72,7 @@ export default function BlogIndex() {
         <script type="application/ld+json">{JSON.stringify(BLOG_LIST_SCHEMA)}</script>
       </Helmet>
 
-      <div style={{ maxWidth: "var(--content-wide)", margin: "0 auto", padding: "40px 24px 80px" }}>
+      <div className="container-reading" style={{ padding: "40px 0 80px" }}>
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 32, fontSize: 13, color: "var(--text-tertiary)" }}>
           <Link href="/" style={{ color: "var(--text-tertiary)", textDecoration: "none" }}>
