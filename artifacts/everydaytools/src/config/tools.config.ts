@@ -6,12 +6,12 @@ import {
   FileDown, Type, FileCode, BookMarked, Pilcrow, FileSymlink, FileOutput, FileInput,
   Globe, ScrollText, FilePlus,
   // Excel & Spreadsheets
-  FileSpreadsheet, AlignJustify, LayoutGrid, Shuffle, Eye,
+  FileSpreadsheet, AlignJustify, LayoutGrid, ArrowLeftRight, Eye,
   // PowerPoint
   Presentation, Images, Monitor,
   // Image Tools
-  Palette, Smartphone, Camera, Phone, ImageDown, ZoomOut, Maximize2, Crop,
-  Image, Wand2, RotateCcw, Pen, Grid2x2,
+  Palette, Smartphone, Camera, Phone, ImageDown, Maximize2, Crop,
+  Image, Wand2, RotateCcw, Grid2x2,
   // Image Format Converters
   ImagePlus, Aperture, Film, PenTool, Scan, CircleDot, Download, FilePlus2,
   Zap, TrendingDown, ArrowDownToLine, ArrowUpRight, Badge, Paintbrush, Ratio,
@@ -60,7 +60,7 @@ export const tools = [
   {slug: 'excel-to-pdf', title: 'Excel to PDF', description: 'Converts Excel spreadsheets to PDF entirely in your browser. Each sheet becomes a page in the output file.', category: 'excel', icon: FileSpreadsheet, formats: ['XLSX','PDF']},
   {slug: 'excel-to-csv', title: 'Excel to CSV', description: 'Exports Excel sheets as comma-separated CSV files. One sheet becomes one CSV file.', category: 'excel', icon: AlignJustify, formats: ['XLSX','CSV']},
   {slug: 'csv-to-excel', title: 'CSV to Excel', description: 'Converts a CSV file into an Excel .xlsx workbook. Column types are detected automatically where possible.', category: 'excel', icon: LayoutGrid, formats: ['CSV','XLSX']},
-  {slug: 'csv-to-json', title: 'CSV ↔ JSON', description: 'Switches between CSV and JSON formats. Paste either one and get the other — headers become keys.', category: 'excel', icon: Shuffle, formats: ['CSV','JSON']},
+  {slug: 'csv-to-json', title: 'CSV ↔ JSON', description: 'Switches between CSV and JSON formats. Paste either one and get the other — headers become keys.', category: 'excel', icon: ArrowLeftRight, formats: ['CSV','JSON']},
   {slug: 'csv-viewer', title: 'CSV Viewer', description: 'Loads a CSV and displays it as a sortable table. Nothing gets uploaded — the file stays in your browser the whole time.', category: 'excel', icon: Eye, formats: ['CSV']},
 
   // PowerPoint
@@ -74,13 +74,13 @@ export const tools = [
   {slug: 'heic-to-png', title: 'HEIC to PNG', description: 'Converts HEIC photos to PNG format. PNG gives lossless quality and works in basically every image viewer.', category: 'image', icon: Camera, formats: ['HEIC','PNG']},
   {slug: 'heic-to-webp', title: 'HEIC to WebP', description: 'Converts HEIC photos to WebP. WebP gives smaller file sizes than JPEG with similar visual quality.', category: 'image', icon: Phone, formats: ['HEIC','WEBP']},
   {slug: 'heic-to-pdf', title: 'HEIC to PDF', description: 'Packages HEIC photos into a PDF document. Useful for sharing iPhone photos with people who need a PDF specifically.', category: 'image', icon: ImageDown, formats: ['HEIC','PDF']},
-  {slug: 'image-compress', title: 'Compress Image', description: 'Reduces image file size using a quality slider. Shows you the before and after file size as you adjust.', category: 'image', icon: ZoomOut, formats: ['JPG','PNG','WEBP']},
+  {slug: 'image-compress', title: 'Compress Image', description: 'Reduces image file size using a quality slider. Shows you the before and after file size as you adjust.', category: 'image', icon: Minimize2, formats: ['JPG','PNG','WEBP']},
   {slug: 'image-resize', title: 'Resize Image', description: 'Resizes images by pixel dimensions or by percentage. You can lock the aspect ratio or stretch it freely.', category: 'image', icon: Maximize2, formats: ['PNG','JPG','WEBP']},
   {slug: 'image-crop', title: 'Crop Image', description: 'Crops images using drag handles. Includes common aspect ratio presets like 1:1, 16:9, and 4:3.', category: 'image', icon: Crop, formats: ['PNG','JPG','WEBP']},
   {slug: 'image-to-pdf', title: 'Image to PDF', description: 'Combines one or more images into a single PDF. Add multiple images and reorder them before generating.', category: 'image', icon: Image, formats: ['IMG','PDF']},
   {slug: 'background-remover', title: 'Background Remover', description: 'Removes image backgrounds using an AI model that runs on your device. The model downloads once and processes everything locally — nothing is sent to a server.', category: 'image', icon: Wand2, formats: ['PNG','JPG']},
-  {slug: 'flip-rotate-image', title: 'Flip & Rotate Image', description: 'Flips images horizontally or vertically, or rotates them by any angle. Useful for fixing phone photos that came out sideways.', category: 'image', icon: RotateCcw, formats: ['PNG','JPG','WEBP']},
-  {slug: 'watermark-image', title: 'Add Watermark', description: 'Adds a text watermark to an image. You control the position, font size, opacity, and color.', category: 'image', icon: Pen, formats: ['PNG','JPG','WEBP']},
+  {slug: 'flip-rotate-image', title: 'Flip & Rotate Image', description: 'Flips images horizontally or vertically, or rotates them by any angle. Useful for fixing phone photos that came out sideways.', category: 'image', icon: RotateCw, formats: ['PNG','JPG','WEBP']},
+  {slug: 'watermark-image', title: 'Add Watermark', description: 'Adds a text watermark to an image. You control the position, font size, opacity, and color.', category: 'image', icon: Stamp, formats: ['PNG','JPG','WEBP']},
   {slug: 'favicon-generator', title: 'Favicon Generator', description: 'Generates a full set of favicon files from any image. Downloads as a ZIP with PNG sizes and an .ico file ready to use.', category: 'image', icon: Grid2x2, formats: ['PNG','ICO']},
 
   // Image Conversion (format-specific pages)
