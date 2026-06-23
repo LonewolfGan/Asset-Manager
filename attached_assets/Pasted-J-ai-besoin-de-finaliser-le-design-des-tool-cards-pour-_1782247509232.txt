@@ -1,0 +1,91 @@
+J'ai besoin de finaliser le design des tool cards pour qu'elles soient un vrai 
+carré 1:1 (largeur = hauteur), exactement comme sur iLovePDF.com, sans espace 
+vide qui se remarque en bas.
+
+1. CSS DE LA GRILLE ET DES CARDS
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.tool-card {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #eee;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+}
+
+.tool-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.tool-card .icon-square {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tool-card h3 {
+  margin: 16px 0 8px 0;
+  flex-shrink: 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.tool-card p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+IMPORTANT : 
+- Ne mets PAS justify-content: space-between ou center sur .tool-card
+- Ne mets PAS de height ou min-height fixe sur le <p>
+- Le contenu doit rester en flow naturel du haut vers le bas (flex-start, 
+  le défaut). L'espace restant en bas devient simplement du padding, et comme 
+  TOUTES les cards ont la même taille (aspect-ratio 1:1), ça ne se remarque 
+  pas — il n'y a pas de comparaison possible entre une card "trop vide" et 
+  une autre "bien remplie".
+
+2. UNIFORMISER LA LONGUEUR DES DESCRIPTIONS
+
+Passe en revue TOUTES les descriptions des tool cards du site. Chacune doit 
+faire environ 18-25 mots (2-3 lignes de texte), pas plus, pas moins. 
+
+Utilise le skill humanizer pour étoffer les descriptions actuellement trop 
+courtes (moins de 15 mots), en ajoutant du contexte d'usage réel ou un 
+bénéfice concret — jamais des mots de remplissage artificiels. Garde le même 
+ton que les descriptions déjà correctes du site.
+
+Exemple de ce qui est attendu :
+Avant (trop court, 9 mots) : "Sign yourself or request electronic signatures 
+from others."
+Après (20 mots) : "Sign yourself or request electronic signatures from 
+others no printing, scanning, or paperwork involved. Add signatures from 
+any device in just seconds."
+
+Si une description est déjà trop longue (plus de 28 mots), raccourcis-la 
+plutôt pour qu'elle tienne sur 2-3 lignes max sans dépasser de la card.
+
+
+
+4. VÉRIFICATION FINALE
+
+Une fois les changements faits, vérifie que :
+- Toutes les cards ont exactement la même largeur ET hauteur (vrai carré)
+- Aucune card n'a un espace vide qui choque visuellement par rapport aux autres
+- Le texte ne dépasse jamais du carré (overflow: hidden en sécurité, mais 
+  idéalement le texte tient naturellement dans les 32px de padding)
