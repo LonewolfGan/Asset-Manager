@@ -400,32 +400,14 @@ function HomeHero() {
         position: "relative",
         overflow: "hidden",
         textAlign: "center",
-        padding: "clamp(60px, 8vw, 90px) 24px clamp(48px, 6vw, 60px)",
-        marginLeft: "calc(-50vw + 50%)",
-        marginRight: "calc(-50vw + 50%)",
+        paddingTop: "clamp(52px, 7vw, 80px)",
+        paddingBottom: "clamp(40px, 5vw, 56px)",
         background: "var(--hero-bg)",
       }}
     >
-      {/* Subtle diagonal geometric pattern */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          inset: 0,
-          background: `repeating-linear-gradient(
-            45deg,
-            transparent,
-            transparent 40px,
-            rgba(128,128,128,0.03) 40px,
-            rgba(128,128,128,0.03) 41px
-          )`,
-          pointerEvents: "none",
-        }}
-      />
-
       <style>{`
         @keyframes hero-fade-in-up {
-          from { opacity: 0; transform: translateY(14px); }
+          from { opacity: 0; transform: translateY(12px); }
           to   { opacity: 1; transform: translateY(0); }
         }
         @keyframes et-scroll-left {
@@ -436,44 +418,42 @@ function HomeHero() {
           0%   { transform: translateX(-50%); }
           100% { transform: translateX(0); }
         }
-        .hero-title {
-          animation: hero-fade-in-up 0.5s ease both;
-        }
-        .hero-subtitle {
-          animation: hero-fade-in-up 0.5s ease 0.1s both;
-        }
-        .hero-scroll {
-          animation: hero-fade-in-up 0.5s ease 0.2s both;
-        }
+        .hero-title  { animation: hero-fade-in-up 0.45s ease both; }
+        .hero-sub    { animation: hero-fade-in-up 0.45s ease 0.08s both; }
+        .hero-scroll { animation: hero-fade-in-up 0.45s ease 0.18s both; }
+        .hero-pill:hover { background: var(--hero-tag-hover) !important; }
       `}</style>
 
-      <div style={{ maxWidth: 720, margin: "0 auto", position: "relative", zIndex: 1 }}>
-        {/* Title: "EVERYDAY" as faint ghost line, "Tools" huge bold below */}
-        <h1 className="hero-title" style={{ marginBottom: 20, lineHeight: 1 }}>
+      {/* Title block — constrained width */}
+      <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1 }}>
+        <h1 className="hero-title" style={{ margin: "0 0 0", lineHeight: 1, userSelect: "none" }}>
+          {/* EVERYDAY — ghost/watermark line */}
           <span
             aria-hidden="true"
             style={{
               display: "block",
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(52px, 10vw, 130px)",
-              fontWeight: 900,
-              color: "rgba(0,0,0,0.13)",
-              letterSpacing: "0.08em",
-              lineHeight: 1.05,
-              userSelect: "none",
+              fontFamily: "var(--font-hero)",
+              fontSize: "clamp(38px, 6.5vw, 82px)",
+              fontWeight: 800,
+              color: "var(--hero-watermark)",
+              letterSpacing: "0.14em",
+              lineHeight: 1.1,
+              textTransform: "uppercase",
             }}
           >
             EVERYDAY
           </span>
+
+          {/* Tools — dominant bold */}
           <span
             style={{
               display: "block",
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(80px, 17vw, 190px)",
+              fontFamily: "var(--font-hero)",
+              fontSize: "clamp(60px, 12vw, 148px)",
               fontWeight: 900,
               color: "var(--hero-title)",
-              letterSpacing: "-0.04em",
-              lineHeight: 0.92,
+              letterSpacing: "-0.02em",
+              lineHeight: 0.9,
             }}
           >
             {isFR ? "Outils" : "Tools"}
@@ -482,38 +462,45 @@ function HomeHero() {
 
         {/* Subtitle */}
         <p
-          className="hero-subtitle"
+          className="hero-sub"
           style={{
             fontFamily: "var(--font-ui)",
-            fontSize: "clamp(14px, 1.2vw, 17px)",
+            fontSize: "clamp(14px, 1.15vw, 16px)",
             color: "var(--hero-subtitle)",
-            margin: "0 auto 32px",
-            lineHeight: 1.65,
-            maxWidth: 580,
+            margin: "20px auto 0",
+            lineHeight: 1.7,
+            maxWidth: 660,
           }}
         >
           {isFR
-            ? "Votre navigateur amélioré — plus de 86 outils gratuits pour vos tâches quotidiennes. Convertissez des PDF, éditez des images, formatez du code, sécurisez vos mots de passe — le tout sans quitter votre navigateur. Pas d'inscription, pas de téléchargement. Vos données restent les vôtres."
+            ? "Votre navigateur amélioré — plus de 86 outils gratuits pour vos tâches quotidiennes. Convertissez des PDF, éditez des images, formatez du code, sécurisez vos mots de passe — le tout sans quitter votre navigateur. Pas d'inscription, pas de téléchargement."
             : "Your browser, upgraded — 86+ free tools for everyday tasks. Convert PDFs, edit images, format code, secure passwords, crunch numbers — all without leaving your browser. No sign-up, no uploads. Your data stays yours."}
         </p>
-
       </div>
 
-      {/* Infinite scroll pills — 2 rows scrolling in opposite directions */}
-      <div className="hero-scroll" style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+      {/* Infinite scroll pills — 2 rows, constrained width + edge fade */}
+      <div
+        className="hero-scroll"
+        style={{
+          marginTop: 36,
+          display: "flex",
+          flexDirection: "column",
+          gap: 8,
+          maxWidth: 860,
+          margin: "36px auto 0",
+          /* CSS mask: fade in from both edges — works in light & dark */
+          WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 9%, black 91%, transparent 100%)",
+          maskImage: "linear-gradient(to right, transparent 0%, black 9%, black 91%, transparent 100%)",
+          overflow: "hidden",
+        }}
+      >
         {/* Row 1 — scrolls left */}
         <div style={{ overflow: "hidden" }}>
-          <div
-            style={{
-              display: "flex",
-              gap: 8,
-              width: "fit-content",
-              animation: "et-scroll-left 35s linear infinite",
-            }}
-          >
+          <div style={{ display: "flex", gap: 8, width: "fit-content", animation: "et-scroll-left 36s linear infinite" }}>
             {[...HERO_TAGS, ...HERO_TAGS].map((tag, i) => (
               <Link key={`r1-${i}`} href={tag.route} style={{ textDecoration: "none", flexShrink: 0 }}>
                 <span
+                  className="hero-pill"
                   style={{
                     display: "inline-block",
                     padding: "6px 14px",
@@ -525,14 +512,8 @@ function HomeHero() {
                     fontWeight: 500,
                     whiteSpace: "nowrap",
                     cursor: "pointer",
-                    transition: "background 150ms ease",
                     lineHeight: 1.4,
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.background = "var(--hero-tag-hover)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.background = "var(--hero-tag-bg)";
+                    transition: "background 150ms ease",
                   }}
                 >
                   {tag.label}
@@ -544,17 +525,11 @@ function HomeHero() {
 
         {/* Row 2 — scrolls right */}
         <div style={{ overflow: "hidden" }}>
-          <div
-            style={{
-              display: "flex",
-              gap: 8,
-              width: "fit-content",
-              animation: "et-scroll-right 40s linear infinite",
-            }}
-          >
+          <div style={{ display: "flex", gap: 8, width: "fit-content", animation: "et-scroll-right 42s linear infinite" }}>
             {[...HERO_TAGS, ...HERO_TAGS].map((tag, i) => (
               <Link key={`r2-${i}`} href={tag.route} style={{ textDecoration: "none", flexShrink: 0 }}>
                 <span
+                  className="hero-pill"
                   style={{
                     display: "inline-block",
                     padding: "6px 14px",
@@ -566,14 +541,8 @@ function HomeHero() {
                     fontWeight: 500,
                     whiteSpace: "nowrap",
                     cursor: "pointer",
-                    transition: "background 150ms ease",
                     lineHeight: 1.4,
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.background = "var(--hero-tag-hover)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.background = "var(--hero-tag-bg)";
+                    transition: "background 150ms ease",
                   }}
                 >
                   {tag.label}
@@ -610,6 +579,7 @@ function CategoryFilterBar({
     <div style={{
       display: "flex",
       alignItems: "center",
+      justifyContent: "center",
       gap: 6,
       flexWrap: "wrap",
       marginBottom: 36,
