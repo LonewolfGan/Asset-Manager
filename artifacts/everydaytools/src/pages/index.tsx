@@ -4,9 +4,11 @@ import { Helmet } from "react-helmet-async";
 import { tools } from "@/config/tools.config";
 import { useLocale } from "@/hooks/use-locale";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { FormatIcon } from "@/components/FormatIcon";
+import { ACTION_SLUGS } from "@/lib/tool-icon-data";
 import type { LucideIcon } from "lucide-react";
 import {
-  Bookmark, BookmarkCheck, ArrowDown,
+  Bookmark, BookmarkCheck,
   FileText, FileType2, Table2, MonitorPlay, ImageIcon, Code2, ShieldCheck, Calculator,
 } from "lucide-react";
 
@@ -202,58 +204,20 @@ const DASH_TOOLS: DashTool[] = tools.map((t) => ({
   formats: (t.formats ?? []) as string[],
 }));
 
-/* ── Action tools: use Lucide icon; everything else gets format badges ──── */
-const ACTION_SLUGS = new Set([
-  // PDF actions
-  'pdf-compress', 'pdf-merge', 'pdf-split', 'pdf-rotate',
-  'pdf-unlock', 'pdf-protect', 'pdf-page-numbers', 'pdf-watermark', 'reorder-pdf',
-  // OCR & scanning
-  'ocr',
-  // Image actions
-  'image-compress', 'image-resize', 'image-crop', 'flip-rotate-image',
-  'watermark-image', 'favicon-generator', 'background-remover', 'image-converter',
-  // Privacy
-  'metadata-cleaner', 'ai-text-scrubber', 'checksum',
-  // Text & Code
-  'json-formatter', 'html-formatter', 'base64', 'url-encoder', 'word-counter', 'lorem-ipsum',
-  // Calculators
-  'password-generator', 'percentage-calc', 'unit-converter',
-  'currency-converter', 'qr-code-generator', 'tip-calculator',
-  // Data utilities
-  'csv-viewer', 'csv-to-json',
-]);
-
-/* ── Icon renderer: Lucide for actions, stacked text badges for conversions */
-function ToolIconContent({ tool, cat }: { tool: DashTool; cat: CategoryDef }) {
+/* ── Icon renderer: Lucide for actions, FormatIcon overlay for conversions */
+function ToolIconContent({ tool }: { tool: DashTool }) {
   const { Icon, slug, formats } = tool;
 
   if (ACTION_SLUGS.has(slug) || formats.length === 0) {
     return <Icon size={22} strokeWidth={1.6} />;
   }
 
-  const srcFmt = formats[0];
-  const tgtFmt = formats[1] ?? '';
-
   return (
-    <div style={{
-      display: 'flex', flexDirection: 'column',
-      alignItems: 'center', justifyContent: 'center',
-      gap: 1, lineHeight: 1, width: '100%',
-    }}>
-      <span style={{
-        fontSize: 10, fontWeight: 800, letterSpacing: '-0.5px',
-        fontFamily: 'var(--font-mono)', color: cat.color,
-      }}>
-        {srcFmt}
-      </span>
-      <ArrowDown size={9} strokeWidth={2.5} color={cat.color} />
-      <span style={{
-        fontSize: 9, fontWeight: 700, letterSpacing: '-0.5px',
-        fontFamily: 'var(--font-mono)', color: cat.color, opacity: 0.8,
-      }}>
-        {tgtFmt}
-      </span>
-    </div>
+    <FormatIcon
+      sourceFormat={formats[0]}
+      targetFormat={formats[1] ?? ""}
+      size="md"
+    />
   );
 }
 
@@ -370,7 +334,7 @@ function ToolCard({
             position: "relative",
           }}
         >
-          <ToolIconContent tool={tool} cat={cat} />
+          <ToolIconContent tool={tool} />
         </div>
 
         {/* Name + badge + description — left-aligned, natural top-to-bottom flow */}

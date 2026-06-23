@@ -1,0 +1,81 @@
+Je veux refaire le système d'icônes pour toutes les conversions de format 
+(PNG to WebP, JPG to AVIF, CSV to JSON, Word to PDF, etc.) sur le site, en 
+gardant le même système pour les tool cards ET pour les dropdowns de navbar.
+
+NOUVEAU SYSTÈME D'ICÔNES — "icône générique + badge overlay"
+
+Structure : un carré arrondi avec une icône Lucide générique représentant 
+le TYPE de fichier source, plus un petit badge texte en overlay (coin bas-
+droit) indiquant le FORMAT CIBLE.
+
+1. CARRÉ PRINCIPAL (icône de base)
+   - Taille : 44px sur les tool cards, 32px dans les dropdowns navbar
+   - border-radius cohérent avec le reste du site
+   - Une SEULE couleur d'accent pour tout le site (pas de couleur par 
+     catégorie) — utilise la couleur d'accent déjà définie dans le design 
+     system du site
+   - Icône Lucide générique au centre selon le type de fichier source :
+     * Image (PNG, JPG, GIF, BMP, TIFF, WebP, AVIF, SVG) → icône "Image" 
+       ou "FileImage"
+     * Document texte (DOC, DOCX, TXT, Markdown) → icône "FileText"
+     * PDF → icône "FileText" ou icône PDF dédiée si déjà présente sur 
+       le site
+     * Tableur (CSV, Excel) → icône "Table" ou "FileSpreadsheet"
+     * Données structurées (JSON, XML, HTML) → icône "Code" ou "FileCode"
+
+2. BADGE OVERLAY (format cible)
+   - Position : absolute, bottom: -4px, right: -6px (ajuster selon le 
+     rendu final)
+   - Taille : petit rectangle compact, padding 2px 4px, border-radius 4px
+   - Couleur de fond CONTRASTANTE par rapport au carré principal (ex: si 
+     le carré est bleu clair, le badge est en bleu foncé ou noir/gris foncé)
+   - Texte : le format CIBLE en 3-4 lettres maximum, tout en majuscules, 
+     font-size 9px, font-weight 500, letter-spacing légèrement négatif 
+     (-0.2px) pour compacter
+   - Exemples : "WEBP", "AVIF", "JSON", "PDF", "XLSX", "PNG"
+
+3. CODE DE RÉFÉRENCE (React/JSX, à adapter à la stack du projet)
+
+   <div className="format-icon" style={{ position: 'relative', width: 44, height: 44 }}>
+     <div className="format-icon__base" style={{
+       width: '100%', height: '100%', borderRadius: 10,
+       background: 'var(--accent-color-light)', // une seule couleur d'accent
+       display: 'flex', alignItems: 'center', justifyContent: 'center'
+     }}>
+       <Image size={22} color="var(--accent-color)" />
+     </div>
+     <span className="format-icon__badge" style={{
+       position: 'absolute', bottom: -4, right: -6,
+       background: 'var(--accent-color-dark)',
+       color: 'white',
+       fontSize: 9, fontWeight: 500, letterSpacing: '-0.2px',
+       padding: '2px 4px', borderRadius: 4
+     }}>
+       WEBP
+     </span>
+   </div>
+
+4. VERSION COMPACTE POUR DROPDOWN NAVBAR
+   Réutilise EXACTEMENT le même composant mais à taille réduite :
+   - Carré principal : 28-32px au lieu de 44px
+   - Icône interne : 14-16px au lieu de 22px
+   - Badge : font-size 7-8px, padding 1px 3px
+   
+   Crée ce système comme un composant réutilisable (ex: <FormatIcon 
+   sourceType="image" targetFormat="WEBP" size="md" />) avec une prop 
+   "size" qui accepte "sm" (dropdown) et "md" (tool cards), pour éviter 
+   de dupliquer le code entre la navbar et la grille d'outils.
+
+5. APPLIQUER À TOUS LES OUTILS DE CONVERSION existants sur le site 
+   (images, documents, données) — remplace l'ancien système de badges 
+   texte empilés verticalement (PNG / flèche / WEBP) par ce nouveau 
+   système icône + overlay.
+
+6. Pour les outils qui ne sont PAS des conversions de format (Sign PDF, 
+   Rotate PDF, Compress PDF, Watermark, etc.), GARDE le système actuel 
+   d'icônes Lucide simples représentant l'action — ne touche pas à ces 
+   icônes-là, seulement celles de conversion de format.
+
+Teste le résultat sur au moins 5 outils de conversion différents et sur 
+le dropdown de navbar pour vérifier que le badge reste lisible même en 
+petite taille.
