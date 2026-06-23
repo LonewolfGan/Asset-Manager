@@ -455,7 +455,7 @@ export function ToolPageSEO({ internalSlug }: ToolPageSEOProps) {
     <>
       <SeoMeta tool={tool} locale={locale} />
       <div
-        className="container-reading"
+        className="container-wide"
         style={{
           paddingBottom: "80px",
         }}
