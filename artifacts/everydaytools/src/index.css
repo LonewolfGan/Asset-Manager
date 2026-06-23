@@ -604,28 +604,28 @@ input[type="checkbox"]:focus-visible {
   }
 }
 
-/* Tool card grid — 6 columns desktop, 3 tablet, 2 mobile */
+/* Tool card grid — auto-fit, cards capped at 180–220px wide */
 .tool-grid-wrap {
-  max-width: 1280px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .tool-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(180px, 220px));
   gap: 20px;
+  justify-content: center;
 }
 
-@media (max-width: 1023px) {
-  .tool-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
+.tool-card {
+  aspect-ratio: 1 / 1;
 }
 
-@media (max-width: 639px) {
+@media (max-width: 480px) {
   .tool-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
+  }
+  .tool-card {
+    aspect-ratio: unset;
   }
 }

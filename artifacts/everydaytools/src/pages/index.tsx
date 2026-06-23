@@ -224,6 +224,7 @@ function ToolCard({
     <Link href={tool.route} style={{ textDecoration: "none", display: "block" }}>
       <article
         data-testid="tool-card"
+        className="tool-card"
         style={{
           position: "relative",
           padding: isMobile ? "14px 12px" : "22px",
@@ -239,7 +240,6 @@ function ToolCard({
           alignItems: "flex-start",
           gap: 0,
           textAlign: "left",
-          aspectRatio: "1 / 1",
         }}
         onMouseEnter={(e) => {
           const el = e.currentTarget as HTMLElement;
