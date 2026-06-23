@@ -359,15 +359,6 @@ function ToolCard({
           }}>
             {description}
           </p>
-          <div style={{
-            marginTop: "auto",
-            paddingTop: 10,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-          }}>
-            <span style={{ fontSize: "13px", color: "var(--text-tertiary)", lineHeight: 1 }}>→</span>
-          </div>
         </div>
       </article>
     </Link>
