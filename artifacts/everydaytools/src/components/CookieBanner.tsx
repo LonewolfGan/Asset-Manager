@@ -58,7 +58,7 @@ export default function CookieBanner() {
       }}>
         {t.cookie.message}{' '}
         <strong style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{t.cookie.neverUploaded}</strong>
-        {' — '}
+        {'. '}
         <a
           href="/privacy"
           style={{

@@ -78,106 +78,106 @@ const BADGE_SLUGS = new Set(["background-remover", "ai-text-scrubber"]);
 /* ── Humanized descriptions ───────────────────────────────────────────────── */
 const HUMAN_DESC: Record<string, string> = {
   // PDF Tools
-  "pdf-to-word": "Got a PDF you need to actually edit? Drop it in and get a proper Word document back, with your text, headings, and layout intact. Works well for contracts, reports, and anything you've been stuck copying and pasting by hand.",
-  "pdf-to-text": "Sometimes you just need the words. No boxes, no columns, no formatting getting in the way. Paste the text wherever you need it, or save it as a plain .txt file.",
-  "pdf-to-html": "Converts your PDF into real HTML you can drop straight into a web page or CMS. The output uses clean semantic tags rather than a pile of divs, so it's actually useful. Good for repurposing reports, manuals, or anything you want online.",
-  "pdf-to-epub": "Turn any PDF into an EPUB that reads properly on phones, tablets, and e-readers. PDFs on small screens are miserable; EPUBs reflow the text to fit. Worth trying if you have long documents you want to read comfortably.",
-  "pdf-compress": "Cuts PDF file sizes down without making them look noticeably worse. Useful when a file is too big to email, or when you're uploading to a form with a size limit. No quality settings to fiddle with.",
-  "pdf-merge": "Drag in two or more PDFs and get one combined file back in the order you dropped them. Handy for assembling reports, contracts with attachments, or scanning jobs that came out as separate files.",
-  "pdf-split": "Pull out specific pages or split a big PDF into smaller chunks. If you only need pages 5-12 of a 40-page document, this saves you from sending the whole thing or trying to print select pages.",
-  "pdf-rotate": "Fixes pages that came out sideways from a scanner or a camera photo. Rotate one page or every page at once. You can mix rotations if different pages need different fixes.",
-  "pdf-unlock": "Removes the password restriction from a PDF so you can open, print, or copy from it normally. You'll need the current password to do this. It's not a bypass, just a way to strip the lock off once you're done needing it.",
-  "pdf-protect": "Adds a password to any PDF so it can't be opened without it. Good for sensitive documents you're emailing to someone specific, or anything you want to store securely.",
-  "pdf-page-numbers": "Stamps page numbers onto every page of your PDF. You can choose the position, font size, and starting number. Useful for documents that go to print or anywhere readers need to navigate by page.",
-  "pdf-watermark": "Adds a text watermark across the pages of your PDF. Handy for marking something as DRAFT, CONFIDENTIAL, or with your name before sharing it. You control the text, opacity, and angle.",
-  "pdf-to-image": "Exports each page of your PDF as a PNG or JPEG image. Useful when you need to share a page as a screenshot, embed it in a presentation, or post it somewhere that doesn't accept PDFs.",
-  "pdf-to-excel": "Finds tables in your PDF and converts them into a real spreadsheet with editable cells. Works best on PDFs with clean, structured tables. Scanned tables with OCR are trickier but often come out usable.",
-  "reorder-pdf": "Drag your PDF pages into any order, delete the ones you don't need, and download the result. Useful after scanning a stack of pages in the wrong sequence, or when building a document from multiple sources.",
-  "ocr": "Turns a scanned image or photo of text into real, selectable, copyable text. Works on photos taken with your phone, scanned documents, screenshots of text, basically anything that looks like words but isn't. Processing happens on your device.",
+  "pdf-to-word": "Converts any PDF to an editable Word document. Keeps text, headings, and basic layout intact. Good for contracts, reports, and anything you'd otherwise copy by hand.",
+  "pdf-to-text": "Pulls raw text out of any PDF. No columns, no formatting, just the words. Save as .txt or paste directly into anything.",
+  "pdf-to-html": "Converts your PDF to proper HTML with real headings and paragraphs. Ready to drop into a CMS or webpage without cleanup.",
+  "pdf-to-epub": "Turns any PDF into an EPUB that reflows text on phones and e-readers. Makes long documents comfortable to read on a small screen.",
+  "pdf-compress": "Shrinks PDF file sizes without visible quality loss. Useful when a file is too large to email or exceeds an upload limit.",
+  "pdf-merge": "Combines multiple PDFs into one file. Drag to set the order, merge, and download in a single click.",
+  "pdf-split": "Pulls out specific pages or cuts a large PDF into smaller chunks. No need to send 40 pages when someone only needs a few.",
+  "pdf-rotate": "Fixes sideways or upside-down pages from a scanner or camera. Rotate one page or all at once.",
+  "pdf-unlock": "Strips the password restriction from a PDF once you have the current one. Lets you open, print, or copy from it normally.",
+  "pdf-protect": "Adds a password to any PDF. Useful for sensitive files before emailing, or anything you want stored with a lock on it.",
+  "pdf-page-numbers": "Stamps page numbers onto every page. Choose the position, font size, and which number to start from.",
+  "pdf-watermark": "Adds a text watermark across your PDF pages. Control the text, opacity, and angle. Good for DRAFT or CONFIDENTIAL markings.",
+  "pdf-to-image": "Exports each PDF page as a PNG or JPEG. Useful for sharing a page as a screenshot or embedding it in a presentation.",
+  "pdf-to-excel": "Finds tables in your PDF and puts them into editable spreadsheet cells. Works best on PDFs with clean, structured tables.",
+  "reorder-pdf": "Drag pages into any order, remove the ones you don't need, then download. Helpful after scanning a stack in the wrong sequence.",
+  "ocr": "Reads text from scanned pages, photos, and screenshots. Turns a picture of a page into selectable, copyable text. Runs on your device.",
 
   // Word & Docs
-  "word-to-pdf": "Converts a Word document to PDF and keeps the formatting as-is. Fonts, spacing, tables, headers, all of it. Much more reliable than printing to PDF from Word, especially if you're on a different machine than where the file was made.",
-  "word-to-text": "Strips styles, formatting, and tracked changes out of a DOCX and gives you back the raw text. Good for pasting into another tool without dragging along hidden formatting, or for feeding text into a script.",
-  "word-to-html": "Converts your Word document into clean HTML. The output skips the bloated Microsoft markup and gives you something you'd actually write yourself. Proper headings, paragraphs, and lists. Ready to paste into a CMS or code editor.",
-  "word-to-epub": "Turns your Word document into an EPUB file you can load onto a Kindle, Kobo, or reading app. The text reflows to fit the screen properly, unlike a PDF. Useful for anything long-form you want to read on a device.",
-  "word-to-markdown": "Converts your Word document to Markdown, keeping headings, bold, italic, lists, and links. Saves a lot of manual reformatting if you write in Word but need to publish in a Markdown-based system like GitHub, Hugo, or Notion.",
-  "html-to-markdown": "Takes any HTML and strips it down to clean Markdown. Good for migrating content from a website, or when you've gotten HTML from a rich text editor and need something human-readable. Keeps the structure, drops the tags.",
-  "markdown-to-pdf": "Renders your Markdown into a properly formatted PDF with real headings, code blocks, and paragraphs. Better than copying into a word processor and fighting with styles. Works well for READMEs, documentation, or notes you want to share.",
-  "markdown-to-docx": "Converts Markdown files into Word documents. Headings become proper heading styles, bold stays bold, lists stay lists. Useful when you've written something in Markdown but need to hand it off to someone who lives in Word.",
-  "html-to-pdf": "Renders HTML into a PDF, including styles. Paste a snippet or a full page and download a clean PDF. Useful for capturing web content, generating reports from HTML templates, or archiving pages that might change.",
-  "txt-to-pdf": "Takes a plain text file and wraps it in a clean PDF document with proper margins and line spacing. Good for sharing notes, logs, or anything written in a text editor that you want to look a bit more presentable.",
-  "txt-to-docx": "Converts plain text files into proper Word documents you can format, edit, and share. If you've been writing in a text editor and need to hand something off as a DOCX, this is the fastest path.",
+  "word-to-pdf": "Converts Word documents to PDF, keeping fonts, tables, and spacing as they are. More reliable than printing to PDF from Word.",
+  "word-to-text": "Strips all styles and tracked changes from a DOCX. Leaves raw text clean enough to paste anywhere without hidden formatting.",
+  "word-to-html": "Converts Word documents to clean HTML without Microsoft's bloat. Proper headings, paragraphs, and lists. Ready for a CMS.",
+  "word-to-epub": "Turns a Word document into an EPUB for Kindle, Kobo, or any reading app. Text reflows to fit the screen properly.",
+  "word-to-markdown": "Converts Word documents to Markdown. Headings, bold, italic, and lists carry over. Good for GitHub, Hugo, or Notion.",
+  "html-to-markdown": "Strips HTML down to clean Markdown. Good for migrating web content or cleaning up rich text editor output.",
+  "markdown-to-pdf": "Renders Markdown into a properly formatted PDF with real headings and code blocks. Easier than fighting with styles in a word processor.",
+  "markdown-to-docx": "Converts Markdown files into Word documents. Headings become proper styles, bold stays bold, lists stay lists.",
+  "html-to-pdf": "Renders HTML into a PDF with styles intact. Useful for archiving web content or generating reports from HTML templates.",
+  "txt-to-pdf": "Wraps plain text in a clean PDF with proper margins. Good for sharing notes or logs that need to look presentable.",
+  "txt-to-docx": "Converts plain text into a Word document you can format and share. Fastest path from a text editor to a proper DOCX.",
 
   // Excel & Spreadsheets
-  "excel-to-pdf": "Converts your Excel spreadsheet to PDF while keeping tables, formatting, and charts exactly as they look in the spreadsheet. Good for sharing data with people who shouldn't be able to edit it, or for archiving a snapshot of a file.",
-  "excel-to-csv": "Exports your Excel sheet as a plain CSV file that any tool, database, or script can read. Strips out the Excel-specific stuff and gives you just the data. Works on any sheet in the workbook.",
-  "csv-to-excel": "Takes a CSV file and turns it into a proper Excel spreadsheet with formatted columns and cells. Saves you from importing manually or fighting with the text-import wizard. Drop it in and download the XLSX.",
-  "csv-to-json": "Converts CSV data to JSON, or JSON back to CSV. Useful when one tool expects CSV and another expects JSON, or when you're preparing data for an API. Handles nested fields and arrays where the format allows.",
-  "csv-viewer": "Opens and displays a CSV file in a clean, sortable table. No spreadsheet app required. Useful for quickly checking what's in a file before importing it somewhere.",
+  "excel-to-pdf": "Converts Excel spreadsheets to PDF, keeping tables, charts, and formatting as they appear. Good for sharing data that shouldn't be edited.",
+  "excel-to-csv": "Exports any Excel sheet as a plain CSV any tool or database can read. Strips the Excel-specific parts and leaves just the data.",
+  "csv-to-excel": "Converts CSV files into formatted Excel spreadsheets. Skips the manual import wizard entirely.",
+  "csv-to-json": "Converts CSV to JSON, or JSON back to CSV. Useful when moving data between tools that expect different formats.",
+  "csv-viewer": "Opens any CSV in a clean, sortable table. No spreadsheet app needed.",
 
   // PowerPoint
-  "pptx-to-pdf": "Converts PowerPoint presentations to PDF so anyone can open them without needing PowerPoint installed. Slides come out as they look in the presentation, with fonts, layouts, and images intact.",
-  "pptx-to-images": "Exports every slide from your PowerPoint file as a separate PNG image and packages them in a ZIP. Handy when you need to use slides in a design tool, post them as images, or include them in a document.",
-  "pdf-to-pptx": "Turns PDF pages into PowerPoint slides you can actually edit. Each page becomes a slide with the content placed as editable elements. Useful for repurposing presentations that only exist as PDFs.",
+  "pptx-to-pdf": "Converts PowerPoint presentations to PDF so anyone can view them without PowerPoint. Fonts, layouts, and images come through intact.",
+  "pptx-to-images": "Exports every slide as a separate PNG and packages them in a ZIP. Handy for using slides in design tools or sharing as images.",
+  "pdf-to-pptx": "Turns PDF pages into editable PowerPoint slides. Each page becomes a slide with content you can move and edit.",
 
   // Image Tools
-  "image-converter": "Converts images between PNG, JPEG, WebP, AVIF, BMP, GIF, TIFF, ICO, and SVG. You can convert up to 20 files at once and download the results as a ZIP. All conversion happens in the browser.",
-  "heic-to-jpg": "Converts iPhone HEIC photos to JPEG so they open on Windows, Android, and anywhere else that doesn't support Apple's format. Drag in multiple files and download them all at once.",
-  "heic-to-png": "Converts HEIC photos to PNG for lossless quality with wide compatibility. Good when you want to keep the image quality high and still share the file without HEIC compatibility headaches.",
-  "heic-to-webp": "Converts HEIC photos to WebP format, which is well-supported in modern browsers and gives you smaller file sizes than JPEG. Good for web use when you're starting with iPhone photos.",
-  "heic-to-pdf": "Combines one or more HEIC photos into a single PDF document. Useful for sharing photos from your iPhone in a format anyone can open without needing a special viewer.",
-  "image-compress": "Reduces image file sizes without making the quality loss obvious. Good for shrinking photos before uploading to a website, emailing, or submitting to a form with a file size limit.",
-  "image-resize": "Resizes images to a specific width and height in pixels, or scales them by percentage. You can lock the aspect ratio to avoid distortion. Works on single images or a batch.",
-  "image-crop": "Crops images to a specific area using drag handles in the browser. You can use preset aspect ratios like 1:1, 16:9, or 4:3, or set a custom crop area. What you see is what you get.",
-  "image-to-pdf": "Takes one or more images and combines them into a single PDF document. Useful for sending a batch of photos as one attachment, or for assembling scanned pages into a readable document.",
-  "background-remover": "Removes the background from any photo using AI that runs entirely on your device. Works on portraits, product shots, and most images with a reasonably distinct subject.",
-  "flip-rotate-image": "Flips images horizontally or vertically, or rotates them by any angle. Fixes photos that came out sideways from a camera or a scan, or mirrors images for design purposes.",
-  "watermark-image": "Stamps your photos with a custom text watermark. You choose the text, position, opacity, and size. Good for protecting photos you're sharing online or marking work as your own.",
-  "favicon-generator": "Takes an image and generates favicons in all the standard sizes web browsers and devices expect. Downloads as a ZIP with every size included: 16x16, 32x32, 180x180, and more.",
-  "png-to-webp": "Converts PNG images to WebP format for smaller file sizes with the same visual quality. WebP is supported in all modern browsers and is the standard choice for web images now.",
-  "jpg-to-webp": "Converts JPEG images to WebP, which gives better compression at similar quality levels. Useful when optimizing images for a website and you want to cut down on load times.",
-  "gif-to-webp": "Converts GIF files to WebP, which supports animation and delivers much smaller file sizes. Most modern browsers handle WebP animations natively.",
-  "bmp-to-webp": "Converts BMP files, a format that's large and rarely needed today, to WebP for practical use on the web.",
-  "tiff-to-webp": "Converts TIFF images, common in photography and print work, to WebP for web-friendly delivery.",
-  "webp-to-png": "Converts WebP images back to PNG when you need a format that older tools, apps, or systems still expect.",
-  "webp-to-jpg": "Converts WebP images to JPEG for maximum compatibility with apps, printers, and systems that haven't caught up with WebP yet.",
-  "webp-to-pdf": "Converts one or more WebP images into a PDF document. Useful for combining web images into something you can send or archive as a single file.",
-  "webp-to-avif": "Converts WebP images to AVIF, which gets even better compression ratios at equivalent visual quality. Worth trying if file size is a priority and you're targeting modern browsers.",
-  "jpg-to-avif": "Converts JPEG photos to AVIF format for noticeably smaller files without visible quality loss. AVIF is now supported in Chrome, Firefox, and Safari.",
-  "png-to-avif": "Converts PNG images to AVIF, which handles both lossy and lossless compression and often beats WebP on file size.",
-  "avif-to-jpg": "Converts AVIF images to JPEG when you need something that works everywhere, not just in modern browsers.",
-  "avif-to-png": "Converts AVIF images to PNG for full compatibility with apps and tools that don't yet support the AVIF format.",
-  "jpg-to-png": "Converts JPEG images to PNG for lossless quality and transparency support. Useful when you're editing an image and don't want any additional compression artifacts.",
-  "png-to-jpg": "Converts PNG images to JPEG for smaller file sizes. Gives up transparency and lossless quality, but fine for photos where those aren't needed.",
-  "png-to-svg": "Wraps your PNG image inside an SVG container. Useful for situations where SVG is required by a tool or platform but you're starting with a raster image.",
-  "svg-to-png": "Renders SVG vector graphics to a PNG image at the pixel dimensions you specify. Handy when you need a raster version of an icon or illustration for use in places that don't support SVG.",
-  "gif-to-png": "Extracts the first frame of a GIF as a still PNG image. Useful when you want a thumbnail or preview from an animated GIF.",
-  "bmp-to-jpg": "Converts BMP files to JPEG to get the file size down to something reasonable for sharing or storing.",
-  "tiff-to-jpg": "Converts TIFF images to JPEG, reducing file size for easier sharing online or by email.",
-  "tiff-to-png": "Converts TIFF images to PNG for good compatibility without losing quality.",
-  "jpg-to-pdf": "Converts a JPEG image into a PDF document. You can combine multiple images into one PDF, which is useful for sending several photos as a single, tidy file.",
-  "png-to-pdf": "Converts PNG images into a PDF document, either individually or combined into one file. The image quality is preserved without recompression.",
+  "image-converter": "Converts images between PNG, JPEG, WebP, AVIF, BMP, GIF, TIFF, ICO, and SVG. Batch convert up to 20 files and download as a ZIP.",
+  "heic-to-jpg": "Converts iPhone HEIC photos to JPEG so they open anywhere that doesn't support Apple's format. Drag in multiple files at once.",
+  "heic-to-png": "Converts HEIC photos to PNG for lossless quality and wide compatibility.",
+  "heic-to-webp": "Converts HEIC photos to WebP, giving smaller files that work in all modern browsers.",
+  "heic-to-pdf": "Combines one or more HEIC photos into a single PDF. Good for sharing iPhone photos in a format anyone can open.",
+  "image-compress": "Reduces image file sizes without obvious quality loss. Useful for uploads with size limits or sending photos by email.",
+  "image-resize": "Resizes images to a specific pixel size or scales by percentage. Lock the aspect ratio to avoid distortion.",
+  "image-crop": "Crops images using drag handles in the browser. Use preset ratios like 1:1 or 16:9, or set a custom crop area.",
+  "image-to-pdf": "Combines one or more images into a single PDF. Good for sending a batch of photos as one tidy attachment.",
+  "background-remover": "Removes backgrounds from photos using AI that runs on your device. Works on portraits, product shots, and most images with a clear subject.",
+  "flip-rotate-image": "Flips images horizontally or vertically, or rotates by any angle. Fixes photos that came out sideways from a camera or scan.",
+  "watermark-image": "Stamps photos with a custom text watermark. Set the text, position, opacity, and size.",
+  "favicon-generator": "Generates favicons in all standard sizes from any image. Downloads as a ZIP with every size browsers and devices expect.",
+  "png-to-webp": "Converts PNG images to WebP for smaller file sizes with the same visual quality.",
+  "jpg-to-webp": "Converts JPEGs to WebP for better compression at similar quality. Useful for cutting web page load times.",
+  "gif-to-webp": "Converts GIFs to WebP, which supports animation and gives much smaller files.",
+  "bmp-to-webp": "Converts large BMP files to WebP for practical use on the web.",
+  "tiff-to-webp": "Converts TIFF images to WebP for web-friendly file sizes.",
+  "webp-to-png": "Converts WebP back to PNG for older tools and apps that don't support WebP yet.",
+  "webp-to-jpg": "Converts WebP to JPEG for maximum compatibility with apps, printers, and older systems.",
+  "webp-to-pdf": "Combines WebP images into a PDF document for easy sharing or archiving.",
+  "webp-to-avif": "Converts WebP to AVIF for even smaller file sizes at equivalent visual quality.",
+  "jpg-to-avif": "Converts JPEG photos to AVIF for noticeably smaller files without visible quality loss.",
+  "png-to-avif": "Converts PNG to AVIF, which handles both lossy and lossless compression and often beats WebP on file size.",
+  "avif-to-jpg": "Converts AVIF to JPEG when you need something that works everywhere.",
+  "avif-to-png": "Converts AVIF to PNG for full compatibility with tools that don't yet support AVIF.",
+  "jpg-to-png": "Converts JPEG to PNG for lossless quality and transparency support.",
+  "png-to-jpg": "Converts PNG to JPEG for smaller file sizes. Drops transparency, but fine for photos that don't need it.",
+  "png-to-svg": "Wraps a PNG inside an SVG container. Useful when a platform requires SVG but you're starting with a raster image.",
+  "svg-to-png": "Renders SVG vector graphics to a PNG at the pixel size you set. Good for icons and illustrations where SVG isn't accepted.",
+  "gif-to-png": "Extracts the first frame of a GIF as a still PNG. Useful for a thumbnail or preview from an animated GIF.",
+  "bmp-to-jpg": "Converts BMP files to JPEG to bring file sizes down to something reasonable for sharing.",
+  "tiff-to-jpg": "Converts TIFF to JPEG, reducing file size for sharing online or by email.",
+  "tiff-to-png": "Converts TIFF images to PNG for broad compatibility without quality loss.",
+  "jpg-to-pdf": "Converts JPEG images into a PDF. Combine multiple photos into one tidy file.",
+  "png-to-pdf": "Converts PNG images into a PDF, individually or merged. Image quality is preserved.",
 
   // Privacy
-  "metadata-cleaner": "Strips hidden metadata from images and documents, including GPS location, camera model, creation date, author name, and more. Worth doing before sharing files publicly, especially photos taken on your phone.",
-  "ai-text-scrubber": "Removes invisible Unicode characters and zero-width characters that AI-detection tools look for, and evens out the kind of statistical patterns that make text look machine-generated. Run your text through and get something that reads like you wrote it.",
-  "checksum": "Generates and verifies SHA-1, SHA-256, and SHA-512 checksums for any file. Paste in an expected checksum to confirm a download hasn't been tampered with.",
+  "metadata-cleaner": "Strips hidden metadata from images and documents: GPS location, camera model, creation date, author name. Worth doing before sharing photos publicly.",
+  "ai-text-scrubber": "Removes invisible Unicode characters and statistical patterns that AI-detection tools flag. Paste your text in and get back something that reads naturally.",
+  "checksum": "Generates and verifies SHA-1, SHA-256, and SHA-512 checksums for any file. Paste an expected hash to confirm a download hasn't been tampered with.",
 
   // Text & Code
-  "json-formatter": "Formats messy JSON into something readable, or minifies it back down for production. Also validates your JSON and highlights any errors with a clear error message. Paste in anything from a log dump to an API response.",
-  "html-formatter": "Formats unindented or compressed HTML into clean, readable markup, or minifies it for deployment. Handles nested elements and attributes without mangling the structure.",
-  "base64": "Encodes text or files to Base64 and decodes Base64 strings back to their original form. Useful for embedding images in CSS, working with data URIs, or debugging encoded API payloads.",
-  "url-encoder": "Encodes special characters in URL strings so they work properly in links and query parameters, and decodes them back to readable text. Handy when building or debugging URLs with dynamic parameters.",
-  "word-counter": "Counts words, characters (with and without spaces), sentences, and paragraphs, and estimates reading time. Good for checking against word limits in articles, essays, or submission forms.",
-  "lorem-ipsum": "Generates placeholder text for mockups and design prototypes in any quantity. Paragraphs, sentences, or words. The output is the classic Lorem Ipsum that designers and developers have been using for decades.",
+  "json-formatter": "Formats messy JSON into something readable, or minifies it for production. Validates the structure and shows errors clearly.",
+  "html-formatter": "Formats compressed HTML into clean, indented markup, or minifies it for deployment.",
+  "base64": "Encodes text or files to Base64 and decodes Base64 strings back. Useful for data URIs, CSS-embedded images, or debugging API payloads.",
+  "url-encoder": "Encodes special characters in URLs so they work in links and query strings. Decodes them back to readable text.",
+  "word-counter": "Counts words, characters, sentences, and paragraphs. Estimates reading time. Good for checking against article or essay word limits.",
+  "lorem-ipsum": "Generates placeholder text for mockups and design prototypes. Paragraphs, sentences, or words in any quantity.",
 
   // Calculators
-  "password-generator": "Generates strong passwords using your browser's built-in cryptographic random number generator. You can see the entropy score update in real time as you adjust the length and character set, so you know exactly how strong your password is.",
-  "percentage-calc": "Handles the percentage calculations that always trip people up. What is X% of Y, what percentage is X of Y, what's the percentage change between two numbers. Gives you the answer and shows the formula.",
-  "unit-converter": "Converts between units across 13 categories including length, weight, temperature, pressure, speed, data, and more. Covers both common and obscure units, from miles to light-years, from bytes to petabytes.",
-  "currency-converter": "Converts between currencies using live exchange rates that refresh automatically. Rates are cached for an hour so you're not hitting a limit. Falls back to static rates if the network isn't available.",
-  "qr-code-generator": "Generates QR codes for URLs, plain text, Wi-Fi credentials, or contact cards. Download the result as a PNG at whatever size you need. Everything generates instantly in the browser.",
-  "tip-calculator": "Works out the tip and splits the total across any number of people. Enter the bill, pick a tip percentage, say how many people are sharing and it tells you what each person owes.",
+  "password-generator": "Generates strong passwords using your browser's cryptographic random generator. Shows the entropy score updating as you adjust length and character sets.",
+  "percentage-calc": "Handles the three percentage calculations people always trip on: X% of Y, what percentage is X of Y, and the change between two numbers.",
+  "unit-converter": "Converts between units across 13 categories: length, weight, temperature, pressure, speed, data, and more.",
+  "currency-converter": "Converts between currencies using live exchange rates that update every hour. Falls back to static rates when the network is unavailable.",
+  "qr-code-generator": "Generates QR codes for URLs, plain text, Wi-Fi credentials, or contact cards. Download as a PNG at any size.",
+  "tip-calculator": "Calculates the tip and splits the total across any number of people. Enter the bill, pick a percentage, set how many are sharing.",
 };
 
 interface DashTool {
@@ -688,7 +688,7 @@ function CategorySection({
         gridTemplateColumns: isMobile
           ? "repeat(2, 1fr)"
           : "repeat(auto-fill, minmax(280px, 1fr))",
-        gap: 12,
+        gap: 16,
       }}>
         {tools.map((tool) => (
           <ToolCard
@@ -831,7 +831,7 @@ export default function DashboardHome() {
                 gridTemplateColumns: isMobile
                   ? "repeat(2, 1fr)"
                   : "repeat(auto-fill, minmax(280px, 1fr))",
-                gap: 12,
+                gap: 16,
               }}>
                 {pinnedTools.map((tool) => {
                   const cat = CATEGORY_MAP[tool.categoryKey] ?? CATEGORIES[0];
@@ -885,7 +885,7 @@ export default function DashboardHome() {
               gridTemplateColumns: isMobile
                 ? "repeat(2, 1fr)"
                 : "repeat(auto-fill, minmax(280px, 1fr))",
-              gap: 12,
+              gap: 16,
             }}>
               {filteredTools.map((tool) => {
                 const cat = CATEGORY_MAP[tool.categoryKey] ?? CATEGORIES[0];
@@ -909,7 +909,7 @@ export default function DashboardHome() {
               gridTemplateColumns: isMobile
                 ? "repeat(2, 1fr)"
                 : "repeat(auto-fill, minmax(280px, 1fr))",
-              gap: 12,
+              gap: 16,
             }}>
               {DASH_TOOLS.map((tool) => {
                 const cat = CATEGORY_MAP[tool.categoryKey] ?? CATEGORIES[0];
