@@ -434,7 +434,7 @@ function HomeHero() {
               display: "block",
               fontFamily: "var(--font-hero)",
               fontSize: "clamp(44px, 10.5vw, 124px)",
-              fontWeight: 800,
+              fontWeight: 900,
               color: "var(--hero-watermark)",
               letterSpacing: "0.12em",
               lineHeight: 1.05,
@@ -469,7 +469,7 @@ function HomeHero() {
             color: "var(--hero-subtitle)",
             margin: "22px auto 0",
             lineHeight: 1.7,
-            maxWidth: 520,
+            maxWidth: 640,
           }}
         >
           {isFR
@@ -493,7 +493,7 @@ function HomeHero() {
         }}
       >
         {/* Row 1 — scrolls left */}
-        <div style={{ overflow: "hidden" }}>
+        <div style={{ overflow: "hidden", width: "100%" }}>
           <div style={{ display: "flex", gap: 8, width: "fit-content", animation: "et-scroll-left 36s linear infinite" }}>
             {[...HERO_TAGS, ...HERO_TAGS].map((tag, i) => (
               <Link key={`r1-${i}`} href={tag.route} style={{ textDecoration: "none", flexShrink: 0 }}>
@@ -522,7 +522,7 @@ function HomeHero() {
         </div>
 
         {/* Row 2 — scrolls right */}
-        <div style={{ overflow: "hidden" }}>
+        <div style={{ overflow: "hidden", width: "100%" }}>
           <div style={{ display: "flex", gap: 8, width: "fit-content", animation: "et-scroll-right 42s linear infinite" }}>
             {[...HERO_TAGS, ...HERO_TAGS].map((tag, i) => (
               <Link key={`r2-${i}`} href={tag.route} style={{ textDecoration: "none", flexShrink: 0 }}>
