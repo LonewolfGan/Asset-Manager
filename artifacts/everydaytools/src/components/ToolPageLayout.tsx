@@ -34,36 +34,30 @@ export default function ToolPageLayout({
       <div
         style={{
           width: '100%',
-          padding: `32px var(--tool-padding-x) 0`,
+          padding: `40px var(--tool-padding-x) 0`,
           boxSizing: 'border-box',
         }}
       >
-        <div
-          style={{
-            maxWidth: 'var(--content-tool)',
-            margin: '0 auto',
-          }}
-        >
           <Breadcrumb items={breadcrumb} />
 
           {/* Hero section */}
           <div
             style={{
               marginTop: 28,
-              marginBottom: 40,
-              paddingBottom: 32,
+              marginBottom: 48,
+              paddingBottom: 40,
               borderBottom: '1px solid var(--border)',
             }}
           >
             <h1
               style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(32px, 3.5vw, 48px)',
+                fontSize: 'clamp(36px, 4.5vw, 64px)',
                 fontWeight: 700,
                 color: 'var(--text-primary)',
-                margin: '0 0 12px',
-                lineHeight: 1.15,
-                letterSpacing: '-0.02em',
+                margin: '0 0 16px',
+                lineHeight: 1.1,
+                letterSpacing: '-0.025em',
               }}
             >
               {title}
@@ -71,11 +65,11 @@ export default function ToolPageLayout({
             <p
               style={{
                 fontFamily: 'var(--font-ui)',
-                fontSize: 'var(--text-lg)',
+                fontSize: 'var(--text-xl)',
                 color: 'var(--text-secondary)',
                 margin: 0,
                 lineHeight: 1.6,
-                maxWidth: 720,
+                maxWidth: '72ch',
               }}
             >
               {description}
@@ -86,10 +80,9 @@ export default function ToolPageLayout({
           {children}
 
           {/* Ad slot */}
-          <div style={{ marginTop: 48, paddingBottom: 80 }}>
+          <div style={{ marginTop: 56, paddingBottom: 96 }}>
             <AdSlot type="horizontal" />
           </div>
-        </div>
       </div>
 
       {/* SEO sections: related tools, about, how‑it‑works, FAQ */}

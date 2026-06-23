@@ -98,15 +98,15 @@
   --font-hero:    'Outfit', sans-serif;
 
   /* Font scale */
-  --text-xs:   0.75rem;
-  --text-sm:   0.875rem;
-  --text-base: 1rem;
-  --text-lg:   1.125rem;
-  --text-xl:   1.25rem;
-  --text-2xl:  1.5rem;
-  --text-3xl:  2rem;
-  --text-4xl:  2.75rem;
-  --text-5xl:  3.75rem;
+  --text-xs:   0.8125rem;
+  --text-sm:   0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg:   1.25rem;
+  --text-xl:   1.4rem;
+  --text-2xl:  1.65rem;
+  --text-3xl:  2.25rem;
+  --text-4xl:  3rem;
+  --text-5xl:  4rem;
 
   /* Spacing scale */
   --content-narrow: 640px;
@@ -114,7 +114,7 @@
   --content-tool:   900px;
   --content-wide:   1200px;
   --content-full:   1400px;
-  --tool-padding-x: clamp(24px, 4vw, 48px);
+  --tool-padding-x: clamp(32px, 5vw, 80px);
 
   /* Tailwind HSL slots */
   --background:  40 5% 97%;

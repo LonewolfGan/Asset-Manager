@@ -456,9 +456,7 @@ export function ToolPageSEO({ internalSlug }: ToolPageSEOProps) {
       <SeoMeta tool={tool} locale={locale} />
       <div
         style={{
-          maxWidth: "var(--content-wide)",
-          margin: "0 auto",
-          padding: "0 24px 64px",
+          padding: "0 var(--tool-padding-x) 80px",
         }}
       >
         <RelatedToolsSection tool={tool} locale={locale} />

@@ -55,9 +55,7 @@ export default function Footer() {
     }}>
       {/* Main footer grid */}
       <div style={{
-        maxWidth: "var(--content-wide)",
-        margin: "0 auto",
-        padding: isMobile ? "40px 20px 32px" : "56px 24px 48px",
+        padding: isMobile ? "40px 20px 32px" : "56px var(--tool-padding-x) 48px",
         display: "flex",
         flexDirection: "column",
         gap: isMobile ? 32 : 0,
@@ -121,9 +119,7 @@ export default function Footer() {
       {/* Bottom bar */}
       <div style={{
         borderTop: "1px solid var(--border)",
-        padding: isMobile ? "14px 20px" : "16px 24px",
-        maxWidth: "var(--content-wide)",
-        margin: "0 auto",
+        padding: isMobile ? "14px 20px" : "18px var(--tool-padding-x)",
         display: "flex",
         flexDirection: isMobile ? "column" : "row",
         alignItems: isMobile ? "flex-start" : "center",
