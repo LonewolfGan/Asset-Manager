@@ -1,0 +1,80 @@
+J'ai analysé précisément la grille de tool cards d'iLovePDF avec Playwright. 
+Voici les vraies valeurs à reproduire — abandonne l'aspect-ratio: 1/1, ce 
+n'est PAS ce qu'ils font.
+
+1. SECTION PARENTE (full-width, pas de max-width fixe)
+   .tools-section {
+     width: 100%;
+     padding: 0 48px; /* desktop large, ≥1600px */
+   }
+   
+   Breakpoints du padding :
+   @media (max-width: 1440px) { padding: 0 32px; }
+   @media (max-width: 1024px) { padding: 0 32px; }
+   @media (max-width: 768px)  { padding: 0 24px; }
+
+2. GRILLE — colonnes fixes par breakpoint (PAS de auto-fit/minmax fluide)
+   .tools-grid {
+     display: grid;
+     gap: 16px;
+     grid-template-columns: repeat(6, 1fr); /* ≥1600px */
+   }
+   
+   @media (max-width: 1440px) { grid-template-columns: repeat(5, 1fr); }
+   @media (max-width: 1024px) { grid-template-columns: repeat(4, 1fr); }
+   @media (max-width: 768px)  { grid-template-columns: repeat(3, 1fr); }
+
+3. CARD — PAS d'aspect-ratio CSS. La hauteur est NATURELLE (height: auto), 
+   déterminée uniquement par le padding + le contenu interne.
+   
+   .tool-card {
+     border-radius: 16px;
+     border: 1px solid #D6D6DF;
+     /* pas de padding ici, c'est le <a> interne qui le gère */
+   }
+   
+   .tool-card a {
+     display: block;
+     padding: 32px; /* desktop large */
+   }
+   
+   @media (max-width: 1440px) {
+     .tool-card a { padding: 24px; }
+   }
+
+4. ICÔNE — taille responsive
+   .tool-card .icon {
+     width: 48px;
+     height: 48px;
+   }
+   @media (max-width: 1440px) {
+     .tool-card .icon { width: 42px; height: 42px; }
+   }
+
+5. TITRE ET DESCRIPTION
+   .tool-card h3 {
+     line-height: 28px; /* desktop, 24px en mobile sous 768px */
+     margin: 16px 0 8px 0; /* à ajuster selon gap visuel souhaité */
+   }
+   
+   .tool-card p {
+     /* PAS de line-clamp strict ni de height fixe — laisse le texte 
+     naturel, limite-toi à des descriptions d'environ 18-22 mots pour 
+     que la hauteur reste cohérente entre les cards sans contrainte CSS */
+   }
+   
+   @media (max-width: 768px) {
+     .tool-card h3 { line-height: 24px; }
+   }
+
+6. IMPORTANT — ne cherche plus à forcer un carré parfait. Les cards 
+   iLovePDF ont un ratio largeur/hauteur entre 1.10 et 1.33 (donc 
+   légèrement plus larges que hautes), et leur hauteur varie naturellement 
+   de quelques pixels selon la longueur du texte. C'est ce système de 
+   padding cohérent (32px desktop / 24px mobile) qui crée l'illusion de 
+   régularité, pas une contrainte géométrique stricte.
+
+7. Vérifie le résultat à 1920px, 1440px, 1280px et 768px de largeur pour 
+   confirmer 6 / 5 / 4 / 3 colonnes respectivement, avec les cards qui 
+   remplissent toute la largeur de la section (pas de marge vide latérale, 
+   pas de centrage avec max-width).

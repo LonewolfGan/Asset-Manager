@@ -227,7 +227,6 @@ function ToolCard({
         className="tool-card"
         style={{
           position: "relative",
-          padding: isMobile ? "14px 12px" : "22px",
           borderRadius: "var(--radius-card)",
           border: "1px solid var(--border)",
           background: "var(--bg-surface)",
@@ -238,7 +237,6 @@ function ToolCard({
           display: "flex",
           flexDirection: "column",
           alignItems: "flex-start",
-          gap: 0,
           textAlign: "left",
         }}
         onMouseEnter={(e) => {
@@ -305,30 +303,31 @@ function ToolCard({
         )}
 
         {/* Icon — top-left */}
-        <div style={{
-          width: isMobile ? 38 : 44,
-          height: isMobile ? 38 : 44,
-          borderRadius: 10,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: cat.bg,
-          color: cat.color,
-          flexShrink: 0,
-          position: "relative",
-        }}>
-          <Icon size={isMobile ? 17 : 20} strokeWidth={1.6} />
+        <div
+          className="tool-card-icon"
+          style={{
+            borderRadius: 10,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: cat.bg,
+            color: cat.color,
+            flexShrink: 0,
+            position: "relative",
+          }}
+        >
+          <Icon size={22} strokeWidth={1.6} />
         </div>
 
         {/* Name + badge + description — left-aligned, natural top-to-bottom flow */}
-        <div style={{ position: "relative", display: "flex", flexDirection: "column" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", marginTop: isMobile ? 12 : 16, marginBottom: isMobile ? 6 : 8 }}>
+        <div style={{ position: "relative", display: "flex", flexDirection: "column", width: "100%" }}>
+          <div className="tool-card-title" style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
             <span style={{
               fontSize: isMobile ? "13px" : "15px",
               fontWeight: 700,
               color: "var(--text-primary)",
               fontFamily: "var(--font-ui)",
-              lineHeight: 1.25,
+              lineHeight: "inherit",
             }}>
               {name}
             </span>
@@ -355,6 +354,7 @@ function ToolCard({
             lineHeight: 1.5,
             margin: 0,
             fontFamily: "var(--font-ui)",
+            width: "100%",
           }}>
             {description}
           </p>
@@ -779,8 +779,8 @@ export default function DashboardHome() {
           <HomeHero />
         )}
 
-        {/* Tools area — full width with side padding */}
-        <div style={{ padding: "40px 24px 80px" }}>
+        {/* Tools area — vertical padding only; horizontal handled by .tool-grid-wrap */}
+        <div style={{ paddingTop: 40, paddingBottom: 80 }}>
         <div className="tool-grid-wrap">
 
 
