@@ -43,7 +43,7 @@ export default function MetadataCleaner() {
         pages.forEach((p) => newDoc.addPage(p));
         setProgress(80);
         const bytes = await newDoc.save();
-        const blob = new Blob([bytes], { type: 'application/pdf' });
+        const blob = new Blob([bytes.buffer as ArrayBuffer], { type: 'application/pdf' });
         setResult({ blob, cleaned: found.length ? found : ['No metadata found'] });
       } else {
         const cleaned: string[] = [];
