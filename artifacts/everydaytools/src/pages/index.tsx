@@ -225,7 +225,7 @@ function ToolCard({
         data-testid="tool-card"
         style={{
           position: "relative",
-          padding: "18px 16px 18px 16px",
+          padding: "20px 18px",
           borderRadius: "var(--radius-card)",
           border: "1px solid var(--border)",
           background: "var(--bg-surface)",
@@ -238,7 +238,7 @@ function ToolCard({
           alignItems: "flex-start",
           gap: 0,
           textAlign: "left",
-          height: "100%",
+          aspectRatio: "1 / 1",
         }}
         onMouseEnter={(e) => {
           const el = e.currentTarget as HTMLElement;
@@ -352,10 +352,10 @@ function ToolCard({
           <p style={{
             fontSize: "12px",
             color: "var(--text-secondary)",
-            lineHeight: 1.55,
+            lineHeight: 1.6,
             margin: 0,
             display: "-webkit-box",
-            WebkitLineClamp: 3,
+            WebkitLineClamp: 5,
             WebkitBoxOrient: "vertical",
             overflow: "hidden",
             fontFamily: "var(--font-ui)",
@@ -423,47 +423,6 @@ function HomeHero() {
         .hero-scroll { animation: hero-fade-in-up 0.45s ease 0.18s both; }
         .hero-pill:hover { background: var(--hero-tag-hover) !important; }
       `}</style>
-
-      {/* Subtle background decoration — faint geometric marks, aria-hidden */}
-      <svg
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          pointerEvents: "none",
-          opacity: 0.07,
-          overflow: "visible",
-        }}
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        {/* Top-left: circle outline */}
-        <circle cx="5%" cy="20%" r="26" fill="none" stroke="currentColor" strokeWidth="1.5" />
-        {/* Left-mid: plus cross */}
-        <line x1="10%" y1="63%" x2="10%" y2="71%" stroke="currentColor" strokeWidth="1.5" />
-        <line x1="7.5%" y1="67%" x2="12.5%" y2="67%" stroke="currentColor" strokeWidth="1.5" />
-        {/* Top-right: X mark */}
-        <line x1="88%" y1="12%" x2="93%" y2="20%" stroke="currentColor" strokeWidth="1.5" />
-        <line x1="93%" y1="12%" x2="88%" y2="20%" stroke="currentColor" strokeWidth="1.5" />
-        {/* Right-mid: small circle */}
-        <circle cx="96%" cy="54%" r="18" fill="none" stroke="currentColor" strokeWidth="1.5" />
-        {/* Bottom-left: open angle bracket  < */}
-        <line x1="4%" y1="78%" x2="1.5%" y2="83%" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        <line x1="1.5%" y1="83%" x2="4%" y2="88%" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        {/* Bottom-right: open angle bracket  > */}
-        <line x1="93%" y1="76%" x2="96%" y2="82%" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        <line x1="96%" y1="82%" x2="93%" y2="88%" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        {/* Mid-left: dot */}
-        <circle cx="2%" cy="44%" r="3" fill="currentColor" />
-        {/* Mid-right: dot */}
-        <circle cx="98%" cy="36%" r="3" fill="currentColor" />
-        {/* Top-centre: hash # */}
-        <line x1="48%" y1="6%" x2="52%" y2="6%" stroke="currentColor" strokeWidth="1.5" />
-        <line x1="48%" y1="10%" x2="52%" y2="10%" stroke="currentColor" strokeWidth="1.5" />
-        <line x1="49.3%" y1="4%" x2="49.3%" y2="12%" stroke="currentColor" strokeWidth="1.5" />
-        <line x1="50.7%" y1="4%" x2="50.7%" y2="12%" stroke="currentColor" strokeWidth="1.5" />
-      </svg>
 
       {/* Title block — constrained, centered */}
       <div style={{ margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1 }}>
