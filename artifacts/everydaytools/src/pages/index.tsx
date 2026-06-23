@@ -5,7 +5,10 @@ import { tools } from "@/config/tools.config";
 import { useLocale } from "@/hooks/use-locale";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { LucideIcon } from "lucide-react";
-import { Bookmark, BookmarkCheck } from "lucide-react";
+import {
+  Bookmark, BookmarkCheck,
+  FileText, FileType2, Table2, MonitorPlay, ImageIcon, Code2, ShieldCheck, Calculator,
+} from "lucide-react";
 
 const WEBSITE_SCHEMA = {
   "@context": "https://schema.org",
@@ -51,20 +54,21 @@ interface CategoryDef {
   key: string;
   label: string;
   labelFr: string;
-  color: string;       // icon color
-  bg: string;          // icon background
-  border: string;      // accent border on hover
+  color: string;
+  bg: string;
+  border: string;
+  FilterIcon: LucideIcon;
 }
 
 const CATEGORIES: CategoryDef[] = [
-  { key: "pdf",         label: "PDF Tools",        labelFr: "Outils PDF",         color: "#DC2626", bg: "rgba(220,38,38,0.09)",   border: "rgba(220,38,38,0.35)" },
-  { key: "word",        label: "Documents",         labelFr: "Documents",          color: "#1A6BFF", bg: "rgba(26,107,255,0.09)",  border: "rgba(26,107,255,0.35)" },
-  { key: "excel",       label: "Spreadsheets",      labelFr: "Tableurs",           color: "#16A34A", bg: "rgba(22,163,74,0.09)",   border: "rgba(22,163,74,0.35)" },
-  { key: "pptx",        label: "Presentations",     labelFr: "Présentations",      color: "#EA580C", bg: "rgba(234,88,12,0.09)",   border: "rgba(234,88,12,0.35)" },
-  { key: "image",       label: "Images",            labelFr: "Images",             color: "#0D9488", bg: "rgba(13,148,136,0.09)",  border: "rgba(13,148,136,0.35)" },
-  { key: "textCode",    label: "Text & Code",       labelFr: "Texte & Code",       color: "#7C3AED", bg: "rgba(124,58,237,0.09)",  border: "rgba(124,58,237,0.35)" },
-  { key: "privacy",     label: "Privacy",           labelFr: "Confidentialité",    color: "#0E7490", bg: "rgba(14,116,144,0.09)",  border: "rgba(14,116,144,0.35)" },
-  { key: "calculators", label: "Calculators",       labelFr: "Calculatrices",      color: "#9333EA", bg: "rgba(147,51,234,0.09)",  border: "rgba(147,51,234,0.35)" },
+  { key: "pdf",         label: "PDF Tools",        labelFr: "Outils PDF",         color: "#DC2626", bg: "rgba(220,38,38,0.09)",   border: "rgba(220,38,38,0.35)",  FilterIcon: FileText },
+  { key: "word",        label: "Documents",         labelFr: "Documents",          color: "#1A6BFF", bg: "rgba(26,107,255,0.09)",  border: "rgba(26,107,255,0.35)", FilterIcon: FileType2 },
+  { key: "excel",       label: "Spreadsheets",      labelFr: "Tableurs",           color: "#16A34A", bg: "rgba(22,163,74,0.09)",   border: "rgba(22,163,74,0.35)",  FilterIcon: Table2 },
+  { key: "pptx",        label: "Presentations",     labelFr: "Présentations",      color: "#EA580C", bg: "rgba(234,88,12,0.09)",   border: "rgba(234,88,12,0.35)",  FilterIcon: MonitorPlay },
+  { key: "image",       label: "Images",            labelFr: "Images",             color: "#0D9488", bg: "rgba(13,148,136,0.09)",  border: "rgba(13,148,136,0.35)", FilterIcon: ImageIcon },
+  { key: "textCode",    label: "Text & Code",       labelFr: "Texte & Code",       color: "#7C3AED", bg: "rgba(124,58,237,0.09)",  border: "rgba(124,58,237,0.35)", FilterIcon: Code2 },
+  { key: "privacy",     label: "Privacy",           labelFr: "Confidentialité",    color: "#0E7490", bg: "rgba(14,116,144,0.09)",  border: "rgba(14,116,144,0.35)", FilterIcon: ShieldCheck },
+  { key: "calculators", label: "Calculators",       labelFr: "Calculatrices",      color: "#9333EA", bg: "rgba(147,51,234,0.09)",  border: "rgba(147,51,234,0.35)", FilterIcon: Calculator },
 ];
 
 const CATEGORY_MAP = Object.fromEntries(CATEGORIES.map(c => [c.key, c]));
@@ -221,7 +225,7 @@ function ToolCard({
         data-testid="tool-card"
         style={{
           position: "relative",
-          padding: "20px 16px",
+          padding: "18px 16px 18px 16px",
           borderRadius: "var(--radius-card)",
           border: "1px solid var(--border)",
           background: "var(--bg-surface)",
@@ -229,13 +233,12 @@ function ToolCard({
           overflow: "hidden",
           transition: "border-color 150ms ease, box-shadow 150ms ease",
           boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
-          aspectRatio: "1 / 1",
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 10,
-          textAlign: "center",
+          alignItems: "flex-start",
+          gap: 0,
+          textAlign: "left",
+          height: "100%",
         }}
         onMouseEnter={(e) => {
           const el = e.currentTarget as HTMLElement;
@@ -269,22 +272,6 @@ function ToolCard({
           }}
         />
 
-        {/* Icon — bigger, centered */}
-        <div style={{
-          width: 56,
-          height: 56,
-          borderRadius: 14,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: cat.bg,
-          color: cat.color,
-          flexShrink: 0,
-          position: "relative",
-        }}>
-          <Icon size={24} strokeWidth={1.5} />
-        </div>
-
         {/* Pin button */}
         {onTogglePin !== undefined && (
           <button
@@ -316,44 +303,59 @@ function ToolCard({
           </button>
         )}
 
-        {/* Name + description — centered */}
-        <div style={{ position: "relative" }}>
-          <span style={{
-            fontSize: "14px",
-            fontWeight: 600,
-            color: "var(--text-primary)",
-            fontFamily: "var(--font-ui)",
-            lineHeight: 1.25,
-            display: "block",
-            marginBottom: 4,
-          }}>
-            {name}
-          </span>
-          {tool.badge && (
+        {/* Icon — top-left */}
+        <div style={{
+          width: 44,
+          height: 44,
+          borderRadius: 10,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: cat.bg,
+          color: cat.color,
+          flexShrink: 0,
+          position: "relative",
+          marginBottom: 12,
+        }}>
+          <Icon size={20} strokeWidth={1.6} />
+        </div>
+
+        {/* Name + badge + description — left-aligned */}
+        <div style={{ position: "relative", flex: 1 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 5, flexWrap: "wrap" }}>
             <span style={{
-              fontSize: 9,
-              fontWeight: 700,
-              padding: "2px 6px",
-              borderRadius: 4,
-              background: cat.bg,
-              color: cat.color,
-              lineHeight: 1.4,
-              letterSpacing: "0.07em",
-              textTransform: "uppercase",
-              flexShrink: 0,
-              display: "inline-block",
-              marginBottom: 4,
+              fontSize: "14px",
+              fontWeight: 600,
+              color: "var(--text-primary)",
+              fontFamily: "var(--font-ui)",
+              lineHeight: 1.25,
             }}>
-              {tool.badge}
+              {name}
             </span>
-          )}
+            {tool.badge && (
+              <span style={{
+                fontSize: 9,
+                fontWeight: 700,
+                padding: "2px 6px",
+                borderRadius: 4,
+                background: cat.bg,
+                color: cat.color,
+                lineHeight: 1.4,
+                letterSpacing: "0.07em",
+                textTransform: "uppercase",
+                flexShrink: 0,
+              }}>
+                {tool.badge}
+              </span>
+            )}
+          </div>
           <p style={{
             fontSize: "12px",
             color: "var(--text-secondary)",
-            lineHeight: 1.5,
+            lineHeight: 1.55,
             margin: 0,
             display: "-webkit-box",
-            WebkitLineClamp: 2,
+            WebkitLineClamp: 3,
             WebkitBoxOrient: "vertical",
             overflow: "hidden",
             fontFamily: "var(--font-ui)",
@@ -446,18 +448,18 @@ function HomeHero() {
       `}</style>
 
       <div style={{ maxWidth: 720, margin: "0 auto", position: "relative", zIndex: 1 }}>
-        {/* Title: "EVERYDAY" as faint watermark line, "Tools" huge bold below */}
+        {/* Title: "EVERYDAY" as faint ghost line, "Tools" huge bold below */}
         <h1 className="hero-title" style={{ marginBottom: 20, lineHeight: 1 }}>
           <span
             aria-hidden="true"
             style={{
               display: "block",
               fontFamily: "var(--font-display)",
-              fontSize: "clamp(48px, 9vw, 120px)",
+              fontSize: "clamp(52px, 10vw, 130px)",
               fontWeight: 900,
-              color: "var(--hero-watermark)",
-              letterSpacing: "0.04em",
-              lineHeight: 1.1,
+              color: "rgba(0,0,0,0.13)",
+              letterSpacing: "0.08em",
+              lineHeight: 1.05,
               userSelect: "none",
             }}
           >
@@ -467,11 +469,11 @@ function HomeHero() {
             style={{
               display: "block",
               fontFamily: "var(--font-display)",
-              fontSize: "clamp(72px, 16vw, 180px)",
+              fontSize: "clamp(80px, 17vw, 190px)",
               fontWeight: 900,
               color: "var(--hero-title)",
               letterSpacing: "-0.04em",
-              lineHeight: 1,
+              lineHeight: 0.92,
             }}
           >
             {isFR ? "Outils" : "Tools"}
@@ -653,6 +655,7 @@ function CategoryFilterBar({
       {categories.map((cat) => {
         const label = locale.toLowerCase().startsWith("fr") ? cat.labelFr : cat.label;
         const isActive = activeKey === cat.key;
+        const { FilterIcon } = cat;
         return (
           <button
             key={cat.key}
@@ -660,7 +663,7 @@ function CategoryFilterBar({
             style={{
               display: "inline-flex",
               alignItems: "center",
-              gap: 7,
+              gap: 6,
               padding: "6px 13px",
               borderRadius: 100,
               border: `1px solid ${isActive ? cat.border : "var(--border)"}`,
@@ -686,13 +689,7 @@ function CategoryFilterBar({
               }
             }}
           >
-            <span style={{
-              width: 7,
-              height: 7,
-              borderRadius: "50%",
-              background: cat.color,
-              flexShrink: 0,
-            }} />
+            <FilterIcon size={13} strokeWidth={1.8} style={{ flexShrink: 0 }} />
             {label}
           </button>
         );
