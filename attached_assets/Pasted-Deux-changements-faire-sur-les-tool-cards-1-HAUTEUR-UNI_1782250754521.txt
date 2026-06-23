@@ -1,0 +1,87 @@
+Deux changements à faire sur les tool cards.
+
+1. HAUTEUR UNIFORME (desktop et tablette)
+
+Toutes les cards doivent avoir exactement la même hauteur, peu importe la 
+longueur du texte de description. 
+
+   .tool-card a {
+     display: flex;
+     flex-direction: column;
+     min-height: 200px; /* ajuste cette valeur après test visuel, 
+                            doit être assez grand pour 3 lignes de 
+                            description max */
+   }
+   
+   .tool-card h3 {
+     margin: 16px 0 8px 0;
+   }
+   
+   .tool-card p {
+     margin: 0;
+     display: -webkit-box;
+     -webkit-line-clamp: 3;
+     -webkit-box-orient: vertical;
+     overflow: hidden;
+     text-overflow: ellipsis;
+   }
+
+En plus du CSS, harmonise la longueur du texte de toutes les descriptions 
+des tool cards pour qu'elles fassent entre 18 et 24 mots chacune (2-3 lignes 
+pleines), en utilisant le skill humanizer pour étoffer celles qui sont trop 
+courtes. L'objectif : que le line-clamp ne tronque jamais visiblement, et 
+que toutes les cards remplissent leur min-height de façon cohérente.
+
+2. LAYOUT MOBILE PETIT ÉCRAN (≤480px) — passer en rectangle horizontal
+
+Sous 480px de largeur, change complètement la structure de la card :
+- 1 seule colonne, pleine largeur
+- Le <a> passe en flex-direction: row au lieu de column
+- Icône à gauche (taille réduite, ~36-40px), alignée verticalement au 
+  centre ou en haut du bloc texte
+- Titre + description empilés à droite de l'icône, en colonne
+- Hauteur de la card libre (pas de min-height fixe ici, juste assez de 
+  padding), car le texte tient sur 2 lignes max horizontalement disponibles
+
+   @media (max-width: 480px) {
+     .tools-grid {
+       grid-template-columns: 1fr;
+       gap: 12px;
+     }
+     
+     .tool-card a {
+       flex-direction: row;
+       align-items: flex-start;
+       gap: 12px;
+       padding: 16px;
+       min-height: auto;
+     }
+     
+     .tool-card .icon {
+       width: 36px;
+       height: 36px;
+       flex-shrink: 0;
+     }
+     
+     .tool-card .text-content {
+       display: flex;
+       flex-direction: column;
+       gap: 4px;
+     }
+     
+     .tool-card h3 {
+       margin: 0;
+       font-size: 15px;
+     }
+     
+     .tool-card p {
+       -webkit-line-clamp: 2; /* 2 lignes max sur mobile, pas 3 */
+       font-size: 13px;
+     }
+   }
+
+Vérifie que le wrapper du titre + description (.text-content) existe bien 
+dans le HTML/JSX — sinon il faut l'ajouter pour que le flex-direction: row 
+fonctionne correctement (icône d'un côté, bloc texte empilé de l'autre).
+
+Teste le résultat à 1920px, 1024px, 768px et 400px de large.
