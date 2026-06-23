@@ -1,0 +1,69 @@
+J'ai un problème avec ma grille de cards (tool cards) dans la section "outils". 
+Actuellement j'essaie de forcer un aspect-ratio: 1/1 sur les cards, mais ça crée 
+un gros espace vide en bas du texte quand la description est courte. C'est moche 
+et incohérent visuellement.
+
+Je veux reproduire exactement la logique de cards qu'utilise iLovePDF.com 
+(j'ai analysé leur design). Voici ce qu'il faut changer :
+
+1. SUPPRIME complètement aspect-ratio: 1/1 sur les cards. La hauteur doit être 
+   en "auto", pas forcée.
+
+2. Structure de la card en flexbox colonne avec un gap fixe (pas de space-between) :
+
+.tool-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 32px;
+  height: auto;
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #eee;
+  transition: box-shadow 0.2s ease;
+}
+
+.tool-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+3. La grille parente doit avoir un gap généreux pour que les petites différences 
+   de hauteur entre cards ne se remarquent pas à l'œil :
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+4. Important : NE METS PAS justify-content: space-between ou center sur la card. 
+   Le contenu (icône, titre, description) doit rester en flow normal du haut vers 
+   le bas (flex-start par défaut), avec le padding de 32px qui absorbe naturellement 
+   l'espace restant en bas. C'est ce padding généreux + le gap de 16px entre les 
+   éléments internes qui font que le vide ne se voit pas, pas un ratio forcé.
+
+5. La description (le texte sous le titre) ne doit pas avoir de height ou 
+   min-height fixe. Si certaines descriptions sont beaucoup plus longues que 
+   d'autres, utilise plutôt un line-clamp pour limiter à 2-3 lignes max au lieu 
+   de forcer une hauteur identique :
+
+.tool-card p {
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+6. Structure HTML/JSX attendue à l'intérieur de chaque card :
+   - Icône dans un carré coloré arrondi (40-48px), couleur pastel de fond, 
+     icône blanche ou foncée au centre
+   - Titre en bold, noir, ~16-18px
+   - Description en gris (#6b7280), ~14px, max 2-3 lignes
+
+Le résultat final doit ressembler à des cards qui paraissent "carrées" visuellement 
+mais qui ne le sont pas par contrainte stricte — c'est l'espacement cohérent qui 
+donne cette impression, pas un aspect-ratio CSS forcé.

@@ -220,21 +220,13 @@ function ToolCard({
   const name = tl?.title ?? tool.name;
   const description = tl?.description ?? tool.description;
 
-  const pad = isMobile ? "14px 13px" : "20px 18px";
-  const iconSize = isMobile ? 36 : 44;
-  const iconRadius = isMobile ? 8 : 10;
-  const iconMargin = isMobile ? 10 : 12;
-  const iconInner = isMobile ? 16 : 20;
-  const descSize = isMobile ? "11px" : "13px";
-  const descLines = isMobile ? 5 : 7;
-
   return (
     <Link href={tool.route} style={{ textDecoration: "none", display: "block" }}>
       <article
         data-testid="tool-card"
         style={{
           position: "relative",
-          padding: pad,
+          padding: isMobile ? "20px 18px" : "28px 24px",
           borderRadius: "var(--radius-card)",
           border: "1px solid var(--border)",
           background: "var(--bg-surface)",
@@ -245,9 +237,9 @@ function ToolCard({
           display: "flex",
           flexDirection: "column",
           alignItems: "flex-start",
-          gap: 0,
+          gap: 16,
           textAlign: "left",
-          aspectRatio: "1 / 1",
+          height: "auto",
         }}
         onMouseEnter={(e) => {
           const el = e.currentTarget as HTMLElement;
@@ -314,9 +306,9 @@ function ToolCard({
 
         {/* Icon — top-left */}
         <div style={{
-          width: iconSize,
-          height: iconSize,
-          borderRadius: iconRadius,
+          width: isMobile ? 40 : 44,
+          height: isMobile ? 40 : 44,
+          borderRadius: 10,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -324,16 +316,15 @@ function ToolCard({
           color: cat.color,
           flexShrink: 0,
           position: "relative",
-          marginBottom: iconMargin,
         }}>
-          <Icon size={iconInner} strokeWidth={1.6} />
+          <Icon size={isMobile ? 18 : 20} strokeWidth={1.6} />
         </div>
 
         {/* Name + badge + description — left-aligned */}
-        <div style={{ position: "relative", flex: 1, display: "flex", flexDirection: "column", minHeight: 0 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: isMobile ? 5 : 7, flexWrap: "wrap" }}>
+        <div style={{ position: "relative", display: "flex", flexDirection: "column", gap: 6 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
             <span style={{
-              fontSize: isMobile ? "12px" : "14px",
+              fontSize: isMobile ? "13px" : "15px",
               fontWeight: 600,
               color: "var(--text-primary)",
               fontFamily: "var(--font-ui)",
@@ -359,14 +350,14 @@ function ToolCard({
             )}
           </div>
           <p style={{
-            fontSize: descSize,
+            fontSize: isMobile ? "12px" : "13px",
             color: "var(--text-secondary)",
             lineHeight: 1.55,
             margin: 0,
             fontFamily: "var(--font-ui)",
             overflow: "hidden",
             display: "-webkit-box",
-            WebkitLineClamp: descLines,
+            WebkitLineClamp: 3,
             WebkitBoxOrient: "vertical",
           }}>
             {description}
@@ -700,7 +691,7 @@ function CategorySection({
         gridTemplateColumns: isMobile
           ? "repeat(2, 1fr)"
           : "repeat(auto-fill, minmax(280px, 1fr))",
-        gap: 16,
+        gap: 24,
       }}>
         {tools.map((tool) => (
           <ToolCard
@@ -843,7 +834,7 @@ export default function DashboardHome() {
                 gridTemplateColumns: isMobile
                   ? "repeat(2, 1fr)"
                   : "repeat(auto-fill, minmax(280px, 1fr))",
-                gap: 16,
+                gap: 24,
               }}>
                 {pinnedTools.map((tool) => {
                   const cat = CATEGORY_MAP[tool.categoryKey] ?? CATEGORIES[0];
@@ -897,7 +888,7 @@ export default function DashboardHome() {
               gridTemplateColumns: isMobile
                 ? "repeat(2, 1fr)"
                 : "repeat(auto-fill, minmax(280px, 1fr))",
-              gap: 16,
+              gap: 24,
             }}>
               {filteredTools.map((tool) => {
                 const cat = CATEGORY_MAP[tool.categoryKey] ?? CATEGORIES[0];
@@ -921,7 +912,7 @@ export default function DashboardHome() {
               gridTemplateColumns: isMobile
                 ? "repeat(2, 1fr)"
                 : "repeat(auto-fill, minmax(280px, 1fr))",
-              gap: 16,
+              gap: 24,
             }}>
               {DASH_TOOLS.map((tool) => {
                 const cat = CATEGORY_MAP[tool.categoryKey] ?? CATEGORIES[0];
