@@ -234,9 +234,6 @@ function ToolCard({
           overflow: "hidden",
           transition: "border-color 150ms ease, box-shadow 150ms ease",
           boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
           textAlign: "left",
         }}
         onMouseEnter={(e) => {
@@ -320,7 +317,7 @@ function ToolCard({
         </div>
 
         {/* Name + badge + description — left-aligned, natural top-to-bottom flow */}
-        <div style={{ position: "relative", display: "flex", flexDirection: "column", width: "100%" }}>
+        <div className="tool-card-text" style={{ position: "relative", display: "flex", flexDirection: "column", width: "100%" }}>
           <div className="tool-card-title" style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
             <span style={{
               fontSize: isMobile ? "13px" : "15px",
