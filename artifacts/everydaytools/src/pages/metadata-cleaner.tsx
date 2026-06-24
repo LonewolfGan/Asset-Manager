@@ -47,20 +47,28 @@ export default function MetadataCleaner() {
         const blob = new Blob([bytes.buffer as ArrayBuffer], { type: 'application/pdf' });
         setResult({ blob, cleaned: found.length ? found : ['No metadata found'] });
       } else {
-        const cleaned: string[] = [];
-        setProgress(40);
-        const img = new Image();
-        img.src = URL.createObjectURL(file);
-        await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; });
-        setProgress(60);
-        const canvas = document.createElement('canvas');
-        canvas.width = img.naturalWidth;
-        canvas.height = img.naturalHeight;
-        const ctx = canvas.getContext('2d')!;
-        ctx.drawImage(img, 0, 0);
-        setProgress(80);
-        const blob = await new Promise<Blob>((resolve) => canvas.toBlob((b) => resolve(b!), 'image/png'));
-        setResult({ blob, cleaned });
+        // Use API server: sharp re-encodes the image in the same format, stripping
+        // all EXIF, XMP and ICC metadata. This preserves the original format (JPEG→JPEG,
+        // WebP→WebP etc.) and quality — unlike Canvas which always outputs PNG.
+        setProgress(30);
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const res = await fetch('/api/tools/image-metadata-clean', {
+          method: 'POST',
+          body: formData,
+        });
+
+        setProgress(70);
+
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({})) as { error?: string };
+          throw new Error(data.error ?? `Server error ${res.status}`);
+        }
+
+        const blob = await res.blob();
+        setProgress(100);
+        setResult({ blob, cleaned: ['EXIF data', 'XMP metadata', 'ICC profile'] });
       }
       setProgress(100);
       setStatus('done');
@@ -84,7 +92,6 @@ export default function MetadataCleaner() {
   return (
     <ToolPageLayout breadcrumb={['Home', 'Privacy Tools', title]} title={title} description={desc} seoSlug="metadata-cleaner">
       <ToolWorkspace>
-        {/* File drop zone */}
         <div
           onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
           onDragLeave={() => setIsDragging(false)}

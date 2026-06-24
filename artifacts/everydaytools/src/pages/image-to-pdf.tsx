@@ -12,6 +12,37 @@ import {
 } from '@/components/ToolContent';
 import ToolLoadingState from '@/components/ToolLoadingState';
 
+// Formats pdf-lib can embed natively without re-encoding
+const NATIVE_PDF_FORMATS = new Set(['image/jpeg', 'image/jpg', 'image/png']);
+
+/**
+ * For formats that pdf-lib cannot embed natively (WebP, AVIF, HEIC, TIFF, BMP,
+ * GIF, SVG…), pre-convert to JPEG via the API (sharp) then embed as JPEG.
+ * Returns the buffer and its MIME type ready for pdf-lib.
+ */
+async function normaliseToEmbeddable(file: File): Promise<{ buffer: ArrayBuffer; mime: 'image/jpeg' | 'image/png' }> {
+  if (file.type === 'image/png') {
+    return { buffer: await file.arrayBuffer(), mime: 'image/png' };
+  }
+  if (file.type === 'image/jpeg' || file.type === 'image/jpg') {
+    return { buffer: await file.arrayBuffer(), mime: 'image/jpeg' };
+  }
+  // Anything else: convert to JPEG on the server (handles WebP, AVIF, HEIC, TIFF, BMP, GIF, SVG…)
+  const form = new FormData();
+  form.append('file', file);
+  form.append('format', 'image/jpeg');
+  form.append('quality', '0.92');
+
+  const res = await fetch('/api/convert/image', { method: 'POST', body: form });
+  if (!res.ok) {
+    // Server couldn't handle it — give a clear message
+    const err = await res.json().catch(() => ({})) as { error?: string };
+    throw new Error(err.error ?? `Could not convert ${file.name} (${file.type}) to a PDF-embeddable format.`);
+  }
+  const buffer = await res.arrayBuffer();
+  return { buffer, mime: 'image/jpeg' };
+}
+
 export default function ImageToPdf() {
   const { t } = useLocale();
   const [files, setFiles] = useState<File[]>([]);
@@ -30,22 +61,17 @@ export default function ImageToPdf() {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         totalSizeBefore += file.size;
-        const arrayBuffer = await file.arrayBuffer();
 
-        let img;
-        if (file.type === 'image/jpeg') {
-          img = await pdfDoc.embedJpg(arrayBuffer);
-        } else if (file.type === 'image/png') {
-          img = await pdfDoc.embedPng(arrayBuffer);
-        } else {
-          trackToolError('image-to-pdf', 'general-error');
-          throw new Error(`Unsupported format ${file.type}. Please use JPG or PNG.`);
-        }
+        const { buffer, mime } = await normaliseToEmbeddable(file);
+
+        const img = mime === 'image/png'
+          ? await pdfDoc.embedPng(buffer)
+          : await pdfDoc.embedJpg(buffer);
 
         const page = pdfDoc.addPage([img.width, img.height]);
         page.drawImage(img, { x: 0, y: 0, width: img.width, height: img.height });
 
-        setProgress(Math.round(((i + 1) / files.length) * 80));
+        setProgress(Math.round(((i + 1) / files.length) * 85));
       }
 
       const pdfBytes = await pdfDoc.save();
@@ -68,7 +94,12 @@ export default function ImageToPdf() {
       seoSlug="image-to-pdf"
     >
       <ToolWorkspace>
-        <FileUpload accept={['image/jpeg', 'image/png']} maxSizeMB={20} multiple={true} onFiles={setFiles} />
+        <FileUpload
+          accept={['image/jpeg', 'image/png', 'image/webp', 'image/avif', 'image/gif', 'image/tiff', 'image/svg+xml', 'image/bmp', 'image/heic', 'image/heif']}
+          maxSizeMB={20}
+          multiple={true}
+          onFiles={setFiles}
+        />
 
         {files.length > 0 && !isProcessing && (
           <ToolButton variant="primary" fullWidth onClick={handleConvert} disabled={isProcessing}>

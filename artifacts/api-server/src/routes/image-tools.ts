@@ -22,13 +22,17 @@ async function compressAtQuality(
     };
   }
   if (mime === "image/png") {
-    const candidate = await sharp(input)
-      .png({ compressionLevel: 9, effort: 10 })
-      .toBuffer();
-    return {
-      output: candidate.length < input.length ? candidate : input,
-      outMime: "image/png",
-    };
+    // Try both deflate-only and palette-quantised (pngquant-style) compression.
+    // Palette mode gives 50-80 % reduction on logos/icons/screenshots with few
+    // colours. We only use it when it is >15 % smaller than the deflate result,
+    // keeping photos safe from visible quality loss.
+    const [deflate, palette] = await Promise.all([
+      sharp(input).png({ compressionLevel: 9, effort: 10 }).toBuffer(),
+      sharp(input).png({ compressionLevel: 9, effort: 10, palette: true, colours: 256, dithering: 1 }).toBuffer(),
+    ]);
+    let best = deflate.length < input.length ? deflate : input;
+    if (palette.length < best.length * 0.85) best = palette;
+    return { output: best, outMime: "image/png" };
   }
   if (mime === "image/webp") {
     return {
