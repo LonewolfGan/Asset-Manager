@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { convertImage } from "@/services/imageConversionService";
 import { ImagePlus, Download, Trash2, CheckCircle2, AlertCircle } from "lucide-react";
 import JSZip from "jszip";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -16,6 +15,7 @@ type FileState = {
   id: string;
   file: File;
   status: "idle" | "processing" | "done" | "error";
+  resultBlob?: Blob;
   resultUrl?: string;
   resultSize?: number;
   error?: string;
@@ -25,7 +25,7 @@ type Action =
   | { type: "ADD_FILES"; files: File[] }
   | { type: "REMOVE_FILE"; id: string }
   | { type: "CLEAR_ALL" }
-  | { type: "SET_STATUS"; id: string; status: FileState["status"]; resultUrl?: string; resultSize?: number; error?: string };
+  | { type: "SET_STATUS"; id: string; status: FileState["status"]; resultBlob?: Blob; resultUrl?: string; resultSize?: number; error?: string };
 
 const reducer = (state: FileState[], action: Action): FileState[] => {
   switch (action.type) {
@@ -40,10 +40,24 @@ const reducer = (state: FileState[], action: Action): FileState[] => {
     case "CLEAR_ALL":
       return [];
     case "SET_STATUS":
-      return state.map(f => f.id === action.id ? { ...f, status: action.status, resultUrl: action.resultUrl, resultSize: action.resultSize, error: action.error } : f);
+      return state.map(f => f.id === action.id ? { ...f, status: action.status, resultBlob: action.resultBlob, resultUrl: action.resultUrl, resultSize: action.resultSize, error: action.error } : f);
     default:
       return state;
   }
+};
+
+const formatToMime: Record<string, string> = {
+  webp: "image/webp",
+  jpeg: "image/jpeg",
+  png: "image/png",
+  avif: "image/avif",
+};
+
+const formatToExt: Record<string, string> = {
+  webp: "webp",
+  jpeg: "jpg",
+  png: "png",
+  avif: "avif",
 };
 
 export default function ImageConverter() {
@@ -53,7 +67,7 @@ export default function ImageConverter() {
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [format, setFormat] = useState("image/webp");
+  const [format, setFormat] = useState("webp");
   const [quality, setQuality] = useState(80);
 
   const isProcessing = files.some(f => f.status === "processing");
@@ -65,37 +79,55 @@ export default function ImageConverter() {
 
       dispatch({ type: "SET_STATUS", id: item.id, status: "processing" });
       try {
-        const blob = await convertImage(item.file, { format, quality: quality / 100 });
+        const mime = formatToMime[format] ?? "image/webp";
+        const formData = new FormData();
+        formData.append("file", item.file);
+        formData.append("format", mime);
+        formData.append("quality", String(quality / 100));
+
+        const res = await fetch("/api/convert/image", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!res.ok) {
+          const json = await res.json().catch(() => ({ error: "Conversion failed" }));
+          throw new Error(json.error ?? "Conversion failed");
+        }
+
+        const blob = await res.blob();
         const url = URL.createObjectURL(blob);
-        dispatch({ type: "SET_STATUS", id: item.id, status: "done", resultUrl: url, resultSize: blob.size });
-      } catch (err: any) {
+        dispatch({ type: "SET_STATUS", id: item.id, status: "done", resultBlob: blob, resultUrl: url, resultSize: blob.size });
+      } catch (err: unknown) {
         trackToolError('image-converter', 'general-error');
-        dispatch({ type: "SET_STATUS", id: item.id, status: "error", error: err.message || "Conversion failed" });
+        const msg = err instanceof Error ? err.message : "Conversion failed";
+        dispatch({ type: "SET_STATUS", id: item.id, status: "error", error: msg });
       }
     }
   };
 
   const handleDownloadAll = async () => {
     trackToolUsed('image-converter', 'images');
-    const doneFiles = files.filter(f => f.status === "done" && f.resultUrl);
+    const doneFiles = files.filter(f => f.status === "done" && f.resultBlob);
     if (doneFiles.length === 0) return;
+
+    const ext = formatToExt[format] ?? format;
 
     if (doneFiles.length === 1) {
       const f = doneFiles[0];
+      const url = URL.createObjectURL(f.resultBlob!);
       const a = document.createElement("a");
-      a.href = f.resultUrl!;
-      a.download = f.file.name.replace(/\.[^/.]+$/, "") + "." + format.split('/')[1];
+      a.href = url;
+      a.download = f.file.name.replace(/\.[^/.]+$/, "") + "." + ext;
       a.click();
+      URL.revokeObjectURL(url);
       return;
     }
 
     const zip = new JSZip();
     for (const f of doneFiles) {
-      const res = await fetch(f.resultUrl!);
-      const blob = await res.blob();
-      const ext = format.split('/')[1];
       const name = f.file.name.replace(/\.[^/.]+$/, "") + "." + ext;
-      zip.file(name, blob);
+      zip.file(name, f.resultBlob!);
     }
 
     const zipBlob = await zip.generateAsync({ type: "blob" });
@@ -113,7 +145,7 @@ export default function ImageConverter() {
         <Breadcrumb items={["Home", "Image Tools", "Image Converter"]} />
         <div className="space-y-2">
           <h1 className="font-serif text-3xl text-foreground">{t.tools['image-converter']?.title ?? 'Image Converter'}</h1>
-          <p className="text-muted-foreground">{t.tools['image-converter']?.description ?? 'Resize, compress, and convert images locally. Batch support up to 20 files.'}</p>
+          <p className="text-muted-foreground">{t.tools['image-converter']?.description ?? 'Convert images between formats. Batch support up to 20 files.'}</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -130,15 +162,15 @@ export default function ImageConverter() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="image/webp">WEBP</SelectItem>
-                      <SelectItem value="image/jpeg">JPEG</SelectItem>
-                      <SelectItem value="image/png">PNG</SelectItem>
-                      <SelectItem value="image/avif">AVIF</SelectItem>
+                      <SelectItem value="webp">WEBP</SelectItem>
+                      <SelectItem value="jpeg">JPEG</SelectItem>
+                      <SelectItem value="png">PNG</SelectItem>
+                      <SelectItem value="avif">AVIF</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
-                {(format === "image/jpeg" || format === "image/webp" || format === "image/avif") && (
+                {(format === "jpeg" || format === "webp" || format === "avif") && (
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
                       <Label>{tc.quality}</Label>
@@ -207,21 +239,29 @@ export default function ImageConverter() {
                       <p className="text-sm font-medium truncate max-w-[200px] md:max-w-xs">{item.file.name}</p>
                       <p className="text-xs text-muted-foreground">
                         {(item.file.size / 1024).toFixed(1)} KB
-                        {item.resultSize && <span className="text-primary font-medium ml-2">→ {(item.resultSize / 1024).toFixed(1)} KB</span>}
+                        {item.resultSize !== undefined && (
+                          <span className={item.resultSize < item.file.size ? "text-primary font-medium ml-2" : "text-muted-foreground ml-2"}>
+                            → {(item.resultSize / 1024).toFixed(1)} KB
+                          </span>
+                        )}
                       </p>
+                      {item.error && <p className="text-xs text-destructive mt-0.5">{item.error}</p>}
                     </div>
                     <div className="flex items-center gap-3">
                       {item.status === "processing" && <span className="text-xs font-mono text-muted-foreground animate-pulse">{tc.processing}</span>}
                       {item.status === "done" && <CheckCircle2 className="w-5 h-5 text-green-500" />}
                       {item.status === "error" && <AlertCircle className="w-5 h-5 text-destructive" />}
 
-                      {item.status === "done" && item.resultUrl && (
+                      {item.status === "done" && item.resultBlob && (
                         <Button variant="ghost" size="icon" onClick={() => {
                           trackToolUsed('image-converter', 'images');
+                          const ext = formatToExt[format] ?? format;
+                          const url = URL.createObjectURL(item.resultBlob!);
                           const a = document.createElement("a");
-                          a.href = item.resultUrl!;
-                          a.download = item.file.name.replace(/\.[^/.]+$/, "") + "." + format.split('/')[1];
+                          a.href = url;
+                          a.download = item.file.name.replace(/\.[^/.]+$/, "") + "." + ext;
                           a.click();
+                          URL.revokeObjectURL(url);
                         }}>
                           <Download className="w-4 h-4" />
                         </Button>

@@ -5,8 +5,7 @@ import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import {
-  ToolWorkspace, ToolCard, ToolButton, ToolBadge,
-  ToolStat, ToolEmptyState,
+  ToolWorkspace, ToolButton,
 } from '@/components/ToolContent';
 import ToolLoadingState from '@/components/ToolLoadingState';
 
@@ -25,74 +24,47 @@ export default function TxtToPdf() {
     if (mode === 'upload' && !files[0]) return;
     if (mode === 'paste' && !textInput.trim()) return;
 
-    setError(null); setIsProcessing(true); setProgress(0);
+    setError(null); setIsProcessing(true); setProgress(10);
     trackToolUsed('txt-to-pdf', 'documents');
+
     try {
-      let textContent = "";
+      let text = "";
       let filename = "document.pdf";
       let sizeBefore = 0;
 
       if (mode === 'upload') {
-        textContent = await files[0].text();
+        text = await files[0].text();
         filename = files[0].name.replace(/\.txt$/i, '.pdf');
         sizeBefore = files[0].size;
       } else {
-        textContent = textInput;
-        sizeBefore = textInput.length;
+        text = textInput;
+        sizeBefore = new TextEncoder().encode(textInput).length;
       }
 
-      setProgress(20);
+      setProgress(30);
 
-      const pdfDoc = await PDFDocument.create();
-      const font = await pdfDoc.embedFont(StandardFonts.Courier);
-
-      const lines = textContent.split('\n');
-      let page = pdfDoc.addPage();
-      const { width, height } = page.getSize();
-
-      let y = height - 50;
-      const fontSize = 11;
-      const lineHeight = 14;
-
-      for (const line of lines) {
-        if (y < 50) {
-          page = pdfDoc.addPage();
-          y = height - 50;
-        }
-
-        const words = line.split(' ');
-        let currentLine = '';
-        for (const word of words) {
-            const testLine = currentLine ? `${currentLine} ${word}` : word;
-            const testWidth = font.widthOfTextAtSize(testLine, fontSize);
-            if (testWidth > width - 100 && currentLine !== '') {
-                page.drawText(currentLine, { x: 50, y, size: fontSize, font, color: rgb(0, 0, 0) });
-                y -= lineHeight;
-                currentLine = word;
-                if (y < 50) {
-                    page = pdfDoc.addPage();
-                    y = height - 50;
-                }
-            } else {
-                currentLine = testLine;
-            }
-        }
-        if (currentLine) {
-            page.drawText(currentLine, { x: 50, y, size: fontSize, font, color: rgb(0, 0, 0) });
-            y -= lineHeight;
-        }
-      }
+      const res = await fetch('/api/convert/text-to-pdf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text }),
+      });
 
       setProgress(80);
-      const pdfBytes = await pdfDoc.save();
-      setProgress(100);
 
-      const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({ error: 'Conversion failed' }));
+        throw new Error(json.error ?? 'Conversion failed');
+      }
+
+      const blob = await res.blob();
+      setProgress(100);
       setResult({ blob, filename, sizeAfter: blob.size, sizeBefore });
     } catch (e) {
       trackToolError('txt-to-pdf', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed. Please try again.');
-    } finally { setIsProcessing(false); }
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -115,7 +87,7 @@ export default function TxtToPdf() {
             placeholder="Paste your text here..."
             value={textInput}
             onChange={e => setTextInput(e.target.value)}
-            style={{ width: '100%', minHeight: 200, padding: 16, border: '1px solid var(--border)', borderRadius: 'var(--radius)', outline: 'none', fontFamily: 'monospace' }}
+            style={{ width: '100%', minHeight: 200, padding: 16, border: '1px solid var(--border)', borderRadius: 'var(--radius)', outline: 'none', fontFamily: 'monospace', resize: 'vertical', boxSizing: 'border-box' }}
           />
         )}
 
@@ -128,9 +100,9 @@ export default function TxtToPdf() {
         <ToolLoadingState
           status={isProcessing ? 'loading' : error ? 'error' : 'idle'}
           progress={isProcessing ? progress : undefined}
-          label="Generating PDF..."
+          label="Generating PDF on server..."
           errorMessage={error ?? undefined}
-          onRetry={error && files.length > 0 ? handleConvert : undefined}
+          onRetry={error ? handleConvert : undefined}
         />
         {result && <ResultPanel {...result} />}
       </ToolWorkspace>

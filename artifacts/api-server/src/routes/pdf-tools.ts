@@ -209,26 +209,41 @@ router.post("/tools/pdf-split", upload.single("file"), guardSinglePdf, async (re
 
 // ─────────────────────────────────────────────────────────
 // POST /tools/pdf-protect
+// Accepts: userPassword, ownerPassword, allowPrinting, allowCopying, allowModifying
 // ─────────────────────────────────────────────────────────
 router.post("/tools/pdf-protect", upload.single("file"), guardSinglePdf, async (req, res) => {
   if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
 
-  const password = String(req.body.password ?? "").trim();
-  if (!password) { res.status(400).json({ error: "Password is required." }); return; }
-  if (password.length > 128) { res.status(400).json({ error: "Password too long." }); return; }
+  const userPassword = String(req.body.userPassword ?? req.body.password ?? "").trim();
+  const ownerPassword = String(req.body.ownerPassword ?? "").trim();
+
+  if (!userPassword && !ownerPassword) {
+    res.status(400).json({ error: "At least one password (user or owner) is required." });
+    return;
+  }
+
+  const tooLong = (s: string) => s.length > 128;
+  if (tooLong(userPassword) || tooLong(ownerPassword)) {
+    res.status(400).json({ error: "Password too long (max 128 characters)." });
+    return;
+  }
+
+  const allowPrinting  = String(req.body.allowPrinting  ?? "true")  !== "false";
+  const allowCopying   = String(req.body.allowCopying   ?? "true")  !== "false";
+  const allowModifying = String(req.body.allowModifying ?? "false") === "true";
 
   try {
     const pdfDoc = await PDFDocument.load(req.file.buffer);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pdfBytes = await pdfDoc.save({
-      userPassword: password,
-      ownerPassword: password + "_owner_et",
+      userPassword:  userPassword  || undefined,
+      ownerPassword: ownerPassword || (userPassword ? userPassword + "_owner_et" : undefined),
       permissions: {
-        printing: "lowResolution",
-        modifying: false,
-        copying: false,
+        printing: allowPrinting ? "highResolution" : undefined,
+        modifying: allowModifying,
+        copying: allowCopying,
         annotating: false,
-        fillingForms: false,
+        fillingForms: allowModifying,
         contentAccessibility: true,
         documentAssembly: false,
       },

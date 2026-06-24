@@ -5,8 +5,7 @@ import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import {
-  ToolWorkspace, ToolCard, ToolButton, ToolBadge,
-  ToolStat, ToolEmptyState,
+  ToolWorkspace, ToolCard, ToolButton,
 } from '@/components/ToolContent';
 import ToolLoadingState from '@/components/ToolLoadingState';
 
@@ -30,34 +29,48 @@ export default function PdfProtect() {
       setError("Please set at least one password.");
       return;
     }
-    setError(null); setIsProcessing(true); setProgress(0);
+    setError(null); setIsProcessing(true); setProgress(10);
+
     try {
       trackToolUsed('pdf-protect', 'pdf');
       const file = files[0];
-      const arrayBuffer = await file.arrayBuffer();
-      const pdfDoc = await PDFDocument.load(arrayBuffer);
-      setProgress(50);
 
-      // Note: pdf-lib uses RC4 128-bit encryption
-      const pdfBytes = await pdfDoc.save({
-        useObjectStreams: false,
-        userPassword: userPassword || undefined,
-        ownerPassword: ownerPassword || undefined,
-        permissions: {
-          printing: allowPrinting ? 'highResolution' : undefined,
-          copying: allowCopying,
-          modifying: allowModifying,
-        }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any);
+      const formData = new FormData();
+      formData.append('file', file);
+      if (userPassword) formData.append('userPassword', userPassword);
+      if (ownerPassword) formData.append('ownerPassword', ownerPassword);
+      formData.append('allowPrinting', String(allowPrinting));
+      formData.append('allowCopying', String(allowCopying));
+      formData.append('allowModifying', String(allowModifying));
+
+      setProgress(40);
+
+      const res = await fetch('/api/tools/pdf-protect', {
+        method: 'POST',
+        body: formData,
+      });
+
+      setProgress(80);
+
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({ error: 'Protection failed' }));
+        throw new Error(json.error ?? 'Protection failed');
+      }
+
+      const blob = await res.blob();
       setProgress(100);
-
-      const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
-      setResult({ blob, filename: file.name.replace(/\.pdf$/i, '_protected.pdf'), sizeAfter: blob.size, sizeBefore: file.size });
+      setResult({
+        blob,
+        filename: file.name.replace(/\.pdf$/i, '_protected.pdf'),
+        sizeAfter: blob.size,
+        sizeBefore: file.size,
+      });
     } catch (e) {
       trackToolError('pdf-protect', 'general-error');
       setError(e instanceof Error ? e.message : 'Protection failed. Please try again.');
-    } finally { setIsProcessing(false); }
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -76,12 +89,12 @@ export default function PdfProtect() {
               <div>
                 <label style={{ display: 'block', fontSize: 'var(--text-sm)', marginBottom: 6, fontWeight: 500 }}>User Password (Required to Open)</label>
                 <input type="text" placeholder="Enter password to open" value={userPassword} onChange={e => setUserPassword(e.target.value)}
-                  style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', outline: 'none' }} />
+                  style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', outline: 'none', boxSizing: 'border-box' }} />
               </div>
               <div>
                 <label style={{ display: 'block', fontSize: 'var(--text-sm)', marginBottom: 6, fontWeight: 500 }}>Owner Password (Required to change permissions)</label>
                 <input type="text" placeholder="Enter owner password (optional)" value={ownerPassword} onChange={e => setOwnerPassword(e.target.value)}
-                  style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', outline: 'none' }} />
+                  style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', outline: 'none', boxSizing: 'border-box' }} />
               </div>
             </div>
 
@@ -114,7 +127,7 @@ export default function PdfProtect() {
         <ToolLoadingState
           status={isProcessing ? 'loading' : error ? 'error' : 'idle'}
           progress={isProcessing ? progress : undefined}
-          label="Encrypting PDF..."
+          label="Encrypting PDF on server..."
           errorMessage={error ?? undefined}
           onRetry={error && files.length > 0 ? handleConvert : undefined}
         />
