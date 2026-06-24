@@ -9,6 +9,7 @@ import {
   ToolStat, ToolEmptyState,
 } from '@/components/ToolContent';
 import ToolLoadingState from '@/components/ToolLoadingState';
+import { apiUrl } from '@/lib/apiBase';
 
 export default function PdfRotate() {
   const { t } = useLocale();
@@ -29,7 +30,7 @@ export default function PdfRotate() {
       const fd = new FormData();
       fd.append('file', file);
       fd.append('rotation', String(rotation));
-      const res = await fetch('/api/tools/pdf-rotate', { method: 'POST', body: fd });
+      const res = await fetch(apiUrl('/api/tools/pdf-rotate'), { method: 'POST', body: fd });
       setProgress(80);
       if (!res.ok) {
         const err = await res.json() as { error?: string };

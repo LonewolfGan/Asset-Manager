@@ -5,6 +5,7 @@ import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { PageTitle, PageSubtitle } from '@/components/Typography';
+import { apiUrl } from '@/lib/apiBase';
 
 export default function FlipRotateImage() {
   const { t } = useLocale();
@@ -44,7 +45,7 @@ export default function FlipRotateImage() {
       fd.append('flipH', String(flipH));
       fd.append('flipV', String(flipV));
       fd.append('outputFormat', outputFormat);
-      const res = await fetch('/api/tools/flip-rotate', { method: 'POST', body: fd });
+      const res = await fetch(apiUrl('/api/tools/flip-rotate'), { method: 'POST', body: fd });
       if (!res.ok) {
         const err = await res.json() as { error?: string };
         throw new Error(err.error ?? 'Processing failed');

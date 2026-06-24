@@ -8,6 +8,7 @@ import {
   ToolWorkspace, ToolCard, ToolButton,
 } from '@/components/ToolContent';
 import ToolLoadingState from '@/components/ToolLoadingState';
+import { apiUrl } from '@/lib/apiBase';
 
 export default function PdfProtect() {
   const { t } = useLocale();
@@ -45,7 +46,7 @@ export default function PdfProtect() {
 
       setProgress(40);
 
-      const res = await fetch('/api/tools/pdf-protect', {
+      const res = await fetch(apiUrl('/api/tools/pdf-protect'), {
         method: 'POST',
         body: formData,
       });

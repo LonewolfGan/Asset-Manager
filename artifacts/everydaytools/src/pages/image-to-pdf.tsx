@@ -11,6 +11,7 @@ import {
   ToolStat, ToolEmptyState,
 } from '@/components/ToolContent';
 import ToolLoadingState from '@/components/ToolLoadingState';
+import { apiUrl } from '@/lib/apiBase';
 
 // Formats pdf-lib can embed natively without re-encoding
 const NATIVE_PDF_FORMATS = new Set(['image/jpeg', 'image/jpg', 'image/png']);
@@ -33,7 +34,7 @@ async function normaliseToEmbeddable(file: File): Promise<{ buffer: ArrayBuffer;
   form.append('format', 'image/jpeg');
   form.append('quality', '0.92');
 
-  const res = await fetch('/api/convert/image', { method: 'POST', body: form });
+  const res = await fetch(apiUrl('/api/convert/image'), { method: 'POST', body: form });
   if (!res.ok) {
     // Server couldn't handle it — give a clear message
     const err = await res.json().catch(() => ({})) as { error?: string };

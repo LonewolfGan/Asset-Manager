@@ -7,6 +7,7 @@ import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { sanitizeHTML } from '@/utils/sanitize';
 import { PageTitle, PageSubtitle } from '@/components/Typography';
+import { apiUrl } from '@/lib/apiBase';
 
 function formatBytes(b: number) {
   if (b < 1024 * 1024) return `${(b / 1024).toFixed(1)} KB`;
@@ -35,7 +36,7 @@ export default function WordToPdf() {
       const fd = new FormData();
       fd.append('file', file);
       setProgress(40);
-      const res = await fetch('/api/tools/word-to-pdf', { method: 'POST', body: fd });
+      const res = await fetch(apiUrl('/api/tools/word-to-pdf'), { method: 'POST', body: fd });
       setProgress(85);
       if (!res.ok) {
         const err = await res.json() as { error?: string };

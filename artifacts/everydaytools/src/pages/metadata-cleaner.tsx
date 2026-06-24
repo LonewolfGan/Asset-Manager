@@ -4,6 +4,7 @@ import { useLocale } from '@/hooks/use-locale';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import { ToolWorkspace, ToolCard, ToolButton, ToolBadge } from '@/components/ToolContent';
 import ToolLoadingState from '@/components/ToolLoadingState';
+import { apiUrl } from '@/lib/apiBase';
 
 function formatBytes(b: number) {
   if (b < 1024) return `${b} B`;
@@ -54,7 +55,7 @@ export default function MetadataCleaner() {
         const formData = new FormData();
         formData.append('file', file);
 
-        const res = await fetch('/api/tools/image-metadata-clean', {
+        const res = await fetch(apiUrl('/api/tools/image-metadata-clean'), {
           method: 'POST',
           body: formData,
         });

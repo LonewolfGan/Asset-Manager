@@ -8,6 +8,7 @@ import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { PageTitle, PageSubtitle } from '@/components/Typography';
+import { apiUrl } from '@/lib/apiBase';
 
 export default function PdfMerge() {
   const { t } = useLocale();
@@ -27,7 +28,7 @@ export default function PdfMerge() {
       let totalSize = 0;
       for (const f of files) { fd.append('files', f); totalSize += f.size; }
       setProgress(20);
-      const res = await fetch('/api/tools/pdf-merge', { method: 'POST', body: fd });
+      const res = await fetch(apiUrl('/api/tools/pdf-merge'), { method: 'POST', body: fd });
       setProgress(90);
       if (!res.ok) {
         const err = await res.json() as { error?: string };

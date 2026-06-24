@@ -5,6 +5,7 @@ import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed } from '@/lib/analytics';
 import { PageTitle, PageSubtitle } from '@/components/Typography';
+import { apiUrl } from '@/lib/apiBase';
 
 type Position = 'top-left' | 'top-right' | 'center' | 'bottom-left' | 'bottom-right';
 
@@ -73,7 +74,7 @@ export default function WatermarkImage() {
       fd.append('opacity', String(opacity / 100));
       fd.append('position', position);
       fd.append('color', color);
-      const res = await fetch('/api/tools/watermark-image', { method: 'POST', body: fd });
+      const res = await fetch(apiUrl('/api/tools/watermark-image'), { method: 'POST', body: fd });
       if (!res.ok) {
         const err = await res.json() as { error?: string };
         throw new Error(err.error ?? 'Processing failed');

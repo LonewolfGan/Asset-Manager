@@ -7,6 +7,7 @@ import {
   ToolStat, ToolEmptyState,
 } from '@/components/ToolContent';
 import ToolLoadingState from '@/components/ToolLoadingState';
+import { apiUrl } from '@/lib/apiBase';
 
 export default function PptxToPdf() {
   const { t } = useLocale();
@@ -26,7 +27,7 @@ export default function PptxToPdf() {
       setProgress(30);
       const fd = new FormData();
       fd.append('file', f);
-      const res = await fetch('/api/tools/pptx-to-pdf', { method: 'POST', body: fd });
+      const res = await fetch(apiUrl('/api/tools/pptx-to-pdf'), { method: 'POST', body: fd });
       setProgress(80);
       if (!res.ok) {
         const err = await res.json() as { error?: string };

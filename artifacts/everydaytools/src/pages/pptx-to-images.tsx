@@ -4,6 +4,7 @@ import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import { ToolWorkspace, ToolButton } from '@/components/ToolContent';
 import ToolLoadingState from '@/components/ToolLoadingState';
+import { apiUrl } from '@/lib/apiBase';
 
 export default function PptxToImages() {
   const { t } = useLocale();
@@ -26,7 +27,7 @@ export default function PptxToImages() {
       const form = new FormData();
       form.append('file', f);
 
-      const res = await fetch('/api/tools/pptx-to-images', { method: 'POST', body: form });
+      const res = await fetch(apiUrl('/api/tools/pptx-to-images'), { method: 'POST', body: form });
       setProgress(70);
 
       if (!res.ok) {

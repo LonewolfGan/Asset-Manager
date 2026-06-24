@@ -10,6 +10,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 import ToolPageSEO from "@/components/ToolPageSEO";
 import { useLocale } from "@/hooks/use-locale";
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
+import { apiUrl } from '@/lib/apiBase';
 
 type FileState = {
   id: string;
@@ -85,7 +86,7 @@ export default function ImageConverter() {
         formData.append("format", mime);
         formData.append("quality", String(quality / 100));
 
-        const res = await fetch("/api/convert/image", {
+        const res = await fetch(apiUrl("/api/convert/image"), {
           method: "POST",
           body: formData,
         });

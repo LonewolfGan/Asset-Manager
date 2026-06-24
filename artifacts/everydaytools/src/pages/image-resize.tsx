@@ -9,6 +9,7 @@ import { useLocale } from '@/hooks/use-locale';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ToolLoadingState from '@/components/ToolLoadingState';
 import { PageTitle, PageSubtitle } from '@/components/Typography';
+import { apiUrl } from '@/lib/apiBase';
 
 export default function ImageResize() {
   const { t } = useLocale();
@@ -83,7 +84,7 @@ export default function ImageResize() {
       }
 
       setProgress(30);
-      const res = await fetch('/api/tools/image-resize', { method: 'POST', body: fd });
+      const res = await fetch(apiUrl('/api/tools/image-resize'), { method: 'POST', body: fd });
       setProgress(90);
       if (!res.ok) {
         const err = await res.json() as { error?: string };

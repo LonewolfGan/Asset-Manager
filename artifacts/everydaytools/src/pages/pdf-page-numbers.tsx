@@ -9,6 +9,7 @@ import {
   ToolStat, ToolEmptyState,
 } from '@/components/ToolContent';
 import ToolLoadingState from '@/components/ToolLoadingState';
+import { apiUrl } from '@/lib/apiBase';
 
 export default function PdfPageNumbers() {
   const { t } = useLocale();
@@ -33,7 +34,7 @@ export default function PdfPageNumbers() {
       fd.append('file', file);
       fd.append('position', `bottom-${position}`);
       fd.append('startFrom', String(startNum));
-      const res = await fetch('/api/tools/pdf-page-numbers', { method: 'POST', body: fd });
+      const res = await fetch(apiUrl('/api/tools/pdf-page-numbers'), { method: 'POST', body: fd });
       setProgress(80);
       if (!res.ok) {
         const err = await res.json() as { error?: string };

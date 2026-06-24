@@ -8,6 +8,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { PageTitle, PageSubtitle } from '@/components/Typography';
+import { apiUrl } from '@/lib/apiBase';
 
 type ItemStatus = 'pending' | 'processing' | 'done' | 'error';
 
@@ -128,7 +129,7 @@ export default function BackgroundRemover() {
         const formData = new FormData();
         formData.append('file', queue[i].file);
 
-        const response = await fetch('/api/remove-background', {
+        const response = await fetch(apiUrl('/api/remove-background'), {
           method: 'POST',
           body: formData,
         });
@@ -178,7 +179,7 @@ export default function BackgroundRemover() {
     try {
       const formData = new FormData();
       formData.append('file', queue[index].file);
-      const response = await fetch('/api/remove-background', { method: 'POST', body: formData });
+      const response = await fetch(apiUrl('/api/remove-background'), { method: 'POST', body: formData });
       if (!response.ok) {
         let msg = 'Failed';
         try { const j = await response.json(); if (j?.error) msg = j.error; } catch {}

@@ -6,6 +6,7 @@ import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { PageTitle, PageSubtitle } from '@/components/Typography';
+import { apiUrl } from '@/lib/apiBase';
 
 const SIZES = [16, 32, 64, 128, 180, 192];
 
@@ -41,7 +42,7 @@ export default function FaviconGenerator() {
     try {
       const fd = new FormData();
       fd.append('file', file);
-      const res = await fetch('/api/tools/favicon-generate', { method: 'POST', body: fd });
+      const res = await fetch(apiUrl('/api/tools/favicon-generate'), { method: 'POST', body: fd });
       if (!res.ok) {
         const err = await res.json() as { error?: string };
         throw new Error(err.error ?? 'Generation failed');

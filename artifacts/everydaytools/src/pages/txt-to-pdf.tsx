@@ -8,6 +8,7 @@ import {
   ToolWorkspace, ToolButton,
 } from '@/components/ToolContent';
 import ToolLoadingState from '@/components/ToolLoadingState';
+import { apiUrl } from '@/lib/apiBase';
 
 export default function TxtToPdf() {
   const { t } = useLocale();
@@ -43,7 +44,7 @@ export default function TxtToPdf() {
 
       setProgress(30);
 
-      const res = await fetch('/api/convert/text-to-pdf', {
+      const res = await fetch(apiUrl('/api/convert/text-to-pdf'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text }),

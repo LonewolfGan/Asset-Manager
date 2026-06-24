@@ -6,6 +6,7 @@ import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { PageTitle, PageSubtitle } from '@/components/Typography';
+import { apiUrl } from '@/lib/apiBase';
 
 interface FileResult {
   id: string;
@@ -175,7 +176,7 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
     fd.append('file', entry.file);
 
     if (toMime === 'application/pdf') {
-      const res = await fetch('/api/convert/image-to-pdf', { method: 'POST', body: fd });
+      const res = await fetch(apiUrl('/api/convert/image-to-pdf'), { method: 'POST', body: fd });
       if (!res.ok) {
         const err = await res.json() as { error?: string };
         throw new Error(err.error ?? 'Conversion failed');
@@ -185,7 +186,7 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
 
     fd.append('format', toMime);
     fd.append('quality', (quality / 100).toString());
-    const res = await fetch('/api/convert/image', { method: 'POST', body: fd });
+    const res = await fetch(apiUrl('/api/convert/image'), { method: 'POST', body: fd });
 
     if (!res.ok) {
       const errData = await res.json() as { error?: string; clientFallback?: boolean };

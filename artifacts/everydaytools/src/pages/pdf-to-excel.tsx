@@ -6,6 +6,7 @@ import {
   ToolWorkspace, ToolButton,
 } from '@/components/ToolContent';
 import ToolLoadingState from '@/components/ToolLoadingState';
+import { apiUrl } from '@/lib/apiBase';
 
 function formatBytes(b: number) {
   if (b < 1024) return `${b} B`;
@@ -38,7 +39,7 @@ export default function PdfToExcel() {
       const form = new FormData();
       form.append('file', file);
 
-      const res = await fetch('/api/convert/pdf-to-excel', { method: 'POST', body: form });
+      const res = await fetch(apiUrl('/api/convert/pdf-to-excel'), { method: 'POST', body: form });
       setProgress(80);
 
       if (!res.ok) {

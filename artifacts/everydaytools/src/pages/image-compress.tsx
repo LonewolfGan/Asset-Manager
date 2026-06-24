@@ -5,6 +5,7 @@ import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { PageTitle, PageSubtitle } from '@/components/Typography';
+import { apiUrl } from '@/lib/apiBase';
 // Processing is handled server-side via /api/tools/image-compress
 
 type Mode = 'quality' | 'target';
@@ -94,7 +95,7 @@ export default function ImageCompress() {
           if (resizeH) fd.append('resizeH', resizeH);
         }
 
-        const res = await fetch('/api/tools/image-compress', { method: 'POST', body: fd });
+        const res = await fetch(apiUrl('/api/tools/image-compress'), { method: 'POST', body: fd });
         if (!res.ok) {
           const err = await res.json() as { error?: string };
           throw new Error(err.error ?? 'Compression failed');

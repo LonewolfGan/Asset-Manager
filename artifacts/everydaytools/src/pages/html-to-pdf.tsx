@@ -9,6 +9,7 @@ import {
   ToolStat, ToolEmptyState,
 } from '@/components/ToolContent';
 import ToolLoadingState from '@/components/ToolLoadingState';
+import { apiUrl } from '@/lib/apiBase';
 
 export default function HtmlToPdf() {
   const { t } = useLocale();
@@ -37,10 +38,10 @@ export default function HtmlToPdf() {
         sizeBefore = files[0].size;
         const fd = new FormData();
         fd.append('file', files[0]);
-        res = await fetch('/api/tools/html-to-pdf', { method: 'POST', body: fd });
+        res = await fetch(apiUrl('/api/tools/html-to-pdf'), { method: 'POST', body: fd });
       } else {
         sizeBefore = htmlInput.length;
-        res = await fetch('/api/tools/html-to-pdf', {
+        res = await fetch(apiUrl('/api/tools/html-to-pdf'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ html: htmlInput }),

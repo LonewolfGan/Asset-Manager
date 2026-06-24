@@ -7,6 +7,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { PageTitle, PageSubtitle } from '@/components/Typography';
+import { apiUrl } from '@/lib/apiBase';
 
 export default function ImageCrop() {
   const { t } = useLocale();
@@ -138,7 +139,7 @@ export default function ImageCrop() {
       fd.append('top', String(top));
       fd.append('width', String(width));
       fd.append('height', String(height));
-      const res = await fetch('/api/tools/image-crop', { method: 'POST', body: fd });
+      const res = await fetch(apiUrl('/api/tools/image-crop'), { method: 'POST', body: fd });
       if (!res.ok) {
         const err = await res.json() as { error?: string };
         throw new Error(err.error ?? 'Crop failed');

@@ -8,6 +8,7 @@ import {
   ToolStat, ToolEmptyState,
 } from '@/components/ToolContent';
 import ToolLoadingState from '@/components/ToolLoadingState';
+import { apiUrl } from '@/lib/apiBase';
 
 export default function ExcelToPdf() {
   const { t } = useLocale();
@@ -46,7 +47,7 @@ export default function ExcelToPdf() {
       fd.append('file', file);
       fd.append('sheet', selectedSheet);
       setProgress(40);
-      const res = await fetch('/api/tools/excel-to-pdf', { method: 'POST', body: fd });
+      const res = await fetch(apiUrl('/api/tools/excel-to-pdf'), { method: 'POST', body: fd });
       setProgress(85);
       if (!res.ok) {
         const err = await res.json() as { error?: string };

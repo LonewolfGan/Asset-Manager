@@ -7,6 +7,7 @@ import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import ToolLoadingState from '@/components/ToolLoadingState';
 import { PageTitle, PageSubtitle } from '@/components/Typography';
+import { apiUrl } from '@/lib/apiBase';
 
 type Level = 'screen' | 'ebook' | 'prepress';
 
@@ -46,7 +47,7 @@ export default function PdfCompress() {
       fd.append('file', file);
       fd.append('level', level);
       setProgress(20);
-      const res = await fetch('/api/tools/pdf-compress', { method: 'POST', body: fd });
+      const res = await fetch(apiUrl('/api/tools/pdf-compress'), { method: 'POST', body: fd });
       setProgress(85);
       if (!res.ok) {
         const err = await res.json() as { error?: string };

@@ -1,0 +1,32 @@
+# Render deployment configuration — EverydayTools API + Frontend
+#
+# This file tells Render how to build and run the EverydayTools backend.
+# The Express server serves BOTH the compiled React frontend AND the API.
+#
+# Setup steps:
+#   1. Push this repo to GitHub.
+#   2. Create a new "Web Service" on Render → connect your GitHub repo.
+#   3. Render auto-detects this render.yaml and configures everything.
+#   4. After first deploy, copy your Render URL (e.g. https://my-app.onrender.com).
+#   5. In your Vercel project settings → Environment Variables → add:
+#        VITE_API_BASE_URL = https://my-app.onrender.com
+#      Then redeploy Vercel so the frontend points to your Render backend.
+#
+# Alternatively, skip Vercel entirely — Render serves the full app (frontend + API)
+# from a single URL at no extra cost.
+
+services:
+  - type: web
+    name: everydaytools-api
+    runtime: docker
+    dockerfilePath: ./artifacts/api-server/Dockerfile
+    dockerContext: .
+    plan: starter          # free tier: change to "standard" for production
+    region: frankfurt      # choose closest to your users
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+    healthCheckPath: /api/health
+    autoDeploy: true       # deploy automatically on every GitHub push
