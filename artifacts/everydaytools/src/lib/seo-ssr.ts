@@ -118,7 +118,7 @@ function sharedCss(): string {
     .site-nav-links a{font-size:14px;color:var(--muted);text-decoration:none}
     .site-nav-links a:hover{color:var(--text)}
     /* Container */
-    .container{max-width:1200px;margin:0 auto;padding:48px 24px 80px}
+    .container{width:100%;box-sizing:border-box;padding:48px 48px 80px}@media(max-width:1440px){.container{padding:48px 32px 80px}}@media(max-width:768px){.container{padding:40px 24px 80px}}
     /* Breadcrumb */
     .breadcrumb{display:flex;align-items:center;gap:6px;margin-bottom:24px;font-size:12px;color:var(--muted)}
     .breadcrumb a{color:var(--muted);text-decoration:none}
