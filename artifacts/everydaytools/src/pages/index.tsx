@@ -543,7 +543,9 @@ function CategoryFilterBar({
       justifyContent: "center",
       gap: 6,
       flexWrap: "wrap",
-      marginBottom: 36,
+      marginBottom: 0,
+      paddingBottom: 32,
+      borderBottom: "1px solid var(--border)",
     }}>
       {/* All pill */}
       <button
@@ -581,7 +583,7 @@ function CategoryFilterBar({
       </button>
 
       {/* Divider */}
-      <div style={{ width: 1, height: 16, background: "var(--border)", flexShrink: 0, marginRight: 2 }} />
+      <div style={{ width: 1, height: 22, background: "var(--border-strong)", flexShrink: 0, marginInline: 4, opacity: 0.7 }} />
 
       {categories.map((cat) => {
         const label = locale.toLowerCase().startsWith("fr") ? cat.labelFr : cat.label;
