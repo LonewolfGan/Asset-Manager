@@ -93,7 +93,7 @@
 
   /* Font families */
   --font-display: 'Space Grotesk', system-ui, sans-serif;
-  --font-ui:      'Inter', system-ui, -apple-system, sans-serif;
+  --font-ui:      'Space Grotesk', system-ui, sans-serif;
   --font-mono:    'Geist Mono', 'Courier New', monospace;
   --font-hero:    'Outfit', sans-serif;
 
