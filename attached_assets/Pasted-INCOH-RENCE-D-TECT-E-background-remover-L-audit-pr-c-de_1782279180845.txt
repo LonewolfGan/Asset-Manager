@@ -1,0 +1,59 @@
+INCOHÉRENCE DÉTECTÉE — background-remover
+
+L'audit précédent a affirmé que background-remover utilise 
+@imgly/background-removal-node (serveur, modèle medium U2-Net) et l'a 
+classé "déjà optimal, aucun changement nécessaire". Mais l'UI affiche 
+actuellement ce texte : "Removes image backgrounds using an AI model 
+that runs on your device. The model downloads once and processes 
+everything locally." — ça décrit clairement un traitement CLIENT 
+(navigateur), pas serveur. Et le bug original persiste : le résultat 
+enlève des parties importantes de l'image.
+
+Il y a une contradiction entre le diagnostic donné et le comportement 
+réel observé. Je veux un VRAI diagnostic cette fois, pas une affirmation.
+
+ÉTAPE 1 — TRACER LE FLUX RÉEL, PAS DE MÉMOIRE
+
+1. Ouvre le fichier de la page frontend background-remover 
+   (probablement src/pages/background-remover.tsx ou équivalent). 
+   Colle-moi ou montre-moi exactement quel import est utilisé : 
+   @imgly/background-removal (client) ou @imgly/background-removal-node 
+   (serveur) ? Cherche littéralement la ligne d'import.
+
+2. Vérifie s'il existe DEUX implémentations dans le code (une route API 
+   serveur ET un appel client direct), et laquelle des deux est 
+   RÉELLEMENT appelée par le bouton/composant que l'utilisateur déclenche 
+   dans l'UI. Trace le clic du bouton jusqu'à la fonction exécutée, 
+   ligne par ligne.
+
+3. Si c'est bien la version client (@imgly/background-removal sans 
+   -node) qui tourne dans le navigateur : explique pourquoi le rapport 
+   précédent affirmait le contraire. Cherche s'il y a un fichier serveur 
+   qui existe mais n'est jamais appelé (code mort), ce qui expliquerait 
+   la confusion du précédent diagnostic.
+
+ÉTAPE 2 — CORRIGER POUR DE VRAI
+
+Une fois la cause confirmée :
+- Si le serveur a bien une route avec @imgly/background-removal-node 
+  mais qu'elle n'est pas appelée par le frontend : corrige le frontend 
+  pour qu'il appelle cette route serveur au lieu du traitement client.
+- Si aucune route serveur n'existe réellement : crée-la avec 
+  @imgly/background-removal-node, et bascule le frontend pour l'utiliser.
+- Si c'est volontairement client pour des raisons de coût/charge serveur : 
+  dis-le-moi clairement, mais dans ce cas le bug de qualité doit être 
+  débuggé différemment (voir étape 3).
+
+ÉTAPE 3 — TESTER RÉELLEMENT LE RÉSULTAT
+
+Peu importe où ça tourne, teste maintenant avec au moins 5 images 
+réelles différentes (portrait avec cheveux détaillés, objet aux couleurs 
+proches du fond, image avec plusieurs éléments) et MONTRE-MOI le résultat 
+réel (description précise de ce qui a été supprimé/conservé), pas une 
+affirmation que "c'est optimal". Si le modèle medium U2-Net produit 
+encore de mauvais résultats sur ces tests, évalue s'il existe une 
+meilleure variante du modèle (large au lieu de medium dans 
+@imgly/background-removal) et teste-la.
+
+Ne me redonne pas un statut "déjà optimal" sans capture ou description 
+concrète d'un test réel à l'appui.
