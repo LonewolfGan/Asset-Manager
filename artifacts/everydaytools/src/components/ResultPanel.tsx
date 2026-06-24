@@ -102,7 +102,7 @@ export default function ResultPanel({ filename, sizeBefore, sizeAfter, blob, tex
           {reduction !== null && (
             <span style={{
               color: 'var(--success)',
-              background: 'rgba(34,197,94,0.10)',
+              background: 'color-mix(in srgb, var(--success) 10%, transparent)',
               borderRadius: 'var(--radius-sm)',
               padding: '1px 6px',
             }}>
@@ -116,7 +116,7 @@ export default function ResultPanel({ filename, sizeBefore, sizeAfter, blob, tex
       {warning && (
         <div style={{
           padding: '10px 16px',
-          background: 'rgba(245, 158, 11, 0.08)',
+          background: 'color-mix(in srgb, var(--warning) 8%, transparent)',
           borderTop: '1px solid var(--border)',
           borderBottom: '1px solid var(--border)',
           fontFamily: 'var(--font-ui)',

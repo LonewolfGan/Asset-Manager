@@ -56,8 +56,8 @@ interface CategoryDef {
   FilterIcon: LucideIcon;
 }
 
-const ACCENT_BG = "rgba(255,107,53,0.08)";
-const ACCENT_BORDER = "rgba(255,107,53,0.4)";
+const ACCENT_BG = "var(--accent-subtle)";
+const ACCENT_BORDER = "var(--accent)";
 
 const CATEGORIES: CategoryDef[] = [
   { key: "pdf",         label: "PDF Tools",        labelFr: "Outils PDF",         FilterIcon: FileText },
@@ -236,20 +236,20 @@ function ToolCard({
           cursor: "pointer",
           overflow: "hidden",
           transition: "border-color 150ms ease, box-shadow 150ms ease",
-          boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
+          boxShadow: "var(--shadow-sm)",
           textAlign: "left",
         }}
         onMouseEnter={(e) => {
           const el = e.currentTarget as HTMLElement;
           el.style.borderColor = ACCENT_BORDER;
-          el.style.boxShadow = `0 4px 16px rgba(0,0,0,0.07)`;
+          el.style.boxShadow = "var(--shadow-hover)";
           const tint = el.querySelector<HTMLElement>(".card-tint");
           if (tint) tint.style.opacity = "1";
         }}
         onMouseLeave={(e) => {
           const el = e.currentTarget as HTMLElement;
           el.style.borderColor = "var(--border)";
-          el.style.boxShadow = "0 1px 2px rgba(0,0,0,0.04)";
+          el.style.boxShadow = "var(--shadow-sm)";
           const tint = el.querySelector<HTMLElement>(".card-tint");
           if (tint) tint.style.opacity = "0";
         }}
@@ -558,7 +558,7 @@ function CategoryFilterBar({
           borderRadius: 'var(--radius-pill)',
           border: `1px solid ${isAllActive ? "var(--accent)" : "var(--border)"}`,
           background: isAllActive ? "var(--accent)" : "var(--bg-surface)",
-          color: isAllActive ? "#fff" : "var(--text-secondary)",
+          color: isAllActive ? "var(--accent-text)" : "var(--text-secondary)",
           fontFamily: "var(--font-ui)",
           fontSize: "var(--text-xs)",
           fontWeight: isAllActive ? 600 : 500,

@@ -41,7 +41,7 @@ export default function UrlEncoder() {
         <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
           {(['encode', 'decode'] as Mode[]).map((m) => (
             <button key={m} onClick={() => { setMode(m); setInput(''); }}
-              style={{ padding: '7px 18px', border: `1px solid ${mode === m ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius)', background: mode === m ? 'var(--accent-subtle,#fff4ef)' : 'var(--bg-surface)', color: mode === m ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: mode === m ? 600 : 400, cursor: 'pointer' }}>
+              style={{ padding: '7px 18px', border: `1px solid ${mode === m ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius)', background: mode === m ? 'var(--accent-subtle)' : 'var(--bg-surface)', color: mode === m ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: mode === m ? 600 : 400, cursor: 'pointer' }}>
               {m === 'encode' ? t.common.encode : t.common.decode}
             </button>
           ))}

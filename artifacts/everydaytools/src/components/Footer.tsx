@@ -74,7 +74,7 @@ export default function Footer() {
           <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, textDecoration: 'none', width: 'fit-content' }}>
             <svg width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <rect width="64" height="64" rx="11" fill="var(--bg-surface)"/>
-              <rect x="14" y="15" width="36" height="7" rx="2" fill="#FF6B35"/>
+              <rect x="14" y="15" width="36" height="7" rx="2" fill="var(--accent)"/>
               <rect x="14" y="28" width="28" height="7" rx="2" fill="var(--text-primary)"/>
               <rect x="14" y="41" width="36" height="7" rx="2" fill="var(--text-primary)"/>
             </svg>

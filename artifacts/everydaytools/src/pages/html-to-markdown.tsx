@@ -81,7 +81,7 @@ export default function HtmlToMarkdown() {
             </div>
             <textarea readOnly value={output || (error ? `Error: ${error}` : '')}
               placeholder="Converted markdown appears here"
-              style={{ width: '100%', height: 320, padding: 12, border: `1px solid ${error ? 'var(--danger,#dc2626)' : 'var(--border)'}`, borderRadius: 'var(--radius)', background: 'var(--bg-elevated)', color: error ? 'var(--danger,#dc2626)' : 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', resize: 'vertical', boxSizing: 'border-box' }}
+              style={{ width: '100%', height: 320, padding: 12, border: `1px solid ${error ? 'var(--danger)' : 'var(--border)'}`, borderRadius: 'var(--radius)', background: 'var(--bg-elevated)', color: error ? 'var(--danger)' : 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', resize: 'vertical', boxSizing: 'border-box' }}
             />
           </div>
         </div>

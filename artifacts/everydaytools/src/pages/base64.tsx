@@ -81,7 +81,7 @@ export default function Base64() {
         <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
           {(['encode', 'decode'] as Mode[]).map((m) => (
             <button key={m} onClick={() => handleMode(m)}
-              style={{ padding: '7px 18px', border: `1px solid ${mode === m ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius)', background: mode === m ? 'var(--accent-subtle,#fff4ef)' : 'var(--bg-surface)', color: mode === m ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: mode === m ? 600 : 400, cursor: 'pointer' }}>
+              style={{ padding: '7px 18px', border: `1px solid ${mode === m ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius)', background: mode === m ? 'var(--accent-subtle)' : 'var(--bg-surface)', color: mode === m ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: mode === m ? 600 : 400, cursor: 'pointer' }}>
               {m === 'encode' ? t.common.encode : t.common.decode}
             </button>
           ))}
@@ -110,7 +110,7 @@ export default function Base64() {
                 style={{ width: '100%', height: 320, padding: 14, border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', resize: 'vertical', boxSizing: 'border-box', lineHeight: 1.5 }}
               />
             )}
-            {error && <p style={{ color: 'var(--danger,#dc2626)', fontSize: 'var(--text-xs)', marginTop: 6, fontFamily: 'var(--font-mono)' }}>{error}</p>}
+            {error && <p style={{ color: 'var(--danger)', fontSize: 'var(--text-xs)', marginTop: 6, fontFamily: 'var(--font-mono)' }}>{error}</p>}
           </div>
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>

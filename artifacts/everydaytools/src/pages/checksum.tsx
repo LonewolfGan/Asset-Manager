@@ -113,7 +113,7 @@ export default function Checksum() {
                   <button onClick={() => { copyWithToast(hashes[algo] ?? ''); setCopiedAlgo(algo); setTimeout(() => setCopiedAlgo(null), 1500); }}
                     style={{ padding: '2px 8px', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: copiedAlgo === algo ? 'var(--accent)' : 'var(--text-secondary)', cursor: 'pointer', transition: 'color 150ms ease' }}>{copiedAlgo === algo ? '✓ ' + t.common.copied : t.common.copy}</button>
                 </div>
-                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: expected.trim() && hashes[algo]?.toLowerCase() === expected.trim().toLowerCase() ? 'var(--success,#16a34a)' : 'var(--text-primary)', margin: 0, wordBreak: 'break-all', lineHeight: 1.5 }}>
+                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: expected.trim() && hashes[algo]?.toLowerCase() === expected.trim().toLowerCase() ? 'var(--success)' : 'var(--text-primary)', margin: 0, wordBreak: 'break-all', lineHeight: 1.5 }}>
                   {hashes[algo]}
                 </p>
               </div>
@@ -123,10 +123,10 @@ export default function Checksum() {
               <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-primary)', marginBottom: 8 }}>Verify — paste expected hash</p>
               <input value={expected} onChange={(e) => setExpected(e.target.value)}
                 placeholder="Paste expected SHA-256, SHA-512, etc."
-                style={{ width: '100%', padding: '8px 12px', border: `1px solid ${expected.trim() && !matchAlgo ? 'var(--danger,#dc2626)' : expected.trim() && matchAlgo ? 'var(--success,#16a34a)' : 'var(--border)'}`, borderRadius: 'var(--radius-md)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', background: 'var(--bg-base)', color: 'var(--text-primary)', boxSizing: 'border-box' }}
+                style={{ width: '100%', padding: '8px 12px', border: `1px solid ${expected.trim() && !matchAlgo ? 'var(--danger)' : expected.trim() && matchAlgo ? 'var(--success)' : 'var(--border)'}`, borderRadius: 'var(--radius-md)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', background: 'var(--bg-base)', color: 'var(--text-primary)', boxSizing: 'border-box' }}
               />
               {expected.trim() && (
-                <p style={{ marginTop: 8, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: matchAlgo ? 'var(--success,#16a34a)' : 'var(--danger,#dc2626)' }}>
+                <p style={{ marginTop: 8, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: matchAlgo ? 'var(--success)' : 'var(--danger)' }}>
                   {matchAlgo ? `Match — ${matchAlgo}` : 'No match for any hash'}
                 </p>
               )}

@@ -41,7 +41,7 @@ function SpinnerIcon() {
 function ErrorIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-      <circle cx="7" cy="7" r="6.5" fill="rgba(239,68,68,0.12)" stroke="rgba(239,68,68,0.5)" strokeWidth="1" />
+      <circle cx="7" cy="7" r="6.5" fill="color-mix(in srgb, var(--danger) 12%, transparent)" stroke="color-mix(in srgb, var(--danger) 50%, transparent)" strokeWidth="1" />
       <path d="M5 5l4 4M9 5l-4 4" stroke="var(--danger)" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   );
@@ -323,7 +323,7 @@ export default function BackgroundRemover() {
                         <button
                           onClick={() => retryItem(queue.indexOf(item))}
                           disabled={isProcessing}
-                          style={{ background: 'none', border: '1px solid rgba(239,68,68,0.4)', borderRadius: 'var(--radius-md)', padding: '4px 10px', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-ui)', color: 'var(--danger)', cursor: isProcessing ? 'default' : 'pointer', opacity: isProcessing ? 0.5 : 1, whiteSpace: 'nowrap' }}
+                          style={{ background: 'none', border: '1px solid color-mix(in srgb, var(--danger) 40%, transparent)', borderRadius: 'var(--radius-md)', padding: '4px 10px', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-ui)', color: 'var(--danger)', cursor: isProcessing ? 'default' : 'pointer', opacity: isProcessing ? 0.5 : 1, whiteSpace: 'nowrap' }}
                         >
                           Retry
                         </button>

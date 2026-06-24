@@ -375,10 +375,10 @@ interface ToolBadgeProps {
 
 export function ToolBadge({ children, variant = 'neutral' }: ToolBadgeProps) {
   const colors: Record<string, { bg: string; fg: string; dot: string }> = {
-    success: { bg: 'rgba(34,197,94,0.10)', fg: 'var(--success)', dot: '#22c55e' },
-    error:    { bg: 'rgba(239,68,68,0.10)', fg: 'var(--danger)', dot: '#ef4444' },
-    warning:  { bg: 'rgba(245,158,11,0.10)', fg: 'var(--warning)', dot: '#f59e0b' },
-    info:     { bg: 'rgba(59,130,246,0.10)', fg: '#3b82f6', dot: '#3b82f6' },
+    success: { bg: 'color-mix(in srgb, var(--success) 10%, transparent)', fg: 'var(--success)', dot: 'var(--success)' },
+    error:    { bg: 'color-mix(in srgb, var(--danger) 10%, transparent)', fg: 'var(--danger)', dot: 'var(--danger)' },
+    warning:  { bg: 'color-mix(in srgb, var(--warning) 10%, transparent)', fg: 'var(--warning)', dot: 'var(--warning)' },
+    info:     { bg: 'color-mix(in srgb, var(--text-secondary) 10%, transparent)', fg: 'var(--text-secondary)', dot: 'var(--text-secondary)' },
     neutral:  { bg: 'var(--bg-elevated)', fg: 'var(--text-tertiary)', dot: 'var(--text-tertiary)' },
   };
 

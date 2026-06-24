@@ -63,7 +63,7 @@ export default function JsonFormatter() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
           {(['format', 'minify'] as Mode[]).map((m) => (
             <button key={m} onClick={() => handleMode(m)}
-              style={{ padding: '6px 16px', borderRadius: 'var(--radius)', border: `1px solid ${mode === m ? 'var(--accent)' : 'var(--border)'}`, background: mode === m ? 'var(--accent-subtle,#fff4ef)' : 'var(--bg-surface)', color: mode === m ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: mode === m ? 600 : 400, cursor: 'pointer' }}>
+              style={{ padding: '6px 16px', borderRadius: 'var(--radius)', border: `1px solid ${mode === m ? 'var(--accent)' : 'var(--border)'}`, background: mode === m ? 'var(--accent-subtle)' : 'var(--bg-surface)', color: mode === m ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: mode === m ? 600 : 400, cursor: 'pointer' }}>
               {m === 'format' ? t.common.format : t.common.minify}
             </button>
           ))}
@@ -72,7 +72,7 @@ export default function JsonFormatter() {
               <span style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>{t.jsonFormatter.indent}</span>
               {[2, 4].map((n) => (
                 <button key={n} onClick={() => { setIndent(n); process(input, 'format'); }}
-                  style={{ padding: '4px 10px', border: `1px solid ${indent === n ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius-md)', background: indent === n ? 'var(--accent-subtle,#fff4ef)' : 'transparent', color: indent === n ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>
+                  style={{ padding: '4px 10px', border: `1px solid ${indent === n ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius-md)', background: indent === n ? 'var(--accent-subtle)' : 'transparent', color: indent === n ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>
                   {n}
                 </button>
               ))}
@@ -91,9 +91,9 @@ export default function JsonFormatter() {
             <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-primary)', marginBottom: 6 }}>{t.jsonFormatter.inputLabel}</p>
             <textarea value={input} onChange={(e) => handleInput(e.target.value)}
               placeholder='{"name":"Alice","age":30,"city":"Paris"}'
-              style={{ width: '100%', height: 420, padding: 14, border: `1px solid ${error ? 'var(--danger,#dc2626)' : 'var(--border)'}`, borderRadius: 'var(--radius)', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', resize: 'vertical', boxSizing: 'border-box', lineHeight: 1.5 }}
+              style={{ width: '100%', height: 420, padding: 14, border: `1px solid ${error ? 'var(--danger)' : 'var(--border)'}`, borderRadius: 'var(--radius)', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', resize: 'vertical', boxSizing: 'border-box', lineHeight: 1.5 }}
             />
-            {error && <p style={{ color: 'var(--danger,#dc2626)', fontSize: 'var(--text-xs)', marginTop: 6, fontFamily: 'var(--font-mono)' }}>{error}</p>}
+            {error && <p style={{ color: 'var(--danger)', fontSize: 'var(--text-xs)', marginTop: 6, fontFamily: 'var(--font-mono)' }}>{error}</p>}
           </div>
           <div>
             <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-primary)', marginBottom: 6 }}>{mode === 'format' ? t.jsonFormatter.formattedOutput : t.jsonFormatter.minifiedOutput}</p>

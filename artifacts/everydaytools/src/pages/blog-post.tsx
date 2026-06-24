@@ -218,7 +218,7 @@ export default function BlogPost({ params }: BlogPostPageProps) {
           <div
             style={{
               background: "var(--accent)",
-              color: "#fff",
+              color: "var(--accent-text)",
               padding: "14px 24px",
               borderRadius: "var(--radius-md)",
               display: "inline-flex",
@@ -257,7 +257,7 @@ export default function BlogPost({ params }: BlogPostPageProps) {
             <div
               style={{
                 background: "var(--accent)",
-                color: "#fff",
+                color: "var(--accent-text)",
                 padding: "14px 24px",
                 borderRadius: "var(--radius-md)",
                 display: "inline-flex",

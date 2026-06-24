@@ -75,7 +75,7 @@ export default function CsvToJson() {
         <div style={{ display: 'flex', gap: 8, marginBottom: 24 }}>
           {(['csv-to-json', 'json-to-csv'] as Mode[]).map((m) => (
             <button key={m} onClick={() => { setMode(m); setInput(''); setOutput(''); setError(''); }}
-              style={{ padding: '7px 18px', borderRadius: 'var(--radius)', border: `1px solid ${mode === m ? 'var(--accent)' : 'var(--border)'}`, background: mode === m ? 'var(--accent-subtle,#fff4ef)' : 'var(--bg-surface)', color: mode === m ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: mode === m ? 600 : 400, cursor: 'pointer' }}>
+              style={{ padding: '7px 18px', borderRadius: 'var(--radius)', border: `1px solid ${mode === m ? 'var(--accent)' : 'var(--border)'}`, background: mode === m ? 'var(--accent-subtle)' : 'var(--bg-surface)', color: mode === m ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: mode === m ? 600 : 400, cursor: 'pointer' }}>
               {m === 'csv-to-json' ? 'CSV → JSON' : 'JSON → CSV'}
             </button>
           ))}
@@ -113,7 +113,7 @@ export default function CsvToJson() {
             </div>
             <textarea readOnly value={output || (error ? `Error: ${error}` : '')}
               placeholder={t.common.outputAppearsHere}
-              style={{ width: '100%', height: 280, padding: 12, border: `1px solid ${error ? 'var(--danger,#dc2626)' : 'var(--border)'}`, borderRadius: 'var(--radius)', background: 'var(--bg-elevated)', color: error ? 'var(--danger,#dc2626)' : 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', resize: 'vertical', boxSizing: 'border-box' }}
+              style={{ width: '100%', height: 280, padding: 12, border: `1px solid ${error ? 'var(--danger)' : 'var(--border)'}`, borderRadius: 'var(--radius)', background: 'var(--bg-elevated)', color: error ? 'var(--danger)' : 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', resize: 'vertical', boxSizing: 'border-box' }}
             />
           </div>
         </div>

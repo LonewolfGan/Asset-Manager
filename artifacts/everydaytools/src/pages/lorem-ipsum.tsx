@@ -77,7 +77,7 @@ export default function LoremIpsum() {
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             {(['paragraphs', 'sentences', 'words', 'lists'] as Type[]).map((tp) => (
               <button key={tp} onClick={() => setType(tp)}
-                style={{ padding: '6px 14px', border: `1px solid ${type === tp ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius-md)', background: type === tp ? 'var(--accent-subtle,#fff4ef)' : 'transparent', color: type === tp ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: type === tp ? 600 : 400, cursor: 'pointer' }}>
+                style={{ padding: '6px 14px', border: `1px solid ${type === tp ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius-md)', background: type === tp ? 'var(--accent-subtle)' : 'transparent', color: type === tp ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: type === tp ? 600 : 400, cursor: 'pointer' }}>
                 {t.loremIpsum.types[tp]}
               </button>
             ))}

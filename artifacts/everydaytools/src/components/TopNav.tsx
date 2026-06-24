@@ -187,7 +187,7 @@ function NavDropdown({
             minWidth: 340,
             padding: 8,
             zIndex: 100,
-            boxShadow: "0 8px 32px rgba(0,0,0,0.10)",
+            boxShadow: "var(--shadow-hover)",
           }}
         >
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
@@ -264,14 +264,14 @@ function MobileDrawer({ open, onClose, onOpenSearch, currentPath }: { open: bool
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", borderBottom: "1px solid var(--border)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <svg width="22" height="22" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <rect width="64" height="64" rx="11" fill="#E7E7E7"/>
-              <rect x="14" y="15" width="36" height="7" rx="2" fill="#FF6B35"/>
-              <rect x="14" y="28" width="28" height="7" rx="2" fill="#111111"/>
-              <rect x="14" y="41" width="36" height="7" rx="2" fill="#111111"/>
+              <rect width="64" height="64" rx="11" fill="var(--bg-elevated)"/>
+              <rect x="14" y="15" width="36" height="7" rx="2" fill="var(--accent)"/>
+              <rect x="14" y="28" width="28" height="7" rx="2" fill="var(--text-primary)"/>
+              <rect x="14" y="41" width="36" height="7" rx="2" fill="var(--text-primary)"/>
             </svg>
             <span style={{ fontFamily: "var(--font-display)", fontSize: 'var(--text-sm)', fontWeight: 600, color: "var(--text-primary)", letterSpacing: "-0.02em" }}>EverydayTools</span>
           </div>
-          <button onClick={onClose} aria-label="Close menu" style={{ background: "none", border: "none", cursor: "pointer", padding: 4, color: "var(--text-secondary)" }}>
+          <button onClick={onClose} aria-label="Close menu" style={{ background: "none", border: "none", cursor: "pointer", padding: 4, color: "var(--text-secondary)", transition: "color 120ms ease" }}>
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 3l12 12M15 3L3 15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>
           </button>
         </div>
@@ -306,7 +306,7 @@ function MobileDrawer({ open, onClose, onOpenSearch, currentPath }: { open: bool
               <div key={group.id} style={{ borderBottom: "1px solid var(--border)" }}>
                 <button
                   onClick={() => setExpandedGroup(isExpanded ? null : group.id)}
-                  style={{ width: "100%", background: "none", border: "none", cursor: "pointer", padding: "13px 20px", fontFamily: "var(--font-ui)", fontSize: "var(--text-sm)", fontWeight: 500, color: "var(--text-primary)", display: "flex", alignItems: "center", justifyContent: "space-between" }}
+                  style={{ width: "100%", background: "none", border: "none", cursor: "pointer", padding: "13px 20px", fontFamily: "var(--font-ui)", fontSize: "var(--text-sm)", fontWeight: 500, color: "var(--text-primary)", display: "flex", transition: "color 120ms ease", alignItems: "center", justifyContent: "space-between" }}
                 >
                   {groupLabel}
                   <svg width="9" height="5" viewBox="0 0 9 5" fill="none" style={{ transform: isExpanded ? "rotate(180deg)" : "none", transition: "transform 120ms ease" }}>
@@ -400,10 +400,10 @@ export default function TopNav() {
           {/* Logo */}
           <Link href="/" style={{ display: "flex", alignItems: "center", gap: 9, textDecoration: "none", flexShrink: 0, marginRight: 32 }}>
             <svg width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <rect width="64" height="64" rx="11" fill="#E7E7E7"/>
-              <rect x="14" y="15" width="36" height="7" rx="2" fill="#FF6B35"/>
-              <rect x="14" y="28" width="28" height="7" rx="2" fill="#111111"/>
-              <rect x="14" y="41" width="36" height="7" rx="2" fill="#111111"/>
+              <rect width="64" height="64" rx="11" fill="var(--bg-elevated)"/>
+              <rect x="14" y="15" width="36" height="7" rx="2" fill="var(--accent)"/>
+              <rect x="14" y="28" width="28" height="7" rx="2" fill="var(--text-primary)"/>
+              <rect x="14" y="41" width="36" height="7" rx="2" fill="var(--text-primary)"/>
             </svg>
             <span style={{ fontFamily: "var(--font-display)", fontSize: 'var(--text-base)', fontWeight: 600, color: "var(--text-primary)", letterSpacing: "-0.02em", lineHeight: 1 }}>
               EverydayTools

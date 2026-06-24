@@ -29,8 +29,8 @@ const FORMAT_ABBR: Record<string, string> = {
   JPEG: "JPG",
 };
 
-const ACCENT = "#1A6BFF";
-const ACCENT_BG = "rgba(26,107,255,0.10)";
+const ACCENT = "var(--accent)";
+const ACCENT_BG = "var(--accent-subtle)";
 
 function getSourceType(format: string): SourceType {
   return FORMAT_SOURCE[format.toUpperCase()] ?? "document";
@@ -78,7 +78,7 @@ export function FormatIcon({
           bottom: badgeBottom,
           right: badgeRight,
           background: ACCENT,
-          color: "#fff",
+          color: "var(--accent-text)",
           fontSize: badgeFontSize,
           fontWeight: 600,
           letterSpacing: "-0.2px",
@@ -118,7 +118,7 @@ export function FormatIcon({
         bottom: badgeBottom,
         right: badgeRight,
         background: ACCENT,
-        color: "#fff",
+        color: "var(--accent-text)",
         fontSize: badgeFontSize,
         fontWeight: 600,
         letterSpacing: "-0.2px",

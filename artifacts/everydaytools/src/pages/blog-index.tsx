@@ -112,7 +112,7 @@ export default function BlogIndex() {
                 }}
                 onMouseEnter={(e) => {
                   (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
-                  (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 20px rgba(0,0,0,0.08)";
+                  (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-hover)";
                 }}
                 onMouseLeave={(e) => {
                   (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";

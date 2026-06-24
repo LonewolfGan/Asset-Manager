@@ -250,7 +250,7 @@ export default function ImageConverter() {
                     </div>
                     <div className="flex items-center gap-3">
                       {item.status === "processing" && <span className="text-xs font-mono text-muted-foreground animate-pulse">{tc.processing}</span>}
-                      {item.status === "done" && <CheckCircle2 className="w-5 h-5 text-green-500" />}
+                      {item.status === "done" && <CheckCircle2 className="w-5 h-5 text-[var(--success)]" />}
                       {item.status === "error" && <AlertCircle className="w-5 h-5 text-destructive" />}
 
                       {item.status === "done" && item.resultBlob && (

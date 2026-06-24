@@ -33,7 +33,7 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
         padding: '6px 14px',
         borderRadius: 'var(--radius-card)',
         border: active ? '1.5px solid var(--accent)' : '1.5px solid var(--border)',
-        background: active ? 'rgba(255,107,53,0.08)' : 'transparent',
+        background: active ? 'var(--accent-subtle)' : 'transparent',
         color: active ? 'var(--accent)' : 'var(--text-secondary)',
         fontFamily: 'var(--font-ui)',
         fontSize: 'var(--text-sm)',
@@ -365,7 +365,7 @@ export default function QrCodeGenerator() {
               </div>
 
               {genError && (
-                <p style={{ fontSize: 'var(--text-sm)', color: 'var(--danger, #DC2626)', fontFamily: 'var(--font-ui)', textAlign: 'center' }}>
+                <p style={{ fontSize: 'var(--text-sm)', color: 'var(--danger)', fontFamily: 'var(--font-ui)', textAlign: 'center' }}>
                   {genError}
                 </p>
               )}
@@ -378,7 +378,7 @@ export default function QrCodeGenerator() {
                   width: '100%',
                   padding: '11px 0',
                   background: empty || genError ? 'var(--bg-elevated)' : 'var(--accent)',
-                  color: empty || genError ? 'var(--text-tertiary)' : '#fff',
+                  color: empty || genError ? 'var(--text-tertiary)' : 'var(--accent-text)',
                   border: 'none',
                   borderRadius: 'var(--radius-btn)',
                   fontFamily: 'var(--font-ui)',
@@ -399,7 +399,7 @@ export default function QrCodeGenerator() {
                   width: '100%',
                   padding: '10px 0',
                   background: 'transparent',
-                  color: copied ? 'var(--success, #16A34A)' : 'var(--text-secondary)',
+                  color: copied ? 'var(--success)' : 'var(--text-secondary)',
                   border: '1px solid var(--border)',
                   borderRadius: 'var(--radius-btn)',
                   fontFamily: 'var(--font-ui)',

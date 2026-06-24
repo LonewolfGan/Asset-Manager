@@ -146,7 +146,7 @@ export default function WatermarkImage() {
               <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                 {POSITIONS.map((p) => (
                   <button key={p.id} onClick={() => setPosition(p.id)}
-                    style={{ padding: '5px 12px', border: `1px solid ${position === p.id ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius-md)', background: position === p.id ? 'var(--accent-subtle,#fff4ef)' : 'transparent', color: position === p.id ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>
+                    style={{ padding: '5px 12px', border: `1px solid ${position === p.id ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius-md)', background: position === p.id ? 'var(--accent-subtle)' : 'transparent', color: position === p.id ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>
                     {p.label}
                   </button>
                 ))}

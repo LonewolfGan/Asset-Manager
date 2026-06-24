@@ -26,7 +26,7 @@ function formatBytes(b: number) {
 
 function sizeDelta(before: number, after: number) {
   const pct = Math.round((1 - after / before) * 100);
-  if (pct > 0) return { label: `-${pct}%`, color: 'var(--success, #16a34a)' };
+  if (pct > 0) return { label: `-${pct}%`, color: 'var(--success)' };
   if (pct < 0) return { label: `+${Math.abs(pct)}%`, color: 'var(--danger, #dc2626)' };
   return { label: '0%', color: 'var(--text-secondary)' };
 }

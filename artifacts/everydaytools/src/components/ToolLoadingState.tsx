@@ -172,8 +172,8 @@ export default function ToolLoadingState({
         role="status"
         aria-live="polite"
         style={{
-          background: 'rgba(34,197,94,0.06)',
-          border: '1px solid rgba(34,197,94,0.25)',
+          background: 'color-mix(in srgb, var(--success) 6%, transparent)',
+          border: '1px solid color-mix(in srgb, var(--success) 25%, transparent)',
           borderRadius: 'var(--radius-card)',
           padding: '12px 20px',
           display: 'flex',
@@ -182,7 +182,7 @@ export default function ToolLoadingState({
         }}
       >
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink: 0 }}>
-          <circle cx="8" cy="8" r="7.5" fill="rgba(34,197,94,0.12)" stroke="rgba(34,197,94,0.5)" />
+          <circle cx="8" cy="8" r="7.5" fill="color-mix(in srgb, var(--success) 12%, transparent)" stroke="color-mix(in srgb, var(--success) 50%, transparent)" />
           <path d="M5 8l2 2 4-4" stroke="var(--success)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
         <span style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--success)' }}>
@@ -198,8 +198,8 @@ export default function ToolLoadingState({
         role="alert"
         aria-live="assertive"
         style={{
-          background: 'rgba(239,68,68,0.05)',
-          border: '1px solid rgba(239,68,68,0.3)',
+          background: 'color-mix(in srgb, var(--danger) 5%, transparent)',
+          border: '1px solid color-mix(in srgb, var(--danger) 30%, transparent)',
           borderRadius: 'var(--radius-card)',
           padding: '16px 20px',
           display: 'flex',
@@ -234,7 +234,7 @@ export default function ToolLoadingState({
               gap: 6,
               padding: '6px 14px',
               background: 'transparent',
-              border: '1px solid rgba(239,68,68,0.4)',
+              border: '1px solid color-mix(in srgb, var(--danger) 40%, transparent)',
               borderRadius: 'var(--radius)',
               fontFamily: 'var(--font-ui)',
               fontSize: 'var(--text-xs)',
@@ -245,12 +245,12 @@ export default function ToolLoadingState({
               transition: 'border-color 150ms, background 150ms',
             }}
             onMouseEnter={e => {
-              (e.currentTarget as HTMLElement).style.background = 'rgba(239,68,68,0.08)';
+              (e.currentTarget as HTMLElement).style.background = 'color-mix(in srgb, var(--danger) 8%, transparent)';
               (e.currentTarget as HTMLElement).style.borderColor = 'var(--danger)';
             }}
             onMouseLeave={e => {
               (e.currentTarget as HTMLElement).style.background = 'transparent';
-              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(239,68,68,0.4)';
+              (e.currentTarget as HTMLElement).style.borderColor = 'color-mix(in srgb, var(--danger) 40%, transparent)';
             }}
           >
             <RotateCcw size={12} aria-hidden="true" />

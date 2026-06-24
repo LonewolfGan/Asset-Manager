@@ -301,13 +301,13 @@ function BackToTop() {
         height: 44,
         borderRadius: '50%',
         background: 'var(--accent)',
-        color: '#fff',
+        color: 'var(--accent-text)',
         border: 'none',
         cursor: 'pointer',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        boxShadow: '0 4px 20px rgba(255,107,53,0.4)',
+        boxShadow: '0 4px 20px color-mix(in srgb, var(--accent) 40%, transparent)',
         opacity: visible ? 1 : 0,
         transform: visible ? 'translateY(0) scale(1)' : 'translateY(10px) scale(0.9)',
         transition: 'opacity 220ms ease, transform 220ms ease, box-shadow 120ms ease',
@@ -315,11 +315,11 @@ function BackToTop() {
         zIndex: 50,
       }}
       onMouseEnter={e => {
-        (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 6px 28px rgba(255,107,53,0.55)';
+        (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 6px 28px color-mix(in srgb, var(--accent) 55%, transparent)';
         (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-2px) scale(1.05)';
       }}
       onMouseLeave={e => {
-        (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 20px rgba(255,107,53,0.4)';
+        (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 20px color-mix(in srgb, var(--accent) 40%, transparent)';
         (e.currentTarget as HTMLButtonElement).style.transform = visible ? 'translateY(0) scale(1)' : 'translateY(10px) scale(0.9)';
       }}
     >

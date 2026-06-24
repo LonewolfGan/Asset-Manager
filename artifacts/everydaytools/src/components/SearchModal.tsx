@@ -152,7 +152,7 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
           borderRadius: "var(--radius-xl)",
           zIndex: 501,
           overflow: "hidden",
-          boxShadow: "0 20px 60px rgba(0,0,0,0.18)",
+          boxShadow: "var(--shadow-hover)",
         }}
       >
         {/* Search input */}

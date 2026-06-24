@@ -115,7 +115,7 @@ export default function CsvViewer() {
           </>
         )}
 
-        {error && <p style={{ color: 'var(--danger,#dc2626)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', marginTop: 12 }}>{error}</p>}
+        {error && <p style={{ color: 'var(--danger)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', marginTop: 12 }}>{error}</p>}
 
         {rows.length > 0 && (
           <div>

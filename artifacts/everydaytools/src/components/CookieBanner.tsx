@@ -39,7 +39,7 @@ export default function CookieBanner() {
         background: 'var(--bg-surface)',
         border: '1px solid var(--border)',
         borderRadius: 'var(--radius-card)',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06)',
+        boxShadow: 'var(--shadow-hover)',
         padding: '16px 20px',
         display: 'flex',
         alignItems: 'center',
