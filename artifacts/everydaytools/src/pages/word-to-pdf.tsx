@@ -28,67 +28,19 @@ export default function WordToPdf() {
 
   const convert = async () => {
     if (!file) return;
-    setStatus('processing'); setProgress(10);
+    setStatus('processing'); setProgress(20);
     trackToolUsed('word-to-pdf', 'documents');
     try {
-      const mammoth = (await import('mammoth')).default;
-      setProgress(25);
-      const arrayBuf = await file.arrayBuffer();
-      const result = await mammoth.convertToHtml({ arrayBuffer: arrayBuf });
-      setProgress(50);
-      const html = result.value;
-
-      const jsPDF = (await import('jspdf')).jsPDF;
-      setProgress(65);
-
-      const fullHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"><style>
-        body { font-family: Georgia, serif; font-size: 12pt; line-height: 1.6; max-width: 700px; margin: 40px auto; padding: 0 20px; color: #1a1a1a; }
-        h1,h2,h3 { font-weight: bold; margin: 1em 0 0.5em; }
-        h1 { font-size: 2em; } h2 { font-size: 1.5em; } h3 { font-size: 1.2em; }
-        p { margin: 0 0 1em; } ul, ol { margin: 0 0 1em 2em; }
-        table { border-collapse: collapse; width: 100%; margin: 1em 0; }
-        td, th { border: 1px solid #ccc; padding: 6px 10px; }
-        strong { font-weight: bold; } em { font-style: italic; }
-      </style></head><body>${html}</body></html>`;
-
-      const container = document.createElement('div');
-      container.style.cssText = 'position:fixed;left:-9999px;top:0;width:794px;background:#fff;padding:0;';
-      container.innerHTML = sanitizeHTML(fullHtml);
-      document.body.appendChild(container);
-      setProgress(75);
-
-      const { toPng } = await import('html-to-image');
-      const pages: string[] = [];
-      const totalH = container.scrollHeight;
-      const pageH = 1122;
-      const numPages = Math.max(1, Math.ceil(totalH / pageH));
-
-      for (let i = 0; i < numPages; i++) {
-        container.scrollTop = 0;
-        const clip = document.createElement('div');
-        clip.style.cssText = `width:794px;height:${Math.min(pageH, totalH - i * pageH)}px;overflow:hidden;position:relative;`;
-        const inner = document.createElement('div');
-        inner.style.cssText = `position:absolute;top:-${i * pageH}px;width:794px;`;
-        inner.innerHTML = sanitizeHTML(container.innerHTML);
-        clip.appendChild(inner);
-        document.body.appendChild(clip);
-        const dataUrl = await toPng(clip, { width: 794, pixelRatio: 1.5 });
-        pages.push(dataUrl);
-        document.body.removeChild(clip);
+      const fd = new FormData();
+      fd.append('file', file);
+      setProgress(40);
+      const res = await fetch('/api/tools/word-to-pdf', { method: 'POST', body: fd });
+      setProgress(85);
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Conversion failed');
       }
-      document.body.removeChild(container);
-
-      setProgress(90);
-      const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: 'a4' });
-      const A4W = pdf.internal.pageSize.getWidth();
-      const A4H = pdf.internal.pageSize.getHeight();
-
-      for (let i = 0; i < pages.length; i++) {
-        if (i > 0) pdf.addPage();
-        pdf.addImage(pages[i], 'PNG', 0, 0, A4W, A4H);
-      }
-
-      const blob = pdf.output('blob');
+      const blob = await res.blob();
       setPdfBlob(blob);
       setProgress(100);
       setStatus('done');

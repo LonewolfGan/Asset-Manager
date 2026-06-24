@@ -39,54 +39,20 @@ export default function ExcelToPdf() {
   };
 
   const convert = async () => {
-    if (!fileData || !selectedSheet) return;
-    setStatus('processing'); setProgress(10);
+    if (!file || !selectedSheet) return;
+    setStatus('processing'); setProgress(20);
     try {
-      const XLSX = (await import('xlsx')).default;
-      setProgress(20);
-      const wb = XLSX.read(fileData, { type: 'buffer' });
-      const ws = wb.Sheets[selectedSheet];
-      const html = XLSX.utils.sheet_to_html(ws);
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('sheet', selectedSheet);
       setProgress(40);
-
-      const styledHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"><style>
-        body{font-family:Arial,sans-serif;font-size:9pt;padding:20px;}
-        table{border-collapse:collapse;width:100%;font-size:9pt;}
-        td,th{border:1px solid #bbb;padding:4px 8px;white-space:nowrap;}
-        th{background:#f0f0f0;font-weight:bold;}
-        tr:nth-child(even){background:#fafafa;}
-      </style></head><body>${html}</body></html>`;
-
-      const container = document.createElement('div');
-      container.style.cssText = 'position:fixed;left:-9999px;top:0;width:1100px;background:#fff;';
-      container.innerHTML = sanitizeHTML(styledHtml);
-      document.body.appendChild(container);
-      setProgress(55);
-
-      const { toPng } = await import('html-to-image');
-      const dataUrl = await toPng(container, { pixelRatio: 1.2 });
-      document.body.removeChild(container);
-      setProgress(75);
-
-      const jsPDF = (await import('jspdf')).jsPDF;
-      const img = new Image();
-      await new Promise((res) => { img.onload = res; img.src = dataUrl; });
-      const aspect = img.height / img.width;
-      const pdf = new jsPDF({ orientation: aspect < 1 ? 'landscape' : 'portrait', unit: 'pt', format: 'a4' });
-      const W = pdf.internal.pageSize.getWidth();
-      const H = W * aspect;
-      if (H <= pdf.internal.pageSize.getHeight()) {
-        pdf.addImage(dataUrl, 'PNG', 0, 0, W, H);
-      } else {
-        const pageH = pdf.internal.pageSize.getHeight();
-        let yOffset = 0;
-        while (yOffset < H) {
-          if (yOffset > 0) pdf.addPage();
-          pdf.addImage(dataUrl, 'PNG', 0, -yOffset, W, H);
-          yOffset += pageH;
-        }
+      const res = await fetch('/api/tools/excel-to-pdf', { method: 'POST', body: fd });
+      setProgress(85);
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Conversion failed');
       }
-      const blob = pdf.output('blob');
+      const blob = await res.blob();
       setPdfBlob(blob);
       setProgress(100);
       setStatus('done');

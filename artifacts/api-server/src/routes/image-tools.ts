@@ -22,10 +22,11 @@ async function compressAtQuality(
     };
   }
   if (mime === "image/png") {
+    const candidate = await sharp(input)
+      .png({ compressionLevel: 9, effort: 10 })
+      .toBuffer();
     return {
-      output: await sharp(input)
-        .png({ compressionLevel: 9, palette: true, effort: 10, quality: q })
-        .toBuffer(),
+      output: candidate.length < input.length ? candidate : input,
       outMime: "image/png",
     };
   }

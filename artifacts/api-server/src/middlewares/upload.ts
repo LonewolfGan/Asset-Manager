@@ -18,6 +18,8 @@ const ALLOWED_IMAGE_MIMES = new Set([
   "image/tiff",
   "image/bmp",
   "image/svg+xml",
+  "image/heic",
+  "image/heif",
 ]);
 
 const ALLOWED_DOCUMENT_MIMES = new Set([

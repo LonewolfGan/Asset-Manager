@@ -7,6 +7,7 @@ import metadataRouter from "./metadata.js";
 import convertRouter from "./convert.js";
 import imageToolsRouter from "./image-tools.js";
 import pdfToolsRouter from "./pdf-tools.js";
+import documentToolsRouter from "./document-tools.js";
 
 const router: IRouter = Router();
 
@@ -18,5 +19,6 @@ router.use(metadataRouter);
 router.use(convertRouter);
 router.use(imageToolsRouter);
 router.use(pdfToolsRouter);
+router.use(documentToolsRouter);
 
 export default router;
