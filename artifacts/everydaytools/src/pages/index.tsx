@@ -53,21 +53,21 @@ interface CategoryDef {
   key: string;
   label: string;
   labelFr: string;
-  color: string;
-  bg: string;
-  border: string;
   FilterIcon: LucideIcon;
 }
 
+const ACCENT_BG = "rgba(255,107,53,0.08)";
+const ACCENT_BORDER = "rgba(255,107,53,0.4)";
+
 const CATEGORIES: CategoryDef[] = [
-  { key: "pdf",         label: "PDF Tools",        labelFr: "Outils PDF",         color: "#DC2626", bg: "rgba(220,38,38,0.09)",   border: "rgba(220,38,38,0.35)",  FilterIcon: FileText },
-  { key: "word",        label: "Documents",         labelFr: "Documents",          color: "#1A6BFF", bg: "rgba(26,107,255,0.09)",  border: "rgba(26,107,255,0.35)", FilterIcon: FileType2 },
-  { key: "excel",       label: "Spreadsheets",      labelFr: "Tableurs",           color: "#16A34A", bg: "rgba(22,163,74,0.09)",   border: "rgba(22,163,74,0.35)",  FilterIcon: Table2 },
-  { key: "pptx",        label: "Presentations",     labelFr: "Présentations",      color: "#EA580C", bg: "rgba(234,88,12,0.09)",   border: "rgba(234,88,12,0.35)",  FilterIcon: MonitorPlay },
-  { key: "image",       label: "Images",            labelFr: "Images",             color: "#0D9488", bg: "rgba(13,148,136,0.09)",  border: "rgba(13,148,136,0.35)", FilterIcon: ImageIcon },
-  { key: "textCode",    label: "Text & Code",       labelFr: "Texte & Code",       color: "#7C3AED", bg: "rgba(124,58,237,0.09)",  border: "rgba(124,58,237,0.35)", FilterIcon: Code2 },
-  { key: "privacy",     label: "Privacy",           labelFr: "Confidentialité",    color: "#0E7490", bg: "rgba(14,116,144,0.09)",  border: "rgba(14,116,144,0.35)", FilterIcon: ShieldCheck },
-  { key: "calculators", label: "Calculators",       labelFr: "Calculatrices",      color: "#9333EA", bg: "rgba(147,51,234,0.09)",  border: "rgba(147,51,234,0.35)", FilterIcon: Calculator },
+  { key: "pdf",         label: "PDF Tools",        labelFr: "Outils PDF",         FilterIcon: FileText },
+  { key: "word",        label: "Documents",         labelFr: "Documents",          FilterIcon: FileType2 },
+  { key: "excel",       label: "Spreadsheets",      labelFr: "Tableurs",           FilterIcon: Table2 },
+  { key: "pptx",        label: "Presentations",     labelFr: "Présentations",      FilterIcon: MonitorPlay },
+  { key: "image",       label: "Images",            labelFr: "Images",             FilterIcon: ImageIcon },
+  { key: "textCode",    label: "Text & Code",       labelFr: "Texte & Code",       FilterIcon: Code2 },
+  { key: "privacy",     label: "Privacy",           labelFr: "Confidentialité",    FilterIcon: ShieldCheck },
+  { key: "calculators", label: "Calculators",       labelFr: "Calculatrices",      FilterIcon: Calculator },
 ];
 
 const CATEGORY_MAP = Object.fromEntries(CATEGORIES.map(c => [c.key, c]));
@@ -260,7 +260,7 @@ function ToolCard({
           style={{
             position: "absolute",
             inset: 0,
-            background: cat.bg,
+            background: ACCENT_BG,
             opacity: 0,
             transition: "opacity 150ms ease",
             pointerEvents: "none",
@@ -275,8 +275,8 @@ function ToolCard({
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            background: cat.bg,
-            color: cat.color,
+            background: ACCENT_BG,
+            color: "var(--accent)",
             flexShrink: 0,
             position: "relative",
           }}
@@ -302,8 +302,8 @@ function ToolCard({
                 fontWeight: 700,
                 padding: "2px 6px",
                 borderRadius: 'var(--radius-sm)',
-                background: cat.bg,
-                color: cat.color,
+                background: ACCENT_BG,
+                color: "var(--accent)",
                 lineHeight: 1.4,
                 letterSpacing: "0.07em",
                 textTransform: "uppercase",
@@ -464,7 +464,7 @@ function HomeHero() {
                   className="hero-pill"
                   style={{
                     display: "inline-block",
-                    padding: "9px 20px",
+                    padding: "5px 14px",
                     borderRadius: 'var(--radius-pill)',
                     background: "var(--hero-tag-bg)",
                     color: "var(--hero-tag-text)",
@@ -493,7 +493,7 @@ function HomeHero() {
                   className="hero-pill"
                   style={{
                     display: "inline-block",
-                    padding: "9px 20px",
+                    padding: "5px 14px",
                     borderRadius: 'var(--radius-pill)',
                     background: "var(--hero-tag-bg)",
                     color: "var(--hero-tag-text)",
@@ -552,13 +552,13 @@ function CategoryFilterBar({
           display: "inline-flex",
           alignItems: "center",
           gap: 7,
-          padding: "6px 13px",
+          padding: "8px 18px",
           borderRadius: 'var(--radius-pill)',
-          border: `1px solid ${isAllActive ? "var(--text-primary)" : "var(--border)"}`,
-          background: isAllActive ? "var(--text-primary)" : "var(--bg-surface)",
-          color: isAllActive ? "var(--bg-base)" : "var(--text-secondary)",
+          border: `1px solid ${isAllActive ? "var(--accent)" : "var(--border)"}`,
+          background: isAllActive ? "var(--accent)" : "var(--bg-surface)",
+          color: isAllActive ? "#fff" : "var(--text-secondary)",
           fontFamily: "var(--font-ui)",
-          fontSize: "12px",
+          fontSize: "var(--text-xs)",
           fontWeight: isAllActive ? 600 : 500,
           cursor: "pointer",
           transition: "all 120ms ease",
@@ -566,8 +566,8 @@ function CategoryFilterBar({
         }}
         onMouseEnter={(e) => {
           if (!isAllActive) {
-            (e.currentTarget as HTMLElement).style.borderColor = "var(--text-primary)";
-            (e.currentTarget as HTMLElement).style.color = "var(--text-primary)";
+            (e.currentTarget as HTMLElement).style.borderColor = ACCENT_BORDER;
+            (e.currentTarget as HTMLElement).style.color = "var(--accent)";
           }
         }}
         onMouseLeave={(e) => {
@@ -595,13 +595,13 @@ function CategoryFilterBar({
               display: "inline-flex",
               alignItems: "center",
               gap: 6,
-              padding: "6px 13px",
+              padding: "8px 18px",
               borderRadius: 'var(--radius-pill)',
-              border: `1px solid ${isActive ? cat.border : "var(--border)"}`,
-              background: isActive ? cat.bg : "var(--bg-surface)",
-              color: isActive ? cat.color : "var(--text-secondary)",
+              border: `1px solid ${isActive ? ACCENT_BORDER : "var(--border)"}`,
+              background: isActive ? ACCENT_BG : "var(--bg-surface)",
+              color: isActive ? "var(--accent)" : "var(--text-secondary)",
               fontFamily: "var(--font-ui)",
-              fontSize: "12px",
+              fontSize: "var(--text-xs)",
               fontWeight: isActive ? 600 : 500,
               cursor: "pointer",
               transition: "all 120ms ease",
@@ -609,8 +609,8 @@ function CategoryFilterBar({
             }}
             onMouseEnter={(e) => {
               if (!isActive) {
-                (e.currentTarget as HTMLElement).style.borderColor = cat.border;
-                (e.currentTarget as HTMLElement).style.color = cat.color;
+                (e.currentTarget as HTMLElement).style.borderColor = ACCENT_BORDER;
+                (e.currentTarget as HTMLElement).style.color = "var(--accent)";
               }
             }}
             onMouseLeave={(e) => {
