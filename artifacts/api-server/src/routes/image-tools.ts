@@ -362,6 +362,31 @@ router.post("/tools/watermark-image", upload.single("file"), guardImage, async (
 // ─────────────────────────────────────────────────────────
 // POST /tools/favicon-generate
 // ─────────────────────────────────────────────────────────
+/**
+ * Build a minimal .ico file from a 32×32 PNG buffer.
+ * ICO container = 6-byte header + 16-byte directory + raw PNG image data.
+ */
+function buildIco(png32: Buffer): Buffer {
+  const size = png32.length;
+  const buf = Buffer.alloc(6 + 16 + size);
+  // ICO header
+  buf.writeUInt16LE(0, 0);    // reserved
+  buf.writeUInt16LE(1, 2);    // type: 1 = ICO
+  buf.writeUInt16LE(1, 4);    // image count
+  // Directory entry
+  buf.writeUInt8(32, 6);      // width (0 = 256)
+  buf.writeUInt8(32, 7);      // height
+  buf.writeUInt8(0, 8);       // palette colours
+  buf.writeUInt8(0, 9);       // reserved
+  buf.writeUInt16LE(1, 10);   // colour planes
+  buf.writeUInt16LE(32, 12);  // bits per pixel
+  buf.writeUInt32LE(size, 14); // image data size
+  buf.writeUInt32LE(22, 18);   // image data offset (6 + 16)
+  // PNG data
+  png32.copy(buf, 22);
+  return buf;
+}
+
 router.post("/tools/favicon-generate", upload.single("file"), guardImage, async (req, res) => {
   if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
 
@@ -377,6 +402,10 @@ router.post("/tools/favicon-generate", upload.single("file"), guardImage, async 
         .toBuffer();
       zipEntries[`favicon-${size}x${size}.png`] = new Uint8Array(buf);
     }
+
+    // Generate a real .ico from the 32×32 PNG
+    const png32 = Buffer.from(zipEntries["favicon-32x32.png"]);
+    zipEntries["favicon.ico"] = new Uint8Array(buildIco(png32));
 
     const zipBuffer = Buffer.from(zipSync(zipEntries, { level: 6 }));
 

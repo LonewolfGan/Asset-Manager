@@ -38,7 +38,7 @@ export async function convertWithLibreOffice(
       [
         "--headless",
         "--norestore",
-        `--env:UserInstallation=file://${profileDir}`,
+        `-env:UserInstallation=file://${profileDir}`,
         "--convert-to", targetFormat,
         "--outdir", workDir,
         inputPath,
@@ -58,8 +58,10 @@ export async function convertWithLibreOffice(
 
 /**
  * Convert a PPTX file to per-slide PNG images.
- * LibreOffice names slides as: input.png, input1.png, input2.png, …
- * Returns them sorted in slide order with names slide-1.png, slide-2.png, …
+ * Uses a two-step process:
+ *   1. LibreOffice converts PPTX → multi-page PDF (handles full fidelity)
+ *   2. Ghostscript renders each PDF page as a separate PNG
+ * Returns them sorted in slide order.
  */
 export async function convertPptxToImages(
   inputBuffer: Buffer,
@@ -69,35 +71,63 @@ export async function convertPptxToImages(
   const profileDir = loProfileDir(id);
   await mkdir(workDir, { recursive: true });
   const inputPath = join(workDir, "input.pptx");
+  const pdfPath = join(workDir, "input.pdf");
   await writeFile(inputPath, inputBuffer);
 
   try {
+    // Step 1: PPTX → multi-page PDF (LibreOffice handles all slides)
     await execFileAsync(
       "soffice",
       [
         "--headless",
         "--norestore",
-        `--env:UserInstallation=file://${profileDir}`,
-        "--convert-to", "png",
+        `-env:UserInstallation=file://${profileDir}`,
+        "--convert-to", "pdf",
         "--outdir", workDir,
         inputPath,
       ],
       { timeout: LO_TIMEOUT_MS },
     );
 
+    // Verify PDF was created
+    const pdfExists = await readFile(pdfPath).then(() => true).catch(() => false);
+    if (!pdfExists) {
+      throw new Error("LibreOffice did not produce a PDF output");
+    }
+
+    // Step 2: Use Ghostscript to render each PDF page as PNG
+    // gs outputs slide-1.png, slide-2.png, …
+    const gsOutputPattern = join(workDir, "slide-%d.png");
+    await execFileAsync(
+      "gs",
+      [
+        "-dNOPAUSE", "-dBATCH", "-dSAFER",
+        "-sDEVICE=png16m",
+        "-r150",
+        `-sOutputFile=${gsOutputPattern}`,
+        pdfPath,
+      ],
+      { timeout: LO_TIMEOUT_MS },
+    );
+
+    // Collect all generated PNGs
     const allFiles = await readdir(workDir);
     const pngFiles = allFiles
-      .filter((f) => /^input\d*\.png$/.test(f))
+      .filter((f) => /^slide-\d+\.png$/.test(f))
       .sort((a, b) => {
-        const n = (s: string) => s === "input.png" ? 0 : parseInt(s.replace("input", "").replace(".png", "")) || 0;
+        const n = (s: string) => parseInt(s.replace("slide-", "").replace(".png", "")) || 0;
         return n(a) - n(b);
       });
 
+    if (pngFiles.length === 0) {
+      throw new Error("Ghostscript did not produce any PNG output");
+    }
+
     const slides: Array<{ name: string; data: Buffer }> = [];
-    for (let i = 0; i < pngFiles.length; i++) {
+    for (const f of pngFiles) {
       slides.push({
-        name: `slide-${i + 1}.png`,
-        data: await readFile(join(workDir, pngFiles[i])),
+        name: f,
+        data: await readFile(join(workDir, f)),
       });
     }
     return slides;

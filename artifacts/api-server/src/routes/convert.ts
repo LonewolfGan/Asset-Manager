@@ -105,23 +105,14 @@ const mimeToSharpFormat = (mime: string): keyof sharp.FormatEnum | null => {
 
 // ─────────────────────────────────────────────────────────
 // POST /convert/pdf-to-text
+// Uses pdfplumber (same as pdf-to-word and pdf-to-excel) for consistency.
 // ─────────────────────────────────────────────────────────
 router.post("/convert/pdf-to-text", upload.single("file"), guardDocument, async (req, res) => {
   if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
   try {
-    const { getDocument, GlobalWorkerOptions } = await import("pdfjs-dist");
-    GlobalWorkerOptions.workerSrc = "";
-    const pdf = await getDocument({
-      data: new Uint8Array(req.file.buffer),
-      useWorkerFetch: false, isEvalSupported: false, useSystemFonts: true,
-    }).promise;
-    const pages: string[] = [];
-    for (let i = 1; i <= pdf.numPages; i++) {
-      const page = await pdf.getPage(i);
-      const text = (await page.getTextContent()).items.map((it: any) => it.str).join(" ");
-      pages.push(text);
-    }
-    res.json({ text: pages.join("\n\n") });
+    const extracted = await callPdfExtract(req.file.buffer, "text") as { text?: string; error?: string };
+    if (extracted.error) throw new Error(extracted.error);
+    res.json({ text: extracted.text ?? "" });
   } catch (err) {
     res.status(500).json({ error: err instanceof Error ? err.message : "PDF parsing failed" });
   }

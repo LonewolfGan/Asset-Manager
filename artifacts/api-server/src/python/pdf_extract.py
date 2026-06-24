@@ -134,15 +134,32 @@ def extract_for_excel(pdf_path: str) -> dict:
     return {"tables": all_tables}
 
 
+def extract_for_text(pdf_path: str) -> dict:
+    """
+    Extract all text content as plain text string.
+    """
+    import pdfplumber
+
+    pages = []
+    with pdfplumber.open(pdf_path) as pdf:
+        for page_num, page in enumerate(pdf.pages):
+            text = page.extract_text() or ""
+            pages.append(text)
+
+    return {"text": "\n\n".join(pages)}
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="pdfplumber PDF extractor")
     parser.add_argument("--pdf", required=True, help="Path to input PDF")
-    parser.add_argument("--mode", choices=["word", "excel"], required=True)
+    parser.add_argument("--mode", choices=["word", "excel", "text"], required=True)
     args = parser.parse_args()
 
     try:
         if args.mode == "word":
             result = extract_for_word(args.pdf)
+        elif args.mode == "text":
+            result = extract_for_text(args.pdf)
         else:
             result = extract_for_excel(args.pdf)
         print(json.dumps(result, ensure_ascii=False))
