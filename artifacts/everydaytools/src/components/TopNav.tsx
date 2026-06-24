@@ -458,14 +458,14 @@ export default function TopNav() {
             aria-label="Search tools"
             data-testid="search-input"
             style={{
-              width: 220,
-              height: 34,
+              width: 270,
+              height: 38,
               alignItems: "center",
               gap: 8,
               background: "var(--bg-elevated)",
               border: "1px solid var(--border)",
               borderRadius: "var(--radius-input)",
-              padding: "0 12px",
+              padding: "0 14px",
               cursor: "pointer",
               transition: "border-color 120ms ease",
               fontFamily: "var(--font-ui)",
@@ -486,7 +486,7 @@ export default function TopNav() {
           {/* Right actions */}
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: 8 }}>
             {/* Locale */}
-            <div className="hidden lg:flex" data-testid="lang-switcher" style={{ alignItems: "center", height: 34, border: "1px solid var(--border)", borderRadius: 'var(--radius-card)', overflow: "hidden", boxSizing: "border-box" }}>
+            <div className="hidden lg:flex" data-testid="lang-switcher" style={{ alignItems: "center", height: 38, border: "1px solid var(--border)", borderRadius: 'var(--radius-card)', overflow: "hidden", boxSizing: "border-box" }}>
               {(["EN", "FR"] as const).map((lang, i) => (
                 <button
                   key={lang}
@@ -497,7 +497,7 @@ export default function TopNav() {
                     color: lang === locale ? "var(--text-primary)" : "var(--text-secondary)",
                     border: "none",
                     borderLeft: i === 1 ? "1px solid var(--border)" : "none",
-                    padding: "0 10px",
+                    padding: "0 11px",
                     height: "100%",
                     fontFamily: "var(--font-mono)",
                     fontSize: 'var(--text-xs)',
@@ -516,7 +516,7 @@ export default function TopNav() {
               onClick={toggle}
               aria-label="Toggle theme"
               className="hidden lg:flex"
-              style={{ width: 34, height: 34, alignItems: "center", justifyContent: "center", background: "none", border: "1px solid var(--border)", borderRadius: 'var(--radius-card)', cursor: "pointer", color: "var(--text-secondary)", transition: "background 150ms ease, color 150ms ease, border-color 150ms ease" }}
+              style={{ width: 38, height: 38, alignItems: "center", justifyContent: "center", background: "none", border: "1px solid var(--border)", borderRadius: 'var(--radius-card)', cursor: "pointer", color: "var(--text-secondary)", transition: "background 150ms ease, color 150ms ease, border-color 150ms ease" }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--bg-elevated)"; (e.currentTarget as HTMLElement).style.color = "var(--text-primary)"; (e.currentTarget as HTMLElement).style.borderColor = "var(--border-strong)"; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "none"; (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)"; (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; }}
             >

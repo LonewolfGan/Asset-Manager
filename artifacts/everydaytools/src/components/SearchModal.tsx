@@ -51,6 +51,7 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
   const [history, setHistory] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   const trimmed = query.trim().toLowerCase();
   const results = trimmed
@@ -69,7 +70,9 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
     setQuery("");
     setActiveIdx(0);
     setHistory(readHistory());
-    const t = setTimeout(() => inputRef.current?.focus(), 30);
+    const t = setTimeout(() => {
+      inputRef.current?.focus();
+    }, 30);
     return () => clearTimeout(t);
   }, [open]);
 
@@ -98,6 +101,7 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
     } else if (e.key === "Enter" && results[activeIdx]) {
       (listRef.current?.children[activeIdx] as HTMLAnchorElement)?.click();
     } else if (e.key === "Escape") {
+      e.preventDefault();
       onClose();
     }
   };
@@ -138,9 +142,12 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
       />
 
       <div
+        ref={dialogRef}
         role="dialog"
         aria-modal="true"
+        tabIndex={-1}
         aria-label="Search tools"
+        onKeyDown={handleKeyDown}
         style={{
           position: "fixed",
           top: "15%",
@@ -153,6 +160,7 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
           zIndex: 501,
           overflow: "hidden",
           boxShadow: "var(--shadow-hover)",
+          outline: "none",
         }}
       >
         {/* Search input */}
@@ -184,7 +192,8 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
 
           <input
             ref={inputRef}
-            type="search"
+            type="text"
+            role="searchbox"
             data-testid="search-modal-input"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
