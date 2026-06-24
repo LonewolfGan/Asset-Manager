@@ -13,7 +13,7 @@ export default function WordToMarkdown() {
   const title = t.tools['word-to-markdown']?.title ?? 'Word to Markdown';
   const desc = t.tools['word-to-markdown']?.description ?? 'Convert DOCX files to clean Markdown in your browser.';
   const [output, setOutput] = useState('');
-  const [status, setStatus] = useState<'idle' | 'done' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
   const [error, setError] = useState('');
   const [isDragging, setIsDragging] = useState(false);
   const [file, setFile] = useState<File | null>(null);

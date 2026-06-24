@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from 'react';
 import { AlertCircle, RotateCcw } from 'lucide-react';
 
 export interface ToolLoadingStateProps {
@@ -11,14 +10,6 @@ export interface ToolLoadingStateProps {
   onRetry?: () => void;
 }
 
-const SPINNER_CSS = `
-@keyframes tls-spin { to { transform: rotate(360deg); } }
-@keyframes tls-pulse {
-  0%, 100% { opacity: 0.4; transform: scaleX(0.3); }
-  50% { opacity: 1; transform: scaleX(1); }
-}
-`;
-
 export default function ToolLoadingState({
   status,
   progress,
@@ -28,25 +19,6 @@ export default function ToolLoadingState({
   errorMessage,
   onRetry,
 }: ToolLoadingStateProps) {
-  const [injected, setInjected] = useState(false);
-  const styleRef = useRef<HTMLStyleElement | null>(null);
-
-  useEffect(() => {
-    if (!injected) {
-      const el = document.createElement('style');
-      el.textContent = SPINNER_CSS;
-      document.head.appendChild(el);
-      styleRef.current = el;
-      setInjected(true);
-    }
-    return () => {
-      if (styleRef.current) {
-        styleRef.current.remove();
-        styleRef.current = null;
-      }
-    };
-  }, [injected]);
-
   if (status === 'idle') return null;
 
   const safeProgress = typeof progress === 'number' ? Math.min(100, Math.max(0, Math.round(progress))) : undefined;
@@ -77,7 +49,7 @@ export default function ToolLoadingState({
             viewBox="0 0 18 18"
             fill="none"
             aria-hidden="true"
-            style={{ flexShrink: 0, animation: 'tls-spin 0.75s linear infinite' }}
+            style={{ flexShrink: 0, animation: 'tool-spin 0.75s linear infinite' }}
           >
             <circle
               cx="9"
