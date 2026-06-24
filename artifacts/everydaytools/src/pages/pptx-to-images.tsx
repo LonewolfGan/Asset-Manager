@@ -131,7 +131,7 @@ export default function PptxToImages() {
               </span>
               <button onClick={downloadAll} style={{
                 padding: '7px 18px', background: 'var(--accent)', color: 'var(--accent-text)',
-                border: 'none', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)',
+                border: 'none', borderRadius: 'var(--radius-md)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)',
                 fontWeight: 500, cursor: 'pointer',
               }}>
                 Download all as ZIP
@@ -140,7 +140,7 @@ export default function PptxToImages() {
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12 }}>
               {slides.map((slide, i) => (
-                <div key={i} style={{ border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden', background: 'var(--bg-surface)' }}>
+                <div key={i} style={{ border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', overflow: 'hidden', background: 'var(--bg-surface)' }}>
                   <img src={slide.dataUrl} alt={`Slide ${i + 1}`} style={{ width: '100%', display: 'block' }} loading="lazy" />
                   <div style={{
                     padding: '6px 10px', background: 'var(--bg-elevated)', borderTop: '1px solid var(--border)',

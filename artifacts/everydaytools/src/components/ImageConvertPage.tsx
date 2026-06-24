@@ -326,7 +326,7 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
                     {entry.file.type.startsWith('image/') || entry.file.type === '' ? (
                       <img src={entry.originalUrl} alt="original" style={{ width: '100%', maxHeight: 120, objectFit: 'contain', background: 'var(--bg-elevated)', display: 'block' }} />
                     ) : (
-                      <div style={{ height: 80, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-elevated)', borderRadius: 4 }}>
+                      <div style={{ height: 80, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-elevated)', borderRadius: 'var(--radius-sm)' }}>
                         <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>{entry.file.type || 'image'}</span>
                       </div>
                     )}
@@ -339,7 +339,7 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
                         {toMime.startsWith('image/') && toMime !== 'image/svg+xml' ? (
                           <img src={entry.compressedUrl} alt="converted" style={{ width: '100%', maxHeight: 120, objectFit: 'contain', background: 'var(--bg-elevated)', display: 'block' }} />
                         ) : (
-                          <div style={{ height: 80, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-elevated)', borderRadius: 4 }}>
+                          <div style={{ height: 80, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-elevated)', borderRadius: 'var(--radius-sm)' }}>
                             <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-primary)' }}>{toExt.toUpperCase()}</span>
                           </div>
                         )}
@@ -355,19 +355,19 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
                     ) : entry.status === 'error' ? (
                       <div role="alert" style={{ height: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--danger, #dc2626)', fontSize: 'var(--text-sm)', padding: 8, textAlign: 'center', fontFamily: 'var(--font-ui)' }}>{entry.error}</div>
                     ) : (
-                      <div style={{ height: 100, background: 'var(--bg-elevated)', borderRadius: 4, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>—</div>
+                      <div style={{ height: 100, background: 'var(--bg-elevated)', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>—</div>
                     )}
                   </div>
                 </div>
                 <div style={{ padding: '8px 14px', borderTop: '1px solid var(--border)', background: 'var(--bg-elevated)', display: 'flex', alignItems: 'center', gap: 8 }}>
                   <span style={{ flex: 1, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={entry.file.name}>{entry.file.name}</span>
                   {entry.status === 'done' && (
-                    <button aria-label={`Download ${entry.file.name}`} onClick={() => downloadOne(entry)} style={{ padding: '4px 12px', background: 'var(--text-primary)', color: 'var(--bg-base)', border: 'none', borderRadius: 5, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>{t.common.download}</button>
+                    <button aria-label={`Download ${entry.file.name}`} onClick={() => downloadOne(entry)} style={{ padding: '4px 12px', background: 'var(--text-primary)', color: 'var(--bg-base)', border: 'none', borderRadius: 'var(--radius-md)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>{t.common.download}</button>
                   )}
                   {entry.status === 'error' && (
-                    <button aria-label={`Retry ${entry.file.name}`} onClick={() => retryOne(entry.id)} style={{ padding: '4px 12px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 5, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>Retry</button>
+                    <button aria-label={`Retry ${entry.file.name}`} onClick={() => retryOne(entry.id)} style={{ padding: '4px 12px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius-md)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>Retry</button>
                   )}
-                  <button aria-label={`Remove ${entry.file.name}`} onClick={() => removeFile(entry.id)} style={{ padding: '4px 10px', background: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--border)', borderRadius: 5, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>{t.common.remove}</button>
+                  <button aria-label={`Remove ${entry.file.name}`} onClick={() => removeFile(entry.id)} style={{ padding: '4px 10px', background: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>{t.common.remove}</button>
                 </div>
               </div>
             ))}

@@ -86,7 +86,7 @@ export default function CsvToJson() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
               <span style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-primary)' }}>{mode === 'csv-to-json' ? 'CSV Input' : 'JSON Input'}</span>
               <div style={{ display: 'flex', gap: 6 }}>
-                <button onClick={() => inputRef.current?.click()} style={{ padding: '3px 10px', border: '1px solid var(--border)', borderRadius: 5, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', cursor: 'pointer' }}>Upload file</button>
+                <button onClick={() => inputRef.current?.click()} style={{ padding: '3px 10px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', cursor: 'pointer' }}>Upload file</button>
                 <input ref={inputRef} type="file" accept={mode === 'csv-to-json' ? '.csv' : '.json'} style={{ display: 'none' }} onChange={(e) => { if (e.target.files?.[0]) handleFile(e.target.files[0]); }} />
               </div>
             </div>
@@ -106,8 +106,8 @@ export default function CsvToJson() {
               <span style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-primary)' }}>{mode === 'csv-to-json' ? 'JSON Output' : 'CSV Output'}</span>
               {output && (
                 <div style={{ display: 'flex', gap: 6 }}>
-                  <button onClick={copyOutput} style={{ padding: '3px 10px', border: '1px solid var(--border)', borderRadius: 5, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: copied ? 'var(--accent)' : 'var(--text-secondary)', cursor: 'pointer', transition: 'color 150ms ease' }}>{copied ? '✓ ' + t.common.copied : t.common.copy}</button>
-                  <button onClick={download} style={{ padding: '3px 10px', border: '1px solid var(--border)', borderRadius: 5, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', cursor: 'pointer' }}>{t.common.download}</button>
+                  <button onClick={copyOutput} style={{ padding: '3px 10px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: copied ? 'var(--accent)' : 'var(--text-secondary)', cursor: 'pointer', transition: 'color 150ms ease' }}>{copied ? '✓ ' + t.common.copied : t.common.copy}</button>
+                  <button onClick={download} style={{ padding: '3px 10px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', cursor: 'pointer' }}>{t.common.download}</button>
                 </div>
               )}
             </div>

@@ -31,7 +31,7 @@ export default function WordCounter() {
   }, [text]);
 
   const stat = (label: string, value: string | number) => (
-    <div style={{ padding: '14px 16px', background: 'var(--bg-elevated)', borderRadius: 10, textAlign: 'center' }}>
+    <div style={{ padding: '14px 16px', background: 'var(--bg-elevated)', borderRadius: 'var(--radius-card)', textAlign: 'center' }}>
       <p style={{ fontFamily: 'var(--font-mono)', fontSize: 26, fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 4px' }}>{value}</p>
       <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', margin: 0, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{label}</p>
     </div>
@@ -62,8 +62,8 @@ export default function WordCounter() {
 
         {text && (
           <div style={{ marginTop: 12, display: 'flex', gap: 8 }}>
-            <button onClick={() => setText('')} style={{ padding: '5px 14px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', cursor: 'pointer' }}>{t.wordCounter.clear}</button>
-            <button onClick={() => navigator.clipboard.writeText(text)} style={{ padding: '5px 14px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', cursor: 'pointer' }}>{t.wordCounter.copyText}</button>
+            <button onClick={() => setText('')} style={{ padding: '5px 14px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', cursor: 'pointer' }}>{t.wordCounter.clear}</button>
+            <button onClick={() => navigator.clipboard.writeText(text)} style={{ padding: '5px 14px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', cursor: 'pointer' }}>{t.wordCounter.copyText}</button>
           </div>
         )}
         <AdSlot type="horizontal" />

@@ -99,7 +99,7 @@ export default function ToolLoadingState({
           style={{
             height: 5,
             background: 'var(--border)',
-            borderRadius: 99,
+            borderRadius: 'var(--radius-pill)',
             overflow: 'hidden',
             position: 'relative',
           }}
@@ -113,7 +113,7 @@ export default function ToolLoadingState({
                 width: '40%',
                 height: '100%',
                 background: 'var(--accent)',
-                borderRadius: 99,
+                borderRadius: 'var(--radius-pill)',
                 transformOrigin: 'left center',
                 animation: 'tls-pulse 1.4s ease-in-out infinite',
               }}
@@ -124,7 +124,7 @@ export default function ToolLoadingState({
                 height: '100%',
                 width: `${safeProgress}%`,
                 background: 'var(--accent)',
-                borderRadius: 99,
+                borderRadius: 'var(--radius-pill)',
                 transition: 'width 250ms ease',
               }}
             />
@@ -148,7 +148,7 @@ export default function ToolLoadingState({
                 style={{
                   width: i === currentStep ? 18 : 6,
                   height: 5,
-                  borderRadius: 99,
+                  borderRadius: 'var(--radius-pill)',
                   background: i < currentStep
                     ? 'var(--accent)'
                     : i === currentStep

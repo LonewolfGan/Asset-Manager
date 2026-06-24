@@ -389,7 +389,7 @@ export function ToolBadge({ children, variant = 'neutral' }: ToolBadgeProps) {
       style={{
         display: 'inline-flex', alignItems: 'center', gap: 5,
         padding: '2px 10px 2px 7px',
-        borderRadius: 99,
+        borderRadius: 'var(--radius-pill)',
         background: c.bg,
         fontFamily: 'var(--font-ui)', fontSize: 11, fontWeight: 500,
         color: c.fg,
@@ -445,7 +445,7 @@ export function ToolEmptyState({ icon, title, description }: ToolEmptyStateProps
       {icon && (
         <div
           style={{
-            width: 48, height: 48, borderRadius: 12,
+            width: 48, height: 48, borderRadius: 'var(--radius-card)',
             background: 'var(--bg-elevated)',
             border: '1px solid var(--border)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -555,7 +555,7 @@ export function ToolProgressBar({ progress, label }: ToolProgressBarProps) {
         style={{
           height: 6,
           background: 'var(--border)',
-          borderRadius: 99,
+          borderRadius: 'var(--radius-pill)',
           overflow: 'hidden',
         }}
       >
@@ -564,7 +564,7 @@ export function ToolProgressBar({ progress, label }: ToolProgressBarProps) {
             height: '100%',
             width: `${Math.min(100, Math.max(0, progress))}%`,
             background: 'var(--accent)',
-            borderRadius: 99,
+            borderRadius: 'var(--radius-pill)',
             transition: 'width 250ms ease',
           }}
         />
@@ -608,7 +608,7 @@ export function ToolCopyButton({ value, label = 'Copy', onCopy }: ToolCopyButton
       style={{
         padding: '4px 10px',
         border: `1px solid ${copied ? 'var(--accent)' : 'var(--border)'}`,
-        borderRadius: 6,
+        borderRadius: 'var(--radius-md)',
         background: copied ? 'var(--accent-subtle, rgba(255,107,53,0.08))' : 'transparent',
         fontFamily: 'var(--font-ui)', fontSize: 11,
         color: copied ? 'var(--accent)' : 'var(--text-secondary)',
@@ -637,7 +637,7 @@ export function ToolDownloadButton({ onClick, label = 'Download' }: ToolDownload
       style={{
         padding: '4px 10px',
         border: '1px solid var(--border)',
-        borderRadius: 6,
+        borderRadius: 'var(--radius-md)',
         background: 'transparent',
         fontFamily: 'var(--font-ui)', fontSize: 11,
         color: 'var(--text-secondary)',

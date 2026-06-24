@@ -252,7 +252,7 @@ export default function ImageCompress() {
                 min="1"
                 value={targetKB}
                 onChange={(e) => setTargetKB(e.target.value)}
-                style={{ width: 90, padding: '6px 10px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', background: 'var(--bg-base)', color: 'var(--text-primary)' }}
+                style={{ width: 90, padding: '6px 10px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', background: 'var(--bg-base)', color: 'var(--text-primary)' }}
               />
               <span style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>{tc.kbPerFile}</span>
             </div>
@@ -269,7 +269,7 @@ export default function ImageCompress() {
                   style={{
                     padding: '5px 12px',
                     border: `1px solid ${resizeMode === rm ? 'var(--accent)' : 'var(--border)'}`,
-                    borderRadius: 6,
+                    borderRadius: 'var(--radius-md)',
                     background: resizeMode === rm ? 'var(--accent-subtle)' : 'transparent',
                     color: resizeMode === rm ? 'var(--accent)' : 'var(--text-secondary)',
                     fontFamily: 'var(--font-ui)',
@@ -303,7 +303,7 @@ export default function ImageCompress() {
                   placeholder="Max width"
                   value={resizeW}
                   onChange={(e) => setResizeW(e.target.value)}
-                  style={{ width: 120, padding: '6px 10px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', background: 'var(--bg-base)', color: 'var(--text-primary)' }}
+                  style={{ width: 120, padding: '6px 10px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', background: 'var(--bg-base)', color: 'var(--text-primary)' }}
                 />
                 <span style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)' }}>×</span>
                 <input
@@ -311,7 +311,7 @@ export default function ImageCompress() {
                   placeholder="Max height"
                   value={resizeH}
                   onChange={(e) => setResizeH(e.target.value)}
-                  style={{ width: 120, padding: '6px 10px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', background: 'var(--bg-base)', color: 'var(--text-primary)' }}
+                  style={{ width: 120, padding: '6px 10px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', background: 'var(--bg-base)', color: 'var(--text-primary)' }}
                 />
                 <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{tc.pxKeepsAspect}</span>
               </div>
@@ -320,7 +320,7 @@ export default function ImageCompress() {
 
           {/* Strip metadata */}
           <label
-            style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', userSelect: 'none', padding: '10px 12px', borderRadius: 8, transition: 'background 120ms ease' }}
+            style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', userSelect: 'none', padding: '10px 12px', borderRadius: 'var(--radius-md)', transition: 'background 120ms ease' }}
             onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-elevated)'; }}
             onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
           >
@@ -465,7 +465,7 @@ export default function ImageCompress() {
                         background: 'var(--text-primary)',
                         color: 'var(--bg-base)',
                         border: 'none',
-                        borderRadius: 5,
+                        borderRadius: 'var(--radius-md)',
                         fontFamily: 'var(--font-ui)',
                         fontSize: 'var(--text-xs)',
                         cursor: 'pointer',
@@ -481,7 +481,7 @@ export default function ImageCompress() {
                       background: 'transparent',
                       color: 'var(--text-secondary)',
                       border: '1px solid var(--border)',
-                      borderRadius: 5,
+                      borderRadius: 'var(--radius-md)',
                       fontFamily: 'var(--font-ui)',
                       fontSize: 'var(--text-xs)',
                       cursor: 'pointer',

@@ -144,11 +144,11 @@ export default function ReorderPdf() {
               </span>
               <div style={{ display: 'flex', gap: 8 }}>
                 <button onClick={() => { setPages([]); setFile(null); setStatus('idle'); }}
-                  style={{ padding: '6px 14px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', cursor: 'pointer' }}>
+                  style={{ padding: '6px 14px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', cursor: 'pointer' }}>
                   Load different PDF
                 </button>
                 <button onClick={save} disabled={status === 'saving'}
-                  style={{ padding: '6px 18px', background: status === 'saving' ? 'var(--bg-elevated)' : 'var(--accent)', color: status === 'saving' ? 'var(--text-tertiary)' : 'var(--accent-text)', border: 'none', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: status === 'saving' ? 'not-allowed' : 'pointer' }}>
+                  style={{ padding: '6px 18px', background: status === 'saving' ? 'var(--bg-elevated)' : 'var(--accent)', color: status === 'saving' ? 'var(--text-tertiary)' : 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius-md)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: status === 'saving' ? 'not-allowed' : 'pointer' }}>
                   {status === 'saving' ? 'Saving…' : 'Save Reordered PDF'}
                 </button>
               </div>
@@ -175,7 +175,7 @@ export default function ReorderPdf() {
                   onDragEnd={() => { setDragIdx(null); setDropIdx(null); }}
                   style={{
                     border: `2px solid ${dropIdx === idx ? 'var(--accent)' : 'var(--border)'}`,
-                    borderRadius: 8,
+                    borderRadius: 'var(--radius-md)',
                     overflow: 'hidden',
                     background: 'var(--bg-surface)',
                     cursor: 'grab',

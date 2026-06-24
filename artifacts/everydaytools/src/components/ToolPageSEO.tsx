@@ -151,7 +151,7 @@ function HowItWorksSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en" 
     >
       <h2
         style={{
-          fontSize: "11px",
+          fontSize: "var(--text-2xs)",
           letterSpacing: "0.1em",
           textTransform: "uppercase",
           color: "var(--text-secondary)",
@@ -186,7 +186,7 @@ function HowItWorksSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en" 
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: "13px",
+                fontSize: "var(--text-xs)",
                 color: "var(--text-tertiary)",
                 flexShrink: 0,
                 marginTop: "2px",
@@ -200,7 +200,7 @@ function HowItWorksSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en" 
                 style={{
                   display: "block",
                   color: "var(--text-primary)",
-                  fontSize: "14px",
+                  fontSize: "var(--text-sm)",
                   fontWeight: 500,
                   marginBottom: "4px",
                   fontFamily: "var(--font-ui)",
@@ -210,7 +210,7 @@ function HowItWorksSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en" 
               </strong>
               <p
                 style={{
-                  fontSize: "13px",
+                  fontSize: "var(--text-xs)",
                   color: "var(--text-secondary)",
                   margin: 0,
                   lineHeight: 1.6,
@@ -243,7 +243,7 @@ function AboutSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en" | "fr
     >
       <h2
         style={{
-          fontSize: "11px",
+          fontSize: "var(--text-2xs)",
           letterSpacing: "0.1em",
           textTransform: "uppercase",
           color: "var(--text-secondary)",
@@ -254,7 +254,7 @@ function AboutSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en" | "fr
       >
         {label}
       </h2>
-      <div style={{ fontSize: "14px", lineHeight: 1.75, color: "var(--text-secondary)" }}>
+      <div style={{ fontSize: "var(--text-sm)", lineHeight: 1.75, color: "var(--text-secondary)" }}>
         {paragraphs.map((para, i) => (
           <p key={i} style={{ margin: "0 0 14px" }}>
             {para.trim()}
@@ -280,7 +280,7 @@ function FaqSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en" | "fr" 
     >
       <h2
         style={{
-          fontSize: "11px",
+          fontSize: "var(--text-2xs)",
           letterSpacing: "0.1em",
           textTransform: "uppercase",
           color: "var(--text-secondary)",
@@ -304,7 +304,7 @@ function FaqSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en" | "fr" 
             <summary
               style={{
                 padding: "14px 16px",
-                fontSize: "14px",
+                fontSize: "var(--text-sm)",
                 fontWeight: 500,
                 color: "var(--text-primary)",
                 background: "var(--bg-surface)",
@@ -322,7 +322,7 @@ function FaqSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en" | "fr" 
             <div
               style={{
                 padding: "14px 16px",
-                fontSize: "13px",
+                fontSize: "var(--text-xs)",
                 color: "var(--text-secondary)",
                 lineHeight: 1.7,
                 background: "var(--bg-base)",
@@ -369,7 +369,7 @@ function RelatedToolsSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en
     >
       <h2
         style={{
-          fontSize: "11px",
+          fontSize: "var(--text-2xs)",
           letterSpacing: "0.1em",
           textTransform: "uppercase",
           color: "var(--text-secondary)",
@@ -416,7 +416,7 @@ function RelatedToolsSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en
             >
               <p
                 style={{
-                  fontSize: "13px",
+                  fontSize: "var(--text-xs)",
                   fontWeight: 500,
                   color: "var(--text-primary)",
                   margin: "0 0 6px",
@@ -427,7 +427,7 @@ function RelatedToolsSection({ tool, locale }: { tool: ToolSeoEntry; locale: "en
               </p>
               <p
                 style={{
-                  fontSize: "12px",
+                  fontSize: "var(--text-xs)",
                   color: "var(--text-secondary)",
                   margin: 0,
                   lineHeight: 1.5,

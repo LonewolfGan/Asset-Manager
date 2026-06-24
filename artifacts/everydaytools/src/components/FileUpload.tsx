@@ -114,7 +114,7 @@ export default function FileUpload({ accept, maxSizeMB, multiple = false, onFile
         />
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
           <div style={{
-            width: 44, height: 44, borderRadius: 12,
+            width: 44, height: 44, borderRadius: 'var(--radius-card)',
             background: dragActive ? 'var(--accent-subtle)' : 'var(--bg-elevated)',
             border: '1px solid var(--border)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -144,7 +144,7 @@ export default function FileUpload({ accept, maxSizeMB, multiple = false, onFile
             <div key={i} style={{
               display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               background: 'var(--bg-surface)', border: '1px solid var(--border)',
-              borderRadius: 10, padding: '10px 14px', gap: 12,
+              borderRadius: 'var(--radius-card)', padding: '10px 14px', gap: 12,
               boxShadow: 'var(--shadow-sm)',
             }}>
               <div style={{ flex: 1, overflow: 'hidden' }}>
@@ -154,7 +154,7 @@ export default function FileUpload({ accept, maxSizeMB, multiple = false, onFile
               <button
                 onClick={(e) => { e.stopPropagation(); removeFile(i); }}
                 aria-label={`Remove ${file.name}`}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 8, minWidth: 44, minHeight: 44, color: 'var(--text-tertiary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'color 150ms ease', borderRadius: 6 }}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 8, minWidth: 44, minHeight: 44, color: 'var(--text-tertiary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'color 150ms ease', borderRadius: 'var(--radius-md)' }}
                 onMouseEnter={(e) => (e.currentTarget as HTMLElement).style.color = 'var(--danger)'}
                 onMouseLeave={(e) => (e.currentTarget as HTMLElement).style.color = 'var(--text-tertiary)'}
               >

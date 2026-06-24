@@ -183,7 +183,7 @@ function NavDropdown({
             left: 0,
             background: "var(--bg-surface)",
             border: "1px solid var(--border)",
-            borderRadius: 16,
+            borderRadius: 'var(--radius-card)',
             minWidth: 340,
             padding: 8,
             zIndex: 100,
@@ -212,7 +212,7 @@ function NavDropdown({
                         fontSize: "var(--text-sm)",
                         color: currentPath === entry.href ? "var(--accent)" : "var(--text-secondary)",
                         textDecoration: "none",
-                        borderRadius: 8,
+                        borderRadius: 'var(--radius-md)',
                         whiteSpace: "nowrap",
                         transition: "background 120ms ease, color 120ms ease",
                         fontWeight: currentPath === entry.href ? 500 : 400,
@@ -284,7 +284,7 @@ function MobileDrawer({ open, onClose, onOpenSearch, currentPath }: { open: bool
             style={{
               display: "flex", alignItems: "center", gap: 8,
               background: "var(--bg-elevated)", border: "1px solid var(--border)",
-              borderRadius: 12, padding: "8px 12px", cursor: "pointer", width: "100%",
+              borderRadius: 'var(--radius-card)', padding: "8px 12px", cursor: "pointer", width: "100%",
               textAlign: "left",
             }}
           >
@@ -346,10 +346,10 @@ function MobileDrawer({ open, onClose, onOpenSearch, currentPath }: { open: bool
         </div>
 
         <div style={{ padding: "16px 20px", borderTop: "1px solid var(--border)", display: "flex", gap: 8 }}>
-          <button onClick={toggle} style={{ padding: "6px 12px", border: "1px solid var(--border)", borderRadius: 10, background: "transparent", color: "var(--text-secondary)", fontFamily: "var(--font-ui)", fontSize: "var(--text-sm)", cursor: "pointer" }}>
+          <button onClick={toggle} style={{ padding: "6px 12px", border: "1px solid var(--border)", borderRadius: 'var(--radius-card)', background: "transparent", color: "var(--text-secondary)", fontFamily: "var(--font-ui)", fontSize: "var(--text-sm)", cursor: "pointer" }}>
             {theme === 'dark' ? t.ui.lightMode : t.ui.darkMode}
           </button>
-          <div style={{ display: "flex", border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
+          <div style={{ display: "flex", border: "1px solid var(--border)", borderRadius: 'var(--radius-card)', overflow: "hidden" }}>
             {(["EN", "FR"] as const).map((lang, i) => (
               <button key={lang} onClick={() => { setLocale(lang); trackLanguageChanged(lang.toLowerCase()); }} style={{ background: lang === locale ? "var(--bg-subtle)" : "transparent", color: lang === locale ? "var(--text-primary)" : "var(--text-secondary)", border: "none", borderLeft: i === 1 ? "1px solid var(--border)" : "none", padding: "6px 12px", fontFamily: "var(--font-mono)", fontSize: 'var(--text-xs)', fontWeight: 500, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 {lang}
@@ -486,7 +486,7 @@ export default function TopNav() {
           {/* Right actions */}
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: 8 }}>
             {/* Locale */}
-            <div className="hidden lg:flex" data-testid="lang-switcher" style={{ alignItems: "center", height: 34, border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden", boxSizing: "border-box" }}>
+            <div className="hidden lg:flex" data-testid="lang-switcher" style={{ alignItems: "center", height: 34, border: "1px solid var(--border)", borderRadius: 'var(--radius-card)', overflow: "hidden", boxSizing: "border-box" }}>
               {(["EN", "FR"] as const).map((lang, i) => (
                 <button
                   key={lang}
@@ -516,7 +516,7 @@ export default function TopNav() {
               onClick={toggle}
               aria-label="Toggle theme"
               className="hidden lg:flex"
-              style={{ width: 34, height: 34, alignItems: "center", justifyContent: "center", background: "none", border: "1px solid var(--border)", borderRadius: 10, cursor: "pointer", color: "var(--text-secondary)", transition: "background 150ms ease, color 150ms ease, border-color 150ms ease" }}
+              style={{ width: 34, height: 34, alignItems: "center", justifyContent: "center", background: "none", border: "1px solid var(--border)", borderRadius: 'var(--radius-card)', cursor: "pointer", color: "var(--text-secondary)", transition: "background 150ms ease, color 150ms ease, border-color 150ms ease" }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--bg-elevated)"; (e.currentTarget as HTMLElement).style.color = "var(--text-primary)"; (e.currentTarget as HTMLElement).style.borderColor = "var(--border-strong)"; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "none"; (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)"; (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; }}
             >
@@ -532,7 +532,7 @@ export default function TopNav() {
             </button>
 
             {/* Mobile hamburger */}
-            <button className="flex lg:hidden" data-testid="hamburger-menu" onClick={() => setMobileOpen(true)} aria-label="Open menu" style={{ background: "none", border: "1px solid var(--border)", borderRadius: 10, cursor: "pointer", padding: "7px", color: "var(--text-secondary)" }}>
+            <button className="flex lg:hidden" data-testid="hamburger-menu" onClick={() => setMobileOpen(true)} aria-label="Open menu" style={{ background: "none", border: "1px solid var(--border)", borderRadius: 'var(--radius-card)', cursor: "pointer", padding: "7px", color: "var(--text-secondary)" }}>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 5h12M2 8h12M2 11h12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>
             </button>
           </div>

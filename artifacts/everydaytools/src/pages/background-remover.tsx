@@ -269,8 +269,8 @@ export default function BackgroundRemover() {
                 </button>
               )}
             </div>
-            <div style={{ height: 4, background: 'var(--border)', borderRadius: 99, overflow: 'hidden' }}>
-              <div style={{ height: '100%', width: `${overallProgress}%`, background: 'var(--accent)', borderRadius: 99, transition: 'width 300ms ease' }} />
+            <div style={{ height: 4, background: 'var(--border)', borderRadius: 'var(--radius-pill)', overflow: 'hidden' }}>
+              <div style={{ height: '100%', width: `${overallProgress}%`, background: 'var(--accent)', borderRadius: 'var(--radius-pill)', transition: 'width 300ms ease' }} />
             </div>
           </div>
         )}
@@ -289,7 +289,7 @@ export default function BackgroundRemover() {
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px' }}>
-                  <div style={{ width: 36, height: 36, borderRadius: 8, overflow: 'hidden', flexShrink: 0, border: '1px solid var(--border)', background: 'var(--bg-elevated)' }}>
+                  <div style={{ width: 36, height: 36, borderRadius: 'var(--radius-md)', overflow: 'hidden', flexShrink: 0, border: '1px solid var(--border)', background: 'var(--bg-elevated)' }}>
                     {item.previewUrl && <img src={item.previewUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
                   </div>
                   <div style={{ flex: 1, overflow: 'hidden' }}>
@@ -312,7 +312,7 @@ export default function BackgroundRemover() {
                     )}
                   </div>
                   <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: 10 }}>
-                    {item.status === 'pending' && <div style={{ width: 14, height: 14, borderRadius: 99, background: 'var(--border-strong)' }} />}
+                    {item.status === 'pending' && <div style={{ width: 14, height: 14, borderRadius: 'var(--radius-pill)', background: 'var(--border-strong)' }} />}
                     {item.status === 'processing' && <SpinnerIcon />}
                     {item.status === 'done' && <CheckIcon />}
                     {item.status === 'error' && (
@@ -321,7 +321,7 @@ export default function BackgroundRemover() {
                         <button
                           onClick={() => retryItem(queue.indexOf(item))}
                           disabled={isProcessing}
-                          style={{ background: 'none', border: '1px solid rgba(239,68,68,0.4)', borderRadius: 8, padding: '4px 10px', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-ui)', color: 'var(--danger)', cursor: isProcessing ? 'default' : 'pointer', opacity: isProcessing ? 0.5 : 1, whiteSpace: 'nowrap' }}
+                          style={{ background: 'none', border: '1px solid rgba(239,68,68,0.4)', borderRadius: 'var(--radius-md)', padding: '4px 10px', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-ui)', color: 'var(--danger)', cursor: isProcessing ? 'default' : 'pointer', opacity: isProcessing ? 0.5 : 1, whiteSpace: 'nowrap' }}
                         >
                           Retry
                         </button>
@@ -330,7 +330,7 @@ export default function BackgroundRemover() {
                     {item.status === 'done' && (
                       <button
                         onClick={() => downloadBlob(item.resultBlob!, item.file.name.replace(/\.[^/.]+$/, '_nobg.png'))}
-                        style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 8, padding: '4px 10px', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-ui)', color: 'var(--text-secondary)', cursor: 'pointer', whiteSpace: 'nowrap' }}
+                        style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', padding: '4px 10px', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-ui)', color: 'var(--text-secondary)', cursor: 'pointer', whiteSpace: 'nowrap' }}
                       >
                         Download
                       </button>
@@ -342,11 +342,11 @@ export default function BackgroundRemover() {
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', borderTop: '1px solid var(--border)' }}>
                     <div style={{ padding: 12, borderRight: '1px solid var(--border)' }}>
                       <p style={{ fontFamily: 'var(--font-ui)', fontSize: 10, color: 'var(--text-tertiary)', margin: '0 0 6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Original</p>
-                      <img src={item.previewUrl} alt="Original" style={{ width: '100%', borderRadius: 6, border: '1px solid var(--border)' }} />
+                      <img src={item.previewUrl} alt="Original" style={{ width: '100%', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }} />
                     </div>
                     <div style={{ padding: 12 }}>
                       <p style={{ fontFamily: 'var(--font-ui)', fontSize: 10, color: 'var(--text-tertiary)', margin: '0 0 6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Result</p>
-                      <div style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'16\' height=\'16\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 0h8v8H0zm8 8h8v8H8z\' fill=\'%23e5e5e5\' fill-rule=\'evenodd\'/%3E%3C/svg%3E")', borderRadius: 6, border: '1px solid var(--border)', overflow: 'hidden' }}>
+                      <div style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'16\' height=\'16\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 0h8v8H0zm8 8h8v8H8z\' fill=\'%23e5e5e5\' fill-rule=\'evenodd\'/%3E%3C/svg%3E")', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', overflow: 'hidden' }}>
                         <img src={item.resultUrl} alt="Result" style={{ width: '100%', display: 'block' }} />
                       </div>
                     </div>

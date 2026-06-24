@@ -87,7 +87,7 @@ export default function TxtToPdf() {
             placeholder="Paste your text here..."
             value={textInput}
             onChange={e => setTextInput(e.target.value)}
-            style={{ width: '100%', minHeight: 200, padding: 16, border: '1px solid var(--border)', borderRadius: 'var(--radius)', outline: 'none', fontFamily: 'monospace', resize: 'vertical', boxSizing: 'border-box' }}
+            style={{ width: '100%', minHeight: 200, padding: 16, border: '1px solid var(--border)', borderRadius: 'var(--radius)', outline: 'none', fontFamily: 'var(--font-mono)', resize: 'vertical', boxSizing: 'border-box' }}
           />
         )}
 

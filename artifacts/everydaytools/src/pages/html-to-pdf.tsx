@@ -82,7 +82,7 @@ export default function HtmlToPdf() {
             placeholder="Paste your HTML code here..."
             value={htmlInput}
             onChange={e => setHtmlInput(e.target.value)}
-            style={{ width: '100%', minHeight: 200, padding: 16, border: '1px solid var(--border)', borderRadius: 'var(--radius)', outline: 'none', fontFamily: 'monospace' }}
+            style={{ width: '100%', minHeight: 200, padding: 16, border: '1px solid var(--border)', borderRadius: 'var(--radius)', outline: 'none', fontFamily: 'var(--font-mono)' }}
           />
         )}
 

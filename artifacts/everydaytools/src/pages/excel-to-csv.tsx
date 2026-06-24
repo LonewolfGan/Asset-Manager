@@ -89,7 +89,7 @@ export default function ExcelToCsv() {
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
                 <label style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>{t.common.exportSheet}</label>
                 <select value={selectedSheet} onChange={(e) => setSelectedSheet(e.target.value)}
-                  style={{ padding: '5px 10px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
+                  style={{ padding: '5px 10px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
                   {sheets.map((s) => <option key={s} value={s}>{s}</option>)}
                 </select>
                 <ToolButton variant="primary" onClick={convert}>{t.common.convertBtn}</ToolButton>
@@ -111,7 +111,7 @@ export default function ExcelToCsv() {
                 {t.common.preview(csvContent.split('\n').length)}
               </span>
               <button onClick={download}
-                style={{ padding: '7px 16px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer' }}>
+                style={{ padding: '7px 16px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius-md)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer' }}>
                 {t.common.downloadCsv}
               </button>
             </div>

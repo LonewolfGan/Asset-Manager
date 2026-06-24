@@ -180,7 +180,7 @@ export default function ImageCrop() {
           </div>
           
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 16 }}>
-            <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted)', fontFamily: 'IBM Plex Mono, monospace' }}>
+            <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>
               {cropRect && canvasRef.current ? 
                 `Selection: ${Math.round(cropRect.w * (imgObj.width / canvasRef.current.width))} x ${Math.round(cropRect.h * (imgObj.height / canvasRef.current.height))} px` 
                 : 'Click and drag to select area'}
@@ -189,7 +189,7 @@ export default function ImageCrop() {
           </div>
 
           <button onClick={handleCrop} disabled={!cropRect || cropRect.w === 0}
-            style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: (!cropRect || cropRect.w === 0) ? 'not-allowed' : 'pointer', width: '100%', opacity: (!cropRect || cropRect.w === 0) ? 0.5 : 1 }}>
+            style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: (!cropRect || cropRect.w === 0) ? 'not-allowed' : 'pointer', width: '100%', opacity: (!cropRect || cropRect.w === 0) ? 0.5 : 1 }}>
             Crop & Download
           </button>
         </div>

@@ -30,7 +30,7 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
       onClick={onClick}
       style={{
         padding: '6px 14px',
-        borderRadius: 10,
+        borderRadius: 'var(--radius-card)',
         border: active ? '1.5px solid var(--accent)' : '1.5px solid var(--border)',
         background: active ? 'rgba(255,107,53,0.08)' : 'transparent',
         color: active ? 'var(--accent)' : 'var(--text-secondary)',
@@ -313,14 +313,14 @@ export default function QrCodeGenerator() {
                 <Field label={isFR ? 'Couleur QR' : 'QR color'}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10, border: '1px solid var(--border)', borderRadius: 'var(--radius-input)', padding: '8px 12px', background: 'var(--bg-base)' }}>
                     <input type="color" value={fgColor} onChange={(e) => setFgColor(e.target.value)}
-                      style={{ width: 28, height: 28, border: 'none', background: 'none', padding: 0, cursor: 'pointer', borderRadius: 4 }} />
+                      style={{ width: 28, height: 28, border: 'none', background: 'none', padding: 0, cursor: 'pointer', borderRadius: 'var(--radius-sm)' }} />
                     <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>{fgColor}</span>
                   </div>
                 </Field>
                 <Field label={isFR ? 'Couleur fond' : 'Background'}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10, border: '1px solid var(--border)', borderRadius: 'var(--radius-input)', padding: '8px 12px', background: 'var(--bg-base)' }}>
                     <input type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)}
-                      style={{ width: 28, height: 28, border: 'none', background: 'none', padding: 0, cursor: 'pointer', borderRadius: 4 }} />
+                      style={{ width: 28, height: 28, border: 'none', background: 'none', padding: 0, cursor: 'pointer', borderRadius: 'var(--radius-sm)' }} />
                     <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>{bgColor}</span>
                   </div>
                 </Field>
@@ -336,7 +336,7 @@ export default function QrCodeGenerator() {
               </p>
 
               <div style={{
-                borderRadius: 12,
+                borderRadius: 'var(--radius-card)',
                 overflow: 'hidden',
                 border: '1px solid var(--border)',
                 display: 'flex',
@@ -415,7 +415,7 @@ export default function QrCodeGenerator() {
             </div>
 
             {/* Info pill */}
-            <div style={{ background: 'var(--bg-subtle, var(--bg-elevated))', border: '1px solid var(--border)', borderRadius: 12, padding: '12px 14px' }}>
+            <div style={{ background: 'var(--bg-subtle, var(--bg-elevated))', border: '1px solid var(--border)', borderRadius: 'var(--radius-card)', padding: '12px 14px' }}>
               <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', fontFamily: 'var(--font-ui)', lineHeight: 1.6, margin: 0 }}>
                 {isFR
                   ? 'Tout est généré localement dans votre navigateur. Aucune donnée n\'est envoyée à nos serveurs.'

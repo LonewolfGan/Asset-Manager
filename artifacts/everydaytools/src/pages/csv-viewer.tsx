@@ -125,12 +125,12 @@ export default function CsvViewer() {
               </div>
               <div style={{ display: 'flex', gap: 8 }}>
                 <button onClick={() => { setRows([]); setHeaders([]); setCsvText(''); setFile(null); setError(''); }}
-                  style={{ padding: '5px 12px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', cursor: 'pointer' }}>
+                  style={{ padding: '5px 12px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', cursor: 'pointer' }}>
                   {t.common.clear}
                 </button>
                 {csvText && (
                   <button onClick={downloadCsv}
-                    style={{ padding: '5px 12px', border: '1px solid var(--border)', borderRadius: 6, background: 'var(--text-primary)', color: 'var(--bg-base)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>
+                    style={{ padding: '5px 12px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', background: 'var(--text-primary)', color: 'var(--bg-base)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>
                     {t.common.downloadCsv}
                   </button>
                 )}

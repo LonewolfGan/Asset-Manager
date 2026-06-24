@@ -103,7 +103,7 @@ export default function ResultPanel({ filename, sizeBefore, sizeAfter, blob, tex
             <span style={{
               color: 'var(--success)',
               background: 'rgba(34,197,94,0.10)',
-              borderRadius: 3,
+              borderRadius: 'var(--radius-sm)',
               padding: '1px 6px',
             }}>
               -{reduction}%
@@ -190,7 +190,7 @@ export default function ResultPanel({ filename, sizeBefore, sizeAfter, blob, tex
                   padding: '5px 12px',
                   background: 'none',
                   border: '1px solid var(--border)',
-                  borderRadius: 10,
+                  borderRadius: 'var(--radius-card)',
                   fontFamily: 'var(--font-ui)',
                   fontSize: 'var(--text-xs)',
                   color: copied ? 'var(--accent)' : 'var(--text-secondary)',
@@ -213,7 +213,7 @@ export default function ResultPanel({ filename, sizeBefore, sizeAfter, blob, tex
                   padding: '5px 12px',
                   background: 'none',
                   border: '1px solid var(--border)',
-                  borderRadius: 10,
+                  borderRadius: 'var(--radius-card)',
                   fontFamily: 'var(--font-ui)',
                   fontSize: 'var(--text-xs)',
                   color: 'var(--text-secondary)',

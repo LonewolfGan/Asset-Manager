@@ -271,7 +271,7 @@ function ToolCard({
         <div
           className="tool-card-icon"
           style={{
-            borderRadius: 10,
+            borderRadius: 'var(--radius-card)',
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -301,7 +301,7 @@ function ToolCard({
                 fontSize: 9,
                 fontWeight: 700,
                 padding: "2px 6px",
-                borderRadius: 4,
+                borderRadius: 'var(--radius-sm)',
                 background: cat.bg,
                 color: cat.color,
                 lineHeight: 1.4,
@@ -465,7 +465,7 @@ function HomeHero() {
                   style={{
                     display: "inline-block",
                     padding: "9px 20px",
-                    borderRadius: 100,
+                    borderRadius: 'var(--radius-pill)',
                     background: "var(--hero-tag-bg)",
                     color: "var(--hero-tag-text)",
                     fontFamily: "var(--font-ui)",
@@ -494,7 +494,7 @@ function HomeHero() {
                   style={{
                     display: "inline-block",
                     padding: "9px 20px",
-                    borderRadius: 100,
+                    borderRadius: 'var(--radius-pill)',
                     background: "var(--hero-tag-bg)",
                     color: "var(--hero-tag-text)",
                     fontFamily: "var(--font-ui)",
@@ -553,7 +553,7 @@ function CategoryFilterBar({
           alignItems: "center",
           gap: 7,
           padding: "6px 13px",
-          borderRadius: 100,
+          borderRadius: 'var(--radius-pill)',
           border: `1px solid ${isAllActive ? "var(--text-primary)" : "var(--border)"}`,
           background: isAllActive ? "var(--text-primary)" : "var(--bg-surface)",
           color: isAllActive ? "var(--bg-base)" : "var(--text-secondary)",
@@ -596,7 +596,7 @@ function CategoryFilterBar({
               alignItems: "center",
               gap: 6,
               padding: "6px 13px",
-              borderRadius: 100,
+              borderRadius: 'var(--radius-pill)',
               border: `1px solid ${isActive ? cat.border : "var(--border)"}`,
               background: isActive ? cat.bg : "var(--bg-surface)",
               color: isActive ? cat.color : "var(--text-secondary)",

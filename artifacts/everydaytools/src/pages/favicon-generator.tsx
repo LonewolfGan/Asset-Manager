@@ -76,7 +76,7 @@ export default function FaviconGenerator() {
           <input ref={inputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={(e) => { if (e.target.files?.[0]) handleFile(e.target.files[0]); }} />
           {previewUrl ? (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
-              <img src={previewUrl} alt="preview" style={{ width: 64, height: 64, objectFit: 'contain', borderRadius: 8, border: '1px solid var(--border)' }} />
+              <img src={previewUrl} alt="preview" style={{ width: 64, height: 64, objectFit: 'contain', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }} />
               <div style={{ textAlign: 'left' }}>
                 <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', margin: 0, fontWeight: 500 }}>{file?.name}</p>
                 <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', margin: '4px 0 0' }}>Click to change</p>
@@ -94,7 +94,7 @@ export default function FaviconGenerator() {
           <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-primary)', marginBottom: 12 }}>Sizes generated:</p>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             {SIZES.map((s) => (
-              <span key={s} style={{ padding: '3px 10px', background: 'var(--bg-elevated)', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>
+              <span key={s} style={{ padding: '3px 10px', background: 'var(--bg-elevated)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>
                 {s === 180 ? 'Apple 180×180' : s === 192 ? 'Android 192×192' : `${s}×${s}`}
               </span>
             ))}

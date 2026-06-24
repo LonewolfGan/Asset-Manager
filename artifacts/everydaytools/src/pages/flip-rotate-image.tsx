@@ -91,18 +91,18 @@ export default function FlipRotateImage() {
             </div>
 
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-              <button onClick={() => setRotation((r) => (r - 90 + 360) % 360)} style={{ padding: '8px 14px', border: '1px solid var(--border)', borderRadius: 8, background: 'var(--bg-surface)', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', cursor: 'pointer' }}>↺ 90° Left</button>
-              <button onClick={() => setRotation((r) => (r + 90) % 360)} style={{ padding: '8px 14px', border: '1px solid var(--border)', borderRadius: 8, background: 'var(--bg-surface)', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', cursor: 'pointer' }}>↻ 90° Right</button>
-              <button onClick={() => setRotation((r) => (r + 180) % 360)} style={{ padding: '8px 14px', border: '1px solid var(--border)', borderRadius: 8, background: 'var(--bg-surface)', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', cursor: 'pointer' }}>↔ 180°</button>
+              <button onClick={() => setRotation((r) => (r - 90 + 360) % 360)} style={{ padding: '8px 14px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', cursor: 'pointer' }}>↺ 90° Left</button>
+              <button onClick={() => setRotation((r) => (r + 90) % 360)} style={{ padding: '8px 14px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', cursor: 'pointer' }}>↻ 90° Right</button>
+              <button onClick={() => setRotation((r) => (r + 180) % 360)} style={{ padding: '8px 14px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', cursor: 'pointer' }}>↔ 180°</button>
               <div style={{ width: 1, background: 'var(--border)', margin: '0 4px' }} />
-              <button onClick={() => setFlipH((f) => !f)} style={{ padding: '8px 14px', border: `1px solid ${flipH ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 8, background: flipH ? 'var(--accent-subtle,#fff4ef)' : 'var(--bg-surface)', color: flipH ? 'var(--accent)' : 'var(--text-primary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', cursor: 'pointer' }}>⇔ Flip Horizontal</button>
-              <button onClick={() => setFlipV((f) => !f)} style={{ padding: '8px 14px', border: `1px solid ${flipV ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 8, background: flipV ? 'var(--accent-subtle,#fff4ef)' : 'var(--bg-surface)', color: flipV ? 'var(--accent)' : 'var(--text-primary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', cursor: 'pointer' }}>⇕ Flip Vertical</button>
+              <button onClick={() => setFlipH((f) => !f)} style={{ padding: '8px 14px', border: `1px solid ${flipH ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius-md)', background: flipH ? 'var(--accent-subtle,#fff4ef)' : 'var(--bg-surface)', color: flipH ? 'var(--accent)' : 'var(--text-primary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', cursor: 'pointer' }}>⇔ Flip Horizontal</button>
+              <button onClick={() => setFlipV((f) => !f)} style={{ padding: '8px 14px', border: `1px solid ${flipV ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius-md)', background: flipV ? 'var(--accent-subtle,#fff4ef)' : 'var(--bg-surface)', color: flipV ? 'var(--accent)' : 'var(--text-primary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', cursor: 'pointer' }}>⇕ Flip Vertical</button>
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <label style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>Save as:</label>
               <select value={outputFormat} onChange={(e) => setOutputFormat(e.target.value)}
-                style={{ padding: '5px 10px', border: '1px solid var(--border)', borderRadius: 6, background: 'var(--bg-base)', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)' }}>
+                style={{ padding: '5px 10px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', background: 'var(--bg-base)', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)' }}>
                 <option value="image/png">PNG</option>
                 <option value="image/jpeg">JPEG</option>
                 <option value="image/webp">WebP</option>

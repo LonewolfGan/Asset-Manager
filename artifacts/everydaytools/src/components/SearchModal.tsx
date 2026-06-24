@@ -253,7 +253,7 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
                     padding: "4px 6px 4px 11px",
                     background: "var(--bg-elevated)",
                     border: "1px solid var(--border)",
-                    borderRadius: 20,
+                    borderRadius: 'var(--radius-card)',
                     fontSize: "var(--text-xs)",
                     fontFamily: "var(--font-ui)",
                     color: "var(--text-primary)",
@@ -285,7 +285,7 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
                       lineHeight: 1,
                       display: "flex",
                       alignItems: "center",
-                      borderRadius: 3,
+                      borderRadius: 'var(--radius-sm)',
                       transition: "color 100ms",
                     }}
                     onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-primary)"; }}

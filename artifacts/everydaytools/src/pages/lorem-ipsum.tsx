@@ -76,7 +76,7 @@ export default function LoremIpsum() {
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             {(['paragraphs', 'sentences', 'words', 'lists'] as Type[]).map((tp) => (
               <button key={tp} onClick={() => setType(tp)}
-                style={{ padding: '6px 14px', border: `1px solid ${type === tp ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 8, background: type === tp ? 'var(--accent-subtle,#fff4ef)' : 'transparent', color: type === tp ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: type === tp ? 600 : 400, cursor: 'pointer' }}>
+                style={{ padding: '6px 14px', border: `1px solid ${type === tp ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius-md)', background: type === tp ? 'var(--accent-subtle,#fff4ef)' : 'transparent', color: type === tp ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: type === tp ? 600 : 400, cursor: 'pointer' }}>
                 {t.loremIpsum.types[tp]}
               </button>
             ))}
@@ -86,11 +86,11 @@ export default function LoremIpsum() {
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <label style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>{t.loremIpsum.count}</label>
               <input type="number" min="1" max="50" value={count} onChange={(e) => setCount(Math.max(1, Math.min(50, +e.target.value)))}
-                style={{ width: 70, padding: '5px 10px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', background: 'var(--bg-base)', color: 'var(--text-primary)' }}
+                style={{ width: 70, padding: '5px 10px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', background: 'var(--bg-base)', color: 'var(--text-primary)' }}
               />
             </div>
             <label
-              style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', padding: '8px 12px', borderRadius: 8, transition: 'background 120ms ease' }}
+              style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', padding: '8px 12px', borderRadius: 'var(--radius-md)', transition: 'background 120ms ease' }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-elevated)'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
             >
@@ -108,7 +108,7 @@ export default function LoremIpsum() {
         {output && (
           <div style={{ marginTop: 20 }}>
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 8 }}>
-              <button onClick={copy} style={{ padding: '5px 14px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: copied ? 'var(--accent)' : 'var(--text-secondary)', cursor: 'pointer', transition: 'color 150ms ease' }}>{copied ? '✓ ' + t.common.copied : t.common.copy}</button>
+              <button onClick={copy} style={{ padding: '5px 14px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: copied ? 'var(--accent)' : 'var(--text-secondary)', cursor: 'pointer', transition: 'color 150ms ease' }}>{copied ? '✓ ' + t.common.copied : t.common.copy}</button>
             </div>
             <div style={{ padding: 20, background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', lineHeight: 1.7, color: 'var(--text-primary)', whiteSpace: 'pre-wrap' }}>
               {output}

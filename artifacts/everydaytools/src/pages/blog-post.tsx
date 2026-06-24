@@ -44,7 +44,7 @@ function renderBlock(block: ContentBlock, idx: number) {
           key={idx}
           style={{
             fontFamily: "var(--font-ui)",
-            fontSize: 16,
+            fontSize: "var(--text-base)",
             fontWeight: 600,
             color: "var(--text-primary)",
             margin: "28px 0 10px",
@@ -59,7 +59,7 @@ function renderBlock(block: ContentBlock, idx: number) {
         <p
           key={idx}
           style={{
-            fontSize: 15,
+            fontSize: "var(--text-sm)",
             lineHeight: 1.8,
             color: "var(--text-secondary)",
             margin: "0 0 16px",
@@ -81,7 +81,7 @@ function renderBlock(block: ContentBlock, idx: number) {
           }}
         >
           {block.items.map((item, i) => (
-            <li key={i} style={{ fontSize: 15, lineHeight: 1.7, color: "var(--text-secondary)" }}>
+            <li key={i} style={{ fontSize: "var(--text-sm)", lineHeight: 1.7, color: "var(--text-secondary)" }}>
               {item}
             </li>
           ))}
@@ -100,7 +100,7 @@ function renderBlock(block: ContentBlock, idx: number) {
           }}
         >
           {block.items.map((item, i) => (
-            <li key={i} style={{ fontSize: 15, lineHeight: 1.7, color: "var(--text-secondary)" }}>
+            <li key={i} style={{ fontSize: "var(--text-sm)", lineHeight: 1.7, color: "var(--text-secondary)" }}>
               {item}
             </li>
           ))}
@@ -118,7 +118,7 @@ function renderBlock(block: ContentBlock, idx: number) {
             margin: "24px 0",
           }}
         >
-          <p style={{ fontSize: 14, lineHeight: 1.7, color: "var(--text-secondary)", margin: 0 }}>
+          <p style={{ fontSize: "var(--text-sm)", lineHeight: 1.7, color: "var(--text-secondary)", margin: 0 }}>
             {block.text}
           </p>
         </div>
@@ -187,9 +187,9 @@ export default function BlogPost({ params }: BlogPostPageProps) {
         <script type="application/ld+json">{JSON.stringify(ARTICLE_SCHEMA)}</script>
       </Helmet>
 
-      <div className="container-reading" style={{ paddingTop: 40, paddingBottom: 80 }}>
+      <div className="container-wide" style={{ paddingTop: 40, paddingBottom: 80 }}>
         {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 32, fontSize: 13, color: "var(--text-tertiary)", flexWrap: "wrap" }}>
+        <nav aria-label="Breadcrumb" style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 32, fontSize: "var(--text-xs)", color: "var(--text-tertiary)", flexWrap: "wrap" }}>
           <Link href="/" style={{ color: "var(--text-tertiary)", textDecoration: "none" }}>
             {homeLabel}
           </Link>
@@ -203,7 +203,7 @@ export default function BlogPost({ params }: BlogPostPageProps) {
 
         {/* Header */}
         <header style={{ marginBottom: 40 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "var(--text-tertiary)", fontFamily: "var(--font-mono)", marginBottom: 16 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: "var(--text-xs)", color: "var(--text-tertiary)", fontFamily: "var(--font-mono)", marginBottom: 16 }}>
             <time dateTime={post.publishedAt}>{formatDate(post.publishedAt, lang)}</time>
             <span>·</span>
             <span>{post.readingMinutes} {readLabel}</span>
@@ -221,7 +221,7 @@ export default function BlogPost({ params }: BlogPostPageProps) {
           >
             {post.title[lang]}
           </h1>
-          <p style={{ fontSize: 16, color: "var(--text-secondary)", lineHeight: 1.65, margin: 0 }}>
+          <p style={{ fontSize: "var(--text-base)", color: "var(--text-secondary)", lineHeight: 1.65, margin: 0 }}>
             {post.description[lang]}
           </p>
         </header>
@@ -238,7 +238,7 @@ export default function BlogPost({ params }: BlogPostPageProps) {
               alignItems: "center",
               gap: 8,
               fontFamily: "var(--font-ui)",
-              fontSize: 15,
+              fontSize: "var(--text-sm)",
               fontWeight: 500,
               transition: "opacity 120ms ease",
             }}
@@ -277,7 +277,7 @@ export default function BlogPost({ params }: BlogPostPageProps) {
                 alignItems: "center",
                 gap: 8,
                 fontFamily: "var(--font-ui)",
-                fontSize: 15,
+                fontSize: "var(--text-sm)",
                 fontWeight: 500,
                 transition: "opacity 120ms ease",
               }}

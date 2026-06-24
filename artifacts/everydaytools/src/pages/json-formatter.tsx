@@ -71,7 +71,7 @@ export default function JsonFormatter() {
               <span style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>{t.jsonFormatter.indent}</span>
               {[2, 4].map((n) => (
                 <button key={n} onClick={() => { setIndent(n); process(input, 'format'); }}
-                  style={{ padding: '4px 10px', border: `1px solid ${indent === n ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 6, background: indent === n ? 'var(--accent-subtle,#fff4ef)' : 'transparent', color: indent === n ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>
+                  style={{ padding: '4px 10px', border: `1px solid ${indent === n ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius-md)', background: indent === n ? 'var(--accent-subtle,#fff4ef)' : 'transparent', color: indent === n ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>
                   {n}
                 </button>
               ))}
@@ -79,8 +79,8 @@ export default function JsonFormatter() {
           )}
           {output && (
             <div style={{ display: 'flex', gap: 6, marginLeft: 'auto' }}>
-              <button onClick={copy} style={{ padding: '5px 12px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: copied ? 'var(--accent)' : 'var(--text-secondary)', cursor: 'pointer', transition: 'color 150ms ease' }}>{copied ? '✓ ' + t.common.copied : t.common.copy}</button>
-              <button onClick={download} style={{ padding: '5px 12px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', cursor: 'pointer' }}>{t.common.download}</button>
+              <button onClick={copy} style={{ padding: '5px 12px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: copied ? 'var(--accent)' : 'var(--text-secondary)', cursor: 'pointer', transition: 'color 150ms ease' }}>{copied ? '✓ ' + t.common.copied : t.common.copy}</button>
+              <button onClick={download} style={{ padding: '5px 12px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', cursor: 'pointer' }}>{t.common.download}</button>
             </div>
           )}
         </div>

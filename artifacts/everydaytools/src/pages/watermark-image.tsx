@@ -123,7 +123,7 @@ export default function WatermarkImage() {
               <div>
                 <label style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Watermark text</label>
                 <input value={text} onChange={(e) => setText(e.target.value)}
-                  style={{ width: '100%', padding: '7px 10px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', background: 'var(--bg-base)', color: 'var(--text-primary)', boxSizing: 'border-box' }} />
+                  style={{ width: '100%', padding: '7px 10px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', background: 'var(--bg-base)', color: 'var(--text-primary)', boxSizing: 'border-box' }} />
               </div>
               <div>
                 <label style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Font size: {fontSize}px</label>
@@ -131,7 +131,7 @@ export default function WatermarkImage() {
               </div>
               <div>
                 <label style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Color</label>
-                <input type="color" value={color} onChange={(e) => setColor(e.target.value)} style={{ width: 48, height: 32, border: '1px solid var(--border)', borderRadius: 6, cursor: 'pointer', padding: 2 }} />
+                <input type="color" value={color} onChange={(e) => setColor(e.target.value)} style={{ width: 48, height: 32, border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', cursor: 'pointer', padding: 2 }} />
               </div>
               <div>
                 <label style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Opacity: {opacity}%</label>
@@ -144,7 +144,7 @@ export default function WatermarkImage() {
               <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                 {POSITIONS.map((p) => (
                   <button key={p.id} onClick={() => setPosition(p.id)}
-                    style={{ padding: '5px 12px', border: `1px solid ${position === p.id ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 6, background: position === p.id ? 'var(--accent-subtle,#fff4ef)' : 'transparent', color: position === p.id ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>
+                    style={{ padding: '5px 12px', border: `1px solid ${position === p.id ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius-md)', background: position === p.id ? 'var(--accent-subtle,#fff4ef)' : 'transparent', color: position === p.id ? 'var(--accent)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>
                     {p.label}
                   </button>
                 ))}

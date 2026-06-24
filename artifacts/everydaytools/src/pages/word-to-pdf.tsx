@@ -93,7 +93,7 @@ export default function WordToPdf() {
               <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', margin: '2px 0 0' }}>{formatBytes(file.size)}</p>
             </div>
             <button onClick={() => { setFile(null); setStatus('idle'); setPdfBlob(null); }}
-              style={{ padding: '4px 10px', border: '1px solid var(--border)', borderRadius: 5, background: 'transparent', color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>
+              style={{ padding: '4px 10px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', background: 'transparent', color: 'var(--text-secondary)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>
               Remove
             </button>
           </div>

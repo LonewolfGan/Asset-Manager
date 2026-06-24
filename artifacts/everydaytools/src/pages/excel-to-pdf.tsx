@@ -103,7 +103,7 @@ export default function ExcelToPdf() {
                 <div style={{ marginTop: 8 }}>
                   <label style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginRight: 8 }}>Sheet:</label>
                   <select value={selectedSheet} onChange={(e) => setSelectedSheet(e.target.value)}
-                    style={{ padding: '4px 8px', border: '1px solid var(--border)', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
+                    style={{ padding: '4px 8px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
                     {sheets.map((s) => <option key={s} value={s}>{s}</option>)}
                   </select>
                 </div>

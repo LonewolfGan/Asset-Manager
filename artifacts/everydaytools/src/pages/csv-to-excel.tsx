@@ -103,7 +103,7 @@ export default function CsvToExcel() {
         {status === 'done' && xlsxBlob && (
           <div style={{ marginTop: 16, padding: '14px 20px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)' }}>Excel file ready — {(xlsxBlob.size / 1024).toFixed(1)} KB</span>
-            <button onClick={download} style={{ padding: '8px 18px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer' }}>{t.common.download}</button>
+            <button onClick={download} style={{ padding: '8px 18px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius-md)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer' }}>{t.common.download}</button>
           </div>
         )}
         <AdSlot type="horizontal" />

@@ -109,13 +109,13 @@ export default function ProgressBar({ progress, label }: ProgressBarProps) {
           aria-valuemin={0}
           aria-valuemax={100}
           aria-hidden="true"
-          style={{ width: "100%", maxWidth: 260, height: 3, background: "var(--bg-hover)", borderRadius: 2 }}
+          style={{ width: "100%", maxWidth: 260, height: 3, background: "var(--bg-hover)", borderRadius: 'var(--radius-sm)' }}
         >
           <div style={{
             height: "100%",
             width: `${pct}%`,
             background: "var(--accent)",
-            borderRadius: 2,
+            borderRadius: 'var(--radius-sm)',
             transition: "width 100ms linear",
           }} />
         </div>
@@ -123,12 +123,12 @@ export default function ProgressBar({ progress, label }: ProgressBarProps) {
 
       {/* Indeterminate shimmer bar */}
       {indeterminate && (
-        <div style={{ width: "100%", maxWidth: 260, height: 3, background: "var(--bg-hover)", borderRadius: 2, overflow: "hidden" }}>
+        <div style={{ width: "100%", maxWidth: 260, height: 3, background: "var(--bg-hover)", borderRadius: 'var(--radius-sm)', overflow: "hidden" }}>
           <div style={{
             height: "100%",
             width: "40%",
             background: "var(--accent)",
-            borderRadius: 2,
+            borderRadius: 'var(--radius-sm)',
             animation: "et-shimmer 1.4s ease-in-out infinite",
           }} />
         </div>

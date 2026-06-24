@@ -152,7 +152,7 @@ export default function UnitConverter() {
                 <button
                   onClick={copyResult}
                   aria-label="Copy result"
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '5px 12px', background: 'none', border: '1px solid var(--border)', borderRadius: 10, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: copied ? 'var(--accent)' : 'var(--text-secondary)', cursor: 'pointer', flexShrink: 0, transition: 'border-color 150ms, color 150ms' }}
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '5px 12px', background: 'none', border: '1px solid var(--border)', borderRadius: 'var(--radius-card)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: copied ? 'var(--accent)' : 'var(--text-secondary)', cursor: 'pointer', flexShrink: 0, transition: 'border-color 150ms, color 150ms' }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; (e.currentTarget as HTMLElement).style.color = 'var(--accent)'; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLElement).style.color = copied ? 'var(--accent)' : 'var(--text-secondary)'; }}
                 >

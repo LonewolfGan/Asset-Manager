@@ -126,10 +126,10 @@ export default function PasswordGenerator() {
           <span style={{ fontSize: 'var(--text-sm)', fontWeight: 500, color: strengthColor }}>{strengthLabel}</span>
           <span style={{ fontSize: 'var(--text-sm)', color: 'var(--text-tertiary)' }}>({Math.round(entropy)} bits)</span>
         </div>
-        <div style={{ height: 4, background: 'var(--border)', borderRadius: 2, marginBottom: 24 }}>
+        <div style={{ height: 4, background: 'var(--border)', borderRadius: 'var(--radius-sm)', marginBottom: 24 }}>
           <div style={{
             height: '100%',
-            borderRadius: 2,
+            borderRadius: 'var(--radius-sm)',
             background: strengthColor,
             width: `${Math.min(100, (entropy / 128) * 100)}%`,
             transition: 'width 0.3s ease, background 0.3s ease',
@@ -153,7 +153,7 @@ export default function PasswordGenerator() {
             ] as const).map(({ checked, onChange, label, disabled }) => (
               <label
                 key={label}
-                style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 'var(--text-sm)', cursor: disabled ? 'not-allowed' : 'pointer', color: disabled ? 'var(--text-tertiary)' : 'var(--text-primary)', fontFamily: 'var(--font-ui)', padding: '10px 12px', borderRadius: 8, transition: 'background 120ms ease' }}
+                style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 'var(--text-sm)', cursor: disabled ? 'not-allowed' : 'pointer', color: disabled ? 'var(--text-tertiary)' : 'var(--text-primary)', fontFamily: 'var(--font-ui)', padding: '10px 12px', borderRadius: 'var(--radius-md)', transition: 'background 120ms ease' }}
                 onMouseEnter={e => { if (!disabled) (e.currentTarget as HTMLElement).style.background = 'var(--bg-elevated)'; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
               >
@@ -162,7 +162,7 @@ export default function PasswordGenerator() {
               </label>
             ))}
             <label
-              style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 'var(--text-sm)', cursor: 'pointer', gridColumn: '1 / -1', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', padding: '10px 12px', borderRadius: 8, transition: 'background 120ms ease' }}
+              style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 'var(--text-sm)', cursor: 'pointer', gridColumn: '1 / -1', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', padding: '10px 12px', borderRadius: 'var(--radius-md)', transition: 'background 120ms ease' }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-elevated)'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
             >
