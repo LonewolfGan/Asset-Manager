@@ -1,0 +1,114 @@
+MIGRATION COMPLÈTE VERS UN TRAITEMENT BACKEND — TOUS LES 86 OUTILS
+
+Contexte : actuellement plusieurs outils (dont "Compress Image") tournent 
+en traitement côté client (navigateur), ce qui donne des résultats de 
+mauvaise qualité voire contre-productifs — exemple concret : l'outil de 
+compression d'image AUGMENTE la taille du fichier au lieu de la réduire 
+(94.2 KB → 213.1 KB), probablement parce que le réencodage via Canvas API 
+ne gère pas bien la transparence/le choix de format.
+
+Objectif : migrer TOUS les 86 outils vers un traitement backend, en 
+choisissant la meilleure librairie/langage pour CHAQUE tâche (pas 
+forcément tout en Node.js) — l'objectif est la meilleure qualité de 
+résultat possible, au niveau ou au-dessus de la concurrence (TinyPNG, 
+Squoosh, iLovePDF, Smallpdf), pas de se limiter à ce qui est pratique.
+
+PHASE 1 — AUDIT ET PLAN (à faire avant tout code)
+
+1. Liste les 86 outils et classe-les par catégorie de traitement : 
+   image, PDF, document, données/texte, calculateur, autre.
+
+2. Pour chaque catégorie, recommande la meilleure stack technique 
+   disponible, avec justification :
+   - Images (compress, resize, convert format, remove background, etc.) 
+     → évalue sharp (Node), libvips, ou Pillow (Python) selon la tâche
+   - PDF (merge, split, compress, convert, OCR) → évalue pdf-lib, 
+     pdfkit, ghostscript, ou des libs Python (PyPDF, pikepdf) selon le 
+     besoin
+   - OCR → Tesseract ou équivalent
+   - Conversion de documents (Word, Excel, PowerPoint) → LibreOffice 
+     headless, ou libs dédiées
+   - Données/texte (CSV, JSON, formatters) → peuvent rester légers, 
+     mais migre quand même vers le backend pour cohérence et sécurité
+   - Calculateurs simples → backend léger aussi, même si le calcul est 
+     trivial, pour garder une architecture uniforme
+
+3. Donne-moi ce plan avant de commencer le code, avec une liste claire 
+   : outil → langage/librairie recommandée → justification (qualité, 
+   performance, fiabilité).
+
+PHASE 2 — INFRASTRUCTURE BACKEND
+
+1. Mets en place l'architecture serveur nécessaire pour supporter 
+   plusieurs langages si besoin (ex: microservices ou endpoints séparés 
+   par technologie), ou un seul backend avec des bindings/sous-processus 
+   vers les bons outils (ex: Node.js qui appelle Python/Sharp/Ghostscript 
+   en sous-processus si nécessaire).
+
+2. Gestion des fichiers uploadés :
+   - Stockage temporaire sécurisé (dossier dédié, pas dans le répertoire 
+     public)
+   - Nettoyage automatique après traitement (les fichiers ne doivent 
+     JAMAIS rester sur le serveur après que l'utilisateur a téléchargé 
+     son résultat, ou après un délai max ex: 1h si pas téléchargé)
+   - Validation stricte du type de fichier (vérifier le contenu réel du 
+     fichier, pas juste l'extension, pour éviter qu'un fichier malveillant 
+     soit traité comme un type différent)
+   - Limite de taille de fichier raisonnable par outil, avec message 
+     d'erreur clair si dépassée
+
+3. Sécurité :
+   - Sanitize tous les noms de fichiers (éviter path traversal, 
+     injection de commande si on appelle des sous-processus comme 
+     ghostscript ou imagemagick)
+   - Rate limiting sur les endpoints de traitement pour éviter l'abus
+   - Timeout sur chaque traitement pour éviter qu'un fichier malformé 
+     bloque le serveur indéfiniment
+
+4. Performance :
+   - Traitement asynchrone avec file d'attente si plusieurs traitements 
+     lourds sont lancés en même temps (éviter de saturer le serveur)
+   - Possibilité de paralléliser si l'infra le permet
+
+PHASE 3 — MIGRATION OUTIL PAR OUTIL
+
+Une fois l'infrastructure prête, migre les outils un par un (pas tous en 
+même temps), en commençant par les outils d'image (le bug actuel est là) 
+puis PDF puis le reste. Pour chaque outil migré :
+
+1. Implémente le traitement backend avec la librairie identifiée en 
+   Phase 1
+2. Teste avec plusieurs cas : fichier normal, fichier avec transparence 
+   (PNG), fichier déjà très compressé (vérifier qu'on ne dégrade pas 
+   inutilement), fichier limite (très gros, très petit, corrompu)
+3. Vérifie que le résultat est RÉELLEMENT meilleur que l'ancien système 
+   client : pour la compression d'image par exemple, le fichier de sortie 
+   doit être SYSTÉMATIQUEMENT plus petit que l'original (sauf cas 
+   extrême où l'original est déjà optimal — dans ce cas, garder 
+   l'original et le signaler à l'utilisateur plutôt que produire un 
+   fichier plus gros)
+4. Branche le composant <ToolLoadingState> existant (progress bar + 
+   messages d'étape) sur l'appel backend, en adaptant les étapes au 
+   traitement réel (ex: "Upload en cours...", "Traitement serveur...", 
+   "Préparation du téléchargement...")
+5. Supprime l'ancien code de traitement client une fois le backend 
+   validé pour cet outil — ne laisse pas les deux systèmes coexister.
+
+PHASE 4 — VALIDATION FINALE
+
+Pour CHAQUE outil migré, fournis-moi :
+- Le résultat avant/après sur un fichier de test identique (taille, 
+  qualité)
+- Confirmation que le résultat est meilleur ou égal à ce qu'on obtiendrait 
+  sur un outil concurrent de référence pour ce type de tâche
+- Le statut : migré et validé / en cours / bloquant rencontré
+
+PRIORITÉ IMMÉDIATE
+
+Commence par corriger l'outil "Compress Image" en urgence avec un vrai 
+backend de compression (sharp avec mozjpeg/pngquant, ou équivalent), 
+puisque c'est le bug le plus visible actuellement — le fichier compressé 
+doit être plus petit que l'original, point final. Une fois cet outil 
+validé, utilise-le comme modèle de référence pour la migration des autres 
+outils d'image, puis enchaîne sur les PDF et le reste selon le plan de 
+Phase 1.

@@ -37,35 +37,26 @@ export default function FaviconGenerator() {
     trackToolUsed('favicon-generator', 'images');
     if (!file) return;
     setStatus('processing');
-    const img = new Image();
-    const url = URL.createObjectURL(file);
-    img.src = url;
-    await new Promise<void>((res) => { img.onload = () => res(); });
-
-    const JSZip = (await import('jszip')).default;
-    const zip = new JSZip();
-
-    for (const size of SIZES) {
-      const blob = await generateFavicon(img, size);
-      const label = size === 180 ? 'apple-touch-icon' : size === 192 ? 'android-chrome-192' : `favicon-${size}x${size}`;
-      zip.file(`${label}.png`, blob);
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await fetch('/api/tools/favicon-generate', { method: 'POST', body: fd });
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Generation failed');
+      }
+      const zipBlob = await res.blob();
+      const dlUrl = URL.createObjectURL(zipBlob);
+      const a = document.createElement('a');
+      a.href = dlUrl;
+      a.download = 'favicons.zip';
+      a.click();
+      URL.revokeObjectURL(dlUrl);
+      setStatus('done');
+    } catch (e) {
+      alert(e instanceof Error ? e.message : 'Generation failed');
+      setStatus('idle');
     }
-
-    // ICO (16x16 as PNG inside .ico wrapper — simplified)
-    const ico16 = await generateFavicon(img, 16);
-    const ico32 = await generateFavicon(img, 32);
-    zip.file('favicon-16.png', ico16);
-    zip.file('favicon-32.png', ico32);
-
-    const zipBlob = await zip.generateAsync({ type: 'blob' });
-    URL.revokeObjectURL(url);
-    const dlUrl = URL.createObjectURL(zipBlob);
-    const a = document.createElement('a');
-    a.href = dlUrl;
-    a.download = 'favicons.zip';
-    a.click();
-    URL.revokeObjectURL(dlUrl);
-    setStatus('done');
   };
 
   return (

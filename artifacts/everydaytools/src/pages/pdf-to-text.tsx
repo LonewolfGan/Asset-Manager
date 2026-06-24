@@ -26,23 +26,18 @@ export default function PdfToText() {
 
     try {
       trackToolUsed('pdf-to-text', 'pdf');
-      const pdfjsLib = await import('pdfjs-dist');
-      pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.mjs', import.meta.url).href;
-
       const file = files[0];
-      const arrayBuffer = await file.arrayBuffer();
-      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-      const numPages = pdf.numPages;
-      let fullText = '';
-
-      for (let i = 1; i <= numPages; i++) {
-        const page = await pdf.getPage(i);
-        const textContent = await page.getTextContent();
-        const pageText = textContent.items.map((item: any) => item.str).join(' ');
-        fullText += pageText + '\n\n';
-        setProgress(Math.round((i / numPages) * 100));
+      setProgress(30);
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await fetch('/api/convert/pdf-to-text', { method: 'POST', body: fd });
+      setProgress(80);
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Conversion failed');
       }
-
+      const fullText = await res.text();
+      setProgress(100);
       const blob = new Blob([fullText], { type: 'text/plain;charset=utf-8' });
       setResult({
         blob,

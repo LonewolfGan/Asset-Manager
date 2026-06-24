@@ -119,25 +119,34 @@ export default function ImageCrop() {
   const handleCrop = async () => {
     trackToolUsed('image-crop', 'images');
     if (!imgObj || !cropRect || !files[0]) return;
-    
+
     const canvas = canvasRef.current!;
     const scale = imgObj.width / canvas.width;
-    
-    const sx = cropRect.x * scale;
-    const sy = cropRect.y * scale;
-    const sw = cropRect.w * scale;
-    const sh = cropRect.h * scale;
 
-    if (sw === 0 || sh === 0) return;
+    const left = Math.round(cropRect.x * scale);
+    const top = Math.round(cropRect.y * scale);
+    const width = Math.round(cropRect.w * scale);
+    const height = Math.round(cropRect.h * scale);
 
-    const outCanvas = document.createElement('canvas');
-    outCanvas.width = sw;
-    outCanvas.height = sh;
-    const ctx = outCanvas.getContext('2d')!;
-    ctx.drawImage(imgObj, sx, sy, sw, sh, 0, 0, sw, sh);
+    if (width === 0 || height === 0) return;
 
-    const blob = await new Promise<Blob>((res) => outCanvas.toBlob(b => res(b!), files[0].type, 1));
-    setResult({ blob, filename: files[0].name.replace(/\.(png|jpe?g|webp)$/i, '_cropped.$1'), sizeAfter: blob.size, sizeBefore: files[0].size });
+    try {
+      const fd = new FormData();
+      fd.append('file', files[0]);
+      fd.append('left', String(left));
+      fd.append('top', String(top));
+      fd.append('width', String(width));
+      fd.append('height', String(height));
+      const res = await fetch('/api/tools/image-crop', { method: 'POST', body: fd });
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Crop failed');
+      }
+      const blob = await res.blob();
+      setResult({ blob, filename: files[0].name.replace(/\.(png|jpe?g|webp)$/i, '_cropped.$1'), sizeAfter: blob.size, sizeBefore: files[0].size });
+    } catch (e) {
+      alert(e instanceof Error ? e.message : 'Crop failed');
+    }
   };
 
   return (

@@ -61,19 +61,32 @@ export default function WatermarkImage() {
     img.src = URL.createObjectURL(f);
   };
 
-  const download = () => {
+  const download = async () => {
     trackToolUsed('watermark-image', 'images');
-    const canvas = canvasRef.current;
-    if (!canvas || !file) return;
-    canvas.toBlob((blob) => {
-      if (!blob) return;
+    if (!file) return;
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('text', text);
+      fd.append('fontSize', String(fontSize));
+      fd.append('opacity', String(opacity / 100));
+      fd.append('position', position);
+      fd.append('color', color);
+      const res = await fetch('/api/tools/watermark-image', { method: 'POST', body: fd });
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Processing failed');
+      }
+      const blob = await res.blob();
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
       a.download = file.name.replace(/\.[^.]+$/, '_watermarked.png');
       a.click();
       URL.revokeObjectURL(url);
-    }, 'image/png', 0.95);
+    } catch (e) {
+      alert(e instanceof Error ? e.message : 'Download failed');
+    }
   };
 
   const POSITIONS: { id: Position; label: string }[] = [

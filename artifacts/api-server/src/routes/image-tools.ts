@@ -298,6 +298,7 @@ router.post("/tools/watermark-image", upload.single("file"), guardImage, async (
     const text = String(req.body.text ?? "Watermark").slice(0, 100);
     const opacity = Math.min(1, Math.max(0, parseFloat(String(req.body.opacity ?? "0.5"))));
     const position = String(req.body.position ?? "center");
+    const colorHex = String(req.body.color ?? "#ffffff").replace(/[^#0-9a-fA-F]/g, "").slice(0, 7);
 
     const meta = await sharp(input).metadata();
     const imgW = meta.width ?? 800;
@@ -318,8 +319,8 @@ router.post("/tools/watermark-image", upload.single("file"), guardImage, async (
       `<svg xmlns="http://www.w3.org/2000/svg" width="${svgW}" height="${svgH}">` +
         `<text x="50%" y="55%" text-anchor="middle" dominant-baseline="middle"` +
         ` font-family="Arial,sans-serif" font-size="${fontSize}"` +
-        ` fill="white" fill-opacity="${opacity}"` +
-        ` stroke="black" stroke-width="1" stroke-opacity="${opacity * 0.4}">` +
+        ` fill="${colorHex || "#ffffff"}" fill-opacity="${opacity}"` +
+        ` stroke="rgba(0,0,0,0.3)" stroke-width="1" stroke-opacity="${opacity * 0.4}">` +
         safeText +
         `</text></svg>`,
     );

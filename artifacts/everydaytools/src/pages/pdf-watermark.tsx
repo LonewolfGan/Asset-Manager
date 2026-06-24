@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
-import { PDFDocument, StandardFonts, rgb, degrees } from 'pdf-lib';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import ToolPageLayout from '@/components/ToolPageLayout';
@@ -24,49 +23,26 @@ export default function PdfWatermark() {
   const [opacity, setOpacity] = useState(0.3);
   const [colorStr, setColorStr] = useState("gray");
 
-  const getColor = () => {
-    switch (colorStr) {
-      case 'red': return rgb(1, 0, 0);
-      case 'blue': return rgb(0, 0, 1);
-      case 'black': return rgb(0, 0, 0);
-      default: return rgb(0.5, 0.5, 0.5); // gray
-    }
-  };
-
   const handleConvert = async () => {
     if (!files[0] || !text) return;
     setError(null); setIsProcessing(true); setProgress(0);
     try {
       trackToolUsed('pdf-watermark', 'pdf');
       const file = files[0];
-      const arrayBuffer = await file.arrayBuffer();
-      const pdfDoc = await PDFDocument.load(arrayBuffer);
-      const helveticaFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-
-      const pages = pdfDoc.getPages();
-      const color = getColor();
-
-      for (let i = 0; i < pages.length; i++) {
-        const page = pages[i];
-        const { width, height } = page.getSize();
-        const textWidth = helveticaFont.widthOfTextAtSize(text, fontSize);
-
-        page.drawText(text, {
-          x: width / 2 - textWidth / 2,
-          y: height / 2,
-          size: fontSize,
-          font: helveticaFont,
-          color: color,
-          opacity: opacity,
-          rotate: degrees(45),
-        });
-        setProgress(Math.round(((i + 1) / pages.length) * 50));
+      setProgress(30);
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('text', text);
+      fd.append('opacity', String(opacity));
+      fd.append('color', colorStr);
+      const res = await fetch('/api/tools/pdf-watermark', { method: 'POST', body: fd });
+      setProgress(80);
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Processing failed');
       }
-
-      const pdfBytes = await pdfDoc.save();
+      const blob = await res.blob();
       setProgress(100);
-
-      const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
       setResult({ blob, filename: file.name.replace(/\.pdf$/i, '_watermarked.pdf'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
       trackToolError('pdf-watermark', 'general-error');

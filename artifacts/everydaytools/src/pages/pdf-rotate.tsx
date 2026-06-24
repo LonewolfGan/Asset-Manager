@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
-import { PDFDocument, degrees } from 'pdf-lib';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import ToolPageLayout from '@/components/ToolPageLayout';
@@ -26,21 +25,18 @@ export default function PdfRotate() {
     try {
       trackToolUsed('pdf-rotate', 'pdf');
       const file = files[0];
-      const arrayBuffer = await file.arrayBuffer();
-      const pdfDoc = await PDFDocument.load(arrayBuffer);
-      const pages = pdfDoc.getPages();
-
-      for (let i = 0; i < pages.length; i++) {
-        const page = pages[i];
-        const currentRotation = page.getRotation().angle;
-        page.setRotation(degrees(currentRotation + rotation));
-        setProgress(Math.round(((i + 1) / pages.length) * 50));
+      setProgress(30);
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('rotation', String(rotation));
+      const res = await fetch('/api/tools/pdf-rotate', { method: 'POST', body: fd });
+      setProgress(80);
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Rotation failed');
       }
-
-      const pdfBytes = await pdfDoc.save();
+      const blob = await res.blob();
       setProgress(100);
-
-      const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
       setResult({ blob, filename: file.name.replace(/\.pdf$/i, '_rotated.pdf'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
       trackToolError('pdf-rotate', 'general-error');

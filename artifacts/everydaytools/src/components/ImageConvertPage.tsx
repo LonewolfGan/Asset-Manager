@@ -169,6 +169,34 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
     });
   };
 
+  const processFileBackend = async (entry: FileResult): Promise<Blob> => {
+    const fd = new FormData();
+    fd.append('file', entry.file);
+
+    if (toMime === 'application/pdf') {
+      const res = await fetch('/api/convert/image-to-pdf', { method: 'POST', body: fd });
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Conversion failed');
+      }
+      return res.blob();
+    }
+
+    fd.append('format', toMime);
+    fd.append('quality', (quality / 100).toString());
+    const res = await fetch('/api/convert/image', { method: 'POST', body: fd });
+
+    if (!res.ok) {
+      const errData = await res.json() as { error?: string; clientFallback?: boolean };
+      if (errData.clientFallback) {
+        const canvas = await fileToCanvas(entry.file);
+        return canvasToBlob(canvas, toMime, quality / 100);
+      }
+      throw new Error(errData.error ?? 'Conversion failed');
+    }
+    return res.blob();
+  };
+
   const processAll = async () => {
     setIsProcessing(true);
     const updated = [...files];
@@ -177,8 +205,13 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
       updated[i] = { ...updated[i], status: 'processing' };
       setFiles([...updated]);
       try {
-        const canvas = await fileToCanvas(updated[i].file);
-        const blob = await canvasToBlob(canvas, toMime, quality / 100);
+        let blob: Blob;
+        if (toMime === 'image/svg+xml') {
+          const canvas = await fileToCanvas(updated[i].file);
+          blob = await canvasToBlob(canvas, toMime, quality / 100);
+        } else {
+          blob = await processFileBackend(updated[i]);
+        }
         const compressedUrl = URL.createObjectURL(blob);
         updated[i] = { ...updated[i], status: 'done', blob, compressedUrl };
         trackToolUsed(slug, 'images');
@@ -219,8 +252,13 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
     if (!entry) return;
     setFiles((prev) => prev.map((f) => f.id === id ? { ...f, status: 'processing', error: undefined } : f));
     try {
-      const canvas = await fileToCanvas(entry.file);
-      const blob = await canvasToBlob(canvas, toMime, quality / 100);
+      let blob: Blob;
+      if (toMime === 'image/svg+xml') {
+        const canvas = await fileToCanvas(entry.file);
+        blob = await canvasToBlob(canvas, toMime, quality / 100);
+      } else {
+        blob = await processFileBackend(entry);
+      }
       const compressedUrl = URL.createObjectURL(blob);
       setFiles((prev) => prev.map((f) => f.id === id ? { ...f, status: 'done', blob, compressedUrl } : f));
       trackToolUsed(slug, 'images');

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
-import mammoth from 'mammoth';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { sanitizeHTML } from '@/utils/sanitize';
@@ -26,14 +25,17 @@ export default function WordToHtml() {
     trackToolUsed('word-to-html', 'documents');
     try {
       const file = files[0];
-      const arrayBuffer = await file.arrayBuffer();
-      setProgress(50);
-
-      const { value: htmlBody } = await mammoth.convertToHtml({ arrayBuffer });
+      setProgress(30);
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await fetch('/api/convert/docx-to-html', { method: 'POST', body: fd });
+      setProgress(80);
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Conversion failed');
+      }
+      const html = await res.text();
       setProgress(100);
-
-      const html = `<!DOCTYPE html>\n<html>\n<head>\n<meta charset="utf-8">\n<title>${file.name}</title>\n<style>body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 2em; line-height: 1.6; }</style>\n</head>\n<body>\n${htmlBody}\n</body>\n</html>`;
-
       const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
       setResult({ blob, filename: file.name.replace(/\.docx?$/i, '.html'), sizeAfter: blob.size, sizeBefore: file.size, textOutput: html });
     } catch (e) {

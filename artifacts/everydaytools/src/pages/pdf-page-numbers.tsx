@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
-import { PDFDocument, StandardFonts } from 'pdf-lib';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import ToolPageLayout from '@/components/ToolPageLayout';
@@ -29,35 +28,19 @@ export default function PdfPageNumbers() {
     try {
       trackToolUsed('pdf-page-numbers', 'pdf');
       const file = files[0];
-      const arrayBuffer = await file.arrayBuffer();
-      const pdfDoc = await PDFDocument.load(arrayBuffer);
-      const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
-
-      const pages = pdfDoc.getPages();
-
-      for (let i = 0; i < pages.length; i++) {
-        const page = pages[i];
-        const { width, height } = page.getSize();
-        const text = String(startNum + i);
-        const textWidth = helveticaFont.widthOfTextAtSize(text, fontSize);
-
-        let x = width / 2 - textWidth / 2; // center
-        if (position === 'left') x = 30;
-        if (position === 'right') x = width - 30 - textWidth;
-
-        page.drawText(text, {
-          x,
-          y: 30, // near bottom
-          size: fontSize,
-          font: helveticaFont,
-        });
-        setProgress(Math.round(((i + 1) / pages.length) * 50));
+      setProgress(30);
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('position', `bottom-${position}`);
+      fd.append('startFrom', String(startNum));
+      const res = await fetch('/api/tools/pdf-page-numbers', { method: 'POST', body: fd });
+      setProgress(80);
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Processing failed');
       }
-
-      const pdfBytes = await pdfDoc.save();
+      const blob = await res.blob();
       setProgress(100);
-
-      const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
       setResult({ blob, filename: file.name.replace(/\.pdf$/i, '_numbered.pdf'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
       trackToolError('pdf-page-numbers', 'general-error');

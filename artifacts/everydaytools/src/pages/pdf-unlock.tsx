@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
-import { PDFDocument } from 'pdf-lib';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import ToolPageLayout from '@/components/ToolPageLayout';
@@ -25,32 +24,17 @@ export default function PdfUnlock() {
     try {
       trackToolUsed('pdf-unlock', 'pdf');
       const file = files[0];
-      const arrayBuffer = await file.arrayBuffer();
-
-      let pdfDoc;
-      try {
-        pdfDoc = await PDFDocument.load(arrayBuffer);
-      } catch (err: any) {
-        // Fallback for some basic empty passwords
-        if (err.message && err.message.includes('password')) {
-           try {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              pdfDoc = await PDFDocument.load(arrayBuffer, { password: '' } as any);
-           } catch (e2) {
-              throw new Error("This PDF requires a User Password to open. We can only remove Owner Passwords (print/copy restrictions).");
-           }
-        } else {
-           throw err;
-        }
+      setProgress(30);
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await fetch('/api/tools/pdf-unlock', { method: 'POST', body: fd });
+      setProgress(80);
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Unlock failed');
       }
-
-      setProgress(50);
-
-      // Saving without password arguments strips the encryption (owner password restrictions)
-      const pdfBytes = await pdfDoc.save();
+      const blob = await res.blob();
       setProgress(100);
-
-      const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
       setResult({ blob, filename: file.name.replace(/\.pdf$/i, '_unlocked.pdf'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
       trackToolError('pdf-unlock', 'general-error');

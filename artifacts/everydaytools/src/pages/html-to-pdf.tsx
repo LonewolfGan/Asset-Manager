@@ -1,11 +1,8 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
-import { PDFDocument } from 'pdf-lib';
-import { toCanvas } from 'html-to-image';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
-import { sanitizeHTML } from '@/utils/sanitize';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import {
   ToolWorkspace, ToolCard, ToolButton, ToolBadge,
@@ -30,63 +27,33 @@ export default function HtmlToPdf() {
 
     setError(null); setIsProcessing(true); setProgress(0);
     try {
-      let htmlContent = "";
+      setProgress(20);
+      let res: Response;
       let filename = "webpage.pdf";
       let sizeBefore = 0;
 
       if (mode === 'upload') {
-        htmlContent = await files[0].text();
         filename = files[0].name.replace(/\.html?$/i, '.pdf');
         sizeBefore = files[0].size;
+        const fd = new FormData();
+        fd.append('file', files[0]);
+        res = await fetch('/api/tools/html-to-pdf', { method: 'POST', body: fd });
       } else {
-        htmlContent = htmlInput;
         sizeBefore = htmlInput.length;
+        res = await fetch('/api/tools/html-to-pdf', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ html: htmlInput }),
+        });
       }
 
-      setProgress(20);
-
-      // Create hidden div
-      const container = document.createElement('div');
-      container.innerHTML = sanitizeHTML(htmlContent);
-      Object.assign(container.style, {
-        position: 'absolute',
-        left: '-9999px',
-        top: '0',
-        width: '800px', // A4 width approx
-        background: 'white',
-        color: 'black',
-        padding: '20px'
-      });
-      document.body.appendChild(container);
-
-      setProgress(40);
-
-      // Render to canvas
-      const canvas = await toCanvas(container, { backgroundColor: '#ffffff' });
-      document.body.removeChild(container);
-      setProgress(60);
-
-      // Compress canvas to jpeg for PDF embedding
-      const imgData = canvas.toDataURL('image/jpeg', 0.95);
-
-      const pdfDoc = await PDFDocument.create();
-      const img = await pdfDoc.embedJpg(imgData);
-
-      // Calculate page dimensions (maintain aspect ratio)
-      const a4Width = 595.28;
-      const imgWidth = img.width;
-      const imgHeight = img.height;
-      const ratio = imgWidth / a4Width;
-      const a4Height = imgHeight / ratio;
-
-      const page = pdfDoc.addPage([a4Width, a4Height]);
-      page.drawImage(img, { x: 0, y: 0, width: a4Width, height: a4Height });
-
       setProgress(80);
-      const pdfBytes = await pdfDoc.save();
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Conversion failed');
+      }
+      const blob = await res.blob();
       setProgress(100);
-
-      const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
       setResult({ blob, filename, sizeAfter: blob.size, sizeBefore });
       trackToolUsed('html-to-pdf', 'documents');
     } catch (e) {

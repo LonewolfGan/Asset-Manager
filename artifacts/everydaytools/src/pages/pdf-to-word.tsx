@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
-import { Document, Packer, Paragraph, TextRun } from 'docx';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import ToolPageLayout from '@/components/ToolPageLayout';
@@ -25,38 +24,17 @@ export default function PdfToWord() {
     try {
       trackToolUsed('pdf-to-word', 'documents');
       const file = files[0];
-      const pdfjsLib = await import('pdfjs-dist');
-      pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.mjs', import.meta.url).href;
-
-      const arrayBuffer = await file.arrayBuffer();
-      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-      const numPages = pdf.numPages;
-      const paragraphs: Paragraph[] = [];
-
-      for (let i = 1; i <= numPages; i++) {
-        const page = await pdf.getPage(i);
-        const textContent = await page.getTextContent();
-
-        // Group items into lines based on Y coordinate approx
-        const items = textContent.items as any[];
-        if (items.length > 0) {
-            // simple paragraph creation
-            const text = items.map(item => item.str).join(' ');
-            if (text.trim()) {
-                paragraphs.push(new Paragraph({
-                    children: [new TextRun(text)],
-                }));
-            }
-        }
-        setProgress(Math.round((i / numPages) * 100));
+      setProgress(30);
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await fetch('/api/convert/pdf-to-word', { method: 'POST', body: fd });
+      setProgress(80);
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Conversion failed');
       }
-
-      const doc = new Document({
-        sections: [{ properties: {}, children: paragraphs }],
-      });
-
-      const blob = await Packer.toBlob(doc);
-
+      const blob = await res.blob();
+      setProgress(100);
       setResult({ blob, filename: file.name.replace(/\.pdf$/i, '.docx'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
       trackToolError('pdf-to-word', 'general-error');

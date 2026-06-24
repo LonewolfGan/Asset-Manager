@@ -23,67 +23,16 @@ export default function PptxToPdf() {
   const convert = async (f: File) => {
     setFile(f); setStatus('processing'); setProgress(10); setPdfBlob(null);
     try {
-      const PptxGenJS = (await import('pptxgenjs')).default;
-      setProgress(20);
-
-      const buf = await f.arrayBuffer();
-      const zip = await import('jszip');
-      const JSZip = zip.default;
-      const pptxZip = await JSZip.loadAsync(buf);
-      setProgress(35);
-
-      const slideFiles = Object.keys(pptxZip.files)
-        .filter((name) => name.match(/^ppt\/slides\/slide\d+\.xml$/))
-        .sort((a, b) => {
-          const na = parseInt(a.match(/\d+/)?.[0] ?? '0');
-          const nb = parseInt(b.match(/\d+/)?.[0] ?? '0');
-          return na - nb;
-        });
-
-      const jsPDF = (await import('jspdf')).jsPDF;
-      const pdf = new jsPDF({ orientation: 'landscape', unit: 'pt', format: [960, 540] });
-      setProgress(50);
-
-      const parser = new DOMParser();
-
-      for (let i = 0; i < slideFiles.length; i++) {
-        const xmlStr = await pptxZip.files[slideFiles[i]].async('string');
-        const doc = parser.parseFromString(xmlStr, 'application/xml');
-        const textEls = doc.querySelectorAll('t');
-        const texts = Array.from(textEls).map((el) => el.textContent?.trim()).filter(Boolean);
-
-        if (i > 0) pdf.addPage([960, 540], 'landscape');
-
-        pdf.setFillColor(248, 248, 248);
-        pdf.rect(0, 0, 960, 540, 'F');
-        pdf.setTextColor(30, 30, 30);
-        pdf.setFont('Helvetica', 'bold');
-        pdf.setFontSize(22);
-
-        let y = 60;
-        if (texts.length > 0) {
-          pdf.text(`Slide ${i + 1}: ${texts[0]}`, 40, y);
-          y += 40;
-        } else {
-          pdf.text(`Slide ${i + 1}`, 40, y);
-          y += 40;
-        }
-
-        pdf.setFont('Helvetica', 'normal');
-        pdf.setFontSize(14);
-        for (let ti = 1; ti < texts.length && y < 500; ti++) {
-          const lines = pdf.splitTextToSize(texts[ti]!, 880);
-          for (const line of lines) {
-            if (y > 500) break;
-            pdf.text(line, 40, y);
-            y += 20;
-          }
-        }
-
-        setProgress(50 + Math.round(((i + 1) / slideFiles.length) * 40));
+      setProgress(30);
+      const fd = new FormData();
+      fd.append('file', f);
+      const res = await fetch('/api/tools/pptx-to-pdf', { method: 'POST', body: fd });
+      setProgress(80);
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Conversion failed');
       }
-
-      const blob = pdf.output('blob');
+      const blob = await res.blob();
       setPdfBlob(blob);
       setProgress(100);
       setStatus('done');

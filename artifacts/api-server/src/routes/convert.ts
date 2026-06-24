@@ -317,16 +317,16 @@ router.post(
 
       if (req.file.mimetype === "image/png") {
         imgBuf = req.file.buffer;
-        isPN = true;
+        isPNG = true;
       } else if (req.file.mimetype === "image/svg+xml") {
         // SVG → rasterise via sharp
         imgBuf = await sharp(req.file.buffer).png().toBuffer();
-        isPN = true;
+        isPNG = true;
       } else {
         imgBuf = await sharp(req.file.buffer).jpeg({ quality: 92 }).toBuffer();
       }
 
-      const img = isPN
+      const img = isPNG
         ? await pdfDoc.embedPng(imgBuf)
         : await pdfDoc.embedJpg(imgBuf);
 

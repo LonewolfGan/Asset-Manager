@@ -36,30 +36,29 @@ export default function FlipRotateImage() {
   const downloadResult = async () => {
     trackToolUsed('flip-rotate-image', 'images');
     if (!file) return;
-    const img = new Image();
-    const url = URL.createObjectURL(file);
-    img.src = url;
-    await new Promise<void>((res) => { img.onload = () => res(); });
-    const rad = (rotation * Math.PI) / 180;
-    const cos = Math.abs(Math.cos(rad)); const sin = Math.abs(Math.sin(rad));
-    const w = Math.round(img.width * cos + img.height * sin);
-    const h = Math.round(img.width * sin + img.height * cos);
-    const canvas = document.createElement('canvas');
-    canvas.width = w; canvas.height = h;
-    const ctx = canvas.getContext('2d')!;
-    ctx.translate(w / 2, h / 2);
-    ctx.rotate(rad);
-    ctx.scale(flipH ? -1 : 1, flipV ? -1 : 1);
-    ctx.drawImage(img, -img.width / 2, -img.height / 2);
-    URL.revokeObjectURL(url);
-    const ext = outputFormat === 'image/jpeg' ? 'jpg' : outputFormat === 'image/webp' ? 'webp' : 'png';
-    const blob = await new Promise<Blob>((res, rej) => canvas.toBlob((b) => b ? res(b) : rej(), outputFormat, 0.92));
-    const dlUrl = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = dlUrl;
-    a.download = file.name.replace(/\.[^.]+$/, `_edited.${ext}`);
-    a.click();
-    URL.revokeObjectURL(dlUrl);
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('rotation', String(rotation));
+      fd.append('flipH', String(flipH));
+      fd.append('flipV', String(flipV));
+      fd.append('outputFormat', outputFormat);
+      const res = await fetch('/api/tools/flip-rotate', { method: 'POST', body: fd });
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Processing failed');
+      }
+      const blob = await res.blob();
+      const ext = outputFormat === 'image/jpeg' ? 'jpg' : outputFormat === 'image/webp' ? 'webp' : 'png';
+      const dlUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = dlUrl;
+      a.download = file.name.replace(/\.[^.]+$/, `_edited.${ext}`);
+      a.click();
+      URL.revokeObjectURL(dlUrl);
+    } catch (e) {
+      alert(e instanceof Error ? e.message : 'Download failed');
+    }
   };
 
   return (
