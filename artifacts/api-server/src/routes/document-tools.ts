@@ -1,9 +1,10 @@
 import { Router, type Request, type Response } from "express";
 import mammoth from "mammoth";
 import { marked } from "marked";
-import { unzipSync } from "fflate";
+import { zipSync } from "fflate";
 import { upload } from "../middlewares/upload.js";
 import { htmlToPdfBuffer } from "../lib/html-to-pdf.js";
+import { convertWithLibreOffice, convertPptxToImages } from "../lib/libreoffice.js";
 
 const router = Router();
 
@@ -18,83 +19,187 @@ function sendPdf(res: Response, buf: Buffer, filename: string): void {
 
 // ─────────────────────────────────────────────────────────
 // POST /tools/word-to-pdf
+// LibreOffice headless — full fidelity (fonts, images, colours, tables).
+// Falls back to mammoth→pdfkit if LibreOffice fails.
 // ─────────────────────────────────────────────────────────
 router.post("/tools/word-to-pdf", upload.single("file"), async (req: Request, res: Response) => {
   if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
 
   const mime = req.file.mimetype;
   const isDocx = mime.includes("wordprocessingml") || mime.includes("msword") ||
-    req.file.originalname?.match(/\.docx?$/i);
+    /\.docx?$/i.test(req.file.originalname ?? "");
   if (!isDocx) { res.status(415).json({ error: "Please upload a .docx or .doc file" }); return; }
 
+  const baseName = (req.file.originalname ?? "document").replace(/\.(docx?|doc)$/i, "");
+
   try {
-    const result = await mammoth.convertToHtml({ buffer: req.file.buffer });
-    const pdfBuf = await htmlToPdfBuffer(result.value);
-    const baseName = (req.file.originalname ?? "document").replace(/\.(docx?|doc)$/i, "");
+    const ext = /\.docx$/i.test(req.file.originalname ?? "") ? "docx" : "doc";
+    const pdfBuf = await convertWithLibreOffice(req.file.buffer, ext, "pdf");
     sendPdf(res, pdfBuf, `${baseName}.pdf`);
-  } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Conversion failed" });
+  } catch (_loErr) {
+    // Fallback: mammoth → pdfkit (layout-lossy but always works)
+    try {
+      const result = await mammoth.convertToHtml({ buffer: req.file.buffer });
+      const pdfBuf = await htmlToPdfBuffer(result.value);
+      sendPdf(res, pdfBuf, `${baseName}.pdf`);
+    } catch (err) {
+      res.status(500).json({ error: err instanceof Error ? err.message : "Conversion failed" });
+    }
   }
 });
 
 // ─────────────────────────────────────────────────────────
 // POST /tools/excel-to-pdf
+// LibreOffice headless — preserves grid, merged cells, colours, charts.
+// Falls back to xlsx→pdfkit if LibreOffice fails.
 // ─────────────────────────────────────────────────────────
 router.post("/tools/excel-to-pdf", upload.single("file"), async (req: Request, res: Response) => {
   if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
 
+  const rawName = req.file.originalname ?? "spreadsheet";
+  const baseName = rawName.replace(/\.(xlsx?|xls|ods|csv)$/i, "");
+  const ext = rawName.split(".").pop()?.toLowerCase() ?? "xlsx";
+
   try {
-    const XLSX = await import("xlsx");
-    const wb = XLSX.read(req.file.buffer, { type: "buffer" });
+    const pdfBuf = await convertWithLibreOffice(req.file.buffer, ext, "pdf");
+    sendPdf(res, pdfBuf, `${baseName}.pdf`);
+  } catch (_loErr) {
+    // Fallback: xlsx → pdfkit (text-only grid)
+    try {
+      const XLSX = await import("xlsx");
+      const wb = XLSX.read(req.file.buffer, { type: "buffer" });
+      const sheetName = (req.body?.sheet as string | undefined) ?? wb.SheetNames[0];
+      const ws = wb.Sheets[sheetName];
+      const rows = XLSX.utils.sheet_to_json<string[]>(ws, { header: 1, defval: "" }) as string[][];
 
-    const sheetName = (req.body?.sheet as string | undefined) ?? wb.SheetNames[0];
-    if (!wb.SheetNames.includes(sheetName)) {
-      res.status(400).json({ error: `Sheet "${sheetName}" not found` });
-      return;
-    }
+      const PDFDocument = (await import("pdfkit")).default;
+      const chunks: Buffer[] = [];
+      const doc = new PDFDocument({ margin: 40, size: "A4", layout: "landscape" });
+      doc.on("data", (c: Buffer) => chunks.push(c));
 
-    const ws = wb.Sheets[sheetName];
-    const rows = XLSX.utils.sheet_to_json<string[]>(ws, { header: 1, defval: "" }) as string[][];
-
-    const PDFDocument = (await import("pdfkit")).default;
-    const chunks: Buffer[] = [];
-    const doc = new PDFDocument({ margin: 40, size: "A4", layout: "landscape", info: { Producer: "EverydayTools Hub" } });
-    doc.on("data", (c: Buffer) => chunks.push(c));
-
-    const pdfBuf = await new Promise<Buffer>((resolve, reject) => {
-      doc.on("end", () => resolve(Buffer.concat(chunks)));
-      doc.on("error", reject);
-
-      if (rows.length === 0) {
-        doc.fontSize(11).font("Helvetica").text("(empty sheet)");
+      const pdfBuf = await new Promise<Buffer>((resolve, reject) => {
+        doc.on("end", () => resolve(Buffer.concat(chunks)));
+        doc.on("error", reject);
+        rows.forEach((row, ri) => {
+          const text = (Array.isArray(row) ? row : []).slice(0, 20)
+            .map((c) => String(c ?? "").trim().slice(0, 40)).join("  |  ");
+          if (!text.trim()) return;
+          if (ri === 0) doc.fontSize(9).font("Helvetica-Bold").text(text, { lineGap: 2 });
+          else doc.fontSize(8).font("Helvetica").text(text, { lineGap: 1 });
+        });
         doc.end();
+      });
+
+      sendPdf(res, pdfBuf, `${baseName}.pdf`);
+    } catch (err) {
+      res.status(500).json({ error: err instanceof Error ? err.message : "Conversion failed" });
+    }
+  }
+});
+
+// ─────────────────────────────────────────────────────────
+// POST /tools/pptx-to-pdf
+// LibreOffice headless — full visual fidelity (images, transitions, fonts).
+// Falls back to pdfkit text-extraction if LibreOffice fails.
+// ─────────────────────────────────────────────────────────
+router.post("/tools/pptx-to-pdf", upload.single("file"), async (req: Request, res: Response) => {
+  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+
+  const baseName = (req.file.originalname ?? "presentation").replace(/\.pptx?$/i, "");
+
+  try {
+    const ext = /\.ppt$/i.test(req.file.originalname ?? "") ? "ppt" : "pptx";
+    const pdfBuf = await convertWithLibreOffice(req.file.buffer, ext, "pdf");
+    sendPdf(res, pdfBuf, `${baseName}.pdf`);
+  } catch (_loErr) {
+    // Fallback: XML text extraction → pdfkit
+    try {
+      const { unzipSync } = await import("fflate");
+      const zipEntries = unzipSync(new Uint8Array(req.file.buffer));
+      const slideKeys = Object.keys(zipEntries)
+        .filter((k) => /^ppt\/slides\/slide\d+\.xml$/.test(k))
+        .sort((a, b) => {
+          const n = (s: string) => parseInt(s.match(/\d+/)?.[0] ?? "0");
+          return n(a) - n(b);
+        });
+
+      const slides: Array<{ title: string; body: string[] }> = [];
+      for (const key of slideKeys) {
+        const xml = Buffer.from(zipEntries[key]).toString("utf-8");
+        const texts = [...xml.matchAll(/<a:t[^>]*>([\s\S]*?)<\/a:t>/gi)]
+          .map((m) => m[1].replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").trim())
+          .filter(Boolean);
+        slides.push({ title: texts[0] ?? `Slide ${slides.length + 1}`, body: texts.slice(1) });
+      }
+
+      if (slides.length === 0) {
+        res.status(422).json({ error: "No slides found. Make sure this is a valid .pptx file." });
         return;
       }
 
-      rows.forEach((row, rowIdx) => {
-        const isHeader = rowIdx === 0;
-        const rowText = (Array.isArray(row) ? row : [])
-          .slice(0, 20)
-          .map((c) => String(c ?? "").trim().slice(0, 40))
-          .join("   |   ");
+      const PDFDocument = (await import("pdfkit")).default;
+      const chunks: Buffer[] = [];
+      const doc = new PDFDocument({ margin: 60, size: "A4" });
+      doc.on("data", (c: Buffer) => chunks.push(c));
 
-        if (!rowText.trim()) return;
-
-        if (isHeader) {
-          doc.fontSize(9).font("Helvetica-Bold").text(rowText, { lineGap: 2 });
+      const pdfBuf = await new Promise<Buffer>((resolve, reject) => {
+        doc.on("end", () => resolve(Buffer.concat(chunks)));
+        doc.on("error", reject);
+        slides.forEach((slide, i) => {
+          if (i > 0) doc.addPage();
+          doc.fontSize(9).font("Helvetica").fillColor("#888888")
+            .text(`Slide ${i + 1} of ${slides.length}`, { align: "right" });
+          doc.fillColor("#000000").moveDown(0.3);
+          doc.fontSize(20).font("Helvetica-Bold").text(slide.title, { lineGap: 4 });
+          doc.moveDown(0.4);
           const y = doc.y;
-          doc.lineWidth(0.5).moveTo(40, y).lineTo(doc.page.width - 40, y).stroke("#333333");
-          doc.y = y + 2;
-        } else {
-          doc.fontSize(8).font("Helvetica").text(rowText, { lineGap: 1 });
-        }
+          doc.lineWidth(1).moveTo(60, y).lineTo(doc.page.width - 60, y).stroke("#cccccc");
+          doc.y = y + 10;
+          doc.fontSize(12).font("Helvetica");
+          for (const line of slide.body) {
+            if (line.trim()) doc.text(`\u2022  ${line}`, { indent: 10, lineGap: 4 });
+          }
+        });
+        doc.end();
       });
 
-      doc.end();
-    });
+      sendPdf(res, pdfBuf, `${baseName}.pdf`);
+    } catch (err) {
+      res.status(500).json({ error: err instanceof Error ? err.message : "Conversion failed" });
+    }
+  }
+});
 
-    const baseName = (req.file.originalname ?? "spreadsheet").replace(/\.(xlsx?|xls|csv)$/i, "");
-    sendPdf(res, pdfBuf, `${baseName}.pdf`);
+// ─────────────────────────────────────────────────────────
+// POST /tools/pptx-to-images
+// LibreOffice headless → per-slide PNG → ZIP.
+// Returns real pixel-accurate slide images, not text previews.
+// ─────────────────────────────────────────────────────────
+router.post("/tools/pptx-to-images", upload.single("file"), async (req: Request, res: Response) => {
+  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+
+  try {
+    const slides = await convertPptxToImages(req.file.buffer);
+    if (slides.length === 0) {
+      res.status(422).json({ error: "No slides generated. Make sure this is a valid .pptx file." });
+      return;
+    }
+
+    const zipEntries: Record<string, Uint8Array> = {};
+    for (const slide of slides) {
+      zipEntries[slide.name] = new Uint8Array(slide.data);
+    }
+    const zipBuf = Buffer.from(zipSync(zipEntries, { level: 6 }));
+    const baseName = (req.file.originalname ?? "presentation").replace(/\.pptx?$/i, "");
+
+    res.set({
+      "Content-Type": "application/zip",
+      "Content-Disposition": `attachment; filename="${baseName}_slides.zip"`,
+      "X-Slide-Count": String(slides.length),
+      "Cache-Control": "no-store",
+      "Access-Control-Expose-Headers": "X-Slide-Count",
+    });
+    res.send(zipBuf);
   } catch (err) {
     res.status(500).json({ error: err instanceof Error ? err.message : "Conversion failed" });
   }
@@ -102,7 +207,6 @@ router.post("/tools/excel-to-pdf", upload.single("file"), async (req: Request, r
 
 // ─────────────────────────────────────────────────────────
 // POST /tools/html-to-pdf
-// Accepts: multipart file  OR  JSON body { html: "..." }
 // ─────────────────────────────────────────────────────────
 router.post("/tools/html-to-pdf", upload.single("file"), async (req: Request, res: Response) => {
   try {
@@ -152,86 +256,6 @@ router.post("/tools/markdown-to-pdf", upload.single("file"), async (req: Request
     const html = await marked(markdown);
     const pdfBuf = await htmlToPdfBuffer(String(html));
     sendPdf(res, pdfBuf, filename);
-  } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Conversion failed" });
-  }
-});
-
-// ─────────────────────────────────────────────────────────
-// POST /tools/pptx-to-pdf
-// ─────────────────────────────────────────────────────────
-router.post("/tools/pptx-to-pdf", upload.single("file"), async (req: Request, res: Response) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
-
-  try {
-    const zipEntries = unzipSync(new Uint8Array(req.file.buffer));
-
-    const slideKeys = Object.keys(zipEntries)
-      .filter((k) => /^ppt\/slides\/slide\d+\.xml$/.test(k))
-      .sort((a, b) => {
-        const na = parseInt(a.match(/\d+/)?.[0] ?? "0");
-        const nb = parseInt(b.match(/\d+/)?.[0] ?? "0");
-        return na - nb;
-      });
-
-    if (slideKeys.length === 0) {
-      res.status(422).json({ error: "No slides found. Make sure this is a valid .pptx file." });
-      return;
-    }
-
-    const slides: Array<{ title: string; body: string[] }> = [];
-
-    for (const key of slideKeys) {
-      const xml = Buffer.from(zipEntries[key]).toString("utf-8");
-      const texts = [...xml.matchAll(/<a:t[^>]*>([\s\S]*?)<\/a:t>/gi)]
-        .map((m) =>
-          m[1]
-            .replace(/&amp;/g, "&")
-            .replace(/&lt;/g, "<")
-            .replace(/&gt;/g, ">")
-            .replace(/&quot;/g, '"')
-            .trim()
-        )
-        .filter(Boolean);
-
-      slides.push({ title: texts[0] ?? `Slide ${slides.length + 1}`, body: texts.slice(1) });
-    }
-
-    const PDFDocument = (await import("pdfkit")).default;
-    const chunks: Buffer[] = [];
-    const doc = new PDFDocument({ margin: 60, size: "A4", info: { Producer: "EverydayTools Hub" } });
-    doc.on("data", (c: Buffer) => chunks.push(c));
-
-    const pdfBuf = await new Promise<Buffer>((resolve, reject) => {
-      doc.on("end", () => resolve(Buffer.concat(chunks)));
-      doc.on("error", reject);
-
-      slides.forEach((slide, i) => {
-        if (i > 0) doc.addPage();
-
-        doc.fontSize(9).font("Helvetica").fillColor("#888888")
-          .text(`Slide ${i + 1} of ${slides.length}`, { align: "right" });
-        doc.fillColor("#000000").moveDown(0.3);
-
-        doc.fontSize(20).font("Helvetica-Bold").text(slide.title, { lineGap: 4 });
-        doc.moveDown(0.4);
-        const y = doc.y;
-        doc.lineWidth(1).moveTo(60, y).lineTo(doc.page.width - 60, y).stroke("#cccccc");
-        doc.y = y + 10;
-
-        doc.fontSize(12).font("Helvetica");
-        for (const line of slide.body) {
-          if (line.trim()) {
-            doc.text(`\u2022  ${line}`, { indent: 10, lineGap: 4 });
-          }
-        }
-      });
-
-      doc.end();
-    });
-
-    const baseName = (req.file.originalname ?? "presentation").replace(/\.pptx?$/i, "");
-    sendPdf(res, pdfBuf, `${baseName}.pdf`);
   } catch (err) {
     res.status(500).json({ error: err instanceof Error ? err.message : "Conversion failed" });
   }

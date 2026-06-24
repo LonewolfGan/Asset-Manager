@@ -1,0 +1,82 @@
+INSTALLATION DES DÉPENDANCES SYSTÈME MANQUANTES — RÉSOLUTION DES BLOCAGES 
+DOCUMENTÉS
+
+D'après l'audit qualité précédent, plusieurs outils sont limités par 
+l'absence de dépendances système. Je veux les installer pour lever ces 
+limitations, même si ça alourdit l'infrastructure du projet.
+
+DÉPENDANCES À INSTALLER
+
+1. LibreOffice headless
+   Requis pour : word-to-pdf, excel-to-pdf, pptx-to-pdf, pptx-to-images
+   But : conversion fidèle avec mise en page, polices, couleurs, images, 
+   tableaux préservés — au lieu des renderers custom actuels qui perdent 
+   le formatage.
+
+2. Python + librairies :
+   - ghostscript ou mutool → requis pour pdf-compress (recompression des 
+     images embarquées dans le PDF, le vrai gain de compression)
+   - pdfplumber ou camelot → requis pour pdf-to-word et pdf-to-excel 
+     (détection fiable de tableaux et mise en page, au lieu de l'heuristique 
+     actuelle par coordonnées X/Y)
+   - pikepdf → requis pour pdf-protect avec un vrai chiffrement AES-256 
+     (au lieu de RC4-128 actuel via pdf-lib)
+   - potrace ou équivalent → requis pour png-to-svg avec une vraie 
+     vectorisation (au lieu du wrapping raster actuel dans un <svg><image/>)
+
+ÉTAPES
+
+1. Vérifie d'abord si l'environnement Replit actuel permet l'installation 
+   de paquets système (apt-get, nix packages, ou équivalent selon la 
+   config Replit) et de Python en parallèle de Node.js. Si l'environnement 
+   actuel ne le permet pas nativement, regarde si Replit propose un moyen 
+   de configurer ça (fichier replit.nix, configuration de l'environnement, 
+   etc.) avant de conclure que c'est impossible.
+
+2. Si possible, installe dans cet ordre de priorité (du plus impactant 
+   au moins impactant) :
+   a. LibreOffice headless — impacte 4 outils différents, c'est la 
+      priorité n°1
+   b. ghostscript/mutool — pour pdf-compress
+   c. pdfplumber/camelot (Python) — pour pdf-to-word et pdf-to-excel
+   d. pikepdf (Python) — pour pdf-protect en AES-256
+   e. potrace — pour png-to-svg
+
+3. Pour chaque dépendance installée avec succès, migre l'outil concerné 
+   vers la nouvelle implémentation :
+   - word-to-pdf, excel-to-pdf, pptx-to-pdf, pptx-to-images → appeler 
+     LibreOffice en mode headless via sous-processus (soffice --headless 
+     --convert-to), avec gestion de timeout et nettoyage des fichiers 
+     temporaires
+   - pdf-compress → ajouter la recompression d'images via ghostscript/mutool 
+     en plus du strip metadata déjà en place
+   - pdf-to-word, pdf-to-excel → utiliser pdfplumber/camelot pour la 
+     détection de tableaux, avec un endpoint Python séparé appelé depuis 
+     le backend Node si besoin
+   - pdf-protect → basculer vers pikepdf pour proposer AES-256 en option, 
+     en gardant RC4 comme option si compatibilité ancienne nécessaire
+   - png-to-svg → utiliser potrace pour produire un vrai SVG vectorisé
+
+4. Si une dépendance ne peut PAS être installée dans l'environnement 
+   Replit actuel (limitation de plateforme, pas juste de configuration), 
+   explique précisément pourquoi (erreur exacte rencontrée) avant de 
+   conclure que c'est un blocage définitif — je veux comprendre si c'est 
+   un vrai mur technique ou un problème de configuration qu'on peut 
+   résoudre autrement (ex: changer de plan Replit, utiliser un service 
+   externe pour cette tâche spécifique).
+
+5. Pour chaque outil migré, reteste avec les mêmes fichiers que l'audit 
+   précédent et montre le résultat avant/après pour confirmer 
+   l'amélioration réelle (mise en page préservée, taille de compression, 
+   etc.).
+
+LIVRABLE
+
+1. Confirmation de quelles dépendances ont pu être installées et 
+   lesquelles non, avec la raison précise pour celles qui ont échoué
+2. Liste des outils migrés avec succès vers la nouvelle implémentation
+3. Pour chaque outil migré : test avant/après montrant l'amélioration
+4. Si certaines dépendances ne sont vraiment pas installables sur 
+   Replit, propose une alternative concrète (service externe, changement 
+   de plan d'hébergement, ou autre solution) plutôt que de simplement 
+   acter la limitation.

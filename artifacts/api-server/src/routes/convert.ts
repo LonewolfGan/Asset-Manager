@@ -2,359 +2,408 @@ import { Router, type IRouter } from "express";
 import { PDFDocument } from "pdf-lib";
 import mammoth from "mammoth";
 import sharp from "sharp";
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } from "docx";
+import { Document, Packer, Paragraph, TextRun, HeadingLevel } from "docx";
+import { execFile } from "child_process";
+import { promisify } from "util";
+import { tmpdir } from "os";
+import { randomUUID } from "crypto";
+import { writeFile, readFile, rm, mkdir } from "fs/promises";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
 import { upload, guardDocument, guardImage } from "../middlewares/upload.js";
 
+const execFileAsync = promisify(execFile);
 const router: IRouter = Router();
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const PDF_EXTRACT_PY = join(__dirname, "../python/pdf_extract.py");
+
+// ─────────────────────────────────────────────────────────
+// Potrace: PNG → real SVG vector via bitmap tracing
+// ─────────────────────────────────────────────────────────
+function buildPBM(grayscale: Buffer, width: number, height: number): Buffer {
+  const header = Buffer.from(`P4\n${width} ${height}\n`, "ascii");
+  const rowBytes = Math.ceil(width / 8);
+  const bitmap = Buffer.alloc(height * rowBytes, 0);
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      if (grayscale[y * width + x] < 128) { // dark pixel → 1 in PBM
+        const bi = y * rowBytes + Math.floor(x / 8);
+        bitmap[bi] |= 1 << (7 - (x % 8));
+      }
+    }
+  }
+  return Buffer.concat([header, bitmap]);
+}
+
+async function convertToSvgWithPotrace(inputBuffer: Buffer): Promise<Buffer> {
+  // Resize to max 2000×2000 before tracing (potrace scales linearly with pixels)
+  const { data, info } = await sharp(inputBuffer)
+    .resize({ width: 2000, height: 2000, fit: "inside", withoutEnlargement: true })
+    .grayscale()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+
+  const pbm = buildPBM(data, info.width, info.height);
+
+  const id = randomUUID();
+  const workDir = join(tmpdir(), `potrace-${id}`);
+  await mkdir(workDir, { recursive: true });
+  const pbmPath = join(workDir, "input.pbm");
+  const svgPath = join(workDir, "output.svg");
+
+  try {
+    await writeFile(pbmPath, pbm);
+    await execFileAsync("potrace", [
+      "--svg",
+      "--turdsize", "4",   // ignore speckles smaller than 4 pixels²
+      "--alphamax", "1",   // curve smoothness
+      "-o", svgPath,
+      pbmPath,
+    ], { timeout: 30_000 });
+    return await readFile(svgPath);
+  } finally {
+    await rm(workDir, { recursive: true, force: true }).catch(() => {});
+  }
+}
+
+// ─────────────────────────────────────────────────────────
+// pdfplumber helper: call Python script, parse JSON
+// ─────────────────────────────────────────────────────────
+async function callPdfExtract(pdfBuffer: Buffer, mode: "word" | "excel"): Promise<unknown> {
+  const id = randomUUID();
+  const workDir = join(tmpdir(), `plumber-${id}`);
+  await mkdir(workDir, { recursive: true });
+  const pdfPath = join(workDir, "input.pdf");
+  await writeFile(pdfPath, pdfBuffer);
+
+  try {
+    const { stdout } = await execFileAsync(
+      "python3",
+      [PDF_EXTRACT_PY, "--pdf", pdfPath, "--mode", mode],
+      { timeout: 120_000, maxBuffer: 50 * 1024 * 1024 },
+    );
+    return JSON.parse(stdout);
+  } finally {
+    await rm(workDir, { recursive: true, force: true }).catch(() => {});
+  }
+}
+
+// ─────────────────────────────────────────────────────────
+// SHARP supported formats
+// ─────────────────────────────────────────────────────────
 const SHARP_SUPPORTED = new Set(["jpeg", "png", "webp", "avif", "gif", "tiff"]);
 
 const mimeToSharpFormat = (mime: string): keyof sharp.FormatEnum | null => {
   const map: Record<string, keyof sharp.FormatEnum> = {
-    "image/jpeg": "jpeg",
-    "image/jpg": "jpeg",
-    "image/png": "png",
-    "image/webp": "webp",
-    "image/avif": "avif",
-    "image/gif": "gif",
-    "image/tiff": "tiff",
+    "image/jpeg": "jpeg", "image/jpg": "jpeg",
+    "image/png": "png", "image/webp": "webp",
+    "image/avif": "avif", "image/gif": "gif", "image/tiff": "tiff",
   };
   return map[mime] ?? null;
 };
 
-router.post(
-  "/convert/pdf-to-text",
-  upload.single("file"),
-  guardDocument,
-  async (req, res) => {
-    if (!req.file) {
-      res.status(400).json({ error: "No file uploaded" });
-      return;
+// ─────────────────────────────────────────────────────────
+// POST /convert/pdf-to-text
+// ─────────────────────────────────────────────────────────
+router.post("/convert/pdf-to-text", upload.single("file"), guardDocument, async (req, res) => {
+  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  try {
+    const { getDocument, GlobalWorkerOptions } = await import("pdfjs-dist");
+    GlobalWorkerOptions.workerSrc = "";
+    const pdf = await getDocument({
+      data: new Uint8Array(req.file.buffer),
+      useWorkerFetch: false, isEvalSupported: false, useSystemFonts: true,
+    }).promise;
+    const pages: string[] = [];
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const text = (await page.getTextContent()).items.map((it: any) => it.str).join(" ");
+      pages.push(text);
     }
+    res.json({ text: pages.join("\n\n") });
+  } catch (err) {
+    res.status(500).json({ error: err instanceof Error ? err.message : "PDF parsing failed" });
+  }
+});
 
-    try {
-      const { getDocument, GlobalWorkerOptions } = await import("pdfjs-dist");
-      GlobalWorkerOptions.workerSrc = "";
-      const data = new Uint8Array(req.file.buffer);
-      const pdf = await getDocument({
-        data,
-        useWorkerFetch: false,
-        isEvalSupported: false,
-        useSystemFonts: true,
-      }).promise;
+// ─────────────────────────────────────────────────────────
+// POST /convert/docx-to-html
+// ─────────────────────────────────────────────────────────
+router.post("/convert/docx-to-html", upload.single("file"), guardDocument, async (req, res) => {
+  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  try {
+    const result = await mammoth.convertToHtml({ buffer: req.file.buffer });
+    res.json({ html: result.value });
+  } catch (err) {
+    res.status(500).json({ error: err instanceof Error ? err.message : "DOCX conversion failed" });
+  }
+});
 
-      const numPages = pdf.numPages;
-      const pages: string[] = [];
+// ─────────────────────────────────────────────────────────
+// POST /convert/docx-to-text
+// ─────────────────────────────────────────────────────────
+router.post("/convert/docx-to-text", upload.single("file"), guardDocument, async (req, res) => {
+  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  try {
+    const result = await mammoth.extractRawText({ buffer: req.file.buffer });
+    res.json({ text: result.value });
+  } catch (err) {
+    res.status(500).json({ error: err instanceof Error ? err.message : "DOCX conversion failed" });
+  }
+});
 
-      for (let i = 1; i <= numPages; i++) {
-        const page = await pdf.getPage(i);
-        const textContent = await page.getTextContent();
-        const pageText = textContent.items.map((item: any) => item.str).join(" ");
-        pages.push(pageText);
-      }
-
-      res.json({ text: pages.join("\n\n") });
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "PDF parsing failed";
-      res.status(500).json({ error: message });
-    }
-  },
-);
-
-router.post(
-  "/convert/docx-to-html",
-  upload.single("file"),
-  guardDocument,
-  async (req, res) => {
-    if (!req.file) {
-      res.status(400).json({ error: "No file uploaded" });
-      return;
-    }
-
-    try {
-      const result = await mammoth.convertToHtml({ buffer: req.file.buffer });
-      res.json({ html: result.value });
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "DOCX conversion failed";
-      res.status(500).json({ error: message });
-    }
-  },
-);
-
-router.post(
-  "/convert/docx-to-text",
-  upload.single("file"),
-  guardDocument,
-  async (req, res) => {
-    if (!req.file) {
-      res.status(400).json({ error: "No file uploaded" });
-      return;
-    }
-
-    try {
-      const result = await mammoth.extractRawText({ buffer: req.file.buffer });
-      res.json({ text: result.value });
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "DOCX conversion failed";
-      res.status(500).json({ error: message });
-    }
-  },
-);
-
+// ─────────────────────────────────────────────────────────
+// POST /convert/text-to-pdf
+// ─────────────────────────────────────────────────────────
 router.post("/convert/text-to-pdf", async (req, res) => {
   const { text } = req.body as { text?: string };
-
   if (typeof text !== "string" || !text.trim()) {
-    res.status(400).json({ error: "text field required" });
-    return;
+    res.status(400).json({ error: "text field required" }); return;
   }
-
   if (text.length > 500_000) {
-    res.status(413).json({ error: "Text too large. Maximum 500,000 characters." });
-    return;
+    res.status(413).json({ error: "Text too large. Maximum 500,000 characters." }); return;
   }
-
   try {
     const pdfDoc = await PDFDocument.create();
     let page = pdfDoc.addPage();
     const { width, height } = page.getSize();
-    const fontSize = 12;
-    const margin = 50;
+    const fontSize = 12, margin = 50;
     let y = height - margin;
-
-    const lines = text.split("\n");
-    for (const line of lines) {
-      if (y < margin) {
-        page = pdfDoc.addPage();
-        y = height - margin;
-      }
+    for (const line of text.split("\n")) {
+      if (y < margin) { page = pdfDoc.addPage(); y = height - margin; }
       page.drawText(line || " ", { x: margin, y, size: fontSize });
       y -= fontSize * 1.5;
     }
-
     const pdfBytes = await pdfDoc.save();
     res.set("Content-Type", "application/pdf");
     res.set("Content-Disposition", `attachment; filename="converted.pdf"`);
     res.set("Cache-Control", "no-store");
     res.send(Buffer.from(pdfBytes));
   } catch (err) {
-    const message = err instanceof Error ? err.message : "PDF creation failed";
-    res.status(500).json({ error: message });
+    res.status(500).json({ error: err instanceof Error ? err.message : "PDF creation failed" });
   }
 });
 
-router.post(
-  "/convert/image",
-  upload.single("file"),
-  guardImage,
-  async (req, res) => {
-    if (!req.file) {
-      res.status(400).json({ error: "No file uploaded" });
-      return;
-    }
+// ─────────────────────────────────────────────────────────
+// POST /convert/image
+// Standard sharp conversion + potrace for SVG output.
+// When format=image/svg+xml: real vectorization via potrace (not raster wrapper).
+// ─────────────────────────────────────────────────────────
+router.post("/convert/image", upload.single("file"), guardImage, async (req, res) => {
+  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  const { format, quality, width, height } = req.body as {
+    format?: string; quality?: string; width?: string; height?: string;
+  };
+  if (!format) { res.status(400).json({ error: "format field required" }); return; }
 
-    const { format, quality, width, height } = req.body as {
-      format?: string;
-      quality?: string;
-      width?: string;
-      height?: string;
-    };
+  const originalBase = (req.file.originalname ?? "converted").replace(/\.[^.]+$/, "");
 
-    if (!format) {
-      res.status(400).json({ error: "format field required" });
-      return;
-    }
-
-    const sharpFormat = mimeToSharpFormat(format);
-
-    if (!sharpFormat || !SHARP_SUPPORTED.has(sharpFormat)) {
-      res.status(422).json({
-        error: `Format ${format} is not supported server-side. Use client-side conversion.`,
-        clientFallback: true,
-      });
-      return;
-    }
-
+  // ── Potrace path for true SVG vectorization ──────────────
+  if (format === "image/svg+xml") {
     try {
-      const qualityNum = quality ? Math.round(parseFloat(quality) * 100) : 80;
-      const widthNum = width ? parseInt(width, 10) : undefined;
-      const heightNum = height ? parseInt(height, 10) : undefined;
-
-      // Guard against absurdly large resize targets
-      if ((widthNum && widthNum > 10000) || (heightNum && heightNum > 10000)) {
-        res.status(400).json({ error: "Resize dimensions must not exceed 10,000 px." });
-        return;
-      }
-
-      let pipeline = sharp(req.file.buffer);
-
-      if (widthNum || heightNum) {
-        pipeline = pipeline.resize(widthNum, heightNum, {
-          fit: "inside",
-          withoutEnlargement: true,
-        });
-      }
-
-      const outputBuffer = await pipeline
-        .toFormat(sharpFormat, { quality: qualityNum })
-        .toBuffer();
-
-      const ext = sharpFormat === "jpeg" ? "jpg" : sharpFormat;
-      const originalBase = req.file.originalname.replace(/\.[^.]+$/, "") ?? "converted";
-
-      res.set("Content-Type", format);
-      res.set("Content-Disposition", `attachment; filename="${originalBase}.${ext}"`);
+      const svgBuf = await convertToSvgWithPotrace(req.file.buffer);
+      res.set("Content-Type", "image/svg+xml");
+      res.set("Content-Disposition", `attachment; filename="${originalBase}.svg"`);
       res.set("Cache-Control", "no-store");
-      res.send(outputBuffer);
+      res.send(svgBuf);
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Image conversion failed";
-      res.status(500).json({ error: message });
+      res.status(500).json({ error: err instanceof Error ? err.message : "SVG vectorization failed" });
     }
-  },
-);
+    return;
+  }
+
+  // ── Sharp path for all other formats ─────────────────────
+  const sharpFormat = mimeToSharpFormat(format);
+  if (!sharpFormat || !SHARP_SUPPORTED.has(sharpFormat)) {
+    res.status(422).json({
+      error: `Format ${format} is not supported server-side. Use client-side conversion.`,
+      clientFallback: true,
+    });
+    return;
+  }
+
+  try {
+    const qualityNum = quality ? Math.round(parseFloat(quality) * 100) : 80;
+    const widthNum = width ? parseInt(width, 10) : undefined;
+    const heightNum = height ? parseInt(height, 10) : undefined;
+    if ((widthNum && widthNum > 10000) || (heightNum && heightNum > 10000)) {
+      res.status(400).json({ error: "Resize dimensions must not exceed 10,000 px." }); return;
+    }
+    let pipeline = sharp(req.file.buffer);
+    if (widthNum || heightNum) {
+      pipeline = pipeline.resize(widthNum, heightNum, { fit: "inside", withoutEnlargement: true });
+    }
+    const outputBuffer = await pipeline.toFormat(sharpFormat, { quality: qualityNum }).toBuffer();
+    const ext = sharpFormat === "jpeg" ? "jpg" : sharpFormat;
+    res.set("Content-Type", format);
+    res.set("Content-Disposition", `attachment; filename="${originalBase}.${ext}"`);
+    res.set("Cache-Control", "no-store");
+    res.send(outputBuffer);
+  } catch (err) {
+    res.status(500).json({ error: err instanceof Error ? err.message : "Image conversion failed" });
+  }
+});
 
 // ─────────────────────────────────────────────────────────
 // POST /convert/pdf-to-word
+// pdfplumber: proper paragraph detection + heading size heuristics + table rows.
+// Falls back to pdfjs-dist coordinate grouping if Python fails.
 // ─────────────────────────────────────────────────────────
-router.post(
-  "/convert/pdf-to-word",
-  upload.single("file"),
-  guardDocument,
-  async (req, res) => {
-    if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+router.post("/convert/pdf-to-word", upload.single("file"), guardDocument, async (req, res) => {
+  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
 
-    try {
-      const { getDocument, GlobalWorkerOptions } = await import("pdfjs-dist");
-      GlobalWorkerOptions.workerSrc = "";
-      const data = new Uint8Array(req.file.buffer);
-      const pdf = await getDocument({
-        data,
-        useWorkerFetch: false,
-        isEvalSupported: false,
-        useSystemFonts: true,
-      }).promise;
+  const baseName = (req.file.originalname ?? "document").replace(/\.pdf$/i, "");
+  const children: Paragraph[] = [];
 
-      const children: Paragraph[] = [];
+  try {
+    // ── pdfplumber path ───────────────────────────────────
+    const extracted = await callPdfExtract(req.file.buffer, "word") as {
+      pages: Array<{
+        page: number;
+        paragraphs: Array<{ text: string; heading: number; table_row?: boolean }>;
+      }>;
+    };
 
-      for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-        if (pageNum > 1) {
-          children.push(new Paragraph({ children: [new TextRun("")], spacing: { before: 200 } }));
-        }
-
-        const page = await pdf.getPage(pageNum);
-        const textContent = await page.getTextContent();
-        const items = textContent.items as Array<{ str: string; transform?: number[]; height?: number }>;
-
-        // Group text items by approximate Y position (line grouping)
-        const lineMap = new Map<number, string[]>();
-        for (const item of items) {
-          const y = Math.round((item.transform?.[5] ?? 0) / 4) * 4;
-          if (!lineMap.has(y)) lineMap.set(y, []);
-          lineMap.get(y)!.push(item.str);
-        }
-
-        const sortedYs = [...lineMap.keys()].sort((a, b) => b - a);
-
-        for (const y of sortedYs) {
-          const lineText = lineMap.get(y)!.join("").trim();
-          if (!lineText) continue;
-
-          const lineItems = items.filter((it) => Math.round((it.transform?.[5] ?? 0) / 4) * 4 === y);
-          const maxHeight = Math.max(0, ...lineItems.map((it) => it.height ?? 0));
-
-          if (maxHeight >= 18) {
-            children.push(new Paragraph({
-              heading: HeadingLevel.HEADING_1,
-              children: [new TextRun({ text: lineText, bold: true })],
-            }));
-          } else if (maxHeight >= 14) {
-            children.push(new Paragraph({
-              heading: HeadingLevel.HEADING_2,
-              children: [new TextRun({ text: lineText, bold: true })],
-            }));
-          } else {
-            children.push(new Paragraph({
-              children: [new TextRun(lineText)],
-              spacing: { after: 80 },
-            }));
-          }
+    for (let pi = 0; pi < extracted.pages.length; pi++) {
+      if (pi > 0) {
+        children.push(new Paragraph({ children: [new TextRun("")], spacing: { before: 400 } }));
+      }
+      for (const para of extracted.pages[pi].paragraphs) {
+        if (!para.text.trim()) { children.push(new Paragraph({ children: [new TextRun("")] })); continue; }
+        if (para.heading === 1) {
+          children.push(new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun({ text: para.text, bold: true })] }));
+        } else if (para.heading === 2) {
+          children.push(new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun({ text: para.text, bold: true })] }));
+        } else if (para.heading === 3) {
+          children.push(new Paragraph({ heading: HeadingLevel.HEADING_3, children: [new TextRun({ text: para.text })] }));
+        } else if (para.table_row) {
+          children.push(new Paragraph({ children: [new TextRun({ text: para.text, font: "Courier New", size: 18 })], spacing: { after: 40 } }));
+        } else {
+          children.push(new Paragraph({ children: [new TextRun(para.text)], spacing: { after: 80 } }));
         }
       }
-
-      const doc = new Document({ sections: [{ properties: {}, children }] });
-      const buffer = await Packer.toBuffer(doc);
-      const baseName = (req.file.originalname ?? "document").replace(/\.pdf$/i, "");
-
-      res.set("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-      res.set("Content-Disposition", `attachment; filename="${baseName}.docx"`);
-      res.set("Cache-Control", "no-store");
-      res.send(buffer);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Conversion failed";
-      res.status(500).json({ error: message });
     }
-  },
-);
+  } catch (_plumberErr) {
+    // ── pdfjs-dist fallback ───────────────────────────────
+    const { getDocument, GlobalWorkerOptions } = await import("pdfjs-dist");
+    GlobalWorkerOptions.workerSrc = "";
+    const pdf = await getDocument({
+      data: new Uint8Array(req.file.buffer),
+      useWorkerFetch: false, isEvalSupported: false, useSystemFonts: true,
+    }).promise;
+
+    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+      if (pageNum > 1) children.push(new Paragraph({ children: [new TextRun("")], spacing: { before: 200 } }));
+      const page = await pdf.getPage(pageNum);
+      const textContent = await page.getTextContent();
+      const items = textContent.items as Array<{ str: string; transform?: number[]; height?: number }>;
+      const lineMap = new Map<number, string[]>();
+      for (const item of items) {
+        const y = Math.round((item.transform?.[5] ?? 0) / 4) * 4;
+        if (!lineMap.has(y)) lineMap.set(y, []);
+        lineMap.get(y)!.push(item.str);
+      }
+      for (const y of [...lineMap.keys()].sort((a, b) => b - a)) {
+        const lineText = lineMap.get(y)!.join("").trim();
+        if (!lineText) continue;
+        const lineItems = items.filter((it) => Math.round((it.transform?.[5] ?? 0) / 4) * 4 === y);
+        const maxH = Math.max(0, ...lineItems.map((it) => it.height ?? 0));
+        if (maxH >= 18) children.push(new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun({ text: lineText, bold: true })] }));
+        else if (maxH >= 14) children.push(new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun({ text: lineText, bold: true })] }));
+        else children.push(new Paragraph({ children: [new TextRun(lineText)], spacing: { after: 80 } }));
+      }
+    }
+  }
+
+  try {
+    const doc = new Document({ sections: [{ properties: {}, children }] });
+    const buffer = await Packer.toBuffer(doc);
+    res.set("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+    res.set("Content-Disposition", `attachment; filename="${baseName}.docx"`);
+    res.set("Cache-Control", "no-store");
+    res.send(buffer);
+  } catch (err) {
+    res.status(500).json({ error: err instanceof Error ? err.message : "Conversion failed" });
+  }
+});
+
+// ─────────────────────────────────────────────────────────
+// POST /convert/pdf-to-excel
+// pdfplumber: table detection → XLSX. Falls back to coordinate grouping.
+// ─────────────────────────────────────────────────────────
+router.post("/convert/pdf-to-excel", upload.single("file"), guardDocument, async (req, res) => {
+  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+
+  const baseName = (req.file.originalname ?? "document").replace(/\.pdf$/i, "");
+
+  try {
+    const extracted = await callPdfExtract(req.file.buffer, "excel") as {
+      tables: Array<{ page: number; rows: string[][]; is_table: boolean }>;
+    };
+
+    const XLSX = await import("xlsx");
+    const wb = XLSX.utils.book_new();
+
+    if (extracted.tables.length === 0) {
+      // Empty PDF — create blank sheet
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["(no tables found)"]]), "Extracted");
+    } else if (extracted.tables.length === 1) {
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(extracted.tables[0].rows), "Extracted");
+    } else {
+      // One sheet per table, labelled by page
+      for (let i = 0; i < extracted.tables.length; i++) {
+        const t = extracted.tables[i];
+        const sheetName = `Page ${t.page}${extracted.tables.filter((x) => x.page === t.page).length > 1 ? ` (${i + 1})` : ""}`;
+        XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(t.rows), sheetName.slice(0, 31));
+      }
+    }
+
+    const buf = XLSX.write(wb, { type: "buffer", bookType: "xlsx" });
+    res.set("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    res.set("Content-Disposition", `attachment; filename="${baseName}.xlsx"`);
+    res.set("Cache-Control", "no-store");
+    res.send(buf);
+  } catch (err) {
+    res.status(500).json({ error: err instanceof Error ? err.message : "Extraction failed" });
+  }
+});
 
 // ─────────────────────────────────────────────────────────
 // POST /convert/image-to-pdf
 // ─────────────────────────────────────────────────────────
-router.post(
-  "/convert/image-to-pdf",
-  upload.single("file"),
-  guardImage,
-  async (req, res) => {
-    if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+router.post("/convert/image-to-pdf", upload.single("file"), guardImage, async (req, res) => {
+  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  try {
+    const A4W = 595.28, A4H = 841.89, MARGIN = 40;
+    const pdfDoc = await PDFDocument.create();
+    const page = pdfDoc.addPage([A4W, A4H]);
 
-    try {
-      const A4W = 595.28, A4H = 841.89, MARGIN = 40;
-      const pdfDoc = await PDFDocument.create();
-      const page = pdfDoc.addPage([A4W, A4H]);
-
-      // Normalise to jpeg (handles HEIC, BMP, TIFF, WEBP, AVIF, etc.)
-      let imgBuf: Buffer;
-      let isPNG = false;
-
-      if (req.file.mimetype === "image/png") {
-        imgBuf = req.file.buffer;
-        isPNG = true;
-      } else if (req.file.mimetype === "image/svg+xml") {
-        // SVG → rasterise via sharp
-        imgBuf = await sharp(req.file.buffer).png().toBuffer();
-        isPNG = true;
-      } else {
-        imgBuf = await sharp(req.file.buffer).jpeg({ quality: 92 }).toBuffer();
-      }
-
-      const img = isPNG
-        ? await pdfDoc.embedPng(imgBuf)
-        : await pdfDoc.embedJpg(imgBuf);
-
-      const maxW = A4W - 2 * MARGIN;
-      const maxH = A4H - 2 * MARGIN;
-      const scale = Math.min(maxW / img.width, maxH / img.height, 1);
-      const dw = img.width * scale;
-      const dh = img.height * scale;
-
-      page.drawImage(img, {
-        x: (A4W - dw) / 2,
-        y: (A4H - dh) / 2,
-        width: dw,
-        height: dh,
-      });
-
-      const pdfBytes = await pdfDoc.save();
-      const baseName = (req.file.originalname ?? "image").replace(/\.[^.]+$/, "");
-
-      res.set("Content-Type", "application/pdf");
-      res.set("Content-Disposition", `attachment; filename="${baseName}.pdf"`);
-      res.set("Cache-Control", "no-store");
-      res.send(Buffer.from(pdfBytes));
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Conversion failed";
-      res.status(500).json({ error: message });
+    let imgBuf: Buffer;
+    let isPNG = false;
+    if (req.file.mimetype === "image/png") {
+      imgBuf = req.file.buffer; isPNG = true;
+    } else if (req.file.mimetype === "image/svg+xml") {
+      imgBuf = await sharp(req.file.buffer).png().toBuffer(); isPNG = true;
+    } else {
+      imgBuf = await sharp(req.file.buffer).jpeg({ quality: 92 }).toBuffer();
     }
-  },
-);
+
+    const img = isPNG ? await pdfDoc.embedPng(imgBuf) : await pdfDoc.embedJpg(imgBuf);
+    const maxW = A4W - 2 * MARGIN, maxH = A4H - 2 * MARGIN;
+    const scale = Math.min(maxW / img.width, maxH / img.height, 1);
+    const dw = img.width * scale, dh = img.height * scale;
+    page.drawImage(img, { x: (A4W - dw) / 2, y: (A4H - dh) / 2, width: dw, height: dh });
+
+    const pdfBytes = await pdfDoc.save();
+    const baseName = (req.file.originalname ?? "image").replace(/\.[^.]+$/, "");
+    res.set("Content-Type", "application/pdf");
+    res.set("Content-Disposition", `attachment; filename="${baseName}.pdf"`);
+    res.set("Cache-Control", "no-store");
+    res.send(Buffer.from(pdfBytes));
+  } catch (err) {
+    res.status(500).json({ error: err instanceof Error ? err.message : "Conversion failed" });
+  }
+});
 
 export default router;

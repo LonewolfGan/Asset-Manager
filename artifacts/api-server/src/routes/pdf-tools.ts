@@ -1,13 +1,20 @@
 import { Router } from "express";
 import { PDFDocument, rgb, StandardFonts, degrees } from "pdf-lib";
 import { zipSync } from "fflate";
+import { execFile } from "child_process";
+import { promisify } from "util";
+import { tmpdir } from "os";
+import { randomUUID } from "crypto";
+import { writeFile, readFile, rm, mkdir } from "fs/promises";
+import { join } from "path";
 import { upload } from "../middlewares/upload.js";
 import type { Request, Response, NextFunction } from "express";
 
+const execFileAsync = promisify(execFile);
 const router = Router();
 
 // ─────────────────────────────────────────────────────────
-// Guard: single PDF file
+// Guards
 // ─────────────────────────────────────────────────────────
 function guardSinglePdf(req: Request, res: Response, next: NextFunction): void {
   const file = req.file;
@@ -23,18 +30,15 @@ function guardSinglePdf(req: Request, res: Response, next: NextFunction): void {
   next();
 }
 
-// Guard: multiple PDF files
 function guardMultiPdf(req: Request, res: Response, next: NextFunction): void {
   const files = req.files as Express.Multer.File[] | undefined;
   if (!files || files.length === 0) { next(); return; }
   for (const f of files) {
     if (f.mimetype !== "application/pdf") {
-      res.status(415).json({ error: `${f.originalname} is not a PDF.` });
-      return;
+      res.status(415).json({ error: `${f.originalname} is not a PDF.` }); return;
     }
     if (f.size > 50 * 1024 * 1024) {
-      res.status(413).json({ error: `${f.originalname} exceeds 50 MB limit.` });
-      return;
+      res.status(413).json({ error: `${f.originalname} exceeds 50 MB limit.` }); return;
     }
   }
   next();
@@ -46,16 +50,13 @@ function pdfBaseName(originalname: string | undefined): string {
 
 function parsePageRanges(str: string, maxPages: number): number[][] {
   if (!str.trim()) return [];
-  const parts = str.split(",").map((s) => s.trim()).filter(Boolean);
   const parsed: number[][] = [];
-  for (const part of parts) {
+  for (const part of str.split(",").map((s) => s.trim()).filter(Boolean)) {
     if (part.includes("-")) {
       const [a, b] = part.split("-").map((s) => parseInt(s.trim()));
       if (isNaN(a) || isNaN(b) || a < 1) continue;
-      const start = Math.min(a, maxPages);
-      const end = Math.min(isNaN(b) ? maxPages : b, maxPages);
-      const lo = Math.min(start, end);
-      const hi = Math.max(start, end);
+      const lo = Math.min(Math.min(a, maxPages), Math.min(b, maxPages));
+      const hi = Math.max(Math.min(a, maxPages), Math.min(b, maxPages));
       const indices: number[] = [];
       for (let i = lo; i <= hi; i++) indices.push(i - 1);
       if (indices.length) parsed.push(indices);
@@ -69,53 +70,84 @@ function parsePageRanges(str: string, maxPages: number): number[][] {
 
 // ─────────────────────────────────────────────────────────
 // POST /tools/pdf-compress
-// pdf-lib: strip metadata + useObjectStreams. Returns best (smaller) version.
+// Ghostscript recompresses images + object streams for real size reduction.
+// quality: "screen" (72dpi) | "ebook" (150dpi, default) | "printer" (300dpi) | "prepress" (300dpi+ICC)
+// Falls back to pdf-lib metadata strip if gs fails.
 // ─────────────────────────────────────────────────────────
+const GS_SETTINGS: Record<string, string> = {
+  screen:   "/screen",
+  ebook:    "/ebook",
+  printer:  "/printer",
+  prepress: "/prepress",
+};
+
 router.post("/tools/pdf-compress", upload.single("file"), guardSinglePdf, async (req, res) => {
   if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
 
+  const level = String(req.body.level ?? req.body.quality ?? "ebook");
+  const gsSettings = GS_SETTINGS[level] ?? "/ebook";
+  const input = req.file.buffer;
+  const baseName = pdfBaseName(req.file.originalname);
+
+  const id = randomUUID();
+  const workDir = join(tmpdir(), `gs-${id}`);
+  await mkdir(workDir, { recursive: true });
+  const inPath = join(workDir, "input.pdf");
+  const outPath = join(workDir, "output.pdf");
+
+  let finalBuffer: Buffer;
+  let gain: number;
+
   try {
-    const input = req.file.buffer;
-    const pdfDoc = await PDFDocument.load(input, { ignoreEncryption: true });
+    await writeFile(inPath, input);
+    await execFileAsync("gs", [
+      "-dNOPAUSE", "-dBATCH", "-dSAFER",
+      "-sDEVICE=pdfwrite",
+      `-dPDFSETTINGS=${gsSettings}`,
+      "-dCompatibilityLevel=1.6",
+      `-sOutputFile=${outPath}`,
+      inPath,
+    ], { timeout: 90_000 });
 
-    pdfDoc.setTitle("");
-    pdfDoc.setAuthor("");
-    pdfDoc.setSubject("");
-    pdfDoc.setKeywords([]);
-    pdfDoc.setProducer("EverydayTools");
-    pdfDoc.setCreator("EverydayTools");
-
-    const pdfBytes = await pdfDoc.save({ useObjectStreams: true });
-    const output = Buffer.from(pdfBytes);
-
-    const finalBuffer = output.length < input.length ? output : input;
-    const gain = Math.round((1 - finalBuffer.length / input.length) * 100);
-    const baseName = pdfBaseName(req.file.originalname);
-
-    res.set({
-      "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="${baseName}_compressed.pdf"`,
-      "X-Original-Size": String(input.length),
-      "X-Compressed-Size": String(finalBuffer.length),
-      "X-Compression-Gain": String(gain),
-      "Cache-Control": "no-store",
-      "Access-Control-Expose-Headers": "X-Original-Size,X-Compressed-Size,X-Compression-Gain",
-    });
-    res.send(finalBuffer);
-  } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Compression failed" });
+    const gsOutput = await readFile(outPath);
+    finalBuffer = gsOutput.length < input.length ? gsOutput : input;
+    gain = Math.round((1 - finalBuffer.length / input.length) * 100);
+  } catch (_gsErr) {
+    // Fallback: pdf-lib metadata strip + object streams
+    try {
+      const pdfDoc = await PDFDocument.load(input, { ignoreEncryption: true });
+      pdfDoc.setTitle(""); pdfDoc.setAuthor(""); pdfDoc.setSubject("");
+      pdfDoc.setKeywords([]); pdfDoc.setProducer("EverydayTools"); pdfDoc.setCreator("EverydayTools");
+      const stripped = Buffer.from(await pdfDoc.save({ useObjectStreams: true }));
+      finalBuffer = stripped.length < input.length ? stripped : input;
+      gain = Math.round((1 - finalBuffer.length / input.length) * 100);
+    } catch (err) {
+      res.status(500).json({ error: err instanceof Error ? err.message : "Compression failed" });
+      return;
+    }
+  } finally {
+    await rm(workDir, { recursive: true, force: true }).catch(() => {});
   }
+
+  res.set({
+    "Content-Type": "application/pdf",
+    "Content-Disposition": `attachment; filename="${baseName}_compressed.pdf"`,
+    "X-Original-Size": String(input.length),
+    "X-Compressed-Size": String(finalBuffer.length),
+    "X-Compression-Gain": String(gain),
+    "Cache-Control": "no-store",
+    "Access-Control-Expose-Headers": "X-Original-Size,X-Compressed-Size,X-Compression-Gain",
+  });
+  res.send(finalBuffer);
 });
 
 // ─────────────────────────────────────────────────────────
 // POST /tools/pdf-merge
-// Accepts up to 20 files via field name "files"
 // ─────────────────────────────────────────────────────────
 router.post("/tools/pdf-merge", upload.array("files", 20), guardMultiPdf, async (req, res) => {
   const files = req.files as Express.Multer.File[] | undefined;
   if (!files || files.length < 2) {
-    res.status(400).json({ error: "At least 2 PDF files are required." });
-    return;
+    res.status(400).json({ error: "At least 2 PDF files are required." }); return;
   }
 
   try {
@@ -125,7 +157,6 @@ router.post("/tools/pdf-merge", upload.array("files", 20), guardMultiPdf, async 
       const pages = await merged.copyPages(src, src.getPageIndices());
       pages.forEach((p) => merged.addPage(p));
     }
-
     const pdfBytes = await merged.save();
     res.set({
       "Content-Type": "application/pdf",
@@ -140,16 +171,14 @@ router.post("/tools/pdf-merge", upload.array("files", 20), guardMultiPdf, async 
 
 // ─────────────────────────────────────────────────────────
 // POST /tools/pdf-split
-// mode: "every" | "range"   ranges: "1-3, 5, 7-9"
 // ─────────────────────────────────────────────────────────
 router.post("/tools/pdf-split", upload.single("file"), guardSinglePdf, async (req, res) => {
   if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
 
   try {
-    const input = req.file.buffer;
     const mode = String(req.body.mode ?? "every");
     const rangesStr = String(req.body.ranges ?? "");
-    const src = await PDFDocument.load(input);
+    const src = await PDFDocument.load(req.file.buffer);
     const numPages = src.getPageCount();
     const baseName = pdfBaseName(req.file.originalname);
 
@@ -159,8 +188,7 @@ router.post("/tools/pdf-split", upload.single("file"), guardSinglePdf, async (re
     } else {
       segments = parsePageRanges(rangesStr, numPages);
       if (segments.length === 0) {
-        res.status(400).json({ error: "Invalid or empty range. Use format: '1-3, 5, 7-9'" });
-        return;
+        res.status(400).json({ error: "Invalid or empty range. Use format: '1-3, 5, 7-9'" }); return;
       }
     }
 
@@ -169,7 +197,6 @@ router.post("/tools/pdf-split", upload.single("file"), guardSinglePdf, async (re
       const pages = await out.copyPages(src, segments[0]);
       pages.forEach((p) => out.addPage(p));
       const bytes = await out.save();
-
       res.set({
         "Content-Type": "application/pdf",
         "Content-Disposition": `attachment; filename="${baseName}_extracted.pdf"`,
@@ -184,16 +211,11 @@ router.post("/tools/pdf-split", upload.single("file"), guardSinglePdf, async (re
         const pages = await out.copyPages(src, seg);
         pages.forEach((p) => out.addPage(p));
         const bytes = await out.save();
-
-        let fname: string;
-        if (seg.length === 1) {
-          fname = `${baseName}_page_${seg[0] + 1}.pdf`;
-        } else {
-          fname = `${baseName}_pages_${seg[0] + 1}-${seg[seg.length - 1] + 1}.pdf`;
-        }
+        const fname = seg.length === 1
+          ? `${baseName}_page_${seg[0] + 1}.pdf`
+          : `${baseName}_pages_${seg[0] + 1}-${seg[seg.length - 1] + 1}.pdf`;
         zipEntries[fname] = new Uint8Array(bytes);
       }
-
       const zipBuf = Buffer.from(zipSync(zipEntries, { level: 6 }));
       res.set({
         "Content-Type": "application/zip",
@@ -209,55 +231,91 @@ router.post("/tools/pdf-split", upload.single("file"), guardSinglePdf, async (re
 
 // ─────────────────────────────────────────────────────────
 // POST /tools/pdf-protect
-// Accepts: userPassword, ownerPassword, allowPrinting, allowCopying, allowModifying
+// qpdf AES-256 encryption (Revision 6, PDF 2.0 compatible).
+// Falls back to pdf-lib RC4-128 if qpdf is unavailable.
 // ─────────────────────────────────────────────────────────
 router.post("/tools/pdf-protect", upload.single("file"), guardSinglePdf, async (req, res) => {
   if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
 
-  const userPassword = String(req.body.userPassword ?? req.body.password ?? "").trim();
+  const userPassword  = String(req.body.userPassword  ?? req.body.password ?? "").trim();
   const ownerPassword = String(req.body.ownerPassword ?? "").trim();
 
   if (!userPassword && !ownerPassword) {
-    res.status(400).json({ error: "At least one password (user or owner) is required." });
-    return;
+    res.status(400).json({ error: "At least one password (user or owner) is required." }); return;
   }
-
-  const tooLong = (s: string) => s.length > 128;
-  if (tooLong(userPassword) || tooLong(ownerPassword)) {
-    res.status(400).json({ error: "Password too long (max 128 characters)." });
-    return;
+  if (userPassword.length > 128 || ownerPassword.length > 128) {
+    res.status(400).json({ error: "Password too long (max 128 characters)." }); return;
   }
 
   const allowPrinting  = String(req.body.allowPrinting  ?? "true")  !== "false";
   const allowCopying   = String(req.body.allowCopying   ?? "true")  !== "false";
   const allowModifying = String(req.body.allowModifying ?? "false") === "true";
+  const baseName = pdfBaseName(req.file.originalname);
+
+  const ownerPw = ownerPassword || (userPassword + "_o_et");
+  const id = randomUUID();
+  const workDir = join(tmpdir(), `qpdf-${id}`);
+  await mkdir(workDir, { recursive: true });
+  const inPath  = join(workDir, "input.pdf");
+  const outPath = join(workDir, "output.pdf");
 
   try {
-    const pdfDoc = await PDFDocument.load(req.file.buffer);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pdfBytes = await pdfDoc.save({
-      userPassword:  userPassword  || undefined,
-      ownerPassword: ownerPassword || (userPassword ? userPassword + "_owner_et" : undefined),
-      permissions: {
-        printing: allowPrinting ? "highResolution" : undefined,
-        modifying: allowModifying,
-        copying: allowCopying,
-        annotating: false,
-        fillingForms: allowModifying,
-        contentAccessibility: true,
-        documentAssembly: false,
-      },
-    } as any);
+    await writeFile(inPath, req.file.buffer);
 
-    const baseName = pdfBaseName(req.file.originalname);
+    const args: string[] = [
+      "--encrypt", userPassword, ownerPw, "256",
+      `--print=${allowPrinting ? "full" : "none"}`,
+      `--extract=${allowCopying ? "y" : "n"}`,
+    ];
+    if (allowModifying) {
+      args.push("--modify-other=y", "--annotate=y", "--form=y", "--assemble=y");
+    } else {
+      args.push("--modify-other=n", "--annotate=n", "--form=n", "--assemble=n");
+    }
+    args.push("--", inPath, outPath);
+
+    await execFileAsync("qpdf", args, { timeout: 30_000 });
+
+    const output = await readFile(outPath);
     res.set({
       "Content-Type": "application/pdf",
       "Content-Disposition": `attachment; filename="${baseName}_protected.pdf"`,
+      "X-Encryption": "AES-256",
       "Cache-Control": "no-store",
+      "Access-Control-Expose-Headers": "X-Encryption",
     });
-    res.send(Buffer.from(pdfBytes));
-  } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Protection failed" });
+    res.send(output);
+  } catch (_qpdfErr) {
+    // Fallback: pdf-lib RC4-128
+    try {
+      const pdfDoc = await PDFDocument.load(req.file.buffer);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const pdfBytes = await pdfDoc.save({
+        userPassword:  userPassword  || undefined,
+        ownerPassword: ownerPw,
+        permissions: {
+          printing: allowPrinting ? "highResolution" : undefined,
+          modifying: allowModifying,
+          copying: allowCopying,
+          annotating: false,
+          fillingForms: allowModifying,
+          contentAccessibility: true,
+          documentAssembly: false,
+        },
+      } as any);
+      res.set({
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `attachment; filename="${baseName}_protected.pdf"`,
+        "X-Encryption": "RC4-128",
+        "Cache-Control": "no-store",
+        "Access-Control-Expose-Headers": "X-Encryption",
+      });
+      res.send(Buffer.from(pdfBytes));
+    } catch (err) {
+      res.status(500).json({ error: err instanceof Error ? err.message : "Protection failed" });
+    }
+  } finally {
+    await rm(workDir, { recursive: true, force: true }).catch(() => {});
   }
 });
 
@@ -267,8 +325,7 @@ router.post("/tools/pdf-protect", upload.single("file"), guardSinglePdf, async (
 router.post("/tools/pdf-unlock", upload.single("file"), async (req, res) => {
   if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
   if (req.file.mimetype !== "application/pdf") {
-    res.status(415).json({ error: "Only PDF files are accepted." });
-    return;
+    res.status(415).json({ error: "Only PDF files are accepted." }); return;
   }
 
   const password = String(req.body.password ?? "");
@@ -281,7 +338,6 @@ router.post("/tools/pdf-unlock", upload.single("file"), async (req, res) => {
     } as any);
     const pdfBytes = await pdfDoc.save();
     const baseName = pdfBaseName(req.file.originalname);
-
     res.set({
       "Content-Type": "application/pdf",
       "Content-Disposition": `attachment; filename="${baseName}_unlocked.pdf"`,
@@ -291,7 +347,7 @@ router.post("/tools/pdf-unlock", upload.single("file"), async (req, res) => {
   } catch (err) {
     const raw = err instanceof Error ? err.message : "";
     const msg = raw.toLowerCase().includes("password") || raw.toLowerCase().includes("encrypt")
-      ? "Incorrect password or file is encrypted without a known password."
+      ? "Incorrect password or file uses unsupported encryption."
       : raw || "Unlock failed";
     res.status(500).json({ error: msg });
   }
@@ -303,21 +359,18 @@ router.post("/tools/pdf-unlock", upload.single("file"), async (req, res) => {
 router.post("/tools/pdf-watermark", upload.single("file"), guardSinglePdf, async (req, res) => {
   if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
 
-  const text = String(req.body.text ?? "WATERMARK").slice(0, 100);
+  const text    = String(req.body.text ?? "WATERMARK").slice(0, 100);
   const opacity = Math.min(1, Math.max(0, parseFloat(String(req.body.opacity ?? "0.3"))));
   const fontSize = Math.min(120, Math.max(10, parseInt(String(req.body.fontSize ?? "60")) || 60));
-  const angle = parseInt(String(req.body.angle ?? "45")) || 45;
+  const angle   = parseInt(String(req.body.angle ?? "45")) || 45;
 
   try {
     const pdfDoc = await PDFDocument.load(req.file.buffer);
     const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-    const pages = pdfDoc.getPages();
-
-    for (const page of pages) {
+    for (const page of pdfDoc.getPages()) {
       const { width, height } = page.getSize();
-      const textWidth = font.widthOfTextAtSize(text, fontSize);
       page.drawText(text, {
-        x: (width - textWidth) / 2,
+        x: (width - font.widthOfTextAtSize(text, fontSize)) / 2,
         y: height / 2 - fontSize / 2,
         size: fontSize,
         font,
@@ -326,10 +379,8 @@ router.post("/tools/pdf-watermark", upload.single("file"), guardSinglePdf, async
         rotate: degrees(angle),
       });
     }
-
     const pdfBytes = await pdfDoc.save();
     const baseName = pdfBaseName(req.file.originalname);
-
     res.set({
       "Content-Type": "application/pdf",
       "Content-Disposition": `attachment; filename="${baseName}_watermarked.pdf"`,
@@ -343,15 +394,14 @@ router.post("/tools/pdf-watermark", upload.single("file"), guardSinglePdf, async
 
 // ─────────────────────────────────────────────────────────
 // POST /tools/pdf-page-numbers
-// position: bottom-center | bottom-right | bottom-left | top-center | top-right | top-left
 // ─────────────────────────────────────────────────────────
 router.post("/tools/pdf-page-numbers", upload.single("file"), guardSinglePdf, async (req, res) => {
   if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
 
-  const position = String(req.body.position ?? "bottom-center");
+  const position  = String(req.body.position  ?? "bottom-center");
   const startFrom = Math.max(1, parseInt(String(req.body.startFrom ?? "1")) || 1);
-  const fontSize = 11;
-  const margin = 22;
+  const fontSize  = 11;
+  const margin    = 22;
 
   try {
     const pdfDoc = await PDFDocument.load(req.file.buffer);
@@ -363,36 +413,18 @@ router.post("/tools/pdf-page-numbers", upload.single("file"), guardSinglePdf, as
       const { width, height } = page.getSize();
       const label = String(i + startFrom);
       const textWidth = font.widthOfTextAtSize(label, fontSize);
-
-      let x: number;
-      let y: number;
-
-      if (position === "bottom-right") {
-        x = width - textWidth - margin;
-        y = margin;
-      } else if (position === "bottom-left") {
-        x = margin;
-        y = margin;
-      } else if (position === "top-center") {
-        x = (width - textWidth) / 2;
-        y = height - margin - fontSize;
-      } else if (position === "top-right") {
-        x = width - textWidth - margin;
-        y = height - margin - fontSize;
-      } else if (position === "top-left") {
-        x = margin;
-        y = height - margin - fontSize;
-      } else {
-        x = (width - textWidth) / 2;
-        y = margin;
-      }
-
+      let x: number, y: number;
+      if      (position === "bottom-right") { x = width - textWidth - margin; y = margin; }
+      else if (position === "bottom-left")  { x = margin; y = margin; }
+      else if (position === "top-center")   { x = (width - textWidth) / 2; y = height - margin - fontSize; }
+      else if (position === "top-right")    { x = width - textWidth - margin; y = height - margin - fontSize; }
+      else if (position === "top-left")     { x = margin; y = height - margin - fontSize; }
+      else                                  { x = (width - textWidth) / 2; y = margin; }
       page.drawText(label, { x, y, size: fontSize, font, color: rgb(0.2, 0.2, 0.2) });
     }
 
     const pdfBytes = await pdfDoc.save();
     const baseName = pdfBaseName(req.file.originalname);
-
     res.set({
       "Content-Type": "application/pdf",
       "Content-Disposition": `attachment; filename="${baseName}_numbered.pdf"`,
@@ -406,28 +438,21 @@ router.post("/tools/pdf-page-numbers", upload.single("file"), guardSinglePdf, as
 
 // ─────────────────────────────────────────────────────────
 // POST /tools/pdf-rotate
-// rotation: 90 | 180 | 270   pages: "all" or "1,3,5-7"
 // ─────────────────────────────────────────────────────────
 router.post("/tools/pdf-rotate", upload.single("file"), guardSinglePdf, async (req, res) => {
   if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
 
   const rotationDeg = parseInt(String(req.body.rotation ?? "90")) || 90;
-  const pageList = String(req.body.pages ?? "all");
+  const pageList    = String(req.body.pages ?? "all");
 
   try {
     const pdfDoc = await PDFDocument.load(req.file.buffer);
     const pages = pdfDoc.getPages();
     const totalPages = pages.length;
 
-    let pageIndices: number[];
-    if (pageList === "all") {
-      pageIndices = Array.from({ length: totalPages }, (_, i) => i);
-    } else {
-      pageIndices = pageList
-        .split(",")
-        .map((s) => parseInt(s.trim()) - 1)
-        .filter((i) => i >= 0 && i < totalPages);
-    }
+    const pageIndices = pageList === "all"
+      ? Array.from({ length: totalPages }, (_, i) => i)
+      : pageList.split(",").map((s) => parseInt(s.trim()) - 1).filter((i) => i >= 0 && i < totalPages);
 
     for (const idx of pageIndices) {
       const current = pages[idx].getRotation().angle;
@@ -436,7 +461,6 @@ router.post("/tools/pdf-rotate", upload.single("file"), guardSinglePdf, async (r
 
     const pdfBytes = await pdfDoc.save();
     const baseName = pdfBaseName(req.file.originalname);
-
     res.set({
       "Content-Type": "application/pdf",
       "Content-Disposition": `attachment; filename="${baseName}_rotated.pdf"`,

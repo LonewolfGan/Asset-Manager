@@ -10,3 +10,4 @@
 - [Range slider & select fixes](range-select-fixes.md) — range thumb needs margin-top:-7px + vertical-align:middle; remove accentColor inline style; fill via MutationObserver in App.tsx; select arrow needs backgroundColor not background shorthand.
 - [Responsive pattern](responsive-pattern.md) — all pages use inline styles (no Tailwind responsive); use `useIsMobile()` from `@/hooks/use-mobile` (breakpoint 768px) to toggle layouts; 13 files fixed.
 - [SEO content rules](seo-content-rules.md) — about/FAQ must NOT contain "runs locally in your browser", "files never leave your device", or any "local processing" boilerplate; user explicitly banned this phrasing.
+- [System deps & Python bridge](system-deps-python-bridge.md) — LibreOffice/ghostscript/potrace/qpdf/pdfplumber/pikepdf installed; Python bridge pattern for pdfplumber via callPdfExtract() in convert.ts; libreoffice.ts lib for concurrent-safe soffice calls.
