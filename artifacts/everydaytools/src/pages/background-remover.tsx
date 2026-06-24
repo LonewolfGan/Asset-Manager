@@ -170,6 +170,30 @@ export default function BackgroundRemover() {
     setIsProcessing(false);
   };
 
+  const retryItem = async (index: number) => {
+    cancelledRef.current = false;
+    setIsProcessing(true);
+    updateItem(index, { status: 'processing', error: undefined });
+    try {
+      const formData = new FormData();
+      formData.append('file', queue[index].file);
+      const response = await fetch('/api/remove-background', { method: 'POST', body: formData });
+      if (!response.ok) {
+        let msg = 'Failed';
+        try { const j = await response.json(); if (j?.error) msg = j.error; } catch {}
+        updateItem(index, { status: 'error', error: msg });
+      } else {
+        const blob = await response.blob();
+        const resultUrl = URL.createObjectURL(blob);
+        updateItem(index, { status: 'done', resultBlob: blob, resultUrl });
+        trackToolUsed('background-remover', 'images');
+      }
+    } catch (e) {
+      updateItem(index, { status: 'error', error: e instanceof Error ? e.message : 'Failed' });
+    }
+    setIsProcessing(false);
+  };
+
   const handleDownloadAll = async () => {
     const done = queue.filter(q => q.status === 'done' && q.resultBlob);
     if (done.length === 1) {
@@ -291,7 +315,18 @@ export default function BackgroundRemover() {
                     {item.status === 'pending' && <div style={{ width: 14, height: 14, borderRadius: 99, background: 'var(--border-strong)' }} />}
                     {item.status === 'processing' && <SpinnerIcon />}
                     {item.status === 'done' && <CheckIcon />}
-                    {item.status === 'error' && <ErrorIcon />}
+                    {item.status === 'error' && (
+                      <>
+                        <ErrorIcon />
+                        <button
+                          onClick={() => retryItem(queue.indexOf(item))}
+                          disabled={isProcessing}
+                          style={{ background: 'none', border: '1px solid rgba(239,68,68,0.4)', borderRadius: 8, padding: '4px 10px', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-ui)', color: 'var(--danger)', cursor: isProcessing ? 'default' : 'pointer', opacity: isProcessing ? 0.5 : 1, whiteSpace: 'nowrap' }}
+                        >
+                          Retry
+                        </button>
+                      </>
+                    )}
                     {item.status === 'done' && (
                       <button
                         onClick={() => downloadBlob(item.resultBlob!, item.file.name.replace(/\.[^/.]+$/, '_nobg.png'))}

@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { AlertCircle, RotateCcw } from 'lucide-react';
 
 export interface ToolLoadingStateProps {
-  status: 'idle' | 'loading' | 'error';
+  status: 'idle' | 'loading' | 'success' | 'error';
   progress?: number;
+  label?: string;
   steps?: string[];
   currentStep?: number;
   errorMessage?: string;
@@ -21,6 +22,7 @@ const SPINNER_CSS = `
 export default function ToolLoadingState({
   status,
   progress,
+  label,
   steps = [],
   currentStep = 0,
   errorMessage,
@@ -49,7 +51,7 @@ export default function ToolLoadingState({
 
   const safeProgress = typeof progress === 'number' ? Math.min(100, Math.max(0, Math.round(progress))) : undefined;
   const isIndeterminate = safeProgress === undefined;
-  const currentMessage = steps[currentStep] ?? steps[0] ?? 'Processing…';
+  const currentMessage = steps[currentStep] ?? steps[0] ?? label ?? 'Processing…';
 
   if (status === 'loading') {
     return (
@@ -188,6 +190,32 @@ export default function ToolLoadingState({
             ))}
           </div>
         )}
+      </div>
+    );
+  }
+
+  if (status === 'success') {
+    return (
+      <div
+        role="status"
+        aria-live="polite"
+        style={{
+          background: 'rgba(34,197,94,0.06)',
+          border: '1px solid rgba(34,197,94,0.25)',
+          borderRadius: 'var(--radius-card)',
+          padding: '12px 20px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 10,
+        }}
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink: 0 }}>
+          <circle cx="8" cy="8" r="7.5" fill="rgba(34,197,94,0.12)" stroke="rgba(34,197,94,0.5)" />
+          <path d="M5 8l2 2 4-4" stroke="var(--success)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        <span style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--success)' }}>
+          {label ?? 'Done'}
+        </span>
       </div>
     );
   }

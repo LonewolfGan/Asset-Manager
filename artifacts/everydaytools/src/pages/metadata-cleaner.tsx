@@ -2,7 +2,8 @@ import { useState, useRef } from 'react';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { useLocale } from '@/hooks/use-locale';
 import ToolPageLayout from '@/components/ToolPageLayout';
-import { ToolWorkspace, ToolCard, ToolButton, ToolLoadingState, ToolBadge } from '@/components/ToolContent';
+import { ToolWorkspace, ToolCard, ToolButton, ToolBadge } from '@/components/ToolContent';
+import ToolLoadingState from '@/components/ToolLoadingState';
 
 function formatBytes(b: number) {
   if (b < 1024) return `${b} B`;

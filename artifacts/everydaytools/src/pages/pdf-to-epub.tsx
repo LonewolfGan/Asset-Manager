@@ -6,8 +6,9 @@ import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import {
   ToolWorkspace, ToolCard, ToolButton, ToolBadge,
-  ToolStat, ToolLoadingState, ToolEmptyState,
+  ToolStat, ToolEmptyState,
 } from '@/components/ToolContent';
+import ToolLoadingState from '@/components/ToolLoadingState';
 
 export default function PdfToEpub() {
   const { t } = useLocale();

@@ -9,8 +9,9 @@ import { sanitizeHTML } from '@/utils/sanitize';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import {
   ToolWorkspace, ToolCard, ToolButton, ToolBadge,
-  ToolStat, ToolLoadingState, ToolEmptyState,
+  ToolStat, ToolEmptyState,
 } from '@/components/ToolContent';
+import ToolLoadingState from '@/components/ToolLoadingState';
 
 export default function HtmlToPdf() {
   const { t } = useLocale();

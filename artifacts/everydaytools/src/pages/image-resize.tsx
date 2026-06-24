@@ -7,7 +7,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { ToolLoadingState } from '@/components/ToolContent';
+import ToolLoadingState from '@/components/ToolLoadingState';
 
 export default function ImageResize() {
   const { t } = useLocale();

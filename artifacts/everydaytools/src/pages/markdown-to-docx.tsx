@@ -7,8 +7,9 @@ import { useLocale } from '@/hooks/use-locale';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import {
   ToolWorkspace, ToolCard, ToolButton, ToolBadge,
-  ToolStat, ToolLoadingState, ToolEmptyState,
+  ToolStat, ToolEmptyState,
 } from '@/components/ToolContent';
+import ToolLoadingState from '@/components/ToolLoadingState';
 
 async function markdownToDocxBlob(markdown: string): Promise<Blob> {
   const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } = await import('docx');

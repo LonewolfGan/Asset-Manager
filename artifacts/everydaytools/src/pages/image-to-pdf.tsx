@@ -8,8 +8,9 @@ import { useLocale } from '@/hooks/use-locale';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import {
   ToolWorkspace, ToolCard, ToolButton, ToolBadge,
-  ToolStat, ToolLoadingState, ToolEmptyState,
+  ToolStat, ToolEmptyState,
 } from '@/components/ToolContent';
+import ToolLoadingState from '@/components/ToolLoadingState';
 
 export default function ImageToPdf() {
   const { t } = useLocale();

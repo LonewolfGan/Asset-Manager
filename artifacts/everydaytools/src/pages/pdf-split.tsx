@@ -3,7 +3,7 @@ import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
-import { ToolLoadingState } from '@/components/ToolContent';
+import ToolLoadingState from '@/components/ToolLoadingState';
 import { PDFDocument } from 'pdf-lib';
 import JSZip from 'jszip';
 import ToolPageSEO from '@/components/ToolPageSEO';
