@@ -1,0 +1,141 @@
+J'ai la liste exhaustive de toutes les routes/outils du site (94 au total, 
+incluant les pages non-outils comme blog-index, privacy, terms, etc.). 
+Je veux un audit de QUALITÉ DE TRAITEMENT pour chaque outil qui transforme 
+un fichier ou des données, avec la meilleure configuration/librairie 
+possible pour chacun — pas juste "ça fonctionne sans crash".
+
+Liste complète des routes à vérifier :
+ai-text-scrubber, avif-to-jpg, avif-to-png, background-remover, base64,
+blog-index, blog-post, bmp-to-jpg, bmp-to-webp, checksum, csv-to-excel,
+csv-to-json, csv-viewer, currency-converter, excel-to-csv, excel-to-pdf,
+favicon-generator, flip-rotate-image, gif-to-png, gif-to-webp, heic-to-jpg,
+heic-to-pdf, heic-to-png, heic-to-webp, html-formatter, html-to-markdown,
+html-to-pdf, image-compress, image-converter, image-crop, image-resize,
+image-to-pdf, index, jpg-to-avif, jpg-to-pdf, jpg-to-png, jpg-to-webp,
+json-formatter, lorem-ipsum, markdown-to-docx, markdown-to-pdf,
+metadata-cleaner, not-found, ocr, password-generator, pdf-compress,
+pdf-merge, pdf-page-numbers, pdf-protect, pdf-rotate, pdf-split,
+pdf-to-epub, pdf-to-excel, pdf-to-html, pdf-to-image, pdf-to-pptx,
+pdf-to-text, pdf-to-word, pdf-unlock, pdf-watermark, percentage-calc,
+png-to-avif, png-to-jpg, png-to-pdf, png-to-svg, png-to-webp,
+pptx-to-images, pptx-to-pdf, privacy, qr-code-generator, reorder-pdf,
+security, svg-to-png, terms, tiff-to-jpg, tiff-to-png, tiff-to-webp,
+tip-calculator, txt-to-docx, txt-to-pdf, unit-converter, url-encoder,
+watermark-image, webp-to-avif, webp-to-jpg, webp-to-pdf, webp-to-png,
+word-counter, word-to-epub, word-to-html, word-to-markdown, word-to-pdf, 
+word-to-text
+
+MÉTHODE — PAR CATÉGORIE, AVEC RECOMMANDATION TECHNIQUE PRÉCISE
+
+Regroupe ces routes par catégorie technique, diagnostique ce qui est 
+utilisé ACTUELLEMENT pour chacune (cherche dans le code/dépendances), et 
+compare à la meilleure pratique. Voici les catégories et ce qu'il faut 
+vérifier pour chacune :
+
+1. SEGMENTATION / IA VISION (risque qualité élevé)
+   - background-remover
+   → Vérifier le modèle utilisé. Doit être un vrai modèle de segmentation 
+   (ex: rembg/U2-Net, MODNet, BiRefNet), jamais une heuristique de couleur/
+   contraste. Tester sur portraits avec cheveux, fonds complexes, objets 
+   aux couleurs proches du fond.
+
+2. OCR (risque qualité élevé)
+   - ocr
+   → Vérifier le moteur (Tesseract et sa version, ou alternative comme 
+   PaddleOCR/EasyOCR si meilleure précision dispo). Tester sur du texte 
+   scanné réel basse qualité, pas juste du texte numérique parfait.
+
+3. CONVERSION IMAGE → IMAGE (risque qualité moyen)
+   avif-to-jpg, avif-to-png, bmp-to-jpg, bmp-to-webp, gif-to-png, 
+   gif-to-webp, heic-to-jpg, heic-to-png, heic-to-webp, jpg-to-avif, 
+   jpg-to-png, jpg-to-webp, png-to-avif, png-to-jpg, png-to-webp, 
+   svg-to-png, png-to-svg, tiff-to-jpg, tiff-to-png, tiff-to-webp, 
+   webp-to-avif, webp-to-jpg, webp-to-png
+   → Toutes doivent utiliser une vraie librairie de traitement d'image 
+   backend (sharp/libvips ou Pillow), PAS Canvas API navigateur. Vérifier 
+   que HEIC et AVIF sont bien supportés nativement par la lib choisie (ce 
+   sont des formats récents, pas toutes les libs les gèrent bien — vérifier 
+   les codecs installés sur le serveur). Tester la préservation de la 
+   transparence pour les formats qui la supportent (PNG, WebP, AVIF).
+
+4. COMPRESSION / RESIZE / CROP / EDIT IMAGE (risque qualité élevé — bug 
+   déjà confirmé sur image-compress)
+   image-compress, image-converter, image-crop, image-resize, 
+   flip-rotate-image, watermark-image, metadata-cleaner, favicon-generator
+   → image-compress : vérifier avec mozjpeg/pngquant/webp encoder que la 
+   sortie est SYSTÉMATIQUEMENT plus petite que l'entrée. Les autres : 
+   vérifier absence de déformation, perte de ratio non désirée, ou 
+   dégradation visible.
+
+5. IMAGE → PDF et PDF → IMAGE
+   image-to-pdf, jpg-to-pdf, png-to-pdf, webp-to-pdf, heic-to-pdf, 
+   pdf-to-image, pptx-to-images
+   → Vérifier la résolution de sortie (pas de flou), le respect du ratio, 
+   et que le PDF généré n'est pas anormalement lourd pour son contenu.
+
+6. PDF — MANIPULATION STRUCTURELLE
+   pdf-merge, pdf-split, pdf-rotate, pdf-page-numbers, reorder-pdf, 
+   pdf-protect, pdf-unlock, pdf-watermark, pdf-compress
+   → Vérifier l'intégrité du PDF de sortie (s'ouvre correctement, pas de 
+   pages corrompues). pdf-compress : même exigence que image-compress, 
+   la sortie doit être plus légère que l'entrée. pdf-protect/unlock : 
+   tester avec différents niveaux de chiffrement PDF (40-bit, 128-bit, 
+   256-bit AES) pour confirmer la compatibilité.
+
+7. PDF — CONVERSION VERS AUTRE FORMAT (risque qualité élevé, mise en page)
+   pdf-to-word, pdf-to-excel, pdf-to-html, pdf-to-text, pdf-to-epub, 
+   pdf-to-pptx
+   → Vérifier la préservation de la mise en page, des tableaux, des 
+   images intégrées. Tester avec un PDF complexe (plusieurs colonnes, 
+   tableaux, images) pas juste un PDF de texte simple.
+
+8. DOCUMENT (WORD/EXCEL/PPTX) — CONVERSION
+   excel-to-csv, excel-to-pdf, csv-to-excel, word-to-pdf, word-to-html, 
+   word-to-markdown, word-to-epub, word-to-text, txt-to-docx, txt-to-pdf, 
+   markdown-to-docx, markdown-to-pdf, html-to-pdf, html-to-markdown, 
+   pptx-to-pdf
+   → Vérifier que LibreOffice headless (ou équivalent) est bien utilisé 
+   pour les conversions impliquant mise en page complexe, pas une lib 
+   trop basique qui perd le formatage. Tester avec des documents contenant 
+   styles, images, tableaux.
+
+9. DONNÉES / TEXTE (risque qualité faible, mais vérifier l'exactitude)
+   csv-to-json, csv-viewer, json-formatter, html-formatter, base64, 
+   url-encoder, checksum, word-counter, ai-text-scrubber, lorem-ipsum
+   → Vérifier l'exactitude du traitement sur des cas limites (CSV avec 
+   virgules dans les valeurs, JSON imbriqué profondément, fichiers très 
+   volumineux). ai-text-scrubber : vérifier quel modèle/méthode est utilisé 
+   pour le scrubbing et sa fiabilité.
+
+10. CALCULATEURS / GÉNÉRATEURS (risque faible, vérifier exactitude logique)
+    percentage-calc, tip-calculator, unit-converter, currency-converter, 
+    password-generator, qr-code-generator
+    → currency-converter : vérifier que les taux de change sont à jour 
+    (API en temps réel, pas des valeurs codées en dur obsolètes). Les 
+    autres : vérifier l'exactitude des calculs avec des cas limites 
+    (valeurs négatives, zéro, très grands nombres).
+
+11. PAGES NON-OUTILS (à exclure de l'audit qualité de traitement, mais 
+    vérifier qu'elles fonctionnent et sont full-width comme déjà demandé)
+    blog-index, blog-post, index, not-found, privacy, security, terms
+
+POUR CHAQUE OUTIL DES CATÉGORIES 1-10
+
+1. Identifie la librairie/méthode actuellement utilisée
+2. Compare à la meilleure pratique recommandée ci-dessus
+3. Si ce n'est pas déjà la meilleure config : migre vers la bonne 
+   librairie et installe les dépendances nécessaires
+4. Teste avec au moins 2-3 fichiers réels représentatifs (pas des cas 
+   triviaux) et montre le résultat avant/après
+5. Note le statut : déjà optimal / migré et corrigé / bloquant technique 
+   rencontré (et pourquoi)
+
+LIVRABLE FINAL
+
+Un tableau récapitulatif avec les colonnes : Outil | Catégorie | Lib/config 
+actuelle | Lib/config recommandée | Statut | Notes. Je veux voir clairement 
+lesquels étaient déjà bons, lesquels ont été corrigés, et lesquels posent 
+encore un problème technique à régler avec moi.
+
+Ne marque aucun outil comme "OK" sans avoir réellement testé un fichier 
+à travers lui et regardé le résultat produit.
