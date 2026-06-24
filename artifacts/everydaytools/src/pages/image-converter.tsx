@@ -141,7 +141,7 @@ export default function ImageConverter() {
 
   return (
     <>
-      <div className="max-w-5xl mx-auto space-y-6 pb-12">
+      <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 48, display: "flex", flexDirection: "column", gap: 24 }}>
         <Breadcrumb items={["Home", "Image Tools", "Image Converter"]} />
         <div className="space-y-2">
           <h1 className="font-serif text-3xl text-foreground">{t.tools['image-converter']?.title ?? 'Image Converter'}</h1>

@@ -1,0 +1,53 @@
+Suite à la migration full width qu'on a faite, il reste des pages qui 
+n'ont pas été corrigées et qui gardent encore l'ancien layout contraint. 
+Confirmé : /blog et /image-converter ne sont pas full width. Il y en a 
+probablement d'autres qui n'ont pas été vérifiées.
+
+TÂCHE — AUDIT COMPLET DE TOUTES LES PAGES DU SITE
+
+1. Liste TOUTES les routes/pages existantes du site (pas seulement les 
+   86 pages outils) : page d'accueil, pages outils individuelles, pages 
+   de listing par catégorie, /blog et tous les articles de blog 
+   individuels, /image-converter, pages légales (privacy policy, terms), 
+   page 404, n'importe quelle autre page statique ou dynamique présente 
+   dans le routeur.
+
+2. Pour CHAQUE page de cette liste, vérifie si elle utilise bien le 
+   système de container qu'on a mis en place (.container-wide pour les 
+   grilles/listes/zones d'action, .container-reading pour le texte long) 
+   ou si elle a encore un ancien container avec un max-width codé en dur 
+   qui la garde étroite.
+
+3. Corrige chaque page trouvée non conforme en lui appliquant le bon 
+   container selon son type de contenu :
+   - Grilles, listes d'outils, zones d'upload/action → .container-wide
+   - Texte long, articles de blog, contenu éditorial → .container-reading 
+     pour le corps du texte, mais le header de la page (titre, image de 
+     couverture si présente) peut être en .container-wide
+   - Si une page mélange les deux (ex: /image-converter avec une zone 
+     d'action ET une section FAQ texte) → applique le système hybride 
+     déjà utilisé sur les pages outils
+
+4. Vérifie spécifiquement /blog : 
+   - La liste des articles (grille ou liste) doit être en .container-wide
+   - Le contenu d'un article individuel (le texte de l'article lui-même) 
+     doit être en .container-reading pour rester lisible, même si le 
+     header de l'article (titre, image) peut être en .container-wide
+
+5. Vérifie spécifiquement /image-converter et tous les autres outils de 
+   conversion d'image/format qui pourraient avoir le même souci.
+
+6. Cherche dans le code TOUT max-width codé en dur qui ne référence pas 
+   les classes .container-wide ou .container-reading du design system — 
+   ce sont des résidus de l'ancien système qu'il faut remplacer.
+
+LIVRABLE
+
+Donne-moi la liste complète de toutes les pages du site avec leur statut :
+- Déjà conforme (full width correct dès le départ)
+- Corrigée maintenant (était cassée, maintenant fixée)
+- Cas particulier à valider avec moi (si une page a une structure 
+  ambiguë qui ne rentre pas clairement dans le système wide/reading)
+
+Vérifie le résultat à 1920px et 768px sur au moins /blog, un article de 
+blog individuel, et /image-converter avant de me confirmer que c'est bon.
