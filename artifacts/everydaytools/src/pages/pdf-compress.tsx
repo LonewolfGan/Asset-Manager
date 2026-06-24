@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import FileUpload from '@/components/FileUpload';
-import ProgressBar from '@/components/ProgressBar';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { ToolLoadingState } from '@/components/ToolContent';
 
 type Level = 'screen' | 'ebook' | 'prepress';
 
@@ -193,8 +193,13 @@ export default function PdfCompress() {
         </button>
       )}
 
-      {isProcessing && <ProgressBar progress={progress} label={tc.compressingLabel} />}
-      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{error}</p>}
+      <ToolLoadingState
+        status={isProcessing ? 'loading' : error ? 'error' : 'idle'}
+        progress={isProcessing ? progress : undefined}
+        label={tc.compressingLabel}
+        errorMessage={error ?? undefined}
+        onRetry={error && files.length > 0 ? handleCompress : undefined}
+      />
 
       {result && (
         <div style={{ marginTop: 24, padding: 20, border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-surface)' }}>

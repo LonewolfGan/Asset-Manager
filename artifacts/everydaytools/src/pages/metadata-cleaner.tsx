@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { useLocale } from '@/hooks/use-locale';
 import ToolPageLayout from '@/components/ToolPageLayout';
-import { ToolWorkspace, ToolCard, ToolButton, ToolProgressBar, ToolBadge } from '@/components/ToolContent';
+import { ToolWorkspace, ToolCard, ToolButton, ToolLoadingState, ToolBadge } from '@/components/ToolContent';
 
 function formatBytes(b: number) {
   if (b < 1024) return `${b} B`;
@@ -115,8 +115,13 @@ export default function MetadataCleaner() {
           <ToolButton variant="primary" fullWidth onClick={clean}>Clean Metadata</ToolButton>
         )}
 
-        {status === 'processing' && <ToolProgressBar progress={progress} label="Cleaning metadata…" />}
-        {error && <p style={{ color: 'var(--danger)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)' }}>{error}</p>}
+        <ToolLoadingState
+          status={status === 'processing' ? 'loading' : status === 'error' ? 'error' : 'idle'}
+          progress={status === 'processing' ? progress : undefined}
+          label="Cleaning metadata..."
+          errorMessage={error || undefined}
+          onRetry={status === 'error' && file ? () => clean() : undefined}
+        />
 
         {status === 'done' && result && (
           <ToolCard variant="result">

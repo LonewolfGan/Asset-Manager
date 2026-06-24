@@ -4,7 +4,7 @@ import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import {
   ToolWorkspace, ToolCard, ToolButton, ToolBadge,
-  ToolStat, ToolProgressBar, ToolEmptyState,
+  ToolStat, ToolLoadingState, ToolEmptyState,
 } from '@/components/ToolContent';
 
 export default function PdfToPptx() {
@@ -87,9 +87,13 @@ export default function PdfToPptx() {
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', marginTop: 6 }}>.pdf · max 50 MB</p>
         </div>
 
-        {status === 'processing' && <ToolProgressBar progress={progress} label="Rendering pages..." />}
-
-        {status === 'error' && <p style={{ color: 'var(--danger,#dc2626)', marginTop: 16, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)' }}>{error}</p>}
+        <ToolLoadingState
+          status={status === 'processing' ? 'loading' : status === 'error' ? 'error' : 'idle'}
+          progress={status === 'processing' ? progress : undefined}
+          label="Rendering pages..."
+          errorMessage={error || undefined}
+          onRetry={status === 'error' && file ? () => convert(file) : undefined}
+        />
         {status === 'done' && <p style={{ color: 'var(--text-secondary)', marginTop: 16, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)' }}>PPTX downloaded successfully.</p>}
       </ToolWorkspace>
     </ToolPageLayout>

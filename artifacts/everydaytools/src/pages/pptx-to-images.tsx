@@ -4,7 +4,7 @@ import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import {
   ToolWorkspace, ToolCard, ToolButton, ToolBadge,
-  ToolStat, ToolProgressBar, ToolEmptyState,
+  ToolStat, ToolLoadingState, ToolEmptyState,
 } from '@/components/ToolContent';
 
 export default function PptxToImages() {
@@ -123,9 +123,13 @@ export default function PptxToImages() {
           </div>
         )}
 
-        {status === 'processing' && <ToolProgressBar progress={progress} label="Rendering slides..." />}
-
-        {status === 'error' && <p style={{ color: 'var(--danger,#dc2626)', marginTop: 16, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)' }}>{error}</p>}
+        <ToolLoadingState
+          status={status === 'processing' ? 'loading' : status === 'error' ? 'error' : 'idle'}
+          progress={status === 'processing' ? progress : undefined}
+          label="Rendering slides..."
+          errorMessage={error || undefined}
+          onRetry={status === 'error' && file ? () => convert(file) : undefined}
+        />
 
         {slides.length > 0 && (
           <div>

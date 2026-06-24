@@ -214,6 +214,22 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
     URL.revokeObjectURL(url);
   };
 
+  const retryOne = async (id: string) => {
+    const entry = files.find((f) => f.id === id);
+    if (!entry) return;
+    setFiles((prev) => prev.map((f) => f.id === id ? { ...f, status: 'processing', error: undefined } : f));
+    try {
+      const canvas = await fileToCanvas(entry.file);
+      const blob = await canvasToBlob(canvas, toMime, quality / 100);
+      const compressedUrl = URL.createObjectURL(blob);
+      setFiles((prev) => prev.map((f) => f.id === id ? { ...f, status: 'done', blob, compressedUrl } : f));
+      trackToolUsed(slug, 'images');
+    } catch (err) {
+      trackToolError(slug, 'general-error');
+      setFiles((prev) => prev.map((f) => f.id === id ? { ...f, status: 'error', error: err instanceof Error ? err.message : 'Conversion failed' } : f));
+    }
+  };
+
   const doneCount = files.filter((f) => f.status === 'done').length;
 
   return (
@@ -309,6 +325,9 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
                   <span style={{ flex: 1, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={entry.file.name}>{entry.file.name}</span>
                   {entry.status === 'done' && (
                     <button aria-label={`Download ${entry.file.name}`} onClick={() => downloadOne(entry)} style={{ padding: '4px 12px', background: 'var(--text-primary)', color: 'var(--bg-base)', border: 'none', borderRadius: 5, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>{t.common.download}</button>
+                  )}
+                  {entry.status === 'error' && (
+                    <button aria-label={`Retry ${entry.file.name}`} onClick={() => retryOne(entry.id)} style={{ padding: '4px 12px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 5, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>Retry</button>
                   )}
                   <button aria-label={`Remove ${entry.file.name}`} onClick={() => removeFile(entry.id)} style={{ padding: '4px 10px', background: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--border)', borderRadius: 5, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>{t.common.remove}</button>
                 </div>

@@ -7,7 +7,7 @@ import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import {
   ToolWorkspace, ToolCard, ToolButton, ToolBadge,
-  ToolStat, ToolProgressBar, ToolEmptyState,
+  ToolStat, ToolLoadingState, ToolEmptyState,
 } from '@/components/ToolContent';
 
 export default function TxtToPdf() {
@@ -125,8 +125,13 @@ export default function TxtToPdf() {
           </ToolButton>
         )}
 
-        {isProcessing && <ToolProgressBar progress={progress} label="Generating PDF..." />}
-        {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{error}</p>}
+        <ToolLoadingState
+          status={isProcessing ? 'loading' : error ? 'error' : 'idle'}
+          progress={isProcessing ? progress : undefined}
+          label="Generating PDF..."
+          errorMessage={error ?? undefined}
+          onRetry={error && files.length > 0 ? handleConvert : undefined}
+        />
         {result && <ResultPanel {...result} />}
       </ToolWorkspace>
     </ToolPageLayout>

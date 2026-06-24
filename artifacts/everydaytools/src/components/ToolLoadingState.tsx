@@ -1,0 +1,265 @@
+import { useEffect, useRef, useState } from 'react';
+import { AlertCircle, RotateCcw } from 'lucide-react';
+
+export interface ToolLoadingStateProps {
+  status: 'idle' | 'loading' | 'error';
+  progress?: number;
+  steps?: string[];
+  currentStep?: number;
+  errorMessage?: string;
+  onRetry?: () => void;
+}
+
+const SPINNER_CSS = `
+@keyframes tls-spin { to { transform: rotate(360deg); } }
+@keyframes tls-pulse {
+  0%, 100% { opacity: 0.4; transform: scaleX(0.3); }
+  50% { opacity: 1; transform: scaleX(1); }
+}
+`;
+
+export default function ToolLoadingState({
+  status,
+  progress,
+  steps = [],
+  currentStep = 0,
+  errorMessage,
+  onRetry,
+}: ToolLoadingStateProps) {
+  const [injected, setInjected] = useState(false);
+  const styleRef = useRef<HTMLStyleElement | null>(null);
+
+  useEffect(() => {
+    if (!injected) {
+      const el = document.createElement('style');
+      el.textContent = SPINNER_CSS;
+      document.head.appendChild(el);
+      styleRef.current = el;
+      setInjected(true);
+    }
+    return () => {
+      if (styleRef.current) {
+        styleRef.current.remove();
+        styleRef.current = null;
+      }
+    };
+  }, [injected]);
+
+  if (status === 'idle') return null;
+
+  const safeProgress = typeof progress === 'number' ? Math.min(100, Math.max(0, Math.round(progress))) : undefined;
+  const isIndeterminate = safeProgress === undefined;
+  const currentMessage = steps[currentStep] ?? steps[0] ?? 'Processing…';
+
+  if (status === 'loading') {
+    return (
+      <div
+        aria-busy="true"
+        aria-live="polite"
+        role="status"
+        style={{
+          background: 'var(--bg-surface)',
+          border: '1px solid var(--border)',
+          borderRadius: 'var(--radius-card)',
+          padding: '20px 20px 16px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 14,
+        }}
+      >
+        {/* Header: spinner + step message */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 18 18"
+            fill="none"
+            aria-hidden="true"
+            style={{ flexShrink: 0, animation: 'tls-spin 0.75s linear infinite' }}
+          >
+            <circle
+              cx="9"
+              cy="9"
+              r="7.5"
+              stroke="var(--border)"
+              strokeWidth="2"
+            />
+            <path
+              d="M9 1.5A7.5 7.5 0 0 1 16.5 9"
+              stroke="var(--accent)"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+          </svg>
+          <span
+            style={{
+              fontFamily: 'var(--font-ui)',
+              fontSize: 'var(--text-sm)',
+              color: 'var(--text-secondary)',
+              flex: 1,
+            }}
+          >
+            {currentMessage}
+          </span>
+          {!isIndeterminate && (
+            <span
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: 'var(--text-xs)',
+                color: 'var(--text-tertiary)',
+                flexShrink: 0,
+              }}
+            >
+              {safeProgress}%
+            </span>
+          )}
+        </div>
+
+        {/* Progress bar */}
+        <div
+          role="progressbar"
+          aria-valuenow={isIndeterminate ? undefined : safeProgress}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={currentMessage}
+          style={{
+            height: 5,
+            background: 'var(--border)',
+            borderRadius: 99,
+            overflow: 'hidden',
+            position: 'relative',
+          }}
+        >
+          {isIndeterminate ? (
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '40%',
+                height: '100%',
+                background: 'var(--accent)',
+                borderRadius: 99,
+                transformOrigin: 'left center',
+                animation: 'tls-pulse 1.4s ease-in-out infinite',
+              }}
+            />
+          ) : (
+            <div
+              style={{
+                height: '100%',
+                width: `${safeProgress}%`,
+                background: 'var(--accent)',
+                borderRadius: 99,
+                transition: 'width 250ms ease',
+              }}
+            />
+          )}
+        </div>
+
+        {/* Step indicator dots */}
+        {steps.length > 1 && (
+          <div
+            style={{
+              display: 'flex',
+              gap: 6,
+              alignItems: 'center',
+            }}
+            aria-hidden="true"
+          >
+            {steps.map((step, i) => (
+              <div
+                key={i}
+                title={step}
+                style={{
+                  width: i === currentStep ? 18 : 6,
+                  height: 5,
+                  borderRadius: 99,
+                  background: i < currentStep
+                    ? 'var(--accent)'
+                    : i === currentStep
+                      ? 'var(--accent)'
+                      : 'var(--border)',
+                  opacity: i > currentStep ? 0.4 : 1,
+                  transition: 'width 200ms ease, background 200ms ease',
+                  flexShrink: 0,
+                }}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  if (status === 'error') {
+    return (
+      <div
+        role="alert"
+        aria-live="assertive"
+        style={{
+          background: 'rgba(239,68,68,0.05)',
+          border: '1px solid rgba(239,68,68,0.3)',
+          borderRadius: 'var(--radius-card)',
+          padding: '16px 20px',
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: 12,
+        }}
+      >
+        <AlertCircle
+          size={16}
+          style={{ color: 'var(--danger)', flexShrink: 0, marginTop: 2 }}
+          aria-hidden="true"
+        />
+        <div style={{ flex: 1 }}>
+          <p
+            style={{
+              margin: 0,
+              fontFamily: 'var(--font-ui)',
+              fontSize: 'var(--text-sm)',
+              color: 'var(--danger)',
+              lineHeight: 1.5,
+            }}
+          >
+            {errorMessage ?? 'Something went wrong. Please try again.'}
+          </p>
+        </div>
+        {onRetry && (
+          <button
+            onClick={onRetry}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              padding: '6px 14px',
+              background: 'transparent',
+              border: '1px solid rgba(239,68,68,0.4)',
+              borderRadius: 'var(--radius)',
+              fontFamily: 'var(--font-ui)',
+              fontSize: 'var(--text-xs)',
+              fontWeight: 500,
+              color: 'var(--danger)',
+              cursor: 'pointer',
+              flexShrink: 0,
+              transition: 'border-color 150ms, background 150ms',
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLElement).style.background = 'rgba(239,68,68,0.08)';
+              (e.currentTarget as HTMLElement).style.borderColor = 'var(--danger)';
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLElement).style.background = 'transparent';
+              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(239,68,68,0.4)';
+            }}
+          >
+            <RotateCcw size={12} aria-hidden="true" />
+            Retry
+          </button>
+        )}
+      </div>
+    );
+  }
+
+  return null;
+}

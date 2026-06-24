@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
-import ProgressBar from '@/components/ProgressBar';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
+import { ToolLoadingState } from '@/components/ToolContent';
 import { PDFDocument } from 'pdf-lib';
 import JSZip from 'jszip';
 import ToolPageSEO from '@/components/ToolPageSEO';
@@ -156,8 +156,13 @@ export default function PdfSplit() {
         </button>
       )}
       
-      {isProcessing && <ProgressBar progress={progress} label="Splitting PDF..." />}
-      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 'var(--text-sm)' }}>{error}</p>}
+      <ToolLoadingState
+        status={isProcessing ? 'loading' : error ? 'error' : 'idle'}
+        progress={isProcessing ? progress : undefined}
+        label="Splitting PDF..."
+        errorMessage={error ?? undefined}
+        onRetry={error && files.length > 0 ? handleConvert : undefined}
+      />
       {result && <ResultPanel {...result} />}
       <AdSlot type="horizontal" />
     </div>

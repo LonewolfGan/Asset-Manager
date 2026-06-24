@@ -476,6 +476,14 @@ button,
   0%   { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
 }
+@keyframes tool-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes tool-indeterminate {
+  0%   { transform: translateX(-100%); }
+  50%  { transform: translateX(150%); }
+  100% { transform: translateX(150%); }
+}
 [data-theme="dark"] .skeleton::after {
   background: linear-gradient(
     90deg,

@@ -4,7 +4,7 @@ import { useLocale } from '@/hooks/use-locale';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import {
   ToolWorkspace, ToolCard, ToolButton, ToolBadge,
-  ToolStat, ToolProgressBar, ToolEmptyState,
+  ToolStat, ToolLoadingState, ToolEmptyState,
 } from '@/components/ToolContent';
 
 export default function ExcelToCsv() {
@@ -97,7 +97,11 @@ export default function ExcelToCsv() {
           </div>
         )}
 
-        {error && <p style={{ color: 'var(--danger,#dc2626)', marginTop: 12, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)' }}>{error}</p>}
+        <ToolLoadingState
+          status={error ? 'error' : 'idle'}
+          errorMessage={error || undefined}
+          onRetry={error && file ? () => convert() : undefined}
+        />
 
         {status === 'done' && csvContent && (
           <div style={{ marginTop: 20 }}>

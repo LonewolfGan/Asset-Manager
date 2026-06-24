@@ -5,7 +5,7 @@ import { sanitizeHTML } from '@/utils/sanitize';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import {
   ToolWorkspace, ToolCard, ToolButton, ToolBadge,
-  ToolStat, ToolProgressBar, ToolEmptyState,
+  ToolStat, ToolLoadingState, ToolEmptyState,
 } from '@/components/ToolContent';
 
 export default function ExcelToPdf() {
@@ -149,11 +149,13 @@ export default function ExcelToPdf() {
           <ToolButton variant="primary" fullWidth onClick={convert}>{t.common.convertToPdf}</ToolButton>
         )}
 
-        {status === 'processing' && <ToolProgressBar progress={progress} label={t.common.converting} />}
-
-        {status === 'error' && (
-          <div style={{ marginTop: 16, padding: 14, background: 'var(--bg-surface)', border: '1px solid var(--danger,#dc2626)', borderRadius: 'var(--radius)', color: 'var(--danger,#dc2626)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)' }}>{error}</div>
-        )}
+        <ToolLoadingState
+          status={status === 'processing' ? 'loading' : status === 'error' ? 'error' : 'idle'}
+          progress={status === 'processing' ? progress : undefined}
+          label={t.common.converting}
+          errorMessage={error || undefined}
+          onRetry={status === 'error' && file ? convert : undefined}
+        />
 
         {status === 'done' && pdfBlob && (
           <div style={{ marginTop: 16, padding: '16px 20px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>

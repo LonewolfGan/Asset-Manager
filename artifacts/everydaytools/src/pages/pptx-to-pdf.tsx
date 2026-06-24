@@ -4,7 +4,7 @@ import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import {
   ToolWorkspace, ToolCard, ToolButton, ToolBadge,
-  ToolStat, ToolProgressBar, ToolEmptyState,
+  ToolStat, ToolLoadingState, ToolEmptyState,
 } from '@/components/ToolContent';
 
 export default function PptxToPdf() {
@@ -130,9 +130,13 @@ export default function PptxToPdf() {
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', marginTop: 6 }}>.pptx · max 50 MB</p>
         </div>
 
-        {status === 'processing' && <ToolProgressBar progress={progress} label={t.common.converting} />}
-
-        {status === 'error' && <p style={{ color: 'var(--danger,#dc2626)', marginTop: 16, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)' }}>{error}</p>}
+        <ToolLoadingState
+          status={status === 'processing' ? 'loading' : status === 'error' ? 'error' : 'idle'}
+          progress={status === 'processing' ? progress : undefined}
+          label={t.common.converting}
+          errorMessage={error || undefined}
+          onRetry={status === 'error' && file ? () => convert(file) : undefined}
+        />
 
         {status === 'done' && pdfBlob && (
           <div style={{ marginTop: 16, padding: '16px 20px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>

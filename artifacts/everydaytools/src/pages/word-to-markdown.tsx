@@ -4,7 +4,7 @@ import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import {
   ToolWorkspace, ToolCard, ToolButton, ToolBadge,
-  ToolStat, ToolProgressBar, ToolEmptyState,
+  ToolStat, ToolLoadingState, ToolEmptyState,
 } from '@/components/ToolContent';
 
 export default function WordToMarkdown() {
@@ -73,7 +73,11 @@ export default function WordToMarkdown() {
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', marginTop: 6 }}>.docx · max 25 MB</p>
         </div>
 
-        {status === 'error' && <p style={{ color: 'var(--danger,#dc2626)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', marginBottom: 16 }}>{error}</p>}
+        <ToolLoadingState
+          status={status === 'error' ? 'error' : 'idle'}
+          errorMessage={error || undefined}
+          onRetry={status === 'error' && file ? () => handleFile(file) : undefined}
+        />
 
         {status === 'done' && output && (
           <div>

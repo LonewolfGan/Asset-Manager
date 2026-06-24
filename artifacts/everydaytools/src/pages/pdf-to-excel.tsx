@@ -4,7 +4,7 @@ import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import {
   ToolWorkspace, ToolCard, ToolButton, ToolBadge,
-  ToolStat, ToolProgressBar, ToolEmptyState,
+  ToolStat, ToolLoadingState, ToolEmptyState,
 } from '@/components/ToolContent';
 
 export default function PdfToExcel() {
@@ -119,9 +119,13 @@ export default function PdfToExcel() {
           <ToolButton variant="primary" fullWidth onClick={convert}>{t.common.convertBtn}</ToolButton>
         )}
 
-        {status === 'processing' && <ToolProgressBar progress={progress} label={t.common.processing} />}
-
-        {status === 'error' && <p style={{ color: 'var(--danger,#dc2626)', marginTop: 16, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)' }}>{error}</p>}
+        <ToolLoadingState
+          status={status === 'processing' ? 'loading' : status === 'error' ? 'error' : 'idle'}
+          progress={status === 'processing' ? progress : undefined}
+          label={t.common.processing}
+          errorMessage={error || undefined}
+          onRetry={status === 'error' && file ? convert : undefined}
+        />
 
         {status === 'done' && xlsxBlob && (
           <div style={{ marginTop: 16, padding: '16px 20px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
