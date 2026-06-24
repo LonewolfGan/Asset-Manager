@@ -4,8 +4,6 @@ import ResultPanel from '@/components/ResultPanel';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolLoadingState from '@/components/ToolLoadingState';
-import { PDFDocument } from 'pdf-lib';
-import JSZip from 'jszip';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
@@ -20,87 +18,29 @@ export default function PdfSplit() {
   const [mode, setMode] = useState<'every' | 'range'>('every');
   const [ranges, setRanges] = useState("");
 
-  const parseRanges = (str: string, maxPages: number): number[][] => {
-    if (!str.trim()) return [];
-    const parts = str.split(',').map(s => s.trim()).filter(Boolean);
-    const parsed: number[][] = [];
-    
-    for (const part of parts) {
-      if (part.includes('-')) {
-        const [startStr, endStr] = part.split('-');
-        let start = parseInt(startStr);
-        let end = parseInt(endStr);
-        if (isNaN(start) || isNaN(end) || start < 1 || end < 1) continue;
-        if (start > maxPages) start = maxPages;
-        if (end > maxPages) end = maxPages;
-        if (start > end) {
-          const temp = start; start = end; end = temp;
-        }
-        
-        const indices = [];
-        for (let i = start; i <= end; i++) indices.push(i - 1);
-        if (indices.length > 0) parsed.push(indices);
-      } else {
-        const page = parseInt(part);
-        if (!isNaN(page) && page >= 1 && page <= maxPages) {
-          parsed.push([page - 1]);
-        }
-      }
-    }
-    return parsed;
-  };
-
   const handleConvert = async () => {
     if (!files[0]) return;
     setError(null); setIsProcessing(true); setProgress(0);
     try {
       trackToolUsed('pdf-split', 'pdf');
       const file = files[0];
-      const arrayBuffer = await file.arrayBuffer();
-      const sourcePdf = await PDFDocument.load(arrayBuffer);
-      const numPages = sourcePdf.getPageCount();
-      
-      let rangesToExtract: number[][] = [];
-      if (mode === 'every') {
-        rangesToExtract = Array.from({ length: numPages }, (_, i) => [i]);
-      } else {
-        rangesToExtract = parseRanges(ranges, numPages);
-        if (rangesToExtract.length === 0) {
-          throw new Error("Invalid or empty range provided. Try '1-3, 5' format.");
-        }
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('mode', mode);
+      if (mode === 'range') fd.append('ranges', ranges);
+      setProgress(20);
+      const res = await fetch('/api/tools/pdf-split', { method: 'POST', body: fd });
+      setProgress(85);
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Split failed');
       }
-      
-      if (rangesToExtract.length === 1 && mode === 'range') {
-        // Single PDF output
-        const newPdf = await PDFDocument.create();
-        const copiedPages = await newPdf.copyPages(sourcePdf, rangesToExtract[0]);
-        copiedPages.forEach(page => newPdf.addPage(page));
-        const pdfBytes = await newPdf.save();
-        const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
-        setResult({ blob, filename: file.name.replace(/\.pdf$/i, '_extracted.pdf'), sizeAfter: blob.size, sizeBefore: file.size });
-      } else {
-        // ZIP output
-        const zip = new JSZip();
-        for (let i = 0; i < rangesToExtract.length; i++) {
-          const newPdf = await PDFDocument.create();
-          const copiedPages = await newPdf.copyPages(sourcePdf, rangesToExtract[i]);
-          copiedPages.forEach(page => newPdf.addPage(page));
-          const pdfBytes = await newPdf.save();
-          const baseName = file.name.replace(/\.pdf$/i, '');
-          let filename = `${baseName}_page_${rangesToExtract[i][0] + 1}.pdf`;
-          if (rangesToExtract[i].length > 1) {
-            filename = `${baseName}_pages_${rangesToExtract[i][0] + 1}-${rangesToExtract[i][rangesToExtract[i].length - 1] + 1}.pdf`;
-          }
-          zip.file(filename, pdfBytes);
-          setProgress(Math.round(((i + 1) / rangesToExtract.length) * 80));
-        }
-        
-        const zipBlob = await zip.generateAsync({ type: "blob" }, (metadata) => {
-            setProgress(80 + Math.round(metadata.percent * 0.2));
-        });
-        
-        setResult({ blob: zipBlob, filename: file.name.replace(/\.pdf$/i, '_split.zip'), sizeAfter: zipBlob.size, sizeBefore: file.size });
-      }
+      const blob = await res.blob();
+      const ct = res.headers.get('Content-Type') ?? '';
+      const isZip = ct.includes('zip');
+      const filename = file.name.replace(/\.pdf$/i, isZip ? '_split.zip' : '_extracted.pdf');
+      setResult({ blob, filename, sizeAfter: blob.size, sizeBefore: file.size });
+      setProgress(100);
     } catch (e) {
       trackToolError('pdf-split', 'general-error');
       setError(e instanceof Error ? e.message : 'Split failed. Please try again.');

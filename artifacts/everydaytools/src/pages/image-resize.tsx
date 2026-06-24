@@ -62,44 +62,33 @@ export default function ImageResize() {
     if (!files[0]) return;
     setError(null); setIsProcessing(true); setProgress(0);
     try {
-      let targetW = parseInt(width);
-      let targetH = parseInt(height);
-      
-      if (mode === 'percentage') {
-        const pct = parseInt(percentage) / 100;
-        targetW = Math.round(origW * pct);
-        targetH = Math.round(origH * pct);
-      }
-      
-      if (isNaN(targetW) || isNaN(targetH) || targetW <= 0 || targetH <= 0) {
-        trackToolError('image-resize', 'general-error');
-        throw new Error("Invalid dimensions.");
-      }
-
       const file = files[0];
-      const img = new Image();
-      const url = URL.createObjectURL(file);
-      await new Promise((resolve, reject) => {
-        img.onload = resolve;
-        img.onerror = reject;
-        img.src = url;
-      });
-      URL.revokeObjectURL(url);
-      setProgress(50);
+      const fd = new FormData();
+      fd.append('file', file);
 
-      const canvas = document.createElement('canvas');
-      canvas.width = targetW;
-      canvas.height = targetH;
-      const ctx = canvas.getContext('2d')!;
-      ctx.drawImage(img, 0, 0, targetW, targetH);
+      if (mode === 'percentage') {
+        const pct = parseFloat(percentage);
+        if (isNaN(pct) || pct <= 0) throw new Error("Invalid percentage.");
+        fd.append('percentage', pct.toString());
+      } else {
+        const w = parseInt(width);
+        const h = parseInt(height);
+        if (isNaN(w) || isNaN(h) || w <= 0 || h <= 0) {
+          trackToolError('image-resize', 'general-error');
+          throw new Error("Invalid dimensions.");
+        }
+        fd.append('width', w.toString());
+        fd.append('height', h.toString());
+      }
 
-      const blob = await new Promise<Blob>((resolve, reject) => {
-        canvas.toBlob((b) => {
-          if (b) resolve(b);
-          else reject(new Error("Canvas toBlob failed"));
-        }, file.type, 0.92);
-      });
-      
+      setProgress(30);
+      const res = await fetch('/api/tools/image-resize', { method: 'POST', body: fd });
+      setProgress(90);
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Resize failed');
+      }
+      const blob = await res.blob();
       setProgress(100);
       trackToolUsed('image-resize', 'images');
       setResult({ blob, filename: file.name.replace(/\.(png|jpe?g|webp)$/i, '_resized.$1'), sizeAfter: blob.size, sizeBefore: file.size });

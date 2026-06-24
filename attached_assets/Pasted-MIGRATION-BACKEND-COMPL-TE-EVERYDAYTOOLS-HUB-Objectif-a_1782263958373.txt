@@ -1,0 +1,229 @@
+MIGRATION BACKEND COMPLÈTE — EVERYDAYTOOLS HUB
+Objectif : abandonner tout traitement côté client et construire un backend
+haute-performance qui rende cette plateforme meilleure que TinyPNG,
+iLovePDF, Smallpdf et Squoosh réunis.
+
+═══════════════════════════════════════════════════════════════
+ÉTAT ACTUEL DU PROJET
+═══════════════════════════════════════════════════════════════
+
+Stack :
+- pnpm monorepo, Node 24, TypeScript 5.9
+- Frontend : React + Vite → artifacts/everydaytools/ (port 5000)
+- API : Express 5 → artifacts/api-server/ (port 8080)
+- Vite proxie /api → 8080 (déjà configuré dans vite.config.ts)
+- Tous les outils tournent actuellement côté client (Canvas API, pdf-lib,
+  mammoth, tesseract.js, etc.) — TOUT doit migrer vers le backend
+
+Problème actuel concret :
+- image-compress.tsx : Canvas toBlob() AUGMENTE la taille (94.2 KB → 213.1 KB)
+  car PNG/JPEG ne sont pas vraiment optimisés par le navigateur
+- word-to-pdf : qualité médiocre (html-to-image au lieu d'un vrai renderer)
+- pdf-compress : pdf-lib ne fait pas de vraie compression
+
+═══════════════════════════════════════════════════════════════
+ARCHITECTURE CIBLE
+═══════════════════════════════════════════════════════════════
+
+Frontend React :
+- Envoie le fichier via multipart/form-data POST /api/tools/<outil>
+- Affiche ToolLoadingState avec Server-Sent Events ou polling de progression
+- Reçoit le fichier traité en réponse binaire et le propose au téléchargement
+- ZÉRO traitement local : plus de Canvas API, pdf-lib, mammoth côté client
+
+Backend Express (artifacts/api-server/) :
+- Toutes les routes sous /api/tools/
+- Traitement en mémoire (multer memoryStorage) — jamais d'écriture disque sauf /tmp
+- Nettoyage immédiat après chaque réponse (finally block)
+- Rate limiting : 20 req/min/IP (utils/rate-limit.ts déjà existant)
+- Validation MIME réelle (magic bytes) avant traitement
+- Timeout 60s par job pour éviter les blocages
+
+═══════════════════════════════════════════════════════════════
+STACK TECHNIQUE PAR CATÉGORIE — CHOISIR LA MEILLEURE OPTION
+═══════════════════════════════════════════════════════════════
+
+IMAGES (priorité 1)
+─────────────────────
+Librairie : Sharp (libvips binding — la plus rapide sur Node.js)
+npm install sharp --save dans artifacts/api-server/
+
+Endpoints à créer :
+POST /api/tools/image-compress
+  - JPEG : sharp().jpeg({ quality: 82, mozjpeg: true })
+  - PNG  : sharp().png({ compressionLevel: 9, palette: true, effort: 10 })
+  - WebP : sharp().webp({ quality: 82, effort: 6, lossless: false })
+  - AVIF : sharp().avif({ quality: 60, effort: 7 })
+  - RÈGLE ABSOLUE : si output.size >= input.size → retourner l'original
+    avec header X-Compression-Gain: 0 et message "Already optimal"
+
+POST /api/tools/image-resize
+  - sharp().resize(w, h, { fit: 'inside', withoutEnlargement: true })
+
+POST /api/tools/image-convert
+  - sharp().toFormat(targetFormat)
+  - Gérer : jpg, png, webp, avif, gif, tiff, bmp
+
+POST /api/tools/image-crop
+  - sharp().extract({ left, top, width, height })
+
+POST /api/tools/flip-rotate
+  - sharp().rotate(degrees).flip(flipH).flop(flipV)
+
+POST /api/tools/watermark-image
+  - sharp().composite([{ input: textSvgBuffer, gravity: position }])
+
+POST /api/tools/favicon-generate
+  - Sharp pour chaque taille (16, 32, 64, 128, 180, 192)
+  - Zip avec jszip
+
+POST /api/tools/image-metadata-clean
+  - sharp().withMetadata(false) — supprime tous les EXIF
+
+Pour background-remove : garder @imgly côté client (WASM, qualité identique
+  au serveur, et aucun upload de photo nécessaire = avantage vie privée réel)
+
+PDF (priorité 2)
+─────────────────
+Librairie principale : pdf-lib (déjà dans le projet, garder pour merge/split)
+Pour compression PDF RÉELLE : utiliser Ghostscript en subprocess
+
+npm install node-ghostscript (ou appel CLI si gs est installé sur Replit)
+
+POST /api/tools/pdf-compress
+  - Appel Ghostscript : gs -dBATCH -dNOPAUSE -sDEVICE=pdfwrite
+      -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook
+      -sOutputFile=output.pdf input.pdf
+  - Niveaux : /screen (72dpi), /ebook (150dpi), /printer (300dpi)
+  - Si gs non dispo sur Replit : utiliser pdf-lib + suppression métadonnées
+
+POST /api/tools/pdf-merge
+  - pdf-lib : PDFDocument.load + copyPages + save (déjà fonctionnel)
+
+POST /api/tools/pdf-split
+  - pdf-lib : extraire plages de pages
+
+POST /api/tools/pdf-to-image
+  - Utiliser pdfjs-dist côté serveur (Node) ou sharp si possible
+  - Ou : canvas npm package pour rendu PDF côté serveur
+
+POST /api/tools/pdf-protect / pdf-unlock
+  - pdf-lib : encrypt avec password
+
+POST /api/tools/pdf-watermark / pdf-page-numbers / pdf-rotate
+  - pdf-lib : opérations sur pages
+
+DOCUMENTS (priorité 3)
+───────────────────────
+Pour DOCX/PPT/ODF → PDF : LibreOffice headless est le gold standard
+
+Vérifier si LibreOffice est disponible sur Replit :
+  exec('which libreoffice || which soffice', ...)
+  Si oui : soffice --headless --convert-to pdf --outdir /tmp input.docx
+
+Si LibreOffice non disponible sur Replit :
+  - word-to-pdf : mammoth (HTML) + puppeteer headless Chromium pour print-to-PDF
+    npm install puppeteer (télécharge Chromium automatiquement)
+  - Alternative : docx-pdf npm package
+
+POST /api/tools/word-to-pdf (DOCX → PDF)
+POST /api/tools/word-to-html (DOCX → HTML — mammoth, déjà bon)
+POST /api/tools/excel-to-pdf (XLSX → PDF)
+POST /api/tools/pptx-to-pdf (PPTX → PDF)
+POST /api/tools/markdown-to-pdf (Marked + puppeteer)
+POST /api/tools/txt-to-pdf (PDFKit ou jsPDF côté serveur)
+POST /api/tools/html-to-pdf (puppeteer page.pdf())
+
+OCR (priorité 4)
+─────────────────
+POST /api/tools/ocr
+  - tesseract.js côté serveur (même moteur, mais on maîtrise la mémoire)
+  - Ou : node-tesseract-ocr (binding natif si Tesseract installé)
+  - Langues : eng + fra pour commencer
+
+DONNÉES/TEXTE (garder côté client — pas de valeur ajoutée backend)
+──────────────────────────────────────────────────────────────────
+Ces outils restent côté client, c'est OK :
+- csv-to-json, csv-to-excel, csv-viewer
+- json-formatter, html-formatter, base64, url-encoder
+- word-counter, lorem-ipsum, ai-text-scrubber
+- password-generator, tip-calculator, percentage-calc
+- unit-converter, currency-converter, qr-code-generator
+- checksum (crypto.subtle côté client est parfait)
+- color-converter
+
+═══════════════════════════════════════════════════════════════
+IMPLÉMENTATION — PAR OÙ COMMENCER
+═══════════════════════════════════════════════════════════════
+
+ÉTAPE 1 — Infrastructure backend (faire en premier)
+
+Fichier : artifacts/api-server/src/routes/tools.ts
+
+```typescript
+import { Router, Request, Response } from 'express';
+import multer from 'multer';
+import sharp from 'sharp';
+
+const router = Router();
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB
+});
+
+// Validation MIME réelle (magic bytes)
+function detectMime(buffer: Buffer): string | null {
+  const sig = buffer.slice(0, 12);
+  if (sig[0] === 0xFF && sig[1] === 0xD8) return 'image/jpeg';
+  if (sig[0] === 0x89 && sig[1] === 0x50 && sig[2] === 0x4E) return 'image/png';
+  if (sig[0] === 0x52 && sig[8] === 0x57 && sig[9] === 0x45) return 'image/webp';
+  if (sig[0] === 0x25 && sig[1] === 0x50 && sig[2] === 0x44) return 'application/pdf';
+  // Ajouter d'autres signatures selon besoin
+  return null;
+}
+
+router.post('/image-compress', upload.single('file'), async (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+    
+    const input = req.file.buffer;
+    const mime = detectMime(input) ?? req.file.mimetype;
+    const quality = parseInt(req.query.quality as string) || 82;
+    
+    let sharpInstance = sharp(input);
+    let output: Buffer;
+    let outMime: string;
+    
+    if (mime === 'image/jpeg') {
+      output = await sharpInstance.jpeg({ quality, mozjpeg: true }).toBuffer();
+      outMime = 'image/jpeg';
+    } else if (mime === 'image/png') {
+      output = await sharpInstance.png({ compressionLevel: 9, palette: true }).toBuffer();
+      outMime = 'image/png';
+    } else if (mime === 'image/webp') {
+      output = await sharpInstance.webp({ quality, effort: 6 }).toBuffer();
+      outMime = 'image/webp';
+    } else {
+      output = await sharpInstance.jpeg({ quality: 82, mozjpeg: true }).toBuffer();
+      outMime = 'image/jpeg';
+    }
+    
+    // Règle absolue : jamais retourner un fichier plus lourd
+    const finalBuffer = output.length < input.length ? output : input;
+    const gain = Math.round((1 - finalBuffer.length / input.length) * 100);
+    
+    res.set({
+      'Content-Type': outMime,
+      'Content-Length': finalBuffer.length,
+      'X-Original-Size': input.length,
+      'X-Compressed-Size': finalBuffer.length,
+      'X-Compression-Gain': gain,
+      'Content-Disposition': `attachment; filename="compressed_${req.file.originalname}"`,
+    });
+    res.send(finalBuffer);
+  } catch (err) {
+    res.status(500).json({ error: err instanceof Error ? err.message : 'Compression failed' });
+  }
+});
+
+export default router;

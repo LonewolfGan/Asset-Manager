@@ -21,55 +21,6 @@ function formatBytes(b: number) {
   return `${(b / (1024 * 1024)).toFixed(2)} MB`;
 }
 
-async function compressPdf(
-  arrayBuffer: ArrayBuffer,
-  level: Level,
-  onProgress: (p: number) => void,
-): Promise<Blob> {
-  const pdfjsLib = await import('pdfjs-dist');
-  pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-    'pdfjs-dist/build/pdf.worker.mjs',
-    import.meta.url,
-  ).href;
-
-  const cfg = LEVELS.find((l) => l.id === level)!;
-  const scale = cfg.dpi / 96;
-
-  const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(arrayBuffer) }).promise;
-  const { PDFDocument } = await import('pdf-lib');
-  const newPdf = await PDFDocument.create();
-
-  for (let i = 1; i <= pdf.numPages; i++) {
-    const page = await pdf.getPage(i);
-    const viewport = page.getViewport({ scale });
-
-    const canvas = document.createElement('canvas');
-    canvas.width = Math.round(viewport.width);
-    canvas.height = Math.round(viewport.height);
-    const ctx = canvas.getContext('2d')!;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await page.render({ canvasContext: ctx, viewport } as any).promise;
-
-    const blob = await new Promise<Blob>((resolve, reject) =>
-      canvas.toBlob(
-        (b) => (b ? resolve(b) : reject(new Error('Canvas toBlob failed'))),
-        'image/jpeg',
-        cfg.quality,
-      ),
-    );
-
-    const jpgBytes = new Uint8Array(await blob.arrayBuffer());
-    const img = await newPdf.embedJpg(jpgBytes);
-    const newPage = newPdf.addPage([canvas.width, canvas.height]);
-    newPage.drawImage(img, { x: 0, y: 0, width: canvas.width, height: canvas.height });
-
-    onProgress(Math.round((i / pdf.numPages) * 88));
-  }
-
-  const bytes = await newPdf.save();
-  onProgress(100);
-  return new Blob([bytes as unknown as BlobPart], { type: 'application/pdf' });
-}
 
 export default function PdfCompress() {
   const { t, locale } = useLocale();
@@ -90,11 +41,22 @@ export default function PdfCompress() {
     setProgress(0);
     try {
       const file = files[0];
-      const ab = await file.arrayBuffer();
-      setProgress(5);
-      const blob = await compressPdf(ab, level, setProgress);
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('level', level);
+      setProgress(20);
+      const res = await fetch('/api/tools/pdf-compress', { method: 'POST', body: fd });
+      setProgress(85);
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Compression failed');
+      }
+      const blob = await res.blob();
+      const originalSize = parseInt(res.headers.get('X-Original-Size') ?? String(file.size));
+      const compressedSize = parseInt(res.headers.get('X-Compressed-Size') ?? String(blob.size));
       trackToolUsed('pdf-compress', 'pdf');
-      setResult({ blob, filename: file.name.replace(/\.pdf$/i, `_${level}.pdf`), sizeBefore: file.size, sizeAfter: blob.size });
+      setResult({ blob, filename: file.name.replace(/\.pdf$/i, `_${level}.pdf`), sizeBefore: originalSize, sizeAfter: compressedSize });
+      setProgress(100);
     } catch (e) {
       trackToolError('pdf-compress', 'general-error');
       setError(e instanceof Error ? e.message : 'Compression failed. Please try again.');

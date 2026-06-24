@@ -4,7 +4,6 @@ import ResultPanel from '@/components/ResultPanel';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolLoadingState from '@/components/ToolLoadingState';
-import { PDFDocument } from 'pdf-lib';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
@@ -19,31 +18,23 @@ export default function PdfMerge() {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleConvert = async () => {
-    if (files.length < 2) {
-      setError(tc.errorMin2);
-      return;
-    }
+    if (files.length < 2) { setError(tc.errorMin2); return; }
     setError(null); setIsProcessing(true); setProgress(0);
     try {
       trackToolUsed('pdf-merge', 'pdf');
-      const mergedPdf = await PDFDocument.create();
-      let totalSizeBefore = 0;
-
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        totalSizeBefore += file.size;
-        const arrayBuffer = await file.arrayBuffer();
-        const pdf = await PDFDocument.load(arrayBuffer);
-        const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
-        copiedPages.forEach((page) => {
-          mergedPdf.addPage(page);
-        });
-        setProgress(Math.round(((i + 1) / files.length) * 100));
+      const fd = new FormData();
+      let totalSize = 0;
+      for (const f of files) { fd.append('files', f); totalSize += f.size; }
+      setProgress(20);
+      const res = await fetch('/api/tools/pdf-merge', { method: 'POST', body: fd });
+      setProgress(90);
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Merge failed');
       }
-
-      const pdfBytes = await mergedPdf.save();
-      const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
-      setResult({ blob, filename: 'merged_document.pdf', sizeAfter: blob.size, sizeBefore: totalSizeBefore });
+      const blob = await res.blob();
+      setResult({ blob, filename: 'merged_document.pdf', sizeAfter: blob.size, sizeBefore: totalSize });
+      setProgress(100);
     } catch (e) {
       trackToolError('pdf-merge', 'general-error');
       setError(e instanceof Error ? e.message : 'Merge failed. Please try again.');

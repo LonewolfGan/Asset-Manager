@@ -4,6 +4,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
+// Processing is handled server-side via /api/tools/image-compress
 
 type Mode = 'quality' | 'target';
 type ResizeMode = 'none' | 'percent' | 'dimensions';
@@ -29,110 +30,6 @@ function reduction(orig: number, compressed: number) {
   return pct > 0 ? `-${pct}%` : `+${Math.abs(pct)}%`;
 }
 
-async function drawToCanvas(
-  file: File,
-  resizeMode: ResizeMode,
-  resizePct: number,
-  resizeW: number,
-  resizeH: number,
-): Promise<HTMLCanvasElement> {
-  const img = new Image();
-  const url = URL.createObjectURL(file);
-  await new Promise<void>((resolve, reject) => {
-    img.onload = () => resolve();
-    img.onerror = reject;
-    img.src = url;
-  });
-  URL.revokeObjectURL(url);
-
-  let w = img.width;
-  let h = img.height;
-
-  if (resizeMode === 'percent' && resizePct > 0 && resizePct !== 100) {
-    w = Math.round(w * resizePct / 100);
-    h = Math.round(h * resizePct / 100);
-  } else if (resizeMode === 'dimensions') {
-    if (resizeW > 0 && resizeH > 0) {
-      const ratio = Math.min(resizeW / w, resizeH / h);
-      w = Math.round(w * ratio);
-      h = Math.round(h * ratio);
-    } else if (resizeW > 0) {
-      h = Math.round(h * (resizeW / w));
-      w = resizeW;
-    } else if (resizeH > 0) {
-      w = Math.round(w * (resizeH / h));
-      h = resizeH;
-    }
-  }
-
-  const canvas = document.createElement('canvas');
-  canvas.width = w;
-  canvas.height = h;
-  const ctx = canvas.getContext('2d')!;
-  ctx.drawImage(img, 0, 0, w, h);
-  return canvas;
-}
-
-function getMime(file: File): string {
-  if (file.type === 'image/png') return 'image/png';
-  if (file.type === 'image/webp') return 'image/webp';
-  if (file.type === 'image/avif') return 'image/avif';
-  return 'image/jpeg';
-}
-
-async function blobAtQuality(canvas: HTMLCanvasElement, mime: string, q: number): Promise<Blob> {
-  return new Promise<Blob>((resolve, reject) =>
-    canvas.toBlob(
-      (b) => (b ? resolve(b) : reject(new Error('Canvas toBlob failed'))),
-      mime,
-      q,
-    ),
-  );
-}
-
-async function binarySearchQuality(
-  canvas: HTMLCanvasElement,
-  mime: string,
-  targetBytes: number,
-): Promise<Blob> {
-  let lo = 0.01;
-  let hi = 1.0;
-  let best: Blob | null = null;
-
-  for (let i = 0; i < 18; i++) {
-    const mid = (lo + hi) / 2;
-    const blob = await blobAtQuality(canvas, mime, mid);
-    if (blob.size <= targetBytes) {
-      best = blob;
-      lo = mid;
-    } else {
-      hi = mid;
-    }
-    if (hi - lo < 0.005) break;
-  }
-
-  return best ?? (await blobAtQuality(canvas, mime, 0.01));
-}
-
-async function stripExif(blob: Blob, file: File): Promise<Blob> {
-  if (!file.type.startsWith('image/jpeg')) return blob;
-  try {
-    const piexif = (await import('piexifjs')).default;
-    const reader = new FileReader();
-    const dataUrl = await new Promise<string>((res, rej) => {
-      reader.onload = () => res(reader.result as string);
-      reader.onerror = rej;
-      reader.readAsDataURL(blob);
-    });
-    const stripped = piexif.remove(dataUrl);
-    const byteString = atob(stripped.split(',')[1]);
-    const arr = new Uint8Array(byteString.length);
-    for (let i = 0; i < byteString.length; i++) arr[i] = byteString.charCodeAt(i);
-    return new Blob([arr], { type: 'image/jpeg' });
-  } catch {
-    return blob;
-  }
-}
 
 export default function ImageCompress() {
   const { t } = useLocale();
@@ -175,10 +72,6 @@ export default function ImageCompress() {
 
   const processAll = async () => {
     setIsProcessing(true);
-    const targetBytes = mode === 'target' ? parseFloat(targetKB) * 1024 : 0;
-    const w = parseInt(resizeW) || 0;
-    const h = parseInt(resizeH) || 0;
-
     const updated = [...files];
 
     for (let i = 0; i < updated.length; i++) {
@@ -188,18 +81,24 @@ export default function ImageCompress() {
       setFiles([...updated]);
 
       try {
-        const canvas = await drawToCanvas(entry.file, resizeMode, resizePct, w, h);
-        const mime = getMime(entry.file);
-
-        let blob: Blob;
-        if (mode === 'quality') {
-          blob = await blobAtQuality(canvas, mime, quality / 100);
-        } else {
-          blob = await binarySearchQuality(canvas, mime, targetBytes);
+        const fd = new FormData();
+        fd.append('file', entry.file);
+        fd.append('quality', quality.toString());
+        fd.append('stripMeta', stripMeta.toString());
+        fd.append('resizeMode', resizeMode);
+        if (mode === 'target') fd.append('targetKB', targetKB);
+        if (resizeMode === 'percent') fd.append('resizePct', resizePct.toString());
+        if (resizeMode === 'dimensions') {
+          if (resizeW) fd.append('resizeW', resizeW);
+          if (resizeH) fd.append('resizeH', resizeH);
         }
 
-        if (stripMeta) blob = await stripExif(blob, entry.file);
-
+        const res = await fetch('/api/tools/image-compress', { method: 'POST', body: fd });
+        if (!res.ok) {
+          const err = await res.json() as { error?: string };
+          throw new Error(err.error ?? 'Compression failed');
+        }
+        const blob = await res.blob();
         const compressedUrl = URL.createObjectURL(blob);
         updated[i] = { ...updated[i], status: 'done', blob, compressedUrl };
       } catch (err) {
@@ -212,6 +111,7 @@ export default function ImageCompress() {
       }
       setFiles([...updated]);
     }
+    trackToolUsed('image-compress', 'images');
     setIsProcessing(false);
   };
 
