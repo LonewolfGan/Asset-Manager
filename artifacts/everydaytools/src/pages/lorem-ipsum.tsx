@@ -5,6 +5,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { PageTitle, PageSubtitle } from '@/components/Typography';
 
 const WORDS = ['lorem','ipsum','dolor','sit','amet','consectetur','adipiscing','elit','sed','do','eiusmod','tempor','incididunt','ut','labore','et','dolore','magna','aliqua','enim','ad','minim','veniam','quis','nostrud','exercitation','ullamco','laboris','nisi','aliquip','ex','ea','commodo','consequat','duis','aute','irure','in','reprehenderit','voluptate','velit','esse','cillum','fugiat','nulla','pariatur','excepteur','sint','occaecat','cupidatat','non','proident','sunt','culpa','qui','officia','deserunt','mollit','anim','id','est','laborum'];
 
@@ -69,8 +70,8 @@ export default function LoremIpsum() {
     <>
       <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 80 }}>
         <Breadcrumb items={['Home', 'Text & Code', title]} />
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{title}</h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 24, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{desc}</p>
+        <PageTitle>{title}</PageTitle>
+        <PageSubtitle>{desc}</PageSubtitle>
 
         <div style={{ padding: 20, background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>

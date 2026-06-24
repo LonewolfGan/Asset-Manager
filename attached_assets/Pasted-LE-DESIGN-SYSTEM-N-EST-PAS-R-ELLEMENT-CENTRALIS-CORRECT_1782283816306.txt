@@ -1,0 +1,99 @@
+LE DESIGN SYSTEM N'EST PAS RÉELLEMENT CENTRALISÉ — CORRECTION STRUCTURELLE
+
+Malgré l'harmonisation précédente, des incohérences persistent : le 
+titre et le sous-titre de la page Blog n'ont pas le même font-size/
+font-weight que les titres des pages outils, et certaines pages outils 
+PDF ont des titres beaucoup trop gros par rapport au reste du site. Ça 
+veut dire que le travail précédent a corrigé des valeurs au cas par cas 
+au lieu d'éliminer la possibilité même d'avoir une valeur non centralisée. 
+Cette fois, je veux une approche structurelle : rendre IMPOSSIBLE d'avoir 
+du texte ou un espacement hors du design system, pas juste corriger ce 
+qu'on voit.
+
+ÉTAPE 1 — CRÉER DES COMPOSANTS DE TYPOGRAPHIE RÉUTILISABLES
+
+Au lieu de laisser chaque page définir son propre style de titre, crée 
+des composants typographiques centralisés que TOUTES les pages doivent 
+utiliser, par exemple :
+
+<PageTitle> → titre principal de page (H1), une seule taille/graisse 
+  possible, définie une fois
+<PageSubtitle> → sous-titre de page, une seule taille/graisse possible
+<SectionTitle> → titre de section (H2), une seule taille/graisse
+<SectionSubtitle> → sous-titre de section
+<BodyText> → paragraphe standard
+<SmallText> → texte secondaire/légende
+
+Chaque composant a UNE seule définition de font-size/font-weight/
+line-height/color, prise depuis les tokens du design system (Phase 1 du 
+travail précédent). Aucune prop "size" ou "variant" permettant de 
+dévier de cette valeur, sauf si explicitement nécessaire et limité à un 
+nombre fixe d'options déjà définies dans le design system (pas une 
+valeur libre en pixels).
+
+ÉTAPE 2 — REMPLACER TOUTES LES BALISES BRUTES PAR CES COMPOSANTS
+
+Cherche dans TOUT le code (grep) chaque utilisation brute de <h1>, <h2>, 
+<h3>, <p> qui a un style inline ou une classe avec une valeur de 
+font-size/font-weight codée en dur, sur TOUTES les pages (outils, blog, 
+accueil, pages légales). Remplace chacune par le composant typographique 
+correspondant de l'étape 1.
+
+Porte une attention particulière à :
+- La page Blog (listing ET template d'article individuel) — le titre/
+  sous-titre doit utiliser exactement <PageTitle>/<PageSubtitle>, pas 
+  un style spécifique au blog
+- Les pages outils PDF spécifiquement (pdf-to-word, pdf-merge, etc.) où 
+  un titre anormalement grand a été repéré — identifie pourquoi ces 
+  pages ont une taille différente (probablement un style inline résiduel 
+  d'une ancienne version, ou un composant de page outil PDF qui diffère 
+  du composant générique des autres pages outils)
+
+ÉTAPE 3 — INTERDIRE STRUCTURELLEMENT LES VALEURS EN DUR
+
+1. Cherche (grep) TOUT style inline (style={{...}} en React/JSX, ou 
+   attribut style="" en HTML) contenant font-size, font-weight, ou 
+   line-height sur l'ensemble du codebase. Liste chaque occurrence avec 
+   fichier et ligne.
+
+2. Cherche TOUTE classe Tailwind arbitraire de type text-[XXpx] ou 
+   font-[XXX] (si la stack utilise Tailwind) qui contourne l'échelle 
+   typographique standard du design system.
+
+3. Cherche TOUTE valeur numérique de taille de police codée en dur dans 
+   des fichiers CSS/SCSS qui ne référence pas une variable CSS/un token 
+   du design system (ex: font-size: 19px; au lieu de 
+   font-size: var(--font-size-lg);).
+
+4. Pour chaque occurrence trouvée dans les 3 points ci-dessus : remplace 
+   par le composant typographique approprié (étape 1) ou par la 
+   référence au token correspondant si c'est un cas où un composant 
+   React n'est pas applicable (ex: dans un fichier CSS pur).
+
+ÉTAPE 4 — VÉRIFICATION CROISÉE SPÉCIFIQUE BLOG vs PAGES OUTILS
+
+Compare explicitement, côte à côte :
+- Le titre de la page Blog (listing) vs le titre d'une page outil (ex: 
+  pdf-to-word) — donne-moi les valeurs de font-size et font-weight 
+  computed des deux, elles doivent être identiques si les deux utilisent 
+  bien <PageTitle>
+- Le sous-titre de la page Blog vs le sous-titre d'une page outil — 
+  même vérification
+- Le titre d'un article de blog individuel vs le titre d'une page outil 
+  PDF spécifiquement (pdf-merge, pdf-to-word, etc.) — même vérification, 
+  en ciblant précisément les pages PDF où le problème a été repéré
+
+ÉTAPE 5 — PREUVE FINALE
+
+1. Relance les 3 recherches grep de l'étape 3 et montre-moi le résultat 
+   brut — il doit être vide, ou chaque résultat restant justifié 
+   explicitement
+2. Donne-moi les valeurs computed réelles (via inspection ou test) du 
+   titre et sous-titre sur : page Blog listing, un article de blog 
+   individuel, et au moins 3 pages outils différentes incluant au moins 
+   une page PDF — pour confirmer qu'elles sont toutes identiques
+3. Liste tous les fichiers modifiés à l'étape 2
+
+Ne me dis pas "c'est centralisé" sans ces valeurs concrètes à l'appui — 
+le problème vient justement du fait qu'on a accepté une confirmation 
+verbale sans preuve la dernière fois, et le bug est resté.

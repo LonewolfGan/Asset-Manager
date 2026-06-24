@@ -6,6 +6,7 @@ import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { trackToolUsed } from '@/lib/analytics';
+import { PageTitle, PageSubtitle } from '@/components/Typography';
 
 type TabId = 'of' | 'isWhat' | 'change' | 'discount' | 'tip' | 'markup';
 
@@ -90,12 +91,12 @@ export default function PercentageCalc() {
     <>
       <div className="container-wide" style={{ paddingTop: 32, paddingBottom: 80 }}>
         <Breadcrumb items={['Home', 'Calculators', 'Percentage Calculator']} />
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 6px', letterSpacing: '-0.02em' }}>
+        <PageTitle style={{ marginBottom: 6 }}>
           {t.tools['percentage-calc']?.title ?? 'Percentage Calculator'}
-        </h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>
+        </PageTitle>
+        <PageSubtitle style={{ marginBottom: 32 }}>
           {t.tools['percentage-calc']?.description ?? 'Instantly calculate percentages, discounts, tips, and margins.'}
-        </p>
+        </PageSubtitle>
 
         {/* Tab switcher */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 24 }}>

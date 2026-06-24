@@ -4,6 +4,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
+import { PageTitle, PageSubtitle } from '@/components/Typography';
 // Processing is handled server-side via /api/tools/image-compress
 
 type Mode = 'quality' | 'target';
@@ -159,10 +160,10 @@ export default function ImageCompress() {
     <>
       <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 80 }}>
       <Breadcrumb items={['Home', 'Tools', 'Image Compressor']} />
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>
+      <PageTitle>
         {t.tools['image-compress']?.title ?? 'Image Compressor'}
-      </h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['image-compress']?.description ?? 'Compress up to 20 images at once. Quality slider or target file size. All processing runs in your browser.'}</p>
+      </PageTitle>
+      <PageSubtitle>{t.tools['image-compress']?.description ?? 'Compress up to 20 images at once. Quality slider or target file size. All processing runs in your browser.'}</PageSubtitle>
 
       {/* Drop zone */}
       <div

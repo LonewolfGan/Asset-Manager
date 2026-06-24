@@ -7,6 +7,7 @@ import ToolLoadingState from '@/components/ToolLoadingState';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
+import { PageTitle, PageSubtitle } from '@/components/Typography';
 
 export default function PdfMerge() {
   const { t } = useLocale();
@@ -45,8 +46,8 @@ export default function PdfMerge() {
     <>
       <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 80 }}>
       <Breadcrumb items={['Home', 'PDF Tools', 'Merge PDFs']} />
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['pdf-merge']?.title ?? 'Merge PDFs'}</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-merge']?.description ?? 'Combine multiple PDF files into a single document instantly.'}</p>
+      <PageTitle>{t.tools['pdf-merge']?.title ?? 'Merge PDFs'}</PageTitle>
+      <PageSubtitle>{t.tools['pdf-merge']?.description ?? 'Combine multiple PDF files into a single document instantly.'}</PageSubtitle>
 
       <FileUpload accept={['.pdf']} maxSizeMB={50} multiple={true} onFiles={setFiles} />
 

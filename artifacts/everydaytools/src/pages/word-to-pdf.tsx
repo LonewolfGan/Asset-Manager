@@ -6,6 +6,7 @@ import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { sanitizeHTML } from '@/utils/sanitize';
+import { PageTitle, PageSubtitle } from '@/components/Typography';
 
 function formatBytes(b: number) {
   if (b < 1024 * 1024) return `${(b / 1024).toFixed(1)} KB`;
@@ -68,8 +69,8 @@ export default function WordToPdf() {
     <>
       <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 80 }}>
         <Breadcrumb items={['Home', 'Documents', title]} />
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{title}</h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{desc}</p>
+        <PageTitle>{title}</PageTitle>
+        <PageSubtitle>{desc}</PageSubtitle>
 
         <div
           onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}

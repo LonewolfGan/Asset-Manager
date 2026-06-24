@@ -8,6 +8,7 @@ import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ToolLoadingState from '@/components/ToolLoadingState';
+import { PageTitle, PageSubtitle } from '@/components/Typography';
 
 export default function ImageResize() {
   const { t } = useLocale();
@@ -102,8 +103,8 @@ export default function ImageResize() {
     <>
       <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 80 }}>
       <Breadcrumb items={['Home', 'Image Tools', 'Resize Image']} />
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['image-resize']?.title ?? 'Resize Image'}</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['image-resize']?.description ?? 'Change the dimensions of your image quickly.'}</p>
+      <PageTitle>{t.tools['image-resize']?.title ?? 'Resize Image'}</PageTitle>
+      <PageSubtitle>{t.tools['image-resize']?.description ?? 'Change the dimensions of your image quickly.'}</PageSubtitle>
       
       <FileUpload accept={['image/jpeg', 'image/png', 'image/webp']} maxSizeMB={20} onFiles={setFiles} />
       

@@ -6,6 +6,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { PageTitle, PageSubtitle } from '@/components/Typography';
 
 export default function ImageCrop() {
   const { t } = useLocale();
@@ -153,8 +154,8 @@ export default function ImageCrop() {
     <>
       <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 80 }}>
       <Breadcrumb items={['Home', 'Image Tools', 'Crop Image']} />
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['image-crop']?.title ?? 'Crop Image'}</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['image-crop']?.description ?? 'Crop images easily with aspect ratio presets.'}</p>
+      <PageTitle>{t.tools['image-crop']?.title ?? 'Crop Image'}</PageTitle>
+      <PageSubtitle>{t.tools['image-crop']?.description ?? 'Crop images easily with aspect ratio presets.'}</PageSubtitle>
       
       {!imgObj && <FileUpload accept={['image/jpeg', 'image/png', 'image/webp']} maxSizeMB={20} onFiles={setFiles} />}
       

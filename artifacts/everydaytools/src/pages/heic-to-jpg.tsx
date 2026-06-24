@@ -7,6 +7,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import ToolLoadingState from '@/components/ToolLoadingState';
+import { PageTitle, PageSubtitle } from '@/components/Typography';
 
 export default function HeicToJpg() {
   const { t } = useLocale();
@@ -49,14 +50,14 @@ export default function HeicToJpg() {
     <>
       <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 80 }}>
       <Breadcrumb items={['Home', 'Image Tools', 'HEIC to JPG']} />
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['heic-to-jpg']?.title ?? 'HEIC to JPG'}</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['heic-to-jpg']?.description ?? 'Convert Apple iPhone HEIC/HEIF photos to universally compatible formats.'}</p>
+      <PageTitle>{t.tools['heic-to-jpg']?.title ?? 'HEIC to JPG'}</PageTitle>
+      <PageSubtitle>{t.tools['heic-to-jpg']?.description ?? 'Convert Apple iPhone HEIC/HEIF photos to universally compatible formats.'}</PageSubtitle>
       
       <FileUpload accept={['.heic', '.heif']} maxSizeMB={20} onFiles={setFiles} />
       
       {files.length > 0 && (
         <div style={{ marginTop: 24, padding: 20, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
-          <h3 style={{ fontSize: 'var(--text-base)', fontWeight: 500, marginBottom: 16 }}>Target Format</h3>
+          <h3 style={{ fontSize: 'var(--text-base)', fontWeight: 'var(--panel-label-weight)' as React.CSSProperties['fontWeight'], marginBottom: 16 }}>Target Format</h3>
           <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
             {([
               { value: 'image/jpeg', label: 'JPEG (Smaller size)' },

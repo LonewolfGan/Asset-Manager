@@ -92,7 +92,7 @@ export default function PdfToImage() {
           <ToolCard title="FORMAT & RESOLUTION">
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
               <div>
-                <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 500, marginBottom: 12 }}>Format</h3>
+                <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--panel-label-weight)' as React.CSSProperties['fontWeight'], marginBottom: 12 }}>Format</h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                   {([
                     { value: 'image/jpeg', label: 'JPEG' },
@@ -111,7 +111,7 @@ export default function PdfToImage() {
                 </div>
               </div>
               <div>
-                <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 500, marginBottom: 12 }}>Resolution</h3>
+                <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--panel-label-weight)' as React.CSSProperties['fontWeight'], marginBottom: 12 }}>Resolution</h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                   <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
                     <input type="radio" checked={scale === 1} onChange={() => setScale(1)} style={{ accentColor: 'var(--accent)' }} />

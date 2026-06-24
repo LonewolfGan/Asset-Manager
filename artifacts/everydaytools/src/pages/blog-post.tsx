@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { getBlogPostByEitherSlug, type ContentBlock } from "@/config/blog-data";
 import { useLocale } from "@/hooks/use-locale";
 import NotFound from "@/pages/not-found";
+import { PageTitle, PageSubtitle } from "@/components/Typography";
 
 const BASE_URL = "https://everydaytools.qzz.io";
 
@@ -27,8 +28,8 @@ function renderBlock(block: ContentBlock, idx: number) {
           key={idx}
           style={{
             fontFamily: "var(--font-display)",
-            fontSize: "clamp(20px, 3vw, 26px)",
-            fontWeight: 400,
+            fontSize: "var(--article-h2-size)",
+            fontWeight: "var(--article-h2-weight)" as React.CSSProperties["fontWeight"],
             color: "var(--text-primary)",
             letterSpacing: "-0.02em",
             margin: "40px 0 16px",
@@ -45,7 +46,7 @@ function renderBlock(block: ContentBlock, idx: number) {
           style={{
             fontFamily: "var(--font-ui)",
             fontSize: "var(--text-base)",
-            fontWeight: 600,
+            fontWeight: "var(--article-h3-weight)" as React.CSSProperties["fontWeight"],
             color: "var(--text-primary)",
             margin: "28px 0 10px",
             lineHeight: 1.4,
@@ -208,22 +209,8 @@ export default function BlogPost({ params }: BlogPostPageProps) {
             <span>·</span>
             <span>{post.readingMinutes} {readLabel}</span>
           </div>
-          <h1
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(26px, 5vw, 40px)",
-              fontWeight: 400,
-              color: "var(--text-primary)",
-              letterSpacing: "-0.02em",
-              lineHeight: 1.2,
-              marginBottom: 16,
-            }}
-          >
-            {post.title[lang]}
-          </h1>
-          <p style={{ fontSize: "var(--text-base)", color: "var(--text-secondary)", lineHeight: 1.65, margin: 0 }}>
-            {post.description[lang]}
-          </p>
+          <PageTitle style={{ marginBottom: 16 }}>{post.title[lang]}</PageTitle>
+          <PageSubtitle>{post.description[lang]}</PageSubtitle>
         </header>
 
         {/* CTA — try the tool */}

@@ -8,6 +8,7 @@ import { CURRENCIES, FALLBACK_RATES, FALLBACK_DATE } from '@/config/currencies.c
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { PageTitle, PageSubtitle } from '@/components/Typography';
 
 export default function CurrencyConverter() {
   const { t, locale } = useLocale();
@@ -122,8 +123,8 @@ export default function CurrencyConverter() {
     <>
       <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 80 }}>
       <Breadcrumb items={['Home', 'Calculators', 'Currency Converter']} />
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['currency-converter']?.title ?? 'Currency Converter'}</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['currency-converter']?.description ?? 'Convert between 170 currencies with live exchange rates.'}</p>
+      <PageTitle>{t.tools['currency-converter']?.title ?? 'Currency Converter'}</PageTitle>
+      <PageSubtitle>{t.tools['currency-converter']?.description ?? 'Convert between 170 currencies with live exchange rates.'}</PageSubtitle>
       
       <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: 24, marginBottom: 24 }}>
         
@@ -187,7 +188,7 @@ export default function CurrencyConverter() {
       
       <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 24, marginBottom: 32 }}>
         <div style={{ background: 'var(--bg)', padding: 16, borderRadius: 'var(--radius)', border: '1px solid var(--border)' }}>
-          <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 500, marginBottom: 12, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{t.currencyConverter.quickConversions}</h3>
+          <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--panel-label-weight)' as React.CSSProperties['fontWeight'], marginBottom: 12, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{t.currencyConverter.quickConversions}</h3>
           <table style={{ width: '100%', fontSize: 'var(--text-sm)', fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>
             <tbody>
               {[1, 10, 100, 1000, 10000].map(amt => (
@@ -201,7 +202,7 @@ export default function CurrencyConverter() {
         </div>
         
         <div style={{ background: 'var(--bg)', padding: 16, borderRadius: 'var(--radius)', border: '1px solid var(--border)' }}>
-          <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 500, marginBottom: 12, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{t.currencyConverter.recentHistory}</h3>
+          <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--panel-label-weight)' as React.CSSProperties['fontWeight'], marginBottom: 12, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{t.currencyConverter.recentHistory}</h3>
           {history.length > 0 ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>
               {history.slice(0, 5).map((h, i) => (

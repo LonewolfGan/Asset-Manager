@@ -241,7 +241,7 @@ function ToolCard({
         }}
         onMouseEnter={(e) => {
           const el = e.currentTarget as HTMLElement;
-          el.style.borderColor = cat.border;
+          el.style.borderColor = ACCENT_BORDER;
           el.style.boxShadow = `0 4px 16px rgba(0,0,0,0.07)`;
           const tint = el.querySelector<HTMLElement>(".card-tint");
           if (tint) tint.style.opacity = "1";
@@ -395,10 +395,10 @@ function HomeHero() {
             style={{
               display: "block",
               fontFamily: "var(--font-hero)",
-              fontSize: "clamp(44px, 10.5vw, 124px)",
-              fontWeight: 450,
+              fontSize: "var(--hero-word-size)",
+              fontWeight: "var(--hero-word-weight)" as React.CSSProperties["fontWeight"],
               color: "var(--hero-watermark)",
-              letterSpacing: "0.12em",
+              letterSpacing: "var(--hero-word-ls)",
               lineHeight: 1.05,
               textTransform: "uppercase",
             }}
@@ -411,10 +411,10 @@ function HomeHero() {
             style={{
               display: "block",
               fontFamily: "var(--font-hero)",
-              fontSize: "clamp(72px, 15vw, 178px)",
-              fontWeight: 900,
+              fontSize: "var(--hero-brand-size)",
+              fontWeight: "var(--hero-brand-weight)" as React.CSSProperties["fontWeight"],
               color: "var(--hero-title)",
-              letterSpacing: "-0.02em",
+              letterSpacing: "var(--hero-brand-ls)",
               lineHeight: 0.88,
             }}
           >
@@ -427,7 +427,7 @@ function HomeHero() {
           className="hero-sub"
           style={{
             fontFamily: "var(--font-ui)",
-            fontSize: "clamp(13px, 1.1vw, 15px)",
+            fontSize: "var(--hero-sub-size)",
             color: "var(--hero-subtitle)",
             margin: "22px auto 0",
             lineHeight: 1.7,

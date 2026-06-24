@@ -6,6 +6,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import ToolLoadingState from '@/components/ToolLoadingState';
+import { PageTitle, PageSubtitle } from '@/components/Typography';
 
 type Level = 'screen' | 'ebook' | 'prepress';
 
@@ -81,10 +82,10 @@ export default function PdfCompress() {
     <>
       <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 80 }}>
       <Breadcrumb items={['Home', 'PDF Tools', 'Compress PDF']} />
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>
+      <PageTitle>
         {t.tools['pdf-compress']?.title ?? 'PDF Compressor'}
-      </h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-compress']?.description ?? 'Reduce PDF file size by re-rendering pages at a target DPI and quality. All processing runs in your browser.'}</p>
+      </PageTitle>
+      <PageSubtitle>{t.tools['pdf-compress']?.description ?? 'Reduce PDF file size by re-rendering pages at a target DPI and quality. All processing runs in your browser.'}</PageSubtitle>
 
       <FileUpload accept={['.pdf', 'application/pdf']} maxSizeMB={50} onFiles={setFiles} />
 
@@ -172,7 +173,7 @@ export default function PdfCompress() {
               { label: tc.statsReduction, value: `${reduction > 0 ? '-' : '+'}${Math.abs(reduction)}%` },
             ].map((s) => (
               <div key={s.label} style={{ textAlign: 'center' }}>
-                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 600, color: s.label === tc.statsReduction && reduction > 0 ? 'var(--success)' : 'var(--text-primary)', margin: 0 }}>
+                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--stat-value-size)', fontWeight: 'var(--article-h3-weight)' as React.CSSProperties['fontWeight'], color: s.label === tc.statsReduction && reduction > 0 ? 'var(--success)' : 'var(--text-primary)', margin: 0 }}>
                   {s.value}
                 </p>
                 <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', margin: '2px 0 0' }}>

@@ -6,6 +6,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import ToolLoadingState from '@/components/ToolLoadingState';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { PageTitle, PageSubtitle } from '@/components/Typography';
 
 export default function Ocr() {
   const { t } = useLocale();
@@ -62,8 +63,8 @@ export default function Ocr() {
     <>
       <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 80 }}>
         <Breadcrumb items={['Home', 'PDF Tools', title]} />
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{title}</h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{desc}</p>
+        <PageTitle>{title}</PageTitle>
+        <PageSubtitle>{desc}</PageSubtitle>
 
         <div style={{ padding: '12px 16px', background: 'var(--bg-elevated)', borderRadius: 'var(--radius)', border: '1px solid var(--border)', marginBottom: 24, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>
           {t.ocr.modelNote}

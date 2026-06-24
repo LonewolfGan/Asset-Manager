@@ -6,6 +6,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import ToolLoadingState from '@/components/ToolLoadingState';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { PageTitle, PageSubtitle } from '@/components/Typography';
 
 type HashAlgo = 'SHA-1' | 'SHA-256' | 'SHA-512' | 'SHA-384';
 const ALGOS: HashAlgo[] = ['SHA-1', 'SHA-256', 'SHA-384', 'SHA-512'];
@@ -61,8 +62,8 @@ export default function Checksum() {
     <>
       <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 80 }}>
         <Breadcrumb items={['Home', 'Privacy', title]} />
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{title}</h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{desc}</p>
+        <PageTitle>{title}</PageTitle>
+        <PageSubtitle>{desc}</PageSubtitle>
 
         <div
           onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}

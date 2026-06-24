@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import Breadcrumb from './Breadcrumb';
 import AdSlot from './AdSlot';
 import { ToolPageSEO } from './ToolPageSEO';
+import { PageTitle, PageSubtitle } from './Typography';
 
 interface ToolPageLayoutProps {
   breadcrumb: string[];
@@ -48,31 +49,8 @@ export default function ToolPageLayout({
               borderBottom: '1px solid var(--border)',
             }}
           >
-            <h1
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(36px, 4.5vw, 64px)',
-                fontWeight: 700,
-                color: 'var(--text-primary)',
-                margin: '0 0 16px',
-                lineHeight: 1.1,
-                letterSpacing: '-0.025em',
-              }}
-            >
-              {title}
-            </h1>
-            <p
-              style={{
-                fontFamily: 'var(--font-ui)',
-                fontSize: 'var(--text-xl)',
-                color: 'var(--text-secondary)',
-                margin: 0,
-                lineHeight: 1.6,
-                maxWidth: '72ch',
-              }}
-            >
-              {description}
-            </p>
+            <PageTitle>{title}</PageTitle>
+            <PageSubtitle>{description}</PageSubtitle>
           </div>
 
           {/* Tool content */}

@@ -7,6 +7,7 @@ import ToolLoadingState from '@/components/ToolLoadingState';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
+import { PageTitle, PageSubtitle } from '@/components/Typography';
 
 export default function PdfSplit() {
   const { t } = useLocale();
@@ -51,14 +52,14 @@ export default function PdfSplit() {
     <>
       <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 80 }}>
       <Breadcrumb items={['Home', 'PDF Tools', 'Split PDF']} />
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['pdf-split']?.title ?? 'Split PDF'}</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-split']?.description ?? 'Extract pages or split a PDF document into multiple files.'}</p>
+      <PageTitle>{t.tools['pdf-split']?.title ?? 'Split PDF'}</PageTitle>
+      <PageSubtitle>{t.tools['pdf-split']?.description ?? 'Extract pages or split a PDF document into multiple files.'}</PageSubtitle>
       
       <FileUpload accept={['.pdf']} maxSizeMB={50} onFiles={setFiles} />
       
       {files.length > 0 && (
         <div style={{ marginTop: 24, padding: 20, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
-          <h3 style={{ fontSize: 'var(--text-base)', fontWeight: 500, marginBottom: 16 }}>Split Options</h3>
+          <h3 style={{ fontSize: 'var(--text-base)', fontWeight: 'var(--panel-label-weight)' as React.CSSProperties['fontWeight'], marginBottom: 16 }}>Split Options</h3>
           
           {([
             { value: 'every', label: 'Extract every page into individual PDFs (ZIP)' },

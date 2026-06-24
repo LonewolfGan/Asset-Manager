@@ -5,6 +5,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { PageTitle, PageSubtitle } from '@/components/Typography';
 
 interface FileResult {
   id: string;
@@ -274,8 +275,8 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
     <>
       <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 80 }}>
         <Breadcrumb items={['Home', breadcrumbParent, toolTitle]} />
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{toolTitle}</h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{toolDesc || `Convert ${fromLabel} files to ${toExt.toUpperCase()} — all in your browser.`}</p>
+        <PageTitle>{toolTitle}</PageTitle>
+        <PageSubtitle>{toolDesc || `Convert ${fromLabel} files to ${toExt.toUpperCase()} — all in your browser.`}</PageSubtitle>
 
         <div
           data-testid="drop-zone"

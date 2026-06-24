@@ -6,6 +6,7 @@ import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { trackToolUsed } from '@/lib/analytics';
+import { PageTitle, PageSubtitle } from '@/components/Typography';
 
 const QUICK_TIPS = [15, 18, 20, 25];
 
@@ -94,12 +95,12 @@ export default function TipCalculator() {
       <div className="container-wide" style={{ paddingTop: 32, paddingBottom: 64 }}>
         <Breadcrumb items={['Home', 'Calculators', 'Tip Calculator']} />
 
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 6px', letterSpacing: '-0.02em' }}>
+        <PageTitle style={{ marginBottom: 6 }}>
           {t.tools['tip-calculator']?.title}
-        </h1>
-        <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', margin: '0 0 32px' }}>
+        </PageTitle>
+        <PageSubtitle style={{ marginBottom: 32 }}>
           {t.tools['tip-calculator']?.description}
-        </p>
+        </PageSubtitle>
 
         <AdSlot type="horizontal" />
 

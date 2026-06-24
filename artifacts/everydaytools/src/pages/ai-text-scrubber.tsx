@@ -5,6 +5,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { PageTitle, PageSubtitle } from '@/components/Typography';
 
 // ── Client-side scrub logic ───────────────────────────────────────────────────
 const INVISIBLE_RE = /[\u200B\u200C\u200D\u2060\u2061\u2062\u2063\uFEFF]/g;
@@ -96,12 +97,12 @@ export default function AiTextScrubber() {
     <>
       <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 80 }}>
         <Breadcrumb items={['Home', 'Privacy Tools', 'AI Text Scrubber']} />
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>
+        <PageTitle>
           {t.tools['ai-text-scrubber']?.title ?? 'AI Text Scrubber'}
-        </h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>
+        </PageTitle>
+        <PageSubtitle>
           {t.tools['ai-text-scrubber']?.description ?? 'Remove invisible characters and AI-detection patterns from text.'}
-        </p>
+        </PageSubtitle>
 
         <div style={{ display: 'flex', borderBottom: '1px solid var(--border)', marginBottom: 24 }}>
           <button onClick={() => switchTab('invisible')} style={{ flex: 1, padding: '12px', background: 'none', border: 'none', borderBottom: tab === 'invisible' ? '2px solid var(--accent)' : '2px solid transparent', fontWeight: 500, cursor: 'pointer', color: tab === 'invisible' ? 'var(--text-primary)' : 'var(--text-secondary)', fontFamily: 'var(--font-ui)' }}>{tc.tabInvisible}</button>
@@ -137,7 +138,7 @@ export default function AiTextScrubber() {
         {outputText && (
           <div style={{ marginTop: 32 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-              <h3 style={{ fontSize: 'var(--text-base)', fontWeight: 500, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{tc.cleanedOutput}</h3>
+              <h3 style={{ fontSize: 'var(--text-base)', fontWeight: 'var(--panel-label-weight)' as React.CSSProperties['fontWeight'], color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{tc.cleanedOutput}</h3>
               <div style={{ display: 'flex', gap: 8 }}>
                 <button onClick={handleCopy} style={{ padding: '6px 12px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: 'var(--text-sm)', cursor: 'pointer', fontFamily: 'var(--font-ui)', color: copied ? 'var(--accent)' : 'var(--text-primary)', transition: 'color 150ms ease' }}>{copied ? '✓ ' + t.common.copied : tc.copy}</button>
                 <button onClick={handleDownload} style={{ padding: '6px 12px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: 'var(--text-sm)', cursor: 'pointer', fontFamily: 'var(--font-ui)', color: 'var(--text-primary)' }}>{tc.downloadTxt}</button>

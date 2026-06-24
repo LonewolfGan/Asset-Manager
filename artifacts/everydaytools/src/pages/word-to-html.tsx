@@ -76,7 +76,7 @@ export default function WordToHtml() {
 
         {result && result.textOutput && (
           <div style={{ marginTop: 32, border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: 16, background: 'var(--surface)' }}>
-            <h3 style={{ fontSize: 'var(--text-base)', fontWeight: 500, marginBottom: 12 }}>Preview</h3>
+            <h3 style={{ fontSize: 'var(--text-base)', fontWeight: 'var(--panel-label-weight)' as React.CSSProperties['fontWeight'], marginBottom: 12 }}>Preview</h3>
             <div
               style={{ maxHeight: 400, overflow: 'auto', background: 'var(--bg)', padding: 16, borderRadius: 'var(--radius)', border: '1px solid var(--border)' }}
               dangerouslySetInnerHTML={{ __html: sanitizeHTML(result.textOutput.replace(/<!DOCTYPE html>.*<body>/is, '').replace(/<\/body><\/html>/i, '')) }}

@@ -4,6 +4,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed } from '@/lib/analytics';
+import { PageTitle, PageSubtitle } from '@/components/Typography';
 
 type Mode = 'encode' | 'decode';
 
@@ -34,8 +35,8 @@ export default function UrlEncoder() {
     <>
       <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 80 }}>
         <Breadcrumb items={['Home', 'Text & Code', title]} />
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{title}</h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 24, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{desc}</p>
+        <PageTitle>{title}</PageTitle>
+        <PageSubtitle>{desc}</PageSubtitle>
 
         <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
           {(['encode', 'decode'] as Mode[]).map((m) => (

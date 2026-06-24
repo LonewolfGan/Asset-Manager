@@ -5,6 +5,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
+import { PageTitle, PageSubtitle } from '@/components/Typography';
 
 type InputMode = 'url' | 'text' | 'wifi' | 'vcard';
 type ErrorLevel = 'L' | 'M' | 'Q' | 'H';
@@ -179,12 +180,12 @@ export default function QrCodeGenerator() {
     <>
       <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 80 }}>
         <Breadcrumb items={['Home', 'Calculators', 'QR Code Generator']} />
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)', lineHeight: 1.15 }}>
+        <PageTitle>
           {title}
-        </h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>
+        </PageTitle>
+        <PageSubtitle>
           {description}
-        </p>
+        </PageSubtitle>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: 24, alignItems: 'start' }}>
 

@@ -4,6 +4,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed } from '@/lib/analytics';
+import { PageTitle, PageSubtitle } from '@/components/Typography';
 
 function analyze(text: string) {
   const words = text.trim() ? text.trim().split(/\s+/).filter(Boolean).length : 0;
@@ -32,7 +33,7 @@ export default function WordCounter() {
 
   const stat = (label: string, value: string | number) => (
     <div style={{ padding: '14px 16px', background: 'var(--bg-elevated)', borderRadius: 'var(--radius-card)', textAlign: 'center' }}>
-      <p style={{ fontFamily: 'var(--font-mono)', fontSize: 26, fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 4px' }}>{value}</p>
+      <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--stat-display-size)', fontWeight: 'var(--stat-display-weight)' as React.CSSProperties['fontWeight'], color: 'var(--text-primary)', margin: '0 0 4px' }}>{value}</p>
       <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', margin: 0, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{label}</p>
     </div>
   );
@@ -41,8 +42,8 @@ export default function WordCounter() {
     <>
       <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 80 }}>
         <Breadcrumb items={['Home', 'Text & Code', title]} />
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{title}</h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 24, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{desc}</p>
+        <PageTitle>{title}</PageTitle>
+        <PageSubtitle>{desc}</PageSubtitle>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 20 }}>
           {stat(t.wordCounter.words, stats.words)}

@@ -7,6 +7,7 @@ import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { useIsMobile } from '@/hooks/use-mobile';
 import FormatSelector from '@/components/FormatSelector';
+import { PageTitle, PageSubtitle } from '@/components/Typography';
 
 export default function PasswordGenerator() {
   const { t } = useLocale();
@@ -112,13 +113,13 @@ export default function PasswordGenerator() {
     <>
       <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 80 }}>
       <Breadcrumb items={['Home', 'Calculators', 'Password Generator']} />
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['password-generator']?.title ?? 'Password Generator'}</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['password-generator']?.description ?? 'Generate cryptographically secure passwords locally.'}</p>
+      <PageTitle>{t.tools['password-generator']?.title ?? 'Password Generator'}</PageTitle>
+      <PageSubtitle>{t.tools['password-generator']?.description ?? 'Generate cryptographically secure passwords locally.'}</PageSubtitle>
       
       <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: 24 }}>
         
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-          <h2 style={{ fontSize: 24, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)', wordBreak: 'break-all', margin: 0 }}>{passwords[0] || ""}</h2>
+          <h2 style={{ fontSize: 'var(--display-value-size)', fontFamily: 'var(--font-mono)', color: 'var(--text-primary)', wordBreak: 'break-all', margin: 0 }}>{passwords[0] || ""}</h2>
           <button onClick={() => handleCopy(passwords[0], 'main')} style={{ padding: '8px 16px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', cursor: 'pointer', color: copiedKey === 'main' ? 'var(--accent)' : 'var(--text-primary)', fontFamily: 'var(--font-ui)', transition: 'color 150ms ease' }}>{copiedKey === 'main' ? '✓ ' + pg.copy : pg.copy}</button>
         </div>
         
@@ -189,7 +190,7 @@ export default function PasswordGenerator() {
       
       {passwords.length > 1 && (
         <div style={{ marginTop: 24, padding: 16, background: 'var(--bg)', borderRadius: 'var(--radius)', border: '1px solid var(--border)', maxHeight: 300, overflow: 'auto' }}>
-          <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 500, marginBottom: 12, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{pg.bulkGeneration}</h3>
+          <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--panel-label-weight)' as React.CSSProperties['fontWeight'], marginBottom: 12, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{pg.bulkGeneration}</h3>
           {passwords.map((p, i) => (
             <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid var(--border)' }}>
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)' }}>{p}</span>
@@ -202,7 +203,7 @@ export default function PasswordGenerator() {
       {history.length > 0 && (
         <div style={{ marginTop: 24 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-            <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{pg.history}</h3>
+            <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--panel-label-weight)' as React.CSSProperties['fontWeight'], color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{pg.history}</h3>
             <button onClick={() => { setHistory([]); sessionStorage.removeItem('password_history'); }} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{pg.clearHistory}</button>
           </div>
           <div style={{ background: 'var(--surface)', borderRadius: 'var(--radius)', border: '1px solid var(--border)' }}>

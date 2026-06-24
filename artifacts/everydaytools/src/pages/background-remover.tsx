@@ -7,6 +7,7 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
+import { PageTitle, PageSubtitle } from '@/components/Typography';
 
 type ItemStatus = 'pending' | 'processing' | 'done' | 'error';
 
@@ -64,7 +65,7 @@ const NEXT_STEPS = [
 function WhatsNext() {
   return (
     <div style={{ marginTop: 32, paddingTop: 24, borderTop: '1px solid var(--border)' }}>
-      <p style={{ fontFamily: 'var(--font-ui)', fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', margin: '0 0 14px' }}>
+      <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--caption-size)', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', margin: '0 0 14px' }}>
         What's next?
       </p>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 10 }}>
@@ -229,12 +230,12 @@ export default function BackgroundRemover() {
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 80 }}>
         <Breadcrumb items={['Home', 'Image Tools', 'Background Remover']} />
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>
+        <PageTitle>
           {t.tools['background-remover']?.title ?? 'Background Remover'}
-        </h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>
+        </PageTitle>
+        <PageSubtitle>
           {t.tools['background-remover']?.description ?? 'Remove backgrounds from photos instantly. Free, no account required.'}
-        </p>
+        </PageSubtitle>
 
         {!isProcessing && !allFinished && (
           <FileUpload
@@ -341,11 +342,11 @@ export default function BackgroundRemover() {
                 {item.status === 'done' && item.resultUrl && (
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', borderTop: '1px solid var(--border)' }}>
                     <div style={{ padding: 12, borderRight: '1px solid var(--border)' }}>
-                      <p style={{ fontFamily: 'var(--font-ui)', fontSize: 10, color: 'var(--text-tertiary)', margin: '0 0 6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Original</p>
+                      <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--micro-size)', color: 'var(--text-tertiary)', margin: '0 0 6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Original</p>
                       <img src={item.previewUrl} alt="Original" style={{ width: '100%', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }} />
                     </div>
                     <div style={{ padding: 12 }}>
-                      <p style={{ fontFamily: 'var(--font-ui)', fontSize: 10, color: 'var(--text-tertiary)', margin: '0 0 6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Result</p>
+                      <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--micro-size)', color: 'var(--text-tertiary)', margin: '0 0 6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Result</p>
                       <div style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'16\' height=\'16\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 0h8v8H0zm8 8h8v8H8z\' fill=\'%23e5e5e5\' fill-rule=\'evenodd\'/%3E%3C/svg%3E")', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', overflow: 'hidden' }}>
                         <img src={item.resultUrl} alt="Result" style={{ width: '100%', display: 'block' }} />
                       </div>

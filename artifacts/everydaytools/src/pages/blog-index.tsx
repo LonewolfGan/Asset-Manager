@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { Link } from "wouter";
 import { BLOG_POSTS } from "@/config/blog-data";
 import { useLocale } from "@/hooks/use-locale";
+import { PageTitle, PageSubtitle } from "@/components/Typography";
 
 const BASE_URL = "https://everydaytools.qzz.io";
 
@@ -84,12 +85,8 @@ export default function BlogIndex() {
 
         {/* Hero */}
         <div style={{ marginBottom: 48 }}>
-          <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(28px, 5vw, 42px)", fontWeight: 400, color: "var(--text-primary)", letterSpacing: "-0.02em", marginBottom: 12 }}>
-            {heroTitle}
-          </h1>
-          <p style={{ fontSize: 16, color: "var(--text-secondary)", maxWidth: 560, lineHeight: 1.6 }}>
-            {heroSubtitle}
-          </p>
+          <PageTitle style={{ marginBottom: 16 }}>{heroTitle}</PageTitle>
+          <PageSubtitle>{heroSubtitle}</PageSubtitle>
         </div>
 
         {/* Post grid */}
@@ -127,10 +124,10 @@ export default function BlogIndex() {
                   <span>·</span>
                   <span>{post.readingMinutes} {readLabel}</span>
                 </div>
-                <h2 style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 400, color: "var(--text-primary)", lineHeight: 1.3, letterSpacing: "-0.01em", margin: 0 }}>
+                <h2 style={{ fontFamily: "var(--font-display)", fontSize: "var(--card-title-size)", fontWeight: "var(--card-title-weight)" as React.CSSProperties["fontWeight"], color: "var(--text-primary)", lineHeight: 1.3, letterSpacing: "-0.01em", margin: 0 }}>
                   {post.title[lang]}
                 </h2>
-                <p style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6, margin: 0, flex: 1 }}>
+                <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", lineHeight: 1.6, margin: 0, flex: 1 }}>
                   {post.description[lang]}
                 </p>
                 <span style={{ fontSize: 13, color: "var(--accent)", fontWeight: 500, display: "flex", alignItems: "center", gap: 4 }}>

@@ -8,6 +8,7 @@ import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { trackToolUsed } from '@/lib/analytics';
+import { PageTitle, PageSubtitle } from '@/components/Typography';
 
 export default function UnitConverter() {
   const { t } = useLocale();
@@ -104,8 +105,8 @@ export default function UnitConverter() {
     <>
       <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 80 }}>
       <Breadcrumb items={['Home', 'Calculators', 'Unit Converter']} />
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['unit-converter']?.title ?? 'Unit Converter'}</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['unit-converter']?.description ?? 'Convert between 200+ units across 13 measurement categories.'}</p>
+      <PageTitle>{t.tools['unit-converter']?.title ?? 'Unit Converter'}</PageTitle>
+      <PageSubtitle>{t.tools['unit-converter']?.description ?? 'Convert between 200+ units across 13 measurement categories.'}</PageSubtitle>
       
       <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 16, marginBottom: 16, borderBottom: '1px solid var(--border)' }}>
         {UNIT_CATEGORIES.map(c => (
@@ -176,7 +177,7 @@ export default function UnitConverter() {
       
       {favorites.length > 0 && (
         <div style={{ marginBottom: 32 }}>
-          <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 500, marginBottom: 12, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{t.unitConverter.pinnedConversions}</h3>
+          <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--panel-label-weight)' as React.CSSProperties['fontWeight'], marginBottom: 12, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>{t.unitConverter.pinnedConversions}</h3>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             {favorites.map(fav => {
               const [cat, from, to] = fav.split(':');

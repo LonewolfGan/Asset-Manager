@@ -111,6 +111,50 @@
   --text-4xl:  3rem;
   --text-5xl:  4rem;
 
+  /* ─── PAGE TYPOGRAPHY TOKENS — single source of truth ─── */
+  /* Edit ONLY here to change typography across the entire site */
+  --page-title-size:      clamp(36px, 4.5vw, 64px);
+  --page-title-weight:    700;
+  --page-title-lh:        1.1;
+  --page-title-ls:        -0.025em;
+  --page-title-mb:        16px;
+  --page-subtitle-size:   var(--text-xl);
+  --page-subtitle-lh:     1.6;
+  --page-subtitle-maxw:   72ch;
+  --section-title-size:   var(--text-2xl);
+  --section-title-weight: 600;
+  --section-title-lh:     1.25;
+  --section-title-ls:     -0.02em;
+  --body-text-size:       var(--text-sm);
+  --body-text-lh:         1.7;
+  --small-text-size:      var(--text-xs);
+  --small-text-lh:        1.5;
+
+  /* ─── ARTICLE / BLOG TOKENS ─── */
+  --article-h2-size:      clamp(20px, 3vw, 26px);
+  --article-h2-weight:    400;
+  --article-h3-weight:    600;
+  --card-title-size:      1.125rem;   /* blog listing card title (≈18px) */
+  --card-title-weight:    400;
+
+  /* ─── UI PANEL / TOOL TOKENS ─── */
+  --panel-label-weight:   500;          /* h3 panel subheaders inside tools */
+  --display-value-size:   1.5rem;       /* large monospace data display (password, stats) */
+  --stat-value-size:      1.375rem;     /* medium stat number (pdf-compress) */
+  --stat-display-size:    1.625rem;     /* large stat number (word-counter, 26px) */
+  --stat-display-weight:  700;          /* bold weight for large stat numbers */
+  --caption-size:         0.6875rem;    /* tiny UI caption / label (11px) */
+  --micro-size:           0.625rem;     /* micro caption (10px) */
+
+  /* ─── HOMEPAGE HERO TOKENS ─── */
+  --hero-word-size:       clamp(44px, 10.5vw, 124px);
+  --hero-word-weight:     450;
+  --hero-word-ls:         0.12em;
+  --hero-brand-size:      clamp(72px, 15vw, 178px);
+  --hero-brand-weight:    900;
+  --hero-brand-ls:        -0.02em;
+  --hero-sub-size:        clamp(13px, 1.1vw, 15px);
+
   /* Spacing scale */
   --content-narrow: 640px;
   --content-mid:    800px;
