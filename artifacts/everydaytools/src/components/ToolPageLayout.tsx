@@ -35,7 +35,7 @@ export default function ToolPageLayout({
       <div
         className="container-wide"
         style={{
-          paddingTop: '40px',
+          paddingTop: '28px',
         }}
       >
           <Breadcrumb items={breadcrumb} />
@@ -43,9 +43,9 @@ export default function ToolPageLayout({
           {/* Hero section */}
           <div
             style={{
-              marginTop: 28,
-              marginBottom: 48,
-              paddingBottom: 40,
+              marginTop: 16,
+              marginBottom: 28,
+              paddingBottom: 20,
               borderBottom: '1px solid var(--border)',
             }}
           >
