@@ -1,0 +1,115 @@
+HARMONISATION COMPLÈTE DU DESIGN SYSTEM — TOUT LE SITE, AUCUNE EXCEPTION
+
+Le site a actuellement des incohérences visuelles : fonts différentes selon 
+les pages, tailles de police non cohérentes, border-radius variables, 
+espacements incohérents, tailles d'éléments/cards/sections qui diffèrent 
+d'une page à l'autre. Je veux une harmonisation totale, et je veux une 
+méthode qui ne rate AUCUNE page cette fois — on a déjà eu plusieurs fois 
+des pages oubliées lors d'audits précédents (full-width, par exemple), je 
+ne veux pas revivre ça avec le design.
+
+PHASE 0 — INVESTIGUER LA ROUTE /en
+
+Avant de commencer le design, j'ai remarqué une route /en qui existe sur 
+le site alors que le switch de langue EN/FR ne devrait pas changer l'URL 
+(c'est un toggle de contenu sur la même route, pas un préfixe d'URL). 
+Trouve pourquoi cette route /en existe : 
+- Est-ce un reste de code d'une ancienne implémentation i18n avec 
+  préfixe de langue ?
+- Est-ce une redirection mal configurée ?
+- Est-ce qu'elle affiche du contenu dupliqué, cassé, ou non stylé ?
+Identifie la cause exacte et corrige-la (probablement en la supprimant 
+si elle n'a pas de raison d'être, ou en la redirigeant proprement vers 
+la route équivalente sans préfixe).
+
+PHASE 1 — DÉFINIR LE DESIGN SYSTEM DE RÉFÉRENCE (avant tout changement)
+
+Avant de toucher au code, utilise tes compétences de design pour définir 
+UN SEUL design system de référence, documenté clairement, avec :
+
+1. Typographie
+   - UNE police pour les titres, UNE police pour le corps de texte 
+     (peuvent être la même police en différentes graisses)
+   - Échelle de tailles cohérente (ex: 12px, 14px, 16px, 18px, 20px, 24px, 
+     32px, 40px — une vraie échelle, pas des valeurs arbitraires comme 
+     17px ici et 19px là)
+   - Graisses utilisées (regular, medium, semibold, bold) et dans quel 
+     contexte chacune s'applique
+
+2. Border-radius
+   - Une échelle limitée (ex: 8px pour petits éléments comme badges/pills, 
+     12px pour cards, 16px pour grandes sections/modales) — pas de valeurs 
+     aléatoires comme 10px ici, 14px là, 16px ailleurs pour le même type 
+     d'élément
+
+3. Espacements
+   - Une échelle d'espacement cohérente basée sur une unité de base (ex: 
+     4px ou 8px), avec des multiples clairs (8, 16, 24, 32, 48, 64px) 
+     utilisés pour padding/margin/gap partout
+
+4. Couleurs
+   - Confirme la palette actuelle (couleur d'accent unique déjà décidée 
+     plus tôt dans le projet, couleurs de fond, couleurs de texte, 
+     couleurs de bordure) et vérifie qu'elle est appliquée de façon 
+     cohérente, pas de variations de teinte légèrement différentes pour 
+     la même fonction sur différentes pages
+
+5. Tailles de composants
+   - Hauteur cohérente des boutons selon leur taille (small/medium/large)
+   - Taille cohérente des icônes selon leur contexte (navbar, cards, 
+     boutons)
+   - Dimensions cohérentes des cards selon leur catégorie (tool cards, 
+     blog cards, etc.)
+
+Documente ce design system dans un fichier centralisé (ex: design-tokens.css, 
+theme.ts, tailwind.config selon la stack) — toutes les valeurs ci-dessus 
+doivent être des variables/tokens réutilisables, jamais des valeurs codées 
+en dur dispersées dans chaque composant.
+
+Montre-moi ce design system avant de l'appliquer partout, pour validation.
+
+PHASE 2 — INVENTAIRE EXHAUSTIF DE TOUTES LES ROUTES (par le code, pas la mémoire)
+
+Comme demandé dans un audit précédent : liste TOUTES les routes réelles du 
+site en lisant le routeur/dossier de pages directement dans le code, pas 
+de mémoire. Inclus absolument toutes les pages : les 94 outils déjà 
+recensés, le blog (listing + template d'article), les pages légales, la 
+page d'accueil, la page 404, et toute route que tu découvrirais en plus 
+en lisant le code (comme /en qu'on vient de traiter).
+
+PHASE 3 — AUDIT MÉCANIQUE DE CHAQUE PAGE CONTRE LE DESIGN SYSTEM
+
+Pour CHAQUE route listée en Phase 2, vérifie par recherche dans le code 
+(grep/ripgrep, pas inspection visuelle au cas par cas) :
+- Toute déclaration de font-family qui ne référence pas la police définie 
+  en Phase 1
+- Toute valeur de font-size codée en dur qui ne correspond pas à l'échelle 
+  définie
+- Toute valeur de border-radius codée en dur hors de l'échelle définie
+- Toute valeur de padding/margin/gap codée en dur hors de l'échelle 
+  d'espacement définie
+- Toute couleur codée en dur (hex, rgb) qui n'utilise pas les variables/
+  tokens de couleur définis
+
+Liste chaque fichier et ligne où une incohérence est trouvée.
+
+PHASE 4 — CORRIGER CHAQUE OCCURRENCE TROUVÉE
+
+Remplace chaque valeur codée en dur trouvée en Phase 3 par la référence 
+au design token correspondant. Fais ça systématiquement, fichier par 
+fichier, sans en sauter.
+
+PHASE 5 — PREUVE FINALE, PAS AFFIRMATION
+
+Une fois terminé :
+1. Relance le même grep qu'en Phase 3 et montre-moi le résultat — il doit 
+   être vide ou chaque résultat restant doit être justifié explicitement 
+   (ex: une valeur ponctuelle légitime sur un composant tiers qu'on ne 
+   contrôle pas)
+2. Donne-moi la liste complète des routes auditées avec leur statut 
+   (déjà conforme / corrigé / cas particulier)
+3. Confirme le statut de la route /en après investigation de la Phase 0
+
+Ne me dis pas "c'est harmonisé partout" sans le résultat brut du grep 
+final à l'appui — je veux la preuve mécanique comme pour les audits 
+précédents, pas une confirmation verbale.

@@ -1,0 +1,40 @@
+PRÉCISION IMPORTANTE — SECTION DE CONTENU EN BAS DES PAGES OUTILS
+
+Sur chaque page outil individuelle, il y a une section sous la zone 
+d'upload/d'action (celle qui décrit l'outil — son fonctionnement, ses cas 
+d'usage, parfois une FAQ). Cette section ne suit PAS le design system 
+actuel et a clairement été oubliée des audits précédents (full-width 
+inclus). Elle DOIT être explicitement vérifiée et corrigée cette fois, 
+pas seulement la zone d'upload/action au-dessus.
+
+Pour cette section spécifique, sur CHAQUE page outil sans exception, 
+vérifie et corrige :
+- Font-family : doit être la même police que le reste du site, pas une 
+  police différente héritée d'un ancien template
+- Font-size : doit suivre l'échelle typographique définie en Phase 1, 
+  pas des tailles arbitraires
+- Couleurs de texte et de fond : doivent utiliser les tokens définis, 
+  pas des couleurs codées en dur différentes du reste du site
+- Espacements (padding/margin entre cette section et la zone d'action 
+  au-dessus, et à l'intérieur de la section elle-même) : doivent suivre 
+  l'échelle d'espacement définie
+- Border-radius des éventuels encadrés/cards dans cette section : doit 
+  suivre l'échelle définie
+- Container : doit utiliser .container-wide ou .container-reading selon 
+  le type de contenu (cette section est probablement plutôt 
+  .container-reading puisqu'elle contient du texte explicatif, sauf si 
+  elle contient une grille comme une FAQ en accordéon, qui pourrait 
+  rester en .container-wide avec le texte interne en lecture confortable)
+
+Cette section existe sur TOUTES les pages outils — fais une recherche 
+explicite du composant/template qui la génère (elle est probablement 
+partagée entre toutes les pages outils via un composant commun, ce qui 
+serait la cause probable du fait qu'elle "rate" l'harmonisation : si elle 
+vient d'un template séparé ajouté après coup, elle n'a peut-être jamais 
+hérité des styles globaux).
+
+Dans la Phase 3 (audit mécanique par grep), inclus explicitement le ou 
+les fichiers de ce composant dans la recherche, et confirme-moi 
+spécifiquement son statut avant/après dans le livrable final — je veux 
+une ligne dédiée à cette section dans ton rapport, pas juste noyée dans 
+l'audit général des pages outils.
