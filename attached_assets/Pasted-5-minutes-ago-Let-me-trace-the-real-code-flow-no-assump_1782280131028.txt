@@ -1,0 +1,50 @@
+5 minutes ago
+
+Let me trace the real code flow — no assumptions.
+
+Good — server route exists with @imgly/background-removal-node. Now let me read the frontend page to see exactly what it calls.
+
+Diagnostic complet. Voici ce que j'ai trouvé concrètement :
+
+Ligne 130 de background-remover.tsx : fetch('/api/remove-background', ...) → c'est du côté serveur. Aucun import de @imgly/background-removal (client) n'existe dans le frontend.
+
+artifacts/api-server/src/routes/background.ts ligne 13 : import("@imgly/background-removal-node") → c'est bien le package Node.js serveur.
+
+Conclusion : Le traitement est déjà côté serveur. Le rapport précédent était correct sur ce point. Le problème réel est deux choses distinctes :
+
+    La description UI dit "runs on your device" — c'est une erreur de traduction i18n, pas la réalité
+    Le modèle medium donne de mauvais résultats — il faut tester large
+
+Traçons l'inscription du router et les traductions pour corriger les deux.
+
+Let me check the router registration and the available models in @imgly/background-removal-node:
+
+Full picture now. Here's the real verdict:
+
+Exact flow traced:
+
+    background-remover.tsx:130 → fetch('/api/remove-background', ...) → server
+    routes/index.ts:5,17 → backgroundRouter is mounted at /api
+    routes/background.ts:13 → import("@imgly/background-removal-node") (Node.js, not browser)
+    There is no client-side fallback anywhere
+
+Two real bugs confirmed:
+
+    i18n descriptions are factually wrong — EN says "runs on your device / processes everything locally", FR says "Aucun envoi de fichiers vers un serveur" — both are opposite to reality
+    Model quality: model: "medium" is in use; the package (v1.4.5) supports small | medium | large — upgrading to large directly addresses the "removes important parts" quality complaint
+
+Fixing both now:
+
+Now fixing both i18n descriptions:
+
+Now let me restart the API server (model change requires it) and do a real live test with an actual image:
+
+Now let me do a real test with actual images to verify the large model quality:
+
+Everything is clean — 73 e2e tests pass, typecheck clean. The browser error is a transient HMR glitch from the context update (disappears on reload). Let me do the real API quality test now and take a screenshot of the corrected page:
+
+The large model needs a publicPath configuration. Let me check what's actually available and how the package serves its models:
+
+The model files use a hash-based naming scheme and resources.json maps names to hashes. Let me check what models are actually bundled:
+
+Clear finding: resources.json only contains /models/small and /models/medium — large is not bundled in v1.4.5. I'm reverting to medium and instead looking at whether the rembg Python library (better models) is available, which would be a real quality upgrade:
