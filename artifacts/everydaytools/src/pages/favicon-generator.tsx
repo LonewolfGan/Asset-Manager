@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
+import ToolLoadingState from '@/components/ToolLoadingState';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
@@ -114,10 +115,23 @@ export default function FaviconGenerator() {
           {status === 'processing' ? 'Generating…' : 'Generate & Download ZIP'}
         </button>
 
+        {status === 'processing' && (
+          <div style={{ marginTop: 16 }}>
+            <ToolLoadingState
+              status="loading"
+              label="Generating favicon sizes…"
+              steps={['16×16', '32×32', '64×64', '128×128', 'Apple 180×180', 'Android 192×192']}
+            />
+          </div>
+        )}
+
         {status === 'done' && (
-          <p style={{ marginTop: 14, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', textAlign: 'center' }}>
-            All favicon sizes generated and downloaded.
-          </p>
+          <div style={{ marginTop: 16 }}>
+            <ToolLoadingState
+              status="success"
+              label="All favicon sizes generated and downloaded."
+            />
+          </div>
         )}
         <AdSlot type="horizontal" />
       </div>

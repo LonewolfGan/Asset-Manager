@@ -3,6 +3,7 @@ import { copyWithToast } from '@/utils/copy';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
+import ToolLoadingState from '@/components/ToolLoadingState';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 
@@ -93,18 +94,24 @@ export default function Ocr() {
         )}
 
         {(status === 'loading' || status === 'processing') && (
-          <div style={{ padding: 16, background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', marginBottom: 20 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-              <span style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>{progressLabel || 'Processing…'}</span>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>{progress}%</span>
-            </div>
-            <div style={{ height: 6, background: 'var(--bg-elevated)', borderRadius: 3, overflow: 'hidden' }}>
-              <div style={{ width: `${progress}%`, height: '100%', background: 'var(--accent)', transition: 'width 0.3s' }} />
-            </div>
+          <div style={{ marginBottom: 20 }}>
+            <ToolLoadingState
+              status="loading"
+              progress={progress}
+              label={progressLabel || 'Processing…'}
+            />
           </div>
         )}
 
-        {status === 'error' && <p style={{ color: 'var(--danger,#dc2626)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', marginBottom: 16 }}>{error}</p>}
+        {status === 'error' && (
+          <div style={{ marginBottom: 16 }}>
+            <ToolLoadingState
+              status="error"
+              errorMessage={error}
+              onRetry={recognize}
+            />
+          </div>
+        )}
 
         {status === 'done' && output && (
           <div>

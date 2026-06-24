@@ -3,6 +3,7 @@ import { copyWithToast } from '@/utils/copy';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
+import ToolLoadingState from '@/components/ToolLoadingState';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 
@@ -19,15 +20,16 @@ export default function Checksum() {
   const desc = t.tools['checksum']?.description ?? 'Compute SHA-1, SHA-256, SHA-384, and SHA-512 checksums for any file — entirely in your browser.';
   const [file, setFile] = useState<File | null>(null);
   const [hashes, setHashes] = useState<Partial<Record<HashAlgo, string>>>({});
-  const [status, setStatus] = useState<'idle' | 'processing' | 'done'>('idle');
+  const [status, setStatus] = useState<'idle' | 'processing' | 'done' | 'error'>('idle');
   const [progress, setProgress] = useState(0);
+  const [errorMsg, setErrorMsg] = useState('');
   const [expected, setExpected] = useState('');
   const [isDragging, setIsDragging] = useState(false);
   const [copiedAlgo, setCopiedAlgo] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFile = async (f: File) => {
-    setFile(f); setHashes({}); setStatus('processing'); setProgress(0);
+    setFile(f); setHashes({}); setStatus('processing'); setProgress(0); setErrorMsg('');
     try {
       const buf = await f.arrayBuffer();
       setProgress(25);
@@ -40,9 +42,10 @@ export default function Checksum() {
       setHashes(results);
       setStatus('done');
       trackToolUsed('checksum', 'utilities');
-    } catch { 
+    } catch (e) {
       trackToolError('checksum', 'general-error');
-      setStatus('idle'); 
+      setErrorMsg(e instanceof Error ? e.message : 'Failed to compute checksums');
+      setStatus('error');
     }
   };
 
@@ -74,11 +77,24 @@ export default function Checksum() {
         </div>
 
         {status === 'processing' && (
-          <div style={{ marginTop: 20, padding: 16, background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
-            <div style={{ height: 6, background: 'var(--bg-elevated)', borderRadius: 3, overflow: 'hidden' }}>
-              <div style={{ width: `${progress}%`, height: '100%', background: 'var(--accent)', transition: 'width 0.3s' }} />
-            </div>
-            <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginTop: 8, margin: '8px 0 0' }}>Computing hashes…</p>
+          <div style={{ marginTop: 20 }}>
+            <ToolLoadingState
+              status="loading"
+              progress={progress}
+              label="Computing hashes…"
+              steps={['SHA-1', 'SHA-256', 'SHA-384', 'SHA-512']}
+              currentStep={progress < 43 ? 0 : progress < 61 ? 1 : progress < 79 ? 2 : 3}
+            />
+          </div>
+        )}
+
+        {status === 'error' && (
+          <div style={{ marginTop: 20 }}>
+            <ToolLoadingState
+              status="error"
+              errorMessage={errorMsg}
+              onRetry={() => file && handleFile(file)}
+            />
           </div>
         )}
 

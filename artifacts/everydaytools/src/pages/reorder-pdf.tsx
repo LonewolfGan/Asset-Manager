@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
+import ToolLoadingState from '@/components/ToolLoadingState';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
@@ -116,17 +117,24 @@ export default function ReorderPdf() {
         )}
 
         {status === 'loading' && (
-          <div style={{ padding: 16, background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', marginTop: 20 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>
-              <span>Loading pages…</span><span style={{ fontFamily: 'var(--font-mono)' }}>{progress}%</span>
-            </div>
-            <div style={{ height: 6, background: 'var(--bg-elevated)', borderRadius: 3, overflow: 'hidden' }}>
-              <div style={{ width: `${progress}%`, height: '100%', background: 'var(--accent)', transition: 'width 0.3s' }} />
-            </div>
+          <div style={{ marginTop: 20 }}>
+            <ToolLoadingState
+              status="loading"
+              progress={progress}
+              label="Loading pages…"
+            />
           </div>
         )}
 
-        {status === 'error' && <p style={{ color: 'var(--danger,#dc2626)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', marginTop: 16 }}>{error}</p>}
+        {status === 'error' && (
+          <div style={{ marginTop: 16 }}>
+            <ToolLoadingState
+              status="error"
+              errorMessage={error}
+              onRetry={() => file && loadPdf(file)}
+            />
+          </div>
+        )}
 
         {pages.length > 0 && (
           <>
@@ -140,11 +148,21 @@ export default function ReorderPdf() {
                   Load different PDF
                 </button>
                 <button onClick={save} disabled={status === 'saving'}
-                  style={{ padding: '6px 18px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: status === 'saving' ? 'not-allowed' : 'pointer' }}>
+                  style={{ padding: '6px 18px', background: status === 'saving' ? 'var(--bg-elevated)' : 'var(--accent)', color: status === 'saving' ? 'var(--text-tertiary)' : 'var(--accent-text)', border: 'none', borderRadius: 6, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: status === 'saving' ? 'not-allowed' : 'pointer' }}>
                   {status === 'saving' ? 'Saving…' : 'Save Reordered PDF'}
                 </button>
               </div>
             </div>
+
+            {status === 'saving' && (
+              <div style={{ marginBottom: 12 }}>
+                <ToolLoadingState
+                  status="loading"
+                  progress={progress}
+                  label="Saving reordered PDF…"
+                />
+              </div>
+            )}
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))', gap: 12 }}>
               {pages.map((page, idx) => (

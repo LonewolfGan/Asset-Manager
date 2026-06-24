@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
+import ToolLoadingState from '@/components/ToolLoadingState';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
@@ -154,19 +155,24 @@ export default function WordToPdf() {
         )}
 
         {status === 'processing' && (
-          <div style={{ marginTop: 16, padding: 16, background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>
-              <span>Converting…</span><span style={{ fontFamily: 'var(--font-mono)' }}>{progress}%</span>
-            </div>
-            <div style={{ height: 6, background: 'var(--bg-elevated)', borderRadius: 3, overflow: 'hidden' }}>
-              <div style={{ width: `${progress}%`, height: '100%', background: 'var(--accent)', borderRadius: 3, transition: 'width 0.3s' }} />
-            </div>
+          <div style={{ marginTop: 16 }}>
+            <ToolLoadingState
+              status="loading"
+              progress={progress}
+              label="Converting…"
+              steps={['Reading document', 'Converting to HTML', 'Rendering pages', 'Generating PDF']}
+              currentStep={progress < 40 ? 0 : progress < 60 ? 1 : progress < 85 ? 2 : 3}
+            />
           </div>
         )}
 
         {status === 'error' && (
-          <div style={{ marginTop: 16, padding: 14, background: 'var(--bg-surface)', border: '1px solid var(--danger, #dc2626)', borderRadius: 'var(--radius)', color: 'var(--danger, #dc2626)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)' }}>
-            {error}
+          <div style={{ marginTop: 16 }}>
+            <ToolLoadingState
+              status="error"
+              errorMessage={error}
+              onRetry={convert}
+            />
           </div>
         )}
 

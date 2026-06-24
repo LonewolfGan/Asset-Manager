@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
+import ToolLoadingState from '@/components/ToolLoadingState';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 
@@ -12,7 +13,7 @@ export default function CsvToExcel() {
   const [csvText, setCsvText] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [status, setStatus] = useState<'idle' | 'done' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'processing' | 'done' | 'error'>('idle');
   const [error, setError] = useState('');
   const [xlsxBlob, setXlsxBlob] = useState<Blob | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -24,6 +25,7 @@ export default function CsvToExcel() {
 
   const convert = async () => {
     if (!csvText.trim()) return;
+    setStatus('processing'); setError('');
     try {
       const Papa = (await import('papaparse')).default;
       const { data } = Papa.parse<string[]>(csvText, { skipEmptyLines: true });
@@ -34,14 +36,15 @@ export default function CsvToExcel() {
       const buf = XLSX.write(wb, { type: 'array', bookType: 'xlsx' });
       setXlsxBlob(new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
       setStatus('done');
+      trackToolUsed('csv-to-excel', 'documents');
     } catch (e) {
       trackToolError('csv-to-excel', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed');
+      setStatus('error');
     }
   };
 
   const download = () => {
-    trackToolUsed('csv-to-excel', 'documents');
     if (!xlsxBlob) return;
     const name = file?.name.replace(/\.csv$/i, '.xlsx') ?? 'converted.xlsx';
     const url = URL.createObjectURL(xlsxBlob);
@@ -80,12 +83,22 @@ export default function CsvToExcel() {
           style={{ width: '100%', height: 220, padding: 12, border: '1px solid var(--border)', borderRadius: 'var(--radius)', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', resize: 'vertical', boxSizing: 'border-box', marginBottom: 16 }}
         />
 
-        <button onClick={convert} disabled={!csvText.trim()}
-          style={{ width: '100%', padding: '12px 24px', background: csvText.trim() ? 'var(--accent)' : 'var(--bg-elevated)', color: csvText.trim() ? 'var(--accent-text)' : 'var(--text-tertiary)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: csvText.trim() ? 'pointer' : 'not-allowed' }}>
-          {t.common.convertFiles(1, 'Excel (.xlsx)')}
+        <button onClick={convert} disabled={!csvText.trim() || status === 'processing'}
+          style={{ width: '100%', padding: '12px 24px', background: csvText.trim() && status !== 'processing' ? 'var(--accent)' : 'var(--bg-elevated)', color: csvText.trim() && status !== 'processing' ? 'var(--accent-text)' : 'var(--text-tertiary)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: csvText.trim() && status !== 'processing' ? 'pointer' : 'not-allowed' }}>
+          {status === 'processing' ? 'Converting…' : t.common.convertFiles(1, 'Excel (.xlsx)')}
         </button>
 
-        {error && <p style={{ color: 'var(--danger,#dc2626)', marginTop: 12, fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)' }}>{error}</p>}
+        {status === 'processing' && (
+          <div style={{ marginTop: 12 }}>
+            <ToolLoadingState status="loading" label="Converting CSV to Excel…" />
+          </div>
+        )}
+
+        {status === 'error' && (
+          <div style={{ marginTop: 12 }}>
+            <ToolLoadingState status="error" errorMessage={error} onRetry={convert} />
+          </div>
+        )}
 
         {status === 'done' && xlsxBlob && (
           <div style={{ marginTop: 16, padding: '14px 20px', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
