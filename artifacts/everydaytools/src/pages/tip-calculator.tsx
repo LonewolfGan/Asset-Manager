@@ -91,7 +91,7 @@ export default function TipCalculator() {
 
   return (
     <>
-      <div style={{ maxWidth: 'var(--content-tool)', margin: '0 auto', padding: '32px 24px 64px' }}>
+      <div className="container-wide" style={{ paddingTop: 32, paddingBottom: 64 }}>
         <Breadcrumb items={['Home', 'Calculators', 'Tip Calculator']} />
 
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 6px', letterSpacing: '-0.02em' }}>

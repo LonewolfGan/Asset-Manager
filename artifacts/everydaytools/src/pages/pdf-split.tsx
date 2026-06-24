@@ -49,7 +49,7 @@ export default function PdfSplit() {
 
   return (
     <>
-      <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
+      <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 80 }}>
       <Breadcrumb items={['Home', 'PDF Tools', 'Split PDF']} />
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['pdf-split']?.title ?? 'Split PDF'}</h1>
       <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['pdf-split']?.description ?? 'Extract pages or split a PDF document into multiple files.'}</p>

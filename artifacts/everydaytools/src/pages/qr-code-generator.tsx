@@ -177,7 +177,7 @@ export default function QrCodeGenerator() {
 
   return (
     <>
-      <div style={{ maxWidth: 900, margin: '0 auto', padding: '24px 24px 80px' }}>
+      <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 80 }}>
         <Breadcrumb items={['Home', 'Calculators', 'QR Code Generator']} />
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)', lineHeight: 1.15 }}>
           {title}

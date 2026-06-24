@@ -120,7 +120,7 @@ export default function CurrencyConverter() {
 
   return (
     <>
-      <div style={{ maxWidth: 'var(--content-wide)', margin: '0 auto', padding: '24px 24px 80px' }}>
+      <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 80 }}>
       <Breadcrumb items={['Home', 'Calculators', 'Currency Converter']} />
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, marginBottom: 8, color: 'var(--text-primary)' }}>{t.tools['currency-converter']?.title ?? 'Currency Converter'}</h1>
       <p style={{ color: 'var(--text-secondary)', marginBottom: 32, fontSize: 'var(--text-sm)', fontFamily: 'var(--font-ui)' }}>{t.tools['currency-converter']?.description ?? 'Convert between 170 currencies with live exchange rates.'}</p>

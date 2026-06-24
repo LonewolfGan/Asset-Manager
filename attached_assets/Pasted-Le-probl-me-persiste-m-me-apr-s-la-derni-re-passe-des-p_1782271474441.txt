@@ -1,0 +1,66 @@
+Le problème persiste : même après la dernière passe, des pages comme la 
+page individuelle de blog (/blog/[slug] ou équivalent) ne sont toujours 
+pas en full width. Ça veut dire que l'audit précédent n'a pas été assez 
+systématique — il a corrigé certaines pages mais pas vérifié exhaustivement 
+chaque route.
+
+Cette fois, je veux une méthode MÉCANIQUE, pas une vérification visuelle 
+au cas par cas.
+
+ÉTAPE 1 — TROUVER TOUTES LES ROUTES PAR LE CODE, PAS DE MÉMOIRE
+
+Ne liste pas les pages "de mémoire" ou en te basant sur ce qu'on a déjà 
+discuté. Fais une recherche dans le code source pour identifier 
+TOUTES les routes réellement définies :
+- Si c'est un framework avec routing par fichiers (Next.js App Router, 
+  Pages Router, etc.) : liste tous les fichiers dans le dossier de 
+  routes/pages, y compris les routes dynamiques ([slug], [id], etc.)
+- Si c'est un routeur déclaratif (React Router, etc.) : grep le fichier 
+  de configuration des routes pour lister chaque route définie
+- Inclus explicitement : la page de listing du blog ET le template de 
+  page individuelle d'article (souvent un fichier séparé du listing, 
+  c'est probablement pour ça qu'il a été oublié)
+
+Donne-moi cette liste de fichiers/routes AVANT de commencer à corriger 
+quoi que ce soit, pour qu'on soit sûr que rien n'est oublié.
+
+ÉTAPE 2 — RECHERCHE TEXTUELLE DE TOUT MAX-WIDTH RÉSIDUEL
+
+Fais une recherche (grep/ripgrep) dans TOUT le codebase pour : 
+- "max-width" en CSS/styles inline/styled-components/Tailwind 
+  (max-w-* en Tailwind)
+- Toute classe container custom qui ne soit pas .container-wide ou 
+  .container-reading
+
+Liste TOUS les fichiers où ces patterns apparaissent encore, avec le 
+numéro de ligne. Ne te fie pas à une vérification visuelle dans le 
+navigateur — le grep doit être exhaustif sur 100% du code.
+
+ÉTAPE 3 — CROISER LES DEUX LISTES
+
+Pour chaque fichier de route trouvé en étape 1, vérifie s'il apparaît 
+dans les résultats du grep de l'étape 2. S'il contient un max-width 
+résiduel qui n'est pas une des deux classes du design system, c'est un 
+bug à corriger.
+
+ÉTAPE 4 — CORRIGER CHAQUE OCCURRENCE TROUVÉE
+
+Corrige chaque fichier identifié, un par un, en remplaçant le container 
+non conforme par .container-wide ou .container-reading selon le type de 
+contenu de cette section précise.
+
+ÉTAPE 5 — PREUVE, PAS AFFIRMATION
+
+Une fois fini, donne-moi :
+1. Le nombre TOTAL de routes trouvées à l'étape 1
+2. Le nombre de fichiers corrigés à l'étape 4, avec le chemin de chaque 
+   fichier et ce qui a été changé
+3. Le résultat du grep de l'étape 2 relancé À LA FIN, pour prouver qu'il 
+   ne reste plus aucun max-width résiduel hors design system (la liste 
+   doit être vide, ou alors chaque résultat restant doit être justifié — 
+   ex: un max-width légitime sur un composant qui n'est pas un container 
+   de page, comme un modal ou un dropdown)
+
+Ne me dis pas "c'est bon, j'ai vérifié" sans me montrer le résultat brut 
+du grep final. Je veux voir la preuve mécanique, pas une confirmation 
+verbale.
