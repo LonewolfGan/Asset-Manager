@@ -74,7 +74,7 @@ export default function Security() {
         <link rel="alternate" hrefLang="x-default" href="https://everydaytools.qzz.io/security" />
       </Helmet>
 
-      <div className="container-reading" style={S.page}>
+      <div className="container-wide" style={S.page}>
         <h1 style={S.h1}>Security</h1>
         <p style={S.date}>Updated May 2026</p>
 

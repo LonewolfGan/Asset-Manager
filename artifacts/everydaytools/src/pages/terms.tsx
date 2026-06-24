@@ -57,7 +57,7 @@ export default function Terms() {
         <link rel="canonical" href="https://everydaytools.qzz.io/terms" />
         <link rel="alternate" hrefLang="x-default" href="https://everydaytools.qzz.io/terms" />
       </Helmet>
-      <div className="container-reading" style={S.page}>
+      <div className="container-wide" style={S.page}>
         <h1 style={S.h1}>Terms of Service</h1>
         <p style={S.date}>Effective: May 26, 2025</p>
 

@@ -197,7 +197,6 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
             data-testid="search-modal-input"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={handleKeyDown}
             placeholder="Search tools…"
             aria-label="Search tools"
             style={{

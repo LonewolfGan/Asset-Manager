@@ -67,7 +67,7 @@ export default function Privacy() {
         <link rel="canonical" href="https://everydaytools.qzz.io/privacy" />
         <link rel="alternate" hrefLang="x-default" href="https://everydaytools.qzz.io/privacy" />
       </Helmet>
-      <div className="container-reading" style={S.page}>
+      <div className="container-wide" style={S.page}>
         <h1 style={S.h1}>Privacy Policy</h1>
         <p style={S.date}>Last updated: May 26, 2025</p>
 
