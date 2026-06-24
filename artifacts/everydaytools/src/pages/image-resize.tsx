@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
-import ProgressBar from '@/components/ProgressBar';
 import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { ToolLoadingState } from '@/components/ToolContent';
 
 export default function ImageResize() {
   const { t } = useLocale();
@@ -180,8 +180,13 @@ export default function ImageResize() {
         </button>
       )}
       
-      {isProcessing && <ProgressBar progress={progress} label="Resizing..." />}
-      {error && <p style={{ color: 'var(--danger)', marginTop: 12, fontSize: 'var(--text-sm)' }}>{error}</p>}
+      <ToolLoadingState
+        status={isProcessing ? 'loading' : error ? 'error' : 'idle'}
+        progress={isProcessing ? progress : undefined}
+        label="Resizing..."
+        errorMessage={error ?? undefined}
+        onRetry={error && files.length > 0 ? handleConvert : undefined}
+      />
       {result && <ResultPanel {...result} />}
       <AdSlot type="horizontal" />
     </div>
