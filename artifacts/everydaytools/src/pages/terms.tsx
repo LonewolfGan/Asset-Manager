@@ -2,7 +2,8 @@ import { Helmet } from 'react-helmet-async';
 
 const S = {
   page: {
-    padding: '48px 0 80px',
+    paddingTop: 48,
+    paddingBottom: 80,
     fontFamily: 'var(--font-ui)',
     color: 'var(--text-primary)',
   } as React.CSSProperties,
