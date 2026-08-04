@@ -11,6 +11,7 @@ import { writeFile, readFile, rm, mkdir } from "fs/promises";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import { upload, guardDocument, guardImage } from "../middlewares/upload.js";
+import { BIN } from "../lib/binaries.js";
 
 const execFileAsync = promisify(execFile);
 const router: IRouter = Router();
@@ -54,7 +55,7 @@ async function convertToSvgWithPotrace(inputBuffer: Buffer): Promise<Buffer> {
 
   try {
     await writeFile(pbmPath, pbm);
-    await execFileAsync("potrace", [
+    await execFileAsync(BIN.potrace, [
       "--svg",
       "--turdsize", "4",   // ignore speckles smaller than 4 pixels²
       "--alphamax", "1",   // curve smoothness
@@ -79,7 +80,7 @@ async function callPdfExtract(pdfBuffer: Buffer, mode: "word" | "excel"): Promis
 
   try {
     const { stdout } = await execFileAsync(
-      "python3",
+      BIN.python3,
       [PDF_EXTRACT_PY, "--pdf", pdfPath, "--mode", mode],
       { timeout: 120_000, maxBuffer: 50 * 1024 * 1024 },
     );

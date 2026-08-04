@@ -5,6 +5,7 @@ import { join } from "path";
 import { tmpdir } from "os";
 import { writeFile, readFile, unlink } from "fs/promises";
 import { upload, guardBackground } from "../middlewares/upload.js";
+import { BIN } from "../lib/binaries.js";
 
 const router: IRouter = Router();
 const execFileAsync = promisify(execFile);
@@ -37,7 +38,7 @@ router.post(
       // Try isnet-general-use first (best quality on modern rembg),
       // fall back to u2net if the model name isn't recognised
       await execFileAsync(
-        "python3",
+        BIN.python3,
         [BG_REMOVE_PY, "--input", inputPath, "--output", outputPath, "--model", "isnet-general-use"],
         { timeout: 120_000 },
       );
@@ -53,7 +54,7 @@ router.post(
       if ((err as { stderr?: string }).stderr?.includes("isnet") || (err as { message?: string }).message?.includes("isnet")) {
         try {
           await execFileAsync(
-            "python3",
+            BIN.python3,
             [BG_REMOVE_PY, "--input", inputPath, "--output", outputPath],
             { timeout: 120_000 },
           );

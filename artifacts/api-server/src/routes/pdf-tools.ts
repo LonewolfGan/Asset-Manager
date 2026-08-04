@@ -8,6 +8,7 @@ import { randomUUID } from "crypto";
 import { writeFile, readFile, rm, mkdir } from "fs/promises";
 import { join } from "path";
 import { upload } from "../middlewares/upload.js";
+import { BIN } from "../lib/binaries.js";
 import type { Request, Response, NextFunction } from "express";
 
 const execFileAsync = promisify(execFile);
@@ -100,7 +101,7 @@ router.post("/tools/pdf-compress", upload.single("file"), guardSinglePdf, async 
 
   try {
     await writeFile(inPath, input);
-    await execFileAsync("gs", [
+    await execFileAsync(BIN.gs, [
       "-dNOPAUSE", "-dBATCH", "-dSAFER",
       "-sDEVICE=pdfwrite",
       `-dPDFSETTINGS=${gsSettings}`,
@@ -274,7 +275,7 @@ router.post("/tools/pdf-protect", upload.single("file"), guardSinglePdf, async (
     }
     args.push("--", inPath, outPath);
 
-    await execFileAsync("qpdf", args, { timeout: 30_000 });
+    await execFileAsync(BIN.qpdf, args, { timeout: 30_000 });
 
     const output = await readFile(outPath);
     res.set({

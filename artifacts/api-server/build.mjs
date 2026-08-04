@@ -60,7 +60,7 @@ async function buildAll() {
       "@prisma/client",
       "@mikro-orm/*",
       "@grpc/*",
-      "@swc/*",
+      "@swc/core",    // native binary — cannot be bundled; @swc/helpers is pure JS and IS bundled
       "@aws-sdk/*",
       "@azure/*",
       "@opentelemetry/*",

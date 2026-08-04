@@ -4,10 +4,13 @@ import { writeFile, unlink } from "fs/promises";
 import { join } from "path";
 import { tmpdir } from "os";
 import { logger } from "./lib/logger.js";
+import { BIN } from "./lib/binaries.js";
 
 const execFileAsync = promisify(execFile);
 
-const BG_REMOVE_PY = join(import.meta.dirname, "python/bg_remove.py");
+// In dev: src/warmup.ts → python/ is at src/python/
+// In prod (dist/index.mjs): one level up from dist/ → python/
+const BG_REMOVE_PY = join(import.meta.dirname, "../python/bg_remove.py");
 
 /**
  * 1x1 red pixel PNG, base64-encoded.
@@ -40,7 +43,7 @@ export async function warmupRembg(): Promise<void> {
 
     logger.info("Warming up rembg model (isnet-general-use) …");
 
-    await execFileAsync("python3", [BG_REMOVE_PY, "--input", inputPath, "--output", outputPath, "--model", "isnet-general-use"], {
+    await execFileAsync(BIN.python3, [BG_REMOVE_PY, "--input", inputPath, "--output", outputPath, "--model", "isnet-general-use"], {
       timeout: WARMUP_TIMEOUT_MS,
     });
 

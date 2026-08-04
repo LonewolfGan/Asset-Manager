@@ -1,0 +1,13 @@
+{
+  "name": "api-server-runtime",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Runtime-only deps for the bundled api-server dist. Used by the Docker production image.",
+  "dependencies": {
+    "@imgly/background-removal-node": "^1.4.5",
+    "mammoth": "^1.12.0",
+    "pdfjs-dist": "^5.7.284",
+    "sharp": "^0.34.2"
+  }
+}

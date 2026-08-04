@@ -1,0 +1,146 @@
+ADAPTATION DU BACKEND POUR DÉPLOIEMENT SUR ORACLE CLOUD (ARM Ubuntu 24.04)
+
+Le backend va être déployé sur une VM Oracle Cloud ARM (aarch64) Ubuntu 
+24.04, dans un container Docker, derrière Caddy comme reverse proxy HTTPS. 
+L'URL publique du backend sera https://api.everydaytools.qzz.io
+
+Voici les adaptations nécessaires avant qu'on copie le code sur le serveur :
+
+1. VARIABLES D'ENVIRONNEMENT
+
+   Crée un fichier .env.example à la racine de artifacts/api-server avec 
+   toutes les variables d'environnement nécessaires au backend :
+   
+   NODE_ENV=production
+   PORT=3001
+   FRONTEND_URL=https://everydaytools.qzz.io
+   
+   (ajoute toute autre variable utilisée dans le code — cherche toutes 
+   les occurrences de process.env dans src/ et liste-les toutes)
+   
+   Ne mets jamais de vraies clés/secrets dans ce fichier — juste des 
+   valeurs d'exemple ou vides.
+
+2. CORS
+
+   Le backend doit accepter les requêtes venant de :
+   - https://everydaytools.qzz.io (frontend Vercel en production)
+   - http://localhost:5000 (frontend en dev local)
+   - http://localhost:3000 (variante dev locale)
+   
+   Vérifie que la config CORS dans src/index.ts (ou équivalent) liste 
+   bien ces trois origines, et que les credentials/headers nécessaires 
+   sont correctement configurés.
+
+3. BUILD TYPESCRIPT
+
+   Vérifie que le script "build" dans package.json de api-server produit 
+   un dossier dist/ compilé en JavaScript pur (pas de tsx/ts-node en 
+   production — uniquement "node dist/index.js" pour lancer en prod).
+   
+   Si ce n'est pas déjà le cas, configure le build correctement avec tsc 
+   ou esbuild selon ce qui est déjà utilisé dans le projet.
+
+4. SCRIPT DE DÉMARRAGE PRODUCTION
+
+   Dans package.json, assure-toi que le script "start" (pas "dev") 
+   lance bien : node dist/index.js
+   Et que le script "build" compile tout proprement.
+
+5. CHEMINS DES BINAIRES SYSTÈME
+
+   Le code appelle des binaires système (LibreOffice, ghostscript, 
+   potrace, qpdf, python3). Vérifie que ces appels utilisent des chemins 
+   qui fonctionnent sur Linux Ubuntu (pas de chemins en dur spécifiques 
+   à Replit ou macOS) :
+   - soffice (LibreOffice) → /usr/bin/soffice
+   - gs (ghostscript) → /usr/bin/gs
+   - potrace → /usr/bin/potrace
+   - qpdf → /usr/bin/qpdf
+   - python3 → /usr/bin/python3
+   
+   Idéalement, ces chemins doivent être configurables via variables 
+   d'environnement avec ces valeurs Linux comme défaut, pour rester 
+   flexibles.
+
+6. GESTION DES FICHIERS TEMPORAIRES
+
+   Vérifie que tous les fichiers temporaires créés pendant le traitement 
+   (uploads, fichiers intermédiaires) sont écrits dans /tmp/ ou un 
+   dossier temporaire configurable — pas dans le répertoire du code 
+   lui-même (ce qui poserait des problèmes de permissions dans Docker).
+   
+   Assure-toi aussi qu'il y a un mécanisme de nettoyage automatique de 
+   ces fichiers temporaires après chaque traitement (ou après un délai 
+   max, ex: 1h) pour ne pas saturer le disque au fil du temps.
+
+7. HEALTHCHECK
+
+   Vérifie que la route GET /healthz (pas /health) retourne bien 
+   { status: "ok" } avec un HTTP 200 — c'est ce qu'on utilise pour 
+   vérifier que le container est vivant.
+   
+   Aussi dans render.yaml si ce fichier existe : corrige 
+   healthCheckPath de "/api/health" vers "/api/healthz" (bug identifié 
+   dans le rapport de test précédent).
+
+8. DOCKERFILE COMPATIBLE ARM
+
+   Le Dockerfile qu'on va utiliser pour builder l'image sur Oracle ARM 
+   (aarch64) est le suivant — vérifie que le build du projet est 
+   compatible avec cette structure (notamment le pnpm install et le 
+   pnpm build) :
+   
+   FROM ubuntu:24.04
+   ENV DEBIAN_FRONTEND=noninteractive
+   
+   RUN apt-get update && apt-get install -y \
+       curl python3 python3-pip python3-venv \
+       libreoffice ghostscript potrace qpdf \
+       && rm -rf /var/lib/apt/lists/*
+   
+   RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+       && apt-get install -y nodejs \
+       && rm -rf /var/lib/apt/lists/*
+   
+   RUN pip3 install --break-system-packages \
+       rembg[cpu] pdfplumber pypdf
+   
+   RUN python3 -c "from rembg import new_session; \
+       new_session('isnet-general-use')"
+   
+   WORKDIR /app
+   COPY package.json pnpm-lock.yaml ./
+   RUN npm install -g pnpm && pnpm install --frozen-lockfile --prod
+   COPY . .
+   RUN pnpm build
+   
+   EXPOSE 3001
+   CMD ["node", "dist/index.js"]
+   
+   Si le build nécessite des devDependencies (ex: typescript, esbuild), 
+   le pnpm install doit se faire SANS --prod d'abord pour le build, 
+   puis on peut pruner les devDeps après. Adapte si nécessaire.
+
+9. PNPM-WORKSPACE
+
+   Le projet est un monorepo pnpm. Le Dockerfile copie uniquement 
+   artifacts/api-server (pas la racine du monorepo). Vérifie que 
+   artifacts/api-server a bien son propre package.json et pnpm-lock.yaml 
+   autonomes (pas dépendants de la racine du monorepo pour fonctionner 
+   seul en isolation Docker).
+   
+   Si ce n'est pas le cas (si le lock file est seulement à la racine), 
+   génère un package.json et pnpm-lock.yaml standalone dans 
+   artifacts/api-server qui peut être installé de façon autonome.
+
+LIVRABLE
+
+- Liste de tous les changements effectués fichier par fichier
+- Contenu du .env.example complet
+- Confirmation que "pnpm build && node dist/index.js" fonctionne 
+  localement en mode production (NODE_ENV=production)
+- Tout problème de compatibilité ARM identifié dans les dépendances 
+  (certains packages npm ont des binaires natifs qui peuvent poser 
+  problème sur ARM — sharp par exemple, vérifie qu'il a bien un build 
+  ARM disponible)

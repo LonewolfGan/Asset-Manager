@@ -28,11 +28,27 @@ app.use(
   }),
 );
 
+// Explicit CORS allowlist — configurable via FRONTEND_URL for production.
+// Add origins here or set FRONTEND_URL in the environment.
+const CORS_ORIGINS = [
+  process.env["FRONTEND_URL"] ?? "https://everydaytools.qzz.io",
+  "http://localhost:5000",
+  "http://localhost:3000",
+];
+
 app.use(
   cors({
-    origin: true,
+    origin: (origin, callback) => {
+      // Allow requests with no Origin header (curl, server-to-server, same-origin)
+      if (!origin || CORS_ORIGINS.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS: origin "${origin}" not allowed`));
+      }
+    },
     methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Accept"],
+    credentials: false,
     maxAge: 86400,
   }),
 );

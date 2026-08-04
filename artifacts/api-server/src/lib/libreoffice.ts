@@ -9,6 +9,7 @@ import { tmpdir } from "os";
 import { randomUUID } from "crypto";
 import { writeFile, readFile, readdir, rm, mkdir } from "fs/promises";
 import { join } from "path";
+import { BIN } from "./binaries.js";
 
 const execFileAsync = promisify(execFile);
 const LO_TIMEOUT_MS = 120_000;
@@ -34,7 +35,7 @@ export async function convertWithLibreOffice(
 
   try {
     await execFileAsync(
-      "soffice",
+      BIN.soffice,
       [
         "--headless",
         "--norestore",
@@ -77,7 +78,7 @@ export async function convertPptxToImages(
   try {
     // Step 1: PPTX → multi-page PDF (LibreOffice handles all slides)
     await execFileAsync(
-      "soffice",
+      BIN.soffice,
       [
         "--headless",
         "--norestore",
@@ -99,7 +100,7 @@ export async function convertPptxToImages(
     // gs outputs slide-1.png, slide-2.png, …
     const gsOutputPattern = join(workDir, "slide-%d.png");
     await execFileAsync(
-      "gs",
+      BIN.gs,
       [
         "-dNOPAUSE", "-dBATCH", "-dSAFER",
         "-sDEVICE=png16m",
