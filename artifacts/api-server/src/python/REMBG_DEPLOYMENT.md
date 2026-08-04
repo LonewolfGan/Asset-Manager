@@ -1,65 +1,46 @@
-# rembg / numba — Notes de déploiement
+# rembg / numba — Deployment Notes
 
-## Situation actuelle
+## Current Status
 
-Le background remover utilise **@imgly/background-removal** (modèle medium, WASM,
-côté client) — fonctionnel dans le sandbox Replit et suffisant pour le développement.
+rembg **works on Replit** as of rembg 2.0.77 + onnxruntime 1.28.0 + Python 3.12.
+The earlier note about JIT/numba being blocked is outdated — modern rembg uses
+ONNX Runtime only and does not require numba's JIT compilation at runtime.
 
-## Pourquoi rembg ne tourne pas sur Replit
+Dependencies are pinned in `pyproject.toml` and installed via `pip install "rembg[cpu]" Pillow`.
 
-`rembg` dépend de `numba`, qui requiert la compilation JIT (LLVM/LLVMLITE) à l'import.
-Le sandbox Replit bloque cette étape (absence de permissions de compilation JIT native).
-Ce n'est pas un bug du code — c'est une restriction d'environnement connue.
+## How background removal works
 
-## Ce qui fonctionnera au déploiement
+The API server calls `bg_remove.py` as a subprocess:
 
-Sur **Render, Vercel (fonctions), ou tout VPS classique** (Ubuntu/Debian avec Python 3.10+),
-`numba` compile normalement. Le code rembg ci-dessous tournera sans modification.
+1. `POST /api/remove-background` (multipart `file` field) → `background.ts` route
+2. Route writes the upload to a temp file, calls `python3 bg_remove.py --input … --output …`
+3. Script loads the ONNX model (u2net or isnet-general-use), runs inference, writes transparent PNG
+4. Route reads the output PNG and streams it back with `Content-Type: image/png`
 
-## Code prêt à déployer (Python)
+The frontend also ships a client-side fallback via `@imgly/background-removal` (WASM)
+for cases where the API is unavailable.
 
-```python
-# artifacts/api-server/src/python/bg_remove.py
-# CE MODULE NÉCESSITE numba/JIT.
-# Ne fonctionne pas dans le sandbox Replit (blocage JIT).
-# Fonctionnera normalement sur Render / Vercel / VPS classique.
-# À tester en priorité après le déploiement initial.
+## Models
 
-from rembg import remove
-from PIL import Image
-import io, sys, json, base64
+| Model | First-use download | Quality |
+|---|---|---|
+| `u2net` | ~176 MB | Good general-purpose |
+| `isnet-general-use` | ~178 MB | Better detail on complex edges |
 
-def remove_background(input_bytes: bytes) -> bytes:
-    """Supprime l'arrière-plan d'une image via rembg (modèle u2net)."""
-    output = remove(input_bytes)
-    return output
+Models are cached in `~/.u2net/` after the first download.
 
-if __name__ == "__main__":
-    # Interface stdin→stdout pour le pont Node.js (voir callPythonScript pattern)
-    payload = json.loads(sys.stdin.read())
-    img_bytes = base64.b64decode(payload["image"])
-    result = remove_background(img_bytes)
-    print(json.dumps({"result": base64.b64encode(result).decode()}))
-```
-
-## Dépendances à installer sur la plateforme cible
-
-```
-rembg[gpu]   # ou rembg (CPU only) selon la machine
-onnxruntime  # (ou onnxruntime-gpu)
-Pillow
-```
+## Dependencies
 
 ```bash
-pip install rembg Pillow
-# ou GPU :
+pip install "rembg[cpu]" Pillow
+# or GPU:
 pip install "rembg[gpu]" Pillow
 ```
 
-## Checklist déploiement
+Listed in `pyproject.toml` — run `pip install -e .` or `uv sync` on the target platform.
 
-- [ ] `pip install rembg Pillow` sur la machine cible
-- [ ] Vérifier `import numba` ne lève pas d'erreur
-- [ ] Tester `bg_remove.py` avec une image de test avant d'exposer la route
-- [ ] Câbler la route `/api/bg-remove` dans `artifacts/api-server/src/routes/` en appelant ce script Python via le pattern `callPythonScript` existant (voir `lib/` pour le pattern)
-- [ ] Désactiver ou garder @imgly côté client en fallback si la route server-side n'est pas disponible
+## Notes
+
+- First request triggers model download if the model isn't cached — may take a few seconds.
+- The isnet-general-use model is tried first; falls back to u2net if unavailable.
+- Works on Replit, Render, Railway, Fly.io, and any standard Linux environment.
