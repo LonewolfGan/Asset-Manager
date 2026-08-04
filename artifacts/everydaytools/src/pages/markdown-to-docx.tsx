@@ -2,114 +2,11 @@ import { useState } from 'react';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
-import { marked } from 'marked';
 import { useLocale } from '@/hooks/use-locale';
 import ToolPageLayout from '@/components/ToolPageLayout';
-import {
-  ToolWorkspace, ToolCard, ToolButton, ToolBadge,
-  ToolStat, ToolEmptyState,
-} from '@/components/ToolContent';
+import { ToolWorkspace, ToolButton } from '@/components/ToolContent';
 import ToolLoadingState from '@/components/ToolLoadingState';
-
-async function markdownToDocxBlob(markdown: string): Promise<Blob> {
-  const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } = await import('docx');
-
-  const html = await marked(markdown);
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
-
-  const paragraphs: InstanceType<typeof Paragraph>[] = [];
-
-  function textRunsFromNode(node: Node): InstanceType<typeof TextRun>[] {
-    const runs: InstanceType<typeof TextRun>[] = [];
-    if (node.nodeType === Node.TEXT_NODE) {
-      const text = node.textContent || '';
-      if (text) runs.push(new TextRun({ text }));
-    } else if (node.nodeType === Node.ELEMENT_NODE) {
-      const el = node as Element;
-      const tag = el.tagName.toLowerCase();
-      const childRuns: InstanceType<typeof TextRun>[] = [];
-      for (const child of el.childNodes) {
-        childRuns.push(...textRunsFromNode(child));
-      }
-      if (tag === 'strong' || tag === 'b') {
-        childRuns.forEach(r => { (r as any).options = { ...(r as any).options, bold: true }; });
-        runs.push(...childRuns.map(r => new TextRun({ text: (r as any).options?.text || '', bold: true })));
-      } else if (tag === 'em' || tag === 'i') {
-        runs.push(...childRuns.map(r => new TextRun({ text: (r as any).options?.text || '', italics: true })));
-      } else if (tag === 'code') {
-        runs.push(...childRuns.map(r => new TextRun({ text: (r as any).options?.text || '', font: 'Courier New' })));
-      } else {
-        runs.push(...childRuns);
-      }
-    }
-    return runs;
-  }
-
-  function getHeadingLevel(tag: string) {
-    switch (tag) {
-      case 'h1': return HeadingLevel.HEADING_1;
-      case 'h2': return HeadingLevel.HEADING_2;
-      case 'h3': return HeadingLevel.HEADING_3;
-      case 'h4': return HeadingLevel.HEADING_4;
-      case 'h5': return HeadingLevel.HEADING_5;
-      case 'h6': return HeadingLevel.HEADING_6;
-      default: return undefined;
-    }
-  }
-
-  function processNode(node: Element) {
-    const tag = node.tagName.toLowerCase();
-
-    if (['h1','h2','h3','h4','h5','h6'].includes(tag)) {
-      const level = getHeadingLevel(tag);
-      paragraphs.push(new Paragraph({
-        heading: level,
-        children: [new TextRun({ text: node.textContent || '', bold: true })],
-      }));
-    } else if (tag === 'p') {
-      const runs = textRunsFromNode(node);
-      paragraphs.push(new Paragraph({ children: runs.length ? runs : [new TextRun('')] }));
-    } else if (tag === 'ul' || tag === 'ol') {
-      const isOrdered = tag === 'ol';
-      let idx = 1;
-      for (const li of node.querySelectorAll(':scope > li')) {
-        const prefix = isOrdered ? `${idx++}. ` : '• ';
-        paragraphs.push(new Paragraph({
-          children: [new TextRun({ text: prefix + (li.textContent || '') })],
-          indent: { left: 720 },
-        }));
-      }
-    } else if (tag === 'blockquote') {
-      paragraphs.push(new Paragraph({
-        children: [new TextRun({ text: node.textContent || '', italics: true, color: '555555' })],
-        indent: { left: 720 },
-      }));
-    } else if (tag === 'hr') {
-      paragraphs.push(new Paragraph({ children: [new TextRun('─'.repeat(40))] }));
-    } else if (tag === 'pre') {
-      const code = node.querySelector('code');
-      const lines = (code?.textContent || node.textContent || '').split('\n');
-      for (const line of lines) {
-        paragraphs.push(new Paragraph({
-          children: [new TextRun({ text: line, font: 'Courier New' })],
-          indent: { left: 720 },
-        }));
-      }
-    }
-  }
-
-  for (const child of doc.body.children) {
-    processNode(child as Element);
-  }
-
-  if (paragraphs.length === 0) {
-    paragraphs.push(new Paragraph({ children: [new TextRun('')] }));
-  }
-
-  const docx = new Document({ sections: [{ children: paragraphs }] });
-  return await Packer.toBlob(docx);
-}
+import { apiUrl } from '@/lib/apiBase';
 
 export default function MarkdownToDocx() {
   const { t } = useLocale();
@@ -121,16 +18,24 @@ export default function MarkdownToDocx() {
 
   const handleConvert = async () => {
     if (!files[0]) return;
-    setError(null); setIsProcessing(true); setProgress(0);
+    setError(null); setIsProcessing(true); setProgress(20);
     try {
       const file = files[0];
-      const text = await file.text();
-      setProgress(30);
+      const fd = new FormData();
+      fd.append('file', file);
 
-      const blob = await markdownToDocxBlob(text);
+      setProgress(40);
+      const res = await fetch(apiUrl('/api/convert/markdown-to-docx'), { method: 'POST', body: fd });
+      setProgress(90);
+
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Conversion failed');
+      }
+
+      const blob = await res.blob();
       setProgress(100);
       trackToolUsed('markdown-to-docx', 'documents');
-
       setResult({ blob, filename: file.name.replace(/\.(md|txt)$/i, '.docx'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
       trackToolError('markdown-to-docx', 'general-error');

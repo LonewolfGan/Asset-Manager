@@ -1,15 +1,12 @@
 import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
-import JSZip from 'jszip';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import ToolPageLayout from '@/components/ToolPageLayout';
-import {
-  ToolWorkspace, ToolCard, ToolButton, ToolBadge,
-  ToolStat, ToolEmptyState,
-} from '@/components/ToolContent';
+import { ToolWorkspace, ToolCard, ToolButton } from '@/components/ToolContent';
 import ToolLoadingState from '@/components/ToolLoadingState';
+import { apiUrl } from '@/lib/apiBase';
 
 export default function PdfToImage() {
   const { t } = useLocale();
@@ -18,60 +15,37 @@ export default function PdfToImage() {
   const [error, setError] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
-
-  const [format, setFormat] = useState<'image/jpeg' | 'image/png'>('image/jpeg');
-  const [scale, setScale] = useState(2); // 2x roughly 144dpi
+  const [format, setFormat] = useState<'jpeg' | 'png'>('jpeg');
+  const [dpi, setDpi] = useState<72 | 150 | 300>(150);
 
   const handleConvert = async () => {
     if (!files[0]) return;
-    setError(null); setIsProcessing(true); setProgress(0);
+    setError(null); setIsProcessing(true); setProgress(10);
     try {
       trackToolUsed('pdf-to-image', 'images');
       const file = files[0];
-      const pdfjsLib = await import('pdfjs-dist');
-      pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.mjs', import.meta.url).href;
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('format', format);
+      fd.append('dpi', String(dpi));
 
-      const arrayBuffer = await file.arrayBuffer();
-      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-      const numPages = pdf.numPages;
+      setProgress(30);
+      const res = await fetch(apiUrl('/api/tools/pdf-to-images'), { method: 'POST', body: fd });
+      setProgress(90);
 
-      const zip = new JSZip();
-
-      for (let i = 1; i <= numPages; i++) {
-        const page = await pdf.getPage(i);
-        const viewport = page.getViewport({ scale });
-
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d')!;
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        await page.render({ canvasContext: ctx, viewport } as any).promise;
-
-        const blob = await new Promise<Blob>((resolve, reject) => {
-          canvas.toBlob((b) => {
-            if (b) resolve(b);
-            else reject(new Error("Canvas toBlob failed"));
-          }, format, 0.95);
-        });
-
-        const ext = format === 'image/jpeg' ? '.jpg' : '.png';
-        const name = `${file.name.replace(/\.pdf$/i, '')}_page_${i}${ext}`;
-
-        if (numPages === 1) {
-          setResult({ blob, filename: name, sizeAfter: blob.size, sizeBefore: file.size });
-          setProgress(100);
-          return; // Exit early for single page
-        }
-
-        zip.file(name, blob);
-        setProgress(Math.round((i / numPages) * 80));
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Conversion failed');
       }
 
-      const zipBlob = await zip.generateAsync({ type: "blob" });
+      const blob = await res.blob();
       setProgress(100);
-      setResult({ blob: zipBlob, filename: file.name.replace(/\.pdf$/i, '_images.zip'), sizeAfter: zipBlob.size, sizeBefore: file.size });
+      const ext = format === 'png' ? 'png' : 'jpg';
+      const isZip = blob.type === 'application/zip';
+      const filename = isZip
+        ? file.name.replace(/\.pdf$/i, '_images.zip')
+        : file.name.replace(/\.pdf$/i, `_page_1.${ext}`);
+      setResult({ blob, filename, sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
       trackToolError('pdf-to-image', 'general-error');
       setError(e instanceof Error ? e.message : 'Conversion failed. Please try again.');
@@ -94,16 +68,8 @@ export default function PdfToImage() {
               <div>
                 <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--panel-label-weight)' as React.CSSProperties['fontWeight'], marginBottom: 12 }}>Format</h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                  {([
-                    { value: 'image/jpeg', label: 'JPEG' },
-                    { value: 'image/png',  label: 'PNG' },
-                  ] as const).map(({ value, label }) => (
-                    <label
-                      key={value}
-                      style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', padding: '8px 12px', borderRadius: 'var(--radius-md)', transition: 'background 120ms ease' }}
-                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-elevated)'; }}
-                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
-                    >
+                  {([{ value: 'jpeg', label: 'JPEG' }, { value: 'png', label: 'PNG' }] as const).map(({ value, label }) => (
+                    <label key={value} style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', padding: '8px 12px', borderRadius: 'var(--radius-md)' }}>
                       <input type="radio" checked={format === value} onChange={() => setFormat(value)} style={{ width: 15, height: 15 }} />
                       <span>{label}</span>
                     </label>
@@ -113,18 +79,12 @@ export default function PdfToImage() {
               <div>
                 <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--panel-label-weight)' as React.CSSProperties['fontWeight'], marginBottom: 12 }}>Resolution</h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-                    <input type="radio" checked={scale === 1} onChange={() => setScale(1)} style={{ accentColor: 'var(--accent)' }} />
-                    <span style={{ fontSize: 'var(--text-sm)' }}>Standard (72 DPI)</span>
-                  </label>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-                    <input type="radio" checked={scale === 2} onChange={() => setScale(2)} style={{ accentColor: 'var(--accent)' }} />
-                    <span style={{ fontSize: 'var(--text-sm)' }}>High (144 DPI)</span>
-                  </label>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-                    <input type="radio" checked={scale === 3} onChange={() => setScale(3)} style={{ accentColor: 'var(--accent)' }} />
-                    <span style={{ fontSize: 'var(--text-sm)' }}>Maximum (216 DPI)</span>
-                  </label>
+                  {([{ value: 72, label: 'Standard (72 DPI)' }, { value: 150, label: 'High (150 DPI)' }, { value: 300, label: 'Maximum (300 DPI)' }] as const).map(({ value, label }) => (
+                    <label key={value} style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+                      <input type="radio" checked={dpi === value} onChange={() => setDpi(value)} style={{ accentColor: 'var(--accent)' }} />
+                      <span style={{ fontSize: 'var(--text-sm)' }}>{label}</span>
+                    </label>
+                  ))}
                 </div>
               </div>
             </div>
@@ -140,7 +100,7 @@ export default function PdfToImage() {
         <ToolLoadingState
           status={isProcessing ? 'loading' : error ? 'error' : 'idle'}
           progress={isProcessing ? progress : undefined}
-          label="Rendering pages..."
+          label="Rendering PDF pages..."
           errorMessage={error ?? undefined}
           onRetry={error && files.length > 0 ? handleConvert : undefined}
         />

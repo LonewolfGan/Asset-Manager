@@ -8,4 +8,5 @@ dependencies = [
     "pikepdf>=10.9.1",
     "rembg[cpu]>=2.0.77",
     "Pillow>=12.0.0",
+    "pillow-heif>=0.18.0",
 ]

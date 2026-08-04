@@ -1,0 +1,189 @@
+REFONTE ARCHITECTURALE COMPLÈTE — BACKEND-FIRST POUR TOUS LES OUTILS
+
+Contexte : le site va être déployé avec une vraie infrastructure de 
+production (frontend sur Vercel, backend sur Oracle Cloud ARM 24 GB RAM 
+avec LibreOffice, ghostscript, potrace, qpdf, rembg, Python, sharp). 
+On a maintenant un vrai serveur puissant disponible — il n'y a plus 
+aucune raison de faire du traitement côté client pour des raisons de 
+contraintes d'hébergement.
+
+Je veux une refonte architecturale propre et complète avant le déploiement.
+Pas de patch superficiel — une vraie décision outil par outil, documentée 
+et justifiée.
+
+PHASE 1 — AUDIT DÉCISIONNEL : CLIENT vs SERVEUR pour chaque outil
+
+Pour chacun des 86 outils du site, prends une décision explicite et 
+justifiée : traitement côté client (navigateur) ou côté serveur (backend) ?
+
+Critères de décision :
+- DOIT être côté serveur si : nécessite LibreOffice, Python, rembg, 
+  ghostscript, potrace, qpdf, ou toute lib système non disponible dans 
+  le navigateur / si la qualité côté client est inférieure à ce qu'on 
+  peut faire côté serveur / si le fichier d'entrée est lourd et que le 
+  transfert réseau est acceptable
+- PEUT rester côté client si : traitement purement mathématique/textuel 
+  (calculatrices, formatters, encodeurs) / traitement d'image simple où 
+  sharp côté serveur n'apporte pas de gain mesurable / outils où la 
+  latence réseau serait plus pénalisante que le gain de qualité / Web 
+  Crypto API (checksum, password-generator) qui doit rester local par 
+  design de sécurité
+
+Pour chaque outil, documente dans un tableau :
+Outil | Implémentation actuelle | Décision | Justification | Lib/méthode 
+retenue | Priorité de migration si changement nécessaire
+
+PHASE 2 — CATALOGUE COMPLET DES ROUTES API NÉCESSAIRES
+
+Sur la base des décisions de la Phase 1, dresse la liste exhaustive de 
+TOUTES les routes API backend nécessaires — celles qui existent déjà ET 
+celles qui doivent être créées pour les outils actuellement en client-side 
+qui méritent de passer côté serveur.
+
+Pour chaque route :
+- Méthode HTTP + chemin (ex: POST /convert/image)
+- Input attendu (multipart/form-data, JSON body, etc.)
+- Output retourné (blob fichier, JSON, ZIP, etc.)
+- Lib/outil système utilisé
+- Statut : existe déjà / à créer
+
+PHASE 3 — IMPLÉMENTATION DES ROUTES MANQUANTES
+
+Implémente TOUTES les routes identifiées comme "à créer" en Phase 2, 
+en respectant ces standards architecturaux :
+
+1. STRUCTURE DES ROUTES
+   Organise les routes de façon cohérente et logique :
+   POST /convert/*     → conversions de format (image, PDF, document)
+   POST /tools/*       → opérations sur fichiers (compress, merge, etc.)
+   POST /generate/*    → génération de contenu (QR code, favicon, etc.)
+   POST /extract/*     → extraction de données (text, metadata, tables)
+   GET  /healthz       → healthcheck
+   GET  /rates         → taux de change (déjà en place)
+
+2. GESTION DES FICHIERS TEMPORAIRES
+   TOUS les fichiers temporaires doivent :
+   - Être écrits dans /tmp/everydaytools/{uuid}/ (un dossier unique par 
+     requête, basé sur un UUID généré au début de chaque traitement)
+   - Être supprimés automatiquement après la réponse envoyée au client 
+     (dans un finally block pour garantir le nettoyage même en cas 
+     d'erreur)
+   - Ne jamais être écrits dans le répertoire du code ou dans un chemin 
+     en dur non configurable
+
+3. GESTION D'ERREUR UNIFORME
+   Toutes les routes doivent retourner des erreurs dans un format 
+   cohérent :
+   {
+     "error": true,
+     "code": "CONVERSION_FAILED",  // code machine lisible
+     "message": "Description humaine de l'erreur",
+     "details": "..." // optionnel, détail technique pour le debug
+   }
+   avec le bon code HTTP (400 pour input invalide, 422 pour fichier 
+   non traitable, 500 pour erreur serveur, 413 pour fichier trop gros)
+
+4. VALIDATION DES INPUTS
+   Pour chaque route qui accepte un fichier :
+   - Vérifie le type MIME réel du fichier (pas juste l'extension) via 
+     magic bytes ou file-type npm package
+   - Limite la taille maximale par type d'outil (ex: 50 MB pour PDF 
+     merge, 20 MB pour image compress, etc. — adapte selon le type 
+     d'opération)
+   - Rejette clairement avec un message d'erreur explicite si le fichier 
+     ne correspond pas au type attendu
+
+5. CHEMINS DES BINAIRES SYSTÈME
+   Tous les appels à des binaires système (soffice, gs, potrace, qpdf, 
+   python3) doivent :
+   - Utiliser des chemins configurables via variables d'environnement
+   - Avoir /usr/bin/XXX comme valeur par défaut (standard Linux)
+   - Avoir un timeout par type d'opération (ex: 30s pour LibreOffice, 
+     60s pour rembg, 10s pour ghostscript) pour éviter qu'un fichier 
+     malformé bloque le serveur indéfiniment
+
+6. CORS
+   Configuration CORS complète qui accepte :
+   - https://everydaytools.qzz.io (production frontend)
+   - http://localhost:5000 (dev frontend)
+   - http://localhost:3000 (dev frontend variante)
+   
+7. RATE LIMITING
+   Ajoute un rate limiting par IP sur les routes de traitement lourd 
+   (rembg, LibreOffice) pour éviter l'abus :
+   - background-remover : max 10 requêtes/minute/IP
+   - LibreOffice (word-to-pdf, excel-to-pdf, pptx-to-pdf) : max 20 
+     requêtes/minute/IP
+   - Autres routes : max 60 requêtes/minute/IP
+
+8. VARIABLES D'ENVIRONNEMENT
+   Crée un .env.example exhaustif listant toutes les variables utilisées 
+   dans le code avec des valeurs d'exemple :
+   NODE_ENV=production
+   PORT=3001
+   FRONTEND_URL=https://everydaytools.qzz.io
+   LIBREOFFICE_PATH=/usr/bin/soffice
+   GHOSTSCRIPT_PATH=/usr/bin/gs
+   POTRACE_PATH=/usr/bin/potrace
+   QPDF_PATH=/usr/bin/qpdf
+   PYTHON_PATH=/usr/bin/python3
+   MAX_FILE_SIZE_MB=50
+   RATE_LIMIT_WINDOW_MS=60000
+   (+ toute autre variable utilisée dans le code)
+
+9. BUILD PRODUCTION AUTONOME
+   Le dossier artifacts/api-server doit pouvoir être buildé et lancé 
+   de façon complètement autonome (sans dépendre de la racine du 
+   monorepo) :
+   - Son propre package.json avec toutes ses dépendances
+   - Son propre pnpm-lock.yaml généré de façon autonome
+   - Script "build" qui compile TypeScript → dist/
+   - Script "start" qui lance node dist/index.js
+   - Vérifie que pnpm install && pnpm build && NODE_ENV=production 
+     node dist/index.js fonctionne depuis artifacts/api-server seul
+
+PHASE 4 — ADAPTATION DU FRONTEND
+
+Pour chaque outil migré de client-side vers backend en Phase 3 :
+- Remplace le traitement local dans le composant React par un appel 
+  fetch vers la nouvelle route API
+- Branche le composant <ToolLoadingState> existant sur cet appel 
+  (progress bar + messages d'étape)
+- Assure-toi que l'URL de l'API est configurée via une variable 
+  d'environnement Vite (VITE_API_URL) avec :
+  - https://api.everydaytools.qzz.io en production
+  - http://localhost:3001 en développement
+- Vérifie que TOUS les appels API du frontend utilisent cette variable, 
+  pas des URLs codées en dur
+
+PHASE 5 — VÉRIFICATION FINALE
+
+1. Lance le backend en mode production localement 
+   (NODE_ENV=production node dist/index.js) et vérifie qu'il démarre 
+   sans erreur
+
+2. Teste chaque nouvelle route créée en Phase 3 avec curl et un fichier 
+   réel — exactement comme l'audit précédent, avec le même format de 
+   rapport (tableau outil / temps / qualité / statut)
+
+3. Vérifie que le frontend appelle correctement les nouvelles routes en 
+   mode dev (VITE_API_URL=http://localhost:3001)
+
+4. Identifie tout package npm avec des binaires natifs qui pourraient 
+   poser problème sur ARM aarch64 (notamment sharp, canvas, certains 
+   packages WASM) et documente comment les gérer au build Docker
+
+LIVRABLE FINAL
+
+1. Le tableau de décision client/serveur de la Phase 1 (86 outils)
+2. Le catalogue complet des routes API de la Phase 2
+3. Confirmation que toutes les routes de la Phase 3 sont implémentées 
+   et testées
+4. Le .env.example complet
+5. Confirmation que artifacts/api-server build de façon autonome
+6. Le rapport de test de la Phase 5 dans le même format que l'audit 
+   précédent
+
+Ne me donne pas un rapport "tout est OK" sans les tests curl réels à 
+l'appui — je veux voir les temps de réponse et le statut de chaque 
+route comme dans l'audit précédent.

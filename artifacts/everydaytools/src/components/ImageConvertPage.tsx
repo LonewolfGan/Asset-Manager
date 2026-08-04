@@ -171,9 +171,25 @@ export default function ImageConvertPage({ fromLabel, fromExts, fromMimes, toMim
     });
   };
 
+  const isHeic = (file: File) => {
+    const m = file.type.toLowerCase();
+    return m === 'image/heic' || m === 'image/heif' || !!file.name.match(/\.(heic|heif)$/i);
+  };
+
   const processFileBackend = async (entry: FileResult): Promise<Blob> => {
     const fd = new FormData();
     fd.append('file', entry.file);
+
+    // HEIC/HEIF: route to dedicated /convert/heic endpoint (handles libvips fallback)
+    if (isHeic(entry.file)) {
+      fd.append('format', toMime === 'image/svg+xml' ? 'image/png' : toMime);
+      const res = await fetch(apiUrl('/api/convert/heic'), { method: 'POST', body: fd });
+      if (!res.ok) {
+        const errData = await res.json() as { message?: string; error?: unknown };
+        throw new Error(typeof errData.message === 'string' ? errData.message : typeof errData.error === 'string' ? errData.error : 'HEIC conversion failed');
+      }
+      return res.blob();
+    }
 
     if (toMime === 'application/pdf') {
       const res = await fetch(apiUrl('/api/convert/image-to-pdf'), { method: 'POST', body: fd });

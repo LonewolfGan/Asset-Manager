@@ -6,6 +6,7 @@ import { tmpdir } from "os";
 import { writeFile, readFile, unlink } from "fs/promises";
 import { upload, guardBackground } from "../middlewares/upload.js";
 import { BIN } from "../lib/binaries.js";
+import { heavyRateLimit } from "../middlewares/rateLimit.js";
 
 const router: IRouter = Router();
 const execFileAsync = promisify(execFile);
@@ -19,6 +20,7 @@ const BG_REMOVE_PY = join(import.meta.dirname, "../python/bg_remove.py");
 
 router.post(
   "/remove-background",
+  heavyRateLimit,
   upload.single("file"),
   guardBackground,
   async (req, res) => {

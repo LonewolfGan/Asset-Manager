@@ -12,6 +12,7 @@ import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import { upload, guardDocument, guardImage } from "../middlewares/upload.js";
 import { BIN } from "../lib/binaries.js";
+import { defaultRateLimit } from "../middlewares/rateLimit.js";
 
 const execFileAsync = promisify(execFile);
 const router: IRouter = Router();
@@ -358,6 +359,111 @@ router.post("/convert/pdf-to-excel", upload.single("file"), guardDocument, async
     res.send(buf);
   } catch (err) {
     res.status(500).json({ error: err instanceof Error ? err.message : "Extraction failed" });
+  }
+});
+
+// ─────────────────────────────────────────────────────────
+// POST /convert/heic
+// HEIC/HEIF → JPEG | PNG | WEBP | PDF
+// Primary: sharp (works if libvips compiled with heif support).
+// Fallback: Python bridge with pillow-heif.
+// ─────────────────────────────────────────────────────────
+const HEIC_PY = join(__dirname, "../python/heic_convert.py");
+
+async function heicViaSharp(inputBuffer: Buffer, outputMime: string): Promise<Buffer> {
+  const fmt = mimeToSharpFormat(outputMime);
+  if (!fmt) throw new Error(`Unsupported output format: ${outputMime}`);
+  return sharp(inputBuffer).toFormat(fmt, { quality: 90 }).toBuffer();
+}
+
+async function heicViaPython(inputBuffer: Buffer, outputMime: string, workDir: string): Promise<Buffer> {
+  const fmtMap: Record<string, string> = {
+    "image/jpeg": "JPEG", "image/jpg": "JPEG",
+    "image/png": "PNG",
+    "image/webp": "WEBP",
+  };
+  const fmt = fmtMap[outputMime];
+  if (!fmt) throw new Error(`Unsupported HEIC output format for Python bridge: ${outputMime}`);
+  const extMap: Record<string, string> = { JPEG: "jpg", PNG: "png", WEBP: "webp" };
+  const inputPath = join(workDir, "input.heic");
+  const outputPath = join(workDir, `output.${extMap[fmt]}`);
+  await writeFile(inputPath, inputBuffer);
+  await execFileAsync(BIN.python3, [HEIC_PY, "--input", inputPath, "--output", outputPath, "--format", fmt], { timeout: 60_000 });
+  return readFile(outputPath);
+}
+
+router.post("/convert/heic", defaultRateLimit, upload.single("file"), async (req, res) => {
+  if (!req.file) { res.status(400).json({ error: true, code: "NO_FILE", message: "No file uploaded" }); return; }
+  const mime = req.file.mimetype.toLowerCase();
+  if (!mime.includes("heic") && !mime.includes("heif") &&
+      !req.file.originalname?.match(/\.(heic|heif)$/i)) {
+    res.status(415).json({ error: true, code: "UNSUPPORTED_TYPE", message: "Only HEIC/HEIF files are accepted." });
+    return;
+  }
+  if (req.file.size > 30 * 1024 * 1024) {
+    res.status(413).json({ error: true, code: "FILE_TOO_LARGE", message: "File too large. Maximum 30 MB for HEIC conversion." });
+    return;
+  }
+
+  const outputMime = String(req.body.format ?? "image/jpeg");
+  const baseName = (req.file.originalname ?? "image").replace(/\.(heic|heif)$/i, "");
+  const extMap: Record<string, string> = {
+    "image/jpeg": "jpg", "image/jpg": "jpg",
+    "image/png": "png", "image/webp": "webp", "application/pdf": "pdf",
+  };
+
+  // ── PDF output: convert to JPEG first, then embed in PDF ──
+  if (outputMime === "application/pdf") {
+    try {
+      let jpegBuf: Buffer;
+      try {
+        jpegBuf = await heicViaSharp(req.file.buffer, "image/jpeg");
+      } catch {
+        const id = randomUUID();
+        const workDir = join(tmpdir(), `heic-pdf-${id}`);
+        await mkdir(workDir, { recursive: true });
+        try {
+          jpegBuf = await heicViaPython(req.file.buffer, "image/jpeg", workDir);
+        } finally {
+          await rm(workDir, { recursive: true, force: true }).catch(() => {});
+        }
+      }
+      const A4W = 595.28, A4H = 841.89, MARGIN = 40;
+      const pdfDoc = await PDFDocument.create();
+      const page = pdfDoc.addPage([A4W, A4H]);
+      const img = await pdfDoc.embedJpg(jpegBuf);
+      const maxW = A4W - 2 * MARGIN, maxH = A4H - 2 * MARGIN;
+      const scale = Math.min(maxW / img.width, maxH / img.height, 1);
+      const dw = img.width * scale, dh = img.height * scale;
+      page.drawImage(img, { x: (A4W - dw) / 2, y: (A4H - dh) / 2, width: dw, height: dh });
+      const pdfBytes = await pdfDoc.save();
+      res.set({ "Content-Type": "application/pdf", "Content-Disposition": `attachment; filename="${baseName}.pdf"`, "Cache-Control": "no-store" });
+      res.send(Buffer.from(pdfBytes));
+    } catch (err) {
+      res.status(500).json({ error: true, code: "HEIC_CONVERSION_FAILED", message: err instanceof Error ? err.message : "HEIC to PDF failed" });
+    }
+    return;
+  }
+
+  const ext = extMap[outputMime] ?? "jpg";
+  const id = randomUUID();
+  const workDir = join(tmpdir(), `heic-${id}`);
+  await mkdir(workDir, { recursive: true });
+
+  try {
+    let outputBuf: Buffer;
+    try {
+      outputBuf = await heicViaSharp(req.file.buffer, outputMime);
+    } catch {
+      outputBuf = await heicViaPython(req.file.buffer, outputMime, workDir);
+    }
+    const normalizedMime = outputMime === "image/jpg" ? "image/jpeg" : outputMime;
+    res.set({ "Content-Type": normalizedMime, "Content-Disposition": `attachment; filename="${baseName}.${ext}"`, "Cache-Control": "no-store" });
+    res.send(outputBuf);
+  } catch (err) {
+    res.status(500).json({ error: true, code: "HEIC_CONVERSION_FAILED", message: err instanceof Error ? err.message : "HEIC conversion failed. Ensure libvips is compiled with HEIF support or pillow-heif is installed." });
+  } finally {
+    await rm(workDir, { recursive: true, force: true }).catch(() => {});
   }
 });
 

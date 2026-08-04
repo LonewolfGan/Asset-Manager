@@ -7,15 +7,15 @@ import ToolLoadingState from '@/components/ToolLoadingState';
 import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import { PageTitle, PageSubtitle } from '@/components/Typography';
+import { apiUrl } from '@/lib/apiBase';
 
 export default function Ocr() {
   const { t } = useLocale();
   const title = t.tools['ocr']?.title ?? 'OCR — Image to Text';
-  const desc = t.tools['ocr']?.description ?? 'Extract text from scanned PDFs or images using Tesseract.js — runs entirely in your browser.';
+  const desc = t.tools['ocr']?.description ?? 'Extract text from scanned images using server-side Tesseract OCR.';
   const [file, setFile] = useState<File | null>(null);
-  const [status, setStatus] = useState<'idle' | 'loading' | 'processing' | 'done' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
   const [progress, setProgress] = useState(0);
-  const [progressLabel, setProgressLabel] = useState('');
   const [output, setOutput] = useState('');
   const [error, setError] = useState('');
   const [isDragging, setIsDragging] = useState(false);
@@ -26,20 +26,25 @@ export default function Ocr() {
 
   const recognize = async () => {
     if (!file) return;
-    setStatus('loading'); setProgress(0); setProgressLabel('Loading OCR engine…'); setOutput('');
+    setStatus('loading'); setProgress(20); setOutput('');
     try {
-      const { createWorker } = await import('tesseract.js');
-      const worker = await createWorker('eng', 1, {
-        logger: (m: { status: string; progress: number }) => {
-          setProgressLabel(m.status);
-          setProgress(Math.round(m.progress * 100));
-          if (m.status.includes('recogniz')) setStatus('processing');
-        },
-      });
-      const result = await worker.recognize(file);
-      await worker.terminate();
-      setOutput(result.data.text);
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('lang', 'eng');
+
+      setProgress(40);
+      const res = await fetch(apiUrl('/api/extract/ocr'), { method: 'POST', body: fd });
+      setProgress(90);
+
+      if (!res.ok) {
+        const err = await res.json() as { message?: string; error?: unknown };
+        throw new Error(typeof err.message === 'string' ? err.message : typeof err.error === 'string' ? err.error : 'OCR failed');
+      }
+
+      const data = await res.json() as { text: string };
+      setOutput(data.text);
       setStatus('done');
+      setProgress(100);
       trackToolUsed('ocr', 'utilities');
     } catch (e) {
       trackToolError('ocr', 'general-error');
@@ -94,23 +99,15 @@ export default function Ocr() {
           </button>
         )}
 
-        {(status === 'loading' || status === 'processing') && (
+        {status === 'loading' && (
           <div style={{ marginBottom: 20 }}>
-            <ToolLoadingState
-              status="loading"
-              progress={progress}
-              label={progressLabel || 'Processing…'}
-            />
+            <ToolLoadingState status="loading" progress={progress} label="Extracting text..." />
           </div>
         )}
 
         {status === 'error' && (
           <div style={{ marginBottom: 16 }}>
-            <ToolLoadingState
-              status="error"
-              errorMessage={error}
-              onRetry={recognize}
-            />
+            <ToolLoadingState status="error" errorMessage={error} onRetry={recognize} />
           </div>
         )}
 
@@ -119,7 +116,7 @@ export default function Ocr() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
               <span style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-primary)' }}>{t.ocr.extractedText}</span>
               <div style={{ display: 'flex', gap: 8 }}>
-                <button onClick={copy} style={{ padding: '5px 12px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: copied ? 'var(--accent)' : 'var(--text-secondary)', cursor: 'pointer', transition: 'color 150ms ease' }}>{copied ? '✓ ' + t.common.copied : t.common.copy}</button>
+                <button onClick={copy} style={{ padding: '5px 12px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', color: copied ? 'var(--accent)' : 'var(--text-secondary)', cursor: 'pointer' }}>{copied ? '✓ ' + t.common.copied : t.common.copy}</button>
                 <button onClick={download} style={{ padding: '5px 12px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', background: 'var(--text-primary)', color: 'var(--bg-base)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-xs)', cursor: 'pointer' }}>{t.common.downloadTxt}</button>
               </div>
             </div>

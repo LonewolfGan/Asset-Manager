@@ -2,16 +2,14 @@ import { useState, useRef } from 'react';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import ToolPageLayout from '@/components/ToolPageLayout';
-import {
-  ToolWorkspace, ToolCard, ToolButton, ToolBadge,
-  ToolStat, ToolEmptyState,
-} from '@/components/ToolContent';
+import { ToolWorkspace, ToolButton } from '@/components/ToolContent';
 import ToolLoadingState from '@/components/ToolLoadingState';
+import { apiUrl } from '@/lib/apiBase';
 
 export default function WordToMarkdown() {
   const { t } = useLocale();
   const title = t.tools['word-to-markdown']?.title ?? 'Word to Markdown';
-  const desc = t.tools['word-to-markdown']?.description ?? 'Convert DOCX files to clean Markdown in your browser.';
+  const desc = t.tools['word-to-markdown']?.description ?? 'Convert DOCX files to clean Markdown.';
   const [output, setOutput] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
   const [error, setError] = useState('');
@@ -21,16 +19,19 @@ export default function WordToMarkdown() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFile = async (f: File) => {
-    setFile(f); setStatus('idle'); setOutput(''); setError('');
+    setFile(f); setStatus('loading'); setOutput(''); setError('');
     trackToolUsed('word-to-markdown', 'documents');
     try {
-      const mammoth = (await import('mammoth')).default;
-      const buf = await f.arrayBuffer();
-      const result = await mammoth.convertToHtml({ arrayBuffer: buf });
-      const html = result.value;
-      const TurndownService = (await import('turndown')).default;
-      const td = new TurndownService({ headingStyle: 'atx', codeBlockStyle: 'fenced' });
-      const md = td.turndown(html);
+      const fd = new FormData();
+      fd.append('file', f);
+      const res = await fetch(apiUrl('/api/convert/word-to-markdown'), { method: 'POST', body: fd });
+
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Conversion failed');
+      }
+
+      const md = await res.text();
       setOutput(md);
       setStatus('done');
     } catch (e) {
@@ -71,11 +72,12 @@ export default function WordToMarkdown() {
           <input ref={inputRef} type="file" accept=".docx" style={{ display: 'none' }}
             onChange={(e) => { if (e.target.files?.[0]) handleFile(e.target.files[0]); }} />
           <p style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', margin: 0 }}>{file ? file.name : t.common.dropFileHere}</p>
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', marginTop: 6 }}>.docx · max 25 MB</p>
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', marginTop: 6 }}>.docx · max 30 MB</p>
         </div>
 
         <ToolLoadingState
-          status={status === 'error' ? 'error' : 'idle'}
+          status={status === 'loading' ? 'loading' : status === 'error' ? 'error' : 'idle'}
+          label="Converting to Markdown..."
           errorMessage={error || undefined}
           onRetry={status === 'error' && file ? () => handleFile(file) : undefined}
         />

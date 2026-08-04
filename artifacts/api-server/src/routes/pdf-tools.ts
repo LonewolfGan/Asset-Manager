@@ -5,10 +5,11 @@ import { execFile } from "child_process";
 import { promisify } from "util";
 import { tmpdir } from "os";
 import { randomUUID } from "crypto";
-import { writeFile, readFile, rm, mkdir } from "fs/promises";
+import { writeFile, readFile, readdir, rm, mkdir } from "fs/promises";
 import { join } from "path";
 import { upload } from "../middlewares/upload.js";
 import { BIN } from "../lib/binaries.js";
+import { defaultRateLimit, mediumRateLimit } from "../middlewares/rateLimit.js";
 import type { Request, Response, NextFunction } from "express";
 
 const execFileAsync = promisify(execFile);
@@ -68,6 +69,124 @@ function parsePageRanges(str: string, maxPages: number): number[][] {
   }
   return parsed;
 }
+
+// ─────────────────────────────────────────────────────────
+// POST /tools/pdf-to-images
+// Each PDF page → PNG or JPEG, returned as a ZIP.
+// Uses Ghostscript for high-quality rasterization.
+// ─────────────────────────────────────────────────────────
+router.post("/tools/pdf-to-images", defaultRateLimit, upload.single("file"), guardSinglePdf, async (req, res) => {
+  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+
+  const format = String(req.body.format ?? "jpeg").toLowerCase() === "png" ? "png" : "jpeg";
+  const dpi = Math.min(300, Math.max(72, parseInt(String(req.body.dpi ?? "150")) || 150));
+  const gsDevice = format === "png" ? "png16m" : "jpeg";
+  const ext = format === "png" ? "png" : "jpg";
+  const baseName = pdfBaseName(req.file.originalname);
+
+  const id = randomUUID();
+  const workDir = join(tmpdir(), `pdf-img-${id}`);
+  await mkdir(workDir, { recursive: true });
+  const inPath = join(workDir, "input.pdf");
+  const outPattern = join(workDir, `page-%d.${ext}`);
+
+  try {
+    await writeFile(inPath, req.file.buffer);
+    await execFileAsync(BIN.gs, [
+      "-dNOPAUSE", "-dBATCH", "-dSAFER",
+      `-sDEVICE=${gsDevice}`,
+      `-r${dpi}`,
+      `-sOutputFile=${outPattern}`,
+      inPath,
+    ], { timeout: 120_000 });
+
+    const allFiles = await readdir(workDir);
+    const imgFiles = allFiles
+      .filter((f) => f.startsWith("page-") && f.endsWith(`.${ext}`))
+      .sort((a, b) => {
+        const n = (s: string) => parseInt(s.replace("page-", "").replace(`.${ext}`, "")) || 0;
+        return n(a) - n(b);
+      });
+
+    if (imgFiles.length === 0) {
+      res.status(422).json({ error: "Ghostscript did not produce any image output. Check the PDF is valid." });
+      return;
+    }
+
+    if (imgFiles.length === 1) {
+      const buf = await readFile(join(workDir, imgFiles[0]));
+      const mime = format === "png" ? "image/png" : "image/jpeg";
+      res.set({ "Content-Type": mime, "Content-Disposition": `attachment; filename="${baseName}_page_1.${ext}"`, "Cache-Control": "no-store" });
+      res.send(buf);
+    } else {
+      const zipEntries: Record<string, Uint8Array> = {};
+      for (const f of imgFiles) {
+        const pageNum = f.replace("page-", "").replace(`.${ext}`, "");
+        zipEntries[`${baseName}_page_${pageNum}.${ext}`] = new Uint8Array(await readFile(join(workDir, f)));
+      }
+      const zipBuf = Buffer.from(zipSync(zipEntries, { level: 6 }));
+      res.set({
+        "Content-Type": "application/zip",
+        "Content-Disposition": `attachment; filename="${baseName}_images.zip"`,
+        "X-Page-Count": String(imgFiles.length),
+        "Cache-Control": "no-store",
+        "Access-Control-Expose-Headers": "X-Page-Count",
+      });
+      res.send(zipBuf);
+    }
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : "Conversion failed";
+    const isMissing = msg.includes("ENOENT");
+    res.status(isMissing ? 503 : 500).json({ error: isMissing ? "Ghostscript is not installed on this server." : msg });
+  } finally {
+    await rm(workDir, { recursive: true, force: true }).catch(() => {});
+  }
+});
+
+// ─────────────────────────────────────────────────────────
+// POST /tools/pdf-reorder
+// Reorder or remove pages from a PDF.
+// Input: file (PDF) + pages (comma-separated 1-based page numbers in desired order)
+// ─────────────────────────────────────────────────────────
+router.post("/tools/pdf-reorder", defaultRateLimit, upload.single("file"), guardSinglePdf, async (req, res) => {
+  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+
+  const pagesParam = String(req.body.pages ?? "");
+  if (!pagesParam.trim()) {
+    res.status(400).json({ error: "pages parameter required (comma-separated 1-based page numbers)" });
+    return;
+  }
+
+  try {
+    const src = await PDFDocument.load(req.file.buffer);
+    const numPages = src.getPageCount();
+    const pageIndices = pagesParam.split(",")
+      .map((s) => parseInt(s.trim()) - 1)
+      .filter((i) => !isNaN(i) && i >= 0 && i < numPages);
+
+    if (pageIndices.length === 0) {
+      res.status(400).json({ error: "No valid page indices. Pages must be 1-based integers within document range." });
+      return;
+    }
+
+    const dest = await PDFDocument.create();
+    const copied = await dest.copyPages(src, pageIndices);
+    for (const page of copied) dest.addPage(page);
+
+    const pdfBytes = await dest.save();
+    const baseName = pdfBaseName(req.file.originalname);
+    res.set({
+      "Content-Type": "application/pdf",
+      "Content-Disposition": `attachment; filename="${baseName}_reordered.pdf"`,
+      "X-Page-Count": String(pageIndices.length),
+      "Cache-Control": "no-store",
+      "Access-Control-Expose-Headers": "X-Page-Count",
+    });
+    res.send(Buffer.from(pdfBytes));
+  } catch (err) {
+    res.status(500).json({ error: err instanceof Error ? err.message : "Reorder failed" });
+  }
+});
 
 // ─────────────────────────────────────────────────────────
 // POST /tools/pdf-compress

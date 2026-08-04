@@ -1,10 +1,23 @@
 import { Router, type Request, type Response } from "express";
 import mammoth from "mammoth";
 import { marked } from "marked";
+import { Document, Packer, Paragraph, TextRun, HeadingLevel } from "docx";
 import { zipSync } from "fflate";
+import { execFile } from "child_process";
+import { promisify } from "util";
+import { tmpdir } from "os";
+import { randomUUID } from "crypto";
+import { writeFile, readFile, rm, mkdir } from "fs/promises";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
 import { upload } from "../middlewares/upload.js";
 import { htmlToPdfBuffer } from "../lib/html-to-pdf.js";
 import { convertWithLibreOffice, convertPptxToImages } from "../lib/libreoffice.js";
+import { defaultRateLimit, mediumRateLimit } from "../middlewares/rateLimit.js";
+
+const execFileAsync = promisify(execFile);
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const PDF_EXTRACT_PY = join(__dirname, "../python/pdf_extract.py");
 
 const router = Router();
 
@@ -22,7 +35,7 @@ function sendPdf(res: Response, buf: Buffer, filename: string): void {
 // LibreOffice headless — full fidelity (fonts, images, colours, tables).
 // Falls back to mammoth→pdfkit if LibreOffice fails.
 // ─────────────────────────────────────────────────────────
-router.post("/tools/word-to-pdf", upload.single("file"), async (req: Request, res: Response) => {
+router.post("/tools/word-to-pdf", mediumRateLimit, upload.single("file"), async (req: Request, res: Response) => {
   if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
 
   const mime = req.file.mimetype;
@@ -53,7 +66,7 @@ router.post("/tools/word-to-pdf", upload.single("file"), async (req: Request, re
 // LibreOffice headless — preserves grid, merged cells, colours, charts.
 // Falls back to xlsx→pdfkit if LibreOffice fails.
 // ─────────────────────────────────────────────────────────
-router.post("/tools/excel-to-pdf", upload.single("file"), async (req: Request, res: Response) => {
+router.post("/tools/excel-to-pdf", mediumRateLimit, upload.single("file"), async (req: Request, res: Response) => {
   if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
 
   const rawName = req.file.originalname ?? "spreadsheet";
@@ -102,7 +115,7 @@ router.post("/tools/excel-to-pdf", upload.single("file"), async (req: Request, r
 // LibreOffice headless — full visual fidelity (images, transitions, fonts).
 // Falls back to pdfkit text-extraction if LibreOffice fails.
 // ─────────────────────────────────────────────────────────
-router.post("/tools/pptx-to-pdf", upload.single("file"), async (req: Request, res: Response) => {
+router.post("/tools/pptx-to-pdf", mediumRateLimit, upload.single("file"), async (req: Request, res: Response) => {
   if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
 
   const baseName = (req.file.originalname ?? "presentation").replace(/\.pptx?$/i, "");
@@ -175,7 +188,7 @@ router.post("/tools/pptx-to-pdf", upload.single("file"), async (req: Request, re
 // LibreOffice headless → per-slide PNG → ZIP.
 // Returns real pixel-accurate slide images, not text previews.
 // ─────────────────────────────────────────────────────────
-router.post("/tools/pptx-to-images", upload.single("file"), async (req: Request, res: Response) => {
+router.post("/tools/pptx-to-images", mediumRateLimit, upload.single("file"), async (req: Request, res: Response) => {
   if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
 
   try {
@@ -208,7 +221,7 @@ router.post("/tools/pptx-to-images", upload.single("file"), async (req: Request,
 // ─────────────────────────────────────────────────────────
 // POST /tools/html-to-pdf
 // ─────────────────────────────────────────────────────────
-router.post("/tools/html-to-pdf", upload.single("file"), async (req: Request, res: Response) => {
+router.post("/tools/html-to-pdf", defaultRateLimit, upload.single("file"), async (req: Request, res: Response) => {
   try {
     let html = "";
     let filename = "webpage.pdf";
@@ -238,7 +251,7 @@ router.post("/tools/html-to-pdf", upload.single("file"), async (req: Request, re
 // ─────────────────────────────────────────────────────────
 // POST /tools/markdown-to-pdf
 // ─────────────────────────────────────────────────────────
-router.post("/tools/markdown-to-pdf", upload.single("file"), async (req: Request, res: Response) => {
+router.post("/tools/markdown-to-pdf", defaultRateLimit, upload.single("file"), async (req: Request, res: Response) => {
   try {
     let markdown = "";
     let filename = "document.pdf";
@@ -258,6 +271,249 @@ router.post("/tools/markdown-to-pdf", upload.single("file"), async (req: Request
     sendPdf(res, pdfBuf, filename);
   } catch (err) {
     res.status(500).json({ error: err instanceof Error ? err.message : "Conversion failed" });
+  }
+});
+
+// ─────────────────────────────────────────────────────────
+// POST /tools/pdf-to-html
+// Extract PDF text via pdfplumber and wrap in clean HTML.
+// Returns a .html file ready for the browser.
+// ─────────────────────────────────────────────────────────
+import { execFile as _execFile } from "child_process";
+import { promisify as _promisify } from "util";
+import { tmpdir as _tmpdir } from "os";
+import { randomUUID as _randomUUID } from "crypto";
+import { writeFile as _writeFile, readFile as _readFile, rm as _rm, mkdir as _mkdir } from "fs/promises";
+import { join as _join, dirname as _dirname } from "path";
+import { fileURLToPath as _fileURLToPath } from "url";
+
+const _execFileAsync = _promisify(_execFile);
+const _PDF_EXTRACT_PY = _join(_dirname(_fileURLToPath(import.meta.url)), "../python/pdf_extract.py");
+
+router.post("/tools/pdf-to-html", defaultRateLimit, upload.single("file"), async (req: Request, res: Response) => {
+  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (req.file.mimetype !== "application/pdf") { res.status(415).json({ error: "Only PDF files are accepted." }); return; }
+  if (req.file.size > 50 * 1024 * 1024) { res.status(413).json({ error: "File too large. Maximum 50 MB." }); return; }
+
+  const baseName = (req.file.originalname ?? "document").replace(/\.pdf$/i, "");
+  const id = _randomUUID();
+  const workDir = _join(_tmpdir(), `pdf-html-${id}`);
+  await _mkdir(workDir, { recursive: true });
+  const pdfPath = _join(workDir, "input.pdf");
+
+  try {
+    await _writeFile(pdfPath, req.file.buffer);
+
+    const { stdout } = await _execFileAsync(
+      process.env["PYTHON3_PATH"] ?? "python3",
+      [_PDF_EXTRACT_PY, "--pdf", pdfPath, "--mode", "text"],
+      { timeout: 120_000, maxBuffer: 50 * 1024 * 1024 },
+    );
+    const extracted = JSON.parse(stdout) as { text?: string; error?: string };
+    if (extracted.error) throw new Error(extracted.error);
+
+    const rawText = extracted.text ?? "";
+    const escapedLines = rawText
+      .split("\n")
+      .map((line) => {
+        const safe = line.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        return safe.trim() ? `<p>${safe}</p>` : "";
+      })
+      .filter(Boolean)
+      .join("\n");
+
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${baseName}</title>
+  <style>
+    body { font-family: Georgia, serif; max-width: 800px; margin: 0 auto; padding: 2em; line-height: 1.7; color: #222; }
+    p { margin: 0 0 1em; }
+  </style>
+</head>
+<body>
+${escapedLines}
+</body>
+</html>`;
+
+    res.set({
+      "Content-Type": "text/html; charset=utf-8",
+      "Content-Disposition": `attachment; filename="${baseName}.html"`,
+      "Cache-Control": "no-store",
+    });
+    res.send(html);
+  } catch (err) {
+    res.status(500).json({ error: err instanceof Error ? err.message : "Conversion failed" });
+  } finally {
+    await _rm(workDir, { recursive: true, force: true }).catch(() => {});
+  }
+});
+
+// ─────────────────────────────────────────────────────────
+// POST /tools/pdf-to-pptx
+// Convert PDF to PowerPoint using LibreOffice headless.
+// Each page is embedded as a slide.
+// ─────────────────────────────────────────────────────────
+router.post("/tools/pdf-to-pptx", mediumRateLimit, upload.single("file"), async (req: Request, res: Response) => {
+  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (req.file.mimetype !== "application/pdf") { res.status(415).json({ error: "Only PDF files are accepted." }); return; }
+  if (req.file.size > 50 * 1024 * 1024) { res.status(413).json({ error: "File too large. Maximum 50 MB." }); return; }
+
+  const baseName = (req.file.originalname ?? "document").replace(/\.pdf$/i, "");
+
+  try {
+    const pptxBuf = await convertWithLibreOffice(req.file.buffer, "pdf", "pptx");
+    res.set({
+      "Content-Type": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+      "Content-Disposition": `attachment; filename="${baseName}.pptx"`,
+      "Cache-Control": "no-store",
+    });
+    res.send(pptxBuf);
+  } catch (err) {
+    res.status(500).json({ error: err instanceof Error ? err.message : "PDF to PPTX conversion failed. Ensure LibreOffice is installed." });
+  }
+});
+
+// ─────────────────────────────────────────────────────────
+// POST /convert/txt-to-docx
+// Plain text → DOCX. Accepts file upload or raw body.text.
+// ─────────────────────────────────────────────────────────
+router.post("/convert/txt-to-docx", defaultRateLimit, upload.single("file"), async (req: Request, res: Response) => {
+  let textContent = "";
+  let filename = "document.docx";
+
+  if (req.file) {
+    textContent = req.file.buffer.toString("utf-8");
+    filename = (req.file.originalname ?? "document").replace(/\.txt$/i, "") + ".docx";
+  } else if (typeof req.body?.text === "string") {
+    textContent = req.body.text as string;
+  } else {
+    res.status(400).json({ error: "Provide a .txt file upload or a text body field" });
+    return;
+  }
+
+  if (textContent.length > 1_000_000) {
+    res.status(413).json({ error: "Text too large. Maximum 1,000,000 characters." });
+    return;
+  }
+
+  try {
+    const paragraphs = textContent.split("\n").map(
+      (line) => new Paragraph({ children: [new TextRun(line)], spacing: { after: 80 } }),
+    );
+    const doc = new Document({ sections: [{ properties: {}, children: paragraphs }] });
+    const buffer = await Packer.toBuffer(doc);
+    res.set({
+      "Content-Type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "Content-Disposition": `attachment; filename="${filename}"`,
+      "Cache-Control": "no-store",
+    });
+    res.send(buffer);
+  } catch (err) {
+    res.status(500).json({ error: err instanceof Error ? err.message : "TXT to DOCX failed" });
+  }
+});
+
+// ─────────────────────────────────────────────────────────
+// POST /convert/markdown-to-docx
+// Markdown → DOCX. Accepts file upload or raw body.markdown.
+// ─────────────────────────────────────────────────────────
+router.post("/convert/markdown-to-docx", defaultRateLimit, upload.single("file"), async (req: Request, res: Response) => {
+  let markdown = "";
+  let filename = "document.docx";
+
+  if (req.file) {
+    markdown = req.file.buffer.toString("utf-8");
+    filename = (req.file.originalname ?? "document").replace(/\.(md|markdown|txt)$/i, "") + ".docx";
+  } else if (typeof req.body?.markdown === "string") {
+    markdown = req.body.markdown as string;
+  } else {
+    res.status(400).json({ error: "Provide a markdown file or a markdown body field" });
+    return;
+  }
+
+  try {
+    const html = await marked(markdown);
+    const htmlStr = String(html);
+
+    // Simple HTML → DOCX paragraph builder
+    const paragraphs: InstanceType<typeof Paragraph>[] = [];
+    const blocks = htmlStr.split(/<\/?(?:p|h[1-6]|ul|ol|li|blockquote|pre|hr|br)[^>]*>/i)
+      .map((s) => s.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").trim())
+      .filter(Boolean);
+
+    // Re-parse structured nodes
+    const div = htmlStr;
+    const headingRe = /<h([1-6])[^>]*>([\s\S]*?)<\/h\1>/gi;
+    const headingMap: Record<string, number> = { "1": HeadingLevel.HEADING_1, "2": HeadingLevel.HEADING_2, "3": HeadingLevel.HEADING_3, "4": HeadingLevel.HEADING_4, "5": HeadingLevel.HEADING_5, "6": HeadingLevel.HEADING_6 };
+
+    // Extract headings first for structure awareness
+    const headingPositions: Map<string, { level: number; text: string }> = new Map();
+    let m: RegExpExecArray | null;
+    // eslint-disable-next-line no-cond-assign
+    while ((m = headingRe.exec(div)) !== null) {
+      headingPositions.set(m[2].replace(/<[^>]+>/g, "").trim(), { level: parseInt(m[1]), text: m[2].replace(/<[^>]+>/g, "").trim() });
+    }
+
+    for (const block of blocks) {
+      if (!block) continue;
+      const h = headingPositions.get(block);
+      if (h) {
+        paragraphs.push(new Paragraph({
+          heading: headingMap[String(h.level)] ?? HeadingLevel.HEADING_1,
+          children: [new TextRun({ text: h.text, bold: true })],
+        }));
+      } else {
+        paragraphs.push(new Paragraph({ children: [new TextRun(block)], spacing: { after: 80 } }));
+      }
+    }
+
+    if (paragraphs.length === 0) {
+      paragraphs.push(new Paragraph({ children: [new TextRun("")] }));
+    }
+
+    const doc = new Document({ sections: [{ children: paragraphs }] });
+    const buffer = await Packer.toBuffer(doc);
+    res.set({
+      "Content-Type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "Content-Disposition": `attachment; filename="${filename}"`,
+      "Cache-Control": "no-store",
+    });
+    res.send(buffer);
+  } catch (err) {
+    res.status(500).json({ error: err instanceof Error ? err.message : "Markdown to DOCX failed" });
+  }
+});
+
+// ─────────────────────────────────────────────────────────
+// POST /convert/word-to-markdown
+// DOCX → Markdown via mammoth (HTML) + turndown.
+// Returns plain text (.md) as a JSON response.
+// ─────────────────────────────────────────────────────────
+router.post("/convert/word-to-markdown", defaultRateLimit, upload.single("file"), async (req: Request, res: Response) => {
+  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  const mime = req.file.mimetype;
+  const isDocx = mime.includes("wordprocessingml") || mime.includes("msword") ||
+    /\.docx?$/i.test(req.file.originalname ?? "");
+  if (!isDocx) { res.status(415).json({ error: "Please upload a .docx or .doc file" }); return; }
+  if (req.file.size > 30 * 1024 * 1024) { res.status(413).json({ error: "File too large. Maximum 30 MB." }); return; }
+
+  try {
+    const result = await mammoth.convertToHtml({ buffer: req.file.buffer });
+    const TurndownService = (await import("turndown")).default;
+    const td = new TurndownService({ headingStyle: "atx", codeBlockStyle: "fenced" });
+    const markdown = td.turndown(result.value);
+    const baseName = (req.file.originalname ?? "document").replace(/\.docx?$/i, "");
+    res.set({
+      "Content-Type": "text/markdown; charset=utf-8",
+      "Content-Disposition": `attachment; filename="${baseName}.md"`,
+      "Cache-Control": "no-store",
+    });
+    res.send(markdown);
+  } catch (err) {
+    res.status(500).json({ error: err instanceof Error ? err.message : "Word to Markdown failed" });
   }
 });
 

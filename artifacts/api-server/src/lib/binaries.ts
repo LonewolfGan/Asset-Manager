@@ -14,9 +14,10 @@
  *   PYTHON3_PATH=/usr/bin/python3
  */
 export const BIN = {
-  soffice: process.env["SOFFICE_PATH"] ?? "soffice",
-  gs:      process.env["GS_PATH"]      ?? "gs",
-  potrace: process.env["POTRACE_PATH"] ?? "potrace",
-  qpdf:    process.env["QPDF_PATH"]    ?? "qpdf",
-  python3: process.env["PYTHON3_PATH"] ?? "python3",
+  soffice:   process.env["SOFFICE_PATH"]   ?? "soffice",
+  gs:        process.env["GS_PATH"]        ?? "gs",
+  potrace:   process.env["POTRACE_PATH"]   ?? "potrace",
+  qpdf:      process.env["QPDF_PATH"]      ?? "qpdf",
+  python3:   process.env["PYTHON3_PATH"]   ?? "python3",
+  tesseract: process.env["TESSERACT_PATH"] ?? "tesseract",
 } as const;

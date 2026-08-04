@@ -1,15 +1,12 @@
 import { useState } from 'react';
 import FileUpload from '@/components/FileUpload';
 import ResultPanel from '@/components/ResultPanel';
-import { Document, Packer, Paragraph, TextRun } from 'docx';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import ToolPageLayout from '@/components/ToolPageLayout';
-import {
-  ToolWorkspace, ToolCard, ToolButton, ToolBadge,
-  ToolStat, ToolEmptyState,
-} from '@/components/ToolContent';
+import { ToolWorkspace, ToolButton } from '@/components/ToolContent';
 import ToolLoadingState from '@/components/ToolLoadingState';
+import { apiUrl } from '@/lib/apiBase';
 
 export default function TxtToDocx() {
   const { t } = useLocale();
@@ -18,44 +15,40 @@ export default function TxtToDocx() {
   const [error, setError] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
-
   const [mode, setMode] = useState<'upload' | 'paste'>('upload');
-  const [textInput, setTextInput] = useState("");
+  const [textInput, setTextInput] = useState('');
 
   const handleConvert = async () => {
     trackToolUsed('txt-to-docx', 'documents');
     if (mode === 'upload' && !files[0]) return;
     if (mode === 'paste' && !textInput.trim()) return;
 
-    setError(null); setIsProcessing(true); setProgress(0);
+    setError(null); setIsProcessing(true); setProgress(20);
     try {
-      let textContent = "";
-      let filename = "document.docx";
+      const fd = new FormData();
+      let filename = 'document.docx';
       let sizeBefore = 0;
 
       if (mode === 'upload') {
-        textContent = await files[0].text();
+        fd.append('file', files[0]);
         filename = files[0].name.replace(/\.txt$/i, '.docx');
         sizeBefore = files[0].size;
       } else {
-        textContent = textInput;
+        fd.append('text', textInput);
         sizeBefore = textInput.length;
       }
 
-      setProgress(50);
+      setProgress(40);
+      const res = await fetch(apiUrl('/api/convert/txt-to-docx'), { method: 'POST', body: fd });
+      setProgress(90);
 
-      const lines = textContent.split('\n');
-      const paragraphs = lines.map(line => new Paragraph({
-        children: [new TextRun(line)],
-      }));
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Conversion failed');
+      }
 
-      const doc = new Document({
-        sections: [{ properties: {}, children: paragraphs }],
-      });
-
-      const blob = await Packer.toBlob(doc);
+      const blob = await res.blob();
       setProgress(100);
-
       setResult({ blob, filename, sizeAfter: blob.size, sizeBefore });
     } catch (e) {
       trackToolError('txt-to-docx', 'general-error');
@@ -83,7 +76,7 @@ export default function TxtToDocx() {
             placeholder="Paste your text here..."
             value={textInput}
             onChange={e => setTextInput(e.target.value)}
-            style={{ width: '100%', minHeight: 200, padding: 16, border: '1px solid var(--border)', borderRadius: 'var(--radius)', outline: 'none', fontFamily: 'var(--font-ui)' }}
+            style={{ width: '100%', minHeight: 200, padding: 16, border: '1px solid var(--border)', borderRadius: 'var(--radius)', outline: 'none', fontFamily: 'var(--font-ui)', boxSizing: 'border-box' }}
           />
         )}
 

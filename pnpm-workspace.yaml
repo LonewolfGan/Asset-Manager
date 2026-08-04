@@ -71,7 +71,6 @@ onlyBuiltDependencies:
   - core-js
   - esbuild
   - msw
-  - onnxruntime-node
   - protobufjs
   - sharp
   - tesseract.js

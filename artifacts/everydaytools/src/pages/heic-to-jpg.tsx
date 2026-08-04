@@ -8,6 +8,7 @@ import ToolPageSEO from '@/components/ToolPageSEO';
 import { useLocale } from '@/hooks/use-locale';
 import ToolLoadingState from '@/components/ToolLoadingState';
 import { PageTitle, PageSubtitle } from '@/components/Typography';
+import { apiUrl } from '@/lib/apiBase';
 
 export default function HeicToJpg() {
   const { t } = useLocale();
@@ -16,28 +17,30 @@ export default function HeicToJpg() {
   const [error, setError] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
-  
   const [format, setFormat] = useState<'image/jpeg' | 'image/png'>('image/jpeg');
 
   const handleConvert = async () => {
     if (!files[0]) return;
-    setError(null); setIsProcessing(true); setProgress(0);
+    setError(null); setIsProcessing(true); setProgress(10);
     try {
       const file = files[0];
-      const heic2any = (await import('heic2any')).default;
-      
-      setProgress(50);
-      
-      const converted = await heic2any({
-        blob: file,
-        toType: format,
-        quality: 0.9
-      });
-      
-      const blob = Array.isArray(converted) ? converted[0] : converted;
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('format', format);
+
+      setProgress(30);
+      const res = await fetch(apiUrl('/api/convert/heic'), { method: 'POST', body: fd });
+      setProgress(90);
+
+      if (!res.ok) {
+        const err = await res.json() as { message?: string; error?: unknown };
+        throw new Error(typeof err.message === 'string' ? err.message : typeof err.error === 'string' ? err.error : 'Conversion failed');
+      }
+
+      const blob = await res.blob();
       setProgress(100);
       trackToolUsed('heic-to-jpg', 'images');
-      
+
       const ext = format === 'image/jpeg' ? '.jpg' : '.png';
       setResult({ blob, filename: file.name.replace(/\.heic$/i, ext).replace(/\.heif$/i, ext), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
@@ -49,52 +52,47 @@ export default function HeicToJpg() {
   return (
     <>
       <div className="container-wide" style={{ paddingTop: 24, paddingBottom: 80 }}>
-      <Breadcrumb items={['Home', 'Image Tools', 'HEIC to JPG']} />
-      <PageTitle>{t.tools['heic-to-jpg']?.title ?? 'HEIC to JPG'}</PageTitle>
-      <PageSubtitle>{t.tools['heic-to-jpg']?.description ?? 'Convert Apple iPhone HEIC/HEIF photos to universally compatible formats.'}</PageSubtitle>
-      
-      <FileUpload accept={['.heic', '.heif']} maxSizeMB={20} onFiles={setFiles} />
-      
-      {files.length > 0 && (
-        <div style={{ marginTop: 24, padding: 20, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
-          <h3 style={{ fontSize: 'var(--text-base)', fontWeight: 'var(--panel-label-weight)' as React.CSSProperties['fontWeight'], marginBottom: 16 }}>Target Format</h3>
-          <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
-            {([
-              { value: 'image/jpeg', label: 'JPEG (Smaller size)' },
-              { value: 'image/png',  label: 'PNG (Lossless)' },
-            ] as const).map(({ value, label }) => (
-              <label
-                key={value}
-                style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', padding: '10px 12px', borderRadius: 'var(--radius-md)', transition: 'background 120ms ease' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-elevated)'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
-              >
-                <input type="radio" checked={format === value} onChange={() => setFormat(value)} style={{ width: 15, height: 15 }} />
-                <span>{label}</span>
-              </label>
-            ))}
-          </div>
-        </div>
-      )}
+        <Breadcrumb items={['Home', 'Image Tools', 'HEIC to JPG']} />
+        <PageTitle>{t.tools['heic-to-jpg']?.title ?? 'HEIC to JPG'}</PageTitle>
+        <PageSubtitle>{t.tools['heic-to-jpg']?.description ?? 'Convert Apple iPhone HEIC/HEIF photos to universally compatible formats.'}</PageSubtitle>
 
-      {files.length > 0 && !isProcessing && (
-        <button onClick={handleConvert} disabled={isProcessing}
-          style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer', width: '100%' }}>
-          Convert Photo
-        </button>
-      )}
-      
-      <ToolLoadingState
-        status={isProcessing ? 'loading' : error ? 'error' : 'idle'}
-        progress={isProcessing ? progress : undefined}
-        label="Converting image..."
-        errorMessage={error ?? undefined}
-        onRetry={error && files.length > 0 ? handleConvert : undefined}
-      />
-      {result && <ResultPanel {...result} />}
-      <AdSlot type="horizontal" />
-    </div>
-    <ToolPageSEO internalSlug="heic-to-jpg" />
-  </>
+        <FileUpload accept={['.heic', '.heif']} maxSizeMB={30} onFiles={setFiles} />
+
+        {files.length > 0 && (
+          <div style={{ marginTop: 24, padding: 20, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)' }}>
+            <h3 style={{ fontSize: 'var(--text-base)', fontWeight: 'var(--panel-label-weight)' as React.CSSProperties['fontWeight'], marginBottom: 16 }}>Target Format</h3>
+            <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+              {([
+                { value: 'image/jpeg', label: 'JPEG (Smaller size)' },
+                { value: 'image/png',  label: 'PNG (Lossless)' },
+              ] as const).map(({ value, label }) => (
+                <label key={value} style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-primary)', padding: '10px 12px', borderRadius: 'var(--radius-md)' }}>
+                  <input type="radio" checked={format === value} onChange={() => setFormat(value)} style={{ width: 15, height: 15 }} />
+                  <span>{label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {files.length > 0 && !isProcessing && (
+          <button onClick={handleConvert} disabled={isProcessing}
+            style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: 'var(--accent-text)', border: 'none', borderRadius: 'var(--radius)', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', fontWeight: 500, cursor: 'pointer', width: '100%' }}>
+            Convert Photo
+          </button>
+        )}
+
+        <ToolLoadingState
+          status={isProcessing ? 'loading' : error ? 'error' : 'idle'}
+          progress={isProcessing ? progress : undefined}
+          label="Converting HEIC image..."
+          errorMessage={error ?? undefined}
+          onRetry={error && files.length > 0 ? handleConvert : undefined}
+        />
+        {result && <ResultPanel {...result} />}
+        <AdSlot type="horizontal" />
+      </div>
+      <ToolPageSEO internalSlug="heic-to-jpg" />
+    </>
   );
 }

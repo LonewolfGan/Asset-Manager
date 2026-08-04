@@ -8,6 +8,7 @@ import convertRouter from "./convert.js";
 import imageToolsRouter from "./image-tools.js";
 import pdfToolsRouter from "./pdf-tools.js";
 import documentToolsRouter from "./document-tools.js";
+import extractToolsRouter from "./extract-tools.js";
 
 const router: IRouter = Router();
 
@@ -20,5 +21,6 @@ router.use(convertRouter);
 router.use(imageToolsRouter);
 router.use(pdfToolsRouter);
 router.use(documentToolsRouter);
+router.use(extractToolsRouter);
 
 export default router;

@@ -3,12 +3,14 @@ import AdSlot from '@/components/AdSlot';
 import Breadcrumb from '@/components/Breadcrumb';
 import ToolLoadingState from '@/components/ToolLoadingState';
 import ToolPageSEO from '@/components/ToolPageSEO';
+import ResultPanel from '@/components/ResultPanel';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { PageTitle, PageSubtitle } from '@/components/Typography';
+import { apiUrl } from '@/lib/apiBase';
 
 interface PageThumb {
-  index: number;
+  index: number;   // 0-based original page index
   dataUrl: string;
 }
 
@@ -18,7 +20,8 @@ export default function ReorderPdf() {
   const desc = t.tools['reorder-pdf']?.description ?? 'Drag and drop PDF pages to reorder them, then download the new PDF.';
   const [file, setFile] = useState<File | null>(null);
   const [pages, setPages] = useState<PageThumb[]>([]);
-  const [status, setStatus] = useState<'idle' | 'loading' | 'saving' | 'done' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'saving' | 'error'>('idle');
+  const [result, setResult] = useState<{blob: Blob, filename: string, sizeAfter: number, sizeBefore?: number} | null>(null);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState('');
   const [isDragging, setIsDragging] = useState(false);
@@ -27,7 +30,7 @@ export default function ReorderPdf() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const loadPdf = async (f: File) => {
-    setFile(f); setStatus('loading'); setProgress(0); setPages([]);
+    setFile(f); setStatus('loading'); setProgress(0); setPages([]); setResult(null);
     try {
       const pdfjsLib = await import('pdfjs-dist');
       pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.mjs', import.meta.url).href;
@@ -70,25 +73,26 @@ export default function ReorderPdf() {
     if (!file) return;
     setStatus('saving'); setProgress(0);
     try {
-      const { PDFDocument } = await import('pdf-lib');
-      const buf = await file.arrayBuffer();
-      const src = await PDFDocument.load(buf);
-      const dest = await PDFDocument.create();
-      setProgress(30);
-      const order = pages.map((p) => p.index);
-      const copied = await dest.copyPages(src, order);
-      for (const page of copied) dest.addPage(page);
-      setProgress(80);
-      const bytes = await dest.save();
-      const blob = new Blob([bytes as unknown as BlobPart], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = file.name.replace(/\.pdf$/i, '_reordered.pdf');
-      a.click();
-      URL.revokeObjectURL(url);
+      // Send original PDF + the new page order (1-based) to the server
+      const fd = new FormData();
+      fd.append('file', file);
+      // pages array is the current order; each page.index is the original 0-based index
+      const pageOrder = pages.map((p) => p.index + 1).join(',');
+      fd.append('pages', pageOrder);
+
+      setProgress(40);
+      const res = await fetch(apiUrl('/api/tools/pdf-reorder'), { method: 'POST', body: fd });
+      setProgress(90);
+
+      if (!res.ok) {
+        const err = await res.json() as { error?: string };
+        throw new Error(err.error ?? 'Failed to save PDF');
+      }
+
+      const blob = await res.blob();
       setProgress(100);
-      setStatus('done');
+      setStatus('idle');
+      setResult({ blob, filename: file.name.replace(/\.pdf$/i, '_reordered.pdf'), sizeAfter: blob.size, sizeBefore: file.size });
     } catch (e) {
       trackToolError('reorder-pdf', 'general-error');
       setError(e instanceof Error ? e.message : 'Failed to save PDF');
@@ -103,7 +107,7 @@ export default function ReorderPdf() {
         <PageTitle>{title}</PageTitle>
         <PageSubtitle>{desc}</PageSubtitle>
 
-        {pages.length === 0 && (
+        {pages.length === 0 && status !== 'loading' && (
           <div
             onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
             onDragLeave={() => setIsDragging(false)}
@@ -119,21 +123,13 @@ export default function ReorderPdf() {
 
         {status === 'loading' && (
           <div style={{ marginTop: 20 }}>
-            <ToolLoadingState
-              status="loading"
-              progress={progress}
-              label="Loading pages…"
-            />
+            <ToolLoadingState status="loading" progress={progress} label="Loading page thumbnails…" />
           </div>
         )}
 
         {status === 'error' && (
           <div style={{ marginTop: 16 }}>
-            <ToolLoadingState
-              status="error"
-              errorMessage={error}
-              onRetry={() => file && loadPdf(file)}
-            />
+            <ToolLoadingState status="error" errorMessage={error} onRetry={() => file && loadPdf(file)} />
           </div>
         )}
 
@@ -144,7 +140,7 @@ export default function ReorderPdf() {
                 {pages.length} page{pages.length !== 1 ? 's' : ''} — drag to reorder, click × to remove
               </span>
               <div style={{ display: 'flex', gap: 8 }}>
-                <button onClick={() => { setPages([]); setFile(null); setStatus('idle'); }}
+                <button onClick={() => { setPages([]); setFile(null); setStatus('idle'); setResult(null); }}
                   style={{ padding: '6px 14px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', background: 'transparent', fontFamily: 'var(--font-ui)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', cursor: 'pointer' }}>
                   Load different PDF
                 </button>
@@ -157,11 +153,7 @@ export default function ReorderPdf() {
 
             {status === 'saving' && (
               <div style={{ marginBottom: 12 }}>
-                <ToolLoadingState
-                  status="loading"
-                  progress={progress}
-                  label="Saving reordered PDF…"
-                />
+                <ToolLoadingState status="loading" progress={progress} label="Saving reordered PDF…" />
               </div>
             )}
 
@@ -170,20 +162,11 @@ export default function ReorderPdf() {
                 <div
                   key={`${page.index}-${idx}`}
                   draggable
-                  onDragStart={() => { setDragIdx(idx); }}
+                  onDragStart={() => setDragIdx(idx)}
                   onDragOver={(e) => { e.preventDefault(); setDropIdx(idx); }}
                   onDrop={() => handleDrop(idx)}
                   onDragEnd={() => { setDragIdx(null); setDropIdx(null); }}
-                  style={{
-                    border: `2px solid ${dropIdx === idx ? 'var(--accent)' : 'var(--border)'}`,
-                    borderRadius: 'var(--radius-md)',
-                    overflow: 'hidden',
-                    background: 'var(--bg-surface)',
-                    cursor: 'grab',
-                    opacity: dragIdx === idx ? 0.4 : 1,
-                    position: 'relative',
-                    transition: 'border-color 0.1s',
-                  }}
+                  style={{ border: `2px solid ${dropIdx === idx ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius-md)', overflow: 'hidden', background: 'var(--bg-surface)', cursor: 'grab', opacity: dragIdx === idx ? 0.4 : 1, position: 'relative', transition: 'border-color 0.1s' }}
                 >
                   <img src={page.dataUrl} alt={`Page ${idx + 1}`} style={{ width: '100%', display: 'block' }} />
                   <div style={{ padding: '4px 6px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--bg-elevated)', borderTop: '1px solid var(--border)' }}>
@@ -195,6 +178,8 @@ export default function ReorderPdf() {
             </div>
           </>
         )}
+
+        {result && <div style={{ marginTop: 24 }}><ResultPanel {...result} /></div>}
         <AdSlot type="horizontal" />
       </div>
       <ToolPageSEO internalSlug="reorder-pdf" />
