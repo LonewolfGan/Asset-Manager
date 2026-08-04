@@ -25,10 +25,17 @@ Pages that DO use service layer (already correct):
 ## Native modules
 `sharp` and `onnxruntime-node` require postinstall scripts. They must be in `onlyBuiltDependencies` in `pnpm-workspace.yaml`, and `pnpm install` must run after adding them.
 
-## Background removal (@imgly/background-removal-node)
-Node package max version is **1.4.5** (not 1.7.0 like the browser version). Uses onnxruntime-node, so that must also be externalized in `build.mjs`.
+## Background removal
+Background removal uses **only** the Python script (`artifacts/api-server/src/python/bg_remove.py` + rembg). The `@imgly/background-removal-node` npm package has been removed — it was unused and its transitive dep `onnxruntime-node@1.17.3` required `tar` which is blocked by the Replit package firewall. Do not re-add it.
+
+**Why:** `onnxruntime-node` uses `prebuild-install` → `tar` at install time. Replit's package firewall blocks ALL versions of `tar` with 403. This breaks the entire monorepo pnpm install.
 
 ## esbuild externals
-Add to `build.mjs` externals list: `pdfjs-dist`, `@imgly/background-removal-node`, `mammoth` — all have dynamic imports or native dependencies that break bundling.
+Add to `build.mjs` externals list: `pdfjs-dist`, `mammoth` — all have dynamic imports or native dependencies that break bundling.
 
-**Why:** These packages use runtime asset loading, workers, or native bindings that esbuild cannot statically bundle.
+**Why:** These packages use runtime asset loading or native bindings that esbuild cannot statically bundle.
+
+## New backend routes (architectural overhaul)
+Added in this session: `POST /convert/heic`, `POST /tools/pdf-to-images`, `POST /tools/pdf-reorder`, `POST /tools/pdf-to-html`, `POST /tools/pdf-to-pptx`, `POST /extract/ocr`, `POST /convert/txt-to-docx`, `POST /convert/markdown-to-docx`, `POST /convert/word-to-markdown`. Rate limiting middleware at `src/middlewares/rateLimit.ts`. Extract tools router at `src/routes/extract-tools.ts`.
+
+Frontend pages migrated to call these new routes: `heic-to-jpg.tsx`, `pdf-to-image.tsx`, `ocr.tsx`, `pdf-to-html.tsx`, `pdf-to-pptx.tsx`, `reorder-pdf.tsx`, `txt-to-docx.tsx`, `markdown-to-docx.tsx`, `word-to-markdown.tsx`.

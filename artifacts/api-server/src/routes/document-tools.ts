@@ -447,7 +447,7 @@ router.post("/convert/markdown-to-docx", defaultRateLimit, upload.single("file")
     // Re-parse structured nodes
     const div = htmlStr;
     const headingRe = /<h([1-6])[^>]*>([\s\S]*?)<\/h\1>/gi;
-    const headingMap: Record<string, number> = { "1": HeadingLevel.HEADING_1, "2": HeadingLevel.HEADING_2, "3": HeadingLevel.HEADING_3, "4": HeadingLevel.HEADING_4, "5": HeadingLevel.HEADING_5, "6": HeadingLevel.HEADING_6 };
+    const headingMap: Record<string, string> = { "1": HeadingLevel.HEADING_1, "2": HeadingLevel.HEADING_2, "3": HeadingLevel.HEADING_3, "4": HeadingLevel.HEADING_4, "5": HeadingLevel.HEADING_5, "6": HeadingLevel.HEADING_6 };
 
     // Extract headings first for structure awareness
     const headingPositions: Map<string, { level: number; text: string }> = new Map();
@@ -462,7 +462,7 @@ router.post("/convert/markdown-to-docx", defaultRateLimit, upload.single("file")
       const h = headingPositions.get(block);
       if (h) {
         paragraphs.push(new Paragraph({
-          heading: headingMap[String(h.level)] ?? HeadingLevel.HEADING_1,
+          heading: (headingMap[String(h.level)] ?? HeadingLevel.HEADING_1) as typeof HeadingLevel.HEADING_1,
           children: [new TextRun({ text: h.text, bold: true })],
         }));
       } else {

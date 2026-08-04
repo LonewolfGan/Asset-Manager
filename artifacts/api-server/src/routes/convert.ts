@@ -72,7 +72,7 @@ async function convertToSvgWithPotrace(inputBuffer: Buffer): Promise<Buffer> {
 // ─────────────────────────────────────────────────────────
 // pdfplumber helper: call Python script, parse JSON
 // ─────────────────────────────────────────────────────────
-async function callPdfExtract(pdfBuffer: Buffer, mode: "word" | "excel"): Promise<unknown> {
+async function callPdfExtract(pdfBuffer: Buffer, mode: "word" | "excel" | "text"): Promise<unknown> {
   const id = randomUUID();
   const workDir = join(tmpdir(), `plumber-${id}`);
   await mkdir(workDir, { recursive: true });
@@ -283,7 +283,7 @@ router.post("/convert/pdf-to-word", upload.single("file"), guardDocument, async 
     GlobalWorkerOptions.workerSrc = "";
     const pdf = await getDocument({
       data: new Uint8Array(req.file.buffer),
-      useWorkerFetch: false, isEvalSupported: false, useSystemFonts: true,
+      useWorkerFetch: false, useSystemFonts: true,
     }).promise;
 
     for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {

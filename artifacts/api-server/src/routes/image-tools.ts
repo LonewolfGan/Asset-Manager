@@ -28,7 +28,7 @@ async function compressAtQuality(
     // keeping photos safe from visible quality loss.
     const [deflate, palette] = await Promise.all([
       sharp(input).png({ compressionLevel: 9, effort: 10 }).toBuffer(),
-      sharp(input).png({ compressionLevel: 9, effort: 10, palette: true, colours: 256, dithering: 1 }).toBuffer(),
+      sharp(input).png({ compressionLevel: 9, effort: 10, palette: true, colours: 256, dither: 1 }).toBuffer(),
     ]);
     let best = deflate.length < input.length ? deflate : input;
     if (palette.length < best.length * 0.85) best = palette;
