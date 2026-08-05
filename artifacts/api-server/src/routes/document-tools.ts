@@ -14,6 +14,8 @@ import { upload } from "../middlewares/upload.js";
 import { htmlToPdfBuffer } from "../lib/html-to-pdf.js";
 import { convertWithLibreOffice, convertPptxToImages } from "../lib/libreoffice.js";
 import { defaultRateLimit, mediumRateLimit } from "../middlewares/rateLimit.js";
+import { BIN } from "../lib/binaries.js";
+import { apiError } from "../lib/errors.js";
 
 const execFileAsync = promisify(execFile);
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -36,12 +38,12 @@ function sendPdf(res: Response, buf: Buffer, filename: string): void {
 // Falls back to mammoth→pdfkit if LibreOffice fails.
 // ─────────────────────────────────────────────────────────
 router.post("/tools/word-to-pdf", mediumRateLimit, upload.single("file"), async (req: Request, res: Response) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
 
   const mime = req.file.mimetype;
   const isDocx = mime.includes("wordprocessingml") || mime.includes("msword") ||
     /\.docx?$/i.test(req.file.originalname ?? "");
-  if (!isDocx) { res.status(415).json({ error: "Please upload a .docx or .doc file" }); return; }
+  if (!isDocx) { apiError(res, 415, "UNSUPPORTED_TYPE", "Please upload a .docx or .doc file"); return; }
 
   const baseName = (req.file.originalname ?? "document").replace(/\.(docx?|doc)$/i, "");
 
@@ -56,7 +58,7 @@ router.post("/tools/word-to-pdf", mediumRateLimit, upload.single("file"), async 
       const pdfBuf = await htmlToPdfBuffer(result.value);
       sendPdf(res, pdfBuf, `${baseName}.pdf`);
     } catch (err) {
-      res.status(500).json({ error: err instanceof Error ? err.message : "Conversion failed" });
+      apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Conversion failed");
     }
   }
 });
@@ -67,7 +69,7 @@ router.post("/tools/word-to-pdf", mediumRateLimit, upload.single("file"), async 
 // Falls back to xlsx→pdfkit if LibreOffice fails.
 // ─────────────────────────────────────────────────────────
 router.post("/tools/excel-to-pdf", mediumRateLimit, upload.single("file"), async (req: Request, res: Response) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
 
   const rawName = req.file.originalname ?? "spreadsheet";
   const baseName = rawName.replace(/\.(xlsx?|xls|ods|csv)$/i, "");
@@ -105,7 +107,7 @@ router.post("/tools/excel-to-pdf", mediumRateLimit, upload.single("file"), async
 
       sendPdf(res, pdfBuf, `${baseName}.pdf`);
     } catch (err) {
-      res.status(500).json({ error: err instanceof Error ? err.message : "Conversion failed" });
+      apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Conversion failed");
     }
   }
 });
@@ -116,7 +118,7 @@ router.post("/tools/excel-to-pdf", mediumRateLimit, upload.single("file"), async
 // Falls back to pdfkit text-extraction if LibreOffice fails.
 // ─────────────────────────────────────────────────────────
 router.post("/tools/pptx-to-pdf", mediumRateLimit, upload.single("file"), async (req: Request, res: Response) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
 
   const baseName = (req.file.originalname ?? "presentation").replace(/\.pptx?$/i, "");
 
@@ -146,7 +148,7 @@ router.post("/tools/pptx-to-pdf", mediumRateLimit, upload.single("file"), async 
       }
 
       if (slides.length === 0) {
-        res.status(422).json({ error: "No slides found. Make sure this is a valid .pptx file." });
+        apiError(res, 422, "CONVERSION_FAILED", "No slides found. Make sure this is a valid .pptx file.");
         return;
       }
 
@@ -178,7 +180,7 @@ router.post("/tools/pptx-to-pdf", mediumRateLimit, upload.single("file"), async 
 
       sendPdf(res, pdfBuf, `${baseName}.pdf`);
     } catch (err) {
-      res.status(500).json({ error: err instanceof Error ? err.message : "Conversion failed" });
+      apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Conversion failed");
     }
   }
 });
@@ -189,12 +191,12 @@ router.post("/tools/pptx-to-pdf", mediumRateLimit, upload.single("file"), async 
 // Returns real pixel-accurate slide images, not text previews.
 // ─────────────────────────────────────────────────────────
 router.post("/tools/pptx-to-images", mediumRateLimit, upload.single("file"), async (req: Request, res: Response) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
 
   try {
     const slides = await convertPptxToImages(req.file.buffer);
     if (slides.length === 0) {
-      res.status(422).json({ error: "No slides generated. Make sure this is a valid .pptx file." });
+      apiError(res, 422, "CONVERSION_FAILED", "No slides generated. Make sure this is a valid .pptx file.");
       return;
     }
 
@@ -214,7 +216,7 @@ router.post("/tools/pptx-to-images", mediumRateLimit, upload.single("file"), asy
     });
     res.send(zipBuf);
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Conversion failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Conversion failed");
   }
 });
 
@@ -232,19 +234,19 @@ router.post("/tools/html-to-pdf", defaultRateLimit, upload.single("file"), async
     } else if (req.body?.html) {
       html = String(req.body.html);
     } else {
-      res.status(400).json({ error: "Provide a file or html body field" });
+      apiError(res, 400, "MISSING_FILE", "Provide a file or html body field");
       return;
     }
 
     if (html.length > 2_000_000) {
-      res.status(413).json({ error: "HTML too large (max 2 MB)" });
+      apiError(res, 413, "FILE_TOO_LARGE", "HTML too large (max 2 MB)");
       return;
     }
 
     const pdfBuf = await htmlToPdfBuffer(html);
     sendPdf(res, pdfBuf, filename);
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Conversion failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Conversion failed");
   }
 });
 
@@ -262,7 +264,7 @@ router.post("/tools/markdown-to-pdf", defaultRateLimit, upload.single("file"), a
     } else if (req.body?.markdown) {
       markdown = String(req.body.markdown);
     } else {
-      res.status(400).json({ error: "Provide a file or markdown body field" });
+      apiError(res, 400, "MISSING_FILE", "Provide a file or markdown body field");
       return;
     }
 
@@ -270,7 +272,7 @@ router.post("/tools/markdown-to-pdf", defaultRateLimit, upload.single("file"), a
     const pdfBuf = await htmlToPdfBuffer(String(html));
     sendPdf(res, pdfBuf, filename);
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Conversion failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Conversion failed");
   }
 });
 
@@ -279,34 +281,23 @@ router.post("/tools/markdown-to-pdf", defaultRateLimit, upload.single("file"), a
 // Extract PDF text via pdfplumber and wrap in clean HTML.
 // Returns a .html file ready for the browser.
 // ─────────────────────────────────────────────────────────
-import { execFile as _execFile } from "child_process";
-import { promisify as _promisify } from "util";
-import { tmpdir as _tmpdir } from "os";
-import { randomUUID as _randomUUID } from "crypto";
-import { writeFile as _writeFile, readFile as _readFile, rm as _rm, mkdir as _mkdir } from "fs/promises";
-import { join as _join, dirname as _dirname } from "path";
-import { fileURLToPath as _fileURLToPath } from "url";
-
-const _execFileAsync = _promisify(_execFile);
-const _PDF_EXTRACT_PY = _join(_dirname(_fileURLToPath(import.meta.url)), "../python/pdf_extract.py");
-
 router.post("/tools/pdf-to-html", defaultRateLimit, upload.single("file"), async (req: Request, res: Response) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
-  if (req.file.mimetype !== "application/pdf") { res.status(415).json({ error: "Only PDF files are accepted." }); return; }
-  if (req.file.size > 50 * 1024 * 1024) { res.status(413).json({ error: "File too large. Maximum 50 MB." }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
+  if (req.file.mimetype !== "application/pdf") { apiError(res, 415, "UNSUPPORTED_TYPE", "Only PDF files are accepted."); return; }
+  if (req.file.size > 50 * 1024 * 1024) { apiError(res, 413, "FILE_TOO_LARGE", "File too large. Maximum 50 MB."); return; }
 
   const baseName = (req.file.originalname ?? "document").replace(/\.pdf$/i, "");
-  const id = _randomUUID();
-  const workDir = _join(_tmpdir(), `pdf-html-${id}`);
-  await _mkdir(workDir, { recursive: true });
-  const pdfPath = _join(workDir, "input.pdf");
+  const id = randomUUID();
+  const workDir = join(tmpdir(), "everydaytools", id);
+  await mkdir(workDir, { recursive: true });
+  const pdfPath = join(workDir, "input.pdf");
 
   try {
-    await _writeFile(pdfPath, req.file.buffer);
+    await writeFile(pdfPath, req.file.buffer);
 
-    const { stdout } = await _execFileAsync(
-      process.env["PYTHON3_PATH"] ?? "python3",
-      [_PDF_EXTRACT_PY, "--pdf", pdfPath, "--mode", "text"],
+    const { stdout } = await execFileAsync(
+      BIN.python3,
+      [PDF_EXTRACT_PY, "--pdf", pdfPath, "--mode", "text"],
       { timeout: 120_000, maxBuffer: 50 * 1024 * 1024 },
     );
     const extracted = JSON.parse(stdout) as { text?: string; error?: string };
@@ -345,9 +336,9 @@ ${escapedLines}
     });
     res.send(html);
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Conversion failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Conversion failed");
   } finally {
-    await _rm(workDir, { recursive: true, force: true }).catch(() => {});
+    await rm(workDir, { recursive: true, force: true }).catch(() => {});
   }
 });
 
@@ -357,9 +348,9 @@ ${escapedLines}
 // Each page is embedded as a slide.
 // ─────────────────────────────────────────────────────────
 router.post("/tools/pdf-to-pptx", mediumRateLimit, upload.single("file"), async (req: Request, res: Response) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
-  if (req.file.mimetype !== "application/pdf") { res.status(415).json({ error: "Only PDF files are accepted." }); return; }
-  if (req.file.size > 50 * 1024 * 1024) { res.status(413).json({ error: "File too large. Maximum 50 MB." }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
+  if (req.file.mimetype !== "application/pdf") { apiError(res, 415, "UNSUPPORTED_TYPE", "Only PDF files are accepted."); return; }
+  if (req.file.size > 50 * 1024 * 1024) { apiError(res, 413, "FILE_TOO_LARGE", "File too large. Maximum 50 MB."); return; }
 
   const baseName = (req.file.originalname ?? "document").replace(/\.pdf$/i, "");
 
@@ -372,7 +363,7 @@ router.post("/tools/pdf-to-pptx", mediumRateLimit, upload.single("file"), async 
     });
     res.send(pptxBuf);
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "PDF to PPTX conversion failed. Ensure LibreOffice is installed." });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "PDF to PPTX conversion failed. Ensure LibreOffice is installed.");
   }
 });
 
@@ -390,12 +381,12 @@ router.post("/convert/txt-to-docx", defaultRateLimit, upload.single("file"), asy
   } else if (typeof req.body?.text === "string") {
     textContent = req.body.text as string;
   } else {
-    res.status(400).json({ error: "Provide a .txt file upload or a text body field" });
+    apiError(res, 400, "MISSING_FILE", "Provide a .txt file upload or a text body field");
     return;
   }
 
   if (textContent.length > 1_000_000) {
-    res.status(413).json({ error: "Text too large. Maximum 1,000,000 characters." });
+    apiError(res, 413, "FILE_TOO_LARGE", "Text too large. Maximum 1,000,000 characters.");
     return;
   }
 
@@ -412,7 +403,7 @@ router.post("/convert/txt-to-docx", defaultRateLimit, upload.single("file"), asy
     });
     res.send(buffer);
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "TXT to DOCX failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "TXT to DOCX failed");
   }
 });
 
@@ -430,7 +421,7 @@ router.post("/convert/markdown-to-docx", defaultRateLimit, upload.single("file")
   } else if (typeof req.body?.markdown === "string") {
     markdown = req.body.markdown as string;
   } else {
-    res.status(400).json({ error: "Provide a markdown file or a markdown body field" });
+    apiError(res, 400, "MISSING_FILE", "Provide a markdown file or a markdown body field");
     return;
   }
 
@@ -483,7 +474,7 @@ router.post("/convert/markdown-to-docx", defaultRateLimit, upload.single("file")
     });
     res.send(buffer);
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Markdown to DOCX failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Markdown to DOCX failed");
   }
 });
 
@@ -493,12 +484,12 @@ router.post("/convert/markdown-to-docx", defaultRateLimit, upload.single("file")
 // Returns plain text (.md) as a JSON response.
 // ─────────────────────────────────────────────────────────
 router.post("/convert/word-to-markdown", defaultRateLimit, upload.single("file"), async (req: Request, res: Response) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
   const mime = req.file.mimetype;
   const isDocx = mime.includes("wordprocessingml") || mime.includes("msword") ||
     /\.docx?$/i.test(req.file.originalname ?? "");
-  if (!isDocx) { res.status(415).json({ error: "Please upload a .docx or .doc file" }); return; }
-  if (req.file.size > 30 * 1024 * 1024) { res.status(413).json({ error: "File too large. Maximum 30 MB." }); return; }
+  if (!isDocx) { apiError(res, 415, "UNSUPPORTED_TYPE", "Please upload a .docx or .doc file"); return; }
+  if (req.file.size > 30 * 1024 * 1024) { apiError(res, 413, "FILE_TOO_LARGE", "File too large. Maximum 30 MB."); return; }
 
   try {
     const result = await mammoth.convertToHtml({ buffer: req.file.buffer });
@@ -513,7 +504,7 @@ router.post("/convert/word-to-markdown", defaultRateLimit, upload.single("file")
     });
     res.send(markdown);
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Word to Markdown failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Word to Markdown failed");
   }
 });
 

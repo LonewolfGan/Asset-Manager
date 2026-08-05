@@ -2,6 +2,7 @@ import { Router } from "express";
 import sharp from "sharp";
 import { zipSync } from "fflate";
 import { upload, guardImage } from "../middlewares/upload.js";
+import { apiError } from "../lib/errors.js";
 
 const router = Router();
 
@@ -99,7 +100,7 @@ function extFromFormat(fmt: string): string {
 // POST /tools/image-compress
 // ─────────────────────────────────────────────────────────
 router.post("/tools/image-compress", upload.single("file"), guardImage, async (req, res) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
 
   try {
     const input = req.file.buffer;
@@ -113,7 +114,7 @@ router.post("/tools/image-compress", upload.single("file"), guardImage, async (r
     const resizeH = parseInt(String(req.body.resizeH ?? "0")) || undefined;
 
     if ((resizeW && resizeW > 10000) || (resizeH && resizeH > 10000)) {
-      res.status(400).json({ error: "Resize dimensions must not exceed 10,000 px." });
+      apiError(res, 400, "INVALID_PARAM", "Resize dimensions must not exceed 10,000 px.");
       return;
     }
 
@@ -158,7 +159,7 @@ router.post("/tools/image-compress", upload.single("file"), guardImage, async (r
     });
     res.send(finalBuffer);
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Compression failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Compression failed");
   }
 });
 
@@ -166,7 +167,7 @@ router.post("/tools/image-compress", upload.single("file"), guardImage, async (r
 // POST /tools/image-resize
 // ─────────────────────────────────────────────────────────
 router.post("/tools/image-resize", upload.single("file"), guardImage, async (req, res) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
 
   try {
     const input = req.file.buffer;
@@ -176,7 +177,7 @@ router.post("/tools/image-resize", upload.single("file"), guardImage, async (req
     const percentage = parseFloat(String(req.body.percentage ?? "0")) || 0;
 
     if ((width && width > 10000) || (height && height > 10000)) {
-      res.status(400).json({ error: "Dimensions must not exceed 10,000 px." });
+      apiError(res, 400, "INVALID_PARAM", "Dimensions must not exceed 10,000 px.");
       return;
     }
 
@@ -190,7 +191,7 @@ router.post("/tools/image-resize", upload.single("file"), guardImage, async (req
     } else if (width || height) {
       pipeline = sharp(input).resize(width, height, { withoutEnlargement: false });
     } else {
-      res.status(400).json({ error: "Provide width, height, or percentage." });
+      apiError(res, 400, "MISSING_PARAM", "Provide width, height, or percentage.");
       return;
     }
 
@@ -209,7 +210,7 @@ router.post("/tools/image-resize", upload.single("file"), guardImage, async (req
     });
     res.send(output);
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Resize failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Resize failed");
   }
 });
 
@@ -217,7 +218,7 @@ router.post("/tools/image-resize", upload.single("file"), guardImage, async (req
 // POST /tools/image-crop
 // ─────────────────────────────────────────────────────────
 router.post("/tools/image-crop", upload.single("file"), guardImage, async (req, res) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
 
   try {
     const input = req.file.buffer;
@@ -228,7 +229,7 @@ router.post("/tools/image-crop", upload.single("file"), guardImage, async (req, 
     const height = Math.round(parseFloat(String(req.body.height ?? "0")));
 
     if (!width || !height || width < 1 || height < 1) {
-      res.status(400).json({ error: "Provide left, top, width, height." });
+      apiError(res, 400, "MISSING_PARAM", "Provide left, top, width, height.");
       return;
     }
 
@@ -249,7 +250,7 @@ router.post("/tools/image-crop", upload.single("file"), guardImage, async (req, 
     });
     res.send(output);
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Crop failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Crop failed");
   }
 });
 
@@ -257,7 +258,7 @@ router.post("/tools/image-crop", upload.single("file"), guardImage, async (req, 
 // POST /tools/flip-rotate
 // ─────────────────────────────────────────────────────────
 router.post("/tools/flip-rotate", upload.single("file"), guardImage, async (req, res) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
 
   try {
     const input = req.file.buffer;
@@ -286,7 +287,7 @@ router.post("/tools/flip-rotate", upload.single("file"), guardImage, async (req,
     });
     res.send(output);
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Transform failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Transform failed");
   }
 });
 
@@ -294,7 +295,7 @@ router.post("/tools/flip-rotate", upload.single("file"), guardImage, async (req,
 // POST /tools/watermark-image
 // ─────────────────────────────────────────────────────────
 router.post("/tools/watermark-image", upload.single("file"), guardImage, async (req, res) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
 
   try {
     const input = req.file.buffer;
@@ -310,8 +311,8 @@ router.post("/tools/watermark-image", upload.single("file"), guardImage, async (
 
     const fontSize = Math.max(24, Math.round(Math.min(imgW, imgH) * 0.08));
     const approxTextW = text.length * fontSize * 0.55;
-    const svgW = Math.ceil(approxTextW + 60);
-    const svgH = Math.ceil(fontSize * 2.5);
+    const svgW = Math.min(Math.ceil(approxTextW + 60), imgW);
+    const svgH = Math.min(Math.ceil(fontSize * 2.5), imgH);
 
     const safeText = text
       .replace(/&/g, "&amp;")
@@ -355,7 +356,7 @@ router.post("/tools/watermark-image", upload.single("file"), guardImage, async (
     });
     res.send(output);
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Watermark failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Watermark failed");
   }
 });
 
@@ -388,7 +389,7 @@ function buildIco(png32: Buffer): Buffer {
 }
 
 router.post("/tools/favicon-generate", upload.single("file"), guardImage, async (req, res) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
 
   try {
     const input = req.file.buffer;
@@ -416,7 +417,7 @@ router.post("/tools/favicon-generate", upload.single("file"), guardImage, async 
     });
     res.send(zipBuffer);
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Favicon generation failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Favicon generation failed");
   }
 });
 
@@ -424,7 +425,7 @@ router.post("/tools/favicon-generate", upload.single("file"), guardImage, async 
 // POST /tools/image-metadata-clean
 // ─────────────────────────────────────────────────────────
 router.post("/tools/image-metadata-clean", upload.single("file"), guardImage, async (req, res) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
 
   try {
     const input = req.file.buffer;
@@ -446,7 +447,7 @@ router.post("/tools/image-metadata-clean", upload.single("file"), guardImage, as
     });
     res.send(output);
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Metadata cleaning failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Metadata cleaning failed");
   }
 });
 

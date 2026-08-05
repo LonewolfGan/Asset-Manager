@@ -56,6 +56,7 @@ async function buildAll() {
       // PDF/doc packages with dynamic imports / workers
       "pdfjs-dist",
       "mammoth",
+      "turndown",
       "@tensorflow/*",
       "@prisma/client",
       "@mikro-orm/*",

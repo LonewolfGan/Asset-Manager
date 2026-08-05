@@ -1,4 +1,5 @@
 import { Router, type IRouter } from "express";
+import { apiError } from "../lib/errors.js";
 
 const router: IRouter = Router();
 
@@ -24,7 +25,7 @@ router.post("/text/scrub", (req, res) => {
   };
 
   if (typeof text !== "string") {
-    res.status(400).json({ error: "text field required" });
+    apiError(res, 400, "MISSING_PARAM", "text field required");
     return;
   }
 

@@ -3,6 +3,7 @@ import { execFile } from "child_process";
 import { promisify } from "util";
 import { join } from "path";
 import { tmpdir } from "os";
+import { apiError } from "../lib/errors.js";
 import { writeFile, readFile, unlink } from "fs/promises";
 import { upload, guardBackground } from "../middlewares/upload.js";
 import { BIN } from "../lib/binaries.js";
@@ -25,7 +26,7 @@ router.post(
   guardBackground,
   async (req, res) => {
     if (!req.file) {
-      res.status(400).json({ error: "No file uploaded" });
+      apiError(res, 400, "NO_FILE", "No file uploaded");
       return;
     }
 

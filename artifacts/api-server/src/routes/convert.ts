@@ -1,4 +1,5 @@
 import { Router, type IRouter } from "express";
+import { apiError } from "../lib/errors.js";
 import { PDFDocument } from "pdf-lib";
 import mammoth from "mammoth";
 import sharp from "sharp";
@@ -49,7 +50,7 @@ async function convertToSvgWithPotrace(inputBuffer: Buffer): Promise<Buffer> {
   const pbm = buildPBM(data, info.width, info.height);
 
   const id = randomUUID();
-  const workDir = join(tmpdir(), `potrace-${id}`);
+  const workDir = join(tmpdir(), "everydaytools", id);
   await mkdir(workDir, { recursive: true });
   const pbmPath = join(workDir, "input.pbm");
   const svgPath = join(workDir, "output.svg");
@@ -74,7 +75,7 @@ async function convertToSvgWithPotrace(inputBuffer: Buffer): Promise<Buffer> {
 // ─────────────────────────────────────────────────────────
 async function callPdfExtract(pdfBuffer: Buffer, mode: "word" | "excel" | "text"): Promise<unknown> {
   const id = randomUUID();
-  const workDir = join(tmpdir(), `plumber-${id}`);
+  const workDir = join(tmpdir(), "everydaytools", id);
   await mkdir(workDir, { recursive: true });
   const pdfPath = join(workDir, "input.pdf");
   await writeFile(pdfPath, pdfBuffer);
@@ -110,13 +111,13 @@ const mimeToSharpFormat = (mime: string): keyof sharp.FormatEnum | null => {
 // Uses pdfplumber (same as pdf-to-word and pdf-to-excel) for consistency.
 // ─────────────────────────────────────────────────────────
 router.post("/convert/pdf-to-text", upload.single("file"), guardDocument, async (req, res) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
   try {
     const extracted = await callPdfExtract(req.file.buffer, "text") as { text?: string; error?: string };
     if (extracted.error) throw new Error(extracted.error);
     res.json({ text: extracted.text ?? "" });
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "PDF parsing failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "PDF parsing failed");
   }
 });
 
@@ -124,12 +125,12 @@ router.post("/convert/pdf-to-text", upload.single("file"), guardDocument, async 
 // POST /convert/docx-to-html
 // ─────────────────────────────────────────────────────────
 router.post("/convert/docx-to-html", upload.single("file"), guardDocument, async (req, res) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
   try {
     const result = await mammoth.convertToHtml({ buffer: req.file.buffer });
     res.json({ html: result.value });
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "DOCX conversion failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "DOCX conversion failed");
   }
 });
 
@@ -137,12 +138,12 @@ router.post("/convert/docx-to-html", upload.single("file"), guardDocument, async
 // POST /convert/docx-to-text
 // ─────────────────────────────────────────────────────────
 router.post("/convert/docx-to-text", upload.single("file"), guardDocument, async (req, res) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
   try {
     const result = await mammoth.extractRawText({ buffer: req.file.buffer });
     res.json({ text: result.value });
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "DOCX conversion failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "DOCX conversion failed");
   }
 });
 
@@ -152,10 +153,10 @@ router.post("/convert/docx-to-text", upload.single("file"), guardDocument, async
 router.post("/convert/text-to-pdf", async (req, res) => {
   const { text } = req.body as { text?: string };
   if (typeof text !== "string" || !text.trim()) {
-    res.status(400).json({ error: "text field required" }); return;
+    apiError(res, 400, "MISSING_PARAM", "text field required"); return;
   }
   if (text.length > 500_000) {
-    res.status(413).json({ error: "Text too large. Maximum 500,000 characters." }); return;
+    apiError(res, 413, "FILE_TOO_LARGE", "Text too large. Maximum 1,000,000 characters."); return;
   }
   try {
     const pdfDoc = await PDFDocument.create();
@@ -174,7 +175,7 @@ router.post("/convert/text-to-pdf", async (req, res) => {
     res.set("Cache-Control", "no-store");
     res.send(Buffer.from(pdfBytes));
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "PDF creation failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "PDF creation failed");
   }
 });
 
@@ -184,11 +185,11 @@ router.post("/convert/text-to-pdf", async (req, res) => {
 // When format=image/svg+xml: real vectorization via potrace (not raster wrapper).
 // ─────────────────────────────────────────────────────────
 router.post("/convert/image", upload.single("file"), guardImage, async (req, res) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
   const { format, quality, width, height } = req.body as {
     format?: string; quality?: string; width?: string; height?: string;
   };
-  if (!format) { res.status(400).json({ error: "format field required" }); return; }
+  if (!format) { apiError(res, 400, "MISSING_PARAM", "format field required"); return; }
 
   const originalBase = (req.file.originalname ?? "converted").replace(/\.[^.]+$/, "");
 
@@ -201,7 +202,7 @@ router.post("/convert/image", upload.single("file"), guardImage, async (req, res
       res.set("Cache-Control", "no-store");
       res.send(svgBuf);
     } catch (err) {
-      res.status(500).json({ error: err instanceof Error ? err.message : "SVG vectorization failed" });
+      apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "SVG vectorization failed");
     }
     return;
   }
@@ -209,10 +210,7 @@ router.post("/convert/image", upload.single("file"), guardImage, async (req, res
   // ── Sharp path for all other formats ─────────────────────
   const sharpFormat = mimeToSharpFormat(format);
   if (!sharpFormat || !SHARP_SUPPORTED.has(sharpFormat)) {
-    res.status(422).json({
-      error: `Format ${format} is not supported server-side. Use client-side conversion.`,
-      clientFallback: true,
-    });
+    apiError(res, 422, "UNSUPPORTED_FORMAT", `Format ${format} is not supported server-side. Use client-side conversion.`, "clientFallback=true");
     return;
   }
 
@@ -221,7 +219,7 @@ router.post("/convert/image", upload.single("file"), guardImage, async (req, res
     const widthNum = width ? parseInt(width, 10) : undefined;
     const heightNum = height ? parseInt(height, 10) : undefined;
     if ((widthNum && widthNum > 10000) || (heightNum && heightNum > 10000)) {
-      res.status(400).json({ error: "Resize dimensions must not exceed 10,000 px." }); return;
+      apiError(res, 400, "INVALID_PARAM", "Resize dimensions must not exceed 10,000 px."); return;
     }
     let pipeline = sharp(req.file.buffer);
     if (widthNum || heightNum) {
@@ -234,7 +232,7 @@ router.post("/convert/image", upload.single("file"), guardImage, async (req, res
     res.set("Cache-Control", "no-store");
     res.send(outputBuffer);
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Image conversion failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Image conversion failed");
   }
 });
 
@@ -244,7 +242,7 @@ router.post("/convert/image", upload.single("file"), guardImage, async (req, res
 // Falls back to pdfjs-dist coordinate grouping if Python fails.
 // ─────────────────────────────────────────────────────────
 router.post("/convert/pdf-to-word", upload.single("file"), guardDocument, async (req, res) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
 
   const baseName = (req.file.originalname ?? "document").replace(/\.pdf$/i, "");
   const children: Paragraph[] = [];
@@ -317,7 +315,7 @@ router.post("/convert/pdf-to-word", upload.single("file"), guardDocument, async 
     res.set("Cache-Control", "no-store");
     res.send(buffer);
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Conversion failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Conversion failed");
   }
 });
 
@@ -326,7 +324,7 @@ router.post("/convert/pdf-to-word", upload.single("file"), guardDocument, async 
 // pdfplumber: table detection → XLSX. Falls back to coordinate grouping.
 // ─────────────────────────────────────────────────────────
 router.post("/convert/pdf-to-excel", upload.single("file"), guardDocument, async (req, res) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
 
   const baseName = (req.file.originalname ?? "document").replace(/\.pdf$/i, "");
 
@@ -358,7 +356,7 @@ router.post("/convert/pdf-to-excel", upload.single("file"), guardDocument, async
     res.set("Cache-Control", "no-store");
     res.send(buf);
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Extraction failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Extraction failed");
   }
 });
 
@@ -420,7 +418,7 @@ router.post("/convert/heic", defaultRateLimit, upload.single("file"), async (req
         jpegBuf = await heicViaSharp(req.file.buffer, "image/jpeg");
       } catch {
         const id = randomUUID();
-        const workDir = join(tmpdir(), `heic-pdf-${id}`);
+        const workDir = join(tmpdir(), "everydaytools", id);
         await mkdir(workDir, { recursive: true });
         try {
           jpegBuf = await heicViaPython(req.file.buffer, "image/jpeg", workDir);
@@ -447,7 +445,7 @@ router.post("/convert/heic", defaultRateLimit, upload.single("file"), async (req
 
   const ext = extMap[outputMime] ?? "jpg";
   const id = randomUUID();
-  const workDir = join(tmpdir(), `heic-${id}`);
+  const workDir = join(tmpdir(), "everydaytools", id);
   await mkdir(workDir, { recursive: true });
 
   try {
@@ -471,7 +469,7 @@ router.post("/convert/heic", defaultRateLimit, upload.single("file"), async (req
 // POST /convert/image-to-pdf
 // ─────────────────────────────────────────────────────────
 router.post("/convert/image-to-pdf", upload.single("file"), guardImage, async (req, res) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
   try {
     const A4W = 595.28, A4H = 841.89, MARGIN = 40;
     const pdfDoc = await PDFDocument.create();
@@ -500,7 +498,7 @@ router.post("/convert/image-to-pdf", upload.single("file"), guardImage, async (r
     res.set("Cache-Control", "no-store");
     res.send(Buffer.from(pdfBytes));
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Conversion failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Conversion failed");
   }
 });
 

@@ -10,6 +10,7 @@ import { join } from "path";
 import { upload } from "../middlewares/upload.js";
 import { BIN } from "../lib/binaries.js";
 import { defaultRateLimit, mediumRateLimit } from "../middlewares/rateLimit.js";
+import { apiError } from "../lib/errors.js";
 import type { Request, Response, NextFunction } from "express";
 
 const execFileAsync = promisify(execFile);
@@ -22,11 +23,11 @@ function guardSinglePdf(req: Request, res: Response, next: NextFunction): void {
   const file = req.file;
   if (!file) { next(); return; }
   if (file.mimetype !== "application/pdf") {
-    res.status(415).json({ error: `Unsupported type: ${file.mimetype}. Only PDF accepted.` });
+    apiError(res, 415, "UNSUPPORTED_TYPE", `Unsupported type: ${file.mimetype}. Only PDF accepted.`);
     return;
   }
   if (file.size > 50 * 1024 * 1024) {
-    res.status(413).json({ error: "File too large. Maximum 50 MB." });
+    apiError(res, 413, "FILE_TOO_LARGE", "File too large. Maximum 50 MB.");
     return;
   }
   next();
@@ -37,10 +38,10 @@ function guardMultiPdf(req: Request, res: Response, next: NextFunction): void {
   if (!files || files.length === 0) { next(); return; }
   for (const f of files) {
     if (f.mimetype !== "application/pdf") {
-      res.status(415).json({ error: `${f.originalname} is not a PDF.` }); return;
+      apiError(res, 415, "UNSUPPORTED_TYPE", `${f.originalname} is not a PDF.`); return;
     }
     if (f.size > 50 * 1024 * 1024) {
-      res.status(413).json({ error: `${f.originalname} exceeds 50 MB limit.` }); return;
+      apiError(res, 413, "FILE_TOO_LARGE", `${f.originalname} exceeds 50 MB limit.`); return;
     }
   }
   next();
@@ -76,7 +77,7 @@ function parsePageRanges(str: string, maxPages: number): number[][] {
 // Uses Ghostscript for high-quality rasterization.
 // ─────────────────────────────────────────────────────────
 router.post("/tools/pdf-to-images", defaultRateLimit, upload.single("file"), guardSinglePdf, async (req, res) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
 
   const format = String(req.body.format ?? "jpeg").toLowerCase() === "png" ? "png" : "jpeg";
   const dpi = Math.min(300, Math.max(72, parseInt(String(req.body.dpi ?? "150")) || 150));
@@ -85,7 +86,7 @@ router.post("/tools/pdf-to-images", defaultRateLimit, upload.single("file"), gua
   const baseName = pdfBaseName(req.file.originalname);
 
   const id = randomUUID();
-  const workDir = join(tmpdir(), `pdf-img-${id}`);
+  const workDir = join(tmpdir(), "everydaytools", id);
   await mkdir(workDir, { recursive: true });
   const inPath = join(workDir, "input.pdf");
   const outPattern = join(workDir, `page-%d.${ext}`);
@@ -109,7 +110,7 @@ router.post("/tools/pdf-to-images", defaultRateLimit, upload.single("file"), gua
       });
 
     if (imgFiles.length === 0) {
-      res.status(422).json({ error: "Ghostscript did not produce any image output. Check the PDF is valid." });
+      apiError(res, 422, "CONVERSION_FAILED", "Ghostscript did not produce any image output. Check the PDF is valid.");
       return;
     }
 
@@ -137,7 +138,7 @@ router.post("/tools/pdf-to-images", defaultRateLimit, upload.single("file"), gua
   } catch (err) {
     const msg = err instanceof Error ? err.message : "Conversion failed";
     const isMissing = msg.includes("ENOENT");
-    res.status(isMissing ? 503 : 500).json({ error: isMissing ? "Ghostscript is not installed on this server." : msg });
+    apiError(res, isMissing ? 503 : 500, isMissing ? "BINARY_UNAVAILABLE" : "CONVERSION_FAILED", isMissing ? "Ghostscript is not installed on this server." : msg);
   } finally {
     await rm(workDir, { recursive: true, force: true }).catch(() => {});
   }
@@ -149,11 +150,11 @@ router.post("/tools/pdf-to-images", defaultRateLimit, upload.single("file"), gua
 // Input: file (PDF) + pages (comma-separated 1-based page numbers in desired order)
 // ─────────────────────────────────────────────────────────
 router.post("/tools/pdf-reorder", defaultRateLimit, upload.single("file"), guardSinglePdf, async (req, res) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
 
   const pagesParam = String(req.body.pages ?? "");
   if (!pagesParam.trim()) {
-    res.status(400).json({ error: "pages parameter required (comma-separated 1-based page numbers)" });
+    apiError(res, 400, "MISSING_PARAM", "pages parameter required (comma-separated 1-based page numbers)");
     return;
   }
 
@@ -165,7 +166,7 @@ router.post("/tools/pdf-reorder", defaultRateLimit, upload.single("file"), guard
       .filter((i) => !isNaN(i) && i >= 0 && i < numPages);
 
     if (pageIndices.length === 0) {
-      res.status(400).json({ error: "No valid page indices. Pages must be 1-based integers within document range." });
+      apiError(res, 400, "INVALID_PARAM", "No valid page indices. Pages must be 1-based integers within document range.");
       return;
     }
 
@@ -184,7 +185,7 @@ router.post("/tools/pdf-reorder", defaultRateLimit, upload.single("file"), guard
     });
     res.send(Buffer.from(pdfBytes));
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Reorder failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Reorder failed");
   }
 });
 
@@ -202,7 +203,7 @@ const GS_SETTINGS: Record<string, string> = {
 };
 
 router.post("/tools/pdf-compress", upload.single("file"), guardSinglePdf, async (req, res) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
 
   const level = String(req.body.level ?? req.body.quality ?? "ebook");
   const gsSettings = GS_SETTINGS[level] ?? "/ebook";
@@ -210,7 +211,7 @@ router.post("/tools/pdf-compress", upload.single("file"), guardSinglePdf, async 
   const baseName = pdfBaseName(req.file.originalname);
 
   const id = randomUUID();
-  const workDir = join(tmpdir(), `gs-${id}`);
+  const workDir = join(tmpdir(), "everydaytools", id);
   await mkdir(workDir, { recursive: true });
   const inPath = join(workDir, "input.pdf");
   const outPath = join(workDir, "output.pdf");
@@ -242,7 +243,7 @@ router.post("/tools/pdf-compress", upload.single("file"), guardSinglePdf, async 
       finalBuffer = stripped.length < input.length ? stripped : input;
       gain = Math.round((1 - finalBuffer.length / input.length) * 100);
     } catch (err) {
-      res.status(500).json({ error: err instanceof Error ? err.message : "Compression failed" });
+      apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Compression failed");
       return;
     }
   } finally {
@@ -267,7 +268,7 @@ router.post("/tools/pdf-compress", upload.single("file"), guardSinglePdf, async 
 router.post("/tools/pdf-merge", upload.array("files", 20), guardMultiPdf, async (req, res) => {
   const files = req.files as Express.Multer.File[] | undefined;
   if (!files || files.length < 2) {
-    res.status(400).json({ error: "At least 2 PDF files are required." }); return;
+    apiError(res, 400, "MISSING_FILES", "At least 2 PDF files are required."); return;
   }
 
   try {
@@ -285,7 +286,7 @@ router.post("/tools/pdf-merge", upload.array("files", 20), guardMultiPdf, async 
     });
     res.send(Buffer.from(pdfBytes));
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Merge failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Merge failed");
   }
 });
 
@@ -293,7 +294,7 @@ router.post("/tools/pdf-merge", upload.array("files", 20), guardMultiPdf, async 
 // POST /tools/pdf-split
 // ─────────────────────────────────────────────────────────
 router.post("/tools/pdf-split", upload.single("file"), guardSinglePdf, async (req, res) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
 
   try {
     const mode = String(req.body.mode ?? "every");
@@ -308,7 +309,7 @@ router.post("/tools/pdf-split", upload.single("file"), guardSinglePdf, async (re
     } else {
       segments = parsePageRanges(rangesStr, numPages);
       if (segments.length === 0) {
-        res.status(400).json({ error: "Invalid or empty range. Use format: '1-3, 5, 7-9'" }); return;
+        apiError(res, 400, "INVALID_PARAM", "Invalid or empty range. Use format: '1-3, 5, 7-9'"); return;
       }
     }
 
@@ -345,7 +346,7 @@ router.post("/tools/pdf-split", upload.single("file"), guardSinglePdf, async (re
       res.send(zipBuf);
     }
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Split failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Split failed");
   }
 });
 
@@ -355,16 +356,16 @@ router.post("/tools/pdf-split", upload.single("file"), guardSinglePdf, async (re
 // Falls back to pdf-lib RC4-128 if qpdf is unavailable.
 // ─────────────────────────────────────────────────────────
 router.post("/tools/pdf-protect", upload.single("file"), guardSinglePdf, async (req, res) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
 
   const userPassword  = String(req.body.userPassword  ?? req.body.password ?? "").trim();
   const ownerPassword = String(req.body.ownerPassword ?? "").trim();
 
   if (!userPassword && !ownerPassword) {
-    res.status(400).json({ error: "At least one password (user or owner) is required." }); return;
+    apiError(res, 400, "MISSING_PARAM", "At least one password (user or owner) is required."); return;
   }
   if (userPassword.length > 128 || ownerPassword.length > 128) {
-    res.status(400).json({ error: "Password too long (max 128 characters)." }); return;
+    apiError(res, 400, "INVALID_PARAM", "Password too long (max 128 characters)."); return;
   }
 
   const allowPrinting  = String(req.body.allowPrinting  ?? "true")  !== "false";
@@ -374,7 +375,7 @@ router.post("/tools/pdf-protect", upload.single("file"), guardSinglePdf, async (
 
   const ownerPw = ownerPassword || (userPassword + "_o_et");
   const id = randomUUID();
-  const workDir = join(tmpdir(), `qpdf-${id}`);
+  const workDir = join(tmpdir(), "everydaytools", id);
   await mkdir(workDir, { recursive: true });
   const inPath  = join(workDir, "input.pdf");
   const outPath = join(workDir, "output.pdf");
@@ -432,7 +433,7 @@ router.post("/tools/pdf-protect", upload.single("file"), guardSinglePdf, async (
       });
       res.send(Buffer.from(pdfBytes));
     } catch (err) {
-      res.status(500).json({ error: err instanceof Error ? err.message : "Protection failed" });
+      apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Protection failed");
     }
   } finally {
     await rm(workDir, { recursive: true, force: true }).catch(() => {});
@@ -443,9 +444,9 @@ router.post("/tools/pdf-protect", upload.single("file"), guardSinglePdf, async (
 // POST /tools/pdf-unlock
 // ─────────────────────────────────────────────────────────
 router.post("/tools/pdf-unlock", upload.single("file"), async (req, res) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
   if (req.file.mimetype !== "application/pdf") {
-    res.status(415).json({ error: "Only PDF files are accepted." }); return;
+    apiError(res, 415, "UNSUPPORTED_TYPE", "Only PDF files are accepted."); return;
   }
 
   const password = String(req.body.password ?? "");
@@ -469,7 +470,7 @@ router.post("/tools/pdf-unlock", upload.single("file"), async (req, res) => {
     const msg = raw.toLowerCase().includes("password") || raw.toLowerCase().includes("encrypt")
       ? "Incorrect password or file uses unsupported encryption."
       : raw || "Unlock failed";
-    res.status(500).json({ error: msg });
+    apiError(res, 500, "CONVERSION_FAILED", msg);
   }
 });
 
@@ -477,7 +478,7 @@ router.post("/tools/pdf-unlock", upload.single("file"), async (req, res) => {
 // POST /tools/pdf-watermark
 // ─────────────────────────────────────────────────────────
 router.post("/tools/pdf-watermark", upload.single("file"), guardSinglePdf, async (req, res) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
 
   const text    = String(req.body.text ?? "WATERMARK").slice(0, 100);
   const opacity = Math.min(1, Math.max(0, parseFloat(String(req.body.opacity ?? "0.3"))));
@@ -508,7 +509,7 @@ router.post("/tools/pdf-watermark", upload.single("file"), guardSinglePdf, async
     });
     res.send(Buffer.from(pdfBytes));
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Watermark failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Watermark failed");
   }
 });
 
@@ -516,7 +517,7 @@ router.post("/tools/pdf-watermark", upload.single("file"), guardSinglePdf, async
 // POST /tools/pdf-page-numbers
 // ─────────────────────────────────────────────────────────
 router.post("/tools/pdf-page-numbers", upload.single("file"), guardSinglePdf, async (req, res) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
 
   const position  = String(req.body.position  ?? "bottom-center");
   const startFrom = Math.max(1, parseInt(String(req.body.startFrom ?? "1")) || 1);
@@ -552,7 +553,7 @@ router.post("/tools/pdf-page-numbers", upload.single("file"), guardSinglePdf, as
     });
     res.send(Buffer.from(pdfBytes));
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Page numbering failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Page numbering failed");
   }
 });
 
@@ -560,7 +561,7 @@ router.post("/tools/pdf-page-numbers", upload.single("file"), guardSinglePdf, as
 // POST /tools/pdf-rotate
 // ─────────────────────────────────────────────────────────
 router.post("/tools/pdf-rotate", upload.single("file"), guardSinglePdf, async (req, res) => {
-  if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
 
   const rotationDeg = parseInt(String(req.body.rotation ?? "90")) || 90;
   const pageList    = String(req.body.pages ?? "all");
@@ -588,7 +589,7 @@ router.post("/tools/pdf-rotate", upload.single("file"), guardSinglePdf, async (r
     });
     res.send(Buffer.from(pdfBytes));
   } catch (err) {
-    res.status(500).json({ error: err instanceof Error ? err.message : "Rotation failed" });
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Rotation failed");
   }
 });
 

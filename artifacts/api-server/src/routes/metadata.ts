@@ -2,12 +2,13 @@ import { Router, type IRouter } from "express";
 import { PDFDocument } from "pdf-lib";
 import piexif from "piexifjs";
 import { upload, guardMetadata } from "../middlewares/upload.js";
+import { apiError } from "../lib/errors.js";
 
 const router: IRouter = Router();
 
 router.post("/metadata/read", upload.single("file"), guardMetadata, async (req, res) => {
   if (!req.file) {
-    res.status(400).json({ error: "No file uploaded" });
+    apiError(res, 400, "NO_FILE", "No file uploaded");
     return;
   }
 
@@ -33,17 +34,17 @@ router.post("/metadata/read", upload.single("file"), guardMetadata, async (req, 
         },
       });
     } else {
-      res.status(400).json({ error: "Unsupported file type. Only JPEG and PDF are supported." });
+      apiError(res, 415, "UNSUPPORTED_TYPE", "Unsupported file type. Only JPEG and PDF are supported.");
     }
   } catch (err) {
     const message = err instanceof Error ? err.message : "Failed to read metadata";
-    res.status(500).json({ error: message });
+    apiError(res, 500, "CONVERSION_FAILED", message);
   }
 });
 
 router.post("/metadata/clean", upload.single("file"), guardMetadata, async (req, res) => {
   if (!req.file) {
-    res.status(400).json({ error: "No file uploaded" });
+    apiError(res, 400, "NO_FILE", "No file uploaded");
     return;
   }
 
@@ -73,11 +74,11 @@ router.post("/metadata/clean", upload.single("file"), guardMetadata, async (req,
       res.set("Content-Disposition", `attachment; filename="cleaned-${originalName}"`);
       res.send(Buffer.from(pdfBytes));
     } else {
-      res.status(400).json({ error: "Unsupported file type. Only JPEG and PDF are supported." });
+      apiError(res, 415, "UNSUPPORTED_TYPE", "Unsupported file type. Only JPEG and PDF are supported.");
     }
   } catch (err) {
     const message = err instanceof Error ? err.message : "Failed to clean metadata";
-    res.status(500).json({ error: message });
+    apiError(res, 500, "CONVERSION_FAILED", message);
   }
 });
 
