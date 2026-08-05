@@ -28,32 +28,48 @@ app.use(
   }),
 );
 
-// Explicit CORS allowlist — configurable via FRONTEND_URL for production.
-// Add origins here or set FRONTEND_URL in the environment.
+// Explicit CORS allowlist — configurable via environment variables.
+// FRONTEND_URL: single origin or comma-separated list (e.g. "https://a.com,https://b.com")
+// CORS_EXTRA_ORIGINS: additional comma-separated origins appended to the list
+const parsedEnvOrigins = [
+  ...(process.env["FRONTEND_URL"] ?? "https://everydaytools.qzz.io")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean),
+  ...(process.env["CORS_EXTRA_ORIGINS"] ?? "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean),
+];
+
 const CORS_ORIGINS = [
-  process.env["FRONTEND_URL"] ?? "https://everydaytools.qzz.io",
+  ...parsedEnvOrigins,
   "http://localhost:5000",
   "http://localhost:3000",
 ];
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      // Allow requests with no Origin header (curl, server-to-server, same-origin)
-      if (!origin || CORS_ORIGINS.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error(`CORS: origin "${origin}" not allowed`));
-      }
-    },
-    methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Accept"],
-    credentials: false,
-    maxAge: 86400,
-  }),
-);
+logger.info({ corsOrigins: CORS_ORIGINS }, "CORS allowlist");
 
-app.options("/*splat", cors());
+const corsMiddleware = cors({
+  origin: (origin, callback) => {
+    // Allow requests with no Origin header (curl, server-to-server, same-origin)
+    if (!origin || CORS_ORIGINS.includes(origin)) {
+      callback(null, true);
+    } else {
+      logger.warn({ origin }, "CORS: blocked origin");
+      callback(new Error(`CORS: origin "${origin}" not allowed`));
+    }
+  },
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Accept"],
+  credentials: false,
+  maxAge: 86400,
+});
+
+app.use(corsMiddleware);
+
+// Handle OPTIONS preflight for all routes (must use same middleware for consistent headers)
+app.options("/*splat", corsMiddleware);
 
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
