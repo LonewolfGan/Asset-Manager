@@ -8,9 +8,8 @@ import { BIN } from "./lib/binaries.js";
 
 const execFileAsync = promisify(execFile);
 
-// In dev: src/warmup.ts → python/ is at src/python/
-// In prod (dist/index.mjs): one level up from dist/ → python/
-const BG_REMOVE_PY = join(import.meta.dirname, "../python/bg_remove.py");
+const PYTHON_SCRIPTS_DIR = process.env["PYTHON_SCRIPTS_DIR"] ?? "/app/python";
+const BG_REMOVE_PY = join(PYTHON_SCRIPTS_DIR, "bg_remove.py");
 
 /**
  * 1x1 red pixel PNG, base64-encoded.

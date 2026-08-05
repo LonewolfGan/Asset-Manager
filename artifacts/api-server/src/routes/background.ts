@@ -12,7 +12,8 @@ import { heavyRateLimit } from "../middlewares/rateLimit.js";
 const router: IRouter = Router();
 const execFileAsync = promisify(execFile);
 
-const BG_REMOVE_PY = join(import.meta.dirname, "../python/bg_remove.py");
+const PYTHON_SCRIPTS_DIR = process.env["PYTHON_SCRIPTS_DIR"] ?? "/app/python";
+const BG_REMOVE_PY = join(PYTHON_SCRIPTS_DIR, "bg_remove.py");
 
 // ── rembg (primary — full RGBA alpha, best quality) ──────────────────────────
 //

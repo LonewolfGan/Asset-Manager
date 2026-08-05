@@ -9,8 +9,7 @@ import { promisify } from "util";
 import { tmpdir } from "os";
 import { randomUUID } from "crypto";
 import { writeFile, readFile, rm, mkdir } from "fs/promises";
-import { join, dirname } from "path";
-import { fileURLToPath } from "url";
+import { join } from "path";
 import { upload, guardDocument, guardImage } from "../middlewares/upload.js";
 import { BIN } from "../lib/binaries.js";
 import { defaultRateLimit } from "../middlewares/rateLimit.js";
@@ -18,8 +17,8 @@ import { defaultRateLimit } from "../middlewares/rateLimit.js";
 const execFileAsync = promisify(execFile);
 const router: IRouter = Router();
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const PDF_EXTRACT_PY = join(__dirname, "../python/pdf_extract.py");
+const PYTHON_SCRIPTS_DIR = process.env["PYTHON_SCRIPTS_DIR"] ?? "/app/python";
+const PDF_EXTRACT_PY = join(PYTHON_SCRIPTS_DIR, "pdf_extract.py");
 
 // ─────────────────────────────────────────────────────────
 // Potrace: PNG → real SVG vector via bitmap tracing
@@ -366,7 +365,7 @@ router.post("/convert/pdf-to-excel", upload.single("file"), guardDocument, async
 // Primary: sharp (works if libvips compiled with heif support).
 // Fallback: Python bridge with pillow-heif.
 // ─────────────────────────────────────────────────────────
-const HEIC_PY = join(__dirname, "../python/heic_convert.py");
+const HEIC_PY = join(PYTHON_SCRIPTS_DIR, "heic_convert.py");
 
 async function heicViaSharp(inputBuffer: Buffer, outputMime: string): Promise<Buffer> {
   const fmt = mimeToSharpFormat(outputMime);

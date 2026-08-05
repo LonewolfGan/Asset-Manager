@@ -8,8 +8,7 @@ import { promisify } from "util";
 import { tmpdir } from "os";
 import { randomUUID } from "crypto";
 import { writeFile, readFile, rm, mkdir } from "fs/promises";
-import { join, dirname } from "path";
-import { fileURLToPath } from "url";
+import { join } from "path";
 import { upload } from "../middlewares/upload.js";
 import { htmlToPdfBuffer } from "../lib/html-to-pdf.js";
 import { convertWithLibreOffice, convertPptxToImages } from "../lib/libreoffice.js";
@@ -18,8 +17,8 @@ import { BIN } from "../lib/binaries.js";
 import { apiError } from "../lib/errors.js";
 
 const execFileAsync = promisify(execFile);
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const PDF_EXTRACT_PY = join(__dirname, "../python/pdf_extract.py");
+const PYTHON_SCRIPTS_DIR = process.env["PYTHON_SCRIPTS_DIR"] ?? "/app/python";
+const PDF_EXTRACT_PY = join(PYTHON_SCRIPTS_DIR, "pdf_extract.py");
 
 const router = Router();
 
