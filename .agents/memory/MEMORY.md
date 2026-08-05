@@ -14,3 +14,4 @@
 - [System deps & Python bridge](system-deps-python-bridge.md) — LibreOffice/ghostscript/potrace/qpdf/pdfplumber/pikepdf installed; Python bridge pattern for pdfplumber via callPdfExtract() in convert.ts; libreoffice.ts lib for concurrent-safe soffice calls.
 - [rembg on Replit](rembg-replit.md) — rembg 2.0.77 + onnxruntime[cpu] works on Replit Python 3.12; old "JIT blocked" warning is outdated; deps in pyproject.toml.
 - [API arch overhaul](api-arch-overhaul.md) — all route files use apiError() helper (111 calls, 0 old format remaining); temp paths join(tmpdir(),"everydaytools",uuid); 9 new routes; turndown in build.mjs externals; deliverables: ARCHITECTURE.md + PHASE5_CURL_REPORT.md in artifacts/api-server/.
+- [Python path fix](python-path-fix.md) — never use __dirname/import.meta.dirname for Python script paths in esbuild bundle; use PYTHON_SCRIPTS_DIR env var ?? '/app/python'; warmup.ts is a hidden location standard grep misses.
