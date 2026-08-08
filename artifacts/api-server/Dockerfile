@@ -72,7 +72,7 @@ WORKDIR /app
 COPY --from=builder /workspace/artifacts/api-server/dist/ ./dist/
 
 # Copy Python helper scripts (called as subprocesses — not bundled by esbuild).
-# Placed at /app/python/ so dist/index.mjs can find them via ../python/ relative to dist/.
+# Placed at /app/python/ to match the PYTHON_SCRIPTS_DIR runtime default.
 COPY artifacts/api-server/src/python/ ./python/
 
 # Install only the native / dynamically-imported npm packages the bundle needs
@@ -83,6 +83,7 @@ RUN pnpm install --no-lockfile
 # ── Environment defaults ──────────────────────────────────────────────────────
 ENV NODE_ENV=production
 ENV PORT=3001
+ENV PYTHON_SCRIPTS_DIR=/app/python
 # Override FRONTEND_URL at runtime: docker run -e FRONTEND_URL=https://your-domain
 ENV FRONTEND_URL=https://everydaytools.qzz.io
 

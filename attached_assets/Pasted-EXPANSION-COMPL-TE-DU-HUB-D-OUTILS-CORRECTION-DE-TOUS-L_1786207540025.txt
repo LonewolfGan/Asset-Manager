@@ -1,0 +1,194 @@
+EXPANSION COMPLÈTE DU HUB D'OUTILS + CORRECTION DE TOUS LES BUGS
+
+CONTEXTE
+Le site tourne sur Oracle Cloud (backend ARM Ubuntu 24.04, 12GB RAM, 
+Docker) + Vercel (frontend React/Vite). Le backend a accès à toutes 
+les ressources système nécessaires — si une meilleure librairie existe 
+pour un outil donné, on l'installe, même si elle n'est pas encore dans 
+le Dockerfile actuel. L'objectif est la meilleure qualité possible pour 
+chaque outil, pas de se limiter à ce qui est déjà installé.
+
+Si une lib actuelle est sous-optimale pour une tâche, remplace-la par 
+une meilleure — documente les changements de dépendances dans le 
+Dockerfile pour qu'on puisse les installer sur Oracle.
+
+PHASE 1 — LISTE EXHAUSTIVE DE TOUS LES OUTILS
+
+Génère la liste complète de TOUS les outils qui doivent exister, par 
+catégorie. Pour chaque outil, indique la meilleure lib disponible 
+(pas forcément ce qui est déjà installé) et si elle nécessite une 
+nouvelle dépendance système ou Python.
+
+CATÉGORIE IMAGE
+Formats supportés : JPG, PNG, WEBP, AVIF, GIF, TIFF, BMP, SVG, HEIC, 
+ICO, PDF
+
+Conversions : toutes les combinaisons bidirectionnelles entre ces formats.
+Pour les conversions impliquant plusieurs formats, utilise une page 
+générique /image-convert avec dropdowns source/cible + pages SEO 
+individuelles (/jpg-to-png etc.) qui redirigent vers ce composant 
+avec formats pré-sélectionnés.
+
+Outils d'édition :
+- Compress (tous formats, meilleure qualité/taille possible)
+- Resize (avec préservation du ratio)
+- Crop (libre et par ratio prédéfini)
+- Flip / Rotate
+- Watermark (texte et image)
+- Background Remove (meilleur modèle disponible)
+- Upscale / Super Resolution (si une lib de qualité existe)
+- Convert to grayscale / sépia / autres filtres
+- Favicon Generator (ICO + PNG multi-tailles)
+- Metadata cleaner
+- Image to PDF
+- PDF to Image (JPG, PNG, WEBP au choix)
+
+CATÉGORIE PDF
+- Merge, Split, Compress, Rotate, Watermark, Page Numbers, Reorder Pages
+- Protect (AES-256), Unlock
+- PDF to Word, Excel, PowerPoint, HTML, Text, EPUB, Markdown
+- Word, Excel, PowerPoint, HTML, Markdown, Text, Images → PDF
+- OCR PDF (extraire texte d'un PDF scanné via Tesseract ou mieux)
+- Edit PDF metadata (titre, auteur, sujet, mots-clés)
+- PDF to PDF/A (archivage)
+- Repair PDF (tentative de réparation de PDFs corrompus)
+
+CATÉGORIE DOCUMENT
+Formats : DOCX, DOC, ODT, RTF, TXT, MD, HTML, EPUB, PDF, PPTX, XLSX
+Toutes les conversions bidirectionnelles pertinentes via LibreOffice 
+headless (qui gère tous ces formats). Si une lib spécialisée fait 
+mieux que LibreOffice pour une conversion précise, utilise-la.
+
+CATÉGORIE DONNÉES / CODE
+- JSON ↔ CSV ↔ XML ↔ YAML ↔ Excel (toutes combinaisons)
+- JSON formatter, validator, minifier, diff
+- CSV viewer, editor
+- Base64 encode/decode (texte et fichiers)
+- URL encode/decode
+- HTML formatter, minifier, validator
+- CSS minifier / beautifier
+- JS/TS minifier / beautifier
+- Markdown preview / editor
+- Diff checker (texte)
+- Regex tester
+- JWT decoder
+- QR code generator (PNG, SVG)
+- Barcode generator
+- Hash generator (MD5, SHA1, SHA256, SHA512, bcrypt)
+- UUID generator
+- Lorem ipsum generator
+- Color converter (HEX, RGB, HSL, CMYK, LAB)
+- Color palette generator
+
+CATÉGORIE CALCULATEURS & UTILITAIRES
+- Tip calculator
+- Percentage calculator
+- Unit converter (longueur, poids, température, vitesse, surface, 
+  volume, données, énergie)
+- Currency converter (taux live via API)
+- Age calculator
+- Date calculator (différence, ajout/soustraction)
+- BMI calculator
+- Loan / mortgage calculator
+- Electricity cost calculator
+- Password generator (avec critères configurables)
+- Password strength checker
+- Internet speed test
+- Screen resolution info
+- Aspect ratio calculator
+
+PHASE 2 — IMPLÉMENTATION
+
+Pour chaque outil de la Phase 1 :
+
+1. Si l'outil existe déjà : vérifie qu'il utilise la meilleure lib 
+   disponible et qu'il fonctionne correctement. Si une meilleure 
+   alternative existe, migre vers elle.
+
+2. Si l'outil est manquant : implémente-le complètement :
+   - Route API backend (si traitement serveur nécessaire)
+   - Page frontend React avec UI propre et cohérente
+   - Branchement sur le composant <ToolLoadingState> existant
+
+3. Choix des librairies — utilise toujours la MEILLEURE option 
+   disponible, pas forcément ce qui est déjà installé :
+   - Images → sharp (Node) ou Pillow (Python) selon la tâche
+   - HEIC → pillow-heif Python (meilleure compatibilité que heic2any)
+   - Background remove → rembg avec isnet-general-use (modèle actuel), 
+     ou BiRefNet si disponible et meilleur
+   - PDF manipulation → qpdf, ghostscript, pdf-lib selon l'opération
+   - PDF→Document → pdfplumber Python pour l'extraction structurée
+   - Document→PDF → LibreOffice headless (fidélité maximale)
+   - OCR → Tesseract CLI (déjà prévu) ou EasyOCR si meilleure qualité
+   - SVG vectorisation → potrace
+   - Données → papaparse (CSV), fast-xml-parser (XML), js-yaml (YAML)
+   - Si tu identifies une lib manquante qui améliorerait significativement 
+     la qualité : ajoute-la au Dockerfile ET documente pourquoi dans un 
+     commentaire
+
+4. Pour les nouvelles dépendances système ou Python nécessaires :
+   - Ajoute-les dans artifacts/api-server/Dockerfile
+   - Documente chaque ajout avec un commentaire expliquant pourquoi
+   - Si tu remplaces une lib existante par une meilleure, supprime 
+     l'ancienne du Dockerfile
+
+PHASE 3 — CORRECTION DES BUGS CONNUS
+
+1. Background remover retourne 500 en production
+   Cause probable : chemin du script bg_remove.py incorrect dans le 
+   bundle esbuild compilé.
+   Fix : utilise process.env.PYTHON_SCRIPTS_DIR ?? "/app/python" pour 
+   tous les chemins vers des scripts Python, exactement comme déjà fait 
+   pour pdf_extract.py dans convert.ts.
+   Vérifie TOUS les fichiers de routes pour cette même erreur.
+
+2. CORS absent sur les erreurs 500
+   Ajoute un error handler global APRÈS toutes les routes dans 
+   src/app.ts :
+   
+   app.use((err, req, res, next) => {
+     const allowed = (process.env.FRONTEND_URL||'').split(',')
+       .map(s => s.trim());
+     const origin = req.headers.origin;
+     if (origin && allowed.includes(origin)) {
+       res.header('Access-Control-Allow-Origin', origin);
+       res.header('Access-Control-Allow-Credentials', 'true');
+     }
+     logger.error({ err, url: req.url, method: req.method }, 
+       'Unhandled error');
+     res.status(500).json({ 
+       error: true, 
+       code: 'INTERNAL_ERROR', 
+       message: err.message || 'An unexpected error occurred'
+     });
+   });
+
+3. Variable PYTHON_SCRIPTS_DIR manquante
+   Ajoute dans .env.example : PYTHON_SCRIPTS_DIR=/app/python
+
+PHASE 4 — TEST EXHAUSTIF EN BOUCLE
+
+Lance une boucle de test automatique sur TOUS les endpoints backend :
+- Pour chaque route, envoie un fichier de test réel via curl
+- Vérifie HTTP 200 + fichier de sortie valide (taille > 0)
+- Si 500 → identifie la cause → corrige → reteste → continue
+- Ne passe à l'outil suivant que quand le précédent est validé
+- Répète jusqu'à 0 erreur sur tous les endpoints
+
+PHASE 5 — BUILD ET VÉRIFICATION
+
+1. pnpm build dans artifacts/api-server
+2. Vérifie absence de chemins Python relatifs dans le bundle :
+   grep -o ".\{30\}python.\{30\}" artifacts/api-server/dist/index.mjs
+   → Aucun résultat ne doit montrer "../python/" — seulement 
+   "/app/python/" ou "process.env"
+3. Commit et push sur main avec message listant tous les nouveaux 
+   outils ajoutés et libs changées
+
+LIVRABLE FINAL
+1. Liste complète de tous les outils disponibles après cette session
+2. Liste des librairies ajoutées/remplacées avec justification
+3. Dockerfile mis à jour avec toutes les nouvelles dépendances
+4. Rapport de test : outil | lib utilisée | HTTP status | temps | statut
+5. Confirmation que background-remover, CORS sur 500, et chemins 
+   Python sont tous corrigés et validés par un test curl réel

@@ -102,4 +102,27 @@ if (process.env["NODE_ENV"] === "production") {
   }
 }
 
+// Keep CORS headers on unexpected 500 responses as well as successful responses.
+// This is intentionally after every route and static handler.
+app.use((err: unknown, req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  const allowedOrigins = (process.env["FRONTEND_URL"] ?? "")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+  const origin = req.headers.origin;
+
+  if (origin && allowedOrigins.includes(origin)) {
+    res.header("Access-Control-Allow-Origin", origin);
+    res.header("Access-Control-Allow-Credentials", "true");
+  }
+
+  logger.error({ err, url: req.url, method: req.method }, "Unhandled error");
+  const message = err instanceof Error ? err.message : "An unexpected server error occurred";
+  res.status(500).json({
+    error: true,
+    code: "INTERNAL_ERROR",
+    message,
+  });
+});
+
 export default app;

@@ -5,7 +5,7 @@ A client-side multi-tool utility web app for everyday digital tasks — file con
 ## Run & Operate
 
 - `pnpm --filter @workspace/everydaytools run dev` — run the frontend (port assigned via workflow)
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `pnpm --filter @workspace/api-server run dev` — run the API server (port 8080 in the Replit workflow)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 
