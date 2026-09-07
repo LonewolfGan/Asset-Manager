@@ -38,7 +38,13 @@ RUN pnpm --filter @workspace/api-server run build
 FROM ubuntu:24.04
 ENV DEBIAN_FRONTEND=noninteractive
 
-# System tools: LibreOffice, Ghostscript, Potrace, QPDF, Python3
+# System tools:
+# - libreoffice: Headless document conversions (DOCX, ODT, RTF, PPTX, XLSX -> PDF / target formats)
+# - ghostscript: PDF compression, multi-page rendering to raster, PDF/A conversion
+# - potrace: High-quality SVG vector tracing from bitmaps
+# - qpdf: Fast PDF linearization, repair, page manipulation, AES-256 protection & unlock
+# - tesseract-ocr (+ eng/fra): Optical Character Recognition for image & PDF OCR
+# - poppler-utils: High-performance PDF rasterization utilities (pdftoppm, pdfinfo)
 RUN apt-get update && apt-get install -y \
         curl \
         python3 python3-pip \
@@ -46,6 +52,10 @@ RUN apt-get update && apt-get install -y \
         ghostscript \
         potrace \
         qpdf \
+        tesseract-ocr \
+        tesseract-ocr-eng \
+        tesseract-ocr-fra \
+        poppler-utils \
     && rm -rf /var/lib/apt/lists/*
 
 # Node.js 20 (LTS)
@@ -56,15 +66,26 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 # pnpm
 RUN npm install -g pnpm@10
 
-# Python deps: rembg (ONNX-based background removal) + PDF extraction
+# Python dependencies:
+# - rembg[cpu]: ONNX AI background removal (isnet-general-use / u2net models)
+# - pdfplumber + pypdf: Structured PDF table, layout and text extraction
+# - Pillow: Image manipulation and format conversions
+# - pillow-heif: Native Apple HEIC/HEIF photo decoding and conversion
+# - openpyxl: Excel spreadsheet processing
+# - python-docx: Word document manipulation
+# - pytesseract: Python OCR integration wrapper
 RUN pip3 install --break-system-packages \
         "rembg[cpu]>=2.0.77" \
         pdfplumber \
         pypdf \
-        Pillow
+        Pillow \
+        pillow-heif \
+        openpyxl \
+        python-docx \
+        pytesseract
 
-# Pre-download the isnet-general-use ONNX model so the first request is fast
-RUN python3 -c "from rembg import new_session; new_session('isnet-general-use')"
+# Pre-download isnet-general-use model for offline/instant background removal
+RUN python3 -c "from rembg import new_session; new_session('isnet-general-use')" || true
 
 WORKDIR /app
 

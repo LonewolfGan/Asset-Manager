@@ -13,14 +13,12 @@ import { upload } from "../middlewares/upload.js";
 import { htmlToPdfBuffer } from "../lib/html-to-pdf.js";
 import { convertWithLibreOffice, convertPptxToImages } from "../lib/libreoffice.js";
 import { defaultRateLimit, mediumRateLimit } from "../middlewares/rateLimit.js";
-import { BIN } from "../lib/binaries.js";
+import { BIN, getPythonScriptPath } from "../lib/binaries.js";
 import { apiError } from "../lib/errors.js";
 
 const execFileAsync = promisify(execFile);
-const PYTHON_SCRIPTS_DIR = process.env["PYTHON_SCRIPTS_DIR"] ?? "/app/python";
-const PDF_EXTRACT_PY = join(PYTHON_SCRIPTS_DIR, "pdf_extract.py");
-
 const router = Router();
+
 
 function sendPdf(res: Response, buf: Buffer, filename: string): void {
   res.set({
@@ -294,9 +292,10 @@ router.post("/tools/pdf-to-html", defaultRateLimit, upload.single("file"), async
   try {
     await writeFile(pdfPath, req.file.buffer);
 
+    const pdfExtractScript = getPythonScriptPath("pdf_extract.py");
     const { stdout } = await execFileAsync(
       BIN.python3,
-      [PDF_EXTRACT_PY, "--pdf", pdfPath, "--mode", "text"],
+      [pdfExtractScript, "--pdf", pdfPath, "--mode", "text"],
       { timeout: 120_000, maxBuffer: 50 * 1024 * 1024 },
     );
     const extracted = JSON.parse(stdout) as { text?: string; error?: string };
@@ -507,4 +506,90 @@ router.post("/convert/word-to-markdown", defaultRateLimit, upload.single("file")
   }
 });
 
+// ─────────────────────────────────────────────────────────
+// POST /convert/pdf-to-markdown
+// PDF → Markdown via pdfplumber / pdftotext extraction + turndown
+// ─────────────────────────────────────────────────────────
+router.post("/convert/pdf-to-markdown", defaultRateLimit, upload.single("file"), async (req: Request, res: Response) => {
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
+  if (req.file.mimetype !== "application/pdf" && !req.file.originalname?.match(/\.pdf$/i)) {
+    apiError(res, 415, "UNSUPPORTED_TYPE", "Please upload a PDF file");
+    return;
+  }
+
+  const id = randomUUID();
+  const workDir = join(tmpdir(), "everydaytools", id);
+  await mkdir(workDir, { recursive: true });
+  const pdfPath = join(workDir, "input.pdf");
+
+  try {
+    await writeFile(pdfPath, req.file.buffer);
+    const pdfExtractScript = getPythonScriptPath("pdf_extract.py");
+    const { stdout } = await execFileAsync(
+      BIN.python3,
+      [pdfExtractScript, "--pdf", pdfPath, "--mode", "text"],
+      { timeout: 120_000, maxBuffer: 50 * 1024 * 1024 },
+    );
+    const extracted = JSON.parse(stdout) as { text?: string; error?: string };
+    if (extracted.error) throw new Error(extracted.error);
+
+    const baseName = (req.file.originalname ?? "document").replace(/\.pdf$/i, "");
+    const rawText = extracted.text ?? "";
+
+    res.set({
+      "Content-Type": "text/markdown; charset=utf-8",
+      "Content-Disposition": `attachment; filename="${baseName}.md"`,
+      "Cache-Control": "no-store",
+    });
+    res.send(rawText);
+  } catch (err) {
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "PDF to Markdown failed");
+  } finally {
+    await rm(workDir, { recursive: true, force: true }).catch(() => {});
+  }
+});
+
+// ─────────────────────────────────────────────────────────
+// POST /tools/document-convert
+// Universal document conversion via LibreOffice headless
+// Supports DOCX, DOC, ODT, RTF, TXT, HTML, EPUB, PPTX, XLSX → PDF, DOCX, ODT, RTF, TXT, HTML
+// ─────────────────────────────────────────────────────────
+router.post("/tools/document-convert", mediumRateLimit, upload.single("file"), async (req: Request, res: Response) => {
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
+
+  const targetFormat = String(req.body.targetFormat ?? req.query.targetFormat ?? "pdf").toLowerCase().trim();
+  const originalName = req.file.originalname ?? "document";
+  const extMatch = originalName.match(/\.([a-zA-Z0-9]+)$/);
+  const inputExt = extMatch ? extMatch[1].toLowerCase() : "docx";
+
+  const MIME_MAP: Record<string, string> = {
+    pdf: "application/pdf",
+    docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    doc: "application/msword",
+    odt: "application/vnd.oasis.opendocument.text",
+    rtf: "application/rtf",
+    txt: "text/plain; charset=utf-8",
+    html: "text/html; charset=utf-8",
+    epub: "application/epub+zip",
+    pptx: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  };
+
+  try {
+    const resultBuffer = await convertWithLibreOffice(req.file.buffer, inputExt, targetFormat);
+    const baseName = originalName.replace(/\.[^.]+$/, "");
+    const outMime = MIME_MAP[targetFormat] ?? "application/octet-stream";
+
+    res.set({
+      "Content-Type": outMime,
+      "Content-Disposition": `attachment; filename="${baseName}.${targetFormat}"`,
+      "Cache-Control": "no-store",
+    });
+    res.send(resultBuffer);
+  } catch (err) {
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Document conversion failed");
+  }
+});
+
 export default router;
+

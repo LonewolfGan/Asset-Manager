@@ -132,6 +132,42 @@ const Privacy = lazy(() => import("@/pages/privacy"));
 const Terms = lazy(() => import("@/pages/terms"));
 const SecurityPage = lazy(() => import("@/pages/security"));
 
+// Newly added tools
+const ImageUpscale = lazy(() => import("@/pages/image-upscale"));
+const ImageFilters = lazy(() => import("@/pages/image-filters"));
+const PdfToPdfa = lazy(() => import("@/pages/pdf-to-pdfa"));
+const PdfRepair = lazy(() => import("@/pages/pdf-repair"));
+const PdfOcr = lazy(() => import("@/pages/pdf-ocr"));
+const PdfMetadata = lazy(() => import("@/pages/pdf-metadata"));
+const PdfToMarkdown = lazy(() => import("@/pages/pdf-to-markdown"));
+const DocumentConverter = lazy(() => import("@/pages/document-converter"));
+const OdtToPdf = lazy(() => import("@/pages/odt-to-pdf"));
+const RtfToPdf = lazy(() => import("@/pages/rtf-to-pdf"));
+const DataConverter = lazy(() => import("@/pages/data-converter"));
+const JsonDiff = lazy(() => import("@/pages/json-diff"));
+const CsvEditor = lazy(() => import("@/pages/csv-editor"));
+const CssFormatter = lazy(() => import("@/pages/css-formatter"));
+const JsFormatter = lazy(() => import("@/pages/js-formatter"));
+const MarkdownPreview = lazy(() => import("@/pages/markdown-preview"));
+const DiffChecker = lazy(() => import("@/pages/diff-checker"));
+const RegexTester = lazy(() => import("@/pages/regex-tester"));
+const JwtDecoder = lazy(() => import("@/pages/jwt-decoder"));
+const BarcodeGenerator = lazy(() => import("@/pages/barcode-generator"));
+const HashGenerator = lazy(() => import("@/pages/hash-generator"));
+const UuidGenerator = lazy(() => import("@/pages/uuid-generator"));
+const ColorConverter = lazy(() => import("@/pages/color-converter"));
+const ColorPalette = lazy(() => import("@/pages/color-palette"));
+const AgeCalculator = lazy(() => import("@/pages/age-calculator"));
+const DateCalculator = lazy(() => import("@/pages/date-calculator"));
+const BmiCalculator = lazy(() => import("@/pages/bmi-calculator"));
+const LoanCalculator = lazy(() => import("@/pages/loan-calculator"));
+const ElectricityCalculator = lazy(() => import("@/pages/electricity-calculator"));
+const PasswordStrength = lazy(() => import("@/pages/password-strength"));
+const SpeedTest = lazy(() => import("@/pages/speed-test"));
+const ScreenInfo = lazy(() => import("@/pages/screen-info"));
+const AspectRatio = lazy(() => import("@/pages/aspect-ratio"));
+
+
 const TOOL_COMPONENTS: Record<string, React.LazyExoticComponent<() => React.ReactElement>> = {
   // PDF
   "pdf-to-word": PdfToWord,
@@ -228,7 +264,41 @@ const TOOL_COMPONENTS: Record<string, React.LazyExoticComponent<() => React.Reac
   "currency-converter": CurrencyConverter,
   "qr-code-generator": QrCodeGenerator,
   "tip-calculator": TipCalculator,
+  "image-upscale": ImageUpscale,
+  "image-filters": ImageFilters,
+  "pdf-to-pdfa": PdfToPdfa,
+  "pdf-repair": PdfRepair,
+  "pdf-ocr": PdfOcr,
+  "pdf-metadata": PdfMetadata,
+  "pdf-to-markdown": PdfToMarkdown,
+  "document-converter": DocumentConverter,
+  "odt-to-pdf": OdtToPdf,
+  "rtf-to-pdf": RtfToPdf,
+  "data-converter": DataConverter,
+  "json-diff": JsonDiff,
+  "csv-editor": CsvEditor,
+  "css-formatter": CssFormatter,
+  "js-formatter": JsFormatter,
+  "markdown-preview": MarkdownPreview,
+  "diff-checker": DiffChecker,
+  "regex-tester": RegexTester,
+  "jwt-decoder": JwtDecoder,
+  "barcode-generator": BarcodeGenerator,
+  "hash-generator": HashGenerator,
+  "uuid-generator": UuidGenerator,
+  "color-converter": ColorConverter,
+  "color-palette": ColorPalette,
+  "age-calculator": AgeCalculator,
+  "date-calculator": DateCalculator,
+  "bmi-calculator": BmiCalculator,
+  "loan-calculator": LoanCalculator,
+  "electricity-calculator": ElectricityCalculator,
+  "password-strength": PasswordStrength,
+  "speed-test": SpeedTest,
+  "screen-info": ScreenInfo,
+  "aspect-ratio": AspectRatio,
 };
+
 
 const queryClient = new QueryClient();
 

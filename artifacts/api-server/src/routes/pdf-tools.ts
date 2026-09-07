@@ -593,4 +593,225 @@ router.post("/tools/pdf-rotate", upload.single("file"), guardSinglePdf, async (r
   }
 });
 
+// ─────────────────────────────────────────────────────────
+// POST /tools/pdf-to-pdfa
+// Convert PDF to PDF/A-2b standard for long-term archiving via Ghostscript
+// ─────────────────────────────────────────────────────────
+router.post("/tools/pdf-to-pdfa", defaultRateLimit, upload.single("file"), guardSinglePdf, async (req, res) => {
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
+
+  const id = randomUUID();
+  const workDir = join(tmpdir(), "everydaytools", id);
+  await mkdir(workDir, { recursive: true });
+  const inputPath = join(workDir, "input.pdf");
+  const outputPath = join(workDir, "output_pdfa.pdf");
+
+  try {
+    await writeFile(inputPath, req.file.buffer);
+
+    await execFileAsync(
+      BIN.gs,
+      [
+        "-dPDFA=2",
+        "-dBATCH",
+        "-dNOPAUSE",
+        "-dNOOUTERSAVE",
+        "-dUseCIEColor",
+        "-sProcessColorModel=DeviceRGB",
+        "-sDEVICE=pdfwrite",
+        "-sPDFACompatibilityPolicy=1",
+        `-sOutputFile=${outputPath}`,
+        inputPath,
+      ],
+      { timeout: 120_000 },
+    );
+
+    const pdfaBuf = await readFile(outputPath);
+    const baseName = pdfBaseName(req.file.originalname);
+
+    res.set({
+      "Content-Type": "application/pdf",
+      "Content-Disposition": `attachment; filename="${baseName}_pdfa.pdf"`,
+      "Cache-Control": "no-store",
+    });
+    res.send(pdfaBuf);
+  } catch (err) {
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "PDF/A conversion failed");
+  } finally {
+    await rm(workDir, { recursive: true, force: true }).catch(() => {});
+  }
+});
+
+// ─────────────────────────────────────────────────────────
+// POST /tools/pdf-repair
+// Repair corrupted or damaged PDF documents using qpdf / ghostscript
+// ─────────────────────────────────────────────────────────
+router.post("/tools/pdf-repair", defaultRateLimit, upload.single("file"), async (req, res) => {
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
+
+  const id = randomUUID();
+  const workDir = join(tmpdir(), "everydaytools", id);
+  await mkdir(workDir, { recursive: true });
+  const inputPath = join(workDir, "input.pdf");
+  const outputPath = join(workDir, "repaired.pdf");
+
+  try {
+    await writeFile(inputPath, req.file.buffer);
+
+    // Primary: qpdf rebuild & linearize
+    let success = false;
+    try {
+      await execFileAsync(
+        BIN.qpdf,
+        ["--linearize", inputPath, outputPath],
+        { timeout: 60_000 },
+      );
+      success = true;
+    } catch {
+      // Fallback: Ghostscript rebuild
+      try {
+        await execFileAsync(
+          BIN.gs,
+          [
+            "-o", outputPath,
+            "-sDEVICE=pdfwrite",
+            "-dPDFSETTINGS=/prepress",
+            inputPath,
+          ],
+          { timeout: 120_000 },
+        );
+        success = true;
+      } catch (gsErr) {
+        throw new Error("Unable to repair PDF structure with standard recovery tools.");
+      }
+    }
+
+    if (!success) {
+      throw new Error("PDF repair failed");
+    }
+
+    const repairedBuf = await readFile(outputPath);
+    const baseName = pdfBaseName(req.file.originalname);
+
+    res.set({
+      "Content-Type": "application/pdf",
+      "Content-Disposition": `attachment; filename="${baseName}_repaired.pdf"`,
+      "Cache-Control": "no-store",
+    });
+    res.send(repairedBuf);
+  } catch (err) {
+    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "PDF repair failed");
+  } finally {
+    await rm(workDir, { recursive: true, force: true }).catch(() => {});
+  }
+});
+
+// ─────────────────────────────────────────────────────────
+// POST /tools/pdf-ocr
+// Extract text from scanned PDFs using Ghostscript + Tesseract OCR
+// ─────────────────────────────────────────────────────────
+router.post("/tools/pdf-ocr", defaultRateLimit, upload.single("file"), guardSinglePdf, async (req, res) => {
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
+
+  const id = randomUUID();
+  const workDir = join(tmpdir(), "everydaytools", id);
+  await mkdir(workDir, { recursive: true });
+  const inputPath = join(workDir, "input.pdf");
+  const lang = String(req.body.lang ?? "eng+fra");
+
+  try {
+    await writeFile(inputPath, req.file.buffer);
+
+    // Step 1: Render pages as images
+    const pagePattern = join(workDir, "page-%d.png");
+    await execFileAsync(
+      BIN.gs,
+      [
+        "-dNOPAUSE", "-dBATCH", "-dSAFER",
+        "-sDEVICE=png16m",
+        "-r200",
+        `-sOutputFile=${pagePattern}`,
+        inputPath,
+      ],
+      { timeout: 120_000 },
+    );
+
+    const files = await readdir(workDir);
+    const pngPages = files
+      .filter((f) => /^page-\d+\.png$/.test(f))
+      .sort((a, b) => {
+        const na = parseInt(a.replace("page-", "").replace(".png", "")) || 0;
+        const nb = parseInt(b.replace("page-", "").replace(".png", "")) || 0;
+        return na - nb;
+      });
+
+    if (pngPages.length === 0) {
+      throw new Error("No pages could be rendered from PDF for OCR");
+    }
+
+    // Step 2: OCR each page
+    let fullText = "";
+    for (let i = 0; i < Math.min(pngPages.length, 50); i++) {
+      const pageFile = join(workDir, pngPages[i]);
+      try {
+        const { stdout } = await execFileAsync(
+          BIN.tesseract,
+          [pageFile, "stdout", "-l", lang],
+          { timeout: 60_000 },
+        );
+        fullText += `--- Page ${i + 1} ---\n` + stdout.trim() + "\n\n";
+      } catch {
+        fullText += `--- Page ${i + 1} ---\n[OCR processing error on page ${i + 1}]\n\n`;
+      }
+    }
+
+    res.json({
+      text: fullText.trim(),
+      totalPages: pngPages.length,
+      lang,
+    });
+  } catch (err) {
+    apiError(res, 500, "OCR_FAILED", err instanceof Error ? err.message : "PDF OCR failed");
+  } finally {
+    await rm(workDir, { recursive: true, force: true }).catch(() => {});
+  }
+});
+
+// ─────────────────────────────────────────────────────────
+// POST /tools/pdf-metadata
+// Read & update PDF Title, Author, Subject, Keywords
+// ─────────────────────────────────────────────────────────
+router.post("/tools/pdf-metadata", upload.single("file"), guardSinglePdf, async (req, res) => {
+  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
+
+  try {
+    const pdfDoc = await PDFDocument.load(req.file.buffer);
+
+    if (req.body.title !== undefined) pdfDoc.setTitle(String(req.body.title));
+    if (req.body.author !== undefined) pdfDoc.setAuthor(String(req.body.author));
+    if (req.body.subject !== undefined) pdfDoc.setSubject(String(req.body.subject));
+    if (req.body.keywords !== undefined) {
+      const kw = Array.isArray(req.body.keywords)
+        ? req.body.keywords
+        : String(req.body.keywords).split(",").map((s) => s.trim());
+      pdfDoc.setKeywords(kw);
+    }
+    if (req.body.creator !== undefined) pdfDoc.setCreator(String(req.body.creator));
+    if (req.body.producer !== undefined) pdfDoc.setProducer(String(req.body.producer));
+
+    const pdfBytes = await pdfDoc.save();
+    const baseName = pdfBaseName(req.file.originalname);
+
+    res.set({
+      "Content-Type": "application/pdf",
+      "Content-Disposition": `attachment; filename="${baseName}_metadata.pdf"`,
+      "Cache-Control": "no-store",
+    });
+    res.send(Buffer.from(pdfBytes));
+  } catch (err) {
+    apiError(res, 500, "METADATA_FAILED", err instanceof Error ? err.message : "Metadata update failed");
+  }
+});
+
 export default router;
+

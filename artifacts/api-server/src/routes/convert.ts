@@ -11,14 +11,12 @@ import { randomUUID } from "crypto";
 import { writeFile, readFile, rm, mkdir } from "fs/promises";
 import { join } from "path";
 import { upload, guardDocument, guardImage } from "../middlewares/upload.js";
-import { BIN } from "../lib/binaries.js";
+import { BIN, getPythonScriptPath } from "../lib/binaries.js";
 import { defaultRateLimit } from "../middlewares/rateLimit.js";
 
 const execFileAsync = promisify(execFile);
 const router: IRouter = Router();
 
-const PYTHON_SCRIPTS_DIR = process.env["PYTHON_SCRIPTS_DIR"] ?? "/app/python";
-const PDF_EXTRACT_PY = join(PYTHON_SCRIPTS_DIR, "pdf_extract.py");
 
 // ─────────────────────────────────────────────────────────
 // Potrace: PNG → real SVG vector via bitmap tracing
@@ -80,9 +78,10 @@ async function callPdfExtract(pdfBuffer: Buffer, mode: "word" | "excel" | "text"
   await writeFile(pdfPath, pdfBuffer);
 
   try {
+    const pdfExtractScript = getPythonScriptPath("pdf_extract.py");
     const { stdout } = await execFileAsync(
       BIN.python3,
-      [PDF_EXTRACT_PY, "--pdf", pdfPath, "--mode", mode],
+      [pdfExtractScript, "--pdf", pdfPath, "--mode", mode],
       { timeout: 120_000, maxBuffer: 50 * 1024 * 1024 },
     );
     return JSON.parse(stdout);
@@ -365,8 +364,6 @@ router.post("/convert/pdf-to-excel", upload.single("file"), guardDocument, async
 // Primary: sharp (works if libvips compiled with heif support).
 // Fallback: Python bridge with pillow-heif.
 // ─────────────────────────────────────────────────────────
-const HEIC_PY = join(PYTHON_SCRIPTS_DIR, "heic_convert.py");
-
 async function heicViaSharp(inputBuffer: Buffer, outputMime: string): Promise<Buffer> {
   const fmt = mimeToSharpFormat(outputMime);
   if (!fmt) throw new Error(`Unsupported output format: ${outputMime}`);
@@ -385,7 +382,8 @@ async function heicViaPython(inputBuffer: Buffer, outputMime: string, workDir: s
   const inputPath = join(workDir, "input.heic");
   const outputPath = join(workDir, `output.${extMap[fmt]}`);
   await writeFile(inputPath, inputBuffer);
-  await execFileAsync(BIN.python3, [HEIC_PY, "--input", inputPath, "--output", outputPath, "--format", fmt], { timeout: 60_000 });
+  const heicScript = getPythonScriptPath("heic_convert.py");
+  await execFileAsync(BIN.python3, [heicScript, "--input", inputPath, "--output", outputPath, "--format", fmt], { timeout: 60_000 });
   return readFile(outputPath);
 }
 

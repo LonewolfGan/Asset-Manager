@@ -3,7 +3,7 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://everydaytools.qzz.io/en</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en"/>
@@ -11,7 +11,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en"/>
@@ -19,7 +19,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-pdf-to-word</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-pdf-to-word"/>
@@ -27,7 +27,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-pdf-en-word</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-pdf-to-word"/>
@@ -35,7 +35,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-pdf-to-text</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-pdf-to-text"/>
@@ -43,7 +43,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-pdf-en-texte</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-pdf-to-text"/>
@@ -51,7 +51,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-pdf-to-html</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-pdf-to-html"/>
@@ -59,7 +59,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-pdf-en-html</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-pdf-to-html"/>
@@ -67,7 +67,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-pdf-to-epub</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-pdf-to-epub"/>
@@ -75,7 +75,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-pdf-en-epub</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-pdf-to-epub"/>
@@ -83,7 +83,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/compress-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/compress-pdf"/>
@@ -91,7 +91,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/compresser-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/compress-pdf"/>
@@ -99,7 +99,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/merge-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/merge-pdf"/>
@@ -107,7 +107,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/fusionner-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/merge-pdf"/>
@@ -115,7 +115,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/split-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/split-pdf"/>
@@ -123,7 +123,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/diviser-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/split-pdf"/>
@@ -131,7 +131,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/rotate-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/rotate-pdf"/>
@@ -139,7 +139,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/pivoter-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/rotate-pdf"/>
@@ -147,7 +147,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/unlock-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/unlock-pdf"/>
@@ -155,7 +155,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/deverrouiller-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/unlock-pdf"/>
@@ -163,7 +163,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/protect-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/protect-pdf"/>
@@ -171,7 +171,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/proteger-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/protect-pdf"/>
@@ -179,7 +179,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/add-page-numbers-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/add-page-numbers-pdf"/>
@@ -187,7 +187,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/ajouter-numeros-page-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/add-page-numbers-pdf"/>
@@ -195,7 +195,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/watermark-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/watermark-pdf"/>
@@ -203,7 +203,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/filigraner-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/watermark-pdf"/>
@@ -211,7 +211,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-word-to-text</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-word-to-text"/>
@@ -219,7 +219,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-word-en-texte</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-word-to-text"/>
@@ -227,7 +227,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-word-to-html</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-word-to-html"/>
@@ -235,7 +235,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-word-en-html</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-word-to-html"/>
@@ -243,7 +243,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-word-to-epub</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-word-to-epub"/>
@@ -251,7 +251,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-word-en-epub</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-word-to-epub"/>
@@ -259,7 +259,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-markdown-to-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-markdown-to-pdf"/>
@@ -267,7 +267,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-markdown-en-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-markdown-to-pdf"/>
@@ -275,7 +275,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-markdown-to-word</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-markdown-to-word"/>
@@ -283,7 +283,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-markdown-en-word</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-markdown-to-word"/>
@@ -291,7 +291,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-html-to-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-html-to-pdf"/>
@@ -299,7 +299,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-html-en-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-html-to-pdf"/>
@@ -307,7 +307,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-text-to-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-text-to-pdf"/>
@@ -315,7 +315,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-texte-en-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-text-to-pdf"/>
@@ -323,7 +323,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-text-to-word</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-text-to-word"/>
@@ -331,7 +331,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-texte-en-word</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-text-to-word"/>
@@ -339,7 +339,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-image-format</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-image-format"/>
@@ -347,7 +347,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-format-image</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-image-format"/>
@@ -355,7 +355,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-heic-to-jpg</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-heic-to-jpg"/>
@@ -363,7 +363,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-heic-en-jpg</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-heic-to-jpg"/>
@@ -371,7 +371,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-png-to-webp</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-png-to-webp"/>
@@ -379,7 +379,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-png-en-webp</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-png-to-webp"/>
@@ -387,7 +387,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-jpg-to-png</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-jpg-to-png"/>
@@ -395,7 +395,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-jpg-en-png</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-jpg-to-png"/>
@@ -403,7 +403,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/compress-image</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/compress-image"/>
@@ -411,7 +411,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/compresser-image</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/compress-image"/>
@@ -419,7 +419,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/resize-image</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/resize-image"/>
@@ -427,7 +427,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/redimensionner-image</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/resize-image"/>
@@ -435,7 +435,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/crop-image</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/crop-image"/>
@@ -443,7 +443,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/recadrer-image</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/crop-image"/>
@@ -451,7 +451,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-image-to-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-image-to-pdf"/>
@@ -459,7 +459,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-image-en-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-image-to-pdf"/>
@@ -467,7 +467,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-pdf-to-image</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-pdf-to-image"/>
@@ -475,7 +475,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-pdf-en-image</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-pdf-to-image"/>
@@ -483,7 +483,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/remove-image-background</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/remove-image-background"/>
@@ -491,7 +491,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/supprimer-fond-image</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/remove-image-background"/>
@@ -499,7 +499,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/clean-file-metadata</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/clean-file-metadata"/>
@@ -507,7 +507,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/nettoyer-metadonnees-fichier</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/clean-file-metadata"/>
@@ -515,7 +515,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/remove-ai-text-watermarks</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/remove-ai-text-watermarks"/>
@@ -523,7 +523,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/supprimer-filigranes-texte-ia</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/remove-ai-text-watermarks"/>
@@ -531,7 +531,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/password-generator</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/password-generator"/>
@@ -539,7 +539,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/generateur-mot-de-passe</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/password-generator"/>
@@ -547,7 +547,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/percentage-calculator</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/percentage-calculator"/>
@@ -555,7 +555,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/calculateur-pourcentage</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/percentage-calculator"/>
@@ -563,7 +563,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/unit-converter</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/unit-converter"/>
@@ -571,7 +571,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertisseur-unites</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/unit-converter"/>
@@ -579,7 +579,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/currency-converter</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/currency-converter"/>
@@ -587,7 +587,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertisseur-devises</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/currency-converter"/>
@@ -595,7 +595,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-avif-to-jpg</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-avif-to-jpg"/>
@@ -603,7 +603,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-avif-en-jpg</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-avif-to-jpg"/>
@@ -611,7 +611,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-avif-to-png</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-avif-to-png"/>
@@ -619,7 +619,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-avif-en-png</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-avif-to-png"/>
@@ -627,7 +627,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-bmp-to-jpg</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-bmp-to-jpg"/>
@@ -635,7 +635,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-bmp-en-jpg</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-bmp-to-jpg"/>
@@ -643,7 +643,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-bmp-to-webp</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-bmp-to-webp"/>
@@ -651,7 +651,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-bmp-en-webp</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-bmp-to-webp"/>
@@ -659,7 +659,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-gif-to-png</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-gif-to-png"/>
@@ -667,7 +667,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-gif-en-png</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-gif-to-png"/>
@@ -675,7 +675,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-gif-to-webp</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-gif-to-webp"/>
@@ -683,7 +683,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-gif-en-webp</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-gif-to-webp"/>
@@ -691,7 +691,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-heic-to-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-heic-to-pdf"/>
@@ -699,7 +699,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-heic-en-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-heic-to-pdf"/>
@@ -707,7 +707,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-heic-to-png</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-heic-to-png"/>
@@ -715,7 +715,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-heic-en-png</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-heic-to-png"/>
@@ -723,7 +723,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-heic-to-webp</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-heic-to-webp"/>
@@ -731,7 +731,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-heic-en-webp</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-heic-to-webp"/>
@@ -739,7 +739,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-jpg-to-avif</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-jpg-to-avif"/>
@@ -747,7 +747,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-jpg-en-avif</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-jpg-to-avif"/>
@@ -755,7 +755,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-jpg-to-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-jpg-to-pdf"/>
@@ -763,7 +763,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-jpg-en-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-jpg-to-pdf"/>
@@ -771,7 +771,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-jpg-to-webp</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-jpg-to-webp"/>
@@ -779,7 +779,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-jpg-en-webp</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-jpg-to-webp"/>
@@ -787,7 +787,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-png-to-avif</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-png-to-avif"/>
@@ -795,7 +795,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-png-en-avif</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-png-to-avif"/>
@@ -803,7 +803,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-png-to-jpg</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-png-to-jpg"/>
@@ -811,7 +811,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-png-en-jpg</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-png-to-jpg"/>
@@ -819,7 +819,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-png-to-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-png-to-pdf"/>
@@ -827,7 +827,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-png-en-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-png-to-pdf"/>
@@ -835,7 +835,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-png-to-svg</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-png-to-svg"/>
@@ -843,7 +843,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-png-en-svg</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-png-to-svg"/>
@@ -851,7 +851,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-svg-to-png</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-svg-to-png"/>
@@ -859,7 +859,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-svg-en-png</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-svg-to-png"/>
@@ -867,7 +867,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-tiff-to-jpg</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-tiff-to-jpg"/>
@@ -875,7 +875,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-tiff-en-jpg</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-tiff-to-jpg"/>
@@ -883,7 +883,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-tiff-to-png</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-tiff-to-png"/>
@@ -891,7 +891,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-tiff-en-png</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-tiff-to-png"/>
@@ -899,7 +899,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-tiff-to-webp</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-tiff-to-webp"/>
@@ -907,7 +907,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-tiff-en-webp</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-tiff-to-webp"/>
@@ -915,7 +915,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-webp-to-avif</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-webp-to-avif"/>
@@ -923,7 +923,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-webp-en-avif</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-webp-to-avif"/>
@@ -931,7 +931,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-webp-to-jpg</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-webp-to-jpg"/>
@@ -939,7 +939,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-webp-en-jpg</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-webp-to-jpg"/>
@@ -947,7 +947,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-webp-to-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-webp-to-pdf"/>
@@ -955,7 +955,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-webp-en-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-webp-to-pdf"/>
@@ -963,7 +963,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-webp-to-png</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-webp-to-png"/>
@@ -971,7 +971,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-webp-en-png</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-webp-to-png"/>
@@ -979,7 +979,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/tip-calculator</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/tip-calculator"/>
@@ -987,7 +987,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/calculateur-pourboire</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/tip-calculator"/>
@@ -995,7 +995,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/base64-encoder-decoder</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/base64-encoder-decoder"/>
@@ -1003,7 +1003,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/encodeur-decodeur-base64</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/base64-encoder-decoder"/>
@@ -1011,7 +1011,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/file-checksum-calculator</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/file-checksum-calculator"/>
@@ -1019,7 +1019,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/calculateur-checksum-fichier</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/file-checksum-calculator"/>
@@ -1027,7 +1027,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-csv-to-excel</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-csv-to-excel"/>
@@ -1035,7 +1035,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-csv-en-excel</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-csv-to-excel"/>
@@ -1043,7 +1043,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-csv-to-json</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-csv-to-json"/>
@@ -1051,7 +1051,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-csv-en-json</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-csv-to-json"/>
@@ -1059,7 +1059,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/csv-file-viewer</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/csv-file-viewer"/>
@@ -1067,7 +1067,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/visualiseur-fichier-csv</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/csv-file-viewer"/>
@@ -1075,7 +1075,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-excel-to-csv</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-excel-to-csv"/>
@@ -1083,7 +1083,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-excel-en-csv</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-excel-to-csv"/>
@@ -1091,7 +1091,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-excel-to-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-excel-to-pdf"/>
@@ -1099,7 +1099,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-excel-en-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-excel-to-pdf"/>
@@ -1107,7 +1107,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/favicon-generator</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/favicon-generator"/>
@@ -1115,7 +1115,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/generateur-favicon</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/favicon-generator"/>
@@ -1123,7 +1123,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/flip-and-rotate-image</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/flip-and-rotate-image"/>
@@ -1131,7 +1131,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/retourner-pivoter-image</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/flip-and-rotate-image"/>
@@ -1139,7 +1139,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/html-formatter-beautifier</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/html-formatter-beautifier"/>
@@ -1147,7 +1147,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/formateur-html-beautifier</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/html-formatter-beautifier"/>
@@ -1155,7 +1155,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-html-to-markdown</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-html-to-markdown"/>
@@ -1163,7 +1163,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-html-en-markdown</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-html-to-markdown"/>
@@ -1171,7 +1171,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/json-formatter-validator</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/json-formatter-validator"/>
@@ -1179,7 +1179,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/formateur-validateur-json</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/json-formatter-validator"/>
@@ -1187,7 +1187,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/lorem-ipsum-generator</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/lorem-ipsum-generator"/>
@@ -1195,7 +1195,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/generateur-lorem-ipsum</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/lorem-ipsum-generator"/>
@@ -1203,7 +1203,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/ocr-image-to-text</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/ocr-image-to-text"/>
@@ -1211,7 +1211,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/ocr-image-en-texte</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/ocr-image-to-text"/>
@@ -1219,7 +1219,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-pdf-to-excel</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-pdf-to-excel"/>
@@ -1227,7 +1227,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-pdf-en-excel</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-pdf-to-excel"/>
@@ -1235,7 +1235,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-pdf-to-powerpoint</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-pdf-to-powerpoint"/>
@@ -1243,7 +1243,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-pdf-en-powerpoint</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-pdf-to-powerpoint"/>
@@ -1251,7 +1251,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-powerpoint-to-images</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-powerpoint-to-images"/>
@@ -1259,7 +1259,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-powerpoint-en-images</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-powerpoint-to-images"/>
@@ -1267,7 +1267,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-powerpoint-to-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-powerpoint-to-pdf"/>
@@ -1275,7 +1275,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-powerpoint-en-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-powerpoint-to-pdf"/>
@@ -1283,7 +1283,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/qr-code-generator</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/qr-code-generator"/>
@@ -1291,7 +1291,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/generateur-qr-code</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/qr-code-generator"/>
@@ -1299,7 +1299,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/reorder-pdf-pages</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/reorder-pdf-pages"/>
@@ -1307,7 +1307,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/reorganiser-pages-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/reorder-pdf-pages"/>
@@ -1315,7 +1315,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/url-encoder-decoder</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/url-encoder-decoder"/>
@@ -1323,7 +1323,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/encodeur-decodeur-url</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/url-encoder-decoder"/>
@@ -1331,7 +1331,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/add-watermark-to-image</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/add-watermark-to-image"/>
@@ -1339,7 +1339,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/ajouter-filigrane-image</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/add-watermark-to-image"/>
@@ -1347,7 +1347,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/word-character-counter</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/word-character-counter"/>
@@ -1355,7 +1355,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/compteur-mots-caracteres</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/word-character-counter"/>
@@ -1363,7 +1363,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-word-to-markdown</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-word-to-markdown"/>
@@ -1371,7 +1371,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-word-en-markdown</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-word-to-markdown"/>
@@ -1379,7 +1379,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/convert-word-to-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-word-to-pdf"/>
@@ -1387,7 +1387,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/convertir-word-en-pdf</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/convert-word-to-pdf"/>
@@ -1395,7 +1395,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/blog</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog"/>
@@ -1403,7 +1403,7 @@
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/fr/blog</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog"/>

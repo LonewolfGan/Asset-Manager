@@ -128,4 +128,47 @@ export const tools = [
   {slug: 'currency-converter', title: 'Currency Converter', description: 'Live exchange rates for 170 currencies, refreshed hourly. Falls back to cached rates if you are offline or the API is slow.', category: 'calculators', icon: DollarSign, formats: []},
   {slug: 'qr-code-generator', title: 'QR Code Generator', description: 'Creates QR codes from URLs, plain text, Wi-Fi credentials, or contact cards. Download as PNG or SVG.', category: 'calculators', icon: QrCode, formats: []},
   {slug: 'tip-calculator', title: 'Tip Calculator', description: 'Calculates the tip and splits the total across any number of people. Adjust the tip percentage and guest count to get clean per-person amounts.', category: 'calculators', icon: Receipt, formats: []},
+  // New Image Tools
+  {slug: 'image-upscale', title: 'Image Upscaler', description: 'Enlarges images by 2x or 4x with sharp detail preservation and unsharp masking.', category: 'image', icon: Maximize2, formats: ['PNG','JPG','WEBP']},
+  {slug: 'image-filters', title: 'Image Filters & Effects', description: 'Applies grayscale, sepia, invert, blur, brightness, contrast, and hue effects in real time.', category: 'image', icon: Sliders, formats: ['PNG','JPG','WEBP']},
+
+  // New PDF Tools
+  {slug: 'pdf-to-pdfa', title: 'PDF to PDF/A', description: 'Converts PDF documents into ISO-standardized PDF/A-2b format for guaranteed long-term preservation.', category: 'pdf', icon: FileCheck, formats: ['PDF']},
+  {slug: 'pdf-repair', title: 'Repair PDF', description: 'Recovers and repairs corrupted, broken, or unreadable PDF documents.', category: 'pdf', icon: Minimize2, formats: ['PDF']},
+  {slug: 'pdf-ocr', title: 'PDF OCR', description: 'Extracts editable text from scanned PDF documents and document images.', category: 'pdf', icon: ScanText, formats: ['PDF','TXT']},
+  {slug: 'pdf-metadata', title: 'Edit PDF Metadata', description: 'Views and updates PDF Title, Author, Subject, Keywords, Creator, and Producer properties.', category: 'pdf', icon: FileText, formats: ['PDF']},
+  {slug: 'pdf-to-markdown', title: 'PDF to Markdown', description: 'Converts PDF documents into clean, structured Markdown syntax.', category: 'pdf', icon: Code2, formats: ['PDF','MD']},
+
+  // New Document Tools
+  {slug: 'document-converter', title: 'Document Converter', description: 'Converts between DOCX, DOC, ODT, RTF, TXT, HTML, EPUB, PPTX, and XLSX via LibreOffice.', category: 'word', icon: FileDown, formats: ['DOCX','ODT','RTF','PDF']},
+  {slug: 'odt-to-pdf', title: 'ODT to PDF', description: 'Converts OpenDocument ODT files to PDF with full layout fidelity.', category: 'word', icon: FileDown, formats: ['ODT','PDF']},
+  {slug: 'rtf-to-pdf', title: 'RTF to PDF', description: 'Converts Rich Text Format RTF documents to PDF.', category: 'word', icon: FileDown, formats: ['RTF','PDF']},
+
+  // New Data & Code Tools
+  {slug: 'data-converter', title: 'Data Converter', description: 'Converts structured data between JSON, CSV, XML, and YAML formats in real-time.', category: 'textCode', icon: ArrowLeftRight, formats: ['JSON','CSV','XML','YAML']},
+  {slug: 'json-diff', title: 'JSON Diff', description: 'Compares two JSON payloads side-by-side to highlight additions, deletions, and modifications.', category: 'textCode', icon: Braces, formats: ['JSON']},
+  {slug: 'csv-editor', title: 'CSV Editor', description: 'Online interactive spreadsheet grid to edit, manage columns, and export CSV/Excel files.', category: 'excel', icon: Table2, formats: ['CSV','XLSX']},
+  {slug: 'css-formatter', title: 'CSS Formatter & Minifier', description: 'Minifies stylesheets for fast loading or beautifies compressed CSS into readable blocks.', category: 'textCode', icon: Terminal, formats: ['CSS']},
+  {slug: 'js-formatter', title: 'JS / TS Beautifier', description: 'Cleans and formats JavaScript and TypeScript code with standard indentation.', category: 'textCode', icon: Terminal, formats: ['JS','TS']},
+  {slug: 'markdown-preview', title: 'Markdown Live Editor', description: 'Live split-screen Markdown editor with real-time HTML preview and export.', category: 'textCode', icon: BookType, formats: ['MD','HTML']},
+  {slug: 'diff-checker', title: 'Text Diff Checker', description: 'Compares two text snippets to highlight additions, deletions, and modifications.', category: 'textCode', icon: TextQuote, formats: ['TXT']},
+  {slug: 'regex-tester', title: 'Regex Tester', description: 'Tests regular expressions with real-time matching, groups extraction, and string replacement.', category: 'textCode', icon: Terminal, formats: []},
+  {slug: 'jwt-decoder', title: 'JWT Token Decoder', description: 'Decodes JSON Web Tokens (header, payload, claims) and checks expiration securely.', category: 'textCode', icon: Binary, formats: []},
+  {slug: 'barcode-generator', title: 'Barcode Generator', description: 'Generates CODE128, EAN-13, UPC-A, and CODE39 barcodes as vector SVG or PNG.', category: 'textCode', icon: QrCode, formats: ['SVG','PNG']},
+  {slug: 'hash-generator', title: 'Hash Generator', description: 'Computes SHA-256, SHA-512, SHA-384, and SHA-1 hashes simultaneously using SubtleCrypto.', category: 'textCode', icon: Hash, formats: []},
+  {slug: 'uuid-generator', title: 'UUID Generator', description: 'Generates cryptographic RFC 4122 v4 UUIDs in bulk with custom options.', category: 'textCode', icon: Hash, formats: []},
+  {slug: 'color-converter', title: 'Color Converter', description: 'Converts colors between HEX, RGB, HSL, and CMYK color spaces with live preview.', category: 'textCode', icon: Palette, formats: []},
+  {slug: 'color-palette', title: 'Color Palette Generator', description: 'Generates balanced color harmonies and exports CSS/HEX color codes.', category: 'textCode', icon: Palette, formats: []},
+
+  // New Calculators & Utilities
+  {slug: 'age-calculator', title: 'Age Calculator', description: 'Calculates exact age in years, months, days, and shows next birthday countdown.', category: 'calculators', icon: Percent, formats: []},
+  {slug: 'date-calculator', title: 'Date Calculator', description: 'Calculates elapsed days between two dates or projects future dates.', category: 'calculators', icon: Percent, formats: []},
+  {slug: 'bmi-calculator', title: 'BMI Calculator', description: 'Computes Body Mass Index for Metric (cm/kg) and Imperial (ft/lbs) measurements.', category: 'calculators', icon: Percent, formats: []},
+  {slug: 'loan-calculator', title: 'Loan & Mortgage Calculator', description: 'Calculates monthly payments, total interest, and loan amortization summaries.', category: 'calculators', icon: DollarSign, formats: []},
+  {slug: 'electricity-calculator', title: 'Electricity Cost Calculator', description: 'Estimates appliance power consumption in kWh and calculates daily/monthly/annual costs.', category: 'calculators', icon: DollarSign, formats: []},
+  {slug: 'password-strength', title: 'Password Strength Checker', description: 'Tests password entropy and security resistance against brute-force attacks.', category: 'calculators', icon: KeyRound, formats: []},
+  {slug: 'speed-test', title: 'Internet Speed Test', description: 'Measures internet download speeds and response ping latency in real time.', category: 'calculators', icon: Percent, formats: []},
+  {slug: 'screen-info', title: 'Screen Resolution & Display Info', description: 'Diagnoses screen resolution, viewport bounds, device pixel ratio, and display properties.', category: 'calculators', icon: Percent, formats: []},
+  {slug: 'aspect-ratio', title: 'Aspect Ratio Calculator', description: 'Calculates standard aspect ratios and computes proportional dimension scaling.', category: 'calculators', icon: Ruler, formats: []},
 ];
+
