@@ -81,7 +81,7 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
   const isFr = locale === "FR";
 
   return (
-    <LocaleContext.Provider value={{ locale, setLocale, t: TRANSLATIONS[locale], isFr }}>
+    <LocaleContext.Provider value={{ locale, setLocale, t: TRANSLATIONS[locale] ?? TRANSLATIONS.EN, isFr }}>
       {children}
     </LocaleContext.Provider>
   );
