@@ -1,0 +1,43 @@
+import {
+  Star,
+  Heart,
+  Award,
+  Shield,
+  Lock,
+  Key,
+  Zap,
+  CheckCircle2,
+  Flame,
+  Gift,
+  Smile,
+  Sparkles,
+  ThumbsUp,
+  Camera,
+  Music,
+  Play,
+  Video,
+  Bell,
+} from 'lucide-react';
+import type { LibraryIcon } from './types';
+import { createLucideLibraryIcon } from './adapter';
+
+export const SYMBOLS_ICONS: LibraryIcon[] = [
+  createLucideLibraryIcon('star', 'Étoile', 'symbols', Star),
+  createLucideLibraryIcon('heart', 'Cœur', 'symbols', Heart),
+  createLucideLibraryIcon('award', 'Badge Certifié', 'symbols', Award),
+  createLucideLibraryIcon('shield', 'Sécurité', 'symbols', Shield),
+  createLucideLibraryIcon('lock', 'Cadenas', 'symbols', Lock),
+  createLucideLibraryIcon('key', 'Clé', 'symbols', Key),
+  createLucideLibraryIcon('zap', 'Éclair', 'symbols', Zap),
+  createLucideLibraryIcon('check', 'Vérifié', 'symbols', CheckCircle2),
+  createLucideLibraryIcon('flame', 'Tendance', 'symbols', Flame),
+  createLucideLibraryIcon('gift', 'Cadeau', 'symbols', Gift),
+  createLucideLibraryIcon('smile', 'Sourire', 'symbols', Smile),
+  createLucideLibraryIcon('sparkle', 'Magie', 'symbols', Sparkles),
+  createLucideLibraryIcon('thumbs-up', 'J\'aime', 'symbols', ThumbsUp),
+  createLucideLibraryIcon('camera', 'Photo', 'symbols', Camera),
+  createLucideLibraryIcon('music', 'Musique', 'symbols', Music),
+  createLucideLibraryIcon('play', 'Vidéo Play', 'symbols', Play),
+  createLucideLibraryIcon('video', 'Caméra', 'symbols', Video),
+  createLucideLibraryIcon('bell', 'Notification', 'symbols', Bell),
+];

@@ -1,0 +1,80 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: everydaytools-redis
+    restart: always
+    command: redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru --save "" --appendonly no
+    mem_limit: 128m
+    ports:
+      - "127.0.0.1:6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  gotenberg:
+    image: gotenberg/gotenberg:8
+    container_name: everydaytools-gotenberg
+    restart: always
+    mem_limit: 4096m
+    cpus: 2.0
+    environment:
+      - LOG_LEVEL=info
+      - LIBREOFFICE_RESTART_AFTER=50
+      - LIBREOFFICE_AUTO_RESTART=true
+    ports:
+      - "127.0.0.1:3000:3000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "3"
+
+  api-server:
+    build:
+      context: .
+      dockerfile: apps/api-server/Dockerfile
+    container_name: everydaytools-api
+    restart: always
+    mem_limit: 3072m
+    cpus: 2.0
+    security_opt:
+      - "no-new-privileges:true"
+    depends_on:
+      gotenberg:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - GOTENBERG_URL=http://gotenberg:3000
+      - REDIS_URL=redis://redis:6379
+      - FRONTEND_URL=https://everydaytools.qzz.io
+      - RATE_LIMIT_WINDOW_MS=60000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/healthz"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+        max-file: "3"

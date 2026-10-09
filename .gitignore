@@ -68,3 +68,7 @@ __pycache__/
 *.key
 secrets/
 .vercel
+
+# Scratch & agent artifacts
+scratch/
+artifacts

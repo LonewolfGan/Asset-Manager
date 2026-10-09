@@ -1,0 +1,42 @@
+{
+  "ecc-full-lifecycle-guards": {
+    "PreInvocation": [
+      {
+        "type": "command",
+        "command": "node /home/lonewolf/.local/share/ecc/hooks/ecc-pre-invocation.js",
+        "timeout": 5
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "run_command|write_to_file|replace_file_content",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node /home/lonewolf/.local/share/ecc/hooks/ecc-pre-tool.js",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "write_to_file|replace_file_content",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node /home/lonewolf/.local/share/ecc/hooks/ecc-post-tool.js",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "command": "node /home/lonewolf/.local/share/ecc/hooks/ecc-stop-hook.js",
+        "timeout": 20
+      }
+    ]
+  }
+}

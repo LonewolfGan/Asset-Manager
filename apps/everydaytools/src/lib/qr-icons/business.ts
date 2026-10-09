@@ -1,0 +1,55 @@
+import {
+  Store,
+  ShoppingCart,
+  ShoppingBag,
+  CreditCard,
+  Bitcoin,
+  Receipt,
+  DollarSign,
+  Coffee,
+  Utensils,
+  Truck,
+  Building2,
+  Handshake,
+  Tag,
+  Percent,
+  Briefcase,
+} from 'lucide-react';
+import type { LibraryIcon } from './types';
+import { createLucideLibraryIcon } from './adapter';
+
+export const BUSINESS_ICONS: LibraryIcon[] = [
+  createLucideLibraryIcon('store', 'Boutique', 'business', Store),
+  createLucideLibraryIcon('cart', 'Panier', 'business', ShoppingCart),
+  createLucideLibraryIcon('bag', 'Shopping', 'business', ShoppingBag),
+  createLucideLibraryIcon('credit-card', 'Carte Bancaire', 'business', CreditCard),
+  {
+    id: 'paypal',
+    label: 'PayPal',
+    category: 'business',
+    path: '<path d="M7 4h7a4 4 0 0 1 4 4c0 3-2 5-5 5H9l-1 7H4L7 4z"/><path d="M10 9h6a3.5 3.5 0 0 1 3.5 3.5c0 2.5-1.8 4.5-4.5 4.5h-2.5L11 22H8l2-13z"/>',
+  },
+  {
+    id: 'apple',
+    label: 'Apple Pay',
+    category: 'business',
+    path: '<path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 1.44S8.22 5 6 5a4.91 4.91 0 0 0-5 4.78C1 14 4 22 7 22c1.25 0 2.5-1.06 4-1.06z"/><path d="M10 2c1 .5 2 2 2 3.5 0 1.5-1.5 2.5-2 2.5s-2-2-2-3.5 1.5-2.5 2-2.5z"/>',
+  },
+  {
+    id: 'google',
+    label: 'Google Pay',
+    category: 'business',
+    path: '<circle cx="12" cy="12" r="10"/><path d="M17.5 12A5.5 5.5 0 1 1 12 6.5c1.6 0 3 .7 4 1.8l-1.6 1.6C13.8 9.3 13 9 12 9a3 3 0 1 0 2.8 4H12v-2h5.5z"/>',
+  },
+  createLucideLibraryIcon('bitcoin', 'Bitcoin', 'business', Bitcoin),
+  createLucideLibraryIcon('receipt', 'Facture', 'business', Receipt),
+  createLucideLibraryIcon('dollar', 'Prix / Tarif', 'business', DollarSign),
+  createLucideLibraryIcon('coffee', 'Café / Bar', 'business', Coffee),
+  createLucideLibraryIcon('utensils', 'Restaurant', 'business', Utensils),
+  createLucideLibraryIcon('truck', 'Livraison', 'business', Truck),
+  createLucideLibraryIcon('building', 'Entreprise', 'business', Building2),
+  createLucideLibraryIcon('handshake', 'Partenariat', 'business', Handshake),
+  createLucideLibraryIcon('tag', 'Promotion', 'business', Tag),
+  createLucideLibraryIcon('percent', 'Réduction', 'business', Percent),
+  createLucideLibraryIcon('briefcase', 'Emploi', 'business', Briefcase),
+];

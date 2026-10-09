@@ -1,0 +1,43 @@
+import {
+  Globe,
+  Link,
+  Mail,
+  Phone,
+  MessageSquare,
+  Wifi,
+  Contact,
+  User,
+  Users,
+  MapPin,
+  Compass,
+  Calendar,
+  Share2,
+  Download,
+  Folder,
+  FileText,
+  ExternalLink,
+  Search,
+} from 'lucide-react';
+import type { LibraryIcon } from './types';
+import { createLucideLibraryIcon } from './adapter';
+
+export const WEB_ICONS: LibraryIcon[] = [
+  createLucideLibraryIcon('globe', 'Site Web', 'web', Globe),
+  createLucideLibraryIcon('link', 'Lien URL', 'web', Link),
+  createLucideLibraryIcon('mail', 'Email', 'web', Mail),
+  createLucideLibraryIcon('phone', 'Téléphone', 'web', Phone),
+  createLucideLibraryIcon('message', 'Message SMS', 'web', MessageSquare),
+  createLucideLibraryIcon('wifi', 'Wi-Fi', 'web', Wifi),
+  createLucideLibraryIcon('contact', 'Contact vCard', 'web', Contact),
+  createLucideLibraryIcon('user', 'Profil', 'web', User),
+  createLucideLibraryIcon('users', 'Communauté', 'web', Users),
+  createLucideLibraryIcon('map-pin', 'Localisation', 'web', MapPin),
+  createLucideLibraryIcon('compass', 'Boussole', 'web', Compass),
+  createLucideLibraryIcon('calendar', 'Événement', 'web', Calendar),
+  createLucideLibraryIcon('share', 'Partager', 'web', Share2),
+  createLucideLibraryIcon('download', 'Téléchargement', 'web', Download),
+  createLucideLibraryIcon('folder', 'Dossier', 'web', Folder),
+  createLucideLibraryIcon('file', 'Document', 'web', FileText),
+  createLucideLibraryIcon('external-link', 'Lien Externe', 'web', ExternalLink),
+  createLucideLibraryIcon('search', 'Recherche', 'web', Search),
+];
