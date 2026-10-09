@@ -109,12 +109,13 @@ export const ColorStudioPopover: React.FC<ColorStudioPopoverProps> = ({
             background: 'linear-gradient(to bottom, transparent, #000000)',
           }}
         />
+        {/* Curseur réticule neutre Figma/macOS style (aucun fond coloré opaque) */}
         <div
-          className="absolute w-4 h-4 rounded-full border-2 border-white shadow-md pointer-events-none -translate-x-1/2 -translate-y-1/2 ring-1 ring-black/40"
+          data-testid="color-canvas-cursor"
+          className="absolute w-4 h-4 rounded-full border-2 border-white shadow-md pointer-events-none -translate-x-1/2 -translate-y-1/2 ring-1 ring-black/40 bg-transparent"
           style={{
             left: `${hsv.s * 100}%`,
             top: `${(1 - hsv.v) * 100}%`,
-            backgroundColor: activeHex,
           }}
         />
       </div>
