@@ -76,7 +76,7 @@ export const MetadataTagsInspector: React.FC<MetadataTagsInspectorProps> = ({
         ) : (
           <MetadataViewerGrid
             data={tagsRecord}
-            allowSearch={true}
+            allowSearch={false}
             isFr={isFr}
           />
         )}

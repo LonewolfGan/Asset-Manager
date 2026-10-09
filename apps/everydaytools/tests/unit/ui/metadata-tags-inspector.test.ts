@@ -25,7 +25,7 @@ describe('MetadataTagsInspector with MetadataViewerGrid (TDD RED Phase)', () => 
     { key: 'GPS', label: 'Coordonnées GPS', value: '48.8584° N, 2.2945° E', isSensitive: true },
   ];
 
-  it('renders MetadataViewerGrid with search filter and items', async () => {
+  it('renders MetadataViewerGrid without search filter and with items', async () => {
     await act(async () => {
       root.render(
         React.createElement(MetadataTagsInspector, {
@@ -43,9 +43,9 @@ describe('MetadataTagsInspector with MetadataViewerGrid (TDD RED Phase)', () => 
       );
     });
 
-    // MetadataViewerGrid has data-testid="metadata-search"
+    // MetadataViewerGrid has search removed on MetadataTagsInspector
     const searchInput = container.querySelector('[data-testid="metadata-search"]');
-    expect(searchInput).not.toBeNull();
+    expect(searchInput).toBeNull();
 
     // MetadataViewerGrid has data-testid="metadata-item"
     const items = container.querySelectorAll('[data-testid="metadata-item"]');

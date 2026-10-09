@@ -26,10 +26,10 @@ export const MetadataViewerGrid: React.FC<MetadataViewerGridProps> = ({
       {(label || allowSearch) && (
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           {label && (
-            <div className="flex items-center gap-1.5 text-xs font-medium text-zinc-700 dark:text-zinc-300">
+            <div className="flex items-center gap-1.5 text-xs sm:text-sm font-medium text-zinc-700 dark:text-zinc-300">
               <Tag className="w-3.5 h-3.5 text-[#FF6B35]" />
               <span>{label}</span>
-              <span className="text-[11px] font-mono text-zinc-400">
+              <span className="text-xs font-mono text-zinc-400">
                 ({entries.length})
               </span>
             </div>
@@ -52,7 +52,7 @@ export const MetadataViewerGrid: React.FC<MetadataViewerGridProps> = ({
       )}
 
       {entries.length === 0 ? (
-        <div className="py-8 text-center text-xs font-mono text-zinc-400">
+        <div className="py-8 text-center text-xs sm:text-sm font-mono text-zinc-400">
           {isFr ? 'Aucune métadonnée trouvée' : 'No metadata found'}
         </div>
       ) : (
@@ -61,16 +61,16 @@ export const MetadataViewerGrid: React.FC<MetadataViewerGridProps> = ({
             <div
               key={key}
               data-testid="metadata-item"
-              className="flex items-center justify-between gap-3 py-2 text-xs"
+              className="flex items-center justify-between gap-3 py-2.5 text-xs sm:text-sm"
             >
               <div className="flex items-center gap-2 min-w-0 max-w-[45%]">
-                <span className="font-mono text-[11px] font-medium text-zinc-500 dark:text-zinc-400 truncate">
+                <span className="font-mono text-xs sm:text-sm font-medium text-zinc-500 dark:text-zinc-400 truncate">
                   {key}
                 </span>
               </div>
 
               <div className="flex items-center gap-2 min-w-0 flex-1 justify-end">
-                <span className="font-mono text-[11px] text-zinc-800 dark:text-zinc-200 truncate select-all">
+                <span className="font-mono text-xs sm:text-sm text-zinc-800 dark:text-zinc-200 truncate select-all">
                   {val !== null && val !== undefined ? String(val) : '—'}
                 </span>
 

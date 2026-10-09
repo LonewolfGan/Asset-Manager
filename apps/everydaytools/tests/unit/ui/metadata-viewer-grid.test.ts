@@ -134,4 +134,20 @@ describe('MetadataViewerGrid (TDD RED Phase)', () => {
     expect(searchInput.className).toContain('dark:text-zinc-100');
     expect(searchInput.className).toContain('pl-8');
   });
+
+  it('renders metadata items with readable typography instead of tiny 11px font', async () => {
+    await renderComponent({
+      data: { Camera: 'Sony' },
+      isFr: true,
+    });
+
+    const item = container.querySelector('[data-testid="metadata-item"]');
+    expect(item).not.toBeNull();
+    expect(item?.className).toContain('text-sm');
+    const spans = item?.querySelectorAll('span');
+    expect(spans).toBeDefined();
+    spans?.forEach((span) => {
+      expect(span.className).not.toContain('text-[11px]');
+    });
+  });
 });
