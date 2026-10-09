@@ -3,6 +3,7 @@ import { upload, guardDocument } from "../middlewares/upload.js";
 import { submitConversionJob, getJobStatus, getJobOutputPath } from "../lib/queue.js";
 import { defaultRateLimit } from "../middlewares/rateLimit.js";
 import { apiError } from "../lib/errors.js";
+import { isValidTargetFormat, isValidInputExt } from "../lib/document-validation.js";
 
 const router = Router();
 
@@ -24,6 +25,18 @@ router.post(
     const taskType = (req.body?.taskType as any) ?? "word-to-pdf";
     const targetFormat = String(req.body?.targetFormat ?? "pdf").toLowerCase().trim();
     const originalName = req.file.originalname ?? "document.docx";
+
+    if (!isValidTargetFormat(targetFormat)) {
+      apiError(res, 400, "INVALID_PARAM", `Unsupported target format: ${targetFormat}`);
+      return;
+    }
+
+    const extMatch = originalName.match(/\.([a-zA-Z0-9]+)$/);
+    const inputExt = extMatch ? extMatch[1].toLowerCase() : "docx";
+    if (!isValidInputExt(inputExt)) {
+      apiError(res, 400, "INVALID_PARAM", `Invalid input document extension: ${inputExt}`);
+      return;
+    }
 
     try {
       const { jobId } = await submitConversionJob(
@@ -151,7 +164,11 @@ router.get("/jobs/:id/download", async (req: Request, res: Response) => {
     return;
   }
 
-  res.download(fileInfo.path, fileInfo.filename);
+  res.download(fileInfo.path, fileInfo.filename, (err) => {
+    if (err && !res.headersSent) {
+      apiError(res, 404, "NOT_FOUND", "Result file not found or expired");
+    }
+  });
 });
 
 export default router;

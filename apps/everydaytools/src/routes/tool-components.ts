@@ -151,6 +151,8 @@ export const TOOL_COMPONENTS: Record<string, React.LazyExoticComponent<() => Rea
   "pdf-to-excel": PdfToExcel,
   "reorder-pdf": ReorderPdf,
   "ocr": Ocr,
+  "pdf-to-markdown": PdfToMarkdown,
+  "pdf-to-pdfa": PdfToPdfa,
   // Word & Docs
   "word-to-text": WordToText,
   "word-to-html": WordToHtml,
@@ -161,6 +163,8 @@ export const TOOL_COMPONENTS: Record<string, React.LazyExoticComponent<() => Rea
   "markdown-to-pdf": MarkdownToPdf,
   "markdown-to-docx": MarkdownToDocx,
   "html-to-pdf": HtmlToPdf,
+  "odt-to-pdf": OdtToPdf,
+  "rtf-to-pdf": RtfToPdf,
   "txt-to-pdf": TxtToPdf,
   "txt-to-docx": TxtToDocx,
   // Excel & Spreadsheets

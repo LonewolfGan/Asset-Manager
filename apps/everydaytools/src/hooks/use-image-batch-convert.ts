@@ -1,9 +1,10 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { apiUrl } from '@/lib/apiBase';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { toast } from '@/hooks/use-toast';
 import { downloadBlob } from '@/lib/download';
 import { consumeHandoffFile } from '@/lib/file-handoff';
+import { safeRevokeObjectUrl } from '@/lib/object-url';
 import {
   type FileResult,
   extForMime,
@@ -25,14 +26,7 @@ export interface UseImageBatchConvertOptions {
 }
 
 export function useImageBatchConvert({
-  fromLabel,
-  fromExts,
-  fromMimes,
-  toMime,
-  slug,
-  isFr,
-  trackUsed,
-  trackError,
+  fromLabel, fromExts, fromMimes, toMime, slug, isFr, trackUsed, trackError,
 }: UseImageBatchConvertOptions) {
   const toExt = extForMime(toMime);
   const sourceFormat = getFormatInfo(fromExts[0] || fromLabel, fromLabel, isFr);
@@ -49,15 +43,18 @@ export function useImageBatchConvert({
 
   const showQuality = ['image/jpeg', 'image/webp', 'image/avif'].includes(toMime);
 
-  // Clean up object URLs on unmount or file list update
+  const filesRef = useRef(files);
+  filesRef.current = files;
+
+  // Clean up object URLs strictly on unmount
   useEffect(() => {
     return () => {
-      files.forEach((f) => {
-        URL.revokeObjectURL(f.originalUrl);
-        if (f.compressedUrl) URL.revokeObjectURL(f.compressedUrl);
+      filesRef.current.forEach((f) => {
+        safeRevokeObjectUrl(f.originalUrl);
+        safeRevokeObjectUrl(f.compressedUrl);
       });
     };
-  }, [files]);
+  }, []);
 
   const validateAndAddFiles = useCallback(
     (incoming: FileList | File[]) => {
@@ -117,8 +114,8 @@ export function useImageBatchConvert({
     setFiles((prev) => {
       const f = prev.find((x) => x.id === id);
       if (f) {
-        URL.revokeObjectURL(f.originalUrl);
-        if (f.compressedUrl) URL.revokeObjectURL(f.compressedUrl);
+        safeRevokeObjectUrl(f.originalUrl);
+        safeRevokeObjectUrl(f.compressedUrl);
       }
       return prev.filter((x) => x.id !== id);
     });
@@ -126,8 +123,8 @@ export function useImageBatchConvert({
 
   const handleResetAll = useCallback(() => {
     files.forEach((f) => {
-      URL.revokeObjectURL(f.originalUrl);
-      if (f.compressedUrl) URL.revokeObjectURL(f.compressedUrl);
+      safeRevokeObjectUrl(f.originalUrl);
+      safeRevokeObjectUrl(f.compressedUrl);
     });
     setFiles([]);
     setIsProcessing(false);

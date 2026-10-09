@@ -79,7 +79,7 @@ export function renderSafeHtml(markdown: string, renderer: any): string {
   try {
     const parsed = marked.parse(markdown, { gfm: true, breaks: true, renderer }) as string;
     return DOMPurify.sanitize(parsed, {
-      ADD_TAGS: ['iframe', 'input', 'kbd', 'mark', 'details', 'summary', 'sub', 'sup'],
+      ADD_TAGS: ['input', 'kbd', 'mark', 'details', 'summary', 'sub', 'sup'],
       ADD_ATTR: ['target', 'type', 'checked', 'disabled']
     });
   } catch {

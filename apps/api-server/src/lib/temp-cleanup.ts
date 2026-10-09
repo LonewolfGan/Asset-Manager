@@ -2,13 +2,17 @@ import { readdir, stat, rm } from "fs/promises";
 import { join } from "path";
 import { tmpdir } from "os";
 import { logger } from "./logger.js";
+import { evictExpiredInMemoryJobs } from "./queue-memory.js";
 
-/** Prefix patterns created by everydaytools */
-const TEMP_PREFIXES = ["lo-work-", "lo-profile-", "everydaytools"];
+/** Top-level temporary prefix patterns created directly under /tmp */
+const TOP_LEVEL_PREFIXES = ["lo-work-", "lo-profile-", "rembg-"];
 
 /**
  * Scan the system tmp directory and purge orphan everydaytools artifacts
  * older than maxAgeMs (default: 15 minutes).
+ *
+ * CRITICAL SAFETY INVARIANT: Never deletes the parent /tmp/everydaytools directory itself,
+ * only stale session and job subdirectories inside it.
  */
 export async function cleanupTempFiles(maxAgeMs = 15 * 60 * 1000): Promise<{ cleaned: number; errors: number }> {
   const rootTmp = tmpdir();
@@ -16,11 +20,12 @@ export async function cleanupTempFiles(maxAgeMs = 15 * 60 * 1000): Promise<{ cle
   let cleaned = 0;
   let errors = 0;
 
+  // 1. Clean top-level isolated temp workspaces (lo-work-*, lo-profile-*, rembg-*)
   try {
     const entries = await readdir(rootTmp, { withFileTypes: true });
 
     for (const entry of entries) {
-      const isTarget = TEMP_PREFIXES.some((prefix) => entry.name.startsWith(prefix));
+      const isTarget = TOP_LEVEL_PREFIXES.some((prefix) => entry.name.startsWith(prefix));
       if (!isTarget) continue;
 
       const fullPath = join(rootTmp, entry.name);
@@ -33,14 +38,62 @@ export async function cleanupTempFiles(maxAgeMs = 15 * 60 * 1000): Promise<{ cle
           cleaned++;
           logger.debug({ path: fullPath, ageMinutes: Math.round(ageMs / 60000) }, "Purged orphan temp directory");
         }
-      } catch (statOrRmErr) {
+      } catch {
         errors++;
-        // File may have been removed concurrently by the worker
       }
     }
   } catch (err) {
-    logger.warn({ err }, "Failed to read tmp directory for orphan cleanup");
+    logger.warn({ err }, "Failed to read tmp directory for top-level cleanup");
   }
+
+  // 2. Clean stale subdirectories inside /tmp/everydaytools (sessions & jobs), leaving parent intact
+  const everydaytoolsDir = join(rootTmp, "everydaytools");
+  try {
+    const subEntries = await readdir(everydaytoolsDir, { withFileTypes: true });
+
+    for (const sub of subEntries) {
+      const subPath = join(everydaytoolsDir, sub.name);
+
+      if (sub.name === "jobs") {
+        // Purge individual stale job folders inside /tmp/everydaytools/jobs/
+        try {
+          const jobEntries = await readdir(subPath, { withFileTypes: true });
+          for (const job of jobEntries) {
+            const jobPath = join(subPath, job.name);
+            const jobStat = await stat(jobPath);
+            if (now - jobStat.mtimeMs > maxAgeMs) {
+              await rm(jobPath, { recursive: true, force: true });
+              cleaned++;
+              logger.debug({ path: jobPath }, "Purged stale background job directory");
+            }
+          }
+        } catch {
+          // jobs folder read error or already removed
+        }
+        continue;
+      }
+
+      try {
+        const fileStat = await stat(subPath);
+        const ageMs = now - fileStat.mtimeMs;
+
+        if (ageMs > maxAgeMs) {
+          await rm(subPath, { recursive: true, force: true });
+          cleaned++;
+          logger.debug({ path: subPath, ageMinutes: Math.round(ageMs / 60000) }, "Purged stale session directory");
+        }
+      } catch {
+        errors++;
+      }
+    }
+  } catch {
+    // /tmp/everydaytools doesn't exist yet or not accessible, normal on fresh start
+  }
+
+  // 3. Purge idle expired in-memory queue jobs
+  try {
+    evictExpiredInMemoryJobs();
+  } catch {}
 
   if (cleaned > 0) {
     logger.info({ cleaned, errors }, "Orphan temp cleanup completed");

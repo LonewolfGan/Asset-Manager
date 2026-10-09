@@ -90,19 +90,25 @@ router.post(
           return;
         } catch (fallbackErr) {
           const stderr = (fallbackErr as { stderr?: string }).stderr ?? "";
-          res.status(500).json({
-            error: "Background removal failed (both models)",
-            detail: stderr.slice(0, 400),
-          });
+          apiError(
+            res,
+            500,
+            "BG_REMOVAL_FAILED",
+            "Background removal failed (both models)",
+            stderr.slice(0, 400),
+          );
           return;
         }
       }
 
       const stderr = (err as { stderr?: string }).stderr ?? "";
-      res.status(500).json({
-        error: "Background removal failed",
-        detail: stderr.slice(0, 400),
-      });
+      apiError(
+        res,
+        500,
+        "BG_REMOVAL_FAILED",
+        "Background removal failed",
+        stderr.slice(0, 400),
+      );
     } finally {
       await unlink(inputPath).catch(() => {});
       await unlink(outputPath).catch(() => {});

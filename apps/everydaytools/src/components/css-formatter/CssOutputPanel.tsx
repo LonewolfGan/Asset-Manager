@@ -197,7 +197,7 @@ export const CssOutputPanel: React.FC<CssOutputPanelProps> = ({
             }}
           >
             <iframe
-              sandbox="allow-same-origin"
+              sandbox=""
               srcDoc={sandboxHtml}
               title={isFr ? 'Aperçu CSS sécurisé' : 'Secure CSS preview'}
               className="w-full h-full border-0 bg-white"

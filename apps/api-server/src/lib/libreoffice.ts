@@ -12,6 +12,7 @@ import { join } from "path";
 import { BIN } from "./binaries.js";
 import { convertWithGotenberg } from "./gotenberg.js";
 import { logger } from "./logger.js";
+import { isValidTargetFormat, isValidInputExt } from "./document-validation.js";
 
 const execFileAsync = promisify(execFile);
 const LO_TIMEOUT_MS = 120_000;
@@ -72,8 +73,15 @@ export async function convertWithLibreOffice(
   inputExt: string,
   targetFormat: string,
 ): Promise<Buffer> {
-  const normTarget = targetFormat.toLowerCase();
-  const normInput = inputExt.toLowerCase().replace(/^\./, "");
+  const normTarget = targetFormat.toLowerCase().trim().replace(/^\./, "");
+  const normInput = inputExt.toLowerCase().trim().replace(/^\./, "");
+
+  if (!isValidTargetFormat(normTarget)) {
+    throw new Error(`Unsupported target format: ${normTarget}`);
+  }
+  if (!isValidInputExt(normInput)) {
+    throw new Error(`Invalid input extension: ${normInput}`);
+  }
 
   // Gotenberg accelerated path for Office -> PDF
   if (normTarget === "pdf" && normInput !== "pdf") {
@@ -94,16 +102,16 @@ export async function convertWithLibreOffice(
     mkdir(workDir, { recursive: true }),
     prepareHardenedProfile(profileDir),
   ]);
-  const inputPath = join(workDir, `input.${inputExt}`);
+  const inputPath = join(workDir, `input.${normInput}`);
   await writeFile(inputPath, inputBuffer);
 
   try {
     const args = getHardenedSofficeArgs(profileDir);
 
-    if (inputExt.toLowerCase() === "pdf" && targetFormat.toLowerCase() === "pptx") {
+    if (normInput === "pdf" && normTarget === "pptx") {
       args.push("--infilter=impress_pdf_import", "--convert-to", "pptx:Impress MS PowerPoint 2007 XML");
     } else {
-      args.push("--convert-to", targetFormat);
+      args.push("--convert-to", normTarget);
     }
 
     args.push("--outdir", workDir, inputPath);
@@ -121,7 +129,7 @@ export async function convertWithLibreOffice(
       },
     });
 
-    const outputPath = join(workDir, `input.${targetFormat}`);
+    const outputPath = join(workDir, `input.${normTarget}`);
     return await readFile(outputPath);
   } finally {
     await Promise.all([

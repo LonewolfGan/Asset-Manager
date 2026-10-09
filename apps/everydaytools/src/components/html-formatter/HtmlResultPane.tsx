@@ -206,7 +206,7 @@ export function HtmlResultPane({
             }}
           >
             <iframe
-              sandbox="allow-same-origin"
+              sandbox=""
               srcDoc={output || input}
               title={isFr ? 'Aperçu HTML sécurisé' : 'Secure HTML preview'}
               className="w-full h-full border-0 bg-white"

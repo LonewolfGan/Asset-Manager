@@ -181,8 +181,25 @@ for (const file of pageFiles) {
   // Skip wrapper pages (e.g. avif-to-jpg.tsx)
   if (isWrapperPage(content)) continue;
 
-  // Check for useLocale hook usage
-  if (!content.includes('useLocale') && !content.includes('use-locale')) {
+  // Check for useLocale hook usage (directly or through an orchestrating workflow hook)
+  let usesLocale = content.includes('useLocale') || content.includes('use-locale');
+  if (!usesLocale) {
+    const workflowMatch = content.match(/from\s+['"](@\/hooks\/use-[^'"]+-workflow)['"]/);
+    if (workflowMatch) {
+      const hookRelative = workflowMatch[1].replace('@/', '');
+      const hookPath = path.join(srcDir, `${hookRelative}.ts`);
+      const hookAltPath = path.join(srcDir, `${hookRelative}.tsx`);
+      const targetPath = fs.existsSync(hookPath) ? hookPath : (fs.existsSync(hookAltPath) ? hookAltPath : null);
+      if (targetPath) {
+        const hookContent = fs.readFileSync(targetPath, 'utf8');
+        if (hookContent.includes('useLocale') || hookContent.includes('use-locale')) {
+          usesLocale = true;
+        }
+      }
+    }
+  }
+
+  if (!usesLocale) {
     addIssue(file, 1, 'Missing useLocale hook. Tool pages must be localized with useLocale (i18n Lock).', 'error');
   }
 }

@@ -8,6 +8,7 @@ export const upload = multer({
 });
 
 import { extname } from "path";
+import { apiError } from "../lib/errors.js";
 
 // Allowed MIME types per tool category
 const ALLOWED_IMAGE_MIMES = new Set([
@@ -22,6 +23,10 @@ const ALLOWED_IMAGE_MIMES = new Set([
   "image/svg+xml",
   "image/heic",
   "image/heif",
+]);
+
+const ALLOWED_IMAGE_EXTS = new Set([
+  ".jpg", ".jpeg", ".png", ".webp", ".avif", ".gif", ".tiff", ".tif", ".bmp", ".svg", ".heic", ".heif"
 ]);
 
 const ALLOWED_DOCUMENT_MIMES = new Set([
@@ -70,20 +75,32 @@ function makeMimeGuard(allowed: Set<string>, sizeLimit: number, allowedExts?: Se
     }
 
     const ext = file.originalname ? extname(file.originalname).toLowerCase() : "";
-    const isMimeAllowed = allowed.has(file.mimetype);
+    const isGenericMime = file.mimetype === "application/octet-stream";
+    const isMimeAllowed = allowed.has(file.mimetype) && !isGenericMime;
     const isExtAllowed = allowedExts ? allowedExts.has(ext) : false;
 
-    if (!isMimeAllowed && !isExtAllowed) {
-      res.status(415).json({
-        error: `Unsupported file type: ${file.mimetype || "unknown"}. Please provide a supported document.`,
-      });
+    // Reject generic octet-stream without valid ext, or spoofed MIME with dangerous/unmatched ext
+    const isAllowed = isGenericMime
+      ? isExtAllowed
+      : isMimeAllowed && (!allowedExts || !ext || isExtAllowed);
+
+    if (!isAllowed) {
+      apiError(
+        res,
+        415,
+        "UNSUPPORTED_TYPE",
+        `Unsupported file type: ${file.mimetype || "unknown"}. Please provide a supported file.`,
+      );
       return;
     }
 
     if (file.size > sizeLimit) {
-      res.status(413).json({
-        error: `File too large. Maximum size is ${Math.round(sizeLimit / 1024 / 1024)} MB.`,
-      });
+      apiError(
+        res,
+        413,
+        "FILE_TOO_LARGE",
+        `File too large. Maximum size is ${Math.round(sizeLimit / 1024 / 1024)} MB.`,
+      );
       return;
     }
 
@@ -91,7 +108,7 @@ function makeMimeGuard(allowed: Set<string>, sizeLimit: number, allowedExts?: Se
   };
 }
 
-export const guardImage = makeMimeGuard(ALLOWED_IMAGE_MIMES, SIZE_LIMITS.image);
+export const guardImage = makeMimeGuard(ALLOWED_IMAGE_MIMES, SIZE_LIMITS.image, ALLOWED_IMAGE_EXTS);
 export const guardDocument = makeMimeGuard(ALLOWED_DOCUMENT_MIMES, SIZE_LIMITS.document, ALLOWED_DOCUMENT_EXTS);
 export const guardMetadata = makeMimeGuard(ALLOWED_METADATA_MIMES, SIZE_LIMITS.document);
-export const guardBackground = makeMimeGuard(ALLOWED_BACKGROUND_MIMES, SIZE_LIMITS.background);
+export const guardBackground = makeMimeGuard(ALLOWED_BACKGROUND_MIMES, SIZE_LIMITS.background, ALLOWED_IMAGE_EXTS);

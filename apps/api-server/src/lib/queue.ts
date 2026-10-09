@@ -1,54 +1,33 @@
 import { Queue, Worker, Job } from "bullmq";
 import { Redis } from "ioredis";
 import { join } from "path";
-import { tmpdir } from "os";
-import { mkdir, writeFile, readFile, stat } from "fs/promises";
+import { mkdir } from "fs/promises";
 import { randomUUID } from "crypto";
-import { convertWithLibreOffice } from "./libreoffice.js";
 import { logger } from "./logger.js";
+import { JOBS_DIR, processConversionJob } from "./queue-processor.js";
+import type { ConversionJobData, JobProgress, JobResult, InMemoryJobEntry } from "./queue-types.js";
+import {
+  setInMemoryJob,
+  evictExpiredInMemoryJobs,
+  getInMemoryMetrics,
+  getInMemoryJobStatus,
+} from "./queue-memory.js";
+
+export type { ConversionJobData, JobProgress, JobResult } from "./queue-types.js";
+export {
+  clearInMemoryJobs,
+  getInMemoryJobEntry,
+  recordInMemoryJob,
+  evictExpiredInMemoryJobs,
+} from "./queue-memory.js";
 
 const REDIS_URL = process.env["REDIS_URL"] ?? "redis://127.0.0.1:6379";
 const QUEUE_NAME = "document-conversions";
-const JOBS_DIR = join(tmpdir(), "everydaytools", "jobs");
-
-export interface ConversionJobData {
-  jobId: string;
-  taskType: "word-to-pdf" | "excel-to-pdf" | "pptx-to-pdf" | "document-convert";
-  originalName: string;
-  inputExt: string;
-  targetFormat: string;
-  inputBufferBase64?: string;
-  inputPath?: string;
-}
-
-export interface JobProgress {
-  percent: number;
-  label: string;
-}
-
-export interface JobResult {
-  jobId: string;
-  filename: string;
-  size: number;
-  outputPath: string;
-}
 
 let redisConnection: Redis | null = null;
 let conversionQueue: Queue<ConversionJobData> | null = null;
 let conversionWorker: Worker<ConversionJobData> | null = null;
 let isRedisReady = false;
-
-interface InMemoryJobEntry {
-  data: ConversionJobData;
-  status: "waiting" | "active" | "completed" | "failed";
-  progress: JobProgress;
-  result?: JobResult;
-  error?: string;
-  listeners: Array<(progress: JobProgress) => void>;
-}
-
-// In-memory fallback map for environments without Redis
-const inMemoryJobs = new Map<string, InMemoryJobEntry>();
 
 /**
  * Initialize Redis and BullMQ worker.
@@ -63,7 +42,7 @@ export async function initConversionQueue(): Promise<void> {
       connectTimeout: 2000,
       lazyConnect: true,
       retryStrategy(times) {
-        if (times > 3) return null; // stop reconnecting if not available
+        if (times > 3) return null;
         return Math.min(times * 500, 2000);
       },
     });
@@ -81,12 +60,11 @@ export async function initConversionQueue(): Promise<void> {
     conversionQueue = new Queue<ConversionJobData>(QUEUE_NAME, {
       connection: redisConnection,
       defaultJobOptions: {
-        removeOnComplete: { age: 3600 }, // Keep completed jobs in Redis for 1h
+        removeOnComplete: { age: 3600 },
         removeOnFail: { age: 3600 },
       },
     });
 
-    // Worker with concurrency 2 to match 4-core Ampere ARM VM
     conversionWorker = new Worker<ConversionJobData>(
       QUEUE_NAME,
       async (job: Job<ConversionJobData>) => {
@@ -109,53 +87,10 @@ export async function initConversionQueue(): Promise<void> {
     });
 
     logger.info({ url: REDIS_URL, queue: QUEUE_NAME }, "BullMQ conversion queue and worker initialized with Redis");
-  } catch (err) {
+  } catch (_err) {
     isRedisReady = false;
     logger.info("Redis not detected — async conversions will use resilient in-process queue");
   }
-}
-
-/**
- * Core processing logic shared by both BullMQ and in-memory fallback.
- */
-async function processConversionJob(
-  data: ConversionJobData,
-  onProgress: (percent: number, label: string) => Promise<void>,
-): Promise<JobResult> {
-  const { jobId, originalName, inputExt, targetFormat } = data;
-  const jobFolder = join(JOBS_DIR, jobId);
-  await mkdir(jobFolder, { recursive: true });
-
-  await onProgress(15, "Préparation du document...");
-
-  let inputBuf: Buffer;
-  if (data.inputBufferBase64) {
-    inputBuf = Buffer.from(data.inputBufferBase64, "base64");
-  } else if (data.inputPath) {
-    inputBuf = await readFile(data.inputPath);
-  } else {
-    throw new Error("No input buffer or path provided for conversion job");
-  }
-
-  await onProgress(40, "Conversion en cours...");
-  const convertedBuffer = await convertWithLibreOffice(inputBuf, inputExt, targetFormat);
-
-  await onProgress(85, "Finalisation du fichier...");
-  const outputBaseName = originalName.replace(/\.[a-zA-Z0-9]+$/, "");
-  const outputFilename = `${outputBaseName}.${targetFormat}`;
-  const outputPath = join(jobFolder, outputFilename);
-
-  await writeFile(outputPath, convertedBuffer);
-  const fileStat = await stat(outputPath);
-
-  await onProgress(100, "Document prêt pour le téléchargement");
-
-  return {
-    jobId,
-    filename: outputFilename,
-    size: fileStat.size,
-    outputPath,
-  };
 }
 
 /**
@@ -184,16 +119,15 @@ export async function submitConversionJob(
   if (isRedisReady && conversionQueue) {
     await conversionQueue.add("convert", jobData, { jobId });
   } else {
-    // In-memory queue
     const memEntry: InMemoryJobEntry = {
       data: jobData,
       status: "waiting",
       progress: { percent: 0, label: "En attente dans la file..." },
+      createdAt: Date.now(),
       listeners: [],
     };
-    inMemoryJobs.set(jobId, memEntry);
+    setInMemoryJob(jobId, memEntry);
 
-    // Run asynchronously without blocking caller
     setImmediate(async () => {
       memEntry.status = "active";
       try {
@@ -206,6 +140,12 @@ export async function submitConversionJob(
       } catch (err) {
         memEntry.status = "failed";
         memEntry.error = err instanceof Error ? err.message : "Erreur de conversion";
+      } finally {
+        // Free base64 buffer from memory entry to avoid retention
+        delete memEntry.data.inputBufferBase64;
+        delete jobData.inputBufferBase64;
+        memEntry.completedAt = Date.now();
+        evictExpiredInMemoryJobs();
       }
     });
   }
@@ -246,22 +186,7 @@ export async function getJobStatus(jobId: string): Promise<{
     };
   }
 
-  const mem = inMemoryJobs.get(jobId);
-  if (!mem) {
-    return {
-      id: jobId,
-      status: "not_found",
-      progress: { percent: 0, label: "Tâche introuvable" },
-    };
-  }
-
-  return {
-    id: jobId,
-    status: mem.status,
-    progress: mem.progress,
-    result: mem.result ? { filename: mem.result.filename, size: mem.result.size } : undefined,
-    error: mem.error,
-  };
+  return getInMemoryJobStatus(jobId);
 }
 
 /**
@@ -314,22 +239,9 @@ export async function getQueueMetrics(): Promise<{
     }
   }
 
-  let waiting = 0;
-  let active = 0;
-  let completed = 0;
-  let failed = 0;
-  for (const job of inMemoryJobs.values()) {
-    if (job.status === "waiting") waiting++;
-    else if (job.status === "active") active++;
-    else if (job.status === "completed") completed++;
-    else if (job.status === "failed") failed++;
-  }
-
+  const counts = getInMemoryMetrics();
   return {
     redisConnected: false,
-    waiting,
-    active,
-    completed,
-    failed,
+    ...counts,
   };
 }

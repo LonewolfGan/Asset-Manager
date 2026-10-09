@@ -7,6 +7,15 @@ import router from "./routes/index.js";
 import { logger } from "./lib/logger.js";
 
 const app: Express = express();
+const trustProxyEnv = process.env["TRUST_PROXY"];
+const trustProxy = trustProxyEnv === undefined
+  ? 1
+  : trustProxyEnv === "true"
+    ? true
+    : trustProxyEnv === "false"
+      ? false
+      : parseInt(trustProxyEnv, 10) || 1;
+app.set("trust proxy", trustProxy);
 
 app.use(
   pinoHttp({
@@ -105,6 +114,10 @@ if (process.env["NODE_ENV"] === "production") {
 // Keep CORS headers on unexpected 500 responses as well as successful responses.
 // This is intentionally after every route and static handler.
 app.use((err: unknown, req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  if (res.headersSent) {
+    return _next(err);
+  }
+
   const origin = req.headers.origin;
 
   if (origin && CORS_ORIGINS.includes(origin)) {
@@ -113,7 +126,10 @@ app.use((err: unknown, req: express.Request, res: express.Response, _next: expre
   }
 
   logger.error({ err, url: req.url, method: req.method }, "Unhandled error");
-  const message = err instanceof Error ? err.message : "An unexpected server error occurred";
+  const isDev = process.env["NODE_ENV"] !== "production";
+  const message = isDev
+    ? (err instanceof Error ? err.message : "An unexpected server error occurred")
+    : "An unexpected server error occurred";
   res.status(500).json({
     error: true,
     code: "INTERNAL_ERROR",

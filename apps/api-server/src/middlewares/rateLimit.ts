@@ -27,15 +27,11 @@ setInterval(() => {
   }
 }, 5 * 60 * 1000).unref();
 
-function makeRateLimiter(maxRequests: number, windowMs: number) {
+export function makeRateLimiter(maxRequests: number, windowMs: number) {
   return async function rateLimiter(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const forwarded = req.headers["x-forwarded-for"];
-    const ip = (
-      (typeof forwarded === "string" ? forwarded : Array.isArray(forwarded) ? forwarded[0] : undefined)?.split(",")[0]?.trim() ??
-      req.socket.remoteAddress ??
-      "unknown"
-    );
-    const key = `${req.path}::${ip}`;
+    const ip = req.ip || req.socket.remoteAddress || "unknown";
+    const route = req.baseUrl ? `${req.baseUrl}${req.path}` : req.path;
+    const key = `${route}::${ip}`;
     const now = Date.now();
 
     // 1. Try Redis distributed rate limiting if available
@@ -45,6 +41,11 @@ function makeRateLimiter(maxRequests: number, windowMs: number) {
         const redisKey = `ratelimit:${key}`;
         const count = await redis.incr(redisKey);
         if (count === 1) {
+          await redis.pexpire(redisKey, windowMs);
+        }
+
+        const ttlMs = await redis.pttl(redisKey);
+        if (ttlMs < 0) {
           await redis.pexpire(redisKey, windowMs);
         }
 

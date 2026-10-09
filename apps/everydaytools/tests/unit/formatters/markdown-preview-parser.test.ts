@@ -62,4 +62,10 @@ describe('Markdown Preview Parser & Format Helpers', () => {
     const codeRes = applyMarkdownFormat('console.log(1);', 0, 15, 'codeblock', true, 'typescript');
     expect(codeRes.updated).toContain('```typescript\nconsole.log(1);\n```');
   });
+
+  it('strips unsafe iframes from rendered markdown HTML', () => {
+    const md = '<iframe src="http://evil.com/phishing"></iframe>';
+    const html = renderSafeHtml(md, renderer);
+    expect(html).not.toContain('<iframe');
+  });
 });
