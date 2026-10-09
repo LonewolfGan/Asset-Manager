@@ -25,7 +25,7 @@ export const StudioCommandBar: React.FC<StudioCommandBarProps> = ({
           onClick={onReset}
           data-testid="studio-reset-btn"
           aria-label={resetLabel}
-          className="flex items-center gap-1.5 h-8 px-2.5 rounded-lg text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100 bg-zinc-100 dark:bg-zinc-850 hover:bg-zinc-200 dark:hover:bg-zinc-800 border border-zinc-200/80 dark:border-white/10 active:scale-[0.98] transition-colors cursor-pointer shrink-0"
+          className="flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-100 active:scale-[0.98] transition-colors cursor-pointer shrink-0"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span className="hidden sm:inline">{resetLabel}</span>
@@ -74,7 +74,7 @@ export const StudioCommandBar: React.FC<StudioCommandBarProps> = ({
             type="button"
             onClick={onResetChanges}
             data-testid="studio-undo-btn"
-            className="flex items-center gap-1.5 h-8 px-2.5 rounded-lg text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100 bg-zinc-100 dark:bg-zinc-850 hover:bg-zinc-200 dark:hover:bg-zinc-800 border border-zinc-200/80 dark:border-white/10 active:scale-[0.98] transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-100 active:scale-[0.98] transition-colors cursor-pointer"
           >
             <Undo2 className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Réinitialiser</span>

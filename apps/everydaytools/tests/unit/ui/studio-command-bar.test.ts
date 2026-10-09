@@ -139,4 +139,17 @@ describe('StudioCommandBar (TDD RED Phase)', () => {
     expect(controls).not.toBeNull();
     expect(controls?.textContent).toBe('Rotations: 90°');
   });
+
+  it('renders return button completely flat without box container border or background', async () => {
+    await renderComponent({
+      meta: { name: 'photo.jpg', size: 500000 },
+      onReset: vi.fn(),
+      primaryAction: { label: 'Save', onClick: vi.fn() },
+    });
+
+    const resetButton = container.querySelector('button[data-testid="studio-reset-btn"]') as HTMLButtonElement;
+    expect(resetButton).not.toBeNull();
+    expect(resetButton.className).not.toContain('border');
+    expect(resetButton.className).not.toContain('bg-zinc-100');
+  });
 });
