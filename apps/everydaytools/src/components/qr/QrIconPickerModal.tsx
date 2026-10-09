@@ -137,9 +137,9 @@ export function QrIconPickerModal({
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.2"
+                      fill={item.renderMode === 'fill' ? 'currentColor' : 'none'}
+                      stroke={item.renderMode === 'fill' ? 'none' : 'currentColor'}
+                      strokeWidth={item.renderMode === 'fill' ? '0' : '2.2'}
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       className="w-6 h-6 mb-1.5 transition-transform group-hover:scale-110"

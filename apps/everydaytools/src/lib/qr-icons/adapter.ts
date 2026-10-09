@@ -1,4 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
+import type { SimpleIcon } from 'simple-icons';
 import type { LibraryIcon } from './types';
 
 /**
@@ -37,5 +38,22 @@ export function createLucideLibraryIcon(
     label,
     category,
     path: extractLucideSvgPath(IconComponent),
+    renderMode: 'stroke',
   };
 }
+
+export function createSimpleIconLibraryIcon(
+  id: string,
+  label: string,
+  category: LibraryIcon['category'],
+  simpleIcon: SimpleIcon
+): LibraryIcon {
+  return {
+    id,
+    label,
+    category,
+    path: `<path d="${simpleIcon.path}"/>`,
+    renderMode: 'fill',
+  };
+}
+

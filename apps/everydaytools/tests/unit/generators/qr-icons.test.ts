@@ -55,5 +55,33 @@ describe('QR Icons Library & Dynamic SVG Generation', () => {
     expect(libraryIcon.category).toBe('symbols');
     expect(libraryIcon.path).toBe(starPath);
   });
+
+  it('correctly adapts simple-icons with renderMode fill and generates fill-based SVG', async () => {
+    const { createSimpleIconLibraryIcon } = await import('@/lib/qr-icons/adapter');
+    const { siWhatsapp } = await import('simple-icons');
+
+    const whatsappIcon = createSimpleIconLibraryIcon('whatsapp', 'WhatsApp', 'social', siWhatsapp);
+    expect(whatsappIcon.id).toBe('whatsapp');
+    expect(whatsappIcon.label).toBe('WhatsApp');
+    expect(whatsappIcon.category).toBe('social');
+    expect(whatsappIcon.renderMode).toBe('fill');
+    expect(whatsappIcon.path).toContain('<path');
+    expect(whatsappIcon.path).toContain(siWhatsapp.path);
+
+    const whatsappDataUrl = getPresetIconSvg('whatsapp', '#25D366');
+    expect(whatsappDataUrl).toContain('data:image/svg+xml');
+    expect(whatsappDataUrl).toContain(`fill="${encodeURIComponent('#25D366')}"`);
+    expect(whatsappDataUrl).not.toContain('stroke=');
+  });
+
+  it('ensures social icons use renderMode fill for vector brands', () => {
+    const whatsapp = ICON_LIBRARY.find((i) => i.id === 'whatsapp');
+    expect(whatsapp).toBeDefined();
+    expect(whatsapp?.renderMode).toBe('fill');
+
+    const xTwitter = ICON_LIBRARY.find((i) => i.id === 'x-twitter');
+    expect(xTwitter).toBeDefined();
+    expect(xTwitter?.renderMode).toBe('fill');
+  });
 });
 
