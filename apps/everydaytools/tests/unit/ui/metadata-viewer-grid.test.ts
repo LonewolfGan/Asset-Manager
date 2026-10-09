@@ -107,4 +107,31 @@ describe('MetadataViewerGrid (TDD RED Phase)', () => {
 
     expect(handleRemove).toHaveBeenCalledWith('Author');
   });
+
+  it('renders list flat without card slop container borders or background', async () => {
+    await renderComponent({
+      data: { Camera: 'Sony' },
+      isFr: true,
+    });
+
+    const listContainer = container.querySelector('[data-testid="metadata-item"]')?.parentElement;
+    expect(listContainer).not.toBeNull();
+    // Must NOT have card-slop classes
+    expect(listContainer?.className).not.toContain('border');
+    expect(listContainer?.className).not.toContain('bg-white');
+  });
+
+  it('renders search input with high-contrast text color and adequate icon padding', async () => {
+    await renderComponent({
+      data: { Camera: 'Sony' },
+      allowSearch: true,
+      isFr: true,
+    });
+
+    const searchInput = container.querySelector('input[data-testid="metadata-search"]') as HTMLInputElement;
+    expect(searchInput).not.toBeNull();
+    expect(searchInput.className).toContain('text-zinc-900');
+    expect(searchInput.className).toContain('dark:text-zinc-100');
+    expect(searchInput.className).toContain('pl-8');
+  });
 });
