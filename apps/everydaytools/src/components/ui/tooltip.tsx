@@ -10,16 +10,20 @@ const Tooltip = TooltipPrimitive.Root;
 
 const TooltipTrigger = TooltipPrimitive.Trigger;
 
+const TooltipArrow = TooltipPrimitive.Arrow;
+
 const TooltipContent = React.forwardRef<
   React.ElementRef<typeof TooltipPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
->(({ className, sideOffset = 5, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content> & {
+    hideArrow?: boolean;
+  }
+>(({ className, sideOffset = 8, children, hideArrow = false, ...props }, ref) => (
   <TooltipPrimitive.Portal>
     <TooltipPrimitive.Content
       ref={ref}
       sideOffset={sideOffset}
       className={cn(
-        "z-50 overflow-hidden rounded-md px-2.5 py-1 text-xs font-medium select-none shadow-md",
+        "z-50 rounded-md px-2.5 py-1 text-xs font-medium select-none shadow-md",
         "bg-zinc-900 text-zinc-100 border border-zinc-800",
         "dark:bg-zinc-100 dark:text-zinc-900 dark:border-zinc-200/80",
         "animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
@@ -28,7 +32,12 @@ const TooltipContent = React.forwardRef<
         className
       )}
       {...props}
-    />
+    >
+      {children}
+      {!hideArrow && (
+        <TooltipPrimitive.Arrow className="fill-zinc-900 dark:fill-zinc-100" />
+      )}
+    </TooltipPrimitive.Content>
   </TooltipPrimitive.Portal>
 ));
 TooltipContent.displayName = TooltipPrimitive.Content.displayName;
@@ -54,6 +63,8 @@ export interface ActionTooltipProps {
   open?: boolean;
   /** Callback for open state change */
   onOpenChange?: (open: boolean) => void;
+  /** If true, hide arrow */
+  hideArrow?: boolean;
 }
 
 /**
@@ -68,12 +79,13 @@ export const ActionTooltip = React.forwardRef<
   children,
   side = "top",
   align = "center",
-  sideOffset = 5,
+  sideOffset = 8,
   delayDuration,
   className,
   disabled = false,
   open,
   onOpenChange,
+  hideArrow = false,
   ...props
 }, ref) => {
   if (disabled || !label) {
@@ -85,7 +97,7 @@ export const ActionTooltip = React.forwardRef<
       <TooltipTrigger asChild ref={ref} {...props}>
         {children}
       </TooltipTrigger>
-      <TooltipContent side={side} align={align} sideOffset={sideOffset} className={className}>
+      <TooltipContent side={side} align={align} sideOffset={sideOffset} className={className} hideArrow={hideArrow}>
         {label}
       </TooltipContent>
     </Tooltip>
@@ -93,5 +105,4 @@ export const ActionTooltip = React.forwardRef<
 });
 ActionTooltip.displayName = "ActionTooltip";
 
-
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider, TooltipArrow };
