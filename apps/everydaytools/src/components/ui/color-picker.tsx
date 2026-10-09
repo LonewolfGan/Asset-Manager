@@ -22,6 +22,10 @@ export interface ColorPickerProps {
   children?: React.ReactNode;
   /** Language flag */
   isFr?: boolean;
+  /** Alignment relative to trigger */
+  align?: 'start' | 'end' | 'auto';
+  /** Preferred placement side */
+  side?: 'top' | 'bottom' | 'auto';
 }
 
 export const ColorPicker: React.FC<ColorPickerProps> = ({
@@ -32,9 +36,35 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
   ariaLabel = 'Sélectionner une couleur',
   children,
   isFr = false,
+  align = 'auto',
+  side = 'auto',
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const popoverRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement | HTMLDivElement>(null);
+
+  const [computedPlacement, setComputedPlacement] = useState<{ align: 'start' | 'end'; side: 'top' | 'bottom' }>({
+    align: align === 'end' ? 'end' : 'start',
+    side: side === 'top' ? 'top' : 'bottom',
+  });
+
+  useEffect(() => {
+    if (!isOpen) return;
+    if (!triggerRef.current) return;
+    const rect = triggerRef.current.getBoundingClientRect();
+    const popoverWidth = 260;
+    const popoverHeight = 350;
+
+    const finalAlign = align === 'auto'
+      ? (rect.left + popoverWidth > (typeof window !== 'undefined' ? window.innerWidth : 1024) - 16 ? 'end' : 'start')
+      : align;
+
+    const finalSide = side === 'auto'
+      ? (rect.bottom + popoverHeight > (typeof window !== 'undefined' ? window.innerHeight : 768) - 16 ? 'top' : 'bottom')
+      : side;
+
+    setComputedPlacement({ align: finalAlign, side: finalSide });
+  }, [isOpen, align, side]);
 
   const {
     hsv,
@@ -73,6 +103,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
     <div className={`relative inline-flex items-center ${className}`} ref={popoverRef}>
       {children ? (
         <div
+          ref={triggerRef as any}
           data-testid="color-picker-custom-trigger"
           onClick={() => setIsOpen((prev) => !prev)}
           className="inline-flex cursor-pointer"
@@ -81,6 +112,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
         </div>
       ) : (
         <button
+          ref={triggerRef as any}
           type="button"
           data-testid="color-picker-trigger"
           onClick={() => setIsOpen((prev) => !prev)}
@@ -129,6 +161,8 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
           hasEyeDropper={hasEyeDropper}
           handleEyeDropper={handleEyeDropper}
           isFr={isFr}
+          align={computedPlacement.align}
+          side={computedPlacement.side}
         />
       )}
     </div>

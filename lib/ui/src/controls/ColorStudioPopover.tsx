@@ -25,6 +25,8 @@ export interface ColorStudioPopoverProps {
   hasEyeDropper: boolean;
   handleEyeDropper: () => void;
   isFr?: boolean;
+  align?: 'start' | 'end';
+  side?: 'top' | 'bottom';
 }
 
 export const ColorStudioPopover: React.FC<ColorStudioPopoverProps> = ({
@@ -44,6 +46,8 @@ export const ColorStudioPopover: React.FC<ColorStudioPopoverProps> = ({
   hasEyeDropper,
   handleEyeDropper,
   isFr = false,
+  align = 'start',
+  side = 'bottom',
 }) => {
   const [copied, setCopied] = useState(false);
 
@@ -53,10 +57,13 @@ export const ColorStudioPopover: React.FC<ColorStudioPopoverProps> = ({
     setTimeout(() => setCopied(false), 1500);
   };
 
+  const sideClass = side === 'top' ? 'bottom-full mb-2' : 'top-full mt-2';
+  const alignClass = align === 'end' ? 'right-0' : 'left-0';
+
   return (
     <div
       data-testid="color-picker-popover"
-      className="absolute top-full left-0 mt-2 z-50 w-64 p-3 rounded-2xl bg-white dark:bg-zinc-950 border border-zinc-200/90 dark:border-white/15 shadow-2xl space-y-3 select-none"
+      className={`absolute ${sideClass} ${alignClass} z-50 w-64 p-3 rounded-2xl bg-white dark:bg-zinc-950 border border-zinc-200/90 dark:border-white/15 shadow-2xl space-y-3 select-none`}
     >
       {/* En-tête popover */}
       <div className="flex items-center justify-between pb-1.5 border-b border-zinc-100 dark:border-zinc-800">

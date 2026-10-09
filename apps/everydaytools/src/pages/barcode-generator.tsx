@@ -84,7 +84,7 @@ export default function BarcodeGenerator() {
         />
 
         {/* L'Atelier Monolithique Studio */}
-        <div className="w-full rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-950 overflow-hidden shadow-xs">
+        <div className="w-full rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-950 shadow-xs relative">
           <div className="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-zinc-200 dark:divide-white/10">
             {/* Zone 1 : Le Canvas Héro du Spécimen */}
             <div className="lg:col-span-8 flex flex-col">

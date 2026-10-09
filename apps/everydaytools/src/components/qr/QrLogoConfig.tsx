@@ -148,6 +148,7 @@ export function QrLogoConfig({
               <ColorPicker
                 value={iconColor}
                 onChange={handleIconColorChange}
+                align="end"
               />
             </div>
           )}

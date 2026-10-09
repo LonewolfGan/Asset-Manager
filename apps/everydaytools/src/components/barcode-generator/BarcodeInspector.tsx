@@ -202,7 +202,13 @@ export function BarcodeInspector({
 
         <div className="flex items-center justify-between text-xs">
           <span className="text-zinc-500 font-mono">{isFr ? 'Encre :' : 'Ink:'}</span>
-          <ColorPicker value={inkColor} onChange={onInkColorChange} isFr={isFr} />
+          <ColorPicker
+            value={inkColor}
+            onChange={onInkColorChange}
+            isFr={isFr}
+            align="end"
+            side="top"
+          />
         </div>
 
 

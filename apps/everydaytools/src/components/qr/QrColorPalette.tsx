@@ -61,6 +61,7 @@ export function QrColorPalette({
             value={bgColor}
             onChange={setBgColor}
             isFr={isFr}
+            align="end"
           />
         </div>
       </div>

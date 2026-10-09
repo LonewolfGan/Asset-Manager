@@ -12,9 +12,35 @@ export const ColorPickerField: React.FC<ColorPickerFieldProps> = ({
   isFr = false,
   className = '',
   disabled = false,
+  align = 'auto',
+  side = 'auto',
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const popoverRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  const [computedPlacement, setComputedPlacement] = useState<{ align: 'start' | 'end'; side: 'top' | 'bottom' }>({
+    align: align === 'end' ? 'end' : 'start',
+    side: side === 'top' ? 'top' : 'bottom',
+  });
+
+  useEffect(() => {
+    if (!isOpen) return;
+    if (!triggerRef.current) return;
+    const rect = triggerRef.current.getBoundingClientRect();
+    const popoverWidth = 260;
+    const popoverHeight = 350;
+
+    const finalAlign = align === 'auto'
+      ? (rect.left + popoverWidth > (typeof window !== 'undefined' ? window.innerWidth : 1024) - 16 ? 'end' : 'start')
+      : align;
+
+    const finalSide = side === 'auto'
+      ? (rect.bottom + popoverHeight > (typeof window !== 'undefined' ? window.innerHeight : 768) - 16 ? 'top' : 'bottom')
+      : side;
+
+    setComputedPlacement({ align: finalAlign, side: finalSide });
+  }, [isOpen, align, side]);
 
   const {
     hsv,
@@ -69,6 +95,7 @@ export const ColorPickerField: React.FC<ColorPickerFieldProps> = ({
 
       {/* Déclencheur Studio : Pastille + HEX + Pipette */}
       <button
+        ref={triggerRef}
         type="button"
         data-testid="color-picker-trigger"
         disabled={disabled}
@@ -114,6 +141,8 @@ export const ColorPickerField: React.FC<ColorPickerFieldProps> = ({
           hasEyeDropper={hasEyeDropper}
           handleEyeDropper={handleEyeDropper}
           isFr={isFr}
+          align={computedPlacement.align}
+          side={computedPlacement.side}
         />
       )}
     </div>
