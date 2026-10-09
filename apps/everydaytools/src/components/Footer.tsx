@@ -200,7 +200,7 @@ export default function Footer() {
         aria-hidden="true"
       >
         <span
-          className="text-foreground/25 dark:text-foreground/20 font-black tracking-[-0.03em] whitespace-nowrap text-center select-none"
+          className="footer-dot-matrix-wave font-black tracking-[-0.03em] whitespace-nowrap text-center select-none"
           style={{
             fontFamily: '"Bricolage Grotesque", "Outfit", "Space Grotesk", system-ui, sans-serif',
             fontSize: 'clamp(3.5rem, 13.5vw, 16rem)',

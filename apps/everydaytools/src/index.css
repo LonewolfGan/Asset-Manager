@@ -796,3 +796,46 @@ details[open] .faq-chevron {
   transform: rotate(180deg);
 }
 
+/* ─── FOOTER DOT MATRIX WAVE ANIMATION ─── */
+@keyframes footer-dot-wave {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+.footer-dot-matrix-wave {
+  background-image: linear-gradient(
+    90deg,
+    rgba(161, 161, 170, 0.25) 0%,
+    rgba(161, 161, 170, 0.25) 35%,
+    rgba(255, 107, 53, 0.95) 48%,
+    #FF6B35 50%,
+    rgba(255, 107, 53, 0.95) 52%,
+    rgba(161, 161, 170, 0.25) 65%,
+    rgba(161, 161, 170, 0.25) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: footer-dot-wave 7s linear infinite;
+}
+
+[data-theme="dark"] .footer-dot-matrix-wave {
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.18) 35%,
+    rgba(255, 107, 53, 0.95) 48%,
+    #FF6B35 50%,
+    rgba(255, 107, 53, 0.95) 52%,
+    rgba(255, 255, 255, 0.18) 65%,
+    rgba(255, 255, 255, 0.18) 100%
+  );
+}
+
+
