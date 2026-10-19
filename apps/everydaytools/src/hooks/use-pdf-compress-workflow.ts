@@ -142,7 +142,8 @@ export function usePdfCompressWorkflow({ isFr }: UsePdfCompressWorkflowOptions) 
       );
       const gainHeader = res.headers.get('X-Compression-Gain');
       const calculatedGain = calculateGain(originalSize, compressedSize);
-      const gain = gainHeader ? parseInt(gainHeader, 10) : calculatedGain;
+      const parsedGain = gainHeader ? parseInt(gainHeader, 10) : NaN;
+      const gain = Number.isFinite(parsedGain) ? parsedGain : calculatedGain;
 
       setLiveBytes(compressedSize);
       trackToolUsed('pdf-compress', 'pdf');

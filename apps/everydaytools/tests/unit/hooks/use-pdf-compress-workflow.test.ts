@@ -142,4 +142,33 @@ describe('usePdfCompressWorkflow (TDD)', () => {
     expect(hook.current.result).toBeNull();
     expect(hook.current.error).toBe('Invalid PDF syntax');
   });
+
+  it('safely falls back to calculated gain when X-Compression-Gain header is corrupt or missing', async () => {
+    const file = new File([new Uint8Array(4000)], 'test.pdf', {
+      type: 'application/pdf',
+    });
+    const mockBlob = new Blob([new Uint8Array(2000)], { type: 'application/pdf' });
+
+    globalThis.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      blob: async () => mockBlob,
+      headers: new Headers({
+        'X-Original-Size': '4000',
+        'X-Compressed-Size': '2000',
+        'X-Compression-Gain': 'invalid_nan',
+      }),
+    });
+
+    const hook = renderWorkflowHook(false);
+
+    act(() => {
+      hook.current.validateAndSetFile(file);
+    });
+
+    await act(async () => {
+      await hook.current.handleCompress();
+    });
+
+    expect(hook.current.result?.gain).toBe(50);
+  });
 });

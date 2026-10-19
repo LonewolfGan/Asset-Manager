@@ -164,7 +164,7 @@ export async function compressPdfBuffer(
         pdfDoc.setProducer("EverydayTools");
         pdfDoc.setCreator("EverydayTools");
         const stripped = Buffer.from(await pdfDoc.save({ useObjectStreams: true }));
-        if (stripped.length < finalBuffer.length) {
+        if (stripped.length > 0 && stripped.length < finalBuffer.length) {
           finalBuffer = stripped;
         }
       } catch {}
