@@ -88,6 +88,7 @@ export async function compressToTargetBytes(
   input: Buffer,
   mime: string,
   targetBytes: number,
+  isGraphic = false,
 ): Promise<Buffer> {
   let cachedDeflate: Buffer | undefined;
   if (mime === "image/png") {
@@ -105,7 +106,7 @@ export async function compressToTargetBytes(
 
   for (let i = 0; i < 6; i++) {
     const mid = Math.round((lo + hi) / 2);
-    const { output } = await compressAtQuality(input, mime, mid, cachedDeflate, true);
+    const { output } = await compressAtQuality(input, mime, mid, cachedDeflate, true, isGraphic);
     if (output.length <= targetBytes) {
       best = output;
       lo = mid + 1;
@@ -116,7 +117,7 @@ export async function compressToTargetBytes(
   }
 
   if (!best) {
-    const { output } = await compressAtQuality(input, mime, 1, cachedDeflate, true);
+    const { output } = await compressAtQuality(input, mime, 1, cachedDeflate, true, isGraphic);
     best = output;
   }
   return best;
@@ -163,7 +164,7 @@ export async function compressImageBuffer(
   let outMime: string;
 
   if (targetKB > 0) {
-    output = await compressToTargetBytes(workingBuffer, mime, targetKB * 1024);
+    output = await compressToTargetBytes(workingBuffer, mime, targetKB * 1024, isGraphic);
     const fmt = sharpFormatFromMime(mime);
     outMime = fmt === "jpeg" ? "image/jpeg" : `image/${fmt}`;
   } else {

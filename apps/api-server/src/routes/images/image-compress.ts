@@ -73,7 +73,7 @@ router.post("/tools/image-compress", upload.single("file"), guardImage, async (r
       "X-Original-Size": String(result.originalSize),
       "X-Compressed-Size": String(result.compressedSize),
       "X-Compression-Gain": String(result.gain),
-      "Content-Disposition": `attachment; filename="compressed_${baseName}.${result.ext}"`,
+      "Content-Disposition": buildContentDisposition(`compressed_${baseName}.${result.ext}`, result.ext),
       "Cache-Control": "no-store",
       "Access-Control-Expose-Headers": "X-Original-Size,X-Compressed-Size,X-Compression-Gain",
     });

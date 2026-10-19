@@ -226,10 +226,27 @@ describe("Image Compression Optimization (TDD)", () => {
       .toBuffer();
 
     const targetKB = 5;
-    const result = await compressImageBuffer(rawPng, "image/png", { targetKB });
+    const result = await compressImageBuffer(rawPng, "image/png", { targetKB, isGraphic: true });
     assert.strictEqual(result.compressedSize <= result.originalSize, true);
     assert.strictEqual(result.buffer.length > 0, true);
     assert.strictEqual(result.mime, "image/png");
+  });
+
+  it("supports isGraphic flag with compressToTargetBytes", async () => {
+    const rawPng = await sharp({
+      create: {
+        width: 100,
+        height: 100,
+        channels: 4,
+        background: { r: 255, g: 0, b: 0, alpha: 1 },
+      },
+    })
+      .png()
+      .toBuffer();
+
+    const compressed = await compressToTargetBytes(rawPng, "image/png", 1000, true);
+    assert.strictEqual(compressed instanceof Buffer, true);
+    assert.strictEqual(compressed.length > 0, true);
   });
 });
 
