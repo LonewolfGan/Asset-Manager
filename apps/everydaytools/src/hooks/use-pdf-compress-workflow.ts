@@ -38,28 +38,6 @@ export function usePdfCompressWorkflow({ isFr }: UsePdfCompressWorkflowOptions) 
 
   const file = files[0];
 
-  // Fluid telemetry countdown during processing
-  useEffect(() => {
-    if (!isProcessing || !file) return;
-
-    const startSize = file.size;
-    const selectedPreset = presets.find((p) => p.id === level) ?? presets[1];
-    const targetSize = Math.max(Math.round(startSize * selectedPreset.ratio), 1024);
-    const duration = 2400;
-    const startTime = performance.now();
-
-    const interval = setInterval(() => {
-      const elapsed = performance.now() - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const ease = 1 - Math.pow(1 - progress, 3);
-      const current = Math.round(startSize - (startSize - targetSize) * ease);
-      setLiveBytes(current);
-
-      if (progress >= 1) clearInterval(interval);
-    }, 25);
-
-    return () => clearInterval(interval);
-  }, [isProcessing, file, level, presets]);
 
   const handleReset = useCallback(() => {
     setFiles([]);
@@ -136,13 +114,10 @@ export function usePdfCompressWorkflow({ isFr }: UsePdfCompressWorkflowOptions) 
       fd.append('file', file);
       fd.append('level', level);
 
-      const [res] = await Promise.all([
-        fetch(apiUrl('/api/tools/pdf-compress'), {
-          method: 'POST',
-          body: fd,
-        }),
-        new Promise((resolve) => setTimeout(resolve, 2400)),
-      ]);
+      const res = await fetch(apiUrl('/api/tools/pdf-compress'), {
+        method: 'POST',
+        body: fd,
+      });
 
       if (!res.ok) {
         const err = (await res.json().catch(() => ({}))) as {
@@ -169,6 +144,7 @@ export function usePdfCompressWorkflow({ isFr }: UsePdfCompressWorkflowOptions) 
       const calculatedGain = calculateGain(originalSize, compressedSize);
       const gain = gainHeader ? parseInt(gainHeader, 10) : calculatedGain;
 
+      setLiveBytes(compressedSize);
       trackToolUsed('pdf-compress', 'pdf');
       setResult({
         blob,
