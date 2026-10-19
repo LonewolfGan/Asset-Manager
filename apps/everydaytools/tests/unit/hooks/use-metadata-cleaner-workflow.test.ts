@@ -35,6 +35,7 @@ function renderWorkflowHook(isFr: boolean = true) {
 
 describe('useMetadataCleanerWorkflow (TDD RED Phase)', () => {
   beforeEach(() => {
+    vi.restoreAllMocks();
     consumeHandoffFile();
   });
 
@@ -151,6 +152,84 @@ describe('useMetadataCleanerWorkflow (TDD RED Phase)', () => {
     });
 
     expect(hook.current.activeFilter).toBe('all');
+    hook.unmount();
+  });
+
+  it('executes handleClean for image file in-browser without fetch network calls', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch');
+    const origImage = globalThis.Image;
+    class MockImage {
+      naturalWidth = 200;
+      naturalHeight = 200;
+      onload: (() => void) | null = null;
+      set src(_v: string) {
+        setTimeout(() => this.onload && this.onload(), 0);
+      }
+    }
+    globalThis.Image = MockImage as unknown as typeof Image;
+
+    const origCreateElement = document.createElement.bind(document);
+    vi.spyOn(document, 'createElement').mockImplementation((tagName: string) => {
+      if (tagName === 'canvas') {
+        return {
+          width: 0,
+          height: 0,
+          getContext: vi.fn(() => ({
+            drawImage: vi.fn(),
+          })),
+          toBlob: (cb: (b: Blob | null) => void, mime?: string) => {
+            cb(new Blob(['clean-image-data'], { type: mime || 'image/png' }));
+          },
+        } as unknown as HTMLCanvasElement;
+      }
+      return origCreateElement(tagName);
+    });
+
+    const hook = renderWorkflowHook(true);
+    const imgFile = new File(['png-data'], 'family.png', { type: 'image/png' });
+
+    act(() => {
+      hook.current.setFiles([imgFile]);
+    });
+
+    await act(async () => {
+      await hook.current.handleClean();
+    });
+
+    expect(fetchSpy).not.toHaveBeenCalled();
+    expect(hook.current.result).not.toBeNull();
+    expect(hook.current.result?.filename).toBe('anonymized_family.png');
+    expect(hook.current.result?.blob).toBeInstanceOf(Blob);
+    expect(hook.current.isProcessing).toBe(false);
+
+    globalThis.Image = origImage;
+    hook.unmount();
+  });
+
+  it('executes handleClean for PDF file in-browser without fetch network calls', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch');
+    const { PDFDocument } = await import('pdf-lib');
+    const doc = await PDFDocument.create();
+    doc.addPage([200, 200]);
+    doc.setTitle('Confidential');
+    const pdfBytes = await doc.save();
+    const pdfFile = new File([pdfBytes], 'report.pdf', { type: 'application/pdf' });
+
+    const hook = renderWorkflowHook(true);
+
+    act(() => {
+      hook.current.setFiles([pdfFile]);
+    });
+
+    await act(async () => {
+      await hook.current.handleClean();
+    });
+
+    expect(fetchSpy).not.toHaveBeenCalled();
+    expect(hook.current.result).not.toBeNull();
+    expect(hook.current.result?.filename).toBe('anonymized_report.pdf');
+    expect(hook.current.result?.blob.type).toBe('application/pdf');
+    expect(hook.current.isProcessing).toBe(false);
     hook.unmount();
   });
 });

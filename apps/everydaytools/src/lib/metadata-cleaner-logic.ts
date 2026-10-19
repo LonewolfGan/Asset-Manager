@@ -1,7 +1,6 @@
 import type { ConversionFormat } from '@/components/conversion';
 import type { MetadataTag } from '@/lib/metadata-inspector';
 import { formatBytes } from '@/lib/utils';
-import { apiUrl } from '@/lib/apiBase';
 
 export interface CleanResult {
   blob: Blob;
@@ -144,27 +143,5 @@ export async function cleanPdfMetadata(file: File): Promise<Blob> {
 }
 
 export async function cleanImageMetadata(file: File, isFr: boolean): Promise<Blob> {
-  let blob: Blob | null = null;
-
-  try {
-    const formData = new FormData();
-    formData.append('file', file);
-
-    const res = await fetch(apiUrl('/api/metadata/clean'), {
-      method: 'POST',
-      body: formData,
-    });
-
-    if (res.ok) {
-      blob = await res.blob();
-    }
-  } catch {
-    // Backend unreachable -> fall through to client-side canvas
-  }
-
-  if (!blob) {
-    blob = await cleanImageWithCanvas(file, isFr);
-  }
-
-  return blob;
+  return cleanImageWithCanvas(file, isFr);
 }

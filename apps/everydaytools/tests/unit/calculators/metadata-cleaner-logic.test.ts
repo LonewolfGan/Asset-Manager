@@ -104,40 +104,30 @@ describe('metadata-cleaner-logic', () => {
   });
 
   describe('cleanImageMetadata', () => {
+    let origImage: typeof Image;
+    let origCreateObjectURL: typeof URL.createObjectURL;
+    let origRevokeObjectURL: typeof URL.revokeObjectURL;
+
     beforeEach(() => {
       vi.restoreAllMocks();
-    });
+      origImage = globalThis.Image;
+      origCreateObjectURL = URL.createObjectURL;
+      origRevokeObjectURL = URL.revokeObjectURL;
 
-    it('successfully calls backend /api/metadata/clean when reachable', async () => {
-      const mockBlob = new Blob(['cleaned-image-binary'], { type: 'image/jpeg' });
-      const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce({
-        ok: true,
-        blob: () => Promise.resolve(mockBlob),
-      } as unknown as Response);
-
-      const file = new File(['raw-image'], 'photo.jpg', { type: 'image/jpeg' });
-      const result = await cleanImageMetadata(file, true);
-
-      expect(fetchSpy).toHaveBeenCalledTimes(1);
-      const calledUrl = fetchSpy.mock.calls[0]?.[0] as string;
-      expect(calledUrl).toContain('/api/metadata/clean');
-      expect(result).toBe(mockBlob);
-    });
-
-    it('falls back to canvas when backend fetch fails', async () => {
-      vi.spyOn(globalThis, 'fetch').mockRejectedValueOnce(new Error('Network error'));
-
-      // Mock URL.createObjectURL and URL.revokeObjectURL
-      const origCreate = URL.createObjectURL;
-      const origRevoke = URL.revokeObjectURL;
-      URL.createObjectURL = vi.fn(() => 'blob:mock-url');
+      URL.createObjectURL = vi.fn(() => 'blob:mock-preview-url');
       URL.revokeObjectURL = vi.fn();
+    });
 
-      // Mock Image and canvas in jsdom
-      const origImage = globalThis.Image;
+    afterEach(() => {
+      globalThis.Image = origImage;
+      URL.createObjectURL = origCreateObjectURL;
+      URL.revokeObjectURL = origRevokeObjectURL;
+    });
+
+    function setupCanvasMock(capturedMimes?: string[]) {
       class MockImage {
-        naturalWidth = 100;
-        naturalHeight = 100;
+        naturalWidth = 800;
+        naturalHeight = 600;
         onload: (() => void) | null = null;
         onerror: (() => void) | null = null;
         set src(_v: string) {
@@ -147,32 +137,104 @@ describe('metadata-cleaner-logic', () => {
       globalThis.Image = MockImage as unknown as typeof Image;
 
       const origCreateElement = document.createElement.bind(document);
-      const mockBlob = new Blob(['canvas-fallback'], { type: 'image/png' });
       vi.spyOn(document, 'createElement').mockImplementation((tagName: string) => {
         if (tagName === 'canvas') {
           return {
             width: 0,
             height: 0,
-            getContext: () => ({
+            getContext: vi.fn(() => ({
               drawImage: vi.fn(),
-            }),
+            })),
             toBlob: (cb: (b: Blob | null) => void, mime?: string) => {
-              cb(mockBlob);
+              if (capturedMimes && mime) capturedMimes.push(mime);
+              cb(new Blob(['cleaned-canvas-bytes'], { type: mime || 'image/jpeg' }));
             },
           } as unknown as HTMLCanvasElement;
         }
         return origCreateElement(tagName);
       });
+    }
+
+    it('cleans image client-side via canvas without any network request', async () => {
+      const fetchSpy = vi.spyOn(globalThis, 'fetch');
+      setupCanvasMock();
+
+      const file = new File(['raw-image-bytes'], 'photo.jpg', { type: 'image/jpeg' });
+      const result = await cleanImageMetadata(file, true);
+
+      expect(fetchSpy).not.toHaveBeenCalled();
+      expect(result).toBeInstanceOf(Blob);
+      expect(result.type).toBe('image/jpeg');
+    });
+
+    it('preserves image/png mime type during canvas stripping', async () => {
+      const fetchSpy = vi.spyOn(globalThis, 'fetch');
+      const capturedMimes: string[] = [];
+      setupCanvasMock(capturedMimes);
 
       const file = new File(['png-data'], 'screenshot.png', { type: 'image/png' });
       const result = await cleanImageMetadata(file, true);
 
-      expect(result).toBe(mockBlob);
+      expect(fetchSpy).not.toHaveBeenCalled();
+      expect(capturedMimes).toContain('image/png');
+      expect(result.type).toBe('image/png');
+    });
 
-      // Restore
-      URL.createObjectURL = origCreate;
-      URL.revokeObjectURL = origRevoke;
-      globalThis.Image = origImage;
+    it('preserves image/webp mime type during canvas stripping', async () => {
+      const fetchSpy = vi.spyOn(globalThis, 'fetch');
+      const capturedMimes: string[] = [];
+      setupCanvasMock(capturedMimes);
+
+      const file = new File(['webp-data'], 'graphic.webp', { type: 'image/webp' });
+      const result = await cleanImageMetadata(file, false);
+
+      expect(fetchSpy).not.toHaveBeenCalled();
+      expect(capturedMimes).toContain('image/webp');
+      expect(result.type).toBe('image/webp');
+    });
+
+    it('rejects with localized error when image reading fails', async () => {
+      class FailingImage {
+        onload: (() => void) | null = null;
+        onerror: (() => void) | null = null;
+        set src(_v: string) {
+          setTimeout(() => this.onerror && this.onerror(), 0);
+        }
+      }
+      globalThis.Image = FailingImage as unknown as typeof Image;
+
+      const file = new File(['corrupt-data'], 'corrupt.jpg', { type: 'image/jpeg' });
+      await expect(cleanImageMetadata(file, true)).rejects.toThrow("Erreur lors de la lecture de l'image");
+      await expect(cleanImageMetadata(file, false)).rejects.toThrow("Error reading image");
+      expect(URL.revokeObjectURL).toHaveBeenCalled();
+    });
+
+    it('rejects when canvas 2d context cannot be acquired', async () => {
+      class MockImage {
+        naturalWidth = 100;
+        naturalHeight = 100;
+        onload: (() => void) | null = null;
+        set src(_v: string) {
+          setTimeout(() => this.onload && this.onload(), 0);
+        }
+      }
+      globalThis.Image = MockImage as unknown as typeof Image;
+
+      const origCreateElement = document.createElement.bind(document);
+      vi.spyOn(document, 'createElement').mockImplementation((tagName: string) => {
+        if (tagName === 'canvas') {
+          return {
+            width: 0,
+            height: 0,
+            getContext: () => null,
+          } as unknown as HTMLCanvasElement;
+        }
+        return origCreateElement(tagName);
+      });
+
+      const file = new File(['data'], 'test.png', { type: 'image/png' });
+      await expect(cleanImageMetadata(file, true)).rejects.toThrow("Impossible de nettoyer l'image");
+      await expect(cleanImageMetadata(file, false)).rejects.toThrow("Unable to clean image");
     });
   });
 
