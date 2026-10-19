@@ -75,10 +75,8 @@ export async function convertImageBuffer(
 
   const qualityNum = quality ? Math.min(100, Math.max(1, quality)) : 80;
   let pipeline = createColorManagedPipeline(inputBuffer);
-  const meta = await pipeline.metadata();
-  const targetFormat = sharpFormat;
 
-  if (targetFormat === "jpeg") {
+  if (sharpFormat === "jpeg") {
     pipeline = pipeline.flatten({ background: { r: 255, g: 255, b: 255 } });
   }
   if (width || height) {
@@ -190,7 +188,7 @@ router.post("/convert/image-to-pdf", defaultRateLimit, upload.single("file"), gu
     const maxW = A4W - 2 * MARGIN, maxH = A4H - 2 * MARGIN;
     const scale = Math.min(maxW / img.width, maxH / img.height, 1);
     const dw = img.width * scale, dh = img.height * scale;
-    page.drawImage(img, { x: (A4W - dw) / 2, y: (A4H - dw) / 2, width: dw, height: dh });
+    page.drawImage(img, { x: (A4W - dw) / 2, y: (A4H - dh) / 2, width: dw, height: dh });
 
     const pdfBytes = await pdfDoc.save();
     res.set({

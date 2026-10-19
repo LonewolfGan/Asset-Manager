@@ -95,7 +95,7 @@ export async function convertHeicBuffer(
     const maxW = A4W - 2 * MARGIN, maxH = A4H - 2 * MARGIN;
     const scale = Math.min(maxW / img.width, maxH / img.height, 1);
     const dw = img.width * scale, dh = img.height * scale;
-    page.drawImage(img, { x: (A4W - dw) / 2, y: (A4H - dw) / 2, width: dw, height: dh });
+    page.drawImage(img, { x: (A4W - dw) / 2, y: (A4H - dh) / 2, width: dw, height: dh });
     const pdfBytes = await pdfDoc.save();
     return { buffer: Buffer.from(pdfBytes), mime: "application/pdf", ext: "pdf" };
   }

@@ -1,6 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import sharp from "sharp";
+import { PDFDocument } from "pdf-lib";
 import { convertImageBuffer, buildContentDisposition } from "./convert-image.js";
 import { convertHeicBuffer } from "./heic-logic.js";
 
@@ -149,6 +150,19 @@ describe("Universal Image Converter & Quality Optimization (TDD)", () => {
       assert.strictEqual(mime, "application/pdf");
       assert.strictEqual(ext, "pdf");
       assert.strictEqual(buffer.subarray(0, 4).toString(), "%PDF");
+    });
+
+    it("converts a tall portrait image buffer to PDF with valid vertical centering", async () => {
+      const sample = await makeImg(100, 400, 3, { r: 50, g: 150, b: 250 });
+      const { buffer, mime, ext } = await convertHeicBuffer(sample, { outputMime: "application/pdf" });
+      assert.strictEqual(mime, "application/pdf");
+      assert.strictEqual(ext, "pdf");
+      const pdfDoc = await PDFDocument.load(buffer);
+      assert.strictEqual(pdfDoc.getPageCount(), 1);
+      const page = pdfDoc.getPages()[0];
+      const { width, height } = page.getSize();
+      assert.strictEqual(width, 595.28);
+      assert.strictEqual(height, 841.89);
     });
 
     it("rejects invalid HEIC buffer or unsupported output format", async () => {
