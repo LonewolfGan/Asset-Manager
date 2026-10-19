@@ -1,4 +1,4 @@
-import { apiUrl } from '@/lib/apiBase';
+import mammoth from 'mammoth';
 import type { ConversionFormat } from '@/components/conversion';
 
 export interface WordToHtmlResult {
@@ -76,44 +76,43 @@ export async function convertWordToHtml(
   options: { isFr: boolean; errorFallback?: string }
 ): Promise<WordToHtmlResult> {
   const { isFr, errorFallback } = options;
-  const fd = new FormData();
-  fd.append('file', file);
 
-  const [res] = await Promise.all([
-    fetch(apiUrl('/api/convert/docx-to-html'), {
-      method: 'POST',
-      body: fd,
-    }),
-    new Promise((resolve) => setTimeout(resolve, 800)),
-  ]);
-
-  if (!res.ok) {
-    const errJson = (await res.json().catch(() => ({}))) as {
-      error?: string;
-      message?: string;
-    };
-    throw new Error(
-      errJson.message ??
-        errJson.error ??
-        errorFallback ??
-        (isFr
-          ? 'Échec de la conversion en HTML. Veuillez réessayer.'
-          : 'Failed to convert to HTML. Please try again.')
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { value: htmlContent } = await mammoth.convertToHtml(
+      { arrayBuffer },
+      {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        convertImage: mammoth.images.imgElement((element: any) =>
+          element.read('base64').then((imageBuffer: string) => ({
+            src: `data:${element.contentType};base64,${imageBuffer}`,
+          }))
+        ),
+      }
     );
+
+    const safeHtml = htmlContent ?? '';
+    const blob = new Blob([safeHtml], { type: 'text/html;charset=utf-8' });
+    const filename = buildHtmlFilename(file.name);
+
+    return {
+      blob,
+      filename,
+      sizeBefore: file.size,
+      sizeAfter: blob.size,
+      textOutput: safeHtml,
+    };
+  } catch (err) {
+    const message =
+      err instanceof Error && err.message
+        ? err.message
+        : (errorFallback ??
+            (isFr
+              ? 'Échec de la conversion en HTML. Veuillez réessayer.'
+              : 'Failed to convert to HTML. Please try again.'));
+    throw new Error(message);
   }
-
-  const data = (await res.json().catch(() => null)) as { html?: string } | null;
-  const htmlContent = data?.html ?? '';
-  const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
-  const filename = buildHtmlFilename(file.name);
-
-  return {
-    blob,
-    filename,
-    sizeAfter: blob.size,
-    sizeBefore: file.size,
-    textOutput: htmlContent,
-  };
 }
 
 export function triggerDownload(blob: Blob, filename: string): void {

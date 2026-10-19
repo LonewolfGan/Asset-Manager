@@ -159,23 +159,14 @@ describe('useWordToHtmlWorkflow [TDD-Lock ECC]', () => {
       sizeAfter: 85,
       textOutput: '<article><h1>Doc</h1></article>',
     };
-
     vi.mocked(wordToHtmlLogic.convertWordToHtml).mockResolvedValue(mockResult);
-
-    act(() => {
-      hook.current.validateAndSetFile(validFile);
-    });
+    act(() => hook.current.validateAndSetFile(validFile));
 
     let convertPromise: Promise<void>;
-    act(() => {
-      convertPromise = hook.current.handleConvert();
-    });
-
+    act(() => { convertPromise = hook.current.handleConvert(); });
     expect(hook.current.isProcessing).toBe(true);
 
-    await act(async () => {
-      await convertPromise;
-    });
+    await act(async () => { await convertPromise; });
 
     expect(hook.current.isProcessing).toBe(false);
     expect(hook.current.result).toEqual(mockResult);
@@ -186,23 +177,13 @@ describe('useWordToHtmlWorkflow [TDD-Lock ECC]', () => {
   it('handles conversion error properly with toast and analytics', async () => {
     const hook = renderWorkflowHook({ isFr: true });
     const validFile = new File(['content'], 'broken.docx');
+    vi.mocked(wordToHtmlLogic.convertWordToHtml).mockRejectedValue(new Error('Corrupted docx archive'));
 
-    vi.mocked(wordToHtmlLogic.convertWordToHtml).mockRejectedValue(
-      new Error('Corrupted docx archive')
-    );
-
-    act(() => {
-      hook.current.validateAndSetFile(validFile);
-    });
-
+    act(() => hook.current.validateAndSetFile(validFile));
     let convertPromise: Promise<void>;
-    act(() => {
-      convertPromise = hook.current.handleConvert();
-    });
+    act(() => { convertPromise = hook.current.handleConvert(); });
 
-    await act(async () => {
-      await convertPromise;
-    });
+    await act(async () => { await convertPromise; });
 
     expect(hook.current.isProcessing).toBe(false);
     expect(hook.current.result).toBeNull();
@@ -210,6 +191,35 @@ describe('useWordToHtmlWorkflow [TDD-Lock ECC]', () => {
     expect(toastMock).toHaveBeenCalledWith(
       expect.objectContaining({ variant: 'destructive', description: 'Corrupted docx archive' })
     );
+    hook.unmount();
+  });
+
+  it('extracts html without network calls or timer delays', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch');
+    const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout');
+    const mockResult = {
+      blob: new Blob(['<p>instant html</p>'], { type: 'text/html' }),
+      filename: 'instant.html',
+      sizeBefore: 100,
+      sizeAfter: 20,
+      textOutput: '<p>instant html</p>',
+    };
+    vi.mocked(wordToHtmlLogic.convertWordToHtml).mockResolvedValue(mockResult);
+
+    const hook = renderWorkflowHook();
+    const validFile = new File(['content'], 'instant.docx');
+    act(() => hook.current.validateAndSetFile(validFile));
+
+    let convertPromise: Promise<void>;
+    act(() => { convertPromise = hook.current.handleConvert(); });
+
+    await act(async () => { await convertPromise; });
+
+    expect(hook.current.result).toEqual(mockResult);
+    expect(fetchSpy).not.toHaveBeenCalled();
+    expect(setTimeoutSpy).not.toHaveBeenCalled();
+    fetchSpy.mockRestore();
+    setTimeoutSpy.mockRestore();
     hook.unmount();
   });
 

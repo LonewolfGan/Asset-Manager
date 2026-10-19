@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import mammoth from 'mammoth';
 import {
   getSourceFormat,
   getTargetFormat,
@@ -89,36 +90,95 @@ describe('word-to-html-logic', () => {
       vi.restoreAllMocks();
     });
 
-    it('converts word file to html result object', async () => {
+    it('converts docx to html in-browser via mammoth without network calls or timer delays', async () => {
       const mockFile = new File(['word content'], 'article.docx', {
         type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       });
+      const fakeBuffer = new ArrayBuffer(16);
+      vi.spyOn(mockFile, 'arrayBuffer').mockResolvedValue(fakeBuffer);
 
-      vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({ html: '<article><h1>Title</h1><p>Hello world</p></article>' }),
-      } as Response);
+      const convertSpy = vi.spyOn(mammoth, 'convertToHtml').mockResolvedValue({
+        value: '<article><h1>Title</h1><p>Hello world</p></article>',
+        messages: [],
+      });
+
+      const fetchSpy = vi.spyOn(globalThis, 'fetch');
+      const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout');
 
       const result = await convertWordToHtml(mockFile, { isFr: false });
 
+      expect(convertSpy).toHaveBeenCalledWith(
+        { arrayBuffer: fakeBuffer },
+        expect.objectContaining({ convertImage: expect.any(Function) })
+      );
+      expect(fetchSpy).not.toHaveBeenCalled();
+      expect(setTimeoutSpy).not.toHaveBeenCalled();
       expect(result.filename).toBe('article.html');
       expect(result.textOutput).toBe('<article><h1>Title</h1><p>Hello world</p></article>');
       expect(result.sizeBefore).toBe(mockFile.size);
-      expect(result.sizeAfter).toBeGreaterThan(0);
+      expect(result.sizeAfter).toBe(new Blob(['<article><h1>Title</h1><p>Hello world</p></article>']).size);
       expect(result.blob).toBeInstanceOf(Blob);
+      expect(result.blob.type).toBe('text/html;charset=utf-8');
     });
 
-    it('throws server error message if response is not ok', async () => {
-      const mockFile = new File(['bad'], 'corrupted.docx', { type: 'application/msword' });
+    it('configures mammoth image converter to transform embedded images to base64 data URLs', async () => {
+      const mockFile = new File(['mock docx'], 'doc-images.docx', {
+        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      });
+      vi.spyOn(mockFile, 'arrayBuffer').mockResolvedValue(new ArrayBuffer(8));
 
-      vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce({
-        ok: false,
-        json: async () => ({ error: 'Unable to parse document' }),
-      } as Response);
+      let imageConverterFn: any = null;
+      vi.spyOn(mammoth, 'convertToHtml').mockImplementation(async (_input, options: any) => {
+        imageConverterFn = options?.convertImage;
+        return { value: '<p>document with image</p>', messages: [] };
+      });
+
+      await convertWordToHtml(mockFile, { isFr: false });
+
+      expect(typeof imageConverterFn).toBe('function');
+
+      const fakeElement = {
+        contentType: 'image/png',
+        read: vi.fn().mockResolvedValue('iVBORw0KGgoAAAANSUhEUgAA'),
+      };
+      const convertedImage = await imageConverterFn(fakeElement);
+      expect(fakeElement.read).toHaveBeenCalledWith('base64');
+      expect(convertedImage[0].tag.attributes).toEqual({
+        src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA',
+      });
+    });
+
+    it('handles in-browser conversion failure with localized error message', async () => {
+      const mockFile = new File(['corrupted content'], 'broken.docx', {
+        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      });
+      vi.spyOn(mockFile, 'arrayBuffer').mockResolvedValue(new ArrayBuffer(8));
+      vi.spyOn(mammoth, 'convertToHtml').mockRejectedValue(new Error('Corrupt zip archive'));
+
+      const fetchSpy = vi.spyOn(globalThis, 'fetch');
+
+      await expect(convertWordToHtml(mockFile, { isFr: true })).rejects.toThrow(
+        'Corrupt zip archive'
+      );
+      expect(fetchSpy).not.toHaveBeenCalled();
+    });
+
+    it('falls back to custom errorFallback or localized default if mammoth rejects without message', async () => {
+      const mockFile = new File(['bad'], 'test.docx');
+      vi.spyOn(mockFile, 'arrayBuffer').mockResolvedValue(new ArrayBuffer(4));
+      vi.spyOn(mammoth, 'convertToHtml').mockRejectedValue('Unknown raw failure');
+
+      await expect(
+        convertWordToHtml(mockFile, { isFr: true, errorFallback: 'Erreur personnalisée' })
+      ).rejects.toThrow('Erreur personnalisée');
+
+      await expect(
+        convertWordToHtml(mockFile, { isFr: false })
+      ).rejects.toThrow('Failed to convert to HTML. Please try again.');
 
       await expect(
         convertWordToHtml(mockFile, { isFr: true })
-      ).rejects.toThrow('Unable to parse document');
+      ).rejects.toThrow('Échec de la conversion en HTML. Veuillez réessayer.');
     });
   });
 
