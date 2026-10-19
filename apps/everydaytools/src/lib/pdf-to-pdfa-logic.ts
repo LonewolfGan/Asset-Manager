@@ -76,13 +76,10 @@ export async function convertPdfToPdfa(
   fd.append('file', file);
   fd.append('conformance', '2b');
 
-  const [res] = await Promise.all([
-    fetch(apiUrl('/api/tools/pdf-to-pdfa'), {
-      method: 'POST',
-      body: fd,
-    }),
-    new Promise((resolve) => setTimeout(resolve, 800)),
-  ]);
+  const res = await fetch(apiUrl('/api/tools/pdf-to-pdfa'), {
+    method: 'POST',
+    body: fd,
+  });
 
   if (!res.ok) {
     const errJson = (await res.json().catch(() => ({}))) as {
