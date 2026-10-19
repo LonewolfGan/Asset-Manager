@@ -46,7 +46,7 @@ describe("Convert Doc Routes (TDD)", () => {
       try {
         const pdfBuf = await createSamplePdf();
         const formData = new FormData();
-        const blob = new Blob([pdfBuf], { type: "application/pdf" });
+        const blob = new Blob([new Uint8Array(pdfBuf)], { type: "application/pdf" });
         formData.append("file", blob, "rapport_trimestriel_été_2024.pdf");
 
         const res = await fetch(`http://127.0.0.1:${port}/convert/pdf-to-word`, {
@@ -91,7 +91,7 @@ describe("Convert Doc Routes (TDD)", () => {
       try {
         const pdfBuf = await createSamplePdf();
         const formData = new FormData();
-        const blob = new Blob([pdfBuf], { type: "application/pdf" });
+        const blob = new Blob([new Uint8Array(pdfBuf)], { type: "application/pdf" });
         formData.append("file", blob, "données_comptables_clôture.pdf");
 
         const res = await fetch(`http://127.0.0.1:${port}/convert/pdf-to-excel`, {
