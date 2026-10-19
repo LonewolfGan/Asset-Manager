@@ -126,13 +126,10 @@ export default function PdfToWord() {
       const fd = new FormData();
       fd.append('file', file);
 
-      const [res] = await Promise.all([
-        fetch(apiUrl('/api/convert/pdf-to-word'), {
-          method: 'POST',
-          body: fd,
-        }),
-        new Promise((resolve) => setTimeout(resolve, 2000)),
-      ]);
+      const res = await fetch(apiUrl('/api/convert/pdf-to-word'), {
+        method: 'POST',
+        body: fd,
+      });
 
       if (!res.ok) {
         const err = (await res.json().catch(() => ({}))) as { error?: string };

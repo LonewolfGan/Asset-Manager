@@ -124,13 +124,10 @@ export default function PdfToExcel() {
       const form = new FormData();
       form.append('file', file);
 
-      const [res] = await Promise.all([
-        fetch(apiUrl('/api/convert/pdf-to-excel'), {
-          method: 'POST',
-          body: form,
-        }),
-        new Promise((resolve) => setTimeout(resolve, 800)),
-      ]);
+      const res = await fetch(apiUrl('/api/convert/pdf-to-excel'), {
+        method: 'POST',
+        body: form,
+      });
 
       if (!res.ok) {
         const data = (await res.json().catch(() => ({}))) as {

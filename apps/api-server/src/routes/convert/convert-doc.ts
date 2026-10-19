@@ -12,6 +12,7 @@ import { join } from "path";
 import { upload, guardDocument } from "../../middlewares/upload.js";
 import { BIN, getPythonScriptPath } from "../../lib/binaries.js";
 import { sanitizeWinAnsi } from "../../lib/pdf-text.js";
+import { buildContentDisposition } from "./convert-image.js";
 
 const execFileAsync = promisify(execFile);
 const router: IRouter = Router();
@@ -184,7 +185,7 @@ router.post("/convert/pdf-to-word", upload.single("file"), guardDocument, async 
     const doc = new Document({ sections: [{ properties: {}, children }] });
     const buffer = await Packer.toBuffer(doc);
     res.set("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-    res.set("Content-Disposition", `attachment; filename="${baseName}.docx"`);
+    res.set("Content-Disposition", buildContentDisposition(`${baseName}.docx`, "docx"));
     res.set("Cache-Control", "no-store");
     res.send(buffer);
   } catch (err) {
@@ -222,7 +223,7 @@ router.post("/convert/pdf-to-excel", upload.single("file"), guardDocument, async
 
     const buf = XLSX.write(wb, { type: "buffer", bookType: "xlsx" });
     res.set("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-    res.set("Content-Disposition", `attachment; filename="${baseName}.xlsx"`);
+    res.set("Content-Disposition", buildContentDisposition(`${baseName}.xlsx`, "xlsx"));
     res.set("Cache-Control", "no-store");
     res.send(buf);
   } catch (err) {
