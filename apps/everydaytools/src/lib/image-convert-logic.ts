@@ -26,6 +26,18 @@ export function extForMime(mime: string): string {
   return map[mime] ?? 'img';
 }
 
+export function canConvertClientSide(fromMime: string, toMime: string, fileSize: number): boolean {
+  const MAX_CLIENT_SIZE = 15 * 1024 * 1024; // 15 MB
+  if (fileSize > MAX_CLIENT_SIZE) return false;
+  const normFrom = fromMime.toLowerCase();
+  const normTo = toMime.toLowerCase();
+  if (normFrom.includes('heic') || normFrom.includes('heif') || normFrom.includes('tiff') || normFrom.includes('tif')) {
+    return false;
+  }
+  const supportedTargets = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'];
+  return supportedTargets.includes(normTo);
+}
+
 export function getFormatInfo(
   mimeOrExt: string,
   fallbackLabel?: string,
@@ -195,15 +207,15 @@ export async function canvasToBlob(
     return new Blob([buf], { type: 'image/avif' });
   }
   if (mime === 'application/pdf') {
-    const jsPDF = (await import('jspdf')).jsPDF;
-    const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
-    const pdf = new jsPDF({
-      orientation: canvas.width > canvas.height ? 'landscape' : 'portrait',
-      unit: 'px',
-      format: [canvas.width, canvas.height],
-    });
-    pdf.addImage(dataUrl, 'JPEG', 0, 0, canvas.width, canvas.height);
-    return pdf.output('blob');
+    const { PDFDocument } = await import('pdf-lib');
+    const doc = await PDFDocument.create();
+    const page = doc.addPage([canvas.width, canvas.height]);
+    const pngDataUrl = canvas.toDataURL('image/png');
+    const pngBytes = Uint8Array.from(atob(pngDataUrl.split(',')[1]), (c) => c.charCodeAt(0));
+    const embedded = await doc.embedPng(pngBytes);
+    page.drawImage(embedded, { x: 0, y: 0, width: canvas.width, height: canvas.height });
+    const pdfBytes = await doc.save();
+    return new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
   }
   if (mime === 'image/svg+xml') {
     const dataUrl = canvas.toDataURL('image/png');

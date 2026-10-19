@@ -2,6 +2,8 @@ import { describe, it, expect } from 'vitest';
 import {
   extForMime,
   getFormatInfo,
+  canConvertClientSide,
+  canvasToBlob,
 } from '@/lib/image-convert-logic';
 
 describe('image-convert-logic pure helpers', () => {
@@ -57,4 +59,53 @@ describe('image-convert-logic pure helpers', () => {
       expect(custom.subLabel).toBe('Image');
     });
   });
+
+  describe('canConvertClientSide', () => {
+    it('returns true for WebP to PDF, JPG to WebP, and PNG to JPG under 15MB', () => {
+      expect(canConvertClientSide('image/webp', 'application/pdf', 1024 * 1024)).toBe(true);
+      expect(canConvertClientSide('image/jpeg', 'image/webp', 5 * 1024 * 1024)).toBe(true);
+      expect(canConvertClientSide('image/png', 'image/jpeg', 14 * 1024 * 1024)).toBe(true);
+    });
+
+    it('returns false for files exceeding 15MB', () => {
+      expect(canConvertClientSide('image/webp', 'application/pdf', 16 * 1024 * 1024)).toBe(false);
+      expect(canConvertClientSide('image/png', 'image/webp', 15 * 1024 * 1024 + 1)).toBe(false);
+    });
+
+    it('returns false for HEIC and TIFF formats', () => {
+      expect(canConvertClientSide('image/heic', 'application/pdf', 1024)).toBe(false);
+      expect(canConvertClientSide('image/heif', 'image/jpeg', 1024)).toBe(false);
+      expect(canConvertClientSide('image/tiff', 'image/png', 1024)).toBe(false);
+      expect(canConvertClientSide('image/tif', 'image/webp', 1024)).toBe(false);
+    });
+
+    it('returns false for unsupported target formats', () => {
+      expect(canConvertClientSide('image/jpeg', 'image/tiff', 1024)).toBe(false);
+      expect(canConvertClientSide('image/png', 'image/avif', 1024)).toBe(false);
+    });
+  });
+
+  describe('canvasToBlob with application/pdf', () => {
+    it('produces a valid PDF Blob (%PDF header)', async () => {
+      const mockCanvas = {
+        width: 100,
+        height: 100,
+        toDataURL: (type: string) => {
+          if (type === 'image/png') {
+            return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
+          }
+          return '';
+        },
+      } as unknown as HTMLCanvasElement;
+
+      const blob = await canvasToBlob(mockCanvas, 'application/pdf');
+      expect(blob).toBeInstanceOf(Blob);
+      expect(blob.type).toBe('application/pdf');
+
+      const arrayBuffer = await blob.arrayBuffer();
+      const header = new TextDecoder().decode(new Uint8Array(arrayBuffer.slice(0, 5)));
+      expect(header).toBe('%PDF-');
+    });
+  });
 });
+

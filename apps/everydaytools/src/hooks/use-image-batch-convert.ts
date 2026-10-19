@@ -12,6 +12,7 @@ import {
   fileToCanvas,
   canvasToBlob,
   createZipPackage,
+  canConvertClientSide,
 } from '@/lib/image-convert-logic';
 
 export interface UseImageBatchConvertOptions {
@@ -188,7 +189,15 @@ export function useImageBatchConvert({
 
       try {
         let blob: Blob;
-        if (toMime === 'image/svg+xml') {
+        const isClientEligible = canConvertClientSide(updated[i].file.type, toMime, updated[i].file.size);
+        if (isClientEligible) {
+          try {
+            const canvas = await fileToCanvas(updated[i].file);
+            blob = await canvasToBlob(canvas, toMime, quality / 100);
+          } catch {
+            blob = await processFileBackend(updated[i]);
+          }
+        } else if (toMime === 'image/svg+xml') {
           try {
             blob = await processFileBackend(updated[i]);
           } catch {
@@ -268,28 +277,10 @@ export function useImageBatchConvert({
   const doneCount = files.filter((f) => f.status === 'done').length;
 
   return {
-    toExt,
-    sourceFormat,
-    targetFormat,
-    isPdfOutput,
-    showQuality,
-    files,
-    isProcessing,
-    quality,
-    setQuality,
-    isSingle,
-    singleFile,
-    allDone,
-    doneCount,
-    validateAndAddFiles,
-    removeFile,
-    handleResetAll,
-    processAll,
-    downloadOne,
-    downloadAllZip,
-    isNextActionOpen,
-    setIsNextActionOpen,
-    downloadedPdf,
-    downloadedImage,
+    toExt, sourceFormat, targetFormat, isPdfOutput, showQuality,
+    files, isProcessing, quality, setQuality, isSingle, singleFile,
+    allDone, doneCount, validateAndAddFiles, removeFile, handleResetAll,
+    processAll, downloadOne, downloadAllZip, isNextActionOpen,
+    setIsNextActionOpen, downloadedPdf, downloadedImage,
   };
 }
