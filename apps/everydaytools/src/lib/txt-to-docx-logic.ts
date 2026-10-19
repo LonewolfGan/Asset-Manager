@@ -1,7 +1,15 @@
-import { apiUrl } from '@/lib/apiBase';
+import { Document, Packer, Paragraph, TextRun } from 'docx';
 import type { ConversionFormat } from '@/components/conversion';
 
 export type TxtToDocxMode = 'upload' | 'paste';
+
+export interface ConvertTxtToDocxOptions {
+  mode: 'upload' | 'paste';
+  file?: File | null;
+  textInput?: string;
+  errorFallback?: string;
+  isFr?: boolean;
+}
 
 export interface TxtToDocxResult {
   blob: Blob;
@@ -103,55 +111,62 @@ export function buildDocxFilename(
   return isFr ? 'texte-saisi.docx' : 'pasted-text.docx';
 }
 
-export async function convertTxtToDocx(options: {
-  mode: TxtToDocxMode;
-  file?: File | null;
-  textInput?: string;
-  errorFallback?: string;
-  isFr?: boolean;
-}): Promise<TxtToDocxResult> {
+export async function convertTxtToDocx(
+  options: ConvertTxtToDocxOptions
+): Promise<TxtToDocxResult> {
   const { mode, file, textInput = '', errorFallback, isFr = false } = options;
 
-  const fd = new FormData();
-  let filename = buildDocxFilename(mode, file, isFr);
+  let textContent = '';
   let sizeBefore = 0;
 
-  if (mode === 'upload' && file) {
-    fd.append('file', file);
+  if (mode === 'upload') {
+    if (!file) {
+      throw new Error(
+        errorFallback ||
+          (isFr
+            ? 'Veuillez fournir du texte à convertir.'
+            : 'Please provide text to convert.')
+      );
+    }
     sizeBefore = file.size;
+    textContent = await file.text();
   } else {
-    fd.append('text', textInput);
+    textContent = textInput;
     sizeBefore = new Blob([textInput]).size;
   }
 
-  const [res] = await Promise.all([
-    fetch(apiUrl('/api/convert/txt-to-docx'), {
-      method: 'POST',
-      body: fd,
-    }),
-    new Promise((resolve) => setTimeout(resolve, 800)),
-  ]);
-
-  if (!res.ok) {
-    const errJson = (await res.json().catch(() => ({}))) as {
-      error?: string;
-      message?: string;
-    };
+  if (!textContent || !textContent.trim()) {
     throw new Error(
-      errJson.message ??
-        errJson.error ??
-        errorFallback ??
-        'Failed to convert to Word document. Please try again.'
+      errorFallback ||
+        (isFr
+          ? 'Veuillez fournir du texte à convertir.'
+          : 'Please provide text to convert.')
     );
   }
 
-  const blob = await res.blob();
+  const filename = buildDocxFilename(mode, file, isFr);
+  const normalized = textContent.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const lines = normalized.split('\n');
+
+  const paragraphs = lines.map(
+    (line) =>
+      new Paragraph({
+        children: [new TextRun({ text: line, size: 22 })],
+        spacing: { after: 120, line: 276 },
+      })
+  );
+
+  const doc = new Document({
+    sections: [{ properties: {}, children: paragraphs }],
+  });
+
+  const blob = await Packer.toBlob(doc);
 
   return {
     blob,
     filename,
-    sizeAfter: blob.size,
     sizeBefore,
+    sizeAfter: blob.size,
   };
 }
 
@@ -163,5 +178,5 @@ export function triggerDownload(blob: Blob, filename: string): void {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }

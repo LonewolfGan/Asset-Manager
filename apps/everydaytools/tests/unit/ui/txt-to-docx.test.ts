@@ -3,6 +3,8 @@ import React, { act } from 'react';
 import { createRoot, Root } from 'react-dom/client';
 import TxtToDocx from '@/pages/txt-to-docx';
 
+(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
+
 vi.mock('wouter', () => ({
   useLocation: () => ['/txt-to-docx', vi.fn()],
   Link: ({ children, href }: any) => React.createElement('a', { href }, children),
@@ -61,12 +63,15 @@ describe('TxtToDocx Page Reciprocal Title (TDD)', () => {
     container.remove();
   });
 
-  it('renders ReciprocalTitle with txt-to-docx slug in page header', async () => {
+  it('renders ReciprocalTitle with txt-to-docx slug in page header without fetch calls', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch');
     await act(async () => {
       root.render(React.createElement(TxtToDocx));
     });
     const title = container.querySelector('[data-testid="reciprocal-title"]');
     expect(title).not.toBeNull();
     expect(lastTitleProps?.currentSlug).toBe('txt-to-docx');
+    expect(fetchSpy).not.toHaveBeenCalled();
+    fetchSpy.mockRestore();
   });
 });

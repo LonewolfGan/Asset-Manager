@@ -5,6 +5,7 @@ import {
   validateTxtFile,
   buildDocxFilename,
   convertTxtToDocx,
+  triggerDownload,
 } from '@/lib/txt-to-docx-logic';
 
 describe('txt-to-docx-logic', () => {
@@ -65,72 +66,119 @@ describe('txt-to-docx-logic', () => {
     });
   });
 
-  describe('convertTxtToDocx', () => {
+  describe('convertTxtToDocx (100% In-Browser Execution)', () => {
+    let fetchSpy: any;
+
     beforeEach(() => {
-      vi.stubGlobal('fetch', vi.fn());
+      fetchSpy = vi.spyOn(globalThis, 'fetch');
     });
 
     afterEach(() => {
       vi.restoreAllMocks();
     });
 
-    it('converts file via FormData in upload mode', async () => {
-      const mockBlob = new Blob(['PK\x03\x04'], {
-        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    it('converts file in upload mode without calling fetch or artificial delay', async () => {
+      const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout');
+      const textContent = 'Line 1: Hello World\nLine 2: EverydayTools in-browser DOCX';
+      const file = new File([textContent], 'meeting-notes.txt', { type: 'text/plain' });
+
+      const res = await convertTxtToDocx({
+        mode: 'upload',
+        file,
+        isFr: false,
       });
-      const mockResponse = {
-        ok: true,
-        blob: vi.fn().mockResolvedValue(mockBlob),
-      };
-      (globalThis.fetch as any).mockResolvedValue(mockResponse);
 
-      const file = new File(['Hello world from file'], 'report.txt', { type: 'text/plain' });
-      const res = await convertTxtToDocx({ mode: 'upload', file });
-
-      expect(res.blob).toBe(mockBlob);
-      expect(res.filename).toBe('report.docx');
-      expect(globalThis.fetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/convert/txt-to-docx'),
-        expect.objectContaining({
-          method: 'POST',
-          body: expect.any(FormData),
-        })
+      expect(fetchSpy).not.toHaveBeenCalled();
+      expect(setTimeoutSpy).not.toHaveBeenCalled();
+      expect(res.filename).toBe('meeting-notes.docx');
+      expect(res.sizeBefore).toBe(file.size);
+      expect(res.sizeAfter).toBeGreaterThan(100);
+      expect(res.blob).toBeInstanceOf(Blob);
+      expect(res.blob.type).toBe(
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
       );
     });
 
-    it('converts raw text in paste mode', async () => {
-      const mockBlob = new Blob(['PK\x03\x04'], {
-        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    it('converts multiline text in paste mode without network requests', async () => {
+      const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout');
+      const text = 'First paragraph\r\nSecond paragraph with CRLF\rThird with CR';
+
+      const res = await convertTxtToDocx({
+        mode: 'paste',
+        textInput: text,
+        isFr: true,
       });
-      const mockResponse = {
-        ok: true,
-        blob: vi.fn().mockResolvedValue(mockBlob),
-      };
-      (globalThis.fetch as any).mockResolvedValue(mockResponse);
 
-      const res = await convertTxtToDocx({ mode: 'paste', textInput: 'Direct text content', isFr: false });
-
-      expect(res.blob).toBe(mockBlob);
-      expect(res.filename).toBe('pasted-text.docx');
-      expect(globalThis.fetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/convert/txt-to-docx'),
-        expect.objectContaining({
-          method: 'POST',
-          body: expect.any(FormData),
-        })
+      expect(fetchSpy).not.toHaveBeenCalled();
+      expect(setTimeoutSpy).not.toHaveBeenCalled();
+      expect(res.filename).toBe('texte-saisi.docx');
+      expect(res.sizeBefore).toBe(new Blob([text]).size);
+      expect(res.sizeAfter).toBeGreaterThan(100);
+      expect(res.blob.type).toBe(
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
       );
     });
 
-    it('throws error when server responds with non-ok status', async () => {
-      const mockResponse = {
-        ok: false,
-        json: vi.fn().mockResolvedValue({ message: 'Conversion failed' }),
-      };
-      (globalThis.fetch as any).mockResolvedValue(mockResponse);
+    it('throws localized error when upload mode has no file or empty content', async () => {
+      await expect(
+        convertTxtToDocx({ mode: 'upload', file: null, isFr: true })
+      ).rejects.toThrow('Veuillez fournir du texte à convertir.');
+
+      const emptyFile = new File(['   \n\t  '], 'empty.txt', { type: 'text/plain' });
+      await expect(
+        convertTxtToDocx({ mode: 'upload', file: emptyFile, isFr: false })
+      ).rejects.toThrow('Please provide text to convert.');
+    });
+
+    it('throws localized error when paste mode has empty or whitespace text', async () => {
+      await expect(
+        convertTxtToDocx({ mode: 'paste', textInput: '', isFr: true })
+      ).rejects.toThrow('Veuillez fournir du texte à convertir.');
 
       await expect(
-        convertTxtToDocx({ mode: 'paste', textInput: 'bad input' })
-      ).rejects.toThrow('Conversion failed');
+        convertTxtToDocx({ mode: 'paste', textInput: '   \n  \r\n  ', isFr: false })
+      ).rejects.toThrow('Please provide text to convert.');
+    });
+
+    it('uses custom errorFallback when provided and content is empty', async () => {
+      await expect(
+        convertTxtToDocx({
+          mode: 'paste',
+          textInput: '',
+          errorFallback: 'Custom fallback error',
+        })
+      ).rejects.toThrow('Custom fallback error');
+    });
+  });
+
+  describe('triggerDownload', () => {
+    it('creates anchor and schedules URL.revokeObjectURL cleanup after 1000ms', () => {
+      vi.useFakeTimers();
+      const createObjectURLSpy = vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:test-url');
+      const revokeObjectURLSpy = vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
+      const clickSpy = vi.fn();
+
+      const origCreateElement = document.createElement.bind(document);
+      vi.spyOn(document, 'createElement').mockImplementation((tagName: string) => {
+        const el = origCreateElement(tagName);
+        if (tagName === 'a') {
+          el.click = clickSpy;
+        }
+        return el;
+      });
+
+      const blob = new Blob(['sample docx content']);
+      triggerDownload(blob, 'export.docx');
+
+      expect(createObjectURLSpy).toHaveBeenCalledWith(blob);
+      expect(clickSpy).toHaveBeenCalled();
+      expect(revokeObjectURLSpy).not.toHaveBeenCalled();
+
+      vi.advanceTimersByTime(1000);
+      expect(revokeObjectURLSpy).toHaveBeenCalledWith('blob:test-url');
+
+      vi.useRealTimers();
+      vi.restoreAllMocks();
     });
   });
 });
