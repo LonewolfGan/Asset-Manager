@@ -110,6 +110,10 @@ export function buildPdfFilename(
   return 'document-markdown.pdf';
 }
 
+/**
+ * Converts Markdown content or file to PDF via the backend Gotenberg Chromium engine.
+ * Guarantees zero artificial delays or fake progress timers.
+ */
 export async function convertMarkdownToPdf(options: {
   mode: MarkdownToPdfMode;
   file?: File | null;

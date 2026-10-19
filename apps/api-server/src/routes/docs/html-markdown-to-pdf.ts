@@ -1,5 +1,5 @@
 import { Router, type Request, type Response } from "express";
-import { marked } from "marked";
+import { renderMarkdownToPdfBuffer } from "./markdown-to-pdf-logic.js";
 import { execFile } from "child_process";
 import { promisify } from "util";
 import { tmpdir } from "os";
@@ -80,8 +80,8 @@ router.post("/tools/markdown-to-pdf", defaultRateLimit, upload.single("file"), a
       return;
     }
 
-    const html = await marked(markdown);
-    const pdfBuf = await htmlToPdfBuffer(String(html));
+    const title = filename.replace(/\.pdf$/i, "");
+    const pdfBuf = await renderMarkdownToPdfBuffer(markdown, title);
     await sendPdf(res, pdfBuf, filename);
   } catch (err) {
     apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Conversion failed");
