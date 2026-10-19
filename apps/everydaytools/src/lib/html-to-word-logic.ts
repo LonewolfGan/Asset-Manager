@@ -78,13 +78,10 @@ export async function convertHtmlToWord(
   fd.append('file', file);
   fd.append('targetFormat', 'docx');
 
-  const [res] = await Promise.all([
-    fetch(apiUrl('/api/tools/document-convert'), {
-      method: 'POST',
-      body: fd,
-    }),
-    new Promise((resolve) => setTimeout(resolve, 800)),
-  ]);
+  const res = await fetch(apiUrl('/api/tools/document-convert'), {
+    method: 'POST',
+    body: fd,
+  });
 
   if (!res.ok) {
     const errJson = (await res.json().catch(() => ({}))) as {

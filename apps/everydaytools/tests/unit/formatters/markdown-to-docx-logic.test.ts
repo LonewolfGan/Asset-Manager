@@ -99,7 +99,7 @@ describe('markdown-to-docx-logic [TDD RED]', () => {
       vi.restoreAllMocks();
     });
 
-    it('converts file via FormData in upload mode', async () => {
+    it('converts file via FormData in upload mode without artificial delay or invoking setTimeout', async () => {
       const mockBlob = new Blob(['docx-binary'], {
         type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       });
@@ -108,12 +108,14 @@ describe('markdown-to-docx-logic [TDD RED]', () => {
         blob: vi.fn().mockResolvedValue(mockBlob),
       };
       (globalThis.fetch as any).mockResolvedValue(mockResponse);
+      const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout');
 
       const file = new File(['# Header'], 'readme.md', { type: 'text/markdown' });
       const res = await convertMarkdownToDocx({ mode: 'upload', file });
 
       expect(res.blob).toBe(mockBlob);
       expect(res.filename).toBe('readme.docx');
+      expect(setTimeoutSpy).not.toHaveBeenCalled();
       expect(globalThis.fetch).toHaveBeenCalledWith(
         expect.stringContaining('/api/convert/markdown-to-docx'),
         expect.objectContaining({
