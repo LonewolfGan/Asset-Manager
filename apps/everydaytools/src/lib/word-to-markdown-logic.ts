@@ -1,4 +1,4 @@
-import { apiUrl } from '@/lib/apiBase';
+import mammoth from 'mammoth';
 import type { ConversionFormat } from '@/components/conversion';
 
 export interface WordToMarkdownResult {
@@ -78,43 +78,53 @@ export async function convertWordToMarkdown(
   options: { isFr: boolean; errorFallback?: string }
 ): Promise<WordToMarkdownResult> {
   const { isFr, errorFallback } = options;
-  const fd = new FormData();
-  fd.append('file', file);
 
-  const [res] = await Promise.all([
-    fetch(apiUrl('/api/convert/word-to-markdown'), {
-      method: 'POST',
-      body: fd,
-    }),
-    new Promise((resolve) => setTimeout(resolve, 800)),
-  ]);
-
-  if (!res.ok) {
-    const errJson = (await res.json().catch(() => ({}))) as {
-      error?: string;
-      message?: string;
-    };
-    throw new Error(
-      errJson.message ??
-        errJson.error ??
-        errorFallback ??
-        (isFr
-          ? 'Échec de la conversion en Markdown. Veuillez réessayer.'
-          : 'Failed to convert to Markdown. Please try again.')
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { value: htmlContent } = await mammoth.convertToHtml(
+      { arrayBuffer },
+      {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        convertImage: mammoth.images.imgElement((element: any) =>
+          element.read('base64').then((imageBuffer: string) => ({
+            src: `data:${element.contentType};base64,${imageBuffer}`,
+          }))
+        ),
+      }
     );
+
+    const TurndownModule = await import('turndown');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const TurndownService = (TurndownModule.default ?? TurndownModule) as any;
+    const turndown = new TurndownService({
+      headingStyle: 'atx',
+      codeBlockStyle: 'fenced',
+      bulletListMarker: '-',
+      emDelimiter: '*',
+    });
+    const markdown = turndown.turndown(htmlContent ?? '');
+
+    const blob = new Blob([markdown], { type: 'text/markdown;charset=utf-8' });
+    const filename = buildMarkdownFilename(file.name);
+
+    return {
+      blob,
+      filename,
+      sizeBefore: file.size,
+      sizeAfter: blob.size,
+      textOutput: markdown,
+    };
+  } catch (err) {
+    const message =
+      err instanceof Error && err.message
+        ? err.message
+        : (errorFallback ??
+            (isFr
+              ? 'Échec de la conversion en Markdown. Veuillez réessayer.'
+              : 'Failed to convert to Markdown. Please try again.'));
+    throw new Error(message);
   }
-
-  const mdContent = await res.text();
-  const blob = new Blob([mdContent], { type: 'text/markdown;charset=utf-8' });
-  const filename = buildMarkdownFilename(file.name);
-
-  return {
-    blob,
-    filename,
-    sizeAfter: blob.size,
-    sizeBefore: file.size,
-    textOutput: mdContent,
-  };
 }
 
 export function triggerDownload(blob: Blob, filename: string): void {

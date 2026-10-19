@@ -159,23 +159,14 @@ describe('useWordToMarkdownWorkflow [TDD-Lock ECC]', () => {
       sizeAfter: 85,
       textOutput: '# Markdown Content',
     };
-
     vi.mocked(wordToMarkdownLogic.convertWordToMarkdown).mockResolvedValue(mockResult);
 
-    act(() => {
-      hook.current.validateAndSetFile(validFile);
-    });
-
+    act(() => hook.current.validateAndSetFile(validFile));
     let convertPromise: Promise<void>;
-    act(() => {
-      convertPromise = hook.current.handleConvert();
-    });
-
+    act(() => { convertPromise = hook.current.handleConvert(); });
     expect(hook.current.isProcessing).toBe(true);
 
-    await act(async () => {
-      await convertPromise;
-    });
+    await act(async () => { await convertPromise; });
 
     expect(hook.current.isProcessing).toBe(false);
     expect(hook.current.result).toEqual(mockResult);
@@ -186,23 +177,15 @@ describe('useWordToMarkdownWorkflow [TDD-Lock ECC]', () => {
   it('handles conversion error properly with toast and analytics', async () => {
     const hook = renderWorkflowHook({ isFr: true });
     const validFile = new File(['content'], 'broken.docx');
-
     vi.mocked(wordToMarkdownLogic.convertWordToMarkdown).mockRejectedValue(
       new Error('Corrupted docx archive')
     );
 
-    act(() => {
-      hook.current.validateAndSetFile(validFile);
-    });
-
+    act(() => hook.current.validateAndSetFile(validFile));
     let convertPromise: Promise<void>;
-    act(() => {
-      convertPromise = hook.current.handleConvert();
-    });
+    act(() => { convertPromise = hook.current.handleConvert(); });
 
-    await act(async () => {
-      await convertPromise;
-    });
+    await act(async () => { await convertPromise; });
 
     expect(hook.current.isProcessing).toBe(false);
     expect(hook.current.result).toBeNull();
@@ -210,6 +193,35 @@ describe('useWordToMarkdownWorkflow [TDD-Lock ECC]', () => {
     expect(toastMock).toHaveBeenCalledWith(
       expect.objectContaining({ variant: 'destructive', description: 'Corrupted docx archive' })
     );
+    hook.unmount();
+  });
+
+  it('extracts markdown without network calls or timer delays', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch');
+    const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout');
+    const mockResult = {
+      blob: new Blob(['# instant markdown'], { type: 'text/markdown' }),
+      filename: 'instant.md',
+      sizeBefore: 100,
+      sizeAfter: 18,
+      textOutput: '# instant markdown',
+    };
+    vi.mocked(wordToMarkdownLogic.convertWordToMarkdown).mockResolvedValue(mockResult);
+
+    const hook = renderWorkflowHook();
+    const validFile = new File(['content'], 'instant.docx');
+    act(() => hook.current.validateAndSetFile(validFile));
+
+    let convertPromise: Promise<void>;
+    act(() => { convertPromise = hook.current.handleConvert(); });
+
+    await act(async () => { await convertPromise; });
+
+    expect(hook.current.result).toEqual(mockResult);
+    expect(fetchSpy).not.toHaveBeenCalled();
+    expect(setTimeoutSpy).not.toHaveBeenCalled();
+    fetchSpy.mockRestore();
+    setTimeoutSpy.mockRestore();
     hook.unmount();
   });
 
@@ -226,12 +238,8 @@ describe('useWordToMarkdownWorkflow [TDD-Lock ECC]', () => {
     act(() => hook.current.validateAndSetFile(new File([''], 'doc.docx')));
 
     let convertPromise: Promise<void>;
-    act(() => {
-      convertPromise = hook.current.handleConvert();
-    });
-    await act(async () => {
-      await convertPromise;
-    });
+    act(() => { convertPromise = hook.current.handleConvert(); });
+    await act(async () => { await convertPromise; });
 
     act(() => hook.current.handleDownload());
     expect(wordToMarkdownLogic.triggerDownload).toHaveBeenCalledWith(
