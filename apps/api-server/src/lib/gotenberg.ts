@@ -1,5 +1,3 @@
-import { logger } from "./logger.js";
-
 const DEFAULT_GOTENBERG_PORT = "3000";
 const GOTENBERG_URL = process.env["GOTENBERG_URL"] ?? `http://127.0.0.1:${DEFAULT_GOTENBERG_PORT}`;
 const REQUEST_TIMEOUT_MS = 60_000;
@@ -14,17 +12,18 @@ export interface GotenbergOptions {
  * Check if the Gotenberg microservice is running and healthy.
  */
 export async function isGotenbergHealthy(): Promise<boolean> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 2000);
   try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 2000);
     const res = await fetch(`${GOTENBERG_URL}/health`, {
       method: "GET",
       signal: controller.signal,
     });
-    clearTimeout(timeout);
     return res.ok;
   } catch {
     return false;
+  } finally {
+    clearTimeout(timeout);
   }
 }
 
