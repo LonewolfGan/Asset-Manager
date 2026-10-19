@@ -1,6 +1,6 @@
 import React from 'react';
-import { FileCode2, Upload } from 'lucide-react';
-import type { CssMetrics } from '@/lib/css-formatter-logic';
+import { FileCode2, Upload, AlertTriangle } from 'lucide-react';
+import { type CssMetrics, type CssIssue, CSS_SAMPLES } from '@/lib/css-formatter-logic';
 
 export interface CssSourcePanelProps {
   input: string;
@@ -10,7 +10,9 @@ export interface CssSourcePanelProps {
   metrics: CssMetrics;
   hasContent: boolean;
   isFr: boolean;
+  issues?: CssIssue[];
   onFileUpload: (file: File) => void;
+  onLoadSample?: (key: keyof typeof CSS_SAMPLES) => void;
 }
 
 export const CssSourcePanel: React.FC<CssSourcePanelProps> = ({
@@ -21,7 +23,9 @@ export const CssSourcePanel: React.FC<CssSourcePanelProps> = ({
   metrics,
   hasContent,
   isFr,
+  issues = [],
   onFileUpload,
+  onLoadSample,
 }) => {
   return (
     <div className="flex flex-col">
@@ -38,6 +42,18 @@ export const CssSourcePanel: React.FC<CssSourcePanelProps> = ({
               {metrics.inputBytes} {isFr ? 'octets' : 'bytes'})
             </span>
           )}
+          {hasContent && issues.length > 0 && (
+            <span
+              title={issues.map((i) => i.message).join('\n')}
+              className="text-[11px] px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400 font-medium flex items-center gap-1 cursor-help"
+            >
+              <AlertTriangle className="w-3 h-3" />
+              <span>
+                {issues.length} {isFr ? 'anomalie' : 'issue'}
+                {issues.length > 1 ? 's' : ''}
+              </span>
+            </span>
+          )}
         </div>
 
         <div className="flex items-center gap-2">
@@ -48,27 +64,78 @@ export const CssSourcePanel: React.FC<CssSourcePanelProps> = ({
               type="file"
               accept=".css,.txt,text/css"
               className="hidden"
-              onChange={(e) => e.target.files?.[0] && onFileUpload(e.target.files[0])}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  onFileUpload(file);
+                  e.target.value = '';
+                }
+              }}
             />
           </label>
         </div>
       </div>
 
-      <textarea
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder={
-          isFr
-            ? 'Collez ou tapez votre feuille de style CSS ici...'
-            : 'Paste or type your CSS stylesheet here...'
-        }
-        spellCheck={false}
-        wrap={wordWrap ? 'soft' : 'off'}
-        style={{ height: `${editorHeight}px` }}
-        className={`w-full p-4 bg-transparent resize-none outline-none text-zinc-800 dark:text-zinc-200 font-mono text-xs leading-relaxed overflow-auto ${
-          wordWrap ? 'whitespace-pre-wrap break-words' : 'whitespace-pre overflow-x-auto'
-        }`}
-      />
+      <div className="relative">
+        <textarea
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder={
+            isFr
+              ? 'Collez ou tapez votre feuille de style CSS ici...'
+              : 'Paste or type your CSS stylesheet here...'
+          }
+          spellCheck={false}
+          wrap={wordWrap ? 'soft' : 'off'}
+          style={{ height: `${editorHeight}px` }}
+          className={`w-full p-4 bg-transparent resize-none outline-none text-zinc-800 dark:text-zinc-200 font-mono text-xs leading-relaxed overflow-auto ${
+            wordWrap ? 'whitespace-pre-wrap break-words' : 'whitespace-pre overflow-x-auto'
+          }`}
+        />
+
+        {!hasContent && (
+          <div className="absolute inset-x-0 bottom-4 flex flex-col items-center justify-center p-4 pointer-events-none">
+            <div className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-zinc-100/90 dark:bg-zinc-800/90 border border-zinc-200 dark:border-white/10 shadow-sm backdrop-blur-sm pointer-events-auto">
+              <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
+                {isFr ? 'Exemples :' : 'Samples:'}
+              </span>
+              <button
+                type="button"
+                data-sample="modernCard"
+                onClick={() => {
+                  if (onLoadSample) onLoadSample('modernCard');
+                  else setInput(CSS_SAMPLES.modernCard);
+                }}
+                className="px-2 py-0.5 text-[11px] font-medium rounded-md bg-white dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-600 transition-colors cursor-pointer border border-zinc-200/60 dark:border-white/5"
+              >
+                Carte UI
+              </button>
+              <button
+                type="button"
+                data-sample="glassmorphism"
+                onClick={() => {
+                  if (onLoadSample) onLoadSample('glassmorphism');
+                  else setInput(CSS_SAMPLES.glassmorphism);
+                }}
+                className="px-2 py-0.5 text-[11px] font-medium rounded-md bg-white dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-600 transition-colors cursor-pointer border border-zinc-200/60 dark:border-white/5"
+              >
+                Glassmorphism
+              </button>
+              <button
+                type="button"
+                data-sample="responsiveGrid"
+                onClick={() => {
+                  if (onLoadSample) onLoadSample('responsiveGrid');
+                  else setInput(CSS_SAMPLES.responsiveGrid);
+                }}
+                className="px-2 py-0.5 text-[11px] font-medium rounded-md bg-white dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-600 transition-colors cursor-pointer border border-zinc-200/60 dark:border-white/5"
+              >
+                Grille
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

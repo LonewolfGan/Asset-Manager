@@ -12,7 +12,7 @@ import {
   ConversionStaging,
   ConversionConduit,
   ConversionResult,
-  DocumentNextActionModal,
+  ReciprocalTitle,
   type ConversionFormat,
 } from '@/components/conversion';
 
@@ -48,7 +48,6 @@ export default function PdfToExcel() {
   const [error, setError] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [isNextActionOpen, setIsNextActionOpen] = useState(false);
 
   const file = files[0];
 
@@ -57,7 +56,6 @@ export default function PdfToExcel() {
     setResult(null);
     setError(null);
     setIsProcessing(false);
-    setIsNextActionOpen(false);
   };
 
   const validateAndSetFile = (selectedFile: File) => {
@@ -174,10 +172,6 @@ export default function PdfToExcel() {
     a.click();
     document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(url), 1000);
-
-    setTimeout(() => {
-      setIsNextActionOpen(true);
-    }, 450);
   };
 
   const title = t.tools['pdf-to-excel']?.title ?? (isFr ? 'PDF en Excel' : 'PDF to Excel');
@@ -190,7 +184,14 @@ export default function PdfToExcel() {
   return (
     <ToolPageLayout
       breadcrumb={[t.nav.breadcrumb.home, t.nav.breadcrumb.pdf, title]}
-      title={title}
+      title={
+        <ReciprocalTitle
+          currentSlug="pdf-to-excel"
+          isFr={isFr}
+          getCurrentFile={() => file}
+          fallbackTitle={title}
+        />
+      }
       description={desc}
       seoSlug="pdf-to-excel"
     >
@@ -278,16 +279,6 @@ export default function PdfToExcel() {
               />
             )}
           </AnimatePresence>
-
-          {/* Continuum Modal */}
-          <DocumentNextActionModal
-            toolId="pdf-to-excel"
-            isOpen={isNextActionOpen}
-            onClose={() => setIsNextActionOpen(false)}
-            resultBlob={result?.blob}
-            resultFilename={result?.filename}
-            formatType="xlsx"
-          />
         </div>
       </ToolWorkspace>
     </ToolPageLayout>

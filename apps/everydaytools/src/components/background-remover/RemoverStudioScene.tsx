@@ -54,18 +54,9 @@ export function RemoverStudioScene({
   onRetry,
   isFr,
 }: RemoverStudioSceneProps) {
-  const downloadLabel =
-    backdropType === 'transparent'
-      ? isFr
-        ? 'Télécharger PNG'
-        : 'Download PNG'
-      : backdropType === 'image'
-      ? isFr
-        ? 'Télécharger avec fond'
-        : 'Download with background'
-      : isFr
-      ? 'Télécharger composé'
-      : 'Download composite';
+  const downloadLabel = isFr ? 'Télécharger' : 'Download';
+
+  const isProcessing = item.status === 'processing';
 
   return (
     <motion.div
@@ -94,51 +85,66 @@ export function RemoverStudioScene({
             : 'Change image'
         }
         centerControls={
-          item.status === 'done' ? (
-            <div className="flex items-center bg-zinc-100/80 dark:bg-zinc-800/80 rounded-lg p-0.5 border border-zinc-200/60 dark:border-white/5">
-              <button
-                type="button"
-                onClick={() => onViewModeChange('split')}
-                className={cn(
-                  'flex items-center gap-1.5 h-7 px-2.5 rounded-md font-medium text-xs transition-all cursor-pointer active:scale-[0.98]',
-                  viewMode === 'split'
-                    ? 'bg-white dark:bg-zinc-700 text-zinc-950 dark:text-zinc-50 shadow-xs font-semibold'
-                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
-                )}
-              >
-                <Columns className="w-3.5 h-3.5" />
-                <span>{isFr ? 'Avant / Après' : 'Before / After'}</span>
-              </button>
+          <div
+            role="group"
+            aria-label={isFr ? "Mode d'affichage" : "Display mode"}
+            aria-disabled={isProcessing}
+            className={cn(
+              'flex items-center bg-zinc-100/80 dark:bg-zinc-800/80 rounded-lg p-0.5 border border-zinc-200/60 dark:border-white/5 transition-opacity',
+              isProcessing && 'opacity-50 pointer-events-none'
+            )}
+          >
+            <button
+              type="button"
+              disabled={isProcessing}
+              onClick={() => onViewModeChange('split')}
+              aria-pressed={viewMode === 'split'}
+              className={cn(
+                'flex items-center gap-1.5 h-7 px-2.5 rounded-md font-medium text-xs transition-colors',
+                isProcessing ? 'cursor-not-allowed' : 'cursor-pointer active:scale-[0.98]',
+                viewMode === 'split'
+                  ? 'bg-white dark:bg-zinc-700 text-zinc-950 dark:text-zinc-50 shadow-xs font-semibold'
+                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
+              )}
+            >
+              <Columns className="w-3.5 h-3.5" />
+              <span>{isFr ? 'Avant / Après' : 'Before / After'}</span>
+            </button>
 
-              <button
-                type="button"
-                onClick={() => onViewModeChange('cutout')}
-                className={cn(
-                  'flex items-center gap-1.5 h-7 px-2.5 rounded-md font-medium text-xs transition-all cursor-pointer active:scale-[0.98]',
-                  viewMode === 'cutout'
-                    ? 'bg-white dark:bg-zinc-700 text-zinc-950 dark:text-zinc-50 shadow-xs font-semibold'
-                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
-                )}
-              >
-                <Eye className="w-3.5 h-3.5" />
-                <span>{isFr ? 'Sujet détouré' : 'Cutout subject'}</span>
-              </button>
+            <button
+              type="button"
+              disabled={isProcessing}
+              onClick={() => onViewModeChange('cutout')}
+              aria-pressed={viewMode === 'cutout'}
+              className={cn(
+                'flex items-center gap-1.5 h-7 px-2.5 rounded-md font-medium text-xs transition-colors',
+                isProcessing ? 'cursor-not-allowed' : 'cursor-pointer active:scale-[0.98]',
+                viewMode === 'cutout'
+                  ? 'bg-white dark:bg-zinc-700 text-zinc-950 dark:text-zinc-50 shadow-xs font-semibold'
+                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
+              )}
+            >
+              <Eye className="w-3.5 h-3.5" />
+              <span>{isFr ? 'Sujet détouré' : 'Cutout subject'}</span>
+            </button>
 
-              <button
-                type="button"
-                onClick={() => onViewModeChange('original')}
-                className={cn(
-                  'flex items-center gap-1.5 h-7 px-2.5 rounded-md font-medium text-xs transition-all cursor-pointer active:scale-[0.98]',
-                  viewMode === 'original'
-                    ? 'bg-white dark:bg-zinc-700 text-zinc-950 dark:text-zinc-50 shadow-xs font-semibold'
-                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
-                )}
-              >
-                <Layers className="w-3.5 h-3.5" />
-                <span>{isFr ? 'Original' : 'Original'}</span>
-              </button>
-            </div>
-          ) : undefined
+            <button
+              type="button"
+              disabled={isProcessing}
+              onClick={() => onViewModeChange('original')}
+              aria-pressed={viewMode === 'original'}
+              className={cn(
+                'flex items-center gap-1.5 h-7 px-2.5 rounded-md font-medium text-xs transition-colors',
+                isProcessing ? 'cursor-not-allowed' : 'cursor-pointer active:scale-[0.98]',
+                viewMode === 'original'
+                  ? 'bg-white dark:bg-zinc-700 text-zinc-950 dark:text-zinc-50 shadow-xs font-semibold'
+                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
+              )}
+            >
+              <Layers className="w-3.5 h-3.5" />
+              <span>{isFr ? 'Original' : 'Original'}</span>
+            </button>
+          </div>
         }
         primaryAction={{
           label: downloadLabel,
@@ -150,17 +156,23 @@ export function RemoverStudioScene({
         }}
       />
 
+      {/* 2. Barre d'options de fond dédiée au canvas */}
       {item.status === 'done' && viewMode !== 'original' && (
-        <RemoverBackdropSelector
-          backdropType={backdropType}
-          onBackdropTypeChange={onBackdropTypeChange}
-          customColor={customColor}
-          onCustomColorChange={onCustomColorChange}
-          customBgUrl={customBgUrl}
-          customBgInputRef={customBgInputRef}
-          onCustomBgChange={onCustomBgChange}
-          isFr={isFr}
-        />
+        <div className="w-full flex items-center justify-between py-1 px-1 flex-wrap gap-2">
+          <span className="text-xs font-medium uppercase tracking-wider text-zinc-400 font-mono">
+            {isFr ? 'Arrière-plan' : 'Background'}
+          </span>
+          <RemoverBackdropSelector
+            backdropType={backdropType}
+            onBackdropTypeChange={onBackdropTypeChange}
+            customColor={customColor}
+            onCustomColorChange={onCustomColorChange}
+            customBgUrl={customBgUrl}
+            customBgInputRef={customBgInputRef}
+            onCustomBgChange={onCustomBgChange}
+            isFr={isFr}
+          />
+        </div>
       )}
 
       <RemoverStudioViewport

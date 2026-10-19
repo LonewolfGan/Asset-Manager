@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
   decodeJwt,
   verifyJwtHmac,
+  cleanJwtToken,
   SAMPLE_JWTS,
 } from '@/lib/jwt-logic';
 
@@ -28,6 +29,11 @@ describe('JWT Decoder Logic', () => {
     const res = decodeJwt('not-a-valid-jwt');
     expect(res.valid).toBe(false);
     expect(res.error).toBeDefined();
+  });
+
+  it('cleans Bearer prefix and whitespace with cleanJwtToken', () => {
+    expect(cleanJwtToken('Bearer eyJhbGciOi...')).toBe('eyJhbGciOi...');
+    expect(cleanJwtToken('  bearer   abc.def.ghi  \n')).toBe('abc.def.ghi');
   });
 
   it('verifies HMAC signature against matching secret', async () => {

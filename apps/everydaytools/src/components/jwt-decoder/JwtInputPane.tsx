@@ -57,16 +57,19 @@ export const JwtInputPane: React.FC<JwtInputPaneProps> = ({
             </span>
           )}
 
-          <label className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md border border-zinc-200 dark:border-zinc-800 hover:border-[#FF6B35]/50 hover:text-[#FF6B35] dark:hover:text-[#FF6B35] text-zinc-600 dark:text-zinc-400 cursor-pointer transition-colors">
-            <Upload className="w-3.5 h-3.5 text-[#FF6B35]" />
+          <label className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md border border-zinc-200 dark:border-zinc-800 hover:border-[var(--accent)]/50 hover:text-[var(--accent)] dark:hover:text-[var(--accent)] text-zinc-600 dark:text-zinc-400 cursor-pointer transition-colors">
+            <Upload className="w-3.5 h-3.5 text-[var(--accent)]" />
             <span>{isFr ? 'Importer .jwt' : 'Import .jwt'}</span>
             <input
               type="file"
               accept=".jwt,.txt"
               className="hidden"
-              onChange={(e) =>
-                e.target.files?.[0] && onFileUpload(e.target.files[0])
-              }
+              onChange={(e) => {
+                if (e.target.files?.[0]) {
+                  onFileUpload(e.target.files[0]);
+                  e.target.value = '';
+                }
+              }}
             />
           </label>
         </div>
@@ -85,6 +88,29 @@ export const JwtInputPane: React.FC<JwtInputPaneProps> = ({
         autoFocus
         className="w-full flex-1 p-4 bg-transparent resize-none outline-none font-mono text-xs leading-relaxed text-zinc-800 dark:text-zinc-200 placeholder:text-zinc-400 focus:outline-none"
       />
+
+      {/* Boutons d'échantillons rapides lorsque le volet est vide */}
+      {!hasToken && (
+        <div className="p-3 border-t border-zinc-100 dark:border-white/5 bg-zinc-50/40 dark:bg-zinc-900/20 flex flex-wrap items-center gap-1.5 text-xs">
+          <span className="text-zinc-500 font-medium text-[11px] mr-1">
+            {isFr ? 'Échantillons :' : 'Samples:'}
+          </span>
+          <button
+            type="button"
+            onClick={() => onUpdateToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c3JfMTAwMSIsIm5hbWUiOiJBbGV4YW5kcmUgTWFydGluIiwiZXhwIjoyMDAwMDAwMDAwLCJpYXQiOjE2MDAwMDAwMDB9.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk')}
+            className="px-2 py-0.5 rounded text-[11px] font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors cursor-pointer"
+          >
+            Admin (HS256)
+          </button>
+          <button
+            type="button"
+            onClick={() => onUpdateToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c3JfMTAwMiIsIm5hbWUiOiJTb3BoaWUgTWFydGluIiwiZXhwIjoxNTAwMDAwMDAwLCJpYXQiOjE0MDAwMDAwMDB9.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk')}
+            className="px-2 py-0.5 rounded text-[11px] font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors cursor-pointer"
+          >
+            {isFr ? 'Session expirée' : 'Expired session'}
+          </button>
+        </div>
+      )}
 
       {/* Message d'erreur de structure ancré sans carte flottante */}
       {!decoded.valid && hasToken && (

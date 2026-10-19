@@ -17,6 +17,7 @@ import {
   getUuidExportFilename,
   triggerFileDownload,
 } from '@/lib/uuid-export-logic';
+import { consumeHandoffText } from '@/lib/file-handoff';
 
 export type TabMode = 'generator' | 'inspector';
 
@@ -53,6 +54,19 @@ export function useUuidGeneratorWorkflow(isFr: boolean) {
   useEffect(() => {
     generate();
   }, [generate]);
+
+  useEffect(() => {
+    const handoffText = consumeHandoffText();
+    if (handoffText) {
+      setInspectInput(handoffText);
+      setActiveTab('inspector');
+      toast.success(
+        isFr
+          ? 'UUID transféré importé dans l’inspecteur'
+          : 'Transferred UUID imported into inspector'
+      );
+    }
+  }, [isFr]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

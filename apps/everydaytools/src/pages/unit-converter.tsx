@@ -24,6 +24,8 @@ export default function UnitConverter() {
     fromSystem,
     toSystem,
     formulaExplanation,
+    popularPresets,
+    applyPopularPreset,
     handleFromChange,
     handleToChange,
     handleSwap,
@@ -76,6 +78,24 @@ export default function UnitConverter() {
           onSwap={handleSwap}
           onOpenPicker={openPickerModal}
         />
+
+        {popularPresets.length > 0 && (
+          <div className="max-w-4xl mx-auto flex items-center justify-center flex-wrap gap-2 pt-1">
+            <span className="text-xs font-medium text-muted-foreground mr-1">
+              {isFr ? 'Conversions populaires :' : 'Popular conversions:'}
+            </span>
+            {popularPresets.map((preset) => (
+              <button
+                key={preset.id}
+                type="button"
+                onClick={() => applyPopularPreset(preset)}
+                className="px-2.5 py-1 text-xs font-mono rounded-lg border border-border/70 bg-card hover:bg-zinc-100 dark:hover:bg-zinc-800 text-foreground transition-colors duration-150 cursor-pointer shadow-2xs active:scale-95"
+              >
+                {isFr && preset.labelFr ? preset.labelFr : preset.label}
+              </button>
+            ))}
+          </div>
+        )}
 
         <UnitPickerModal
           isOpen={pickerModal.isOpen}

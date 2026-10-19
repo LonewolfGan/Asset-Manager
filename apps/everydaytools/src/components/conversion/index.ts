@@ -14,3 +14,5 @@ export * from './BatchStagingGrid';
 export * from './BatchResultGallery';
 export * from './SingleImagePreview';
 export * from './ProcessingAperture';
+export * from './ReciprocalDirectionTabs';
+export * from './ReciprocalTitle';

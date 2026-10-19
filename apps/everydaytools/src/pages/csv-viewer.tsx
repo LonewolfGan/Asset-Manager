@@ -19,7 +19,7 @@ const getSourceFormat = (isFr: boolean): ConversionFormat => ({
   name: isFr ? 'Tableur CSV' : 'CSV Spreadsheet',
   extension: 'csv, xlsx, tsv',
   icon: '/icons/csv.svg',
-  color: '#10B981',
+  color: 'var(--accent, #10b981)',
   subLabel: isFr ? 'Fichiers CSV, Excel (.xlsx, .xls) ou TSV' : 'CSV, Excel (.xlsx, .xls) or TSV files',
 });
 
@@ -115,6 +115,8 @@ export default function CsvViewer() {
                 isFr={isFr}
                 documentName={workflow.documentName}
                 fileSize={workflow.fileSize}
+                fileSizeBytes={workflow.fileSizeBytes}
+                isExcel={workflow.isExcel}
                 rows={workflow.rows}
                 headers={workflow.headers}
                 searchQuery={data.searchQuery}

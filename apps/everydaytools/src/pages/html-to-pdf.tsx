@@ -1,5 +1,5 @@
 import { AnimatePresence } from 'framer-motion';
-import { Eye } from 'lucide-react';
+import { Eye, Sparkles } from 'lucide-react';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import { ToolWorkspace } from '@/components/ToolContent';
 import {
@@ -8,6 +8,7 @@ import {
   ConversionConduit,
   ConversionResult,
   NextActionModal,
+  ReciprocalTitle,
 } from '@/components/conversion';
 import { useHtmlToPdfWorkflow } from '@/hooks/use-html-to-pdf-workflow';
 import {
@@ -27,7 +28,6 @@ export default function HtmlToPdf() {
     file,
     htmlInput,
     setHtmlInput,
-    isPastedStaged,
     setIsPastedStaged,
     result,
     isProcessing,
@@ -54,7 +54,15 @@ export default function HtmlToPdf() {
   return (
     <ToolPageLayout
       breadcrumb={[t.nav.breadcrumb.home, t.nav.breadcrumb.documents, pageTitle]}
-      title={pageTitle}
+      title={
+        <ReciprocalTitle
+          currentSlug="html-to-pdf"
+          isFr={isFr}
+          getCurrentFile={() => file}
+          getCurrentText={() => htmlInput}
+          fallbackTitle={pageTitle}
+        />
+      }
       description={pageDesc}
       seoSlug="html-to-pdf"
     >
@@ -73,8 +81,9 @@ export default function HtmlToPdf() {
           {/* Unified 4-Scene Conversion Flow */}
           <AnimatePresence mode="wait">
             {/* ─── SCENE 1A : ARCHITECTURAL DOUBLE-BEZEL UPLOAD BOX ─── */}
-            {mode === 'upload' && !file && !result && !isProcessing && (
+            {mode === 'upload' && !isStaged && !file && !result && !isProcessing && (
               <ConversionDropzone
+                key="dropzone"
                 sourceFormat={sourceFormat}
                 title={isFr ? 'Glissez-déposez votre document HTML' : 'Drag & drop your HTML document'}
                 description={
@@ -92,8 +101,9 @@ export default function HtmlToPdf() {
             )}
 
             {/* ─── SCENE 1B : CODEWORKSPACE FOR PASTE MODE ─── */}
-            {mode === 'paste' && !isPastedStaged && !result && !isProcessing && (
+            {mode === 'paste' && !isStaged && !result && !isProcessing && (
               <HtmlToPdfPastePane
+                key="paste"
                 htmlInput={htmlInput}
                 onHtmlInputChange={setHtmlInput}
                 onSubmit={() => setIsPastedStaged(true)}
@@ -104,6 +114,7 @@ export default function HtmlToPdf() {
             {/* ─── SCENE 2 : STANDARDIZED ARCHITECTURAL STAGING ─── */}
             {isStaged && stagedFile && !result && !isProcessing && (
               <ConversionStaging
+                key="staging"
                 sourceFormat={sourceFormat}
                 targetFormat={targetFormat}
                 sourceFile={stagedFile}
@@ -117,6 +128,7 @@ export default function HtmlToPdf() {
             {/* ─── SCENE 3 : UNIFIED KINETIC CONDUIT ─── */}
             {isProcessing && (
               <ConversionConduit
+                key="conduit"
                 sourceFormat={sourceFormat}
                 targetFormat={targetFormat}
                 fileName={mode === 'upload' ? file?.name : (isFr ? 'code-html.html' : 'html-code.html')}
@@ -132,6 +144,7 @@ export default function HtmlToPdf() {
             {/* ─── SCENE 4 : HEROIC UNBOXED RESULT ─── */}
             {result && !isProcessing && (
               <ConversionResult
+                key="result"
                 targetFormat={targetFormat}
                 resultFileName={result.filename}
                 resultFileSize={result.sizeAfter}
@@ -140,14 +153,24 @@ export default function HtmlToPdf() {
                 onDownload={handleDownload}
                 onReset={handleReset}
                 extraActions={
-                  <button
-                    type="button"
-                    onClick={handleOpenPreview}
-                    className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-medium text-base active:scale-[0.98] transition-all flex items-center gap-2.5 shadow-sm cursor-pointer"
-                  >
-                    <Eye size={16} strokeWidth={2.2} />
-                    <span>{isFr ? "Ouvrir l'aperçu PDF" : 'Open PDF preview'}</span>
-                  </button>
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={handleOpenPreview}
+                      className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-medium text-base active:scale-[0.98] transition-[background-color,border-color,transform] duration-150 flex items-center gap-2.5 shadow-sm cursor-pointer"
+                    >
+                      <Eye size={16} strokeWidth={2.2} />
+                      <span>{isFr ? "Ouvrir l'aperçu PDF" : 'Open PDF preview'}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsNextActionOpen(true)}
+                      className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-medium text-base active:scale-[0.98] transition-[background-color,border-color,transform] duration-150 flex items-center gap-2.5 shadow-sm cursor-pointer"
+                    >
+                      <Sparkles size={16} className="text-amber-500" />
+                      <span>{isFr ? 'Actions suivantes' : 'Next actions'}</span>
+                    </button>
+                  </div>
                 }
               />
             )}

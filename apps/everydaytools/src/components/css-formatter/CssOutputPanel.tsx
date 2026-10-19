@@ -186,7 +186,7 @@ export const CssOutputPanel: React.FC<CssOutputPanelProps> = ({
           className="w-full flex items-center justify-center p-3 bg-zinc-100/60 dark:bg-zinc-900/50 overflow-auto"
         >
           <div
-            className="h-full bg-white rounded-lg shadow-sm border border-zinc-200 dark:border-white/10 overflow-hidden transition-all duration-200"
+            className="h-full bg-white rounded-lg shadow-sm border border-zinc-200 dark:border-white/10 overflow-hidden transition-[width] duration-200"
             style={{
               width:
                 deviceWidth === 'mobile'

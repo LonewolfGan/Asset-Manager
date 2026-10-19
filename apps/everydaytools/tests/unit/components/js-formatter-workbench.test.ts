@@ -124,4 +124,115 @@ describe('js-formatter components', () => {
 
     expect(html).toContain('data-testid="code-drag-overlay"');
   });
+
+  it('renders sample buttons when empty and onLoadSample is provided', () => {
+    const html = renderToString(
+      React.createElement(
+        LocaleContext.Provider,
+        { value: dummyLocaleValue },
+        React.createElement(
+          TooltipProvider,
+          null,
+          React.createElement(JsFormatterWorkbench, {
+            input: '',
+            onInputChange: () => {},
+            historyLength: 0,
+            onUndo: () => {},
+            mode: 'format',
+            setMode: () => {},
+            language: 'javascript',
+            setLanguage: () => {},
+            indent: 2,
+            setIndent: () => {},
+            semicolons: true,
+            setSemicolons: () => {},
+            quotes: 'preserve',
+            setQuotes: () => {},
+            stripComments: false,
+            setStripComments: () => {},
+            wordWrap: true,
+            setWordWrap: () => {},
+            outputView: 'code',
+            setOutputView: () => {},
+            executionLogs: [],
+            setExecutionLogs: () => {},
+            executionTime: null,
+            setExecutionTime: () => {},
+            editorHeight: 460,
+            isDragOver: false,
+            setIsDragOver: () => {},
+            output: '',
+            highlightedOutput: '',
+            metrics: dummyMetrics,
+            hasContent: false,
+            onMouseDownResize: () => {},
+            onRunCode: () => {},
+            onDownload: () => {},
+            onClear: () => {},
+            onFileUpload: () => {},
+            onLoadSample: () => {},
+          })
+        )
+      )
+    );
+
+    expect(html).toContain('Exemples :');
+    expect(html).toContain('Fetch Asynchrone');
+    expect(html).toContain('Traitement Données');
+    expect(html).toContain('Utilitaire Debounce');
+  });
+
+  it('renders issue warning badge when syntax issues are detected', () => {
+    const html = renderToString(
+      React.createElement(
+        LocaleContext.Provider,
+        { value: dummyLocaleValue },
+        React.createElement(
+          TooltipProvider,
+          null,
+          React.createElement(JsFormatterWorkbench, {
+            input: 'function broken() {',
+            onInputChange: () => {},
+            historyLength: 0,
+            onUndo: () => {},
+            mode: 'format',
+            setMode: () => {},
+            language: 'javascript',
+            setLanguage: () => {},
+            indent: 2,
+            setIndent: () => {},
+            semicolons: true,
+            setSemicolons: () => {},
+            quotes: 'preserve',
+            setQuotes: () => {},
+            stripComments: false,
+            setStripComments: () => {},
+            wordWrap: true,
+            setWordWrap: () => {},
+            outputView: 'code',
+            setOutputView: () => {},
+            executionLogs: [],
+            setExecutionLogs: () => {},
+            executionTime: null,
+            setExecutionTime: () => {},
+            editorHeight: 460,
+            isDragOver: false,
+            setIsDragOver: () => {},
+            output: 'function broken() {',
+            highlightedOutput: '',
+            metrics: dummyMetrics,
+            issues: [{ type: 'unclosed-brace', message: 'Accolade manquante', line: 1 }],
+            hasContent: true,
+            onMouseDownResize: () => {},
+            onRunCode: () => {},
+            onDownload: () => {},
+            onClear: () => {},
+            onFileUpload: () => {},
+          })
+        )
+      )
+    );
+
+    expect(html).toContain('anomalie');
+  });
 });

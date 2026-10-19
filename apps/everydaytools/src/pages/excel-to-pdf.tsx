@@ -7,7 +7,7 @@ import {
   ConversionStaging,
   ConversionConduit,
   ConversionResult,
-  NextActionModal,
+  ReciprocalTitle,
 } from '@/components/conversion';
 import { useExcelToPdfWorkflow } from '@/hooks/use-excel-to-pdf-workflow';
 import { ExcelToPdfSheetSelector } from '@/components/excel-to-pdf';
@@ -26,8 +26,6 @@ export default function ExcelToPdf() {
     result,
     isProcessing,
     isDragging,
-    isNextActionOpen,
-    setIsNextActionOpen,
     validateAndSetFile,
     handleDragOver,
     handleDragLeave,
@@ -52,7 +50,14 @@ export default function ExcelToPdf() {
         t.nav.breadcrumb.excelSpreadsheets,
         pageTitle,
       ]}
-      title={pageTitle}
+      title={
+        <ReciprocalTitle
+          currentSlug="excel-to-pdf"
+          isFr={isFr}
+          getCurrentFile={() => file}
+          fallbackTitle={pageTitle}
+        />
+      }
       description={pageDesc}
       seoSlug="excel-to-pdf"
     >
@@ -128,14 +133,6 @@ export default function ExcelToPdf() {
               />
             )}
           </AnimatePresence>
-
-          <NextActionModal
-            toolId="excel-to-pdf"
-            isOpen={isNextActionOpen}
-            onClose={() => setIsNextActionOpen(false)}
-            resultBlob={result?.blob}
-            resultFilename={result?.filename}
-          />
         </div>
       </ToolWorkspace>
     </ToolPageLayout>

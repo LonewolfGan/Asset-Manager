@@ -1,11 +1,7 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import { ToolWorkspace } from '@/components/ToolContent';
-import { useLocale } from '@/hooks/use-locale';
-import { trackToolUsed, trackToolError } from '@/lib/analytics';
-import { apiUrl } from '@/lib/apiBase';
-import { consumeHandoffFile } from '@/lib/file-handoff';
 import { AlertCircle } from 'lucide-react';
 import {
   ConversionDropzone,
@@ -13,171 +9,33 @@ import {
   ConversionConduit,
   ConversionResult,
   DocumentNextActionModal,
-  type ConversionFormat,
+  ReciprocalTitle,
 } from '@/components/conversion';
-
-const getSourceFormat = (isFr: boolean): ConversionFormat => ({
-  name: 'PDF',
-  extension: 'pdf',
-  icon: '/icons/pdf.svg',
-  color: '#EC1C24',
-  subLabel: isFr ? 'Document Adobe Acrobat' : 'Adobe Acrobat Document',
-});
-
-const getTargetFormat = (isFr: boolean): ConversionFormat => ({
-  name: 'PPTX',
-  extension: 'pptx',
-  icon: '/icons/pptx.svg',
-  color: '#D24726',
-  subLabel: isFr ? 'Présentation PowerPoint (.pptx)' : 'PowerPoint Presentation (.pptx)',
-});
+import { usePdfToPptxWorkflow } from '@/hooks/use-pdf-to-pptx-workflow';
 
 export default function PdfToPptx() {
-  const { t, isFr } = useLocale();
-  const tc = t.pdfToPptx;
-  const sourceFormat = getSourceFormat(isFr);
-  const targetFormat = getTargetFormat(isFr);
-
-  const [files, setFiles] = useState<File[]>([]);
-  const [result, setResult] = useState<{
-    blob: Blob;
-    filename: string;
-    sizeAfter: number;
-    sizeBefore?: number;
-  } | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [isNextActionOpen, setIsNextActionOpen] = useState(false);
-
-  const file = files[0];
-
-  const handleReset = () => {
-    setFiles([]);
-    setResult(null);
-    setError(null);
-    setIsProcessing(false);
-    setIsNextActionOpen(false);
-  };
-
-  const validateAndSetFile = (selectedFile: File) => {
-    const isPdf =
-      selectedFile.type === 'application/pdf' ||
-      selectedFile.name.toLowerCase().endsWith('.pdf');
-
-    if (!isPdf) {
-      setError(
-        isFr
-          ? 'Veuillez sélectionner un document au format PDF valide.'
-          : 'Please select a valid PDF document.'
-      );
-      return;
-    }
-
-    if (selectedFile.size > 50 * 1024 * 1024) {
-      setError(
-        isFr
-          ? 'Le fichier dépasse la taille maximale autorisée de 50 Mo.'
-          : 'File exceeds maximum allowed size of 50 MB.'
-      );
-      return;
-    }
-
-    setError(null);
-    setResult(null);
-    setFiles([selectedFile]);
-  };
-
-  // Auto-consume handoff file from previous workflow step
-  useEffect(() => {
-    const staged = consumeHandoffFile();
-    if (staged) {
-      validateAndSetFile(staged);
-    }
-  }, []);
-
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      validateAndSetFile(e.dataTransfer.files[0]);
-    }
-  };
-
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = () => {
-    setIsDragging(false);
-  };
-
-  const handleConvert = async () => {
-    if (!file || isProcessing) return;
-    setError(null);
-    setIsProcessing(true);
-
-    try {
-      trackToolUsed('pdf-to-pptx', 'documents');
-      const fd = new FormData();
-      fd.append('file', file);
-
-      const [res] = await Promise.all([
-        fetch(apiUrl('/api/tools/pdf-to-pptx'), {
-          method: 'POST',
-          body: fd,
-        }),
-        new Promise((resolve) => setTimeout(resolve, 800)),
-      ]);
-
-      if (!res.ok) {
-        const err = (await res.json().catch(() => ({}))) as {
-          message?: string;
-          error?: unknown;
-        };
-        const msg =
-          typeof err.message === 'string'
-            ? err.message
-            : typeof err.error === 'string'
-            ? err.error
-            : tc.error;
-        throw new Error(msg);
-      }
-
-      const blob = await res.blob();
-      setResult({
-        blob,
-        filename: file.name.replace(/\.[^/.]+$/, '') + '.pptx',
-        sizeAfter: blob.size,
-        sizeBefore: file.size,
-      });
-      setIsProcessing(false);
-    } catch (e) {
-      trackToolError('pdf-to-pptx', 'general-error');
-      const msg = e instanceof Error ? e.message : tc.error;
-      setError(msg === 'true' ? tc.error : msg);
-      setIsProcessing(false);
-    }
-  };
-
-  const handleDownload = () => {
-    if (!result) return;
-    const url = URL.createObjectURL(result.blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = result.filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-
-    setTimeout(() => {
-      setIsNextActionOpen(true);
-    }, 450);
-  };
+  const {
+    t,
+    tc,
+    isFr,
+    sourceFormat,
+    targetFormat,
+    file,
+    result,
+    error,
+    setError,
+    isProcessing,
+    isDragging,
+    isNextActionOpen,
+    setIsNextActionOpen,
+    validateAndSetFile,
+    handleReset,
+    handleDrop,
+    handleDragOver,
+    handleDragLeave,
+    handleConvert,
+    handleDownload,
+  } = usePdfToPptxWorkflow();
 
   const title = t.tools['pdf-to-pptx']?.title ?? (isFr ? 'PDF en PowerPoint' : 'PDF to PowerPoint');
   const desc =
@@ -189,7 +47,14 @@ export default function PdfToPptx() {
   return (
     <ToolPageLayout
       breadcrumb={[t.nav.breadcrumb.home, t.nav.breadcrumb.pdf, title]}
-      title={title}
+      title={
+        <ReciprocalTitle
+          currentSlug="pdf-to-pptx"
+          isFr={isFr}
+          getCurrentFile={() => file}
+          fallbackTitle={title}
+        />
+      }
       description={desc}
       seoSlug="pdf-to-pptx"
     >

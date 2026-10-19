@@ -3,6 +3,7 @@ import {
   convertUnits,
   getFormulaExplanation,
   CATEGORY_ICONS,
+  getPopularPresetsForCategory,
 } from '@/lib/unit-converter-logic';
 import { UNIT_CATEGORIES } from '@/config/units.config';
 
@@ -38,6 +39,23 @@ describe('unit-converter-logic', () => {
     it('handles commas as decimal points', () => {
       const res = convertUnits('1,5', 'kilometer', 'meter', lengthCategory.units, 'en-US');
       expect(res).toBe('1,500');
+    });
+
+    it('correctly parses numbers with thousand separators without truncation', () => {
+      // English format "1,000" meters to kilometers should be 1, not 0.001
+      const enRes = convertUnits('1,000', 'meter', 'kilometer', lengthCategory.units, 'en-US');
+      expect(enRes).toBe('1');
+
+      // French format "1 000" or non-breaking space
+      const frRes = convertUnits('1 000', 'meter', 'kilometer', lengthCategory.units, 'en-US');
+      expect(frRes).toBe('1');
+
+      const frNbspRes = convertUnits('1\u00A0000', 'meter', 'kilometer', lengthCategory.units, 'en-US');
+      expect(frNbspRes).toBe('1');
+
+      // Multiple commas "1,234,567"
+      const millionRes = convertUnits('1,000,000', 'millimeter', 'kilometer', lengthCategory.units, 'en-US');
+      expect(millionRes).toBe('1');
     });
 
     it('returns "0" when result value is 0', () => {
@@ -104,6 +122,28 @@ describe('unit-converter-logic', () => {
       for (const cat of UNIT_CATEGORIES) {
         expect(CATEGORY_ICONS[cat.id]).toBeDefined();
       }
+    });
+  });
+
+  describe('POPULAR_UNIT_PRESETS and getPopularPresetsForCategory', () => {
+    it('provides quick presets for length category', () => {
+      const presets = getPopularPresetsForCategory('length');
+      expect(presets.length).toBeGreaterThanOrEqual(3);
+      expect(presets[0].fromUnit).toBe('kilometer');
+      expect(presets[0].toUnit).toBe('mile');
+    });
+
+    it('provides quick presets for weight, temperature, speed, data, area, volume', () => {
+      for (const cat of ['weight', 'temperature', 'speed', 'data', 'area', 'volume']) {
+        const presets = getPopularPresetsForCategory(cat);
+        expect(presets.length).toBeGreaterThanOrEqual(3);
+        expect(presets[0].id).toBeDefined();
+        expect(presets[0].label).toBeDefined();
+      }
+    });
+
+    it('returns empty array for unknown category', () => {
+      expect(getPopularPresetsForCategory('nonexistent')).toEqual([]);
     });
   });
 });

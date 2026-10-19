@@ -3,6 +3,7 @@ import {
   getJwtByteSize,
   getClaimAnnotation,
   buildJwtExportPayload,
+  triggerJwtDownload,
 } from '@/lib/jwt-export-logic';
 import { decodeJwt, SAMPLE_JWTS } from '@/lib/jwt-logic';
 
@@ -63,5 +64,9 @@ describe('JWT Export and Annotation Logic', () => {
     const expiredDecoded = decodeJwt(SAMPLE_JWTS.expiredUser, false);
     const expAnnotationEn = getClaimAnnotation('exp', 1500000000, expiredDecoded, false);
     expect(expAnnotationEn).toContain('Expired on');
+  });
+
+  it('exports triggerJwtDownload without throwing', () => {
+    expect(typeof triggerJwtDownload).toBe('function');
   });
 });

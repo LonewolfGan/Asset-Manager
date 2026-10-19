@@ -1,5 +1,6 @@
 import React, { RefObject } from 'react';
 import { FileText, Upload } from 'lucide-react';
+import type { MARKDOWN_SAMPLES } from '@/lib/markdown-preview-parser';
 
 export interface MarkdownEditorPaneProps {
   editorRef: RefObject<HTMLTextAreaElement | null>;
@@ -15,6 +16,7 @@ export interface MarkdownEditorPaneProps {
     words: number;
   };
   onFileUpload: (file: File) => void;
+  onLoadSample?: (key: keyof typeof MARKDOWN_SAMPLES) => void;
   isFr: boolean;
 }
 
@@ -29,6 +31,7 @@ export function MarkdownEditorPane({
   hasContent,
   metrics,
   onFileUpload,
+  onLoadSample,
   isFr,
 }: MarkdownEditorPaneProps) {
   return (
@@ -54,28 +57,67 @@ export function MarkdownEditorPane({
               type="file"
               accept=".md,.markdown,.txt"
               className="hidden"
-              onChange={(e) => e.target.files?.[0] && onFileUpload(e.target.files[0])}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  onFileUpload(file);
+                  e.target.value = '';
+                }
+              }}
             />
           </label>
         </div>
       </div>
 
-      <textarea
-        ref={editorRef}
-        value={markdown}
-        onChange={(e) => onMarkdownChange(e.target.value)}
-        onScroll={onScroll}
-        onSelect={onSelect}
-        onKeyUp={onSelect}
-        onMouseUp={onSelect}
-        placeholder={isFr ? "Rédigez ou collez votre document Markdown ici..." : "Write or paste your Markdown document here..."}
-        spellCheck={false}
-        wrap={wordWrap ? 'soft' : 'off'}
-        style={{ height: `${editorHeight}px` }}
-        className={`w-full p-4 bg-transparent resize-none outline-none text-zinc-800 dark:text-zinc-200 font-mono text-xs leading-relaxed overflow-auto ${
-          wordWrap ? 'whitespace-pre-wrap break-words [overflow-wrap:anywhere]' : 'whitespace-pre overflow-x-auto'
-        }`}
-      />
+      <div className="relative">
+        <textarea
+          ref={editorRef}
+          value={markdown}
+          onChange={(e) => onMarkdownChange(e.target.value)}
+          onScroll={onScroll}
+          onSelect={onSelect}
+          onKeyUp={onSelect}
+          onMouseUp={onSelect}
+          placeholder={isFr ? "Rédigez ou collez votre document Markdown ici..." : "Write or paste your Markdown document here..."}
+          spellCheck={false}
+          wrap={wordWrap ? 'soft' : 'off'}
+          style={{ height: `${editorHeight}px` }}
+          className={`w-full p-4 bg-transparent resize-none outline-none text-zinc-800 dark:text-zinc-200 font-mono text-xs leading-relaxed overflow-auto ${
+            wordWrap ? 'whitespace-pre-wrap break-words [overflow-wrap:anywhere]' : 'whitespace-pre overflow-x-auto'
+          }`}
+        />
+
+        {!hasContent && onLoadSample && (
+          <div className="absolute inset-x-0 bottom-4 flex flex-col items-center justify-center p-4 pointer-events-none">
+            <div className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-zinc-100/90 dark:bg-zinc-800/90 border border-zinc-200 dark:border-white/10 shadow-sm backdrop-blur-sm pointer-events-auto">
+              <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
+                {isFr ? 'Modèles :' : 'Templates:'}
+              </span>
+              <button
+                type="button"
+                onClick={() => onLoadSample('welcomeDoc')}
+                className="px-2 py-1 text-[11px] font-medium rounded-lg text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors cursor-pointer"
+              >
+                {isFr ? 'Démarrage' : 'Quickstart'}
+              </button>
+              <button
+                type="button"
+                onClick={() => onLoadSample('readmeTemplate')}
+                className="px-2 py-1 text-[11px] font-medium rounded-lg text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors cursor-pointer"
+              >
+                README
+              </button>
+              <button
+                type="button"
+                onClick={() => onLoadSample('technicalSpec')}
+                className="px-2 py-1 text-[11px] font-medium rounded-lg text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors cursor-pointer"
+              >
+                {isFr ? 'Spécification' : 'Tech Spec'}
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

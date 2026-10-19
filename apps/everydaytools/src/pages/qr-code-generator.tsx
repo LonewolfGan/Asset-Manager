@@ -1,7 +1,7 @@
 import React from 'react';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import { useLocale } from '@/hooks/use-locale';
-import { Globe, FileText, Wifi, Contact } from 'lucide-react';
+import { Globe, FileText, Wifi, Contact, Undo2, Redo2 } from 'lucide-react';
 import { useQrCodeGenerator } from '@/hooks/use-qr-code-generator';
 import { InputMode } from '@/lib/qr-code-logic';
 import { QrViewport } from '@/components/qr/QrViewport';
@@ -57,7 +57,7 @@ export default function QrCodeGenerator() {
                   key={tab.id}
                   type="button"
                   onClick={() => qr.setMode(tab.id as InputMode)}
-                  className={`h-9 px-3.5 rounded-lg inline-flex items-center gap-2 text-xs font-mono transition-all cursor-pointer ${
+                  className={`h-9 px-3.5 rounded-lg inline-flex items-center gap-2 text-xs font-mono transition-colors duration-150 cursor-pointer ${
                     isActive
                       ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 font-semibold shadow-xs'
                       : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800'
@@ -71,11 +71,33 @@ export default function QrCodeGenerator() {
             })}
           </div>
 
-          <div className="hidden sm:flex items-center gap-2 text-xs font-mono">
-            <span className={qr.contrastAssessment.color}>{qr.contrastAssessment.label}</span>
-            <span className="font-semibold text-zinc-800 dark:text-zinc-200">
-              ({qr.contrastRatio.toFixed(1)}:1)
-            </span>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1 border-r border-zinc-200/80 dark:border-white/10 pr-3">
+              <button
+                type="button"
+                onClick={qr.undo}
+                disabled={!qr.canUndo}
+                title="Undo (Ctrl+Z)"
+                className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 disabled:opacity-30 disabled:pointer-events-none hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors duration-150 cursor-pointer"
+              >
+                <Undo2 className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={qr.redo}
+                disabled={!qr.canRedo}
+                title="Redo (Ctrl+Y)"
+                className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 disabled:opacity-30 disabled:pointer-events-none hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors duration-150 cursor-pointer"
+              >
+                <Redo2 className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="hidden sm:flex items-center gap-2 text-xs font-mono">
+              <span className={qr.contrastAssessment.color}>{qr.contrastAssessment.label}</span>
+              <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+                ({qr.contrastRatio.toFixed(1)}:1)
+              </span>
+            </div>
           </div>
         </div>
 

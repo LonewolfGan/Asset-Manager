@@ -1,8 +1,12 @@
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
 import { trackToolUsed } from '@/lib/analytics';
-import { downloadText } from '@/lib/download';
 import { consumeHandoffFile } from '@/lib/file-handoff';
+import {
+  downloadPatchFile,
+  downloadOriginalFile,
+  downloadModifiedFile,
+} from '@/lib/diff-checker-downloads';
 import {
   computeTextDiff,
   generateUnifiedPatch,
@@ -41,36 +45,42 @@ export function useDiffCheckerWorkflow(isFr: boolean) {
   // Drag & drop state
   const [isDragOverOriginal, setIsDragOverOriginal] = useState(false);
   const [isDragOverModified, setIsDragOverModified] = useState(false);
+  const lastHistoryPushRef = useRef<number>(0);
 
-  const handleUpdateOriginal = useCallback((val: string) => {
-    setTextA((currentA) => {
-      setTextB((currentB) => {
-        setHistory((prev) => [...prev.slice(-25), { a: currentA, b: currentB }]);
-        return currentB;
-      });
-      return val;
-    });
+  const pushSnapshot = useCallback((a: string, b: string) => {
+    const now = Date.now();
+    if (now - lastHistoryPushRef.current > 1000) {
+      setHistory((prev) => [...prev.slice(-25), { a, b }]);
+      lastHistoryPushRef.current = now;
+    }
   }, []);
 
-  const handleUpdateModified = useCallback((val: string) => {
-    setTextA((currentA) => {
-      setTextB((currentB) => {
-        setHistory((prev) => [...prev.slice(-25), { a: currentA, b: currentB }]);
-        return val;
-      });
-      return currentA;
-    });
-  }, []);
+  const handleUpdateOriginal = useCallback(
+    (val: string) => {
+      pushSnapshot(textA, textB);
+      setTextA(val);
+    },
+    [textA, textB, pushSnapshot]
+  );
+
+  const handleUpdateModified = useCallback(
+    (val: string) => {
+      pushSnapshot(textA, textB);
+      setTextB(val);
+    },
+    [textA, textB, pushSnapshot]
+  );
 
   const handleUndo = useCallback(() => {
+    lastHistoryPushRef.current = 0;
     setHistory((prev) => {
       if (prev.length === 0) return prev;
       const last = prev[prev.length - 1];
       setTextA(last.a);
       setTextB(last.b);
-      toast.info(isFr ? 'Action annulée' : 'Action undone');
       return prev.slice(0, -1);
     });
+    toast.info(isFr ? 'Action annulée' : 'Action undone');
   }, [isFr]);
 
   // Universal keyboard shortcut Ctrl+Z / Cmd+Z
@@ -112,27 +122,21 @@ export function useDiffCheckerWorkflow(isFr: boolean) {
   }, [editorHeight]);
 
   const handleSwap = useCallback(() => {
-    setTextA((currentA) => {
-      setTextB((currentB) => {
-        setHistory((prev) => [...prev.slice(-25), { a: currentA, b: currentB }]);
-        toast.success(isFr ? 'Textes intervertis' : 'Texts swapped');
-        return currentA;
-      });
-      return textB;
-    });
-  }, [textB, isFr]);
+    setHistory((prev) => [...prev.slice(-25), { a: textA, b: textB }]);
+    lastHistoryPushRef.current = 0;
+    setTextA(textB);
+    setTextB(textA);
+    toast.success(isFr ? 'Textes intervertis' : 'Texts swapped');
+  }, [textA, textB, isFr]);
 
   const handleClear = useCallback(() => {
-    setTextA((currentA) => {
-      setTextB((currentB) => {
-        setHistory((prev) => [...prev.slice(-25), { a: currentA, b: currentB }]);
-        return '';
-      });
-      return '';
-    });
+    setHistory((prev) => [...prev.slice(-25), { a: textA, b: textB }]);
+    lastHistoryPushRef.current = 0;
+    setTextA('');
+    setTextB('');
     setViewMode('edit');
     toast.info(isFr ? 'Textes effacés' : 'Texts cleared');
-  }, [isFr]);
+  }, [textA, textB, isFr]);
 
   const handleFileUpload = useCallback(
     (file: File, target: 'original' | 'modified') => {
@@ -212,28 +216,15 @@ export function useDiffCheckerWorkflow(isFr: boolean) {
   }, [textA, textB, diffResult.lines]);
 
   const handleDownloadPatch = useCallback(() => {
-    if (!unifiedPatchText) return;
-    trackToolUsed('diff-checker', 'download-patch');
-    downloadText(unifiedPatchText, 'changes.diff', 'text/plain;charset=utf-8');
-    toast.success(
-      isFr ? 'Fichier changes.diff téléchargé' : 'File changes.diff downloaded'
-    );
+    downloadPatchFile(unifiedPatchText, isFr);
   }, [unifiedPatchText, isFr]);
 
   const handleDownloadOriginal = useCallback(() => {
-    if (!textA) return;
-    downloadText(textA, 'original.txt', 'text/plain;charset=utf-8');
-    toast.success(
-      isFr ? 'Fichier original.txt téléchargé' : 'File original.txt downloaded'
-    );
+    downloadOriginalFile(textA, isFr);
   }, [textA, isFr]);
 
   const handleDownloadModified = useCallback(() => {
-    if (!textB) return;
-    downloadText(textB, 'modified.txt', 'text/plain;charset=utf-8');
-    toast.success(
-      isFr ? 'Fichier modified.txt téléchargé' : 'File modified.txt downloaded'
-    );
+    downloadModifiedFile(textB, isFr);
   }, [textB, isFr]);
 
   const loadSample = useCallback(

@@ -173,8 +173,8 @@ export function calculateVaultStrength(params: VaultStrengthParams): PasswordVau
     return {
       label: params.labels.exceptional,
       level: 4,
-      color: 'text-[#FF6B35] dark:text-[#FF8255]',
-      stroke: 'text-[#FF6B35]',
+      color: 'text-[var(--accent,#f97316)]',
+      stroke: 'text-[var(--accent,#f97316)]',
     };
   }
 
@@ -213,8 +213,8 @@ export function calculateVaultStrength(params: VaultStrengthParams): PasswordVau
   return {
     label: params.labels.exceptional,
     level: 4,
-    color: 'text-[#FF6B35] dark:text-[#FF8255]',
-    stroke: 'text-[#FF6B35]',
+    color: 'text-[var(--accent,#f97316)]',
+    stroke: 'text-[var(--accent,#f97316)]',
   };
 }
 
@@ -224,3 +224,46 @@ export function getTextSizeClass(length: number): string {
   if (length <= 36) return 'text-xl sm:text-3xl md:text-4xl tracking-normal';
   return 'text-lg sm:text-2xl md:text-3xl tracking-tight';
 }
+
+/** Calculate Shannon entropy in bits */
+export function calculateEntropyBits(password: string): number {
+  if (!password) return 0;
+  let pool = 0;
+  if (/[a-z]/.test(password)) pool += 26;
+  if (/[A-Z]/.test(password)) pool += 26;
+  if (/[0-9]/.test(password)) pool += 10;
+  if (/[^a-zA-Z0-9]/.test(password)) pool += 32;
+  if (pool === 0) pool = 26;
+  return Math.round(password.length * Math.log2(pool) * 10) / 10;
+}
+
+/** Human-readable estimated time to crack */
+export function estimateCrackTime(
+  entropyBits: number,
+  isFr = false
+): { offlineFast: string; onlineThrottled: string } {
+  const secondsOffline = Math.pow(2, entropyBits) / (2 * 1e11);
+  const secondsOnline = Math.pow(2, entropyBits) / (2 * 100);
+
+  return {
+    offlineFast: formatDuration(secondsOffline, isFr),
+    onlineThrottled: formatDuration(secondsOnline, isFr),
+  };
+}
+
+function formatDuration(seconds: number, isFr: boolean): string {
+  if (seconds < 1) return isFr ? 'Instantané' : 'Instant';
+  if (seconds < 60) return isFr ? `${Math.round(seconds)} secondes` : `${Math.round(seconds)} seconds`;
+  const minutes = seconds / 60;
+  if (minutes < 60) return isFr ? `${Math.round(minutes)} minutes` : `${Math.round(minutes)} minutes`;
+  const hours = minutes / 60;
+  if (hours < 24) return isFr ? `${Math.round(hours)} heures` : `${Math.round(hours)} hours`;
+  const days = hours / 24;
+  if (days < 365) return isFr ? `${Math.round(days)} jours` : `${Math.round(days)} days`;
+  const years = days / 365;
+  if (years < 100) return isFr ? `${Math.round(years)} années` : `${Math.round(years)} years`;
+  const centuries = years / 100;
+  if (centuries < 10) return isFr ? `${Math.round(centuries)} siècles` : `${Math.round(centuries)} centuries`;
+  return isFr ? 'Plusieurs millénaires' : 'Many millennia';
+}
+

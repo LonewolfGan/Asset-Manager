@@ -9,15 +9,17 @@ import {
   ConversionConduit,
   ConversionResult,
   TextPreviewDialog,
-  DocumentNextActionModal,
+  ReciprocalTitle,
 } from '@/components/conversion';
+import { DocumentNextActionModal } from '@/components/conversion/DocumentNextActionModal';
 import { useWordToHtmlWorkflow } from '@/hooks/use-word-to-html-workflow';
+import { useLocale } from '@/hooks/use-locale';
 
 export default function WordToHtml() {
+  const { isFr } = useLocale();
   const {
     t,
     tc,
-    isFr,
     sourceFormat,
     targetFormat,
     file,
@@ -47,7 +49,14 @@ export default function WordToHtml() {
   return (
     <ToolPageLayout
       breadcrumb={[t.nav.breadcrumb.home, t.nav.breadcrumb.documents, pageTitle]}
-      title={pageTitle}
+      title={
+        <ReciprocalTitle
+          currentSlug="word-to-html"
+          isFr={isFr}
+          getCurrentFile={() => file}
+          fallbackTitle={pageTitle}
+        />
+      }
       description={pageDesc}
       seoSlug="word-to-html"
     >
@@ -103,6 +112,7 @@ export default function WordToHtml() {
                 targetFormat={targetFormat}
                 resultFileName={result.filename}
                 resultFileSize={result.sizeAfter}
+                resultMetadataText={`${result.textOutput ? result.textOutput.split('\n').length : 0} ${isFr ? 'lignes' : 'lines'} · ${result.textOutput.length} ${isFr ? 'caractères' : 'chars'}`}
                 downloadBtnLabel={tc.downloadHtml ?? (isFr ? 'Télécharger le code HTML' : 'Download HTML code')}
                 resetBtnLabel={tc.convertAnother ?? (isFr ? 'Convertir un autre document' : 'Convert another document')}
                 onDownload={handleDownload}
@@ -112,7 +122,7 @@ export default function WordToHtml() {
                     <button
                       type="button"
                       onClick={() => setPreviewOpen(true)}
-                      className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-medium text-base active:scale-[0.98] transition-all flex items-center gap-2.5 shadow-sm cursor-pointer"
+                      className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-medium text-base active:scale-[0.98] transition-[background-color,border-color,transform] duration-150 flex items-center gap-2.5 shadow-sm cursor-pointer"
                     >
                       <Eye size={16} strokeWidth={2.2} />
                       <span>{isFr ? 'Aperçu du code HTML' : 'Preview HTML code'}</span>
@@ -125,6 +135,14 @@ export default function WordToHtml() {
                       variant="pill"
                       className="h-12 px-6 text-sm font-sans"
                     />
+
+                    <button
+                      type="button"
+                      onClick={() => setIsNextActionOpen(true)}
+                      className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-medium text-base active:scale-[0.98] transition-[background-color,border-color,transform] duration-150 flex items-center gap-2.5 shadow-sm cursor-pointer"
+                    >
+                      <span>{isFr ? 'Actions suivantes' : 'Next actions'}</span>
+                    </button>
                   </div>
                 }
               />
@@ -146,15 +164,17 @@ export default function WordToHtml() {
             />
           )}
 
-          {/* Continuum Modal */}
-          <DocumentNextActionModal
-            toolId="word-to-html"
-            isOpen={isNextActionOpen}
-            onClose={() => setIsNextActionOpen(false)}
-            resultBlob={result?.blob}
-            resultFilename={result?.filename}
-            formatType="html"
-          />
+          {/* Document Next Action Modal */}
+          {result && (
+            <DocumentNextActionModal
+              toolId="word-to-html"
+              isOpen={isNextActionOpen}
+              onClose={() => setIsNextActionOpen(false)}
+              resultBlob={result.blob}
+              resultFilename={result.filename}
+              formatType="html"
+            />
+          )}
         </div>
       </ToolWorkspace>
     </ToolPageLayout>

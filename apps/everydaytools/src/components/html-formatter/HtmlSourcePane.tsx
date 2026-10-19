@@ -1,6 +1,7 @@
 import React from 'react';
-import { FileCode2, Upload } from 'lucide-react';
+import { FileCode2, Upload, AlertTriangle } from 'lucide-react';
 import { useLocale } from '@/hooks/use-locale';
+import { HTML_SAMPLES, type HtmlIssue } from '@/lib/html-formatter-logic';
 
 interface HtmlSourcePaneProps {
   input: string;
@@ -8,8 +9,10 @@ interface HtmlSourcePaneProps {
   wordWrap: boolean;
   editorHeight: number;
   inputBytes: number;
+  issues?: HtmlIssue[];
   onInputChange: (val: string) => void;
   onFileUpload: (file: File) => void;
+  onLoadSample?: (key: keyof typeof HTML_SAMPLES) => void;
 }
 
 export function HtmlSourcePane({
@@ -18,8 +21,10 @@ export function HtmlSourcePane({
   wordWrap,
   editorHeight,
   inputBytes,
+  issues = [],
   onInputChange,
   onFileUpload,
+  onLoadSample,
 }: HtmlSourcePaneProps) {
   const { isFr } = useLocale();
 
@@ -37,6 +42,18 @@ export function HtmlSourcePane({
               {inputBytes} {isFr ? 'octets' : 'bytes'})
             </span>
           )}
+          {hasContent && issues.length > 0 && (
+            <span
+              title={issues.map((i) => i.message).join('\n')}
+              className="text-[11px] px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400 font-medium flex items-center gap-1 cursor-help"
+            >
+              <AlertTriangle className="w-3 h-3" />
+              <span>
+                {issues.length} {isFr ? 'anomalie' : 'issue'}
+                {issues.length > 1 ? 's' : ''}
+              </span>
+            </span>
+          )}
         </div>
 
         <div className="flex items-center gap-2">
@@ -47,31 +64,69 @@ export function HtmlSourcePane({
               type="file"
               accept=".html,.htm,.txt,text/html"
               className="hidden"
-              onChange={(e) =>
-                e.target.files?.[0] && onFileUpload(e.target.files[0])
-              }
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  onFileUpload(file);
+                  e.target.value = '';
+                }
+              }}
             />
           </label>
         </div>
       </div>
 
-      <textarea
-        value={input}
-        onChange={(e) => onInputChange(e.target.value)}
-        placeholder={
-          isFr
-            ? 'Collez ou tapez votre code HTML ici...'
-            : 'Paste or type your HTML code here...'
-        }
-        spellCheck={false}
-        wrap={wordWrap ? 'soft' : 'off'}
-        style={{ height: `${editorHeight}px` }}
-        className={`w-full p-4 bg-transparent resize-none outline-none text-zinc-800 dark:text-zinc-200 font-mono text-xs leading-relaxed overflow-auto ${
-          wordWrap
-            ? 'whitespace-pre-wrap break-words'
-            : 'whitespace-pre overflow-x-auto'
-        }`}
-      />
+      <div className="relative">
+        <textarea
+          value={input}
+          onChange={(e) => onInputChange(e.target.value)}
+          placeholder={
+            isFr
+              ? 'Collez ou tapez votre code HTML ici...'
+              : 'Paste or type your HTML code here...'
+          }
+          spellCheck={false}
+          wrap={wordWrap ? 'soft' : 'off'}
+          style={{ height: `${editorHeight}px` }}
+          className={`w-full p-4 bg-transparent resize-none outline-none text-zinc-800 dark:text-zinc-200 font-mono text-xs leading-relaxed overflow-auto ${
+            wordWrap
+              ? 'whitespace-pre-wrap break-words'
+              : 'whitespace-pre overflow-x-auto'
+          }`}
+        />
+
+        {!hasContent && (
+          <div className="absolute inset-x-0 bottom-4 flex flex-col items-center justify-center p-4 pointer-events-none">
+            <div className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-zinc-100/90 dark:bg-zinc-800/90 border border-zinc-200 dark:border-white/10 shadow-sm backdrop-blur-sm pointer-events-auto">
+              <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
+                {isFr ? 'Exemples :' : 'Samples:'}
+              </span>
+              <button
+                type="button"
+                data-sample="landingHero"
+                onClick={() => {
+                  if (onLoadSample) onLoadSample('landingHero');
+                  else onInputChange(HTML_SAMPLES.landingHero);
+                }}
+                className="px-2 py-0.5 text-[11px] font-medium rounded-md bg-white dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-600 transition-colors cursor-pointer border border-zinc-200/60 dark:border-white/5"
+              >
+                Hero Page
+              </button>
+              <button
+                type="button"
+                data-sample="article"
+                onClick={() => {
+                  if (onLoadSample) onLoadSample('article');
+                  else onInputChange(HTML_SAMPLES.article);
+                }}
+                className="px-2 py-0.5 text-[11px] font-medium rounded-md bg-white dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-600 transition-colors cursor-pointer border border-zinc-200/60 dark:border-white/5"
+              >
+                Article
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

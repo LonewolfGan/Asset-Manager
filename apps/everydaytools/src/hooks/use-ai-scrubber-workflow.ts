@@ -1,6 +1,7 @@
-import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import { trackToolUsed } from '@/lib/analytics';
+import { consumeHandoffText, consumeHandoffFile } from '@/lib/file-handoff';
 import {
   analyzeText,
   SAMPLE_AI_TEXT_FR,
@@ -27,6 +28,26 @@ export function useAiScrubberWorkflow(isFr: boolean) {
 
   const [isDragging, setIsDragging] = useState(false);
 
+  // Auto-consume handoff file or text from previous workflow step (React 19 StrictMode guarded)
+  const hasConsumedHandoffRef = useRef(false);
+  useEffect(() => {
+    if (hasConsumedHandoffRef.current) return;
+    hasConsumedHandoffRef.current = true;
+    const stagedFile = consumeHandoffFile();
+    if (stagedFile) {
+      stagedFile.text().then((content) => {
+        setInputText(content);
+        setOutputText('');
+      }).catch(() => {});
+      return;
+    }
+    const stagedText = consumeHandoffText();
+    if (stagedText) {
+      setInputText(stagedText);
+      setOutputText('');
+    }
+  }, []);
+
   // Real-time analysis of the input text
   const analysis: TextAnalysis = useMemo(() => {
     return analyzeText(inputText);
@@ -45,6 +66,25 @@ export function useAiScrubberWorkflow(isFr: boolean) {
 
   const hasActiveOptions =
     optInvisibles || optEmDashes || optStylistic || optSymbols || optWhitespace;
+
+  // Clear all text
+  const handleClear = useCallback(() => {
+    if (!inputText && !outputText) return;
+    setUndoStack((prev) => [...prev, { input: inputText, output: outputText }].slice(-20));
+    setInputText('');
+    setOutputText('');
+    toast.info(isFr ? 'Texte effacé.' : 'Text cleared.');
+  }, [inputText, outputText, isFr]);
+
+  // Undo last modification
+  const handleUndo = useCallback(() => {
+    if (undoStack.length === 0) return;
+    const last = undoStack[undoStack.length - 1];
+    setUndoStack((prev) => prev.slice(0, -1));
+    setInputText(last.input);
+    setOutputText(last.output);
+    toast.info(isFr ? 'Action annulée.' : 'Action undone.');
+  }, [undoStack, isFr]);
 
   // Main cleaning function
   const handleScrub = useCallback(() => {
@@ -66,10 +106,7 @@ export function useAiScrubberWorkflow(isFr: boolean) {
       return;
     }
 
-    setUndoStack((prev) => [
-      ...prev.slice(-20),
-      { input: inputText, output: outputText },
-    ]);
+    setUndoStack((prev) => [...prev, { input: inputText, output: outputText }].slice(-20));
 
     const result = executeTextScrubbing(inputText, scrubOptions);
     setOutputText(result.outputText);
@@ -82,24 +119,23 @@ export function useAiScrubberWorkflow(isFr: boolean) {
     );
   }, [inputText, outputText, hasActiveOptions, scrubOptions, isFr]);
 
-  // Keyboard shortcut Ctrl/Cmd + Enter to scrub
+  // Keyboard shortcut Ctrl/Cmd + Enter to scrub, Escape to clear
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
         e.preventDefault();
         handleScrub();
+      } else if (e.key === 'Escape' && (inputText || outputText)) {
+        handleClear();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleScrub]);
+  }, [handleScrub, handleClear, inputText, outputText]);
 
   // Load sample text
   const handleLoadSample = useCallback(() => {
-    setUndoStack((prev) => [
-      ...prev.slice(-20),
-      { input: inputText, output: outputText },
-    ]);
+    setUndoStack((prev) => [...prev, { input: inputText, output: outputText }].slice(-20));
     const sample = isFr ? SAMPLE_AI_TEXT_FR : SAMPLE_AI_TEXT_EN;
     setInputText(sample);
     setOutputText('');
@@ -122,10 +158,7 @@ export function useAiScrubberWorkflow(isFr: boolean) {
   // Transfer output back to input
   const handleApplyToInput = useCallback(() => {
     if (!outputText) return;
-    setUndoStack((prev) => [
-      ...prev.slice(-20),
-      { input: inputText, output: outputText },
-    ]);
+    setUndoStack((prev) => [...prev, { input: inputText, output: outputText }].slice(-20));
     setInputText(outputText);
     setOutputText('');
     toast.success(
@@ -133,27 +166,6 @@ export function useAiScrubberWorkflow(isFr: boolean) {
     );
   }, [inputText, outputText, isFr]);
 
-  // Clear all text
-  const handleClear = useCallback(() => {
-    if (!inputText && !outputText) return;
-    setUndoStack((prev) => [
-      ...prev.slice(-20),
-      { input: inputText, output: outputText },
-    ]);
-    setInputText('');
-    setOutputText('');
-    toast.info(isFr ? 'Texte effacé.' : 'Text cleared.');
-  }, [inputText, outputText, isFr]);
-
-  // Undo last modification
-  const handleUndo = useCallback(() => {
-    if (undoStack.length === 0) return;
-    const last = undoStack[undoStack.length - 1];
-    setUndoStack((prev) => prev.slice(0, -1));
-    setInputText(last.input);
-    setOutputText(last.output);
-    toast.info(isFr ? 'Action annulée.' : 'Action undone.');
-  }, [undoStack, isFr]);
 
   // Drag & drop file reader
   const handleFileDrop = useCallback(
@@ -162,14 +174,20 @@ export function useAiScrubberWorkflow(isFr: boolean) {
       setIsDragging(false);
       if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
         const file = e.dataTransfer.files[0];
+        if (file.size > 5 * 1024 * 1024) {
+          toast.error(
+            isFr
+              ? 'Fichier trop volumineux (max 5 Mo).'
+              : 'File too large (max 5MB).'
+          );
+          return;
+        }
+
         const reader = new FileReader();
         reader.onload = (event) => {
           const content = event.target?.result;
           if (typeof content === 'string') {
-            setUndoStack((prev) => [
-              ...prev.slice(-20),
-              { input: inputText, output: outputText },
-            ]);
+            setUndoStack((prev) => [...prev, { input: inputText, output: outputText }].slice(-20));
             setInputText(content);
             setOutputText('');
             toast.success(

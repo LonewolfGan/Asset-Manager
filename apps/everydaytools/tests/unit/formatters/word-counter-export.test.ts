@@ -95,4 +95,38 @@ describe('word-counter-export-logic', () => {
       expect(parsed.stats.words).toBe(50);
     });
   });
+
+  describe('downloadTextFile', () => {
+    it('creates object url and triggers click with proper filename', async () => {
+      const { downloadTextFile } = await import('@/lib/word-counter-export-logic');
+      let clicked = false;
+      let downloadedName = '';
+      const originalCreateObjectURL = URL.createObjectURL;
+      const originalRevokeObjectURL = URL.revokeObjectURL;
+
+      URL.createObjectURL = () => 'blob:mock-url';
+      URL.revokeObjectURL = () => {};
+
+      const originalAppendChild = document.body.appendChild.bind(document.body);
+      const appendSpy = (node: Node) => {
+        if (node instanceof HTMLAnchorElement) {
+          node.click = () => {
+            clicked = true;
+            downloadedName = node.download;
+          };
+        }
+        return originalAppendChild(node);
+      };
+      document.body.appendChild = appendSpy as any;
+
+      downloadTextFile('Contenu texte de test', 'mon-analyse.txt');
+
+      expect(clicked).toBe(true);
+      expect(downloadedName).toBe('mon-analyse.txt');
+
+      URL.createObjectURL = originalCreateObjectURL;
+      URL.revokeObjectURL = originalRevokeObjectURL;
+      document.body.appendChild = originalAppendChild;
+    });
+  });
 });

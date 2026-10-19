@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { toast } from '@/hooks/use-toast';
@@ -11,10 +11,72 @@ import {
   triggerDownload,
   type WordToTextResult,
 } from '@/lib/word-to-text-logic';
+import type { ConversionFormat } from '@/components/conversion/types';
 
-export function useWordToTextWorkflow() {
-  const { t, isFr } = useLocale();
-  const tc = t.wordToText;
+export interface UseWordToTextWorkflowOptions {
+  isFr?: boolean;
+}
+
+export interface UseWordToTextWorkflowReturn {
+  t: any;
+  tc: any;
+  isFr: boolean;
+  sourceFormat: ConversionFormat;
+  targetFormat: ConversionFormat;
+  file: File | undefined;
+  result: WordToTextResult | null;
+  isProcessing: boolean;
+  isDragging: boolean;
+  previewOpen: boolean;
+  setPreviewOpen: (open: boolean) => void;
+  isNextActionOpen: boolean;
+  setIsNextActionOpen: (open: boolean) => void;
+  validateAndSetFile: (selectedFile: File) => void;
+  handleDragOver: (e: React.DragEvent) => void;
+  handleDragLeave: () => void;
+  handleDrop: (e: React.DragEvent) => void;
+  handleReset: () => void;
+  handleConvert: () => Promise<void>;
+  handleDownload: () => void;
+}
+
+function useSafeLocale(options?: UseWordToTextWorkflowOptions): {
+  t: any;
+  tc: Record<string, any>;
+  isFr: boolean;
+} {
+  try {
+    const localeCtx = useLocale();
+    const isFr = options?.isFr ?? localeCtx.isFr;
+    return {
+      t: localeCtx.t,
+      tc: (localeCtx.t.wordToText ?? {}) as Record<string, any>,
+      isFr,
+    };
+  } catch {
+    const isFr = options?.isFr ?? false;
+    return {
+      t: {
+        tools: {
+          'word-to-text': {
+            title: isFr ? 'Word en Texte' : 'Word to Text',
+            description: isFr
+              ? 'Extrayez le texte brut de documents Word.'
+              : 'Extract plain text from Word document.',
+          },
+        },
+        wordToText: {},
+      },
+      tc: {} as Record<string, any>,
+      isFr,
+    };
+  }
+}
+
+export function useWordToTextWorkflow(
+  options?: UseWordToTextWorkflowOptions
+): UseWordToTextWorkflowReturn {
+  const { t, tc, isFr } = useSafeLocale(options);
   const sourceFormat = getSourceFormat(isFr);
   const targetFormat = getTargetFormat(isFr);
 
@@ -25,6 +87,7 @@ export function useWordToTextWorkflow() {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [isNextActionOpen, setIsNextActionOpen] = useState(false);
 
+  const hasConsumedHandoffRef = useRef(false);
   const file = files[0];
 
   const validateAndSetFile = useCallback(
@@ -45,6 +108,8 @@ export function useWordToTextWorkflow() {
   );
 
   useEffect(() => {
+    if (hasConsumedHandoffRef.current) return;
+    hasConsumedHandoffRef.current = true;
     const staged = consumeHandoffFile();
     if (staged) {
       validateAndSetFile(staged);
@@ -81,6 +146,19 @@ export function useWordToTextWorkflow() {
     setIsNextActionOpen(false);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !isProcessing) {
+        if (previewOpen || isNextActionOpen) return;
+        const activeTag = document.activeElement?.tagName.toLowerCase();
+        if (activeTag === 'input' || activeTag === 'textarea') return;
+        handleReset();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isProcessing, previewOpen, isNextActionOpen, handleReset]);
+
   const handleConvert = useCallback(async () => {
     if (!file || isProcessing) return;
     setIsProcessing(true);
@@ -115,9 +193,6 @@ export function useWordToTextWorkflow() {
   const handleDownload = useCallback(() => {
     if (!result) return;
     triggerDownload(result.blob, result.filename);
-    setTimeout(() => {
-      setIsNextActionOpen(true);
-    }, 450);
   }, [result]);
 
   return {

@@ -66,6 +66,19 @@ describe('regex-tester-logic', () => {
       expect(groups.find((g) => g.name === 'day')?.value).toBe('04');
     });
 
+    it('assigns named capture groups correctly even when values are identical', () => {
+      const text = '12-12';
+      const result = evaluateRegex('(?<start>\\d+)-(?<end>\\d+)', 'g', text, '$<start>/$<end>');
+      expect(result.isValid).toBe(true);
+      expect(result.matches).toHaveLength(1);
+      const groups = result.matches[0].groups;
+      expect(groups).toHaveLength(2);
+      expect(groups[0].name).toBe('start');
+      expect(groups[0].value).toBe('12');
+      expect(groups[1].name).toBe('end');
+      expect(groups[1].value).toBe('12');
+    });
+
     it('returns error when regex syntax is invalid', () => {
       const result = evaluateRegex('[a-z(', 'g', 'test', '');
       expect(result.isValid).toBe(false);

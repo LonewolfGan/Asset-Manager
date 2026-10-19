@@ -8,6 +8,7 @@ import {
   parseCurrencyAmount,
   formatConvertedValue,
 } from '@/lib/currency-converter-logic';
+import { consumeHandoffText } from '@/lib/file-handoff';
 
 export type CurrencySourceInfo =
   | { type: 'loading' }
@@ -27,6 +28,16 @@ export function useCurrencyConverterWorkflow() {
   const [fromCurrency, setFromCurrency] = useState('USD');
   const [toCurrency, setToCurrency] = useState('EUR');
   const [amount, setAmount] = useState('100');
+
+  useEffect(() => {
+    const text = consumeHandoffText();
+    if (text) {
+      const cleaned = text.replace(/[\s\u00A0\u202F]/g, '').replace(',', '.').trim();
+      if (cleaned && !isNaN(Number(cleaned))) {
+        setAmount(cleaned);
+      }
+    }
+  }, []);
 
   const [isSwapping, setIsSwapping] = useState(false);
   const [pickerModal, setPickerModal] = useState<{
@@ -141,29 +152,26 @@ export function useCurrencyConverterWorkflow() {
 
   const handleSwap = useCallback(() => {
     setIsSwapping(true);
-    setFromCurrency((prev) => {
-      setToCurrency(prev);
-      return toCurrency;
-    });
+    setFromCurrency(toCurrency);
+    setToCurrency(fromCurrency);
     setTimeout(() => setIsSwapping(false), 200);
-  }, [toCurrency]);
+  }, [fromCurrency, toCurrency]);
 
   const handleSelectCurrency = useCallback((code: string) => {
-    setPickerModal((prevModal) => {
-      if (prevModal.target === 'from') {
-        if (code === toCurrency) {
-          setToCurrency(fromCurrency);
-        }
-        setFromCurrency(code);
-      } else {
-        if (code === fromCurrency) {
-          setFromCurrency(toCurrency);
-        }
-        setToCurrency(code);
+    const target = pickerModal.target;
+    if (target === 'from') {
+      if (code === toCurrency) {
+        setToCurrency(fromCurrency);
       }
-      return { ...prevModal, isOpen: false };
-    });
-  }, [fromCurrency, toCurrency]);
+      setFromCurrency(code);
+    } else {
+      if (code === fromCurrency) {
+        setFromCurrency(toCurrency);
+      }
+      setToCurrency(code);
+    }
+    setPickerModal((prev) => ({ ...prev, isOpen: false }));
+  }, [pickerModal.target, fromCurrency, toCurrency]);
 
   const handleSelectPair = useCallback((from: string, to: string) => {
     setFromCurrency(from);

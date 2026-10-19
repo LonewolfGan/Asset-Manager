@@ -6,6 +6,8 @@ import { CopyButton } from '@/components/ui/copy-button';
 import { ActionTooltip } from '@/components/ui/tooltip';
 import { trackToolUsed } from '@/lib/analytics';
 
+import type { RegexPreset } from '@/lib/regex-tester-logic';
+
 interface RegexSourcePaneProps {
   testString: string;
   onInputChange: (val: string) => void;
@@ -17,6 +19,8 @@ interface RegexSourcePaneProps {
   onUndo: () => void;
   onClear: () => void;
   onFileUpload: (file: File) => void;
+  presets?: RegexPreset[];
+  onApplyPreset?: (preset: RegexPreset) => void;
   isFr: boolean;
 }
 
@@ -31,6 +35,8 @@ export function RegexSourcePane({
   onUndo,
   onClear,
   onFileUpload,
+  presets,
+  onApplyPreset,
   isFr,
 }: RegexSourcePaneProps) {
   return (
@@ -56,7 +62,12 @@ export function RegexSourcePane({
               type="file"
               accept=".txt,.log,.json,.csv,.md,.html"
               className="hidden"
-              onChange={(e) => e.target.files?.[0] && onFileUpload(e.target.files[0])}
+              onChange={(e) => {
+                if (e.target.files?.[0]) {
+                  onFileUpload(e.target.files[0]);
+                  e.target.value = '';
+                }
+              }}
             />
           </label>
 
@@ -113,17 +124,37 @@ export function RegexSourcePane({
         </div>
       </div>
 
-      <textarea
-        value={testString}
-        onChange={(e) => onInputChange(e.target.value)}
-        placeholder={isFr ? 'Collez ou tapez votre texte de test ici...' : 'Paste or type your test text here...'}
-        spellCheck={false}
-        wrap={wordWrap ? 'soft' : 'off'}
-        style={{ height: `${editorHeight}px` }}
-        className={`w-full p-4 bg-transparent resize-none outline-none text-zinc-800 dark:text-zinc-200 font-mono text-xs leading-relaxed overflow-auto ${
-          wordWrap ? 'whitespace-pre-wrap break-words' : 'whitespace-pre overflow-x-auto'
-        }`}
-      />
+      <div className="relative flex-1 flex flex-col">
+        <textarea
+          value={testString}
+          onChange={(e) => onInputChange(e.target.value)}
+          placeholder={isFr ? 'Collez ou tapez votre texte de test ici...' : 'Paste or type your test text here...'}
+          spellCheck={false}
+          wrap={wordWrap ? 'soft' : 'off'}
+          style={{ height: `${editorHeight}px` }}
+          className={`w-full p-4 bg-transparent resize-none outline-none text-zinc-800 dark:text-zinc-200 font-mono text-xs leading-relaxed overflow-auto ${
+            wordWrap ? 'whitespace-pre-wrap break-words' : 'whitespace-pre overflow-x-auto'
+          }`}
+        />
+
+        {!hasTestContent && presets && onApplyPreset && presets.length > 0 && (
+          <div className="p-3 border-t border-zinc-100 dark:border-white/5 bg-zinc-50/40 dark:bg-zinc-900/20 flex flex-wrap items-center gap-1.5 text-xs">
+            <span className="text-zinc-500 font-medium text-[11px] mr-1">
+              {isFr ? 'Exemples rapides :' : 'Quick samples:'}
+            </span>
+            {presets.slice(0, 4).map((preset) => (
+              <button
+                key={preset.name}
+                type="button"
+                onClick={() => onApplyPreset(preset)}
+                className="px-2 py-0.5 rounded text-[11px] font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors cursor-pointer"
+              >
+                {preset.name}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

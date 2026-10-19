@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Download, Eye, Loader2 } from 'lucide-react';
+import { Download, Eye, Loader2 } from 'lucide-react';
+import { StudioCommandBar } from '@workspace/ui';
 import { ActionTooltip } from '@/components/ui/tooltip';
 import { formatBytes } from '@/lib/utils';
 import { type QueueItem, IMAGE_FORMAT } from '@/lib/background-remover-logic';
@@ -41,48 +42,30 @@ export function RemoverBatchGallery({
       transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
       className="w-full space-y-6"
     >
-      {/* En-tête du lot */}
-      <div className="w-full flex items-center justify-between py-3 border-b border-black/[0.08] dark:border-white/10 flex-wrap gap-3">
-        <div className="flex items-center gap-2.5 min-w-0">
-          <ActionTooltip label={isFr ? 'Tout vider' : 'Clear all'}>
-            <button
-              type="button"
-              onClick={onFullReset}
-              disabled={isProcessing}
-              className="flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors cursor-pointer shrink-0 disabled:opacity-50 active:scale-[0.98]"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">{isFr ? 'Tout vider' : 'Clear all'}</span>
-            </button>
-          </ActionTooltip>
-
-          <div className="h-5 w-px bg-black/[0.08] dark:bg-white/10 shrink-0" />
-
-          <div className="flex items-center gap-2.5 min-w-0">
-            <img
-              src={IMAGE_FORMAT.icon}
-              alt="Format"
-              className="w-7 h-7 sm:w-8 sm:h-8 object-contain shrink-0 drop-shadow-xs"
-            />
-            <span className="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-              {queue.length}{' '}
-              {isFr
-                ? queue.length > 1
-                  ? 'images en cours'
-                  : 'image en cours'
-                : queue.length > 1
-                ? 'images processing'
-                : 'image processing'}
-            </span>
-            <span className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400 shrink-0 hidden md:inline">
-              {doneCountTotal} / {queue.length} {isFr ? 'traitées' : 'processed'} &middot;{' '}
-              {formatBytes(totalSize)}
+      {/* En-tête canonique Studio du lot */}
+      <StudioCommandBar
+        meta={{
+          name: `${queue.length} image${queue.length > 1 ? 's' : ''}`,
+          size: totalSize,
+          icon: IMAGE_FORMAT.icon,
+        }}
+        onReset={onFullReset}
+        resetLabel={isFr ? 'Changer de fichiers' : 'Change files'}
+        centerControls={
+          <div className="flex items-center gap-2 text-xs font-medium text-zinc-600 dark:text-zinc-400">
+            {isProcessing && (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 font-mono text-[11px]">
+                <Loader2 className="w-3 h-3 animate-spin" />
+                {isFr ? 'Traitement en cours...' : 'Processing...'}
+              </span>
+            )}
+            <span className="font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
+              {doneCountTotal} / {queue.length} {isFr ? 'traitées' : 'processed'}
             </span>
           </div>
-        </div>
-
-        <div className="flex items-center gap-2.5 shrink-0 ml-auto">
-          {isProcessing && (
+        }
+        secondaryActions={
+          isProcessing ? (
             <button
               type="button"
               onClick={onCancel}
@@ -90,19 +73,17 @@ export function RemoverBatchGallery({
             >
               {isFr ? 'Arrêter' : 'Stop'}
             </button>
-          )}
-          {allBatchFinished && (
-            <button
-              type="button"
-              onClick={onDownloadBatchZip}
-              className="h-9 px-4 rounded-xl text-xs font-semibold bg-[#FF6B35] text-white hover:bg-[#ff5519] active:scale-[0.98] transition-colors flex items-center gap-2 cursor-pointer shadow-xs"
-            >
-              <Download className="w-3.5 h-3.5" />
-              <span>{isFr ? 'Télécharger le lot (.ZIP)' : 'Download batch (.ZIP)'}</span>
-            </button>
-          )}
-        </div>
-      </div>
+          ) : undefined
+        }
+        primaryAction={{
+          label: isFr ? 'Télécharger le lot (.ZIP)' : 'Download batch (.ZIP)',
+          loadingLabel: isFr ? 'Génération du ZIP...' : 'Creating ZIP...',
+          onClick: onDownloadBatchZip,
+          isDisabled: !allBatchFinished,
+          isLoading: false,
+          icon: Download,
+        }}
+      />
 
       {/* Grille Contact-Sheet des images détourées */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -142,6 +123,7 @@ export function RemoverBatchGallery({
                     <button
                       type="button"
                       onClick={() => onInspectItem(index)}
+                      aria-label={isFr ? `Inspecter ${item.file.name}` : `Inspect ${item.file.name}`}
                       className="p-2 rounded-lg bg-white/90 text-zinc-900 hover:bg-white shadow-xs transition-transform active:scale-95 cursor-pointer"
                     >
                       <Eye className="w-4 h-4" />
@@ -151,6 +133,7 @@ export function RemoverBatchGallery({
                     <button
                       type="button"
                       onClick={() => onDownloadItem(item)}
+                      aria-label={isFr ? `Télécharger ${item.file.name}` : `Download ${item.file.name}`}
                       className="p-2 rounded-lg bg-white/90 text-zinc-900 hover:bg-white shadow-xs transition-transform active:scale-95 cursor-pointer"
                     >
                       <Download className="w-4 h-4" />

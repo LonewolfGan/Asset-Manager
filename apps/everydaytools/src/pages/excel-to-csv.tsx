@@ -10,6 +10,7 @@ import {
   ConversionConduit,
   ConversionResult,
   TextPreviewDialog,
+  ReciprocalTitle,
   DocumentNextActionModal,
 } from '@/components/conversion';
 import { ExcelSheetSelector } from '@/components/excel-to-csv';
@@ -60,7 +61,14 @@ export default function ExcelToCsv() {
         t.nav.breadcrumb.excelSpreadsheets,
         pageTitle,
       ]}
-      title={pageTitle}
+      title={
+        <ReciprocalTitle
+          currentSlug="excel-to-csv"
+          isFr={isFr}
+          getCurrentFile={() => file}
+          fallbackTitle={pageTitle}
+        />
+      }
       description={pageDesc}
       seoSlug="excel-to-csv"
     >
@@ -165,7 +173,7 @@ export default function ExcelToCsv() {
                     <button
                       type="button"
                       onClick={() => setIsPreviewOpen(true)}
-                      className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-medium text-base active:scale-[0.98] transition-all flex items-center gap-2.5 shadow-sm cursor-pointer"
+                      className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-medium text-base active:scale-[0.98] transition-colors duration-150 flex items-center gap-2.5 shadow-sm cursor-pointer"
                     >
                       <Table size={16} strokeWidth={2.2} />
                       <span>{isFr ? 'Aperçu des données' : 'Preview data'}</span>
@@ -190,17 +198,16 @@ export default function ExcelToCsv() {
               downloadLabel={tc.downloadCsv ?? (isFr ? 'Télécharger le fichier .csv' : 'Download .csv file')}
             />
           )}
-
-          {/* Continuum Modal */}
-          <DocumentNextActionModal
-            toolId="excel-to-csv"
-            isOpen={isNextActionOpen}
-            onClose={() => setIsNextActionOpen(false)}
-            resultBlob={result?.blob}
-            resultFilename={result?.filename}
-            formatType="csv"
-          />
         </div>
+
+        <DocumentNextActionModal
+          toolId="excel-to-csv"
+          isOpen={isNextActionOpen}
+          onClose={() => setIsNextActionOpen(false)}
+          resultBlob={result?.blob}
+          resultFilename={result?.filename}
+          formatType="csv"
+        />
       </ToolWorkspace>
     </ToolPageLayout>
   );

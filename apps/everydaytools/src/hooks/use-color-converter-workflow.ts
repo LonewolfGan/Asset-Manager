@@ -1,5 +1,6 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { trackToolUsed } from '@/lib/analytics';
+import { consumeHandoffText } from '@/lib/file-handoff';
 import {
   type RGB,
   type HSL,
@@ -13,6 +14,7 @@ import {
   rgbToCmyk,
   cmykToRgb,
   getLuminance,
+  getContrastRatio,
   generateTintsAndShades,
   parseHex,
   parseRgb,
@@ -45,12 +47,6 @@ export function useColorConverterWorkflow(isFr: boolean) {
   const [controlMode, setControlMode] = useState<'rgb' | 'hsl'>('rgb');
   const [recentColors, setRecentColors] = useState<string[]>(DEFAULT_RECENT_COLORS);
 
-  // Derived color models
-  const hex = useMemo(() => rgbToHex(rgb), [rgb]);
-  const hsl = useMemo(() => rgbToHsl(rgb), [rgb]);
-  const hsv = useMemo(() => rgbToHsv(rgb), [rgb]);
-  const cmyk = useMemo(() => rgbToCmyk(rgb), [rgb]);
-
   const addToRecent = useCallback((hexToAdd: string) => {
     setRecentColors((prev) => updateRecentColorsList(prev, hexToAdd, 8));
   }, []);
@@ -69,6 +65,23 @@ export function useColorConverterWorkflow(isFr: boolean) {
     },
     [addToRecent]
   );
+
+  // Consume text handoff if coming from another tool
+  useEffect(() => {
+    const text = consumeHandoffText();
+    if (text && text.trim()) {
+      const parsed = parseAnyColor(text);
+      if (parsed) {
+        updateRgb(parsed, true, true);
+      }
+    }
+  }, [updateRgb]);
+
+  // Derived color models
+  const hex = useMemo(() => rgbToHex(rgb), [rgb]);
+  const hsl = useMemo(() => rgbToHsl(rgb), [rgb]);
+  const hsv = useMemo(() => rgbToHsv(rgb), [rgb]);
+  const cmyk = useMemo(() => rgbToCmyk(rgb), [rgb]);
 
   const formats: ColorFormatRow[] = useMemo(() => {
     return buildColorFormatRows({
@@ -132,6 +145,16 @@ export function useColorConverterWorkflow(isFr: boolean) {
   const luminance = useMemo(() => getLuminance(rgb), [rgb]);
   const contrastTextColor = useMemo(() => getContrastTextColor(hex), [hex]);
 
+  // Contrast ratios for accessibility
+  const contrastWithWhite = useMemo(
+    () => getContrastRatio(rgb, { r: 255, g: 255, b: 255 }),
+    [rgb]
+  );
+  const contrastWithBlack = useMemo(
+    () => getContrastRatio(rgb, { r: 0, g: 0, b: 0 }),
+    [rgb]
+  );
+
   const spectrumStrip = useMemo(
     () => generateSpectrumStrip(tints, hex, shades),
     [tints, hex, shades]
@@ -149,6 +172,8 @@ export function useColorConverterWorkflow(isFr: boolean) {
     recentColors,
     luminance,
     contrastTextColor,
+    contrastWithWhite,
+    contrastWithBlack,
     spectrumStrip,
     formats,
     updateRgb,

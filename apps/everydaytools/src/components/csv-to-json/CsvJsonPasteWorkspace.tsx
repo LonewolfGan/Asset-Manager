@@ -57,7 +57,7 @@ export function CsvJsonPasteWorkspace({
           type="button"
           disabled={!rawText.trim()}
           onClick={onSubmit}
-          className="h-11 px-6 rounded-full bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-zinc-900 font-medium text-sm transition-all disabled:opacity-40 disabled:pointer-events-none active:scale-[0.98] flex items-center gap-2 shadow-sm cursor-pointer"
+          className="h-11 px-6 rounded-full bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-zinc-900 font-medium text-sm transition-colors duration-150 disabled:opacity-40 disabled:pointer-events-none active:scale-[0.98] flex items-center gap-2 shadow-sm cursor-pointer"
         >
           <span>{isFr ? 'Valider et configurer' : 'Validate and proceed'}</span>
           <ArrowRight size={15} />

@@ -4,7 +4,7 @@ export const getSourceFormat = (isFr: boolean): ConversionFormat => ({
   name: 'CSV',
   extension: 'csv',
   icon: '/icons/csv.svg',
-  color: '#21A366',
+  color: 'var(--accent, #10b981)',
   subLabel: isFr ? 'Données CSV Délimitées' : 'Delimited CSV Data',
 });
 
@@ -12,7 +12,7 @@ export const getTargetFormat = (): ConversionFormat => ({
   name: 'Excel',
   extension: 'xlsx',
   icon: '/icons/excel.svg',
-  color: '#107C41',
+  color: 'var(--accent, #107c41)',
   subLabel: 'Microsoft Excel XLSX',
 });
 

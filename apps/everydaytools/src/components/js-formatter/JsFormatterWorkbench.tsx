@@ -9,6 +9,8 @@ import type {
   ViewOutput,
   JsMetrics,
   ExecutionLog,
+  JsIssue,
+  JS_SAMPLES,
 } from '../../lib/js-formatter-logic';
 import { JsFormatterToolbar } from './JsFormatterToolbar';
 import { JsSourcePanel } from './JsSourcePanel';
@@ -46,12 +48,14 @@ interface JsFormatterWorkbenchProps {
   output: string;
   highlightedOutput: string;
   metrics: JsMetrics;
+  issues?: JsIssue[];
   hasContent: boolean;
   onMouseDownResize: (e: React.MouseEvent) => void;
   onRunCode: () => void;
   onDownload: () => void;
   onClear: () => void;
   onFileUpload: (file: File) => void;
+  onLoadSample?: (key: keyof typeof JS_SAMPLES) => void;
 }
 
 export function JsFormatterWorkbench({
@@ -85,17 +89,33 @@ export function JsFormatterWorkbench({
   output,
   highlightedOutput,
   metrics,
+  issues = [],
   hasContent,
   onMouseDownResize,
   onRunCode,
   onDownload,
   onClear,
   onFileUpload,
+  onLoadSample,
 }: JsFormatterWorkbenchProps) {
   const { isFr } = useLocale();
 
   return (
-    <div className="w-full space-y-4">
+    <div
+      onDragEnter={(e) => {
+        e.preventDefault();
+        setIsDragOver(true);
+      }}
+      onDragOver={(e) => {
+        e.preventDefault();
+      }}
+      onDragLeave={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+          setIsDragOver(false);
+        }
+      }}
+      className="w-full space-y-4"
+    >
       <JsFormatterToolbar
         mode={mode}
         setMode={setMode}
@@ -126,7 +146,10 @@ export function JsFormatterWorkbench({
             ? `Déposez votre fichier .${language === 'typescript' ? 'ts' : 'js'} pour le formater`
             : `Drop your .${language === 'typescript' ? 'ts' : 'js'} file to format it`
         }
-        onDropFile={onFileUpload}
+        onDropFile={(file) => {
+          setIsDragOver(false);
+          onFileUpload(file);
+        }}
         footerSlot={<JsResizeHandle onMouseDownResize={onMouseDownResize} />}
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-zinc-200 dark:divide-white/10">
@@ -138,7 +161,9 @@ export function JsFormatterWorkbench({
             hasContent={hasContent}
             wordWrap={wordWrap}
             editorHeight={editorHeight}
+            issues={issues}
             onFileUpload={onFileUpload}
+            onLoadSample={onLoadSample}
           />
 
           <JsOutputPanel

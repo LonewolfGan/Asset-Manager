@@ -11,6 +11,8 @@ import {
 } from '@workspace/ui/controls';
 import { getSourceFormat, getTargetFormat } from '@/lib/csv-to-excel-logic';
 
+(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
+
 describe('CsvToExcel staging optionsSlot with @workspace/ui controls (TDD RED Phase)', () => {
   let container: HTMLDivElement;
   let root: Root;

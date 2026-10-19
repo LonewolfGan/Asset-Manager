@@ -16,7 +16,9 @@ import {
   BatchStagingGrid,
   BatchResultGallery,
   SingleImagePreview,
+  ReciprocalTitle,
 } from '@/components/conversion';
+import { getReciprocalTool } from '@/lib/reciprocal-tools';
 
 interface Props {
   fromLabel: string;
@@ -42,41 +44,15 @@ export default function ImageConvertPage({
   const { t, isFr } = useLocale();
   const toolTitle = t.tools[slug]?.title ?? slug;
   const toolDesc = t.tools[slug]?.description ?? '';
+  const isReciprocal = Boolean(getReciprocalTool(slug));
 
   const {
-    toExt,
-    sourceFormat,
-    targetFormat,
-    isPdfOutput,
-    showQuality,
-    files,
-    isProcessing,
-    quality,
-    setQuality,
-    isSingle,
-    singleFile,
-    allDone,
-    doneCount,
-    validateAndAddFiles,
-    removeFile,
-    handleResetAll,
-    processAll,
-    downloadOne,
-    downloadAllZip,
-    isNextActionOpen,
-    setIsNextActionOpen,
-    downloadedPdf,
-    downloadedImage,
-  } = useImageBatchConvert({
-    fromLabel,
-    fromExts,
-    fromMimes,
-    toMime,
-    slug,
-    isFr,
-    trackUsed,
-    trackError,
-  });
+    toExt, sourceFormat, targetFormat, isPdfOutput, showQuality,
+    files, isProcessing, quality, setQuality, isSingle, singleFile,
+    allDone, doneCount, validateAndAddFiles, removeFile, handleResetAll,
+    processAll, downloadOne, downloadAllZip, isNextActionOpen, setIsNextActionOpen,
+    downloadedPdf, downloadedImage,
+  } = useImageBatchConvert({ fromLabel, fromExts, fromMimes, toMime, slug, isFr, trackUsed, trackError });
 
   const { isDragging, dropProps } = useFileDrop({
     onFilesSelected: validateAndAddFiles,
@@ -86,7 +62,18 @@ export default function ImageConvertPage({
   return (
     <ToolPageLayout
       breadcrumb={[t.nav.breadcrumb.home, t.nav.breadcrumb.image, toolTitle]}
-      title={toolTitle}
+      title={
+        isReciprocal ? (
+          <ReciprocalTitle
+            currentSlug={slug}
+            isFr={isFr}
+            getCurrentFile={() => (files[0] ? files[0].file : null)}
+            fallbackTitle={toolTitle}
+          />
+        ) : (
+          toolTitle
+        )
+      }
       description={
         toolDesc ||
         (isFr
@@ -258,7 +245,7 @@ export default function ImageConvertPage({
           </AnimatePresence>
 
           {/* Post-Download Continuum for PDF conversions */}
-          {isPdfOutput && (
+          {isPdfOutput && !isReciprocal && (
             <NextActionModal
               toolId={slug}
               isOpen={isNextActionOpen}
@@ -269,7 +256,7 @@ export default function ImageConvertPage({
           )}
 
           {/* Post-Download Continuum for Image conversions */}
-          {!isPdfOutput && (
+          {!isPdfOutput && !isReciprocal && (
             <ImageNextActionModal
               toolId={slug}
               isOpen={isNextActionOpen}

@@ -24,7 +24,8 @@ export function UnitCategoryNav({
             key={c.id}
             type="button"
             onClick={() => onSelectCategory(c.id)}
-            className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-medium transition-all shrink-0 active:scale-95 cursor-pointer ${
+            aria-pressed={isActive}
+            className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-medium transition-colors duration-150 shrink-0 active:scale-95 cursor-pointer ${
               isActive
                 ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 font-semibold shadow-xs'
                 : 'bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 hover:text-foreground hover:bg-zinc-200 dark:hover:bg-zinc-700'

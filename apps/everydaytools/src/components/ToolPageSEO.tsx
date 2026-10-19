@@ -45,11 +45,11 @@ function buildSchemas(tool: ToolSeoEntry, locale: "en" | "fr"): object[] {
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     featureList: [
       "No signup required",
-      "Client-side processing",
-      "Files never leave your device",
+      "Fast & private processing",
+      "Automatic ephemeral cleanup",
       "Free forever",
     ],
-    browserRequirements: "Requires JavaScript. Works offline after first load.",
+    browserRequirements: "Requires modern web browser with JavaScript enabled.",
   };
 
   const faqPage = {

@@ -1,4 +1,4 @@
-import { apiUrl } from '@/lib/apiBase';
+import { apiUrl, formatFetchError } from '@/lib/apiBase';
 import type { ConversionFormat } from '@/components/conversion';
 
 export interface OdtToPdfResult {
@@ -18,7 +18,7 @@ export const getSourceFormat = (_isFr: boolean): ConversionFormat => ({
   name: 'ODT',
   extension: 'odt',
   icon: '/icons/odt.svg',
-  color: '#0D9488',
+  color: 'var(--accent, #0d9488)',
   subLabel: 'OpenDocument Text',
 });
 
@@ -26,32 +26,37 @@ export const getTargetFormat = (_isFr: boolean): ConversionFormat => ({
   name: 'PDF',
   extension: 'pdf',
   icon: '/icons/pdf.svg',
-  color: '#EC1C24',
+  color: 'var(--accent, #dc2626)',
   subLabel: 'Adobe Acrobat',
 });
 
 const MAX_ODT_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
 
 export function buildPdfFilename(filename: string): string {
-  return filename.replace(/\.odt$/i, '.pdf');
+  const baseName = filename.replace(/\.(odt|fodt)$/i, '').trim();
+  const safeBase = baseName || 'document';
+  return `${safeBase}.pdf`;
 }
 
 export function validateOdtFile(
   selectedFile: File,
   isFr: boolean
 ): OdtFileValidationResult {
-  const isOdt =
-    selectedFile.name.toLowerCase().endsWith('.odt') ||
+  const name = selectedFile.name.toLowerCase();
+  const isOdtExt = name.endsWith('.odt') || name.endsWith('.fodt');
+  const isOdtMime =
     selectedFile.type === 'application/vnd.oasis.opendocument.text' ||
-    selectedFile.type === '';
+    selectedFile.type === 'application/vnd.oasis.opendocument.text-flat-xml';
+
+  const isOdt = isOdtExt || isOdtMime;
 
   if (!isOdt) {
     return {
       isValid: false,
       errorTitle: isFr ? 'Format non supporté' : 'Unsupported format',
       errorDesc: isFr
-        ? 'Veuillez sélectionner un fichier OpenDocument Text (.odt) valide.'
-        : 'Please select a valid OpenDocument Text (.odt) file.',
+        ? 'Veuillez sélectionner un fichier OpenDocument Text (.odt, .fodt) valide.'
+        : 'Please select a valid OpenDocument Text (.odt, .fodt) file.',
     };
   }
 
@@ -70,20 +75,27 @@ export function validateOdtFile(
 
 export async function convertOdtToPdf(
   file: File,
-  options: { isFr: boolean; errorFallback?: string }
+  options: { isFr: boolean; errorFallback?: string; skipDelay?: boolean }
 ): Promise<OdtToPdfResult> {
-  const { isFr, errorFallback } = options;
+  const { isFr, errorFallback, skipDelay = false } = options;
   const fd = new FormData();
   fd.append('file', file);
   fd.append('targetFormat', 'pdf');
 
-  const [res] = await Promise.all([
-    fetch(apiUrl('/api/tools/document-convert'), {
+  let res: Response;
+  try {
+    const fetchPromise = fetch(apiUrl('/api/tools/document-convert'), {
       method: 'POST',
       body: fd,
-    }),
-    new Promise((resolve) => setTimeout(resolve, 800)),
-  ]);
+    });
+    const [response] = await Promise.all([
+      fetchPromise,
+      skipDelay ? Promise.resolve() : new Promise((resolve) => setTimeout(resolve, 800)),
+    ]);
+    res = response;
+  } catch (err) {
+    throw new Error(formatFetchError(err, isFr));
+  }
 
   if (!res.ok) {
     const errJson = (await res.json().catch(() => ({}))) as {
@@ -119,10 +131,15 @@ export function triggerDownload(blob: Blob, filename: string): void {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+  }, 1000);
 }
 
 export function openPreview(blob: Blob): void {
   const url = URL.createObjectURL(blob);
   window.open(url, '_blank', 'noopener,noreferrer');
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+  }, 10000);
 }

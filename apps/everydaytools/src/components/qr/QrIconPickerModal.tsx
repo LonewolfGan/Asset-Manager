@@ -41,7 +41,7 @@ export function QrIconPickerModal({
         <DialogHeader className="flex flex-col gap-1 pb-1">
           <DialogTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100 flex items-center justify-between">
             <span className="flex items-center gap-2">
-              <LayoutGrid className="w-4 h-4 text-[#FF6B35]" />
+              <LayoutGrid className="w-4 h-4 text-[var(--accent)]" />
               <span>{isFr ? "Bibliothèque d'icônes vectorielles" : 'Vector Icon Library'}</span>
             </span>
             <span className="text-[11px] font-mono text-zinc-400 font-normal">
@@ -68,7 +68,7 @@ export function QrIconPickerModal({
                   ? 'Rechercher une icône (ex: WhatsApp, Instagram, Wi-Fi, Boutique, Star...)'
                   : 'Search icons (e.g. WhatsApp, Instagram, Wi-Fi, Store, Star...)'
               }
-              className="h-10 w-full pl-10 pr-9 rounded-xl font-mono text-xs bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/10 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-all"
+              className="h-10 w-full pl-10 pr-9 rounded-xl font-mono text-xs bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/10 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors duration-150"
             />
             {searchQuery && (
               <button
@@ -95,7 +95,7 @@ export function QrIconPickerModal({
                   key={cat.id}
                   type="button"
                   onClick={() => setCategory(cat.id as IconCategory)}
-                  className={`h-7 px-3 rounded-lg text-xs font-mono transition-all cursor-pointer shrink-0 ${
+                  className={`h-7 px-3 rounded-lg text-xs font-mono transition-colors duration-150 cursor-pointer shrink-0 ${
                     isSelected
                       ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 font-semibold'
                       : 'bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
@@ -128,9 +128,9 @@ export function QrIconPickerModal({
                       onSelectIcon(item.id);
                       onOpenChange(false);
                     }}
-                    className={`flex flex-col items-center justify-center p-3 rounded-xl border transition-all cursor-pointer text-center group ${
+                    className={`flex flex-col items-center justify-center p-3 rounded-xl border transition-colors duration-150 cursor-pointer text-center group ${
                       isCurrent
-                        ? 'border-[#FF6B35] bg-[#FF6B35]/5 text-[#FF6B35]'
+                        ? 'border-[var(--accent)] bg-[var(--accent)]/5 text-[var(--accent)]'
                         : 'border-zinc-200/70 dark:border-white/10 bg-zinc-50/50 dark:bg-zinc-900/30 hover:border-zinc-300 dark:hover:border-white/20 hover:bg-zinc-100/70 dark:hover:bg-zinc-900/80 text-zinc-800 dark:text-zinc-200'
                     }`}
                   >

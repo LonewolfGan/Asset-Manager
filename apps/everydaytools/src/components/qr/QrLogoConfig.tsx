@@ -98,7 +98,7 @@ export function QrLogoConfig({
             <div
               className={`w-12 h-12 ${
                 eyeStyle === 'circle' ? 'rounded-full' : eyeStyle === 'square' ? 'rounded-none' : 'rounded-xl'
-              } bg-zinc-100 dark:bg-zinc-800 p-2 flex items-center justify-center overflow-hidden shrink-0 shadow-2xs transition-all duration-200`}
+              } bg-zinc-100 dark:bg-zinc-800 p-2 flex items-center justify-center overflow-hidden shrink-0 shadow-2xs transition-[border-radius] duration-200`}
             >
               <img src={logoUrl} alt="Logo" className="w-full h-full object-contain" />
             </div>
@@ -122,7 +122,7 @@ export function QrLogoConfig({
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="h-8 px-2.5 rounded-lg inline-flex items-center gap-1.5 text-[11px] font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-all cursor-pointer border border-zinc-200/60 dark:border-white/10"
+              className="h-8 px-2.5 rounded-lg inline-flex items-center gap-1.5 text-[11px] font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors duration-150 cursor-pointer border border-zinc-200/60 dark:border-white/10"
             >
               <Upload className="w-3 h-3" />
               <span>{isFr ? 'Remplacer' : 'Replace'}</span>
@@ -131,13 +131,13 @@ export function QrLogoConfig({
             <button
               type="button"
               onClick={() => setIsIconModalOpen(true)}
-              className="h-8 px-2.5 rounded-lg inline-flex items-center gap-1.5 text-[11px] font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-all cursor-pointer border border-zinc-200/60 dark:border-white/10 font-medium"
+              className="h-8 px-2.5 rounded-lg inline-flex items-center gap-1.5 text-[11px] font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors duration-150 cursor-pointer border border-zinc-200/60 dark:border-white/10 font-medium"
             >
-              <LayoutGrid className="w-3 h-3 text-[#FF6B35]" />
+              <LayoutGrid className="w-3 h-3 text-[var(--accent)]" />
               <span>{isFr ? "Bibliothèque d'icônes" : 'Icon Library'}</span>
             </button>
 
-            {renderQuickFavorites('h-8 px-2.5 rounded-lg inline-flex items-center gap-1.5 text-[11px] font-mono transition-all cursor-pointer', 'w-3 h-3 shrink-0')}
+            {renderQuickFavorites('h-8 px-2.5 rounded-lg inline-flex items-center gap-1.5 text-[11px] font-mono transition-colors duration-150 cursor-pointer', 'w-3 h-3 shrink-0')}
           </div>
 
           {activePresetId && (
@@ -159,7 +159,7 @@ export function QrLogoConfig({
           <button
             type="button"
             onClick={() => setIsIconModalOpen(true)}
-            className="h-9 px-3.5 rounded-lg inline-flex items-center gap-2 text-xs font-mono bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-200 font-medium transition-all cursor-pointer shadow-2xs"
+            className="h-9 px-3.5 rounded-lg inline-flex items-center gap-2 text-xs font-mono bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-200 font-medium transition-colors duration-150 cursor-pointer shadow-2xs"
           >
             <LayoutGrid className="w-3.5 h-3.5 text-zinc-400" />
             <span>{isFr ? "Bibliothèque d'icônes" : 'Icon Library'}</span>
@@ -168,14 +168,14 @@ export function QrLogoConfig({
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="h-9 px-3 rounded-lg inline-flex items-center gap-1.5 text-xs font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-all cursor-pointer border border-zinc-200/60 dark:border-white/10"
+            className="h-9 px-3 rounded-lg inline-flex items-center gap-1.5 text-xs font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors duration-150 cursor-pointer border border-zinc-200/60 dark:border-white/10"
           >
             <Upload className="w-3.5 h-3.5" />
             <span>{isFr ? 'Importer logo' : 'Upload logo'}</span>
           </button>
 
           <div className="flex flex-wrap items-center gap-1">
-            {renderQuickFavorites('h-9 px-2.5 rounded-lg inline-flex items-center gap-1.5 text-xs font-mono transition-all cursor-pointer', 'w-3.5 h-3.5 shrink-0')}
+            {renderQuickFavorites('h-9 px-2.5 rounded-lg inline-flex items-center gap-1.5 text-xs font-mono transition-colors duration-150 cursor-pointer', 'w-3.5 h-3.5 shrink-0')}
           </div>
         </div>
       )}

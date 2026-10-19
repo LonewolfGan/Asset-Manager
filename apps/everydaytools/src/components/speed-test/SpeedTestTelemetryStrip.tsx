@@ -35,7 +35,7 @@ export const SpeedTestTelemetryStrip: React.FC<SpeedTestTelemetryStripProps> = (
             <span className="text-xs text-muted-foreground font-mono">Mbps</span>
           </div>
           {phase === 'download' && (
-            <span className="w-8 h-0.5 bg-[#FF6B35] rounded-full mt-2 animate-pulse" />
+            <span className="w-8 h-0.5 bg-[var(--accent,#f97316)] rounded-full mt-2 animate-pulse" />
           )}
         </div>
 
@@ -52,7 +52,7 @@ export const SpeedTestTelemetryStrip: React.FC<SpeedTestTelemetryStripProps> = (
             <span className="text-xs text-muted-foreground font-mono">Mbps</span>
           </div>
           {phase === 'upload' && (
-            <span className="w-8 h-0.5 bg-[#FF6B35] rounded-full mt-2 animate-pulse" />
+            <span className="w-8 h-0.5 bg-[var(--accent,#f97316)] rounded-full mt-2 animate-pulse" />
           )}
         </div>
 
@@ -69,7 +69,7 @@ export const SpeedTestTelemetryStrip: React.FC<SpeedTestTelemetryStripProps> = (
             <span className="text-xs text-muted-foreground font-mono">ms</span>
           </div>
           {phase === 'ping' && (
-            <span className="w-8 h-0.5 bg-[#FF6B35] rounded-full mt-2 animate-pulse" />
+            <span className="w-8 h-0.5 bg-[var(--accent,#f97316)] rounded-full mt-2 animate-pulse" />
           )}
         </div>
 

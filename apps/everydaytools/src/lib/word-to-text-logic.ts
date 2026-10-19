@@ -19,7 +19,7 @@ export const getSourceFormat = (_isFr: boolean): ConversionFormat => ({
   name: 'Word',
   extension: 'docx',
   icon: '/icons/word.svg',
-  color: '#185ABD',
+  color: 'var(--accent, #2563eb)',
   subLabel: 'Microsoft Word',
 });
 
@@ -27,9 +27,10 @@ export const getTargetFormat = (isFr: boolean): ConversionFormat => ({
   name: isFr ? 'Texte' : 'Text',
   extension: 'txt',
   icon: '/icons/txt.svg',
-  color: '#4B5563',
+  color: 'var(--accent, #4b5563)',
   subLabel: isFr ? 'Texte Brut UTF-8' : 'Plain Text UTF-8',
 });
+
 
 const MAX_WORD_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
 
@@ -124,5 +125,8 @@ export function triggerDownload(blob: Blob, filename: string): void {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+  }, 1000);
 }
+

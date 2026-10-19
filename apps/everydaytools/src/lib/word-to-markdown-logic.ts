@@ -19,7 +19,7 @@ export const getSourceFormat = (isFr: boolean): ConversionFormat => ({
   name: 'Word',
   extension: 'docx',
   icon: '/icons/word.svg',
-  color: '#185ABD',
+  color: 'var(--accent, #2563eb)',
   subLabel: isFr ? 'Format Word (.docx)' : 'Word Format (.docx)',
 });
 
@@ -27,14 +27,16 @@ export const getTargetFormat = (isFr: boolean): ConversionFormat => ({
   name: 'Markdown',
   extension: 'md',
   icon: '/icons/markdown.svg',
-  color: '#0284C7',
+  color: 'var(--accent, #0284c7)',
   subLabel: isFr ? 'Syntaxe Markdown' : 'Markdown Syntax',
 });
 
 const MAX_WORD_FILE_SIZE = 30 * 1024 * 1024; // 30 MB
 
 export function buildMarkdownFilename(filename: string): string {
-  return filename.replace(/\.(docx?|doc)$/i, '.md');
+  const base = filename.replace(/\.docx?$/i, '').trim();
+  const clean = base.length > 0 ? base : 'document';
+  return clean.endsWith('.md') ? clean : `${clean}.md`;
 }
 
 export function validateWordFile(
@@ -123,5 +125,7 @@ export function triggerDownload(blob: Blob, filename: string): void {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+  }, 1000);
 }

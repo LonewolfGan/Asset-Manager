@@ -2,6 +2,7 @@ import React from 'react';
 import { toast } from 'sonner';
 import { WrapButton } from '@/components/ui/wrap-button';
 import type { JsonErrorInfo } from '@/lib/json-repair-logic';
+import { JSON_SAMPLES } from '@/lib/json-formatter-logic';
 
 export interface JsonSourcePanelProps {
   rawInput: string;
@@ -92,6 +93,40 @@ export function JsonSourcePanel({
               : 'whitespace-pre overflow-x-auto'
           }`}
         />
+
+        {!rawInput && (
+          <div className="absolute inset-x-0 bottom-4 flex flex-col items-center justify-center p-4 pointer-events-none">
+            <div className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-zinc-100/90 dark:bg-zinc-800/90 border border-zinc-200 dark:border-white/10 shadow-sm backdrop-blur-sm pointer-events-auto">
+              <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
+                {isFr ? 'Exemples :' : 'Samples:'}
+              </span>
+              <button
+                type="button"
+                data-sample="userProfile"
+                onClick={() => onRawInputChange(JSON_SAMPLES.userProfile)}
+                className="px-2 py-0.5 text-[11px] font-medium rounded-md bg-white dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-600 transition-colors cursor-pointer border border-zinc-200/60 dark:border-white/5"
+              >
+                {isFr ? 'Utilisateur' : 'User'}
+              </button>
+              <button
+                type="button"
+                data-sample="ecommerceOrder"
+                onClick={() => onRawInputChange(JSON_SAMPLES.ecommerceOrder)}
+                className="px-2 py-0.5 text-[11px] font-medium rounded-md bg-white dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-600 transition-colors cursor-pointer border border-zinc-200/60 dark:border-white/5"
+              >
+                {isFr ? 'Commande' : 'Order'}
+              </button>
+              <button
+                type="button"
+                data-sample="geojson"
+                onClick={() => onRawInputChange(JSON_SAMPLES.geojson)}
+                className="px-2 py-0.5 text-[11px] font-medium rounded-md bg-white dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-600 transition-colors cursor-pointer border border-zinc-200/60 dark:border-white/5"
+              >
+                GeoJSON
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -23,8 +23,12 @@ export default function LoremIpsum() {
     unit,
     count,
     flavor,
+    format,
+    startWithClassic,
     setCount,
     setFlavor,
+    setFormat,
+    setStartWithClassic,
     isRefreshing,
     blocks,
     fullText,
@@ -32,6 +36,8 @@ export default function LoremIpsum() {
     handleRegenerate,
     handleCountChange,
     handleUnitSelect,
+    handleApplyPreset,
+    handleDownload,
   } = useLoremIpsumWorkflow();
 
   return (
@@ -48,20 +54,28 @@ export default function LoremIpsum() {
             unit={unit}
             count={count}
             flavor={flavor}
+            format={format}
+            startWithClassic={startWithClassic}
             isRefreshing={isRefreshing}
             fullText={fullText}
             onUnitSelect={handleUnitSelect}
             onCountChange={handleCountChange}
             onCountSet={setCount}
             onFlavorChange={setFlavor}
+            onFormatChange={setFormat}
+            onToggleStartWithClassic={() => setStartWithClassic(!startWithClassic)}
+            onApplyPreset={handleApplyPreset}
             onRegenerate={handleRegenerate}
+            onDownload={handleDownload}
             isFr={isFr}
           />
 
           {/* Feuille de lecture et blocs de texte */}
           <LoremReadingCanvas
             unit={unit}
+            format={format}
             blocks={blocks}
+            fullText={fullText}
             isFr={isFr}
           />
 
@@ -69,6 +83,8 @@ export default function LoremIpsum() {
           <LoremTelemetryFooter
             words={stats.words}
             chars={stats.chars}
+            lines={stats.lines}
+            format={format}
             isFr={isFr}
           />
         </div>

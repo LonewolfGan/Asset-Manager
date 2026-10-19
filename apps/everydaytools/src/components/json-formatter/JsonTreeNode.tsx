@@ -50,7 +50,7 @@ export function JsonTreeNode({
   if (!isObject) {
     let valueColor = 'text-emerald-600 dark:text-emerald-400';
     if (typeof data === 'number') valueColor = 'text-blue-600 dark:text-blue-400';
-    if (typeof data === 'boolean') valueColor = 'text-orange-600 dark:orange-400';
+    if (typeof data === 'boolean') valueColor = 'text-orange-600 dark:text-orange-400';
     if (data === null) valueColor = 'text-zinc-400';
 
     return (

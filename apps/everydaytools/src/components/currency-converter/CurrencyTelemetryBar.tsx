@@ -73,12 +73,12 @@ export function CurrencyTelemetryBar({
               type="button"
               onClick={onRefresh}
               disabled={isRefreshing}
-              className="p-1.5 rounded-lg border border-border/60 bg-background hover:bg-zinc-100 dark:hover:bg-zinc-800 text-muted-foreground hover:text-foreground transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
+              className="p-1.5 rounded-lg border border-border/60 bg-background hover:bg-zinc-100 dark:hover:bg-zinc-800 text-muted-foreground hover:text-foreground transition-colors duration-150 active:scale-95 disabled:opacity-50 cursor-pointer"
               aria-label={isFr ? 'Actualiser les cours' : 'Refresh rates'}
             >
               <RefreshCw
                 className={`w-3.5 h-3.5 ${
-                  isRefreshing ? 'animate-spin text-[#FF6B35]' : ''
+                  isRefreshing ? 'animate-spin text-[var(--accent,#f97316)]' : ''
                 }`}
               />
             </button>
@@ -95,7 +95,7 @@ export function CurrencyTelemetryBar({
               key={pair.label}
               type="button"
               onClick={() => onSelectPair(pair.from, pair.to)}
-              className={`px-2.5 py-1 rounded-md text-[11px] font-mono font-medium transition-all shrink-0 active:scale-95 cursor-pointer ${
+              className={`px-2.5 py-1 rounded-md text-[11px] font-mono font-medium transition-colors duration-150 shrink-0 active:scale-95 cursor-pointer ${
                 isActive
                   ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 font-semibold shadow-xs'
                   : 'text-muted-foreground hover:text-foreground hover:bg-zinc-200/60 dark:hover:bg-zinc-800'

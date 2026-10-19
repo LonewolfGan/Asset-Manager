@@ -1,4 +1,4 @@
-import { apiUrl } from '@/lib/apiBase';
+import { apiUrl, formatFetchError } from '@/lib/apiBase';
 import type { ConversionFormat } from '@/components/conversion';
 
 export interface RtfToPdfResult {
@@ -18,7 +18,7 @@ export const getSourceFormat = (_isFr: boolean): ConversionFormat => ({
   name: 'RTF',
   extension: 'rtf',
   icon: '/icons/rtf.svg',
-  color: '#D97706',
+  color: 'var(--accent, #d97706)',
   subLabel: 'Rich Text Format',
 });
 
@@ -26,25 +26,30 @@ export const getTargetFormat = (_isFr: boolean): ConversionFormat => ({
   name: 'PDF',
   extension: 'pdf',
   icon: '/icons/pdf.svg',
-  color: '#EC1C24',
+  color: 'var(--accent, #dc2626)',
   subLabel: 'Adobe Acrobat',
 });
 
 const MAX_RTF_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
 
 export function buildPdfFilename(filename: string): string {
-  return filename.replace(/\.rtf$/i, '.pdf');
+  const baseName = filename.replace(/\.rtf$/i, '').trim();
+  const safeBase = baseName || 'document';
+  return `${safeBase}.pdf`;
 }
 
 export function validateRtfFile(
   selectedFile: File,
   isFr: boolean
 ): RtfFileValidationResult {
-  const isRtf =
-    selectedFile.name.toLowerCase().endsWith('.rtf') ||
+  const name = selectedFile.name.toLowerCase();
+  const isRtfExt = name.endsWith('.rtf');
+  const isRtfMime =
     selectedFile.type === 'application/rtf' ||
     selectedFile.type === 'text/rtf' ||
-    selectedFile.type === '';
+    selectedFile.type === 'application/x-rtf';
+
+  const isRtf = isRtfExt || isRtfMime;
 
   if (!isRtf) {
     return {
@@ -71,20 +76,27 @@ export function validateRtfFile(
 
 export async function convertRtfToPdf(
   file: File,
-  options: { isFr: boolean; errorFallback?: string }
+  options: { isFr: boolean; errorFallback?: string; skipDelay?: boolean }
 ): Promise<RtfToPdfResult> {
-  const { isFr, errorFallback } = options;
+  const { isFr, errorFallback, skipDelay = false } = options;
   const fd = new FormData();
   fd.append('file', file);
   fd.append('targetFormat', 'pdf');
 
-  const [res] = await Promise.all([
-    fetch(apiUrl('/api/tools/document-convert'), {
+  let res: Response;
+  try {
+    const fetchPromise = fetch(apiUrl('/api/tools/document-convert'), {
       method: 'POST',
       body: fd,
-    }),
-    new Promise((resolve) => setTimeout(resolve, 800)),
-  ]);
+    });
+    const [response] = await Promise.all([
+      fetchPromise,
+      skipDelay ? Promise.resolve() : new Promise((resolve) => setTimeout(resolve, 800)),
+    ]);
+    res = response;
+  } catch (err) {
+    throw new Error(formatFetchError(err, isFr));
+  }
 
   if (!res.ok) {
     const errJson = (await res.json().catch(() => ({}))) as {
@@ -120,10 +132,15 @@ export function triggerDownload(blob: Blob, filename: string): void {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+  }, 1000);
 }
 
 export function openPreview(blob: Blob): void {
   const url = URL.createObjectURL(blob);
   window.open(url, '_blank', 'noopener,noreferrer');
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+  }, 10000);
 }

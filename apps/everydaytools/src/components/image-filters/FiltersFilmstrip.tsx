@@ -48,7 +48,7 @@ export function FiltersFilmstrip({
                 type="button"
                 onClick={() => onIntensityChange(stepPct)}
                 className={cn(
-                  'h-6 px-2 rounded-md text-[11px] font-mono font-medium transition-all cursor-pointer',
+                  'h-6 px-2 rounded-md text-[11px] font-mono font-medium transition-colors cursor-pointer',
                   presetIntensity === stepPct
                     ? 'bg-[#FF6B35] text-white shadow-xs'
                     : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
@@ -64,7 +64,7 @@ export function FiltersFilmstrip({
               type="button"
               onClick={() => onIntensityChange(Math.max(0, presetIntensity - 5))}
               disabled={presetIntensity <= 0}
-              className="w-5 h-5 flex items-center justify-center rounded text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-zinc-200/60 dark:hover:bg-zinc-800 active:scale-90 transition-all cursor-pointer disabled:opacity-30"
+              className="w-5 h-5 flex items-center justify-center rounded text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-zinc-200/60 dark:hover:bg-zinc-800 active:scale-90 transition-[background-color,color,transform] duration-150 cursor-pointer disabled:opacity-30"
             >
               <Minus className="w-3 h-3" />
             </button>
@@ -75,7 +75,7 @@ export function FiltersFilmstrip({
               type="button"
               onClick={() => onIntensityChange(Math.min(100, presetIntensity + 5))}
               disabled={presetIntensity >= 100}
-              className="w-5 h-5 flex items-center justify-center rounded text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-zinc-200/60 dark:hover:bg-zinc-800 active:scale-90 transition-all cursor-pointer disabled:opacity-30"
+              className="w-5 h-5 flex items-center justify-center rounded text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-zinc-200/60 dark:hover:bg-zinc-800 active:scale-90 transition-[background-color,color,transform] duration-150 cursor-pointer disabled:opacity-30"
             >
               <Plus className="w-3 h-3" />
             </button>
@@ -94,7 +94,7 @@ export function FiltersFilmstrip({
             'w-8 h-8 rounded-full bg-zinc-900 dark:bg-zinc-800 text-white dark:text-zinc-100',
             'border border-zinc-700/40 dark:border-white/15 shadow-md',
             'flex items-center justify-center hover:bg-[#FF6B35] dark:hover:bg-[#FF6B35] hover:text-white',
-            'active:scale-95 transition-all duration-150 shrink-0',
+            'active:scale-95 transition-[background-color,color,transform,opacity] duration-150 shrink-0',
             '-translate-y-3.5 sm:-translate-y-[18px]',
             scrollState.canLeft
               ? 'opacity-100 pointer-events-auto cursor-pointer visible'
@@ -122,15 +122,15 @@ export function FiltersFilmstrip({
                 type="button"
                 onClick={() => onSelectPreset(preset)}
                 className={cn(
-                  'flex flex-col items-center gap-1.5 shrink-0 transition-all cursor-pointer group/card',
+                  'flex flex-col items-center gap-1.5 shrink-0 transition-transform duration-150 cursor-pointer group/card',
                   isSelected ? 'scale-[1.03]' : 'hover:scale-[1.02]'
                 )}
               >
                 <div
                   className={cn(
-                    'w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden bg-zinc-900 relative transition-all',
+                    'w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden bg-zinc-900 relative transition-[border-color,box-shadow] duration-150',
                     isSelected
-                      ? 'ring-2 ring-zinc-950 dark:ring-zinc-100 ring-offset-2 ring-offset-white dark:ring-offset-zinc-950 shadow-md'
+                      ? 'border-2 border-zinc-950 dark:border-zinc-100 shadow-md'
                       : 'border border-zinc-200 dark:border-white/10 group-hover/card:border-zinc-400 dark:group-hover/card:border-white/30'
                   )}
                 >
@@ -172,7 +172,7 @@ export function FiltersFilmstrip({
             'w-8 h-8 rounded-full bg-zinc-900 dark:bg-zinc-800 text-white dark:text-zinc-100',
             'border border-zinc-700/40 dark:border-white/15 shadow-md',
             'flex items-center justify-center hover:bg-[#FF6B35] dark:hover:bg-[#FF6B35] hover:text-white',
-            'active:scale-95 transition-all duration-150 shrink-0',
+            'active:scale-95 transition-[background-color,color,transform,opacity] duration-150 shrink-0',
             '-translate-y-3.5 sm:-translate-y-[18px]',
             scrollState.canRight
               ? 'opacity-100 pointer-events-auto cursor-pointer visible'

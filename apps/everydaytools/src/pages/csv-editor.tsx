@@ -21,7 +21,7 @@ export default function CsvEditor() {
     name: isFr ? 'Tableur' : 'Spreadsheet',
     extension: 'csv, xlsx',
     icon: '/icons/csv.svg',
-    color: '#10B981',
+    color: 'var(--accent, #10b981)',
     subLabel: isFr ? 'Fichiers CSV, Excel (.xlsx, .xls) ou TSV' : 'CSV, Excel (.xlsx, .xls) or TSV files',
   };
 
@@ -109,7 +109,7 @@ export default function CsvEditor() {
                   <button
                     type="button"
                     onClick={table.handleStartBlank}
-                    className="h-11 px-5 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-sm font-medium text-zinc-900 dark:text-zinc-100 transition-all flex items-center gap-2.5 cursor-pointer active:scale-[0.98] shadow-sm"
+                    className="h-11 px-5 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-sm font-medium text-zinc-900 dark:text-zinc-100 transition-colors duration-150 flex items-center gap-2.5 cursor-pointer active:scale-[0.98] shadow-sm"
                   >
                     <Plus size={16} />
                     <span>{isFr ? 'Créer un tableau vierge' : 'Create blank table'}</span>
@@ -118,7 +118,7 @@ export default function CsvEditor() {
                   <button
                     type="button"
                     onClick={table.handleLoadSample}
-                    className="h-11 px-5 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-sm font-medium text-zinc-900 dark:text-zinc-100 transition-all flex items-center gap-2.5 cursor-pointer active:scale-[0.98] shadow-sm"
+                    className="h-11 px-5 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-sm font-medium text-zinc-900 dark:text-zinc-100 transition-colors duration-150 flex items-center gap-2.5 cursor-pointer active:scale-[0.98] shadow-sm"
                   >
                     <FileSpreadsheet size={16} className="text-zinc-500 dark:text-zinc-400" />
                     <span>{isFr ? "Charger des données d'exemple" : 'Load sample data'}</span>

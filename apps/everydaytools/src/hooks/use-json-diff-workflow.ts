@@ -149,6 +149,12 @@ export function useJsonDiffWorkflow(isFr: boolean) {
     toast.info(isFr ? 'Atelier vidé' : 'Workspace cleared');
   };
 
+  const handleLoadSample = () => {
+    setInputLeft(DEFAULT_LEFT);
+    setInputRight(DEFAULT_RIGHT);
+    toast.success(isFr ? 'Exemple de comparaison chargé' : 'Comparison sample loaded');
+  };
+
   const handleAutoRepairA = () => {
     const { repaired, modified } = autoRepairJsonString(inputLeft);
     if (modified) {
@@ -197,8 +203,8 @@ export function useJsonDiffWorkflow(isFr: boolean) {
   const handleFileUploadA = (file: File) => {
     const reader = new FileReader();
     reader.onload = (e) => {
-      const text = e.target?.result as string;
-      if (text) {
+      const text = e.target?.result;
+      if (typeof text === 'string') {
         setInputLeft(text);
         toast.success(isFr ? `Fichier « ${file.name} » chargé` : `File "${file.name}" loaded`);
       }
@@ -209,8 +215,8 @@ export function useJsonDiffWorkflow(isFr: boolean) {
   const handleFileUploadB = (file: File) => {
     const reader = new FileReader();
     reader.onload = (e) => {
-      const text = e.target?.result as string;
-      if (text) {
+      const text = e.target?.result;
+      if (typeof text === 'string') {
         setInputRight(text);
         toast.success(isFr ? `Fichier « ${file.name} » chargé` : `File "${file.name}" loaded`);
       }
@@ -265,6 +271,7 @@ export function useJsonDiffWorkflow(isFr: boolean) {
     unifiedLines,
     handleSwap,
     handleClear,
+    handleLoadSample,
     handleAutoRepairA,
     handleAutoRepairB,
     getDiffSummary,

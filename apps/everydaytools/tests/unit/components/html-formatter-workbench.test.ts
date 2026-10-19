@@ -101,4 +101,19 @@ describe('HtmlFormatterWorkbench with CodeWorkspaceSplit', () => {
 
     expect(onMouseDownResize).toHaveBeenCalledTimes(1);
   });
+
+  it('renders sample buttons when input is empty and allows loading a sample', async () => {
+    const onInputChange = vi.fn();
+    await renderWorkbench({ input: '', hasContent: false, onInputChange });
+
+    expect(container.textContent).toContain('Exemples');
+    const sampleBtn = container.querySelector('button[data-sample="landingHero"]');
+    expect(sampleBtn).not.toBeNull();
+
+    await act(async () => {
+      sampleBtn?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    expect(onInputChange).toHaveBeenCalled();
+  });
 });
+

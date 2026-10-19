@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { toast } from '@/hooks/use-toast';
@@ -14,9 +14,41 @@ import {
   type MarkdownToPdfMode,
 } from '@/lib/markdown-to-pdf-logic';
 
-export function useMarkdownToPdfWorkflow() {
-  const { t, isFr } = useLocale();
-  const tc = t.markdownToPdf;
+export interface UseMarkdownToPdfOptions {
+  isFr?: boolean;
+}
+
+function useSafeLocale(options?: UseMarkdownToPdfOptions) {
+  try {
+    const localeCtx = useLocale();
+    return {
+      t: localeCtx.t,
+      tc: ((localeCtx.t as any).markdownToPdf ?? {}) as Record<string, any>,
+      isFr: options?.isFr ?? localeCtx.isFr,
+    };
+  } catch {
+    const isFr = options?.isFr ?? false;
+    return {
+      t: {
+        nav: { breadcrumb: { home: isFr ? 'Accueil' : 'Home', documents: 'Documents' } },
+        tools: {
+          'markdown-to-pdf': {
+            title: isFr ? 'Markdown en PDF' : 'Markdown to PDF',
+            description: isFr
+              ? 'Convertissez vos fichiers Markdown en documents PDF.'
+              : 'Convert Markdown (.md) or text files into an elegant, formatted PDF document.',
+          },
+        },
+        markdownToPdf: {},
+      },
+      tc: {} as Record<string, any>,
+      isFr,
+    };
+  }
+}
+
+export function useMarkdownToPdfWorkflow(options?: UseMarkdownToPdfOptions) {
+  const { t, tc, isFr } = useSafeLocale(options);
 
   const sourceFormat = getSourceFormat(isFr);
   const targetFormat = getTargetFormat();
@@ -45,12 +77,16 @@ export function useMarkdownToPdfWorkflow() {
         return;
       }
       setFiles([selectedFile]);
+      setMode('upload');
       setResult(null);
     },
     [isFr]
   );
 
+  const hasConsumedHandoffRef = useRef(false);
   useEffect(() => {
+    if (hasConsumedHandoffRef.current) return;
+    hasConsumedHandoffRef.current = true;
     const staged = consumeHandoffFile();
     if (staged) {
       validateAndSetFile(staged);
@@ -87,6 +123,18 @@ export function useMarkdownToPdfWorkflow() {
     setIsProcessing(false);
     setIsNextActionOpen(false);
   }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !isProcessing && !isNextActionOpen) {
+        const activeTag = document.activeElement?.tagName.toLowerCase();
+        if (activeTag === 'input' || activeTag === 'textarea') return;
+        handleReset();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isProcessing, isNextActionOpen, handleReset]);
 
   const handleConvert = useCallback(async () => {
     if (mode === 'upload' && !file) return;

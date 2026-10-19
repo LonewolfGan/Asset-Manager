@@ -95,4 +95,18 @@ describe('JsonFormatterWorkbench with CodeWorkspaceSplit', () => {
     expect(dragOverlay).not.toBeNull();
     expect(dragOverlay?.textContent).toContain('Déposez votre fichier .json ici');
   });
+
+  it('renders sample buttons when input is empty and allows loading a sample', async () => {
+    const onRawInputChange = vi.fn();
+    await renderWorkbench({ rawInput: '', onRawInputChange });
+
+    expect(container.textContent).toContain('Exemples');
+    const sampleBtn = container.querySelector('button[data-sample="userProfile"]');
+    expect(sampleBtn).not.toBeNull();
+    await act(async () => {
+      sampleBtn?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    expect(onRawInputChange).toHaveBeenCalled();
+  });
 });
+

@@ -7,6 +7,8 @@ import type { ChecksumWorkflow } from '@/hooks/use-checksum-workflow';
 
 import { LocaleProvider } from '@/contexts/locale-context';
 
+(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
+
 describe('ChecksumWorkbench with HashAlgorithmPills (TDD RED Phase)', () => {
   let container: HTMLDivElement;
   let root: Root;
@@ -70,5 +72,30 @@ describe('ChecksumWorkbench with HashAlgorithmPills (TDD RED Phase)', () => {
 
     const sha256Pill = container.querySelector('button[data-algorithm="sha-256"]');
     expect(sha256Pill).not.toBeNull();
+  });
+
+  it('renders SHA-384 pill and does not render phantom CRC-32 pill', async () => {
+    await act(async () => {
+      root.render(
+        React.createElement(
+          LocaleProvider,
+          null,
+          React.createElement(
+            TooltipProvider,
+            null,
+            React.createElement(ChecksumWorkbench, {
+              isFr: true,
+              workflow: mockWorkflow,
+              copiedLabel: 'Copié',
+            })
+          )
+        )
+      );
+    });
+
+    const sha384Pill = container.querySelector('button[data-algorithm="sha-384"]');
+    expect(sha384Pill).not.toBeNull();
+    const crc32Pill = container.querySelector('button[data-algorithm="crc32"]');
+    expect(crc32Pill).toBeNull();
   });
 });

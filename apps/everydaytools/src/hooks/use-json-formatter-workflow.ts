@@ -14,9 +14,19 @@ import {
   type ViewTab,
   type JsonErrorInfo,
 } from '@/lib/json-repair-logic';
+import { JSON_SAMPLES } from '@/lib/json-formatter-logic';
 
 hljs.registerLanguage('json', jsonLang);
 hljs.registerLanguage('yaml', yamlLang);
+
+export function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
 
 export interface DownloadResult {
   blob: Blob;
@@ -73,7 +83,7 @@ export function useJsonFormatterWorkflow(isFr: boolean) {
       const lang = yamlMode ? 'yaml' : 'json';
       return hljs.highlight(outputCode, { language: lang, ignoreIllegals: true }).value;
     } catch {
-      return outputCode;
+      return escapeHtml(outputCode);
     }
   }, [outputCode, yamlMode]);
 
@@ -180,6 +190,14 @@ export function useJsonFormatterWorkflow(isFr: boolean) {
     toast.info(isFr ? 'Atelier vidé' : 'Workspace cleared');
   };
 
+  const handleLoadSample = (sampleKey: keyof typeof JSON_SAMPLES) => {
+    const sample = JSON_SAMPLES[sampleKey];
+    if (sample) {
+      pushToInput(sample);
+      toast.success(isFr ? 'Exemple chargé' : 'Sample loaded');
+    }
+  };
+
   const handleDownload = () => {
     if (!outputCode) return;
     const ext = yamlMode ? 'yaml' : 'json';
@@ -255,6 +273,7 @@ export function useJsonFormatterWorkflow(isFr: boolean) {
     handleMinify,
     handleEscapeToggle,
     handleClear,
+    handleLoadSample,
     handleDownload,
     handleFileUpload,
   };

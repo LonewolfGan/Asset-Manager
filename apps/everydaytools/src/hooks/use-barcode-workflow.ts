@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import JsBarcode from 'jsbarcode';
 import { toast } from 'sonner';
 import { trackToolUsed } from '@/lib/analytics';
+import { consumeHandoffText } from '@/lib/file-handoff';
 import {
   type BarcodeSymbology,
   getSymbologies,
@@ -18,6 +19,11 @@ import {
 export type BarcodeBackgroundMode = 'paper' | 'transparent';
 export type BarcodeTextPosition = 'bottom' | 'top';
 
+export interface BarcodeHistorySnapshot {
+  value: string;
+  symbologyId: string;
+}
+
 export function useBarcodeWorkflow(isFr: boolean) {
   // Format et données
   const [symbologyId, setSymbologyId] = useState<string>('EAN13');
@@ -33,16 +39,18 @@ export function useBarcodeWorkflow(isFr: boolean) {
   const [fontSize, setFontSize] = useState<number>(15);
   const [textPosition, setTextPosition] = useState<BarcodeTextPosition>('bottom');
 
-  // Paramètres d'encre et support
-  const [inkColor, setInkColor] = useState<string>('#000000');
+  // Paramètres d'encre et support (Anti-Slop: Zero Pure Black #000000 -> #18181b)
+  const [inkColor, setInkColor] = useState<string>('#18181b');
   const [backgroundMode, setBackgroundMode] = useState<BarcodeBackgroundMode>('paper');
 
   // État de l'atelier
   const [zoomLevel, setZoomLevel] = useState<number>(100);
   const [showDownloadMenu, setShowDownloadMenu] = useState<boolean>(false);
-  const [history, setHistory] = useState<string[]>([]);
+  const [history, setHistory] = useState<BarcodeHistorySnapshot[]>([]);
+  const [redoStack, setRedoStack] = useState<BarcodeHistorySnapshot[]>([]);
 
   const svgRef = useRef<SVGSVGElement>(null);
+  const lastHistoryPushRef = useRef<number>(0);
 
   const symbologies = useMemo(() => getSymbologies(isFr), [isFr]);
 
@@ -54,12 +62,19 @@ export function useBarcodeWorkflow(isFr: boolean) {
     return validateBarcode(symbologyId, value, isFr);
   }, [symbologyId, value, isFr]);
 
+  // Valeur assainie pour JsBarcode et exports (suppression des espaces pour les codes numériques GS1)
+  const sanitizedBarcodeValue = useMemo(() => {
+    return ['EAN13', 'UPC', 'EAN8', 'ITF14'].includes(symbologyId)
+      ? value.replace(/\s+/g, '')
+      : value.trim();
+  }, [symbologyId, value]);
+
   // Rendu vectoriel du code-barres à 60 FPS
   useEffect(() => {
-    if (!svgRef.current || !value.trim() || !validation.isValid) return;
+    if (!svgRef.current || !sanitizedBarcodeValue || !validation.isValid) return;
 
     try {
-      JsBarcode(svgRef.current, value.trim(), {
+      JsBarcode(svgRef.current, sanitizedBarcodeValue, {
         format: symbologyId,
         lineColor: inkColor,
         width: barWidth,
@@ -72,12 +87,11 @@ export function useBarcodeWorkflow(isFr: boolean) {
         margin: quietZone,
         background: backgroundMode === 'transparent' ? 'transparent' : '#ffffff',
       });
-      trackToolUsed('barcode-generator', 'render');
     } catch (e) {
       console.warn('JsBarcode render error:', e);
     }
   }, [
-    value,
+    sanitizedBarcodeValue,
     symbologyId,
     inkColor,
     barWidth,
@@ -91,55 +105,98 @@ export function useBarcodeWorkflow(isFr: boolean) {
   ]);
 
   const handleValueChange = useCallback((newVal: string) => {
-    setHistory((prev) => [...prev.slice(-30), value]);
+    const now = Date.now();
+    if (now - lastHistoryPushRef.current > 1000) {
+      setHistory((prev) => [...prev.slice(-30), { value, symbologyId }]);
+      setRedoStack([]);
+      lastHistoryPushRef.current = now;
+    }
     setValue(newVal);
-  }, [value]);
+  }, [value, symbologyId]);
 
   const handleUndo = useCallback(() => {
     if (history.length === 0) return;
     const last = history[history.length - 1];
+    setRedoStack((prev) => [...prev.slice(-30), { value, symbologyId }]);
     setHistory((prev) => prev.slice(0, -1));
-    setValue(last);
-  }, [history]);
+    setValue(last.value);
+    setSymbologyId(last.symbologyId);
+    lastHistoryPushRef.current = 0;
+  }, [history, value, symbologyId]);
+
+  const handleRedo = useCallback(() => {
+    if (redoStack.length === 0) return;
+    const next = redoStack[redoStack.length - 1];
+    setHistory((prev) => [...prev.slice(-30), { value, symbologyId }]);
+    setRedoStack((prev) => prev.slice(0, -1));
+    setValue(next.value);
+    setSymbologyId(next.symbologyId);
+    lastHistoryPushRef.current = 0;
+  }, [redoStack, value, symbologyId]);
+
+  useEffect(() => {
+    const handoff = consumeHandoffText();
+    if (handoff && typeof handoff === 'string' && handoff.trim()) {
+      setValue(handoff.trim());
+      toast.info(isFr ? 'Code-barres importé depuis le handoff' : 'Barcode imported from handoff');
+    }
+  }, [isFr]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
-        if (document.activeElement?.tagName !== 'INPUT' && history.length > 0) {
+      const activeEl = document.activeElement;
+      const isInputFocused = activeEl?.tagName === 'INPUT' || activeEl?.tagName === 'TEXTAREA';
+
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+        if (!isInputFocused) {
+          if (e.shiftKey) {
+            e.preventDefault();
+            handleRedo();
+          } else {
+            e.preventDefault();
+            handleUndo();
+          }
+        }
+      } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') {
+        if (!isInputFocused) {
           e.preventDefault();
-          handleUndo();
+          handleRedo();
         }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleUndo, history.length]);
+  }, [handleUndo, handleRedo]);
 
   const handleSelectSymbology = useCallback((symbology: BarcodeSymbology) => {
-    setHistory((prev) => [...prev.slice(-30), value]);
+    setHistory((prev) => [...prev.slice(-30), { value, symbologyId }]);
+    setRedoStack([]);
+    lastHistoryPushRef.current = 0;
     setSymbologyId(symbology.id);
     setValue(symbology.sample);
-  }, [value]);
+  }, [value, symbologyId]);
 
   const handleApplyAutoFix = useCallback((fixedValue: string) => {
-    setHistory((prev) => [...prev.slice(-30), value]);
+    setHistory((prev) => [...prev.slice(-30), { value, symbologyId }]);
+    setRedoStack([]);
+    lastHistoryPushRef.current = 0;
     setValue(fixedValue);
     toast.success(isFr ? 'Clé de contrôle corrigée' : 'Checksum fixed');
-  }, [value, isFr]);
+  }, [value, symbologyId, isFr]);
 
   const handleDownloadSvg = useCallback(() => {
     if (!svgRef.current || !validation.isValid) return;
     trackToolUsed('barcode-generator', 'download-svg');
-    downloadSvgBarcode(svgRef.current, symbologyId, value);
+    downloadSvgBarcode(svgRef.current, symbologyId, sanitizedBarcodeValue);
     toast.success(isFr ? 'Fichier SVG téléchargé' : 'SVG file downloaded');
-  }, [symbologyId, value, validation.isValid, isFr]);
+  }, [symbologyId, sanitizedBarcodeValue, validation.isValid, isFr]);
 
   const handleDownloadPng = useCallback(async () => {
     if (!svgRef.current || !validation.isValid) return;
     trackToolUsed('barcode-generator', 'download-png');
-    await downloadPngBarcode(svgRef.current, symbologyId, value, backgroundMode === 'paper');
+    await downloadPngBarcode(svgRef.current, symbologyId, sanitizedBarcodeValue, backgroundMode === 'paper');
     toast.success(isFr ? 'Image PNG téléchargée' : 'PNG image downloaded');
-  }, [symbologyId, value, backgroundMode, validation.isValid, isFr]);
+  }, [symbologyId, sanitizedBarcodeValue, backgroundMode, validation.isValid, isFr]);
 
   const handleCopyPng = useCallback(async () => {
     if (!svgRef.current || !validation.isValid) return;
@@ -155,8 +212,8 @@ export function useBarcodeWorkflow(isFr: boolean) {
   const handlePrint = useCallback(() => {
     if (!svgRef.current || !validation.isValid) return;
     trackToolUsed('barcode-generator', 'print');
-    printBarcodeLabel(svgRef.current, activeSymbology.name, value);
-  }, [activeSymbology.name, value, validation.isValid]);
+    printBarcodeLabel(svgRef.current, activeSymbology.name, sanitizedBarcodeValue);
+  }, [activeSymbology.name, sanitizedBarcodeValue, validation.isValid]);
 
   const getSvgString = useCallback(() => {
     if (!svgRef.current || !validation.isValid) return '';
@@ -188,12 +245,15 @@ export function useBarcodeWorkflow(isFr: boolean) {
     showDownloadMenu,
     setShowDownloadMenu,
     history,
+    redoStack,
+    canRedo: redoStack.length > 0,
     svgRef,
     symbologies,
     activeSymbology,
     validation,
     handleValueChange,
     handleUndo,
+    handleRedo,
     handleSelectSymbology,
     handleApplyAutoFix,
     handleDownloadSvg,

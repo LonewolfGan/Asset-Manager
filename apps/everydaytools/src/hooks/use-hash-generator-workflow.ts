@@ -12,6 +12,7 @@ import {
   calculateCurrentHashes,
   EMPTY_HASHES,
 } from '@/lib/hash-calculator-service';
+import { consumeHandoffFile, consumeHandoffText } from '@/lib/file-handoff';
 
 export type InputMode = 'text' | 'file';
 
@@ -36,12 +37,12 @@ export function useHashGeneratorWorkflow() {
   const [hmacSecret, setHmacSecret] = useState<string>('');
   const [compareHash, setCompareHash] = useState<string>('');
 
-  const [hashes, setHashes] =
-    useState<Record<SupportedHashAlgo, string>>(EMPTY_HASHES);
+  const [hashes, setHashes] = useState<Record<SupportedHashAlgo, string>>(EMPTY_HASHES);
   const [isCalculating, setIsCalculating] = useState<boolean>(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const lastHistoryPushRef = useRef<number>(0);
 
   const textByteLength = useMemo(() => {
     return new TextEncoder().encode(inputText).length;
@@ -71,9 +72,7 @@ export function useHashGeneratorWorkflow() {
     } catch (err) {
       console.error(err);
       trackToolError('hash-generator', 'calculation-error');
-      toast.error(
-        isFr ? 'Erreur lors du calcul des empreintes' : 'Error computing hashes'
-      );
+      toast.error(isFr ? 'Erreur lors du calcul des empreintes' : 'Error computing hashes');
     } finally {
       setIsCalculating(false);
     }
@@ -85,7 +84,11 @@ export function useHashGeneratorWorkflow() {
 
   const handleTextChange = useCallback(
     (val: string) => {
-      setHistory((prev) => [...prev.slice(-30), inputText]);
+      const now = Date.now();
+      if (now - lastHistoryPushRef.current > 1000) {
+        setHistory((prev) => [...prev.slice(-30), inputText]);
+        lastHistoryPushRef.current = now;
+      }
       setInputText(val);
     },
     [inputText]
@@ -102,11 +105,7 @@ export function useHashGeneratorWorkflow() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
-        if (
-          inputMode === 'text' &&
-          document.activeElement?.tagName !== 'INPUT' &&
-          history.length > 0
-        ) {
+        if (inputMode === 'text' && document.activeElement?.tagName !== 'INPUT' && history.length > 0) {
           e.preventDefault();
           handleUndo();
         }
@@ -115,6 +114,17 @@ export function useHashGeneratorWorkflow() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleUndo, history.length, inputMode]);
+
+  const handleLoadSample = useCallback(
+    (sampleText: string) => {
+      setHistory((prev) => [...prev.slice(-30), inputText]);
+      lastHistoryPushRef.current = Date.now();
+      setInputText(sampleText);
+      setInputMode('text');
+      toast.info(isFr ? 'Échantillon chargé' : 'Sample loaded');
+    },
+    [inputText, isFr]
+  );
 
   const handleClear = useCallback(() => {
     if (inputMode === 'text') {
@@ -146,13 +156,25 @@ export function useHashGeneratorWorkflow() {
             : `File ${file.name} loaded (${formatBytes(file.size, isFr)})`
         );
       } catch {
-        toast.error(
-          isFr ? 'Échec de la lecture du fichier' : 'Failed to read file'
-        );
+        toast.error(isFr ? 'Échec de la lecture du fichier' : 'Failed to read file');
       }
     },
     [isFr]
   );
+
+  useEffect(() => {
+    const handoffText = consumeHandoffText();
+    if (handoffText) {
+      setInputText(handoffText);
+      setInputMode('text');
+      toast.success(isFr ? 'Texte transféré importé' : 'Transferred text imported');
+      return;
+    }
+    const handoffFile = consumeHandoffFile();
+    if (handoffFile) {
+      handleProcessFile(handoffFile);
+    }
+  }, [handleProcessFile, isFr]);
 
   const compareResult = useMemo(() => {
     return verifyHashMatch(compareHash, hashes);
@@ -160,11 +182,7 @@ export function useHashGeneratorWorkflow() {
 
   const manifestContent = useMemo(() => {
     const sourceLabel =
-      inputMode === 'file' && fileInfo
-        ? fileInfo.name
-        : isFr
-        ? 'Texte UTF-8'
-        : 'UTF-8 Text';
+      inputMode === 'file' && fileInfo ? fileInfo.name : isFr ? 'Texte UTF-8' : 'UTF-8 Text';
 
     return generateManifestContent({
       sourceLabel,
@@ -182,32 +200,20 @@ export function useHashGeneratorWorkflow() {
       toast.success(isFr ? 'Manifeste complet copié' : 'Full manifest copied');
       trackToolUsed('hash-generator', 'copy-manifest');
     } catch {
-      toast.error(
-        isFr
-          ? 'Impossible de copier le manifeste'
-          : 'Could not copy manifest'
-      );
+      toast.error(isFr ? 'Impossible de copier le manifeste' : 'Could not copy manifest');
     }
   }, [manifestContent, isFr]);
 
   const handleDownloadManifest = useCallback(() => {
-    const blob = new Blob([manifestContent], {
-      type: 'text/plain;charset=utf-8',
-    });
+    const blob = new Blob([manifestContent], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     a.download =
-      inputMode === 'file' && fileInfo
-        ? `${fileInfo.name}.checksums.txt`
-        : 'checksums.txt';
+      inputMode === 'file' && fileInfo ? `${fileInfo.name}.checksums.txt` : 'checksums.txt';
     a.click();
     URL.revokeObjectURL(url);
-    toast.success(
-      isFr
-        ? 'Manifeste checksums téléchargé'
-        : 'Checksums manifest downloaded'
-    );
+    toast.success(isFr ? 'Manifeste checksums téléchargé' : 'Checksums manifest downloaded');
     trackToolUsed('hash-generator', 'download-manifest');
   }, [manifestContent, inputMode, fileInfo, isFr]);
 
@@ -235,6 +241,7 @@ export function useHashGeneratorWorkflow() {
     setInputMode,
     inputText,
     handleTextChange,
+    handleLoadSample,
     history,
     handleUndo,
     fileInfo,

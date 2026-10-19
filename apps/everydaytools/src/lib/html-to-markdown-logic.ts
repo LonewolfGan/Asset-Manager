@@ -4,7 +4,7 @@ export const getSourceFormat = (isFr: boolean): ConversionFormat => ({
   name: 'HTML',
   extension: 'html',
   icon: '/icons/html.svg',
-  color: '#E34F26',
+  color: 'var(--accent, #ea580c)',
   subLabel: isFr ? 'Document HTML5' : 'HTML5 Document',
 });
 
@@ -12,7 +12,7 @@ export const getTargetFormat = (isFr: boolean): ConversionFormat => ({
   name: 'Markdown',
   extension: 'md',
   icon: '/icons/markdown.svg',
-  color: '#0284C7',
+  color: 'var(--accent, #0284c7)',
   subLabel: isFr ? 'Syntaxe Markdown' : 'Markdown Syntax',
 });
 
@@ -22,14 +22,9 @@ export interface FileValidationResult {
 }
 
 export function validateHtmlInputFile(file: File, isFr: boolean): FileValidationResult {
-  const isHtml =
-    file.name.toLowerCase().endsWith('.html') ||
-    file.name.toLowerCase().endsWith('.htm') ||
-    file.name.toLowerCase().endsWith('.xhtml') ||
-    file.type === 'text/html' ||
-    file.type === 'application/xhtml+xml' ||
-    file.type === 'text/plain' ||
-    file.type === '';
+  const hasHtmlExt = /\.(html?|xhtml)$/i.test(file.name);
+  const hasHtmlMime = file.type === 'text/html' || file.type === 'application/xhtml+xml';
+  const isHtml = hasHtmlExt || hasHtmlMime;
 
   if (!isHtml) {
     return {
@@ -53,10 +48,8 @@ export function validateHtmlInputFile(file: File, isFr: boolean): FileValidation
 }
 
 export function buildMarkdownFilename(originalName?: string): string {
-  if (!originalName || !originalName.trim()) {
-    return 'document.md';
-  }
-  return originalName.replace(/\.(html?|xhtml)$/i, '.md');
+  const base = originalName?.replace(/\.(html?|xhtml)$/i, '').trim();
+  return `${base || 'document'}.md`;
 }
 
 export async function convertHtmlToMarkdown(rawHtml: string): Promise<string> {
@@ -71,4 +64,15 @@ export async function convertHtmlToMarkdown(rawHtml: string): Promise<string> {
   });
 
   return turndown.turndown(rawHtml);
+}
+
+export function triggerDownload(blob: Blob, filename: string): void {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }

@@ -60,7 +60,8 @@ export const tools = [
   {slug: 'excel-to-pdf', title: 'Excel to PDF', description: 'Converts Excel spreadsheets to PDF entirely in your browser. Each sheet becomes a page in the output file.', category: 'excel', icon: FileSpreadsheet, formats: ['XLSX','PDF']},
   {slug: 'excel-to-csv', title: 'Excel to CSV', description: 'Exports Excel sheets as comma-separated CSV files. One sheet becomes one CSV file.', category: 'excel', icon: AlignJustify, formats: ['XLSX','CSV']},
   {slug: 'csv-to-excel', title: 'CSV to Excel', description: 'Converts a CSV file into an Excel .xlsx workbook. Column types are detected automatically where possible.', category: 'excel', icon: LayoutGrid, formats: ['CSV','XLSX']},
-  {slug: 'csv-to-json', title: 'CSV ↔ JSON', description: 'Switches between CSV and JSON formats. Paste either one and get the other — headers become keys.', category: 'excel', icon: ArrowLeftRight, formats: ['CSV','JSON']},
+  {slug: 'csv-to-json', title: 'CSV to JSON', description: 'Converts CSV spreadsheet files into structured JSON objects or arrays.', category: 'excel', icon: FileSpreadsheet, formats: ['CSV','JSON']},
+  {slug: 'json-to-csv', title: 'JSON to CSV', description: 'Converts JSON data structures and arrays into CSV spreadsheet format in your browser.', category: 'excel', icon: FileCode, formats: ['JSON','CSV']},
   {slug: 'csv-viewer', title: 'CSV Viewer', description: 'Loads a CSV and displays it as a sortable table. Nothing gets uploaded — the file stays in your browser the whole time.', category: 'excel', icon: Eye, formats: ['CSV']},
 
   // PowerPoint
@@ -139,6 +140,13 @@ export const tools = [
   // New Document Tools
   {slug: 'odt-to-pdf', title: 'ODT to PDF', description: 'Converts OpenDocument ODT files to PDF with full layout fidelity.', category: 'word', icon: FileDown, formats: ['ODT','PDF']},
   {slug: 'rtf-to-pdf', title: 'RTF to PDF', description: 'Converts Rich Text Format RTF documents to PDF.', category: 'word', icon: FileDown, formats: ['RTF','PDF']},
+  {slug: 'html-to-word', title: 'HTML to Word', description: 'Converts HTML documents and web snippets into editable DOCX Word files.', category: 'word', icon: FileInput, formats: ['HTML','DOCX']},
+  {slug: 'epub-to-word', title: 'EPUB to Word', description: 'Converts EPUB e-books into editable DOCX Word documents.', category: 'word', icon: BookMarked, formats: ['EPUB','DOCX']},
+  {slug: 'epub-to-pdf', title: 'EPUB to PDF', description: 'Converts EPUB e-books into standard PDF documents readable anywhere.', category: 'pdf', icon: BookOpen, formats: ['EPUB','PDF']},
+  {slug: 'pdf-to-odt', title: 'PDF to ODT', description: 'Converts PDF documents into OpenDocument Text (ODT) files.', category: 'pdf', icon: FileText, formats: ['PDF','ODT']},
+  {slug: 'pdf-to-rtf', title: 'PDF to RTF', description: 'Converts PDF documents into Rich Text Format (RTF) files.', category: 'pdf', icon: FileText, formats: ['PDF','RTF']},
+  {slug: 'png-to-gif', title: 'PNG to GIF', description: 'Converts PNG images into standard GIF format.', category: 'image', icon: Film, formats: ['PNG','GIF']},
+  {slug: 'webp-to-gif', title: 'WebP to GIF', description: 'Converts WebP images into standard GIF format.', category: 'image', icon: Film, formats: ['WEBP','GIF']},
 
   // New Data & Code Tools
   {slug: 'json-diff', title: 'JSON Diff', description: 'Compares two JSON payloads side-by-side to highlight additions, deletions, and modifications.', category: 'textCode', icon: Braces, formats: ['JSON']},

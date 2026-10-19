@@ -51,6 +51,7 @@ export default function MarkdownPreview() {
     handleDownloadHtml,
     handleClear,
     handleFileUpload,
+    handleLoadSample,
     hasContent,
   } = useMarkdownPreviewWorkflow(isFr);
 
@@ -71,7 +72,7 @@ export default function MarkdownPreview() {
           .md-preview h3 { font-size: 1.2rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.5rem; }
           .md-preview h4 { font-size: 1.05rem; font-weight: 600; margin-top: 1rem; margin-bottom: 0.4rem; }
           .md-preview p { margin-top: 0; margin-bottom: 1rem; line-height: 1.7; }
-          .md-preview a { color: #FF6B35; text-decoration: underline; text-underline-offset: 3px; font-weight: 500; }
+          .md-preview a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; font-weight: 500; }
           .md-preview ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
           .md-preview ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
           .md-preview li { margin-bottom: 0.35rem; line-height: 1.6; }
@@ -91,7 +92,7 @@ export default function MarkdownPreview() {
           .dark .md-preview kbd { border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.05); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1); }
           .md-preview mark { background: #fef08a; padding: 0.1rem 0.3rem; border-radius: 0.2rem; }
           .dark .md-preview mark { background: #854d0e; color: #fef9c3; }
-          .md-preview input[type="checkbox"] { margin-right: 0.5rem; accent-color: #FF6B35; }
+          .md-preview input[type="checkbox"] { margin-right: 0.5rem; accent-color: var(--accent); }
           .md-preview details { margin: 1rem 0; padding: 0.75rem 1rem; border-radius: 0.5rem; border: 1px solid rgba(0, 0, 0, 0.08); background: rgba(0, 0, 0, 0.015); }
           .dark .md-preview details { border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.02); }
           .md-preview summary { font-weight: 600; cursor: pointer; }
@@ -169,6 +170,7 @@ export default function MarkdownPreview() {
             if (file) handleFileUpload(file);
           }}
           onFileUpload={handleFileUpload}
+          onLoadSample={handleLoadSample}
           isFr={isFr}
         />
 

@@ -16,7 +16,7 @@ export interface ColorPreset {
 export const COLOR_PRESETS: ColorPreset[] = [
   { name: 'Noir', nameEn: 'Black', fg: '#09090b', bg: '#ffffff' },
   { name: 'Inversé', nameEn: 'Inverted', fg: '#ffffff', bg: '#09090b' },
-  { name: 'Studio', nameEn: 'Studio', fg: '#FF6B35', bg: '#ffffff' },
+  { name: 'Studio', nameEn: 'Studio', fg: '#f97316', bg: '#ffffff' },
   { name: 'Nuit', nameEn: 'Midnight', fg: '#0f172a', bg: '#f8fafc' },
   { name: 'Forêt', nameEn: 'Forest', fg: '#064e3b', bg: '#f0fdf4' },
 ];
@@ -107,9 +107,61 @@ export function buildQrPayload(mode: InputMode, params: QrPayloadParams): string
         params.vcardUrl.trim() ? `URL:${params.vcardUrl.trim()}` : '',
         'END:VCARD',
       ].filter(Boolean);
-      return lines.length > 2 ? lines.join('\n') : '';
+      return lines.length > 3 ? lines.join('\n') : '';
     }
   }
+}
+
+export function parseHandoffPayload(text: string): { mode: InputMode; data: Partial<QrPayloadParams> } {
+  const trimmed = text.trim();
+  if (trimmed.startsWith('WIFI:')) {
+    const tMatch = trimmed.match(/T:([^;]*);/);
+    const sMatch = trimmed.match(/S:([^;]*);/);
+    const pMatch = trimmed.match(/P:([^;]*);/);
+    const enc = (tMatch?.[1] as WifiEnc) || 'WPA';
+    return {
+      mode: 'wifi',
+      data: {
+        wifiSsid: sMatch?.[1] ?? '',
+        wifiPass: pMatch?.[1] ?? '',
+        wifiEnc: enc === 'nopass' || enc === 'WEP' || enc === 'WPA' ? enc : 'WPA',
+      },
+    };
+  }
+
+  if (trimmed.startsWith('BEGIN:VCARD')) {
+    const fnMatch = trimmed.match(/^FN:(.*)$/m);
+    const orgMatch = trimmed.match(/^ORG:(.*)$/m);
+    const telMatch = trimmed.match(/^TEL:(.*)$/m);
+    const emailMatch = trimmed.match(/^EMAIL:(.*)$/m);
+    const urlMatch = trimmed.match(/^URL:(.*)$/m);
+    return {
+      mode: 'vcard',
+      data: {
+        vcardName: fnMatch?.[1]?.trim() ?? '',
+        vcardOrg: orgMatch?.[1]?.trim() ?? '',
+        vcardPhone: telMatch?.[1]?.trim() ?? '',
+        vcardEmail: emailMatch?.[1]?.trim() ?? '',
+        vcardUrl: urlMatch?.[1]?.trim() ?? '',
+      },
+    };
+  }
+
+  if (/^https?:\/\//i.test(trimmed)) {
+    return {
+      mode: 'url',
+      data: {
+        url: trimmed,
+      },
+    };
+  }
+
+  return {
+    mode: 'text',
+    data: {
+      rawText: trimmed,
+    },
+  };
 }
 
 export function isPayloadEmpty(content: string, mode: InputMode): boolean {
@@ -199,7 +251,7 @@ export function generateQrSvgString(options: QrSvgOptions): string {
       const eyeCenterY = eyeY + eyeH / 2;
 
       if (eyeStyle === 'circle') {
-        shapes += `<circle cx="${eyeCenterX}" cy="${eyeCenterY}" r="${2.5 * cellSize}" fill="none" stroke="${fgColor}" stroke-width="${cellSize}"/>\n`;
+        shapes += `<circle cx="${eyeCenterX}" cy="${eyeCenterY}" r="${3 * cellSize}" fill="none" stroke="${fgColor}" stroke-width="${cellSize}"/>\n`;
         shapes += `<circle cx="${eyeCenterX}" cy="${eyeCenterY}" r="${1.5 * cellSize}" fill="${fgColor}"/>\n`;
       } else if (eyeStyle === 'rounded') {
         const frameOffset = cellSize / 2;

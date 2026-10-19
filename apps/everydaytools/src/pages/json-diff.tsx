@@ -42,6 +42,7 @@ export default function JsonDiff() {
     unifiedLines,
     handleSwap,
     handleClear,
+    handleLoadSample,
     handleAutoRepairA,
     handleAutoRepairB,
     getDiffSummary,
@@ -94,6 +95,7 @@ export default function JsonDiff() {
           onMouseDownResize={handleMouseDownResize}
           onFileUploadA={handleFileUploadA}
           onFileUploadB={handleFileUploadB}
+          onLoadSample={handleLoadSample}
           isFr={isFr}
         />
 

@@ -4,6 +4,7 @@ import {
   renderSafeHtml,
   highlightHtml,
   generateStandaloneHtml,
+  MARKDOWN_SAMPLES,
 } from '@/lib/markdown-preview-parser';
 import { applyMarkdownFormat } from '@/lib/markdown-format-helpers';
 
@@ -68,4 +69,35 @@ describe('Markdown Preview Parser & Format Helpers', () => {
     const html = renderSafeHtml(md, renderer);
     expect(html).not.toContain('<iframe');
   });
+
+  it('guarantees zero arbitrary hex #FF6B35 in renderer blockquote and standalone html', () => {
+    const quoteMd = '> Citation standard';
+    const html = renderSafeHtml(quoteMd, renderer);
+    expect(html).not.toContain('#FF6B35');
+
+    const standalone = generateStandaloneHtml('<p>Test</p>', true);
+    expect(standalone).not.toContain('#FF6B35');
+  });
+
+  it('escapes HTML tags in unhighlighted code blocks to prevent tag consumption by DOMPurify', () => {
+    const md = '```unrecognizedlang\n<MyComponent prop="value">\n```';
+    const html = renderSafeHtml(md, renderer);
+    expect(html).toContain('&lt;MyComponent prop="value"&gt;');
+  });
+
+  it('includes alert callout styles in standalone HTML', () => {
+    const standalone = generateStandaloneHtml('<div class="border-sky-500">Alert</div>', true);
+    expect(standalone).toContain('.border-sky-500');
+    expect(standalone).toContain('.border-emerald-500');
+  });
+
+  describe('MARKDOWN_SAMPLES', () => {
+    it('provides standard curated markdown samples', () => {
+      expect(MARKDOWN_SAMPLES.welcomeDoc).toBeDefined();
+      expect(MARKDOWN_SAMPLES.welcomeDoc).toContain('# ');
+      expect(MARKDOWN_SAMPLES.readmeTemplate).toBeDefined();
+      expect(MARKDOWN_SAMPLES.technicalSpec).toBeDefined();
+    });
+  });
 });
+

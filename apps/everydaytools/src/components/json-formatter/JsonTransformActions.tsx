@@ -47,7 +47,7 @@ export function JsonTransformActions({
               onClick={() => onFormat(n)}
               className={`px-1.5 py-0.5 text-[11px] font-mono rounded transition-colors cursor-pointer ${
                 indentSize === n && !isMinified && !yamlMode
-                  ? 'bg-[#FF6B35] text-white font-bold'
+                  ? 'bg-[var(--accent)] text-white font-bold'
                   : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
               }`}
             >

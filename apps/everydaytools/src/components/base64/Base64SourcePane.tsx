@@ -51,7 +51,10 @@ export function Base64SourcePane({
             type="file"
             className="hidden"
             onChange={(e) => {
-              if (e.target.files?.[0]) onFileUpload(e.target.files[0]);
+              if (e.target.files?.[0]) {
+                onFileUpload(e.target.files[0]);
+                e.target.value = '';
+              }
             }}
           />
           <ActionTooltip label={isFr ? "Importer une image, un PDF ou n'importe quel fichier" : "Import an image, PDF or any file"}>
@@ -71,7 +74,7 @@ export function Base64SourcePane({
       {fileInfo && (
         <div className="px-4 py-2.5 bg-zinc-100/60 dark:bg-zinc-900/60 border-b border-zinc-200 dark:border-white/10 flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs">
-            <FileCode className="w-4 h-4 text-[#FF6B35]" />
+            <FileCode className="w-4 h-4 text-[var(--accent)]" />
             <span className="font-semibold text-zinc-800 dark:text-zinc-200">{fileInfo.name}</span>
             <span className="text-zinc-400 text-[11px]">
               ({fileInfo.type} · {formatBytes(fileInfo.size, isFr)})

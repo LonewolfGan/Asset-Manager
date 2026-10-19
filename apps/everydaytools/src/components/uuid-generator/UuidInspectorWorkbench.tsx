@@ -1,8 +1,9 @@
 import React from 'react';
-import { Search, CheckCircle2, AlertCircle, X } from 'lucide-react';
+import { Search, CheckCircle2, AlertCircle, X, Sparkles } from 'lucide-react';
 import { ActionTooltip } from '@/components/ui/tooltip';
 import { CopyButton } from '@/components/ui/copy-button';
 import type { UuidParsedInfo } from '@/lib/uuid-logic';
+import { UUID_SAMPLES } from '@/lib/uuid-samples';
 
 interface UuidInspectorWorkbenchProps {
   inspectInput: string;
@@ -164,10 +165,29 @@ export const UuidInspectorWorkbench: React.FC<UuidInspectorWorkbenchProps> = ({
           </div>
         )
       ) : (
-        <div className="py-12 text-center text-xs text-zinc-400 font-mono">
-          {isFr
-            ? 'Saisissez ou collez un identifiant UUID pour inspecter sa structure.'
-            : 'Enter or paste a UUID to inspect its structure.'}
+        <div className="py-10 px-4 flex flex-col items-center justify-center gap-4 text-center">
+          <span className="text-xs text-zinc-400 font-mono">
+            {isFr
+              ? 'Saisissez ou collez un identifiant UUID pour inspecter sa structure.'
+              : 'Enter or paste a UUID to inspect its structure.'}
+          </span>
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <span className="text-xs text-zinc-400 flex items-center gap-1.5 mr-1">
+              <Sparkles className="w-3.5 h-3.5 text-[var(--accent)]" />
+              <span>{isFr ? 'Exemples rapides :' : 'Quick samples:'}</span>
+            </span>
+            {UUID_SAMPLES.map((sample) => (
+              <button
+                key={sample.id}
+                type="button"
+                data-uuid-sample={sample.id}
+                onClick={() => onInputChange(sample.uuid)}
+                className="px-2.5 py-1 text-xs font-medium rounded-lg border border-zinc-200 dark:border-white/10 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors cursor-pointer"
+              >
+                {isFr ? sample.label.fr : sample.label.en}
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </div>

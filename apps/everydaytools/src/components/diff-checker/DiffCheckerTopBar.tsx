@@ -202,7 +202,7 @@ export function DiffCheckerTopBar({
             <button
               type="button"
               onClick={onSwap}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-[0.98] cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors active:scale-[0.98] cursor-pointer"
             >
               <ArrowLeftRight className="w-3.5 h-3.5" />
               <span>{isFr ? 'Intervertir' : 'Swap'}</span>

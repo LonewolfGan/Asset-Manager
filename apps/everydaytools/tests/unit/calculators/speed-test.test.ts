@@ -41,4 +41,16 @@ describe('Internet Speed Test Logic', () => {
 
     expect(res.suitability.download10GbMinutes).toBeCloseTo(13.3, 1);
   });
+
+  it('handles zero download bandwidth without negative or NaN ETA', () => {
+    const res = assessNetworkQuality({
+      downloadMbps: 0,
+      uploadMbps: 0,
+      pingMs: 150,
+      jitterMs: 50,
+    });
+
+    expect(res.suitability.download10GbMinutes).toBe(0);
+    expect(res.grade).toBe('D');
+  });
 });

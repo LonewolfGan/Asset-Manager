@@ -19,14 +19,23 @@ export function autoRepairJsonString(str: string): { repaired: string; modified:
   let s = str.trim();
   const original = s;
 
-  // 1. Supprimer les commentaires JavaScript (// et /* */)
-  s = s.replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '');
+  // 1. Supprimer les commentaires JavaScript (// et /* */) SANS toucher aux chaînes littérales
+  s = s.replace(
+    /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')|(\/\*[\s\S]*?\*\/|\/\/[^\r\n]*)/g,
+    (match, strLiteral) => (strLiteral ? match : '')
+  );
 
-  // 2. Remplacer les booléens et constantes Python
-  s = s
-    .replace(/\bTrue\b/g, 'true')
-    .replace(/\bFalse\b/g, 'false')
-    .replace(/\bNone\b/g, 'null');
+  // 2. Remplacer les booléens et constantes Python UNIQUEMENT hors chaînes de texte
+  s = s.replace(
+    /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')|(\bTrue\b|\bFalse\b|\bNone\b)/g,
+    (match, strLiteral, pyLiteral) => {
+      if (strLiteral) return match;
+      if (pyLiteral === 'True') return 'true';
+      if (pyLiteral === 'False') return 'false';
+      if (pyLiteral === 'None') return 'null';
+      return match;
+    }
+  );
 
   // 3. Remplacer les guillemets simples par des doubles pour les chaînes
   s = s.replace(/'([^'\\]*(?:\\.[^'\\]*)*)'/g, (_match, group) => {
@@ -36,8 +45,11 @@ export function autoRepairJsonString(str: string): { repaired: string; modified:
   // 4. Quotation des clés d'objets non quotées
   s = s.replace(/([{,]\s*)([a-zA-Z0-9_$-]+)\s*:/g, '$1"$2":');
 
-  // 5. Suppression des virgules traînantes (trailing commas)
-  s = s.replace(/,\s*([}\]])/g, '$1');
+  // 5. Suppression des virgules traînantes (trailing commas) hors chaînes
+  s = s.replace(
+    /("(?:\\.|[^"\\])*")|(,\s*([}\]]))/g,
+    (match, strLiteral, _commaGroup, closing) => (strLiteral ? match : closing)
+  );
 
   return { repaired: s, modified: s !== original };
 }

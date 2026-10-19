@@ -103,7 +103,7 @@ export function JsOutputPanel({
               <button
                 type="button"
                 onClick={onRunCode}
-                className="flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-md bg-emerald-600 text-white hover:bg-emerald-700 transition-all active:scale-[0.98] cursor-pointer"
+                className="flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-md bg-emerald-600 text-white hover:bg-emerald-700 transition-colors active:scale-[0.98] cursor-pointer"
               >
                 <Play className="w-3 h-3 fill-current" />
                 <span>{isFr ? 'Exécuter' : 'Run'}</span>

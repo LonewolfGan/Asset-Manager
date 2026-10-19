@@ -1,8 +1,9 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
-import { consumeHandoffFile } from '@/lib/file-handoff';
+import { consumeHandoffFile, consumeHandoffText } from '@/lib/file-handoff';
+import { detectDelimiter } from '@/lib/csv-data-logic';
 import {
   SAMPLE_CSV_FR,
   SAMPLE_CSV_EN,
@@ -18,11 +19,18 @@ export function useCsvViewerWorkflow({
   isFr,
   onResetView,
 }: UseCsvViewerWorkflowOptions) {
+  const onResetViewRef = useRef(onResetView);
+  useEffect(() => {
+    onResetViewRef.current = onResetView;
+  }, [onResetView]);
+
   const [inputMode, setInputMode] = useState<'file' | 'paste'>('file');
   const [headers, setHeaders] = useState<string[]>([]);
   const [rows, setRows] = useState<string[][]>([]);
   const [documentName, setDocumentName] = useState<string>(isFr ? 'donnees' : 'data');
   const [fileSize, setFileSize] = useState<string | null>(null);
+  const [fileSizeBytes, setFileSizeBytes] = useState<number>(0);
+  const [isExcel, setIsExcel] = useState<boolean>(false);
   const [detectedDelimiter, setDetectedDelimiter] = useState<string>(',');
   const [isReady, setIsReady] = useState<boolean>(false);
 
@@ -39,18 +47,10 @@ export function useCsvViewerWorkflow({
           throw new Error(isFr ? 'Le texte est vide.' : 'The text is empty.');
         }
 
-        const firstLine = trimmed.split('\n')[0] || '';
-        let delim = ',';
-        const commaCount = (firstLine.match(/,/g) || []).length;
-        const semicolonCount = (firstLine.match(/;/g) || []).length;
-        const tabCount = (firstLine.match(/\t/g) || []).length;
-        const pipeCount = (firstLine.match(/\|/g) || []).length;
-
-        if (semicolonCount > commaCount && semicolonCount >= tabCount) delim = ';';
-        else if (tabCount > commaCount && tabCount >= semicolonCount) delim = '\t';
-        else if (pipeCount > commaCount && pipeCount >= semicolonCount) delim = '|';
-
+        const delim = detectDelimiter(trimmed);
         setDetectedDelimiter(delim);
+        setIsExcel(false);
+        setFileSizeBytes(new Blob([content]).size);
 
         Papa.parse(trimmed, {
           delimiter: delim,
@@ -74,7 +74,7 @@ export function useCsvViewerWorkflow({
               setDocumentName(fileName.replace(/\.[^/.]+$/, '') || (isFr ? 'donnees' : 'data'));
               if (sizeStr) setFileSize(sizeStr);
               setIsReady(true);
-              onResetView?.();
+              onResetViewRef.current?.();
               trackToolUsed('csv-viewer', 'documents');
             } else {
               throw new Error(
@@ -95,20 +95,23 @@ export function useCsvViewerWorkflow({
         );
       }
     },
-    [isFr, onResetView]
+    [isFr]
   );
 
   const processUploadedFile = useCallback(
     (file: File) => {
-      const isExcel =
-        file.name.endsWith('.xlsx') ||
-        file.name.endsWith('.xls') ||
+      const lowerName = file.name.toLowerCase();
+      const isExcelFile =
+        lowerName.endsWith('.xlsx') ||
+        lowerName.endsWith('.xls') ||
         file.type.includes('spreadsheet') ||
         file.type.includes('excel');
 
       const formattedSize = formatTabularFileSize(file.size, isFr);
+      setFileSizeBytes(file.size);
+      setIsExcel(isExcelFile);
 
-      if (isExcel) {
+      if (isExcelFile) {
         const reader = new FileReader();
         reader.onload = (e) => {
           try {
@@ -139,7 +142,7 @@ export function useCsvViewerWorkflow({
               setFileSize(formattedSize);
               setDetectedDelimiter('Excel (.xlsx)');
               setIsReady(true);
-              onResetView?.();
+              onResetViewRef.current?.();
               trackToolUsed('csv-viewer', 'documents');
             } else {
               throw new Error(isFr ? 'La feuille Excel est vide.' : 'The Excel sheet is empty.');
@@ -154,23 +157,49 @@ export function useCsvViewerWorkflow({
         };
         reader.readAsArrayBuffer(file);
       } else {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const text = (e.target?.result as string) || '';
-          parseCsvString(text, file.name, formattedSize);
-        };
-        reader.readAsText(file);
+        if (typeof file.text === 'function') {
+          file
+            .text()
+            .then((text) => {
+              parseCsvString(text, file.name, formattedSize);
+            })
+            .catch((err) => {
+              setError(
+                err instanceof Error
+                  ? err.message
+                  : isFr
+                  ? 'Impossible de lire ce fichier CSV.'
+                  : 'Unable to read this CSV file.'
+              );
+            });
+        } else {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const text = (e.target?.result as string) || '';
+            parseCsvString(text, file.name, formattedSize);
+          };
+          reader.readAsText(file);
+        }
       }
     },
-    [isFr, onResetView, parseCsvString]
+    [isFr, parseCsvString]
   );
 
+  const hasConsumedHandoffRef = useRef(false);
   useEffect(() => {
-    const staged = consumeHandoffFile();
-    if (staged) {
-      processUploadedFile(staged);
+    if (hasConsumedHandoffRef.current) return;
+    hasConsumedHandoffRef.current = true;
+
+    const stagedFile = consumeHandoffFile();
+    if (stagedFile) {
+      processUploadedFile(stagedFile);
+      return;
     }
-  }, [processUploadedFile]);
+    const stagedText = consumeHandoffText();
+    if (stagedText) {
+      parseCsvString(stagedText, isFr ? 'presse_papier.csv' : 'clipboard.csv');
+    }
+  }, [isFr, parseCsvString, processUploadedFile]);
 
   const handleLoadSample = useCallback(() => {
     const sample = isFr ? SAMPLE_CSV_FR : SAMPLE_CSV_EN;
@@ -217,11 +246,11 @@ export function useCsvViewerWorkflow({
     setRawText('');
     setError(null);
     setFileSize(null);
+    setFileSizeBytes(0);
+    setIsExcel(false);
     setIsReady(false);
-    onResetView?.();
-  }, [onResetView]);
-
-
+    onResetViewRef.current?.();
+  }, []);
 
   return {
     inputMode,
@@ -230,6 +259,8 @@ export function useCsvViewerWorkflow({
     rows,
     documentName,
     fileSize,
+    fileSizeBytes,
+    isExcel,
     detectedDelimiter,
     isReady,
     rawText,

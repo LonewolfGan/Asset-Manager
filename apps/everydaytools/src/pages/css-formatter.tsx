@@ -40,11 +40,13 @@ export default function CssFormatter() {
     isDragOver,
     setIsDragOver,
     metrics,
+    issues,
     hasContent,
     sandboxHtml,
     handleInputChange,
     handleUndo,
     handleClear,
+    handleLoadSample,
     handleFileUpload,
     handleDownload,
     handleMouseDownResize,
@@ -113,6 +115,7 @@ export default function CssFormatter() {
           isDragOver={isDragOver}
           setIsDragOver={setIsDragOver}
           metrics={metrics}
+          issues={issues}
           hasContent={hasContent}
           outputView={outputView}
           setOutputView={setOutputView}
@@ -123,6 +126,7 @@ export default function CssFormatter() {
           sandboxHtml={sandboxHtml}
           isFr={isFr}
           onFileUpload={handleFileUpload}
+          onLoadSample={handleLoadSample}
           onMouseDownResize={handleMouseDownResize}
         />
       </div>

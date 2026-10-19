@@ -39,12 +39,18 @@ export const OdtToPdf = lazy(() => import("@/pages/odt-to-pdf"));
 export const RtfToPdf = lazy(() => import("@/pages/rtf-to-pdf"));
 export const TxtToPdf = lazy(() => import("@/pages/txt-to-pdf"));
 export const TxtToDocx = lazy(() => import("@/pages/txt-to-docx"));
+export const HtmlToWord = lazy(() => import("@/pages/html-to-word"));
+export const EpubToWord = lazy(() => import("@/pages/epub-to-word"));
+export const EpubToPdf = lazy(() => import("@/pages/epub-to-pdf"));
+export const PdfToOdt = lazy(() => import("@/pages/pdf-to-odt"));
+export const PdfToRtf = lazy(() => import("@/pages/pdf-to-rtf"));
 
 // Excel & Spreadsheets
 export const ExcelToPdf = lazy(() => import("@/pages/excel-to-pdf"));
 export const ExcelToCsv = lazy(() => import("@/pages/excel-to-csv"));
 export const CsvToExcel = lazy(() => import("@/pages/csv-to-excel"));
 export const CsvToJson = lazy(() => import("@/pages/csv-to-json"));
+export const JsonToCsv = lazy(() => import("@/pages/json-to-csv"));
 export const CsvViewer = lazy(() => import("@/pages/csv-viewer"));
 export const CsvEditor = lazy(() => import("@/pages/csv-editor"));
 
@@ -88,6 +94,8 @@ export const PngToJpg = lazy(() => import("@/pages/png-to-jpg"));
 export const PngToSvg = lazy(() => import("@/pages/png-to-svg"));
 export const SvgToPng = lazy(() => import("@/pages/svg-to-png"));
 export const GifToPng = lazy(() => import("@/pages/gif-to-png"));
+export const PngToGif = lazy(() => import("@/pages/png-to-gif"));
+export const WebpToGif = lazy(() => import("@/pages/webp-to-gif"));
 export const BmpToJpg = lazy(() => import("@/pages/bmp-to-jpg"));
 export const TiffToJpg = lazy(() => import("@/pages/tiff-to-jpg"));
 export const TiffToPng = lazy(() => import("@/pages/tiff-to-png"));
@@ -133,7 +141,7 @@ export const Privacy = lazy(() => import("@/pages/privacy"));
 export const Terms = lazy(() => import("@/pages/terms"));
 export const SecurityPage = lazy(() => import("@/pages/security"));
 
-export const TOOL_COMPONENTS: Record<string, React.LazyExoticComponent<() => React.ReactElement>> = {
+export const TOOL_COMPONENTS: Record<string, React.LazyExoticComponent<React.ComponentType<any>>> = {
   // PDF
   "pdf-to-word": PdfToWord,
   "pdf-to-text": PdfToText,
@@ -167,11 +175,17 @@ export const TOOL_COMPONENTS: Record<string, React.LazyExoticComponent<() => Rea
   "rtf-to-pdf": RtfToPdf,
   "txt-to-pdf": TxtToPdf,
   "txt-to-docx": TxtToDocx,
+  "html-to-word": HtmlToWord,
+  "epub-to-word": EpubToWord,
+  "epub-to-pdf": EpubToPdf,
+  "pdf-to-odt": PdfToOdt,
+  "pdf-to-rtf": PdfToRtf,
   // Excel & Spreadsheets
   "excel-to-pdf": ExcelToPdf,
   "excel-to-csv": ExcelToCsv,
   "csv-to-excel": CsvToExcel,
   "csv-to-json": CsvToJson,
+  "json-to-csv": JsonToCsv,
   "csv-viewer": CsvViewer,
   // PowerPoint
   "pptx-to-pdf": PptxToPdf,
@@ -209,6 +223,8 @@ export const TOOL_COMPONENTS: Record<string, React.LazyExoticComponent<() => Rea
   "png-to-svg": PngToSvg,
   "svg-to-png": SvgToPng,
   "gif-to-png": GifToPng,
+  "png-to-gif": PngToGif,
+  "webp-to-gif": WebpToGif,
   "bmp-to-jpg": BmpToJpg,
   "tiff-to-jpg": TiffToJpg,
   "tiff-to-png": TiffToPng,

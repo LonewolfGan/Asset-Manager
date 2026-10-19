@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { consumeHandoffFile } from '@/lib/file-handoff';
 import { inspectFileMetadata, type InspectionResult } from '@/lib/metadata-inspector';
@@ -28,11 +28,15 @@ export function useMetadataCleanerWorkflow(isFr: boolean) {
   const file = files[0] ?? null;
   const { previewUrl, isPreviewLoading, imageDims } = useMetadataFilePreview(file);
 
-  // Auto-consume handoff file from previous workflow step
+  // Auto-consume handoff file from previous workflow step (React 19 StrictMode guarded)
+  const hasConsumedHandoffRef = useRef(false);
   useEffect(() => {
+    if (hasConsumedHandoffRef.current) return;
+    hasConsumedHandoffRef.current = true;
     const staged = consumeHandoffFile();
     if (staged) {
       setFiles([staged]);
+      setActiveFilter('all');
       setResult(null);
       setError(null);
     }
@@ -40,6 +44,7 @@ export function useMetadataCleanerWorkflow(isFr: boolean) {
 
   // Inspect metadata live on file change
   useEffect(() => {
+    setActiveFilter('all');
     if (!file) {
       setInspection(null);
       return;
@@ -53,12 +58,16 @@ export function useMetadataCleanerWorkflow(isFr: boolean) {
         if (isMounted) {
           setInspection(res);
           setIsInspecting(false);
+          if (res.sensitiveTagsCount === 0) {
+            setActiveFilter('all');
+          }
         }
       })
       .catch(() => {
         if (isMounted) {
           setInspection(null);
           setIsInspecting(false);
+          setActiveFilter('all');
         }
       });
 
@@ -108,7 +117,9 @@ export function useMetadataCleanerWorkflow(isFr: boolean) {
       const a = document.createElement('a');
       a.href = url;
       a.download = outputFilename;
+      document.body.appendChild(a);
       a.click();
+      document.body.removeChild(a);
       setTimeout(() => URL.revokeObjectURL(url), 1000);
 
       setResult({
@@ -138,7 +149,9 @@ export function useMetadataCleanerWorkflow(isFr: boolean) {
     const a = document.createElement('a');
     a.href = url;
     a.download = result.filename;
+    document.body.appendChild(a);
     a.click();
+    document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(url), 1000);
 
     setTimeout(() => {
@@ -163,6 +176,7 @@ export function useMetadataCleanerWorkflow(isFr: boolean) {
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       const droppedFile = e.dataTransfer.files[0];
       setFiles([droppedFile]);
+      setActiveFilter('all');
       setResult(null);
       setError(null);
     }

@@ -21,8 +21,9 @@ describe('word-to-text-logic', () => {
     const format = getSourceFormat(false);
     expect(format.name).toBe('Word');
     expect(format.extension).toBe('docx');
-    expect(format.color).toBe('#185ABD');
+    expect(format.color).toContain('var(--accent');
   });
+
 
   it('provides localized target format descriptors', () => {
     const formatFr = getTargetFormat(true);
@@ -103,7 +104,8 @@ describe('word-to-text-logic', () => {
     );
   });
 
-  it('triggers download with an anchor element', () => {
+  it('triggers download with an anchor element and delayed URL revocation', () => {
+    vi.useFakeTimers();
     const blob = new Blob(['plain text'], { type: 'text/plain' });
     const createObjectURLMock = vi.fn().mockReturnValue('blob:mock-url');
     const revokeObjectURLMock = vi.fn();
@@ -118,6 +120,11 @@ describe('word-to-text-logic', () => {
     expect(createObjectURLMock).toHaveBeenCalledWith(blob);
     expect(appendChildSpy).toHaveBeenCalled();
     expect(removeChildSpy).toHaveBeenCalled();
+    expect(revokeObjectURLMock).not.toHaveBeenCalled();
+
+    vi.advanceTimersByTime(1000);
     expect(revokeObjectURLMock).toHaveBeenCalledWith('blob:mock-url');
+    vi.useRealTimers();
   });
 });
+

@@ -2,6 +2,7 @@ export type ViewOutput = 'code' | 'sandbox';
 export type DeviceWidth = 'desktop' | 'tablet' | 'mobile';
 
 export function generateCssSandboxHtml(appliedCss: string, isFr: boolean): string {
+  const safeCss = appliedCss.replace(/<\/style/gi, '<\\/style');
   return `<!DOCTYPE html>
 <html lang="${isFr ? 'fr' : 'en'}">
 <head>
@@ -41,7 +42,7 @@ export function generateCssSandboxHtml(appliedCss: string, isFr: boolean): strin
     table.preview-table th { font-weight: 600; color: #71717a; }
   </style>
   <style id="user-injected-css">
-    ${appliedCss}
+    ${safeCss}
   </style>
 </head>
 <body>

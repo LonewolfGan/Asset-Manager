@@ -49,6 +49,9 @@ export function convertCurrency(
   const inUSD = amount / rateFrom;
   const converted = inUSD * rateTo;
 
+  if (converted < 0.001 && converted > 0) {
+    return Number(converted.toFixed(6));
+  }
   return Number(converted.toFixed(4));
 }
 
@@ -64,7 +67,12 @@ export function getDirectRate(
   const rateFrom = rates[fromCurrency];
   const rateTo = rates[toCurrency];
   if (!rateFrom || !rateTo || rateFrom <= 0) return null;
-  return Number((rateTo / rateFrom).toFixed(4));
+
+  const rawRate = rateTo / rateFrom;
+  if (rawRate < 0.001 && rawRate > 0) {
+    return Number(rawRate.toFixed(6));
+  }
+  return Number(rawRate.toFixed(4));
 }
 
 /**
@@ -119,7 +127,7 @@ export function formatCurrencyAmount(
  */
 export function parseCurrencyAmount(input: string): number {
   if (!input) return 0;
-  const clean = input.replace(',', '.').trim();
+  const clean = input.replace(/[\s\u00A0\u202F]/g, '').replace(',', '.').trim();
   const val = parseFloat(clean);
   return isNaN(val) || val < 0 ? 0 : val;
 }

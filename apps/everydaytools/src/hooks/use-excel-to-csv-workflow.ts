@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { toast } from '@/hooks/use-toast';
@@ -83,7 +83,10 @@ export function useExcelToCsvWorkflow() {
     };
   }, [fileData, selectedSheet]);
 
+  const hasConsumedHandoffRef = useRef(false);
   useEffect(() => {
+    if (hasConsumedHandoffRef.current) return;
+    hasConsumedHandoffRef.current = true;
     const staged = consumeHandoffFile();
     if (staged) {
       validateAndSetFile(staged);

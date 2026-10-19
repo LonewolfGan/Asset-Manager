@@ -21,7 +21,9 @@ export function exportQrSvg(options: QrSvgOptions, mode: string): void {
     link.download = `qrcode-${mode}-${Date.now()}.svg`;
     link.href = objUrl;
     link.click();
-    URL.revokeObjectURL(objUrl);
+    setTimeout(() => {
+      URL.revokeObjectURL(objUrl);
+    }, 1000);
   } catch {
     trackToolError('qr-code-generator', 'svg-export-error');
   }

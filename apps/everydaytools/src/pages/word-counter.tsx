@@ -47,6 +47,7 @@ export default function WordCounter() {
     handleDragLeave,
     handleDrop,
     handleTransformCase,
+    handleLoadSample,
     handleCopyText,
     handleDownloadTxt,
     handleCopyReport,
@@ -98,6 +99,7 @@ export default function WordCounter() {
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
+              onLoadSample={handleLoadSample}
               onQuickCopy={() => {
                 toast.success(
                   isFr

@@ -9,15 +9,17 @@ import {
   ConversionConduit,
   ConversionResult,
   TextPreviewDialog,
+  ReciprocalTitle,
   DocumentNextActionModal,
 } from '@/components/conversion';
 import { useWordToEpubWorkflow } from '@/hooks/use-word-to-epub-workflow';
+import { useLocale } from '@/hooks/use-locale';
 
 export default function WordToEpub() {
+  const { isFr } = useLocale();
   const {
     t,
     tc,
-    isFr,
     sourceFormat,
     targetFormat,
     file,
@@ -47,7 +49,14 @@ export default function WordToEpub() {
   return (
     <ToolPageLayout
       breadcrumb={[t.nav.breadcrumb.home, t.nav.breadcrumb.documents, pageTitle]}
-      title={pageTitle}
+      title={
+        <ReciprocalTitle
+          currentSlug="word-to-epub"
+          isFr={isFr}
+          getCurrentFile={() => file}
+          fallbackTitle={pageTitle}
+        />
+      }
       description={pageDesc}
       seoSlug="word-to-epub"
     >
@@ -103,19 +112,30 @@ export default function WordToEpub() {
                 targetFormat={targetFormat}
                 resultFileName={result.filename}
                 resultFileSize={result.sizeAfter}
+                resultMetadataText={`${result.textOutput ? result.textOutput.split('\n').length : 0} ${isFr ? 'lignes' : 'lines'} · ${result.textOutput.length} ${isFr ? 'caractères' : 'chars'}`}
                 downloadBtnLabel={tc.downloadEpub ?? (isFr ? 'Télécharger le livre EPUB' : 'Download EPUB e-book')}
                 resetBtnLabel={tc.convertAnother ?? (isFr ? 'Convertir un autre document' : 'Convert another document')}
                 onDownload={handleDownload}
                 onReset={handleReset}
                 extraActions={
-                  <button
-                    type="button"
-                    onClick={() => setPreviewOpen(true)}
-                    className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-medium text-base active:scale-[0.98] transition-all flex items-center gap-2.5 shadow-sm cursor-pointer"
-                  >
-                    <Eye size={16} strokeWidth={2.2} />
-                    <span>{isFr ? 'Aperçu du contenu du livre' : 'Preview book content'}</span>
-                  </button>
+                  <div className="flex flex-wrap items-center justify-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setPreviewOpen(true)}
+                      className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-medium text-base active:scale-[0.98] transition-[background-color,border-color,transform] duration-150 flex items-center gap-2.5 shadow-sm cursor-pointer"
+                    >
+                      <Eye size={16} strokeWidth={2.2} />
+                      <span>{isFr ? 'Aperçu du contenu du livre' : 'Preview book content'}</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setIsNextActionOpen(true)}
+                      className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-medium text-base active:scale-[0.98] transition-[background-color,border-color,transform] duration-150 flex items-center gap-2.5 shadow-sm cursor-pointer"
+                    >
+                      <span>{isFr ? 'Actions suivantes' : 'Next actions'}</span>
+                    </button>
+                  </div>
                 }
               />
             )}
@@ -137,14 +157,16 @@ export default function WordToEpub() {
           )}
 
           {/* Continuum Modal */}
-          <DocumentNextActionModal
-            toolId="word-to-epub"
-            isOpen={isNextActionOpen}
-            onClose={() => setIsNextActionOpen(false)}
-            resultBlob={result?.blob}
-            resultFilename={result?.filename}
-            formatType="epub"
-          />
+          {result && (
+            <DocumentNextActionModal
+              toolId="word-to-epub"
+              isOpen={isNextActionOpen}
+              onClose={() => setIsNextActionOpen(false)}
+              resultBlob={result.blob}
+              resultFilename={result.filename}
+              formatType="epub"
+            />
+          )}
         </div>
       </ToolWorkspace>
     </ToolPageLayout>

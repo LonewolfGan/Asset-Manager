@@ -8,6 +8,7 @@ import {
   ConversionStaging,
   ConversionConduit,
   ConversionResult,
+  ReciprocalTitle,
   TextPreviewDialog,
   DocumentNextActionModal,
 } from '@/components/conversion';
@@ -49,15 +50,24 @@ export default function HtmlToMarkdown() {
     handleDownload,
   } = useHtmlToMarkdownWorkflow();
 
-  const pageTitle = t.tools['html-to-markdown']?.title ?? 'HTML to Markdown';
+  const pageTitle = t.tools['html-to-markdown']?.title ?? (isFr ? 'HTML en Markdown' : 'HTML to Markdown');
   const pageDesc =
     t.tools['html-to-markdown']?.description ??
-    'Convert HTML content to clean, readable Markdown format in your browser.';
+    (isFr
+      ? 'Convertissez vos pages et balises HTML en syntaxe Markdown épurée (.md) directement dans votre navigateur.'
+      : 'Convert HTML content to clean, readable Markdown format in your browser.');
 
   return (
     <ToolPageLayout
       breadcrumb={[t.nav.breadcrumb.home, t.nav.breadcrumb.documents, pageTitle]}
-      title={pageTitle}
+      title={
+        <ReciprocalTitle
+          currentSlug="html-to-markdown"
+          isFr={isFr}
+          getCurrentFile={() => stagedFile}
+          fallbackTitle={pageTitle}
+        />
+      }
       description={pageDesc}
       seoSlug="html-to-markdown"
     >
@@ -147,7 +157,7 @@ export default function HtmlToMarkdown() {
                     <button
                       type="button"
                       onClick={() => setPreviewOpen(true)}
-                      className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-medium text-base active:scale-[0.98] transition-all flex items-center gap-2.5 shadow-sm cursor-pointer"
+                      className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-medium text-base active:scale-[0.98] transition-[background-color,border-color,transform] duration-150 flex items-center gap-2.5 shadow-sm cursor-pointer"
                     >
                       <Eye size={16} strokeWidth={2.2} />
                       <span>{isFr ? 'Aperçu Markdown' : 'Markdown preview'}</span>
@@ -159,6 +169,14 @@ export default function HtmlToMarkdown() {
                       size="md"
                       className="h-12 px-6 rounded-full text-base font-medium shadow-sm"
                     />
+
+                    <button
+                      type="button"
+                      onClick={() => setIsNextActionOpen(true)}
+                      className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-medium text-base active:scale-[0.98] transition-[background-color,border-color,transform] duration-150 flex items-center gap-2.5 shadow-sm cursor-pointer"
+                    >
+                      <span>{isFr ? 'Actions suivantes' : 'Next actions'}</span>
+                    </button>
                   </div>
                 }
               />

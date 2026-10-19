@@ -40,8 +40,9 @@ export const MetadataTagsInspector: React.FC<MetadataTagsInspectorProps> = ({
           <div className="flex items-center gap-3 text-xs font-mono">
             <button
               type="button"
+              aria-pressed={activeFilter === 'all'}
               onClick={() => onFilterChange('all')}
-              className={`transition-colors cursor-pointer ${
+              className={`transition-colors duration-150 cursor-pointer ${
                 activeFilter === 'all'
                   ? 'text-zinc-950 dark:text-white font-semibold underline underline-offset-4'
                   : 'text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300'
@@ -52,8 +53,9 @@ export const MetadataTagsInspector: React.FC<MetadataTagsInspectorProps> = ({
             {inspection.sensitiveTagsCount > 0 && (
               <button
                 type="button"
+                aria-pressed={activeFilter === 'sensitive'}
                 onClick={() => onFilterChange('sensitive')}
-                className={`transition-colors cursor-pointer ${
+                className={`transition-colors duration-150 cursor-pointer ${
                   activeFilter === 'sensitive'
                     ? 'text-amber-600 dark:text-amber-400 font-semibold underline underline-offset-4'
                     : 'text-zinc-400 hover:text-amber-600 dark:hover:text-amber-400'

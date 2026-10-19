@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ActionTooltip } from '@/components/ui/tooltip';
 
 export interface JsonTableViewProps {
@@ -17,16 +17,18 @@ export function JsonTableView({ data, isFr }: JsonTableViewProps) {
     );
   }
 
-  const allColumns = Array.from(
-    new Set(
-      data.reduce<string[]>((acc, row) => {
-        if (row && typeof row === 'object' && !Array.isArray(row)) {
-          acc.push(...Object.keys(row));
-        }
-        return acc;
-      }, [])
-    )
-  );
+  const allColumns = useMemo(() => {
+    return Array.from(
+      new Set(
+        data.reduce<string[]>((acc, row) => {
+          if (row && typeof row === 'object' && !Array.isArray(row)) {
+            acc.push(...Object.keys(row));
+          }
+          return acc;
+        }, [])
+      )
+    );
+  }, [data]);
 
   return (
     <div className="w-full border border-zinc-200 dark:border-white/10 rounded-xl overflow-hidden text-xs">

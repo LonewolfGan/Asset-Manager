@@ -95,7 +95,7 @@ export const ChecksumWorkbench: React.FC<ChecksumWorkbenchProps> = ({
                 type="button"
                 data-testid="checksum-export-btn"
                 disabled={!hashes || isProcessing}
-                className="h-9 px-4 rounded-xl bg-[#FF6B35] hover:bg-[#E85A24] text-white text-xs font-semibold active:scale-[0.98] disabled:opacity-50 transition-all duration-200 flex items-center justify-center gap-2 shadow-xs cursor-pointer"
+                className="h-9 px-4 rounded-xl bg-[var(--accent,#f97316)] hover:bg-[var(--accent,#f97316)]/90 text-white text-xs font-semibold active:scale-[0.98] disabled:opacity-50 transition-colors duration-150 flex items-center justify-center gap-2 shadow-xs cursor-pointer"
               >
                 <Download size={13} />
                 <span>{isFr ? 'Exporter le rapport' : 'Export report'}</span>
@@ -131,7 +131,12 @@ export const ChecksumWorkbench: React.FC<ChecksumWorkbenchProps> = ({
 
               <DropdownMenuItem
                 onClick={handleDownloadMd5}
-                className="flex items-center justify-between text-xs py-2 px-2.5 cursor-pointer font-medium text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                disabled={!hashes?.['MD5'] || hashes['MD5'].startsWith('(')}
+                className={`flex items-center justify-between text-xs py-2 px-2.5 font-medium ${
+                  !hashes?.['MD5'] || hashes['MD5'].startsWith('(')
+                    ? 'opacity-40 cursor-not-allowed text-zinc-400'
+                    : 'cursor-pointer text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                }`}
               >
                 <div className="flex items-center gap-2">
                   <FileCode className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
@@ -170,9 +175,9 @@ export const ChecksumWorkbench: React.FC<ChecksumWorkbenchProps> = ({
           { id: 'all', name: isFr ? 'Tous les algorithmes' : 'All algorithms' },
           { id: 'sha-256', name: 'SHA-256', bits: 256, recommended: true },
           { id: 'sha-512', name: 'SHA-512', bits: 512, recommended: true },
+          { id: 'sha-384', name: 'SHA-384', bits: 384 },
           { id: 'sha-1', name: 'SHA-1', bits: 160, legacy: true },
           { id: 'md5', name: 'MD5', bits: 128, legacy: true },
-          { id: 'crc32', name: 'CRC-32', bits: 32 },
         ]}
         label={isFr ? 'Filtrer par algorithme' : 'Filter by algorithm'}
         isFr={isFr}

@@ -4,6 +4,8 @@ import { createRoot, Root } from 'react-dom/client';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { WordCounterCommandBar } from '@/components/word-counter/WordCounterCommandBar';
 
+(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
+
 describe('WordCounterCommandBar with CaseTransformButtonGroup (TDD RED Phase)', () => {
   let container: HTMLDivElement;
   let root: Root;
@@ -69,5 +71,10 @@ describe('WordCounterCommandBar with CaseTransformButtonGroup (TDD RED Phase)', 
     });
 
     expect(handleTransformCase).toHaveBeenCalledWith('upper');
+
+    // Anti-slop verification
+    expect(container.innerHTML).not.toContain('#FF6B35');
+    expect(container.innerHTML).not.toContain('#e85a26');
+    expect(container.innerHTML).not.toContain('transition-all');
   });
 });

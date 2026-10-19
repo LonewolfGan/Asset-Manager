@@ -59,9 +59,14 @@ export default function UnitPickerModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in-0 duration-150">
+    <div
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in-0 duration-150 cursor-pointer"
+    >
       <div
-        className="w-full max-w-md max-h-[80vh] flex flex-col rounded-2xl border border-border/80 bg-card text-card-foreground shadow-2xl overflow-hidden scale-in-95 duration-150"
+        className="w-full max-w-md max-h-[80vh] flex flex-col rounded-2xl border border-border/80 bg-card text-card-foreground shadow-2xl overflow-hidden scale-in-95 duration-150 cursor-default"
         role="dialog"
         aria-modal="true"
         aria-labelledby="unit-picker-title"
@@ -90,7 +95,7 @@ export default function UnitPickerModal({
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={isFr ? "Rechercher une unité ou un symbole..." : "Search unit or symbol..."}
-              className="w-full pl-9 pr-8 py-2 text-sm bg-background border border-border/80 rounded-xl placeholder:text-muted-foreground focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-all"
+              className="w-full pl-9 pr-8 py-2 text-sm bg-background border border-border/80 rounded-xl placeholder:text-muted-foreground focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors duration-150"
             />
             {search && (
               <button
@@ -119,7 +124,7 @@ export default function UnitPickerModal({
                 <button
                   key={u.id}
                   onClick={() => onSelect(u.id)}
-                  className={`w-full flex items-center justify-between p-3 rounded-xl text-left transition-all ${
+                  className={`w-full flex items-center justify-between p-3 rounded-xl text-left transition-colors duration-150 ${
                     isSelected
                       ? 'bg-zinc-100 dark:bg-zinc-800/90 text-foreground font-medium'
                       : 'hover:bg-zinc-50 dark:hover:bg-zinc-900/60 text-muted-foreground hover:text-foreground'
@@ -140,7 +145,7 @@ export default function UnitPickerModal({
                   </div>
 
                   {isSelected && (
-                    <div className="w-5 h-5 rounded-full bg-[#FF6B35] text-white flex items-center justify-center shrink-0 ml-2">
+                    <div className="w-5 h-5 rounded-full bg-[var(--accent,#f97316)] text-white flex items-center justify-center shrink-0 ml-2">
                       <Check className="w-3 h-3 stroke-[2.5]" />
                     </div>
                   )}

@@ -17,7 +17,7 @@ export function getCsvFormat(isFr: boolean): ConversionFormat {
     name: 'CSV',
     extension: 'csv',
     icon: '/icons/csv.svg',
-    color: '#21A366',
+    color: 'var(--accent, #10b981)',
     subLabel: isFr ? 'Données CSV Délimitées' : 'Delimited CSV Data',
   };
 }
@@ -27,7 +27,7 @@ export function getJsonFormat(isFr: boolean): ConversionFormat {
     name: 'JSON',
     extension: 'json',
     icon: '/icons/json.svg',
-    color: '#F5A623',
+    color: 'var(--accent, #f59e0b)',
     subLabel: isFr ? 'Notation Objet JavaScript' : 'JavaScript Object Notation',
   };
 }
@@ -40,24 +40,15 @@ export function validateCsvJsonFile(
   const isCsvTarget = direction === 'csv-to-json';
 
   if (isCsvTarget) {
-    const isCsv =
-      ext.endsWith('.csv') ||
-      ext.endsWith('.tsv') ||
-      ext.endsWith('.txt') ||
-      file.type === 'text/csv' ||
-      file.type === 'text/plain' ||
-      file.type === '';
-    if (!isCsv) {
+    const hasValidExt = ext.endsWith('.csv') || ext.endsWith('.tsv') || ext.endsWith('.txt');
+    const hasValidType = file.type === 'text/csv' || file.type === 'text/plain' || (file.type === '' && hasValidExt);
+    if (!hasValidExt && !hasValidType) {
       return { valid: false, error: 'unsupported_format' };
     }
   } else {
-    const isJson =
-      ext.endsWith('.json') ||
-      ext.endsWith('.txt') ||
-      file.type === 'application/json' ||
-      file.type === 'text/plain' ||
-      file.type === '';
-    if (!isJson) {
+    const hasValidExt = ext.endsWith('.json') || ext.endsWith('.txt');
+    const hasValidType = file.type === 'application/json' || file.type === 'text/plain' || (file.type === '' && hasValidExt);
+    if (!hasValidExt && !hasValidType) {
       return { valid: false, error: 'unsupported_format' };
     }
   }
@@ -118,4 +109,42 @@ export function resolveConvertedFilename(
   }
   const defaultBase = isFr ? 'donnees-converties' : 'converted-data';
   return `${defaultBase}${outExt}`;
+}
+
+export function parseCsvJsonPreview(
+  rawText: string,
+  direction: ConversionDirection,
+  delimiter?: string
+): { headers: string[]; rows: any[][] } {
+  if (!rawText.trim()) return { headers: [], rows: [] };
+  try {
+    if (direction === 'csv-to-json') {
+      const parsed = Papa.parse(rawText, {
+        preview: 6,
+        delimiter: delimiter || undefined,
+        skipEmptyLines: true,
+      });
+      const headers = (parsed.data[0] as string[]) || [];
+      const rows = (parsed.data.slice(1) as any[][]) || [];
+      return { headers, rows };
+    } else {
+      const parsed = JSON.parse(rawText);
+      const arr = Array.isArray(parsed) ? parsed : [parsed];
+      const headers = Object.keys(arr[0] || {});
+      const rows = arr.slice(0, 5).map((item) => headers.map((h) => item[h]));
+      return { headers, rows };
+    }
+  } catch {
+    return { headers: [], rows: [] };
+  }
+}
+
+export async function readEncodedText(file: File, encoding: string): Promise<string> {
+  try {
+    const buffer = await file.arrayBuffer();
+    const decoder = new TextDecoder(encoding || 'utf-8');
+    return decoder.decode(buffer);
+  } catch {
+    return file.text();
+  }
 }

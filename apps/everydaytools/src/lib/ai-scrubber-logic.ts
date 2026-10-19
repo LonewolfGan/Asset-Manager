@@ -5,7 +5,7 @@
 
 // Comprehensive zero-width and bidirectional control characters often used for watermarking
 export const INVISIBLE_CHARS_REGEX =
-  /[\u200B-\u200D\u200E\u200F\u202A-\u202E\u2060-\u2064\uFEFF\u00AD\u180E\u2000-\u200A]/g;
+  /[\u200B-\u200D\u200E\u200F\u202A-\u202E\u2060-\u2064\uFEFF\u00AD\u180E]/g;
 
 export interface DetectedInvisible {
   index: number;
@@ -109,7 +109,8 @@ export function scrubStylisticPatterns(text: string): ScrubStylisticResult {
     }
   }
 
-  cleaned = cleaned.replace(/\s{2,}/g, ' ').trim();
+  // Normalize horizontal spaces without destroying line breaks and paragraph structure
+  cleaned = cleaned.replace(/[ \t]{2,}/g, ' ');
 
   return {
     cleanedText: cleaned,
@@ -121,6 +122,7 @@ export function scrubStylisticPatterns(text: string): ScrubStylisticResult {
 export function scrubWhitespace(text: string): { cleanedText: string; count: number } {
   const originalLen = text.length;
   const cleaned = text
+    .replace(/[\u2000-\u200A]/g, ' ')
     .split('\n')
     .map((line) => line.replace(/[ \t]{2,}/g, ' ').trimEnd())
     .join('\n')

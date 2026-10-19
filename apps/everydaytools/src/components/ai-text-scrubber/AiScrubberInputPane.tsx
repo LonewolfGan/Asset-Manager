@@ -48,7 +48,7 @@ export function AiScrubberInputPane({
             ? 'Collez ou déposez votre texte ici (prompt, réponse IA, article, document)...'
             : 'Paste or drop your text here (prompt, AI output, article)...')
         }
-        className="w-full min-h-[420px] lg:min-h-[500px] p-4 bg-transparent font-mono text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 outline-none resize-none leading-relaxed"
+        className="w-full min-h-[420px] lg:min-h-[500px] p-4 bg-transparent font-mono text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 outline-none focus-visible:ring-1 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-600 rounded-lg resize-none leading-relaxed"
         spellCheck={false}
       />
     </div>

@@ -1,13 +1,14 @@
 import { AnimatePresence } from 'framer-motion';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import { ToolWorkspace } from '@/components/ToolContent';
-import { Eye } from 'lucide-react';
+import { Eye, Sparkles } from 'lucide-react';
 import {
   ConversionDropzone,
   ConversionStaging,
   ConversionConduit,
   ConversionResult,
   NextActionModal,
+  ReciprocalTitle,
 } from '@/components/conversion';
 import { useOdtToPdfWorkflow } from '@/hooks/use-odt-to-pdf-workflow';
 
@@ -42,7 +43,14 @@ export default function OdtToPdf() {
   return (
     <ToolPageLayout
       breadcrumb={[t.nav.breadcrumb.home, t.nav.breadcrumb.documents, pageTitle]}
-      title={pageTitle}
+      title={
+        <ReciprocalTitle
+          currentSlug="odt-to-pdf"
+          isFr={isFr}
+          getCurrentFile={() => file}
+          fallbackTitle={pageTitle}
+        />
+      }
       description={pageDesc}
       seoSlug="odt-to-pdf"
     >
@@ -53,6 +61,7 @@ export default function OdtToPdf() {
             {/* ─── SCENE 1 : ARCHITECTURAL DOUBLE-BEZEL UPLOAD BOX ─── */}
             {!file && !result && !isProcessing && (
               <ConversionDropzone
+                key="dropzone"
                 sourceFormat={sourceFormat}
                 title={isFr ? 'Glissez-déposez votre document ODT' : 'Drag & drop your ODT document'}
                 description={
@@ -72,6 +81,7 @@ export default function OdtToPdf() {
             {/* ─── SCENE 2 : STANDARDIZED ARCHITECTURAL STAGING ─── */}
             {file && !result && !isProcessing && (
               <ConversionStaging
+                key="staging"
                 sourceFormat={sourceFormat}
                 targetFormat={targetFormat}
                 sourceFile={file}
@@ -85,6 +95,7 @@ export default function OdtToPdf() {
             {/* ─── SCENE 3 : UNIFIED KINETIC CONDUIT ─── */}
             {isProcessing && (
               <ConversionConduit
+                key="conduit"
                 sourceFormat={sourceFormat}
                 targetFormat={targetFormat}
                 fileName={file?.name}
@@ -100,6 +111,7 @@ export default function OdtToPdf() {
             {/* ─── SCENE 4 : HEROIC UNBOXED RESULT ─── */}
             {result && !isProcessing && (
               <ConversionResult
+                key="result"
                 targetFormat={targetFormat}
                 resultFileName={result.filename}
                 resultFileSize={result.sizeAfter}
@@ -113,14 +125,24 @@ export default function OdtToPdf() {
                 onDownload={handleDownload}
                 onReset={handleReset}
                 extraActions={
-                  <button
-                    type="button"
-                    onClick={handleOpenPreview}
-                    className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-medium text-base active:scale-[0.98] transition-all flex items-center gap-2.5 shadow-sm"
-                  >
-                    <Eye size={16} strokeWidth={2.2} />
-                    <span>{isFr ? "Ouvrir l'aperçu PDF" : 'Open PDF preview'}</span>
-                  </button>
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={handleOpenPreview}
+                      className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-medium text-base active:scale-[0.98] transition-[background-color,border-color,transform] duration-150 flex items-center gap-2.5 shadow-sm cursor-pointer"
+                    >
+                      <Eye size={16} strokeWidth={2.2} />
+                      <span>{isFr ? "Ouvrir l'aperçu PDF" : 'Open PDF preview'}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsNextActionOpen(true)}
+                      className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-medium text-base active:scale-[0.98] transition-[background-color,border-color,transform] duration-150 flex items-center gap-2.5 shadow-sm cursor-pointer"
+                    >
+                      <Sparkles size={16} className="text-amber-500" />
+                      <span>{isFr ? 'Actions suivantes' : 'Next actions'}</span>
+                    </button>
+                  </div>
                 }
               />
             )}

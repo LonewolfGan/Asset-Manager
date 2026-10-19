@@ -8,16 +8,35 @@ import {
   formatHtml,
   minifyHtml,
   calculateHtmlMetrics,
+  detectHtmlIssues,
+  HTML_SAMPLES,
   type Mode,
   type IndentSize,
   type ViewOutput,
   type DeviceWidth,
+  type HtmlIssue,
 } from '@/lib/html-formatter-logic';
 
 hljs.registerLanguage('xml', xmlLang);
 
-export function useHtmlFormatterWorkflow() {
-  const { isFr } = useLocale();
+export function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+export function useHtmlFormatterWorkflow(isFrProp?: boolean) {
+  let isFrFromCtx = true;
+  try {
+    const ctx = useLocale();
+    isFrFromCtx = ctx.isFr;
+  } catch {
+    // fallback if outside context
+  }
+  const isFr = isFrProp ?? isFrFromCtx;
 
   // Entrée et historique pour Undo (Ctrl+Z)
   const [input, setInput] = useState<string>('');
@@ -39,11 +58,19 @@ export function useHtmlFormatterWorkflow() {
 
   // Drag & drop de fichier .html
   const [isDragOver, setIsDragOver] = useState(false);
+  const lastPushedInputRef = useRef(input);
 
   // Mise à jour de l'input avec enregistrement de l'historique
   const handleInputChange = useCallback(
     (val: string) => {
-      setHistory((prev) => [...prev.slice(-30), input]);
+      if (
+        Math.abs(val.length - lastPushedInputRef.current.length) > 5 ||
+        val === '' ||
+        lastPushedInputRef.current === ''
+      ) {
+        setHistory((prev) => [...prev.slice(-30), input]);
+        lastPushedInputRef.current = input;
+      }
       setInput(val);
     },
     [input]
@@ -117,7 +144,7 @@ export function useHtmlFormatterWorkflow() {
       return hljs.highlight(output, { language: 'xml', ignoreIllegals: true })
         .value;
     } catch {
-      return output;
+      return escapeHtml(output);
     }
   }, [output]);
 
@@ -125,6 +152,11 @@ export function useHtmlFormatterWorkflow() {
   const metrics = useMemo(() => {
     return calculateHtmlMetrics(input, output);
   }, [input, output]);
+
+  // Détection d'erreurs syntaxiques de balises
+  const issues = useMemo(() => {
+    return detectHtmlIssues(input);
+  }, [input]);
 
   // Téléchargement
   const handleDownload = useCallback(() => {
@@ -146,12 +178,24 @@ export function useHtmlFormatterWorkflow() {
     toast.info(isFr ? 'Atelier vidé' : 'Workspace cleared');
   }, [input, isFr]);
 
+  const handleLoadSample = useCallback(
+    (key: keyof typeof HTML_SAMPLES) => {
+      const sample = HTML_SAMPLES[key];
+      if (sample) {
+        setHistory((prev) => [...prev.slice(-30), input]);
+        setInput(sample);
+        toast.success(isFr ? 'Exemple HTML chargé' : 'HTML sample loaded');
+      }
+    },
+    [input, isFr]
+  );
+
   const handleFileUpload = useCallback(
     (file: File) => {
       const reader = new FileReader();
       reader.onload = (e) => {
-        const text = e.target?.result as string;
-        if (text) {
+        const text = e.target?.result;
+        if (typeof text === 'string') {
           setHistory((prev) => [...prev.slice(-30), input]);
           setInput(text);
           toast.success(
@@ -189,12 +233,14 @@ export function useHtmlFormatterWorkflow() {
     output,
     highlightedOutput,
     metrics,
+    issues,
     hasContent,
     handleInputChange,
     handleUndo,
     handleMouseDownResize,
     handleDownload,
     handleClear,
+    handleLoadSample,
     handleFileUpload,
   };
 }

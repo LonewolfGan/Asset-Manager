@@ -30,13 +30,6 @@ export const SpeedTestDial: React.FC<SpeedTestDialProps> = ({
   return (
     <div className="relative w-full max-w-[340px] aspect-[280/215] flex items-center justify-center">
       <svg viewBox="0 0 280 220" className="w-full h-full overflow-visible">
-        <defs>
-          <linearGradient id="speedDialGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#FF6B35" />
-            <stop offset="100%" stopColor="#FF8C42" />
-          </linearGradient>
-        </defs>
-
         {/* Dial Track Arc */}
         <circle
           cx={DIAL_CX}
@@ -57,7 +50,7 @@ export const SpeedTestDial: React.FC<SpeedTestDialProps> = ({
           cy={DIAL_CY}
           r={DIAL_R}
           fill="none"
-          stroke="url(#speedDialGrad)"
+          stroke="var(--accent, #f97316)"
           strokeWidth="8"
           strokeDasharray={`${DIAL_ARC_LENGTH} 600`}
           strokeDashoffset={strokeDashoffset}

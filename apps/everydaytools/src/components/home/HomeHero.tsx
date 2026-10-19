@@ -3,7 +3,7 @@ import { Link } from 'wouter';
 import { useLocale } from '@/hooks/use-locale';
 
 export const HERO_TAGS = [
-  { label: 'CSV ↔ JSON', labelFr: 'CSV ↔ JSON', route: '/csv-to-json' },
+  { label: 'CSV to JSON', labelFr: 'CSV vers JSON', route: '/csv-to-json' },
   { label: 'Markdown to PDF', labelFr: 'Markdown vers PDF', route: '/markdown-to-pdf' },
   { label: 'HTML to PDF', labelFr: 'HTML vers PDF', route: '/html-to-pdf' },
   { label: 'Word to PDF', labelFr: 'Word vers PDF', route: '/word-to-pdf' },

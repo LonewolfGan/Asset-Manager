@@ -85,7 +85,7 @@ export const WordCounterCommandBar: React.FC<WordCounterCommandBarProps> = ({
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="group flex items-center gap-2 h-8 px-3 text-xs font-medium rounded-lg border border-zinc-200/80 dark:border-white/10 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-zinc-950 dark:hover:text-zinc-100 transition-all active:scale-[0.98] cursor-pointer"
+              className="group flex items-center gap-2 h-8 px-3 text-xs font-medium rounded-lg border border-zinc-200/80 dark:border-white/10 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-zinc-950 dark:hover:text-zinc-100 transition-colors duration-150 active:scale-[0.98] cursor-pointer"
             >
               <FolderOpen className="w-3.5 h-3.5 text-zinc-500 group-hover:text-zinc-700 dark:group-hover:text-zinc-200 transition-colors" />
               <span>{isFr ? 'Importer un document' : 'Import document'}</span>
@@ -96,7 +96,7 @@ export const WordCounterCommandBar: React.FC<WordCounterCommandBarProps> = ({
           </ActionTooltip>
         ) : (
           <div className="flex items-center gap-2 h-8 px-2.5 rounded-lg border border-zinc-200/80 dark:border-white/10 bg-zinc-100 dark:bg-zinc-800 text-xs">
-            <FileText className="w-3.5 h-3.5 text-[#FF6B35] shrink-0" />
+            <FileText className="w-3.5 h-3.5 text-[var(--accent)] shrink-0" />
             <span className="font-mono text-zinc-900 dark:text-zinc-100 font-medium truncate max-w-[150px] sm:max-w-[240px]">
               {loadedFile.name}
             </span>
@@ -184,13 +184,13 @@ export const WordCounterCommandBar: React.FC<WordCounterCommandBarProps> = ({
           </ActionTooltip>
         )}
 
-        {/* Menu Exporter (Orange #FF6B35 en dernier à droite) */}
+        {/* Menu Exporter (Bouton accentué en dernier à droite) */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
               type="button"
               disabled={!text}
-              className="flex items-center gap-1.5 h-8 px-3 text-xs font-semibold rounded-lg bg-[#FF6B35] text-white hover:bg-[#e85a26] transition-all active:scale-[0.98] shadow-xs disabled:opacity-40 disabled:pointer-events-none cursor-pointer"
+              className="flex items-center gap-1.5 h-8 px-3 text-xs font-semibold rounded-lg bg-[var(--accent)] text-white hover:opacity-90 transition-colors duration-150 active:scale-[0.98] shadow-xs disabled:opacity-40 disabled:pointer-events-none cursor-pointer"
             >
               <Download className="w-3.5 h-3.5" />
               <span>{isFr ? 'Exporter' : 'Export'}</span>

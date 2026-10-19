@@ -47,10 +47,10 @@ export function RemoverStudioViewport({
         <div className="w-full flex items-center justify-center">
           <CompareReveal
             className="w-full aspect-[16/10] min-h-[520px] sm:min-h-[600px] max-h-[720px] rounded-xl shadow-lg border border-black/10 dark:border-white/10"
-            before={{ src: item.previewUrl, alt: isFr ? 'Original' : 'Original' }}
-            after={{ src: item.resultUrl, alt: isFr ? 'Détouré' : 'Cutout' }}
+            before={{ src: item.previewUrl, alt: isFr ? 'Avant' : 'Before' }}
+            after={{ src: item.resultUrl, alt: isFr ? 'Après' : 'After' }}
             afterStyle={stageBackgroundStyle}
-            labels={[isFr ? 'Original' : 'Original', isFr ? 'Détouré' : 'Cutout']}
+            labels={[isFr ? 'Avant' : 'Before', isFr ? 'Après' : 'After']}
             defaultPosition={50}
             introSweep={true}
             snapOnDoubleClick={50}

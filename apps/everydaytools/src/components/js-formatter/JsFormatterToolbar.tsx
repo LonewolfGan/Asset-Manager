@@ -128,7 +128,7 @@ export function JsFormatterToolbar({
             <button
               type="button"
               onClick={onDownload}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-[#FF6B35] text-white hover:bg-[#e85a26] transition-all active:scale-[0.98] cursor-pointer"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-[var(--accent)] text-white hover:bg-[var(--accent-hover)] transition-colors active:scale-[0.98] cursor-pointer"
             >
               <Download className="w-3.5 h-3.5" />
               <span>

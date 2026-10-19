@@ -42,7 +42,7 @@ export function MarkdownToPdfPastePane({
           type="button"
           disabled={!markdownInput.trim()}
           onClick={onSubmit}
-          className="h-11 px-6 rounded-full bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-zinc-900 font-medium text-sm transition-all disabled:opacity-40 disabled:pointer-events-none active:scale-[0.98] flex items-center gap-2 shadow-sm cursor-pointer"
+          className="h-11 px-6 rounded-full bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-zinc-900 font-medium text-sm transition-[background-color,transform,opacity] duration-150 disabled:opacity-40 disabled:pointer-events-none active:scale-[0.98] flex items-center gap-2 shadow-sm cursor-pointer"
         >
           <span>{isFr ? 'Valider et configurer' : 'Confirm and configure'}</span>
           <ArrowRight size={15} />

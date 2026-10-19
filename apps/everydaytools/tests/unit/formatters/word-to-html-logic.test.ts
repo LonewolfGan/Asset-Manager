@@ -15,7 +15,7 @@ describe('word-to-html-logic', () => {
       expect(sourceFr.name).toBe('Word');
       expect(sourceFr.extension).toBe('docx');
       expect(sourceFr.icon).toBe('/icons/word.svg');
-      expect(sourceFr.color).toBe('#185ABD');
+      expect(sourceFr.color).toBe('var(--accent, #2563eb)');
       expect(sourceFr.subLabel).toBe('Format Word (.docx)');
 
       const sourceEn = getSourceFormat(false);
@@ -27,7 +27,7 @@ describe('word-to-html-logic', () => {
       expect(targetFr.name).toBe('HTML');
       expect(targetFr.extension).toBe('html');
       expect(targetFr.icon).toBe('/icons/html.svg');
-      expect(targetFr.color).toBe('#E34F26');
+      expect(targetFr.color).toBe('var(--accent, #ea580c)');
       expect(targetFr.subLabel).toBe('Code Web HTML5');
 
       const targetEn = getTargetFormat(false);
@@ -123,7 +123,8 @@ describe('word-to-html-logic', () => {
   });
 
   describe('triggerDownload', () => {
-    it('creates anchor and clicks it to trigger download', () => {
+    it('creates anchor, clicks it, and revokes object URL with delay', () => {
+      vi.useFakeTimers();
       const createObjectURLMock = vi.fn().mockReturnValue('blob:mock-html');
       const revokeObjectURLMock = vi.fn();
       globalThis.URL.createObjectURL = createObjectURLMock;
@@ -138,7 +139,11 @@ describe('word-to-html-logic', () => {
       expect(createObjectURLMock).toHaveBeenCalledWith(blob);
       expect(appendChildSpy).toHaveBeenCalled();
       expect(removeChildSpy).toHaveBeenCalled();
+      expect(revokeObjectURLMock).not.toHaveBeenCalled();
+
+      vi.advanceTimersByTime(1000);
       expect(revokeObjectURLMock).toHaveBeenCalledWith('blob:mock-html');
+      vi.useRealTimers();
     });
   });
 });

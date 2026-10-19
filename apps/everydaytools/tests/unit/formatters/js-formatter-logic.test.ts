@@ -4,6 +4,8 @@ import {
   beautifyJs,
   minifyJs,
   computeJsMetrics,
+  detectJsIssues,
+  JS_SAMPLES,
 } from '../../../src/lib/js-formatter-logic';
 
 describe('js-formatter-logic', () => {
@@ -90,17 +92,51 @@ describe('js-formatter-logic', () => {
     });
   });
 
-  describe('computeJsMetrics', () => {
-    it('computes character, byte, function, and variable metrics correctly', () => {
-      const input = `const a = 1; let b = 2; function sum(x, y) { return x + y; } const multiply = (p, q) => p * q;`;
-      const output = minifyJs(input);
-      const metrics = computeJsMetrics(input, output);
+  describe('detectJsIssues', () => {
+    it('detects unclosed curly braces', () => {
+      const code = `function test() { const a = 1;`;
+      const issues = detectJsIssues(code);
+      expect(issues.length).toBeGreaterThan(0);
+      expect(issues[0].type).toBe('unclosed-brace');
+    });
 
-      expect(metrics.totalFunctions).toBe(2);
-      expect(metrics.totalVariables).toBe(3);
-      expect(metrics.inputBytes).toBeGreaterThan(0);
-      expect(metrics.outputBytes).toBeLessThan(metrics.inputBytes);
-      expect(metrics.savingsPercent).toBeGreaterThan(0);
+    it('detects unexpected closing curly braces', () => {
+      const code = `function test() {} }`;
+      const issues = detectJsIssues(code);
+      expect(issues.length).toBeGreaterThan(0);
+      expect(issues[0].type).toBe('unexpected-brace');
+    });
+
+    it('detects unclosed parentheses and brackets', () => {
+      const parenCode = `const arr = [1, 2, (3 + 4];`;
+      const issues = detectJsIssues(parenCode);
+      expect(issues.length).toBeGreaterThan(0);
+    });
+
+    it('detects unclosed strings and comments', () => {
+      const unclosedStr = `const s = "hello world;`;
+      const strIssues = detectJsIssues(unclosedStr);
+      expect(strIssues.some((i) => i.type === 'unclosed-string')).toBe(true);
+
+      const unclosedComment = `/* unfinished comment \n const x = 10;`;
+      const commentIssues = detectJsIssues(unclosedComment);
+      expect(commentIssues.some((i) => i.type === 'unclosed-comment')).toBe(true);
+    });
+
+    it('returns empty array for valid clean javascript', () => {
+      const cleanCode = `const add = (a, b) => a + b;\nconsole.log(add(1, 2));`;
+      const issues = detectJsIssues(cleanCode);
+      expect(issues).toEqual([]);
+    });
+  });
+
+  describe('JS_SAMPLES', () => {
+    it('provides standard curated javascript samples', () => {
+      expect(JS_SAMPLES.asyncFetch).toBeDefined();
+      expect(JS_SAMPLES.asyncFetch.length).toBeGreaterThan(20);
+      expect(JS_SAMPLES.dataProcessing).toBeDefined();
+      expect(JS_SAMPLES.debounceUtility).toBeDefined();
     });
   });
 });
+

@@ -50,9 +50,9 @@ export async function measurePingAndJitter(
   for (let i = 1; i < pingSamples.length; i++) {
     jitterSum += Math.abs(pingSamples[i] - pingSamples[i - 1]);
   }
-  const finalJitter = Number(
-    (jitterSum / (pingSamples.length - 1)).toFixed(1)
-  );
+  const finalJitter = pingSamples.length > 1
+    ? Number((jitterSum / (pingSamples.length - 1)).toFixed(1))
+    : 0;
 
   return { ping: finalPing, jitter: finalJitter };
 }
@@ -181,12 +181,14 @@ export async function measureUploadSpeed(
         }
       );
     } catch {
+      if (ac.signal.aborted) throw new Error('Aborted');
       if (upIdx === 0) {
         const fallbackUpload = Number(
           (fallbackDownloadMbps * 0.4).toFixed(1)
         );
         return Math.max(1, fallbackUpload);
       }
+      break;
     }
 
     totalBytesUploaded += chunk.byteLength;

@@ -115,7 +115,7 @@ export function MarkdownRightPane({
             </div>
           ) : (
             <pre
-              className={`html-src font-mono text-xs transition-all ${
+              className={`html-src font-mono text-xs transition-colors ${
                 wordWrap
                   ? 'whitespace-pre-wrap break-all sm:break-words [overflow-wrap:anywhere]'
                   : 'whitespace-pre overflow-x-auto'

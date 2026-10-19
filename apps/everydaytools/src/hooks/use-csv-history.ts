@@ -93,8 +93,10 @@ export function useCsvHistory({
 
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z') {
         if (e.shiftKey) {
-          e.preventDefault();
-          handleRedo();
+          if (!isInputActive) {
+            e.preventDefault();
+            handleRedo();
+          }
         } else if (!isInputActive) {
           e.preventDefault();
           handleUndo();

@@ -77,6 +77,13 @@ describe('Text Diff Checker Logic', () => {
     expect(tokensA.some((t) => t.text === 'apple' && t.type === 'equal')).toBe(true);
   });
 
+  it('handles accented unicode words in inline diff without segmenting them into symbols', () => {
+    const { tokensA, tokensB } = computeInlineDiff('développement rapide', 'développement soigné');
+    expect(tokensA.some((t) => t.text === 'développement' && t.type === 'equal')).toBe(true);
+    expect(tokensA.some((t) => t.text === 'rapide' && t.type === 'delete')).toBe(true);
+    expect(tokensB.some((t) => t.text === 'soigné' && t.type === 'insert')).toBe(true);
+  });
+
   it('generates standard unified patch format (.diff)', () => {
     const textA = 'alpha\nbeta\ngamma';
     const textB = 'alpha\nbeta delta\ngamma';

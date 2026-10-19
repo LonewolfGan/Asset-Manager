@@ -41,7 +41,7 @@ export function PasswordPassphraseControls({
                 key={preset}
                 type="button"
                 onClick={() => onWordCountChange(preset)}
-                className={`h-7 px-2.5 rounded-lg text-xs font-mono transition-all cursor-pointer ${
+                className={`h-7 px-2.5 rounded-lg text-xs font-mono transition-colors duration-150 cursor-pointer ${
                   wordCount === preset
                     ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 font-semibold'
                     : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-zinc-950 dark:hover:text-white'
@@ -85,7 +85,7 @@ export function PasswordPassphraseControls({
           onChange={(e) => onSeparatorChange(e.target.value)}
           maxLength={8}
           placeholder="-"
-          className="h-11 w-full px-4 rounded-xl font-mono text-sm font-medium bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/80 dark:border-white/10 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-all"
+          className="h-11 w-full px-4 rounded-xl font-mono text-sm font-medium bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/80 dark:border-white/10 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors duration-150"
         />
       </div>
 

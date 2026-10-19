@@ -69,4 +69,11 @@ describe('Base64 Line Breaks & Binary Detection (Phase RED)', () => {
     expect(detected?.isImage).toBe(true);
     expect(detected?.mimeType).toBe('image/png');
   });
+
+  it('handles whitespace and multiline Base64 (PEM/MIME) gracefully in decodeBase64', () => {
+    const chunked = 'SGVs\nbG8g\nV29y\nbGQ=';
+    const decoded = decodeBase64(chunked);
+    expect(decoded.output).toBe('Hello World');
+    expect(decoded.error).toBeUndefined();
+  });
 });

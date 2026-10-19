@@ -82,7 +82,7 @@ export function JsFormatterOptions({
           onClick={() => setLanguage('javascript')}
           className={`px-2 py-0.5 text-xs rounded transition-colors font-mono font-medium cursor-pointer ${
             language === 'javascript'
-              ? 'bg-[#FF6B35] text-white font-bold'
+              ? 'bg-[var(--accent)] text-white font-bold'
               : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
           }`}
         >
@@ -93,7 +93,7 @@ export function JsFormatterOptions({
           onClick={() => setLanguage('typescript')}
           className={`px-2 py-0.5 text-xs rounded transition-colors font-mono font-medium cursor-pointer ${
             language === 'typescript'
-              ? 'bg-[#FF6B35] text-white font-bold'
+              ? 'bg-[var(--accent)] text-white font-bold'
               : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
           }`}
         >
@@ -115,7 +115,7 @@ export function JsFormatterOptions({
                   onClick={() => setIndent(val)}
                   className={`px-2 py-0.5 text-xs rounded transition-colors font-mono cursor-pointer ${
                     indent === val
-                      ? 'bg-[#FF6B35] text-white font-bold'
+                      ? 'bg-[var(--accent)] text-white font-bold'
                       : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
                   }`}
                 >
@@ -182,7 +182,7 @@ export function JsFormatterOptions({
                 }}
                 className={`px-2 py-0.5 text-xs rounded transition-colors font-mono cursor-pointer ${
                   quotes === 'single'
-                    ? 'bg-[#FF6B35] text-white font-bold'
+                    ? 'bg-[var(--accent)] text-white font-bold'
                     : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
                 }`}
               >
@@ -196,7 +196,7 @@ export function JsFormatterOptions({
                 }}
                 className={`px-2 py-0.5 text-xs rounded transition-colors font-mono cursor-pointer ${
                   quotes === 'double'
-                    ? 'bg-[#FF6B35] text-white font-bold'
+                    ? 'bg-[var(--accent)] text-white font-bold'
                     : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
                 }`}
               >

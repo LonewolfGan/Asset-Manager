@@ -2,6 +2,7 @@ import React, { RefObject } from 'react';
 import { Upload } from 'lucide-react';
 import { ActionTooltip } from '@/components/ui/tooltip';
 import type { ViewLayout, RightPaneView } from '@/hooks/use-markdown-preview-workflow';
+import type { MARKDOWN_SAMPLES } from '@/lib/markdown-preview-parser';
 import { MarkdownEditorPane } from './MarkdownEditorPane';
 import { MarkdownRightPane } from './MarkdownRightPane';
 
@@ -34,6 +35,7 @@ export interface MarkdownWorkbenchProps {
   onDragLeave: () => void;
   onDrop: (e: React.DragEvent) => void;
   onFileUpload: (file: File) => void;
+  onLoadSample?: (key: keyof typeof MARKDOWN_SAMPLES) => void;
   isFr: boolean;
 }
 
@@ -61,6 +63,7 @@ export function MarkdownWorkbench({
   onDragLeave,
   onDrop,
   onFileUpload,
+  onLoadSample,
   isFr,
 }: MarkdownWorkbenchProps) {
   return (
@@ -78,7 +81,7 @@ export function MarkdownWorkbench({
       {isDragOver && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-zinc-900/60 backdrop-blur-xs">
           <div className="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 text-sm font-medium text-zinc-900 dark:text-zinc-100 flex items-center gap-2 shadow-lg">
-            <Upload className="w-4 h-4 text-[#FF6B35]" />
+            <Upload className="w-4 h-4 text-[var(--accent)]" />
             <span>{isFr ? 'Déposez votre fichier Markdown (.md, .txt)' : 'Drop your Markdown file (.md, .txt)'}</span>
           </div>
         </div>
@@ -106,6 +109,7 @@ export function MarkdownWorkbench({
             hasContent={hasContent}
             metrics={metrics}
             onFileUpload={onFileUpload}
+            onLoadSample={onLoadSample}
             isFr={isFr}
           />
         )}

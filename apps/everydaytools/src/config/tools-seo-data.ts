@@ -4453,7 +4453,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     internalSlug: "csv-to-json",
     slugs: { en: "convert-csv-to-json", fr: "convertir-csv-en-json" },
     title: { en: "CSV to JSON Converter — Free Online Tool | EverydayTools Hub", fr: "Convertir CSV en JSON — Outil Gratuit En Ligne | EverydayTools Hub" },
-    h1: { en: "CSV ↔ JSON Converter", fr: "Convertisseur CSV ↔ JSON" },
+    h1: { en: "CSV to JSON Converter", fr: "Convertisseur CSV en JSON" },
     description: { en: "Convert CSV to JSON or JSON to CSV instantly. Paste text or upload a file and get a clean, structured result immediately.", fr: "Convertissez du CSV en JSON ou du JSON en CSV instantanément. Collez du texte ou chargez un fichier." },
     keywords: {
       en: ["csv to json converter", "convert csv to json online", "json to csv free", "csv json transform", "parse csv online"],
@@ -4480,12 +4480,54 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       en: [
         { q: "How does CSV to JSON conversion work?", a: "The first row of the CSV is treated as the key names for each JSON object. Each subsequent row becomes an object in the output array. Empty cells become empty strings or null values." },
         { q: "What about nested JSON?", a: "The converter handles flat arrays of objects. Deeply nested JSON structures will be flattened to a single level when converting to CSV." },
-        { q: "Is the CSV ↔ JSON Converter free?", a: "Yes. EverydayTools CSV ↔ JSON Converter is completely free with no account required." },
+        { q: "Is the CSV to JSON Converter free?", a: "Yes. EverydayTools CSV to JSON Converter is completely free with no account required." },
       ],
       fr: [
         { q: "Comment fonctionne la conversion CSV en JSON ?", a: "La première ligne du CSV est utilisée comme noms de clés pour chaque objet JSON. Chaque ligne suivante devient un objet dans le tableau de sortie." },
         { q: "Qu'en est-il du JSON imbriqué ?", a: "Le convertisseur gère les tableaux plats d'objets. Les structures JSON profondément imbriquées sont aplaties lors de la conversion en CSV." },
-        { q: "Le convertisseur CSV ↔ JSON est-il gratuit ?", a: "Oui. EverydayTools CSV ↔ JSON est entièrement gratuit, sans compte requis." },
+        { q: "Le convertisseur CSV en JSON est-il gratuit ?", a: "Oui. EverydayTools CSV en JSON est entièrement gratuit, sans compte requis." },
+      ],
+    },
+  },
+  {
+    internalSlug: "json-to-csv",
+    slugs: { en: "convert-json-to-csv", fr: "convertir-json-en-csv" },
+    title: { en: "JSON to CSV Converter — Free Online Tool | EverydayTools Hub", fr: "Convertir JSON en CSV — Outil Gratuit En Ligne | EverydayTools Hub" },
+    h1: { en: "JSON to CSV Converter", fr: "Convertisseur JSON en CSV" },
+    description: { en: "Convert JSON arrays and objects into clean CSV spreadsheets instantly. Paste JSON or upload a file and export formatted CSV.", fr: "Convertissez des tableaux et objets JSON en feuilles de calcul CSV instantanément. Collez du JSON ou téléversez un fichier." },
+    keywords: {
+      en: ["json to csv converter", "convert json to csv online", "json to csv free", "json csv transform", "export json as csv"],
+      fr: ["convertir json en csv", "json en csv en ligne gratuit", "transformer json en csv", "exporter json en csv"],
+    },
+    relatedTools: ["csv-to-json", "csv-to-excel", "csv-editor", "json-formatter", "base64"],
+    howItWorks: {
+      en: [
+        { name: "Paste or upload JSON", text: "Upload your .json file or paste raw JSON directly into the interactive editor." },
+        { name: "Automatic table unrolling", text: "JSON objects and arrays are flattened into tabular columns and rows in real time." },
+        { name: "Download CSV spreadsheet", text: "Download your standard UTF-8 CSV file or copy the raw table to clipboard." },
+      ],
+      fr: [
+        { name: "Collez ou téléversez votre JSON", text: "Chargez un fichier .json ou collez directement votre code JSON dans l'éditeur interactif." },
+        { name: "Dépliage tabulaire automatique", text: "Les objets et tableaux JSON sont convertis en colonnes et lignes tabulaires en temps réel." },
+        { name: "Téléchargez le tableur CSV", text: "Téléchargez votre fichier CSV au format UTF-8 ou copiez le contenu dans le presse-papier." },
+      ],
+    },
+    about: {
+      en: "JSON to CSV conversion transforms hierarchical or array-based data into flat tabular spreadsheets suitable for Excel, Google Sheets, databases, and reporting tools. EverydayTools performs the entire transformation securely inside your browser.",
+      fr: "La conversion de JSON en CSV transforme des données hiérarchiques ou des tableaux d'objets en feuilles de calcul plates exploitables dans Excel, Google Sheets ou des bases de données. EverydayTools traite tout en local dans votre navigateur.",
+    },
+    faqs: {
+      en: [
+        { q: "What JSON structure produces the best CSV output?", a: "An array of objects with uniform keys produces clean columns and rows. For example: [{\"name\":\"John\", \"age\":30}, {\"name\":\"Jane\", \"age\":25}]." },
+        { q: "How are nested objects or arrays handled in CSV?", a: "Nested objects are flattened using dot notation or serialized into string representations so no data is lost." },
+        { q: "Can I customize the CSV delimiter?", a: "Yes, you can choose commas, semicolons, tabs, or custom delimiters before downloading your file." },
+        { q: "Is JSON to CSV conversion free and secure?", a: "Yes, it is 100% free with unlimited conversions. Your data is parsed client-side and never uploaded to any server." },
+      ],
+      fr: [
+        { q: "Quelle structure JSON donne le meilleur résultat CSV ?", a: "Un tableau d'objets avec des clés uniformes génère des colonnes claires. Exemple : [{\"nom\":\"Jean\", \"age\":30}, {\"nom\":\"Jeanne\", \"age\":25}]." },
+        { q: "Comment les objets ou tableaux imbriqués sont-ils traités ?", a: "Les objets imbriqués sont aplatis avec la notation pointée ou sérialisés en chaînes pour préserver l'intégrité des données." },
+        { q: "Puis-je personnaliser le délimiteur CSV ?", a: "Oui, vous pouvez choisir la virgule, le point-virgule, la tabulation ou un séparateur personnalisé." },
+        { q: "La conversion JSON en CSV est-elle gratuite et sécurisée ?", a: "Oui, totalement gratuite et sans limite. Vos données sont analysées en local dans le navigateur sans transit serveur." },
       ],
     },
   },
@@ -7757,6 +7799,804 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         {
           "q": "L'outil est-il gratuit ?",
           "a": "Oui, totalement gratuit et sans inscription."
+        }
+      ]
+    }
+  },
+  {
+    "internalSlug": "html-to-word",
+    "slugs": {
+      "en": "convert-html-to-word",
+      "fr": "convertir-html-en-word"
+    },
+    "title": {
+      "en": "HTML to Word Converter — Convert HTML to DOCX Free | EverydayTools Hub",
+      "fr": "Convertir HTML en Word — Convertisseur HTML vers DOCX Gratuit | EverydayTools Hub"
+    },
+    "h1": {
+      "en": "HTML to Word Converter",
+      "fr": "Convertisseur HTML en Word"
+    },
+    "description": {
+      "en": "Convert HTML files and web snippets into clean, editable Microsoft Word (DOCX) documents online. Fast, secure, and preserves headings, tables, and formatting.",
+      "fr": "Convertissez vos fichiers et balises HTML en documents Microsoft Word (.docx) éditables. Rapide, sécurisé et préserve titres, tableaux et styles."
+    },
+    "keywords": {
+      "en": [
+        "html to word",
+        "convert html to docx",
+        "html to docx converter",
+        "web page to word document",
+        "html to docx free"
+      ],
+      "fr": [
+        "convertir html en word",
+        "html vers docx",
+        "convertisseur html word gratuit",
+        "transformer page web en word",
+        "html en docx"
+      ]
+    },
+    "relatedTools": [
+      "word-to-html",
+      "word-to-pdf",
+      "html-to-pdf",
+      "markdown-to-docx",
+      "txt-to-docx"
+    ],
+    "howItWorks": {
+      "en": [
+        {
+          "name": "Upload HTML file",
+          "text": "Select or drag your .html or .htm file into the conversion workspace."
+        },
+        {
+          "name": "Process & structure",
+          "text": "HTML semantic tags, paragraphs, and tables are converted into native Microsoft Word DOCX styles."
+        },
+        {
+          "name": "Download DOCX",
+          "text": "Click Download Word Document to save your formatted .docx file instantly."
+        }
+      ],
+      "fr": [
+        {
+          "name": "Téléversez le fichier HTML",
+          "text": "Sélectionnez ou glissez-déposez votre fichier .html ou .htm dans l'atelier."
+        },
+        {
+          "name": "Structuration et mise en page",
+          "text": "Les balises HTML sémantiques, paragraphes et tableaux sont transposés en styles Word natifs."
+        },
+        {
+          "name": "Téléchargez le DOCX",
+          "text": "Cliquez sur Télécharger le document Word pour récupérer votre fichier .docx instantanément."
+        }
+      ]
+    },
+    "about": {
+      "en": "Convert HTML web pages and code snippets into fully editable Microsoft Word DOCX documents with complete formatting fidelity. Whether you are archiving web content, compiling reports from CMS exports, or transforming documentation into deliverable Office files, EverydayTools provides instant, secure conversion without server-side tracking.",
+      "fr": "Convertissez des pages web et fragments de code HTML en documents Microsoft Word (.docx) entièrement modifiables avec une fidélité de mise en page maximale. Que ce soit pour archiver du contenu web, compiler des rapports depuis un CMS ou transformer de la documentation en fichiers Office, EverydayTools garantit une conversion rapide et confidentielle."
+    },
+    "faqs": {
+      "en": [
+        {
+          "q": "How does HTML to Word handle CSS styles and layout?",
+          "a": "Semantic HTML tags (headings, lists, blockquotes, tables, bold, italics) and inline styles are mapped to native Word styles. Complex flexbox or grid layouts are converted into clean sequential documents."
+        },
+        {
+          "q": "Can I convert HTML files containing images?",
+          "a": "Yes, standard image tags (PNG, JPEG, WebP) embedded in the HTML are processed and included within the generated DOCX document."
+        },
+        {
+          "q": "Is my uploaded HTML kept private?",
+          "a": "Absolutely. All conversions run through isolated, temporary sandboxes that are immediately purged after your download completes."
+        },
+        {
+          "q": "Is HTML to Word completely free to use?",
+          "a": "Yes, EverydayTools Hub offers unrestricted, free conversions with no registration or credit card required."
+        }
+      ],
+      "fr": [
+        {
+          "q": "Comment la mise en page HTML et le CSS sont-ils gérés ?",
+          "a": "Les balises sémantiques (titres, listes, citations, tableaux, gras, italique) sont automatiquement associées aux styles Word natifs correspondants."
+        },
+        {
+          "q": "Les images intégrées dans le fichier HTML sont-elles conservées ?",
+          "a": "Oui, les images standards (PNG, JPEG, WebP) référencées ou encapsulées dans le code HTML sont incorporées dans le document DOCX final."
+        },
+        {
+          "q": "Mes fichiers HTML restent-ils confidentiels ?",
+          "a": "Absolument. Les fichiers sont traités dans des environnements éphémères isolés et supprimés automatiquement dès le téléchargement."
+        },
+        {
+          "q": "Le convertisseur HTML en Word est-il gratuit ?",
+          "a": "Oui, l'outil est 100% gratuit, sans inscription, sans publicité intrusive et sans filigrane."
+        }
+      ]
+    }
+  },
+  {
+    "internalSlug": "epub-to-word",
+    "slugs": {
+      "en": "convert-epub-to-word",
+      "fr": "convertir-epub-en-word"
+    },
+    "title": {
+      "en": "EPUB to Word Converter — Convert EPUB to DOCX Free | EverydayTools Hub",
+      "fr": "Convertir EPUB en Word — Convertisseur EPUB vers DOCX Gratuit | EverydayTools Hub"
+    },
+    "h1": {
+      "en": "EPUB to Word Converter",
+      "fr": "Convertisseur EPUB en Word"
+    },
+    "description": {
+      "en": "Convert EPUB e-books and manuscripts into editable Microsoft Word (DOCX) documents online for free. Clean formatting and chapter structure preservation.",
+      "fr": "Convertissez vos e-books EPUB en documents Microsoft Word (.docx) modifiables en ligne gratuitement. Préserve chapitres et mise en page."
+    },
+    "keywords": {
+      "en": [
+        "epub to word",
+        "convert epub to docx",
+        "epub to docx free",
+        "ebook to word converter",
+        "convert epub to word online"
+      ],
+      "fr": [
+        "convertir epub en word",
+        "epub en docx",
+        "convertisseur epub word gratuit",
+        "ebook vers word",
+        "transformer epub en docx"
+      ]
+    },
+    "relatedTools": [
+      "word-to-epub",
+      "epub-to-pdf",
+      "pdf-to-epub",
+      "word-to-pdf",
+      "txt-to-docx"
+    ],
+    "howItWorks": {
+      "en": [
+        {
+          "name": "Upload EPUB e-book",
+          "text": "Drag and drop your .epub e-book or digital publication into the dropzone."
+        },
+        {
+          "name": "Parse chapters & styles",
+          "text": "The engine extracts chapter divisions, typography, and formatting from the EPUB container."
+        },
+        {
+          "name": "Download DOCX",
+          "text": "Save your editable Word document with complete chapter breaks and formatting intact."
+        }
+      ],
+      "fr": [
+        {
+          "name": "Déposez votre e-book EPUB",
+          "text": "Glissez-déposez votre livre numérique ou manuscrit .epub dans la zone de téléversement."
+        },
+        {
+          "name": "Extraction des chapitres",
+          "text": "Le moteur analyse la structure des chapitres, les polices et la pagination de l'e-book."
+        },
+        {
+          "name": "Téléchargez le document Word",
+          "text": "Récupérez votre document .docx prêt à être annoté et édité dans Microsoft Word."
+        }
+      ]
+    },
+    "about": {
+      "en": "Transform digital e-books in EPUB format into editable Word documents (.docx) directly. Ideal for authors proofreading manuscripts, students reviewing academic texts, or editors preparing publications for formatting and revision.",
+      "fr": "Transformez vos livres numériques au format EPUB en documents Word modifiables (.docx) en un instant. Idéal pour les auteurs souhaitant réviser un manuscrit, les étudiants analysant des ouvrages ou les éditeurs préparant de nouvelles éditions."
+    },
+    "faqs": {
+      "en": [
+        {
+          "q": "Are chapter breaks and headings preserved?",
+          "a": "Yes, EPUB spine chapters and navigation headings are translated into native Word section breaks and heading styles."
+        },
+        {
+          "q": "Can I convert DRM-protected EPUB files?",
+          "a": "No, files encrypted with commercial Digital Rights Management (DRM) cannot be processed. Only DRM-free EPUB files are supported."
+        },
+        {
+          "q": "Can I re-edit the text in Microsoft Word?",
+          "a": "Yes, the output is a fully editable standard Microsoft Word DOCX document with selectable text and standard typography."
+        },
+        {
+          "q": "Is there a limit on book size or page count?",
+          "a": "We support EPUB files up to 50 MB, which easily accommodates books with hundreds of pages and embedded illustrations."
+        }
+      ],
+      "fr": [
+        {
+          "q": "La structure des chapitres et les titres sont-ils conservés ?",
+          "a": "Oui, les chapitres et l'arborescence EPUB sont convertis en sauts de section et styles de titres Word natifs."
+        },
+        {
+          "q": "Peut-on convertir un fichier EPUB protégé par DRM ?",
+          "a": "Non, les e-books protégés par des verrous numériques (DRM) ne peuvent pas être décodés. Seuls les fichiers libres de droits ou sans DRM sont supportés."
+        },
+        {
+          "q": "Le document DOCX généré est-il modifiable ?",
+          "a": "Oui, le résultat est un document Microsoft Word standard entièrement modifiable avec styles de police éditables."
+        },
+        {
+          "q": "Y a-t-il une limite de taille ou de nombre de pages ?",
+          "a": "L'outil accepte les fichiers jusqu'à 50 Mo, ce qui couvre la quasi-totalité des romans et ouvrages illustrés."
+        }
+      ]
+    }
+  },
+  {
+    "internalSlug": "epub-to-pdf",
+    "slugs": {
+      "en": "convert-epub-to-pdf",
+      "fr": "convertir-epub-en-pdf"
+    },
+    "title": {
+      "en": "EPUB to PDF Converter — Convert EPUB to PDF Free | EverydayTools Hub",
+      "fr": "Convertir EPUB en PDF — Convertisseur EPUB vers PDF Gratuit | EverydayTools Hub"
+    },
+    "h1": {
+      "en": "EPUB to PDF Converter",
+      "fr": "Convertisseur EPUB en PDF"
+    },
+    "description": {
+      "en": "Convert EPUB e-books into clean, printable PDF documents. Optimized pagination, crisp text, and universal compatibility across all devices.",
+      "fr": "Convertissez vos e-books et livres numériques EPUB en documents PDF prêts à l'impression et au partage. Rendu net et mise en page soignée."
+    },
+    "keywords": {
+      "en": [
+        "epub to pdf",
+        "convert epub to pdf",
+        "epub to pdf converter free",
+        "ebook to pdf online",
+        "epub to pdf printer"
+      ],
+      "fr": [
+        "convertir epub en pdf",
+        "epub en pdf gratuit",
+        "convertisseur epub pdf",
+        "livre numerique vers pdf",
+        "transformer epub en pdf"
+      ]
+    },
+    "relatedTools": [
+      "pdf-to-epub",
+      "epub-to-word",
+      "word-to-epub",
+      "pdf-compress",
+      "pdf-merge"
+    ],
+    "howItWorks": {
+      "en": [
+        {
+          "name": "Upload EPUB",
+          "text": "Drag and drop your .epub publication into the upload dropzone."
+        },
+        {
+          "name": "Paginate & render",
+          "text": "The conversion engine computes page flow, margins, and typography for standard PDF layout."
+        },
+        {
+          "name": "Download PDF",
+          "text": "Download your universal PDF file ready for printing, offline reading, or sharing."
+        }
+      ],
+      "fr": [
+        {
+          "name": "Sélectionnez l'EPUB",
+          "text": "Déposez votre publication numérique .epub dans l'espace de conversion."
+        },
+        {
+          "name": "Mise en page et pagination",
+          "text": "Le moteur génère une mise en page soignée avec marges équilibrées et polices nettes."
+        },
+        {
+          "name": "Téléchargez le PDF",
+          "text": "Récupérez votre document PDF universel prêt pour l'impression ou la lecture sur tout écran."
+        }
+      ]
+    },
+    "about": {
+      "en": "Convert reflowable EPUB e-books into fixed-layout PDF documents with crisp typography and balanced page geometry. Enjoy easy printing, universal device reading, and consistent visual presentation across all platforms.",
+      "fr": "Convertissez vos livres électroniques EPUB en documents PDF à mise en page fixe, parfaits pour l'impression ou la lecture sans dépendance à une application de liseuse dédiée. Le rendu typographique est net et la mise en page optimisée pour tous les formats de papier."
+    },
+    "faqs": {
+      "en": [
+        {
+          "q": "Will the PDF look good when printed?",
+          "a": "Yes, pages are formatted with comfortable reading margins and high-resolution vector text rendering suitable for paper printing."
+        },
+        {
+          "q": "Can I open the generated PDF on any device?",
+          "a": "Yes, PDF is universally supported on PCs, Macs, iPhones, Android devices, and standalone e-readers."
+        },
+        {
+          "q": "Are embedded illustrations and covers included?",
+          "a": "Yes, book covers, inline images, diagrams, and illustrations are rendered in high fidelity inside the PDF."
+        },
+        {
+          "q": "Is there any cost or watermarking?",
+          "a": "No, EverydayTools Hub generates clean, watermark-free PDF files completely free of charge."
+        }
+      ],
+      "fr": [
+        {
+          "q": "Le PDF produit est-il adapté à l'impression papier ?",
+          "a": "Oui, la mise en page intègre des marges standardisées et un rendu vectoriel haute définition optimal pour l'impression."
+        },
+        {
+          "q": "Le fichier PDF s'ouvre-t-il sur n'importe quel appareil ?",
+          "a": "Absolument, le format PDF est universel et lisible sur ordinateurs, smartphones, tablettes et liseuses sans logiciel spécifique."
+        },
+        {
+          "q": "Les couvertures et illustrations sont-elles conservées ?",
+          "a": "Oui, la couverture et toutes les images du livre sont incorporées avec leur résolution d'origine."
+        },
+        {
+          "q": "Y a-t-il un filigrane ou une limitation ?",
+          "a": "Aucun filigrane, aucune publicité et aucune limitation de conversion."
+        }
+      ]
+    }
+  },
+  {
+    "internalSlug": "pdf-to-odt",
+    "slugs": {
+      "en": "convert-pdf-to-odt",
+      "fr": "convertir-pdf-en-odt"
+    },
+    "title": {
+      "en": "PDF to ODT Converter — Convert PDF to OpenDocument Free | EverydayTools Hub",
+      "fr": "Convertir PDF en ODT — Convertisseur PDF vers OpenDocument Gratuit | EverydayTools Hub"
+    },
+    "h1": {
+      "en": "PDF to ODT Converter",
+      "fr": "Convertisseur PDF en ODT"
+    },
+    "description": {
+      "en": "Convert PDF documents into editable OpenDocument Text (.odt) files for LibreOffice and OpenOffice. Free, fast, and secure document conversion.",
+      "fr": "Convertissez vos documents PDF en fichiers texte OpenDocument (.odt) pour LibreOffice et OpenOffice. Gratuit, rapide et respectueux de vos données."
+    },
+    "keywords": {
+      "en": [
+        "pdf to odt",
+        "convert pdf to odt",
+        "pdf to opendocument text",
+        "pdf to libreoffice",
+        "free pdf to odt converter"
+      ],
+      "fr": [
+        "convertir pdf en odt",
+        "pdf en odt gratuit",
+        "pdf vers libreoffice",
+        "convertisseur pdf opendocument",
+        "transformer pdf en odt"
+      ]
+    },
+    "relatedTools": [
+      "odt-to-pdf",
+      "pdf-to-word",
+      "pdf-to-rtf",
+      "word-to-pdf",
+      "pdf-compress"
+    ],
+    "howItWorks": {
+      "en": [
+        {
+          "name": "Upload PDF",
+          "text": "Select or drop your PDF document into the converter."
+        },
+        {
+          "name": "Convert to ODF standard",
+          "text": "The system reconstructs paragraphs and document styles into native OpenDocument format."
+        },
+        {
+          "name": "Download ODT",
+          "text": "Download your .odt document ready to open and edit in LibreOffice Writer or OpenOffice."
+        }
+      ],
+      "fr": [
+        {
+          "name": "Déposez le PDF",
+          "text": "Sélectionnez ou glissez votre document PDF dans l'atelier."
+        },
+        {
+          "name": "Conversion standard ODF",
+          "text": "Le système extrait les paragraphes et les styles pour les structurer au format OpenDocument."
+        },
+        {
+          "name": "Téléchargez le fichier ODT",
+          "text": "Récupérez votre fichier .odt prêt à être ouvert et modifié dans LibreOffice ou OpenOffice."
+        }
+      ]
+    },
+    "about": {
+      "en": "Convert PDF files into native OpenDocument Text (ODT) files used by LibreOffice Writer, Apache OpenOffice, and modern office suites. Perfect for open-source workflows, institutional archiving, and vendor-neutral document editing.",
+      "fr": "Convertissez vos documents PDF en fichiers texte OpenDocument (ODT), le standard ouvert utilisé par LibreOffice Writer et Apache OpenOffice. Idéal pour les environnements open source, les administrations et l'édition de documents pérenne sans dépendance logicielle propriétaire."
+    },
+    "faqs": {
+      "en": [
+        {
+          "q": "What software opens ODT files?",
+          "a": "LibreOffice Writer, Apache OpenOffice, Google Docs, and Microsoft Word can all open and edit ODT documents natively."
+        },
+        {
+          "q": "Is the OpenDocument standard preserved accurately?",
+          "a": "Yes, files conform to ISO/IEC 26300 standards for open document architectures."
+        },
+        {
+          "q": "Are tables and font styles preserved?",
+          "a": "Text layout, font weights, and data tables are translated into editable ODT elements."
+        },
+        {
+          "q": "Is the tool free to use?",
+          "a": "Yes, completely free with zero restrictions and no sign-up required."
+        }
+      ],
+      "fr": [
+        {
+          "q": "Quels logiciels peuvent ouvrir un fichier ODT ?",
+          "a": "LibreOffice Writer, OpenOffice, Google Docs ainsi que Microsoft Word prennent en charge nativement les fichiers ODT."
+        },
+        {
+          "q": "La conformité avec la norme OpenDocument est-elle respectée ?",
+          "a": "Oui, les fichiers générés respectent rigoureusement les normes internationales ISO/CEI 26300."
+        },
+        {
+          "q": "Les tableaux et les polices sont-ils préservés ?",
+          "a": "La mise en page du texte, les graisses et les tableaux sont convertis en composants ODT modifiables."
+        },
+        {
+          "q": "L'outil est-il gratuit ?",
+          "a": "Oui, totalement gratuit, sans inscription ni limite d'usage."
+        }
+      ]
+    }
+  },
+  {
+    "internalSlug": "pdf-to-rtf",
+    "slugs": {
+      "en": "convert-pdf-to-rtf",
+      "fr": "convertir-pdf-en-rtf"
+    },
+    "title": {
+      "en": "PDF to RTF Converter — Convert PDF to Rich Text Free | EverydayTools Hub",
+      "fr": "Convertir PDF en RTF — Convertisseur PDF vers Texte Enrichi Gratuit | EverydayTools Hub"
+    },
+    "h1": {
+      "en": "PDF to RTF Converter",
+      "fr": "Convertisseur PDF en RTF"
+    },
+    "description": {
+      "en": "Convert PDF documents into Rich Text Format (.rtf) files. Universal compatibility with WordPad, TextEdit, and all word processors.",
+      "fr": "Convertissez vos fichiers PDF en format texte enrichi (.rtf) universellement lisible dans WordPad, TextEdit et tous les logiciels de traitement de texte."
+    },
+    "keywords": {
+      "en": [
+        "pdf to rtf",
+        "convert pdf to rtf",
+        "pdf to rich text format",
+        "pdf to rtf converter free",
+        "extract rtf from pdf"
+      ],
+      "fr": [
+        "convertir pdf en rtf",
+        "pdf en rtf gratuit",
+        "texte enrichi vers pdf",
+        "convertisseur pdf rtf",
+        "transformer pdf en rtf"
+      ]
+    },
+    "relatedTools": [
+      "rtf-to-pdf",
+      "pdf-to-word",
+      "pdf-to-odt",
+      "pdf-to-text",
+      "pdf-compress"
+    ],
+    "howItWorks": {
+      "en": [
+        {
+          "name": "Upload PDF",
+          "text": "Drag and drop your PDF file into the dropzone."
+        },
+        {
+          "name": "Extract rich text",
+          "text": "The parser extracts formatted text and styling into standard RTF control structures."
+        },
+        {
+          "name": "Download RTF",
+          "text": "Download your lightweight .rtf document ready for immediate editing."
+        }
+      ],
+      "fr": [
+        {
+          "name": "Sélectionnez le PDF",
+          "text": "Déposez votre document PDF dans l'espace de conversion."
+        },
+        {
+          "name": "Extraction du texte enrichi",
+          "text": "Le moteur transpose les styles et paragraphes dans la syntaxe RTF universelle."
+        },
+        {
+          "name": "Téléchargez le fichier RTF",
+          "text": "Récupérez votre fichier .rtf léger et prêt à l'emploi."
+        }
+      ]
+    },
+    "about": {
+      "en": "Convert PDF documents into lightweight Rich Text Format (RTF) files. RTF provides universal compatibility across legacy operating systems, embedded text editors, WordPad, macOS TextEdit, and specialized word processors without formatting bloat.",
+      "fr": "Convertissez vos PDF en fichiers au format texte enrichi (RTF) légers et universels. Le format RTF est lisible nativement sur tous les systèmes d'exploitation (Windows WordPad, macOS TextEdit, Linux) et dans tous les traitements de texte sans lourdeur technique."
+    },
+    "faqs": {
+      "en": [
+        {
+          "q": "Why convert to RTF instead of DOCX?",
+          "a": "RTF is an open, cross-platform format that opens instantly in lightweight editors like WordPad and TextEdit without needing Microsoft Office."
+        },
+        {
+          "q": "Does RTF keep bold, italic, and font sizes?",
+          "a": "Yes, standard typographic hierarchy including weights, colors, and paragraph alignment is preserved."
+        },
+        {
+          "q": "Is the file size smaller than DOCX?",
+          "a": "RTF files for text-heavy documents are often compact and load very quickly in minimal environments."
+        },
+        {
+          "q": "Is my document secure?",
+          "a": "Yes, your files are processed securely in private sandboxes and deleted immediately after download."
+        }
+      ],
+      "fr": [
+        {
+          "q": "Pourquoi choisir le format RTF plutôt que DOCX ?",
+          "a": "Le RTF est un standard universel léger qui s'ouvre sans délai dans WordPad ou TextEdit sans nécessiter l'installation de Microsoft Office."
+        },
+        {
+          "q": "Le format RTF conserve-t-il le gras et l'italique ?",
+          "a": "Oui, les attributs typographiques de base comme le gras, l'italique et les alignements sont conservés."
+        },
+        {
+          "q": "Le fichier RTF est-il léger ?",
+          "a": "Oui, pour les documents à dominante textuelle, le format RTF produit des fichiers compacts et très rapides à ouvrir."
+        },
+        {
+          "q": "Mes données sont-elles protégées ?",
+          "a": "Oui, les fichiers sont traités dans des environnements isolés et purgés aussitôt après le téléchargement."
+        }
+      ]
+    }
+  },
+  {
+    "internalSlug": "png-to-gif",
+    "slugs": {
+      "en": "convert-png-to-gif",
+      "fr": "convertir-png-en-gif"
+    },
+    "title": {
+      "en": "PNG to GIF Converter — Convert PNG to GIF Online Free | EverydayTools Hub",
+      "fr": "Convertir PNG en GIF — Convertisseur PNG vers GIF Gratuit | EverydayTools Hub"
+    },
+    "h1": {
+      "en": "PNG to GIF Converter",
+      "fr": "Convertisseur PNG en GIF"
+    },
+    "description": {
+      "en": "Convert PNG images into standard GIF format online for free. Preserves transparency and creates optimized palette files without quality loss.",
+      "fr": "Convertissez vos images PNG en format GIF standard en ligne gratuitement. Préserve la transparence et optimise la palette de couleurs."
+    },
+    "keywords": {
+      "en": [
+        "png to gif",
+        "convert png to gif",
+        "png to gif converter free",
+        "png image to gif",
+        "transparent png to gif"
+      ],
+      "fr": [
+        "convertir png en gif",
+        "png en gif gratuit",
+        "convertisseur png gif",
+        "image png vers gif",
+        "transformer png en gif"
+      ]
+    },
+    "relatedTools": [
+      "gif-to-png",
+      "webp-to-gif",
+      "png-to-webp",
+      "png-to-jpg",
+      "gif-to-webp"
+    ],
+    "howItWorks": {
+      "en": [
+        {
+          "name": "Upload PNG image",
+          "text": "Select or drop your PNG picture into the image workbench."
+        },
+        {
+          "name": "Quantize & optimize",
+          "text": "The color palette is quantized to standard 256-color GIF format with optional transparency preservation."
+        },
+        {
+          "name": "Download GIF",
+          "text": "Download your optimized GIF image instantly ready to share."
+        }
+      ],
+      "fr": [
+        {
+          "name": "Déposez votre image PNG",
+          "text": "Sélectionnez ou glissez votre image PNG dans l'atelier."
+        },
+        {
+          "name": "Quantification des couleurs",
+          "text": "La palette est optimisée en 256 couleurs avec préservation de la transparence."
+        },
+        {
+          "name": "Téléchargez le GIF",
+          "text": "Téléchargez votre image GIF prête à être partagée sur vos applications favorites."
+        }
+      ]
+    },
+    "about": {
+      "en": "Convert high-resolution PNG images into universally compatible GIF files. GIF format ensures maximum compatibility with legacy forums, messaging channels, email clients, and vintage hardware displays while retaining alpha transparency.",
+      "fr": "Convertissez vos images PNG haute définition en fichiers GIF universels. Le format GIF garantit une compatibilité totale avec les forums, les clients de messagerie et les plateformes historiques tout en conservant la transparence alpha."
+    },
+    "faqs": {
+      "en": [
+        {
+          "q": "Is alpha transparency preserved in GIF?",
+          "a": "Yes, full transparency channels are quantized with binary transparency suitable for GIF specifications."
+        },
+        {
+          "q": "Can I convert multiple PNG images?",
+          "a": "Yes, you can convert images one by one or in sequence with high processing speed."
+        },
+        {
+          "q": "Does GIF reduce image quality?",
+          "a": "GIF uses an indexed 256-color palette. For diagrams, logos, and pixel graphics the visual fidelity remains crisp and sharp."
+        },
+        {
+          "q": "Is this PNG to GIF converter free?",
+          "a": "Yes, EverydayTools provides unlimited, fast conversions with no account or fee."
+        }
+      ],
+      "fr": [
+        {
+          "q": "La transparence est-elle conservée dans le GIF ?",
+          "a": "Oui, la couche de transparence est quantifiée conformément aux spécifications du format GIF."
+        },
+        {
+          "q": "Peut-on convertir des logos ou captures d'écran ?",
+          "a": "Absolument, le format GIF est particulièrement adapté aux graphismes, icônes et illustrations à aplats nets."
+        },
+        {
+          "q": "La qualité visuelle est-elle préservée ?",
+          "a": "Le format GIF utilise une palette indexée de 256 couleurs, offrant un rendu très net pour les diagrammes et visuels épurés."
+        },
+        {
+          "q": "L'outil est-il gratuit ?",
+          "a": "Oui, 100% gratuit, sans inscription ni filigrane."
+        }
+      ]
+    }
+  },
+  {
+    "internalSlug": "webp-to-gif",
+    "slugs": {
+      "en": "convert-webp-to-gif",
+      "fr": "convertir-webp-en-gif"
+    },
+    "title": {
+      "en": "WebP to GIF Converter — Convert WebP to GIF Online Free | EverydayTools Hub",
+      "fr": "Convertir WebP en GIF — Convertisseur WebP vers GIF Gratuit | EverydayTools Hub"
+    },
+    "h1": {
+      "en": "WebP to GIF Converter",
+      "fr": "Convertisseur WebP en GIF"
+    },
+    "description": {
+      "en": "Convert WebP images and animations into standard GIF format. Broad compatibility across messaging apps, forums, and legacy platforms.",
+      "fr": "Convertissez vos images et animations WebP en format GIF standard. Compatibilité universelle avec les applications de messagerie et forums."
+    },
+    "keywords": {
+      "en": [
+        "webp to gif",
+        "convert webp to gif",
+        "webp to gif converter free",
+        "animated webp to gif",
+        "webp image to gif"
+      ],
+      "fr": [
+        "convertir webp en gif",
+        "webp en gif gratuit",
+        "convertisseur webp gif",
+        "animation webp en gif",
+        "transformer webp en gif"
+      ]
+    },
+    "relatedTools": [
+      "gif-to-webp",
+      "png-to-gif",
+      "webp-to-png",
+      "webp-to-jpg",
+      "image-compress"
+    ],
+    "howItWorks": {
+      "en": [
+        {
+          "name": "Upload WebP image",
+          "text": "Drag and drop your WebP image or animation into the dropzone."
+        },
+        {
+          "name": "Convert & encode",
+          "text": "The engine decodes WebP frames and compiles them into standard GIF format."
+        },
+        {
+          "name": "Download GIF",
+          "text": "Save your resulting GIF file ready for Discord, Slack, forums, or websites."
+        }
+      ],
+      "fr": [
+        {
+          "name": "Déposez votre image WebP",
+          "text": "Glissez votre image ou animation WebP dans l'atelier de conversion."
+        },
+        {
+          "name": "Encodage GIF",
+          "text": "Le moteur décode l'image WebP et génère un fichier GIF standardisé."
+        },
+        {
+          "name": "Téléchargez le GIF",
+          "text": "Récupérez votre image GIF compatible avec Discord, Slack et tous les réseaux."
+        }
+      ]
+    },
+    "about": {
+      "en": "Convert modern WebP images into standard GIF format for maximum compatibility. While WebP offers superior compression, many platforms, older software, and discussion boards still require standard GIF format for image sharing.",
+      "fr": "Convertissez vos images WebP modernes en format GIF pour une compatibilité universelle. Bien que le WebP soit plus compact, de nombreuses applications et plateformes de partage exigent encore le format GIF traditionnel."
+    },
+    "faqs": {
+      "en": [
+        {
+          "q": "Why convert WebP to GIF?",
+          "a": "Many messaging platforms, older CMS tools, and forums do not fully support WebP uploads. GIF is supported everywhere."
+        },
+        {
+          "q": "Does the conversion support transparent WebP?",
+          "a": "Yes, transparent backgrounds in WebP are accurately mapped to GIF transparent color indices."
+        },
+        {
+          "q": "Is any software installation required?",
+          "a": "No, everything runs online in your web browser with zero installation."
+        },
+        {
+          "q": "Is WebP to GIF free?",
+          "a": "Yes, completely free and unlimited on EverydayTools Hub."
+        }
+      ],
+      "fr": [
+        {
+          "q": "Pourquoi convertir du WebP en GIF ?",
+          "a": "Plusieurs applications de messagerie, CMS et forums n'acceptent pas encore le WebP. Le format GIF est universellement accepté."
+        },
+        {
+          "q": "La transparence est-elle prise en charge ?",
+          "a": "Oui, les zones transparentes de l'image WebP sont fidèlement reportées dans le fichier GIF."
+        },
+        {
+          "q": "Doit-on installer un logiciel ?",
+          "a": "Non, la conversion s'effectue directement en ligne sans aucun logiciel à installer."
+        },
+        {
+          "q": "L'outil est-il gratuit ?",
+          "a": "Oui, entièrement gratuit et sans aucune limitation."
         }
       ]
     }

@@ -22,7 +22,7 @@ export const UrlQueryInspector: React.FC<UrlQueryInspectorProps> = ({
       {/* En-tête de l'inspecteur */}
       <div className="h-10 px-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/30 flex items-center justify-between text-xs">
         <div className="flex items-center gap-2">
-          <Link2 className="w-3.5 h-3.5 text-[#FF6B35]" />
+          <Link2 className="w-3.5 h-3.5 text-[var(--accent)]" />
           <span className="font-mono text-[11px] uppercase tracking-wider text-zinc-700 dark:text-zinc-300 font-semibold">
             {isFr
               ? 'Paramètres de Requête Décomposés'

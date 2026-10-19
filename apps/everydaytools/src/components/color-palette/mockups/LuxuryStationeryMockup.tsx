@@ -14,7 +14,7 @@ export function LuxuryStationeryMockup({ palette, isFr }: LuxuryStationeryMockup
       {/* CARTE 01 (Gauche) : Carte de Visite Studio Recto */}
       <div
         style={{ backgroundColor: curPalette[0]?.hex }}
-        className="absolute -translate-x-36 sm:-translate-x-44 -translate-y-3 rotate-[-6deg] w-[295px] h-[180px] rounded-xl p-5 shadow-2xl flex flex-col justify-between border border-black/10 transition-all duration-300 hover:rotate-0 hover:scale-105 hover:z-30 cursor-default z-10"
+        className="absolute -translate-x-36 sm:-translate-x-44 -translate-y-3 rotate-[-6deg] w-[295px] h-[180px] rounded-xl p-5 shadow-2xl flex flex-col justify-between border border-black/10 transition-[transform,box-shadow] duration-300 hover:rotate-0 hover:scale-105 hover:z-30 cursor-default z-10"
       >
         <div className="flex items-center justify-between">
           <span
@@ -63,7 +63,7 @@ export function LuxuryStationeryMockup({ palette, isFr }: LuxuryStationeryMockup
       {/* CARTE 02 (Centre) : Carte de Visite Verso */}
       <div
         style={{ backgroundColor: curPalette[curPalette.length - 1]?.hex || '#ffffff' }}
-        className="relative z-20 translate-x-0 translate-y-1 rotate-0 w-[310px] h-[190px] rounded-xl p-5 shadow-2xl flex flex-col justify-between border border-black/15 transition-all duration-300 hover:scale-105 hover:z-30 cursor-default"
+        className="relative z-20 translate-x-0 translate-y-1 rotate-0 w-[310px] h-[190px] rounded-xl p-5 shadow-2xl flex flex-col justify-between border border-black/15 transition-[transform,box-shadow] duration-300 hover:scale-105 hover:z-30 cursor-default"
       >
         {(() => {
           const bg = curPalette[curPalette.length - 1]?.hex || '#ffffff';
@@ -124,7 +124,7 @@ export function LuxuryStationeryMockup({ palette, isFr }: LuxuryStationeryMockup
       {/* CARTE 03 (Droite) : Accréditation Privée Studio */}
       <div
         style={{ backgroundColor: curPalette[1]?.hex || curPalette[0]?.hex }}
-        className="absolute translate-x-36 sm:translate-x-44 translate-y-6 rotate-[6deg] w-[295px] h-[180px] rounded-xl p-5 shadow-2xl flex flex-col justify-between border border-black/10 transition-all duration-300 hover:rotate-0 hover:scale-105 hover:z-30 cursor-default z-10"
+        className="absolute translate-x-36 sm:translate-x-44 translate-y-6 rotate-[6deg] w-[295px] h-[180px] rounded-xl p-5 shadow-2xl flex flex-col justify-between border border-black/10 transition-[transform,box-shadow] duration-300 hover:rotate-0 hover:scale-105 hover:z-30 cursor-default z-10"
       >
         <div className="flex items-center justify-between">
           <span

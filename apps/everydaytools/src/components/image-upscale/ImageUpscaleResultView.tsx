@@ -31,11 +31,11 @@ export function ImageUpscaleResultView({
             before={{ src: previewUrl, alt: isFr ? 'Avant' : 'Before' }}
             after={{
               src: resultUrl,
-              alt: isFr ? `Après (${scale}x)` : `After (${scale}x)`,
+              alt: isFr ? 'Après' : 'After',
             }}
             labels={[
               isFr ? 'Avant' : 'Before',
-              isFr ? `Après (${scale}x)` : `After (${scale}x)`,
+              isFr ? 'Après' : 'After',
             ]}
             defaultPosition={50}
             introSweep={true}

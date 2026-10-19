@@ -1,8 +1,7 @@
-import { useState, useCallback, useEffect, useMemo } from 'react';
-import Papa from 'papaparse';
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { toast } from '@/hooks/use-toast';
-import { consumeHandoffFile } from '@/lib/file-handoff';
+import { consumeHandoffFile, consumeHandoffText } from '@/lib/file-handoff';
 import {
   type ConversionDirection,
   type ConversionInputMode,
@@ -12,6 +11,8 @@ import {
   convertCsvToJson,
   convertJsonToCsv,
   resolveConvertedFilename,
+  parseCsvJsonPreview,
+  readEncodedText,
 } from '@/lib/csv-json-conversion-logic';
 
 export interface CsvJsonResult {
@@ -22,8 +23,11 @@ export interface CsvJsonResult {
   textOutput: string;
 }
 
-export function useCsvJsonWorkflow(isFr: boolean) {
-  const [direction, setDirection] = useState<ConversionDirection>('csv-to-json');
+export function useCsvJsonWorkflow(
+  isFr: boolean,
+  initialDirection: ConversionDirection = 'csv-to-json'
+) {
+  const [direction, setDirection] = useState<ConversionDirection>(initialDirection);
   const [files, setFiles] = useState<File[]>([]);
   const [inputMode, setInputMode] = useState<ConversionInputMode>('upload');
   const [rawText, setRawText] = useState('');
@@ -31,29 +35,10 @@ export function useCsvJsonWorkflow(isFr: boolean) {
   const [delimiter, setDelimiter] = useState(',');
   const [encoding, setEncoding] = useState('utf-8');
 
-  const previewData = useMemo(() => {
-    if (!rawText.trim()) return { headers: [], rows: [] };
-    try {
-      if (direction === 'csv-to-json') {
-        const parsed = Papa.parse(rawText, {
-          preview: 6,
-          delimiter: delimiter || undefined,
-          skipEmptyLines: true,
-        });
-        const headers = (parsed.data[0] as string[]) || [];
-        const rows = (parsed.data.slice(1) as any[][]) || [];
-        return { headers, rows };
-      } else {
-        const parsed = JSON.parse(rawText);
-        const arr = Array.isArray(parsed) ? parsed : [parsed];
-        const headers = Object.keys(arr[0] || {});
-        const rows = arr.slice(0, 5).map((item) => headers.map((h) => item[h]));
-        return { headers, rows };
-      }
-    } catch {
-      return { headers: [], rows: [] };
-    }
-  }, [rawText, direction, delimiter]);
+  const previewData = useMemo(
+    () => parseCsvJsonPreview(rawText, direction, delimiter),
+    [rawText, direction, delimiter]
+  );
 
   const [result, setResult] = useState<CsvJsonResult | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -72,33 +57,21 @@ export function useCsvJsonWorkflow(isFr: boolean) {
     async (selectedFile: File) => {
       const validation = validateCsvJsonFile(selectedFile, direction);
       if (!validation.valid) {
-        if (validation.error === 'unsupported_format') {
-          const isCsvTarget = direction === 'csv-to-json';
-          toast({
-            variant: 'destructive',
-            title: isFr ? 'Format non supporté' : 'Unsupported format',
-            description: isCsvTarget
-              ? isFr
-                ? 'Veuillez sélectionner un fichier CSV (.csv) valide.'
-                : 'Please select a valid CSV (.csv) file.'
-              : isFr
-              ? 'Veuillez sélectionner un fichier JSON (.json) valide.'
-              : 'Please select a valid JSON (.json) file.',
-          });
-        } else if (validation.error === 'file_too_large') {
-          toast({
-            variant: 'destructive',
-            title: isFr ? 'Fichier trop volumineux' : 'File too large',
-            description: isFr
-              ? 'Le fichier dépasse la taille maximale autorisée de 25 Mo.'
-              : 'The file exceeds the maximum allowed size of 25 MB.',
-          });
-        }
+        const isCsvTarget = direction === 'csv-to-json';
+        const description = validation.error === 'unsupported_format'
+          ? (isCsvTarget ? (isFr ? 'Veuillez sélectionner un fichier CSV (.csv) valide.' : 'Please select a valid CSV (.csv) file.')
+                        : (isFr ? 'Veuillez sélectionner un fichier JSON (.json) valide.' : 'Please select a valid JSON (.json) file.'))
+          : (isFr ? 'Le fichier dépasse la taille maximale autorisée de 25 Mo.' : 'The file exceeds the maximum allowed size of 25 MB.');
+        toast({
+          variant: 'destructive',
+          title: validation.error === 'unsupported_format' ? (isFr ? 'Format non supporté' : 'Unsupported format') : (isFr ? 'Fichier trop volumineux' : 'File too large'),
+          description,
+        });
         return;
       }
 
       try {
-        const text = await selectedFile.text();
+        const text = await readEncodedText(selectedFile, encoding);
         setRawText(text);
         setFiles([selectedFile]);
         setResult(null);
@@ -106,19 +79,43 @@ export function useCsvJsonWorkflow(isFr: boolean) {
         toast({
           variant: 'destructive',
           title: isFr ? 'Erreur de lecture' : 'Read error',
-          description: isFr
-            ? 'Impossible de lire le contenu du fichier sélectionné.'
-            : 'Unable to read the selected file content.',
+          description: isFr ? 'Impossible de lire le contenu du fichier sélectionné.' : 'Unable to read the selected file content.',
         });
       }
     },
-    [direction, isFr]
+    [direction, isFr, encoding]
   );
 
   useEffect(() => {
+    if (inputMode !== 'upload' || !file) {
+      return undefined;
+    }
+    let isCancelled = false;
+    readEncodedText(file, encoding)
+      .then((text) => {
+        if (!isCancelled) setRawText(text);
+      })
+      .catch(() => {});
+    return () => {
+      isCancelled = true;
+    };
+  }, [file, encoding, inputMode]);
+
+  const hasConsumedHandoffRef = useRef(false);
+  useEffect(() => {
+    if (hasConsumedHandoffRef.current) return;
+    hasConsumedHandoffRef.current = true;
     const staged = consumeHandoffFile();
     if (staged) {
       validateAndSetFile(staged);
+      return;
+    }
+    const stagedText = consumeHandoffText();
+    if (stagedText) {
+      setRawText(stagedText);
+      setInputMode('paste');
+      setIsPastedStaged(true);
+      setResult(null);
     }
   }, [validateAndSetFile]);
 
@@ -128,9 +125,7 @@ export function useCsvJsonWorkflow(isFr: boolean) {
     setIsDragging(true);
   }, []);
 
-  const handleDragLeave = useCallback(() => {
-    setIsDragging(false);
-  }, []);
+  const handleDragLeave = useCallback(() => setIsDragging(false), []);
 
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
@@ -169,7 +164,7 @@ export function useCsvJsonWorkflow(isFr: boolean) {
     setIsProcessing(true);
 
     try {
-      trackToolUsed('csv-to-json', 'documents');
+      trackToolUsed(direction, 'documents');
 
       await new Promise((resolve) => setTimeout(resolve, 600));
 
@@ -198,7 +193,7 @@ export function useCsvJsonWorkflow(isFr: boolean) {
       });
     } catch (err) {
       console.error('Conversion CSV/JSON error:', err);
-      trackToolError('csv-to-json', 'conversion-error');
+      trackToolError(direction, 'conversion-error');
       const message =
         err instanceof Error
           ? err.message
@@ -213,7 +208,7 @@ export function useCsvJsonWorkflow(isFr: boolean) {
     } finally {
       setIsProcessing(false);
     }
-  }, [rawText, isProcessing, direction, isFr, inputMode, file]);
+  }, [rawText, isProcessing, direction, isFr, inputMode, file, delimiter]);
 
   const handleDownload = useCallback(() => {
     if (!result) return;
@@ -224,11 +219,8 @@ export function useCsvJsonWorkflow(isFr: boolean) {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-
-    setTimeout(() => {
-      setIsNextActionOpen(true);
-    }, 450);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    setTimeout(() => setIsNextActionOpen(true), 450);
   }, [result]);
 
   const isStaged =

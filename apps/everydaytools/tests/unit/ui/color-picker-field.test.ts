@@ -157,4 +157,80 @@ describe('ColorPickerField (Studio Design with In-Popover Nuances Grid)', () => 
 
     expect(handleChange).toHaveBeenCalledWith('#123456');
   });
+
+  it('renders compact size="sm" with no outer label header when label is omitted', async () => {
+    const handleOpen = vi.fn();
+    await renderComponent({
+      value: '#2563eb',
+      onChange: vi.fn(),
+      size: 'sm',
+      isActive: true,
+      onOpen: handleOpen,
+    });
+
+    const triggerBtn = container.querySelector('[data-testid="color-picker-trigger"]') as HTMLButtonElement;
+    expect(triggerBtn).not.toBeNull();
+    expect(triggerBtn.className).toContain('h-7');
+    expect(triggerBtn.className).toContain('px-2');
+    // Absolute Zero Double-Ring: active trigger must NOT have ring-offset or ring-2
+    expect(triggerBtn.className).not.toContain('ring-offset');
+    expect(triggerBtn.className).not.toContain('ring-2');
+    expect(triggerBtn.className).toContain('border-zinc-900');
+    expect(triggerBtn.className).toContain('focus-visible:ring-1');
+    expect(triggerBtn.getAttribute('aria-haspopup')).toBe('dialog');
+    expect(triggerBtn.getAttribute('aria-expanded')).toBe('false');
+
+    // No outer header div when label is not provided
+    const headers = container.querySelectorAll('.text-zinc-700');
+    expect(headers.length).toBe(0);
+
+    // Clicking trigger invokes onOpen and sets aria-expanded="true"
+    await act(async () => {
+      triggerBtn.click();
+    });
+    expect(handleOpen).toHaveBeenCalledTimes(1);
+    expect(triggerBtn.getAttribute('aria-expanded')).toBe('true');
+
+    // Clicking again closes without triggering onOpen a second time
+    await act(async () => {
+      triggerBtn.click();
+    });
+    expect(handleOpen).toHaveBeenCalledTimes(1);
+    expect(triggerBtn.getAttribute('aria-expanded')).toBe('false');
+  });
+
+  it('closes popover on Escape key press', async () => {
+    await renderComponent({
+      value: '#2563eb',
+      onChange: vi.fn(),
+    });
+
+    const triggerBtn = container.querySelector('[data-testid="color-picker-trigger"]') as HTMLButtonElement;
+    await act(async () => {
+      triggerBtn.click();
+    });
+
+    expect(container.querySelector('[data-testid="color-picker-popover"]')).not.toBeNull();
+
+    await act(async () => {
+      const event = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true });
+      document.dispatchEvent(event);
+    });
+
+    expect(container.querySelector('[data-testid="color-picker-popover"]')).toBeNull();
+  });
+
+  it('renders neutral placeholder with Palette icon when value is empty string', async () => {
+    await renderComponent({
+      value: '',
+      onChange: vi.fn(),
+      placeholder: 'Couleur libre',
+    });
+
+    const triggerBtn = container.querySelector('[data-testid="color-picker-trigger"]');
+    expect(triggerBtn).not.toBeNull();
+    expect(triggerBtn?.textContent).toContain('Couleur libre');
+    expect(triggerBtn?.textContent).not.toContain('#FF6B35');
+    expect(triggerBtn?.textContent).not.toContain('#2563EB');
+  });
 });

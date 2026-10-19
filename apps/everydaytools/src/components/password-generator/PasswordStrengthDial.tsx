@@ -33,7 +33,7 @@ export function PasswordStrengthDial({ strengthInfo }: PasswordStrengthDialProps
             strokeDasharray="69.1"
             strokeDashoffset={69.1 - 69.1 * (strengthInfo.level / 4)}
             strokeLinecap="round"
-            className={`transition-all duration-500 ease-out ${strengthInfo.stroke}`}
+            className={`transition-[stroke-dashoffset] duration-500 ease-out ${strengthInfo.stroke}`}
           />
         </svg>
         {/* Center dynamic security glyph */}
@@ -41,7 +41,7 @@ export function PasswordStrengthDial({ strengthInfo }: PasswordStrengthDialProps
           {strengthInfo.level === 1 && <ShieldAlert className="w-3 h-3 text-red-500" />}
           {strengthInfo.level === 2 && <Shield className="w-3 h-3 text-amber-500" />}
           {strengthInfo.level === 3 && <ShieldCheck className="w-3 h-3 text-emerald-500" />}
-          {strengthInfo.level === 4 && <Lock className="w-3 h-3 text-[#FF6B35]" />}
+          {strengthInfo.level === 4 && <Lock className="w-3 h-3 text-[var(--accent,#f97316)]" />}
         </div>
       </div>
 

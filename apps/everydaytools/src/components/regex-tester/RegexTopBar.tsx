@@ -47,7 +47,7 @@ export function RegexTopBar({
             {isFr ? 'Expression régulière :' : 'Regular expression:'}
           </label>
 
-          <div className="flex-1 flex items-center px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 bg-zinc-50/70 dark:bg-zinc-900/60 focus-within:border-[#FF6B35] transition-colors">
+          <div className="flex-1 flex items-center px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-white/10 bg-zinc-50/70 dark:bg-zinc-900/60 focus-within:border-[var(--accent)] transition-colors">
             <input
               id="regex-input"
               ref={patternInputRef}
@@ -103,14 +103,13 @@ export function RegexTopBar({
                 return (
                   <label
                     key={flag}
-                    onClick={() => onToggleFlag(flag)}
                     className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800/80 cursor-pointer transition-colors"
                   >
                     <input
                       type="checkbox"
                       checked={isChecked}
-                      onChange={() => {}}
-                      className="mt-0.5 accent-[#FF6B35]"
+                      onChange={() => onToggleFlag(flag)}
+                      className="mt-0.5 accent-[var(--accent)]"
                     />
                     <div className="flex flex-col text-left">
                       <span className="text-xs font-medium text-zinc-900 dark:text-zinc-100">

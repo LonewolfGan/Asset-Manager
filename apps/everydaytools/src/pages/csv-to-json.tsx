@@ -1,20 +1,23 @@
 import ToolPageLayout from '@/components/ToolPageLayout';
 import { ToolWorkspace } from '@/components/ToolContent';
 import { useLocale } from '@/hooks/use-locale';
-import {
-  TextPreviewDialog,
-  DocumentNextActionModal,
-} from '@/components/conversion';
+import { TextPreviewDialog, ReciprocalTitle, DocumentNextActionModal } from '@/components/conversion';
 import { useCsvJsonWorkflow } from '@/hooks/use-csv-json-workflow';
-import {
-  CsvJsonDirectionToolbar,
-  CsvJsonFlow,
-} from '@/components/csv-to-json';
+import { type ConversionDirection } from '@/lib/csv-json-conversion-logic';
+import { CsvJsonFlow, CsvJsonModeSelector } from '@/components/csv-to-json';
 
-export default function CsvToJson() {
+export interface CsvToJsonProps {
+  initialDirection?: ConversionDirection;
+  toolSlug?: string;
+}
+
+export default function CsvToJson({
+  initialDirection = 'csv-to-json',
+  toolSlug = 'csv-to-json',
+}: CsvToJsonProps = {}) {
   const { t, isFr } = useLocale();
 
-  const workflow = useCsvJsonWorkflow(isFr);
+  const workflow = useCsvJsonWorkflow(isFr, initialDirection);
   const {
     direction,
     inputMode,
@@ -31,10 +34,19 @@ export default function CsvToJson() {
     handleDownload,
   } = workflow;
 
-  const pageTitle = t.tools['csv-to-json']?.title ?? 'CSV ↔ JSON';
-  const pageDesc =
-    t.tools['csv-to-json']?.description ??
-    'Convert between CSV and JSON formats instantly in your browser.';
+  const isJsonToCsv = toolSlug === 'json-to-csv';
+  const pageTitle = isJsonToCsv
+    ? (t.tools['json-to-csv']?.title ?? (isFr ? 'JSON en CSV' : 'JSON to CSV'))
+    : (t.tools['csv-to-json']?.title ?? (isFr ? 'CSV en JSON' : 'CSV to JSON'));
+  const pageDesc = isJsonToCsv
+    ? (t.tools['json-to-csv']?.description ??
+        (isFr
+          ? 'Convertissez des objets et tableaux JSON en fichiers CSV en un clic.'
+          : 'Convert JSON data structures and files into CSV format instantly.'))
+    : (t.tools['csv-to-json']?.description ??
+        (isFr
+          ? 'Convertissez vos fichiers CSV en JSON instantanément dans votre navigateur.'
+          : 'Convert CSV to JSON instantly in your browser.'));
 
   return (
     <ToolPageLayout
@@ -43,18 +55,28 @@ export default function CsvToJson() {
         t.nav.breadcrumb.excelSpreadsheets,
         pageTitle,
       ]}
-      title={pageTitle}
+      title={
+        <ReciprocalTitle
+          currentSlug={toolSlug}
+          isFr={isFr}
+          getCurrentFile={() => workflow.file}
+          getCurrentText={() => workflow.rawText}
+          onSwap={(newSlug) => {
+            handleToggleDirection(newSlug as ConversionDirection);
+          }}
+          fallbackTitle={pageTitle}
+        />
+      }
       description={pageDesc}
-      seoSlug="csv-to-json"
+      seoSlug={toolSlug}
     >
       <ToolWorkspace noGrid>
         <div className="w-full max-w-5xl mx-auto">
-          {/* Direction Switcher & Mode Selector */}
+          {/* Streamlined Input Mode Selector (Zero Box Stacking) */}
           {!result && !isProcessing && !isStaged && (
-            <CsvJsonDirectionToolbar
-              direction={direction}
+            <CsvJsonModeSelector
               inputMode={inputMode}
-              onToggleDirection={handleToggleDirection}
+              direction={direction}
               onSetInputMode={setInputMode}
               isFr={isFr}
             />
@@ -85,18 +107,18 @@ export default function CsvToJson() {
               formatTag={`${targetFormat.name} · UTF-8`}
             />
           )}
-
-          {/* Modal continuum */}
-          <DocumentNextActionModal
-            toolId="csv-to-json"
-            isOpen={isNextActionOpen}
-            onClose={() => setIsNextActionOpen(false)}
-            resultBlob={result?.blob}
-            resultFilename={result?.filename}
-            formatType={direction === 'csv-to-json' ? 'json' : 'csv'}
-          />
         </div>
+
+        <DocumentNextActionModal
+          toolId={toolSlug}
+          isOpen={isNextActionOpen}
+          onClose={() => setIsNextActionOpen(false)}
+          resultBlob={result?.blob}
+          resultFilename={result?.filename}
+          formatType={direction === 'csv-to-json' ? 'json' : 'csv'}
+        />
       </ToolWorkspace>
     </ToolPageLayout>
   );
 }
+

@@ -55,7 +55,7 @@ export function UnitConverterConsole({
             <button
               type="button"
               onClick={() => onOpenPicker('from')}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-border/80 bg-background hover:bg-zinc-100 dark:hover:bg-zinc-800 text-foreground transition-all shadow-xs active:scale-98 cursor-pointer"
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-border/80 bg-background hover:bg-zinc-100 dark:hover:bg-zinc-800 text-foreground transition-colors duration-150 shadow-xs active:scale-98 cursor-pointer"
               aria-label={isFr ? "Changer l'unité A" : 'Change unit A'}
             >
               <span className="px-2 py-0.5 rounded-md font-mono font-bold text-xs bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 border border-border/60">
@@ -79,6 +79,11 @@ export function UnitConverterConsole({
               value={fromValue}
               onChange={(e) => onFromChange(e.target.value)}
               placeholder="0"
+              aria-label={
+                isFr
+                  ? `Valeur en ${unitNames?.[fromDef.id] ?? fromDef.name}`
+                  : `Value in ${unitNames?.[fromDef.id] ?? fromDef.name}`
+              }
               className="w-full text-4xl sm:text-5xl font-mono font-bold tracking-tight text-foreground bg-transparent border-none outline-none p-0 focus:ring-0"
             />
             <span className="text-lg sm:text-xl font-mono font-medium text-muted-foreground select-none shrink-0">
@@ -97,7 +102,7 @@ export function UnitConverterConsole({
               type="button"
               onClick={onSwap}
               aria-label={isFr ? 'Inverser les unités' : 'Swap units'}
-              className="w-10 h-10 rounded-full border border-border/80 bg-background text-foreground shadow-sm flex items-center justify-center hover:border-[#FF6B35] hover:text-[#FF6B35] dark:hover:border-[#FF6B35] transition-all duration-200 active:scale-90 active:rotate-180 cursor-pointer"
+              className="w-10 h-10 rounded-full border border-border/80 bg-background text-foreground shadow-sm flex items-center justify-center hover:border-[var(--accent,#f97316)] hover:text-[var(--accent,#f97316)] dark:hover:border-[var(--accent,#f97316)] transition-colors duration-150 active:scale-90 cursor-pointer"
             >
               <ArrowLeftRight
                 className={`w-4 h-4 transition-transform duration-200 ${
@@ -114,7 +119,7 @@ export function UnitConverterConsole({
             <button
               type="button"
               onClick={() => onOpenPicker('to')}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-border/80 bg-background hover:bg-zinc-100 dark:hover:bg-zinc-800 text-foreground transition-all shadow-xs active:scale-98 cursor-pointer"
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-border/80 bg-background hover:bg-zinc-100 dark:hover:bg-zinc-800 text-foreground transition-colors duration-150 shadow-xs active:scale-98 cursor-pointer"
               aria-label={isFr ? "Changer l'unité B" : 'Change unit B'}
             >
               <span className="px-2 py-0.5 rounded-md font-mono font-bold text-xs bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 border border-border/60">
@@ -138,6 +143,11 @@ export function UnitConverterConsole({
               value={toValue}
               onChange={(e) => onToChange(e.target.value)}
               placeholder="0"
+              aria-label={
+                isFr
+                  ? `Valeur en ${unitNames?.[toDef.id] ?? toDef.name}`
+                  : `Value in ${unitNames?.[toDef.id] ?? toDef.name}`
+              }
               className="w-full text-4xl sm:text-5xl font-mono font-bold tracking-tight text-foreground bg-transparent border-none outline-none p-0 focus:ring-0"
             />
             <div className="flex items-center gap-2 shrink-0">

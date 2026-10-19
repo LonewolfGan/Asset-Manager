@@ -11,6 +11,7 @@ export interface JsonDiffInputWorkbenchProps {
   onMouseDownResize: (e: React.MouseEvent) => void;
   onFileUploadA: (file: File) => void;
   onFileUploadB: (file: File) => void;
+  onLoadSample?: () => void;
   isFr: boolean;
 }
 
@@ -23,87 +24,142 @@ export function JsonDiffInputWorkbench({
   onMouseDownResize,
   onFileUploadA,
   onFileUploadB,
+  onLoadSample,
   isFr,
 }: JsonDiffInputWorkbenchProps) {
   const lineCountLeft = inputLeft ? inputLeft.split('\n').length : 0;
   const lineCountRight = inputRight ? inputRight.split('\n').length : 0;
 
+  const handleDropA = (e: React.DragEvent) => {
+    e.preventDefault();
+    if (e.dataTransfer.files?.[0]) {
+      onFileUploadA(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleDropB = (e: React.DragEvent) => {
+    e.preventDefault();
+    if (e.dataTransfer.files?.[0]) {
+      onFileUploadB(e.dataTransfer.files[0]);
+    }
+  };
+
   return (
     <div className="w-full rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-950 overflow-hidden">
-      <div className="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-zinc-200 dark:divide-white/10">
-        {/* Volet Gauche : Original */}
-        <div className="flex flex-col">
-          <div className="h-10 px-4 border-b border-zinc-200 dark:border-white/10 bg-zinc-50/50 dark:bg-zinc-900/30 flex items-center justify-between shrink-0">
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-                {isFr ? 'Original' : 'Original'}
-              </span>
-              {inputLeft && (
-                <span className="text-[11px] font-mono text-zinc-400">
-                  ({lineCountLeft} {isFr ? 'lignes' : 'lines'})
+      <div className="relative">
+        <div className="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-zinc-200 dark:divide-white/10">
+          {/* Volet Gauche : Original */}
+          <div
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={handleDropA}
+            className="flex flex-col"
+          >
+            <div className="h-10 px-4 border-b border-zinc-200 dark:border-white/10 bg-zinc-50/50 dark:bg-zinc-900/30 flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+                  {isFr ? 'Original' : 'Original'}
                 </span>
-              )}
+                {inputLeft && (
+                  <span className="text-[11px] font-mono text-zinc-400">
+                    ({lineCountLeft} {isFr ? 'lignes' : 'lines'})
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                <label className="text-xs text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100 px-2 py-0.5 rounded transition-colors cursor-pointer flex items-center gap-1">
+                  <Upload className="w-3 h-3" />
+                  <span>{isFr ? 'Importer' : 'Import'}</span>
+                  <input
+                    type="file"
+                    accept=".json,.txt,application/json"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        onFileUploadA(file);
+                        e.target.value = '';
+                      }
+                    }}
+                  />
+                </label>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <label className="text-xs text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100 px-2 py-0.5 rounded transition-colors cursor-pointer flex items-center gap-1">
-                <Upload className="w-3 h-3" />
-                <span>{isFr ? 'Importer' : 'Import'}</span>
-                <input
-                  type="file"
-                  accept=".json,.txt,application/json"
-                  className="hidden"
-                  onChange={(e) => e.target.files?.[0] && onFileUploadA(e.target.files[0])}
-                />
-              </label>
-            </div>
+
+            <textarea
+              value={inputLeft}
+              onChange={(e) => onInputLeftChange(e.target.value)}
+              placeholder={isFr ? 'Collez le JSON original ici ou déposez un fichier...' : 'Paste original JSON here or drop file...'}
+              spellCheck={false}
+              style={{ height: `${editorHeight}px` }}
+              className="p-4 bg-transparent resize-none outline-none text-zinc-800 dark:text-zinc-200 font-mono text-xs leading-relaxed overflow-y-auto"
+            />
           </div>
 
-          <textarea
-            value={inputLeft}
-            onChange={(e) => onInputLeftChange(e.target.value)}
-            placeholder={isFr ? 'Collez le JSON original ici...' : 'Paste original JSON here...'}
-            spellCheck={false}
-            style={{ height: `${editorHeight}px` }}
-            className="p-4 bg-transparent resize-none outline-none text-zinc-800 dark:text-zinc-200 font-mono text-xs leading-relaxed overflow-y-auto"
-          />
+          {/* Volet Droit : Modifié */}
+          <div
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={handleDropB}
+            className="flex flex-col"
+          >
+            <div className="h-10 px-4 border-b border-zinc-200 dark:border-white/10 bg-zinc-50/50 dark:bg-zinc-900/30 flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+                  {isFr ? 'Modifié' : 'Modified'}
+                </span>
+                {inputRight && (
+                  <span className="text-[11px] font-mono text-zinc-400">
+                    ({lineCountRight} {isFr ? 'lignes' : 'lines'})
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                <label className="text-xs text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100 px-2 py-0.5 rounded transition-colors cursor-pointer flex items-center gap-1">
+                  <Upload className="w-3 h-3" />
+                  <span>{isFr ? 'Importer' : 'Import'}</span>
+                  <input
+                    type="file"
+                    accept=".json,.txt,application/json"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        onFileUploadB(file);
+                        e.target.value = '';
+                      }
+                    }}
+                  />
+                </label>
+              </div>
+            </div>
+
+            <textarea
+              value={inputRight}
+              onChange={(e) => onInputRightChange(e.target.value)}
+              placeholder={isFr ? 'Collez le JSON modifié ici ou déposez un fichier...' : 'Paste modified JSON here or drop file...'}
+              spellCheck={false}
+              style={{ height: `${editorHeight}px` }}
+              className="p-4 bg-transparent resize-none outline-none text-zinc-800 dark:text-zinc-200 font-mono text-xs leading-relaxed overflow-y-auto"
+            />
+          </div>
         </div>
 
-        {/* Volet Droit : Modifié */}
-        <div className="flex flex-col">
-          <div className="h-10 px-4 border-b border-zinc-200 dark:border-white/10 bg-zinc-50/50 dark:bg-zinc-900/30 flex items-center justify-between shrink-0">
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-                {isFr ? 'Modifié' : 'Modified'}
+        {!inputLeft && !inputRight && onLoadSample && (
+          <div className="absolute inset-x-0 bottom-6 flex flex-col items-center justify-center p-4 pointer-events-none">
+            <div className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-zinc-100/90 dark:bg-zinc-800/90 border border-zinc-200 dark:border-white/10 shadow-sm backdrop-blur-sm pointer-events-auto">
+              <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
+                {isFr ? 'Atelier vide :' : 'Empty workspace:'}
               </span>
-              {inputRight && (
-                <span className="text-[11px] font-mono text-zinc-400">
-                  ({lineCountRight} {isFr ? 'lignes' : 'lines'})
-                </span>
-              )}
-            </div>
-            <div className="flex items-center gap-2">
-              <label className="text-xs text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100 px-2 py-0.5 rounded transition-colors cursor-pointer flex items-center gap-1">
-                <Upload className="w-3 h-3" />
-                <span>{isFr ? 'Importer' : 'Import'}</span>
-                <input
-                  type="file"
-                  accept=".json,.txt,application/json"
-                  className="hidden"
-                  onChange={(e) => e.target.files?.[0] && onFileUploadB(e.target.files[0])}
-                />
-              </label>
+              <button
+                type="button"
+                data-sample="load-default"
+                onClick={onLoadSample}
+                className="px-2.5 py-1 text-[11px] font-medium rounded-md bg-white dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-600 transition-colors cursor-pointer border border-zinc-200/60 dark:border-white/5"
+              >
+                {isFr ? 'Charger un exemple de comparaison' : 'Load comparison sample'}
+              </button>
             </div>
           </div>
-
-          <textarea
-            value={inputRight}
-            onChange={(e) => onInputRightChange(e.target.value)}
-            placeholder={isFr ? 'Collez le JSON modifié ici...' : 'Paste modified JSON here...'}
-            spellCheck={false}
-            style={{ height: `${editorHeight}px` }}
-            className="p-4 bg-transparent resize-none outline-none text-zinc-800 dark:text-zinc-200 font-mono text-xs leading-relaxed overflow-y-auto"
-          />
-        </div>
+        )}
       </div>
 
       {/* Poignée de redimensionnement vertical synchronisé à 100% */}

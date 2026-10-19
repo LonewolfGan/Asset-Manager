@@ -28,6 +28,7 @@ export default function HashGenerator() {
     setInputMode,
     inputText,
     handleTextChange,
+    handleLoadSample,
     history,
     handleUndo,
     fileInfo,
@@ -94,6 +95,7 @@ export default function HashGenerator() {
                 textareaRef={textareaRef}
                 fileInputRef={fileInputRef}
                 onTextChange={handleTextChange}
+                onLoadSample={handleLoadSample}
                 onProcessFile={handleProcessFile}
                 onClearFile={() => setFileInfo(null)}
                 setIsDragOver={setIsDragOver}
@@ -125,6 +127,7 @@ export default function HashGenerator() {
               isCalculating={isCalculating}
               isUppercase={isUppercase}
               enableHmac={enableHmac}
+              hmacSecret={hmacSecret}
               inputMode={inputMode}
               compareResult={compareResult}
             />

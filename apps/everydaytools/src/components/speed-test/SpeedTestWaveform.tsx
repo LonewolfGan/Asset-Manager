@@ -23,11 +23,11 @@ export const SpeedTestWaveform: React.FC<SpeedTestWaveformProps> = ({
   return (
     <div className="w-full max-w-sm h-10 mt-3 flex flex-col items-center">
       <div className="w-full h-6 relative">
-        <svg className="w-full h-full overflow-visible" preserveAspectRatio="none">
+        <svg viewBox="0 0 320 24" className="w-full h-full overflow-visible" preserveAspectRatio="none">
           <polyline
             points={points}
             fill="none"
-            stroke="#FF6B35"
+            stroke="var(--accent, #f97316)"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"

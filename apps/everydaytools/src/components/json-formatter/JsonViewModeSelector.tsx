@@ -93,7 +93,7 @@ export function JsonViewModeSelector({
         disabled={isActionDisabled}
         className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors cursor-pointer disabled:opacity-40 disabled:pointer-events-none ${
           yamlMode
-            ? 'bg-[#FF6B35] text-white font-semibold'
+            ? 'bg-[var(--accent)] text-white font-semibold'
             : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800/50'
         }`}
       >

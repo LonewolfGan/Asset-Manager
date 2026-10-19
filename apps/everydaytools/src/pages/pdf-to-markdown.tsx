@@ -10,6 +10,7 @@ import {
   ConversionResult,
   TextPreviewDialog,
   DocumentNextActionModal,
+  ReciprocalTitle,
 } from '@/components/conversion';
 import { usePdfToMarkdownWorkflow } from '@/hooks/use-pdf-to-markdown-workflow';
 
@@ -47,7 +48,14 @@ export default function PdfToMarkdown() {
   return (
     <ToolPageLayout
       breadcrumb={[t.nav.breadcrumb.home, t.nav.breadcrumb.pdf, title]}
-      title={title}
+      title={
+        <ReciprocalTitle
+          currentSlug="pdf-to-markdown"
+          isFr={isFr}
+          getCurrentFile={() => file}
+          fallbackTitle={title}
+        />
+      }
       description={desc}
       seoSlug="pdf-to-markdown"
     >

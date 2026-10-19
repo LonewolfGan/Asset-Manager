@@ -2,11 +2,15 @@ import React from 'react';
 import { KeyRound, BookOpen } from 'lucide-react';
 import { PasswordRandomControls } from './PasswordRandomControls';
 import { PasswordPassphraseControls } from './PasswordPassphraseControls';
+import { PasswordPresetsBar } from './PasswordPresetsBar';
 import type { GeneratorMode } from '@/hooks/use-password-generator-workflow';
+import type { PasswordPreset } from '@/lib/password-generator-presets';
 
 export interface PasswordControlsDeckProps {
   mode: GeneratorMode;
   onModeChange: (mode: GeneratorMode) => void;
+  activePresetId?: string | null;
+  onSelectPreset?: (preset: PasswordPreset) => void;
   // Random mode props
   length: number;
   onLengthChange: (val: number) => void;
@@ -46,6 +50,8 @@ export interface PasswordControlsDeckProps {
 export function PasswordControlsDeck({
   mode,
   onModeChange,
+  activePresetId = null,
+  onSelectPreset,
   length,
   onLengthChange,
   uppercase,
@@ -81,6 +87,15 @@ export function PasswordControlsDeck({
 }: PasswordControlsDeckProps) {
   return (
     <div className="w-full max-w-4xl mx-auto flex flex-col gap-8">
+      {/* Security Presets Bar */}
+      {onSelectPreset && (
+        <PasswordPresetsBar
+          activePresetId={activePresetId}
+          onSelectPreset={onSelectPreset}
+          isFr={isFr}
+        />
+      )}
+
       {/* Mode Tabs (Segmented) */}
       <div className="flex items-center justify-center">
         <div className="inline-flex items-center p-1 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/80 dark:border-white/10">
@@ -90,7 +105,7 @@ export function PasswordControlsDeck({
               onStopSpeaking();
               onModeChange('random');
             }}
-            className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-mono transition-all cursor-pointer ${
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-mono transition-colors duration-150 cursor-pointer ${
               mode === 'random'
                 ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white font-semibold shadow-xs'
                 : 'text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white'
@@ -106,7 +121,7 @@ export function PasswordControlsDeck({
               onStopSpeaking();
               onModeChange('passphrase');
             }}
-            className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-mono transition-all cursor-pointer ${
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-mono transition-colors duration-150 cursor-pointer ${
               mode === 'passphrase'
                 ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white font-semibold shadow-xs'
                 : 'text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white'

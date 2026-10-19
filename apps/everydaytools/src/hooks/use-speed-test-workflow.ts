@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { trackToolUsed } from '@/lib/analytics';
 import { assessNetworkQuality, type SpeedTestAssessment } from '@/lib/speed-test-logic';
 import { formatSpeedReportSummary } from '@/lib/speed-test-dial-logic';
@@ -30,6 +30,13 @@ export function useSpeedTestWorkflow(isFr: boolean) {
     }
     setPhase('idle');
     setCurrentSpeed(0);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      abortControllerRef.current?.abort();
+      abortControllerRef.current = null;
+    };
   }, []);
 
   const runTest = useCallback(async () => {

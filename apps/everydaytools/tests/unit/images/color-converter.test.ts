@@ -49,4 +49,25 @@ describe('color-converter-logic', () => {
     const harmonies = generateHarmonies({ h: 0, s: 100, l: 50 });
     expect(harmonies.complementary).toBe('#00FFFF');
   });
+
+  it('disambiguates functional prefixes in parseAnyColor correctly', async () => {
+    const { parseAnyColor, parseRgb } = await import('../../../src/lib/color-converter-logic');
+    
+    // RGB parsing without degree artifact
+    expect(parseRgb('rgb(25, 50, 75)')).toEqual({ r: 25, g: 50, b: 75 });
+
+    // Functional prefix routing
+    const cmykResult = parseAnyColor('cmyk(0, 50, 100, 0)');
+    expect(cmykResult).toEqual({ r: 255, g: 128, b: 0 });
+
+    const hsvResult = parseAnyColor('hsv(0, 100, 100)');
+    expect(hsvResult).toEqual({ r: 255, g: 0, b: 0 });
+
+    const hslResult = parseAnyColor('hsl(120, 100%, 50%)');
+    expect(hslResult).toEqual({ r: 0, g: 255, b: 0 });
+
+    // CSS variable syntax
+    const cssVarResult = parseAnyColor('--brand-color: #1A6BFF;');
+    expect(cssVarResult).toEqual({ r: 26, g: 107, b: 255 });
+  });
 });

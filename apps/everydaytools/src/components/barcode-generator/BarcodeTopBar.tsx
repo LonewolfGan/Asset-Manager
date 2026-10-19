@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   RotateCcw,
+  RotateCw,
   Printer,
   Download,
   ChevronDown,
@@ -18,6 +19,8 @@ interface BarcodeTopBarProps {
   onSelectSymbology: (symbology: BarcodeSymbology) => void;
   historyLength: number;
   onUndo: () => void;
+  canRedo?: boolean;
+  onRedo?: () => void;
   validation: BarcodeValidationResult;
   onPrint: () => void;
   onCopyPng: () => Promise<void>;
@@ -35,6 +38,8 @@ export function BarcodeTopBar({
   onSelectSymbology,
   historyLength,
   onUndo,
+  canRedo,
+  onRedo,
   validation,
   onPrint,
   onCopyPng,
@@ -78,10 +83,25 @@ export function BarcodeTopBar({
             <button
               type="button"
               onClick={onUndo}
-              className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+              aria-label={isFr ? 'Annuler' : 'Undo'}
+              className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors duration-150 cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">{isFr ? 'Annuler' : 'Undo'}</span>
+            </button>
+          </ActionTooltip>
+        )}
+
+        {canRedo && onRedo && (
+          <ActionTooltip label={isFr ? 'Rétablir (Ctrl+Y)' : 'Redo (Ctrl+Y)'}>
+            <button
+              type="button"
+              onClick={onRedo}
+              aria-label={isFr ? 'Rétablir' : 'Redo'}
+              className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors duration-150 cursor-pointer"
+            >
+              <RotateCw className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">{isFr ? 'Rétablir' : 'Redo'}</span>
             </button>
           </ActionTooltip>
         )}
@@ -92,7 +112,8 @@ export function BarcodeTopBar({
               <button
                 type="button"
                 onClick={onPrint}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-[0.98] cursor-pointer"
+                aria-label={isFr ? 'Imprimer le code-barres' : 'Print barcode'}
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors duration-150 active:scale-[0.98] cursor-pointer"
               >
                 <Printer className="w-3.5 h-3.5 text-zinc-500" />
                 <span>{isFr ? 'Imprimer' : 'Print'}</span>
@@ -132,7 +153,8 @@ export function BarcodeTopBar({
               <PopoverTrigger asChild>
                 <button
                   type="button"
-                  className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-[#FF6B35] text-white hover:bg-[#e85a26] transition-all active:scale-[0.98] shadow-xs cursor-pointer"
+                  aria-label={isFr ? 'Menu de téléchargement' : 'Download menu'}
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-[var(--accent)] text-white hover:opacity-90 transition-colors duration-150 active:scale-[0.98] shadow-xs cursor-pointer"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>{isFr ? 'Télécharger' : 'Download'}</span>

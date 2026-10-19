@@ -8,7 +8,7 @@ import {
 export function useBackgroundRemoverBackdrop() {
   const [viewMode, setViewMode] = useState<ViewMode>('split');
   const [backdropType, setBackdropType] = useState<BackdropType>('transparent');
-  const [customColor, setCustomColor] = useState<string>('#2563eb');
+  const [customColor, setCustomColor] = useState<string>('');
   const [customBgFile, setCustomBgFile] = useState<File | null>(null);
   const [customBgUrl, setCustomBgUrl] = useState<string | null>(null);
   const customBgInputRef = useRef<HTMLInputElement | null>(null);
@@ -40,6 +40,7 @@ export function useBackgroundRemoverBackdrop() {
     }
     setViewMode('split');
     setBackdropType('transparent');
+    setCustomColor('');
   }, [customBgUrl]);
 
   const stageBackgroundStyle = getStageBackgroundStyle(

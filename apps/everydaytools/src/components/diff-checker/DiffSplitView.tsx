@@ -29,13 +29,13 @@ export function DiffSplitView({
         <div className="px-4 flex items-center justify-between text-zinc-600 dark:text-zinc-400">
           <span>{isFr ? 'Texte Original' : 'Original Text'}</span>
           <span className="font-mono text-zinc-400">
-            {textA.split('\n').length} {isFr ? 'lignes' : 'lines'}
+            {textA ? textA.split('\n').length : 0} {isFr ? 'lignes' : 'lines'}
           </span>
         </div>
         <div className="px-4 flex items-center justify-between text-zinc-600 dark:text-zinc-400">
           <span>{isFr ? 'Texte Modifié' : 'Modified Text'}</span>
           <span className="font-mono text-zinc-400">
-            {textB.split('\n').length} {isFr ? 'lignes' : 'lines'}
+            {textB ? textB.split('\n').length : 0} {isFr ? 'lignes' : 'lines'}
           </span>
         </div>
       </div>

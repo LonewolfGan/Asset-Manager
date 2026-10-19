@@ -32,6 +32,7 @@ export function ColorFormatsList({
           <div className="flex-1 min-w-0">
             <input
               type="text"
+              aria-label={fmt.label}
               value={fmt.value}
               onChange={(e) => fmt.onUpdate(e.target.value)}
               className="w-full bg-transparent font-mono text-sm sm:text-base font-bold text-zinc-950 dark:text-zinc-50 outline-none tracking-tight truncate selection:bg-zinc-200 dark:selection:bg-zinc-800"

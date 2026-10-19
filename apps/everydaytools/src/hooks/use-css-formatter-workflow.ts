@@ -9,13 +9,25 @@ import {
   minifyCssAdvanced,
   calculateCssMetrics,
   generateCssSandboxHtml,
+  detectCssIssues,
+  CSS_SAMPLES,
   type Mode,
   type IndentSize,
   type ViewOutput,
   type DeviceWidth,
+  type CssIssue,
 } from '@/lib/css-formatter-logic';
 
 hljs.registerLanguage('css', cssLang);
+
+export function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
 
 export interface UseCssFormatterWorkflowOptions {
   isFr: boolean;
@@ -43,10 +55,18 @@ export function useCssFormatterWorkflow({ isFr }: UseCssFormatterWorkflowOptions
 
   // Drag & drop file status
   const [isDragOver, setIsDragOver] = useState(false);
+  const lastPushedInputRef = useRef(input);
 
   const handleInputChange = useCallback(
     (val: string) => {
-      setHistory((prev) => [...prev.slice(-30), input]);
+      if (
+        Math.abs(val.length - lastPushedInputRef.current.length) > 5 ||
+        val === '' ||
+        lastPushedInputRef.current === ''
+      ) {
+        setHistory((prev) => [...prev.slice(-30), input]);
+        lastPushedInputRef.current = input;
+      }
       setInput(val);
     },
     [input]
@@ -116,7 +136,7 @@ export function useCssFormatterWorkflow({ isFr }: UseCssFormatterWorkflowOptions
     try {
       return hljs.highlight(output, { language: 'css', ignoreIllegals: true }).value;
     } catch {
-      return output;
+      return escapeHtml(output);
     }
   }, [output]);
 
@@ -124,6 +144,11 @@ export function useCssFormatterWorkflow({ isFr }: UseCssFormatterWorkflowOptions
   const metrics = useMemo(() => {
     return calculateCssMetrics(input, output);
   }, [input, output]);
+
+  // Détection des anomalies de syntaxe CSS
+  const issues = useMemo(() => {
+    return detectCssIssues(input);
+  }, [input]);
 
   // Download handler via SSOT download module
   const handleDownload = useCallback(() => {
@@ -142,12 +167,24 @@ export function useCssFormatterWorkflow({ isFr }: UseCssFormatterWorkflowOptions
     toast.info(isFr ? 'Atelier vidé' : 'Workspace cleared');
   }, [input, isFr]);
 
+  const handleLoadSample = useCallback(
+    (key: keyof typeof CSS_SAMPLES) => {
+      const sample = CSS_SAMPLES[key];
+      if (sample) {
+        setHistory((prev) => [...prev.slice(-30), input]);
+        setInput(sample);
+        toast.success(isFr ? 'Exemple CSS chargé' : 'CSS sample loaded');
+      }
+    },
+    [input, isFr]
+  );
+
   const handleFileUpload = useCallback(
     (file: File) => {
       const reader = new FileReader();
       reader.onload = (e) => {
-        const text = e.target?.result as string;
-        if (text) {
+        const text = e.target?.result;
+        if (typeof text === 'string') {
           setHistory((prev) => [...prev.slice(-30), input]);
           setInput(text);
           toast.success(
@@ -192,11 +229,13 @@ export function useCssFormatterWorkflow({ isFr }: UseCssFormatterWorkflowOptions
     isDragOver,
     setIsDragOver,
     metrics,
+    issues,
     hasContent,
     sandboxHtml,
     handleInputChange,
     handleUndo,
     handleClear,
+    handleLoadSample,
     handleFileUpload,
     handleDownload,
     handleMouseDownResize,

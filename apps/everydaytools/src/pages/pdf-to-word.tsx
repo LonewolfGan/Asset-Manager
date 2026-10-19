@@ -12,7 +12,7 @@ import {
   ConversionStaging,
   ConversionConduit,
   ConversionResult,
-  DocumentNextActionModal,
+  ReciprocalTitle,
   type ConversionFormat,
 } from '@/components/conversion';
 
@@ -48,7 +48,6 @@ export default function PdfToWord() {
   const [error, setError] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [isNextActionOpen, setIsNextActionOpen] = useState(false);
 
   const file = files[0];
 
@@ -57,7 +56,6 @@ export default function PdfToWord() {
     setResult(null);
     setError(null);
     setIsProcessing(false);
-    setIsNextActionOpen(false);
   };
 
   const validateAndSetFile = useCallback((selectedFile: File) => {
@@ -166,10 +164,6 @@ export default function PdfToWord() {
     a.click();
     document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(url), 1000);
-
-    setTimeout(() => {
-      setIsNextActionOpen(true);
-    }, 450);
   };
 
   const title = t.tools['pdf-to-word']?.title ?? (isFr ? 'PDF en Word' : 'PDF to Word');
@@ -182,7 +176,14 @@ export default function PdfToWord() {
   return (
     <ToolPageLayout
       breadcrumb={[t.nav.breadcrumb.home, t.nav.breadcrumb.pdf, title]}
-      title={title}
+      title={
+        <ReciprocalTitle
+          currentSlug="pdf-to-word"
+          isFr={isFr}
+          getCurrentFile={() => file}
+          fallbackTitle={title}
+        />
+      }
       description={desc}
       seoSlug="pdf-to-word"
     >
@@ -270,16 +271,6 @@ export default function PdfToWord() {
               />
             )}
           </AnimatePresence>
-
-          {/* Continuum Modal */}
-          <DocumentNextActionModal
-            toolId="pdf-to-word"
-            isOpen={isNextActionOpen}
-            onClose={() => setIsNextActionOpen(false)}
-            resultBlob={result?.blob}
-            resultFilename={result?.filename}
-            formatType="docx"
-          />
         </div>
       </ToolWorkspace>
     </ToolPageLayout>

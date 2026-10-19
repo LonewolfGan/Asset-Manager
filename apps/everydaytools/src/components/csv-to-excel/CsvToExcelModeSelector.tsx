@@ -20,7 +20,7 @@ export function CsvToExcelModeSelector({
         <button
           type="button"
           onClick={() => onModeChange('upload')}
-          className={`flex items-center gap-2 px-5 py-2 rounded-xl text-xs font-medium transition-all cursor-pointer ${
+          className={`flex items-center gap-2 px-5 py-2 rounded-xl text-xs font-medium transition-colors duration-150 cursor-pointer ${
             mode === 'upload'
               ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-sm'
               : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
@@ -32,7 +32,7 @@ export function CsvToExcelModeSelector({
         <button
           type="button"
           onClick={() => onModeChange('paste')}
-          className={`flex items-center gap-2 px-5 py-2 rounded-xl text-xs font-medium transition-all cursor-pointer ${
+          className={`flex items-center gap-2 px-5 py-2 rounded-xl text-xs font-medium transition-colors duration-150 cursor-pointer ${
             mode === 'paste'
               ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-sm'
               : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'

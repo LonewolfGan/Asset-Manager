@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { trackToolUsed } from '@/lib/analytics';
 import { toast } from 'sonner';
+import { consumeHandoffText } from '@/lib/file-handoff';
 import {
   generateHarmonyPalette,
   adjustColorLightness,
@@ -17,6 +18,8 @@ export interface HarmonyOption {
   desc: string;
 }
 
+const MAX_HISTORY = 30;
+
 export function useColorPaletteWorkflow(isFr: boolean) {
   const harmonyModes: HarmonyOption[] = [
     { id: 'trending', label: isFr ? 'Tendance' : 'Trending', desc: isFr ? 'Équilibre chromatique contemporain' : 'Contemporary chromatic balance' },
@@ -31,52 +34,119 @@ export function useColorPaletteWorkflow(isFr: boolean) {
   const [mode, setMode] = useState<HarmonyMode>('trending');
   const [count, setCount] = useState<number>(5);
   const [format, setFormat] = useState<ColorFormat>('hex');
-  const [palette, setPalette] = useState<PaletteColor[]>(() => generateHarmonyPalette('trending', [], 5));
+  const [history, setHistory] = useState<PaletteColor[][]>(() => [
+    generateHarmonyPalette('trending', [], 5),
+  ]);
+  const [historyIndex, setHistoryIndex] = useState<number>(0);
   const [isMockupModalOpen, setIsMockupModalOpen] = useState<boolean>(false);
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
+  const palette = history[historyIndex] ?? history[0];
+
+  const pushHistory = useCallback((nextPalette: PaletteColor[]) => {
+    setHistory((prev) => {
+      const sliced = prev.slice(0, historyIndex + 1);
+      const updated = [...sliced, nextPalette];
+      return updated.length > MAX_HISTORY ? updated.slice(updated.length - MAX_HISTORY) : updated;
+    });
+    setHistoryIndex((prev) => Math.min(prev + 1, MAX_HISTORY - 1));
+  }, [historyIndex]);
+
+  useEffect(() => {
+    const handoffText = consumeHandoffText();
+    if (handoffText && handoffText.trim()) {
+      const hexMatches = handoffText.match(/#[0-9A-Fa-f]{6}/g);
+      if (hexMatches && hexMatches.length > 0) {
+        const uniqueHexes = Array.from(new Set(hexMatches));
+        const seeded: PaletteColor[] = uniqueHexes.slice(0, 8).map((hex, i) => {
+          const base = generateHarmonyPalette('trending', [], 1)[0];
+          return updateColorFromHex(hex, { ...base, id: `seed-${i}-${hex}` });
+        });
+        const targetCount = Math.max(3, Math.min(8, seeded.length < 3 ? 5 : seeded.length));
+        let fullPalette = seeded;
+        if (fullPalette.length < targetCount) {
+          const needed = targetCount - fullPalette.length;
+          const additions = generateHarmonyPalette('trending', fullPalette, targetCount).slice(-needed);
+          fullPalette = [...fullPalette, ...additions];
+        }
+        setCount(fullPalette.length);
+        setHistory([fullPalette]);
+        setHistoryIndex(0);
+        toast.success(isFr ? 'Palette importée depuis le transfert' : 'Palette imported from handoff');
+      }
+    }
+  }, [isFr]);
+
   const handleRegenerate = useCallback(() => {
     setIsRefreshing(true);
     setTimeout(() => setIsRefreshing(false), 260);
-    setPalette((prev) => generateHarmonyPalette(mode, prev, count));
+    const next = generateHarmonyPalette(mode, palette, count);
+    pushHistory(next);
     trackToolUsed('color-palette', `regenerate-${mode}-${count}`);
-  }, [mode, count]);
+  }, [mode, palette, count, pushHistory]);
+
+  const handleUndo = useCallback(() => {
+    if (historyIndex > 0) {
+      setHistoryIndex((prev) => prev - 1);
+    }
+  }, [historyIndex]);
+
+  const handleRedo = useCallback(() => {
+    if (historyIndex < history.length - 1) {
+      setHistoryIndex((prev) => prev + 1);
+    }
+  }, [historyIndex, history.length]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
+        return;
+      }
       if (e.code === 'Space') {
-        const target = e.target as HTMLElement | null;
-        if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
-          return;
-        }
         e.preventDefault();
         if (target && target.tagName === 'BUTTON') {
           target.blur();
         }
         handleRegenerate();
+      } else if ((e.ctrlKey || e.metaKey) && !e.shiftKey && (e.key === 'z' || e.key === 'Z')) {
+        e.preventDefault();
+        handleUndo();
+      } else if (
+        ((e.ctrlKey || e.metaKey) && (e.key === 'y' || e.key === 'Y')) ||
+        ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'z' || e.key === 'Z'))
+      ) {
+        e.preventDefault();
+        handleRedo();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleRegenerate]);
+  }, [handleRegenerate, handleUndo, handleRedo]);
 
   const handleModeChange = useCallback((newMode: HarmonyMode) => {
     setMode(newMode);
-    setPalette((prev) => generateHarmonyPalette(newMode, prev, count));
-  }, [count]);
+    const next = generateHarmonyPalette(newMode, palette, count);
+    pushHistory(next);
+  }, [palette, count, pushHistory]);
 
   const handleCountChange = useCallback((newCount: number) => {
     const validCount = Math.max(3, Math.min(8, newCount));
     setCount(validCount);
-    setPalette((prev) => generateHarmonyPalette(mode, prev, validCount));
-  }, [mode]);
+    const next = generateHarmonyPalette(mode, palette, validCount);
+    pushHistory(next);
+  }, [mode, palette, pushHistory]);
 
   const toggleLock = useCallback((idx: number) => {
-    setPalette((prev) =>
-      prev.map((c, i) => (i === idx ? { ...c, isLocked: !c.isLocked } : c))
-    );
-  }, []);
+    setHistory((prev) => {
+      const current = prev[historyIndex];
+      if (!current) return prev;
+      const updated = [...prev];
+      updated[historyIndex] = current.map((c, i) => (i === idx ? { ...c, isLocked: !c.isLocked } : c));
+      return updated;
+    });
+  }, [historyIndex]);
 
   const getColorValue = useCallback((color: PaletteColor): string => {
     if (format === 'rgb') {
@@ -150,18 +220,18 @@ export function useColorPaletteWorkflow(isFr: boolean) {
   }, [isFr]);
 
   const handleAdjustLightness = useCallback((idx: number, delta: number) => {
-    setPalette((prev) =>
-      prev.map((c, i) => (i === idx ? adjustColorLightness(c, delta) : c))
-    );
-  }, []);
+    const next = palette.map((c, i) => (i === idx ? adjustColorLightness(c, delta) : c));
+    pushHistory(next);
+  }, [palette, pushHistory]);
 
   const handleCustomHexChange = useCallback((idx: number, newHex: string) => {
-    setPalette((prev) =>
-      prev.map((c, i) => (i === idx ? updateColorFromHex(newHex, c) : c))
-    );
-  }, []);
+    const next = palette.map((c, i) => (i === idx ? updateColorFromHex(newHex, c) : c));
+    pushHistory(next);
+  }, [palette, pushHistory]);
 
   const lockedCount = palette.filter((c) => c.isLocked).length;
+  const canUndo = historyIndex > 0;
+  const canRedo = historyIndex < history.length - 1;
 
   return {
     mode,
@@ -175,6 +245,10 @@ export function useColorPaletteWorkflow(isFr: boolean) {
     copiedIdx,
     isRefreshing,
     lockedCount,
+    canUndo,
+    canRedo,
+    handleUndo,
+    handleRedo,
     handleRegenerate,
     handleModeChange,
     handleCountChange,

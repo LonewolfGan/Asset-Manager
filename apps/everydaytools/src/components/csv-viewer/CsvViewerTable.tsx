@@ -1,6 +1,5 @@
 import React from 'react';
 import { ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
-import { ActionTooltip } from '@/components/ui/tooltip';
 import type { IndexedTabularRow, TabularSortDir } from '@/lib/csv-data-logic';
 
 export interface CsvViewerTableProps {
@@ -43,14 +42,28 @@ export const CsvViewerTable: React.FC<CsvViewerTableProps> = ({
               <th
                 key={colIdx}
                 onClick={() => onSort(colIdx)}
-                className="min-w-[140px] px-3.5 py-3 border-r border-black/[0.06] dark:border-white/5 last:border-r-0 cursor-pointer hover:bg-black/[0.03] dark:hover:bg-white/[0.05] transition-colors select-none group"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onSort(colIdx);
+                  }
+                }}
+                tabIndex={0}
+                aria-sort={
+                  sortCol === colIdx && sortDir
+                    ? sortDir === 'asc'
+                      ? 'ascending'
+                      : 'descending'
+                    : 'none'
+                }
+                className="min-w-[140px] px-3.5 py-3 border-r border-black/[0.06] dark:border-white/5 last:border-r-0 cursor-pointer hover:bg-black/[0.03] dark:hover:bg-white/[0.05] transition-colors select-none group focus:outline-none focus:bg-black/[0.05] dark:focus:bg-white/[0.08]"
               >
                 <div className="flex items-center justify-between gap-2">
                   <span className="truncate font-semibold text-zinc-900 dark:text-zinc-100">
                     {header}
                   </span>
                   <div className="shrink-0 text-zinc-400 group-hover:text-zinc-700 dark:group-hover:text-zinc-200">
-                    {sortCol === colIdx ? (
+                    {sortCol === colIdx && sortDir !== null ? (
                       sortDir === 'asc' ? (
                         <ArrowUp size={13} className="text-zinc-900 dark:text-zinc-100" />
                       ) : (
@@ -86,21 +99,10 @@ export const CsvViewerTable: React.FC<CsvViewerTableProps> = ({
                 return (
                   <td
                     key={colIdx}
+                    title={strVal.length > 25 ? strVal : undefined}
                     className="px-3.5 py-2.5 border-r border-black/[0.04] dark:border-white/5 last:border-r-0 max-w-[260px] truncate text-zinc-800 dark:text-zinc-200"
                   >
-                    {strVal.length > 25 ? (
-                      <ActionTooltip label={strVal} side="top">
-                        <span className="truncate block">
-                          {cellValue !== '' ? (
-                            cellValue
-                          ) : (
-                            <span className="text-zinc-300 dark:text-zinc-700 font-mono text-xs">
-                              —
-                            </span>
-                          )}
-                        </span>
-                      </ActionTooltip>
-                    ) : cellValue !== '' ? (
+                    {cellValue !== '' ? (
                       cellValue
                     ) : (
                       <span className="text-zinc-300 dark:text-zinc-700 font-mono text-xs">

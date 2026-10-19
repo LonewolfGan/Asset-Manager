@@ -98,8 +98,8 @@ export const getPresets = (isFr: boolean): RegexPreset[] => [
     flags: 'g',
     description: isFr ? 'Couleurs CSS au format hexadécimal (#RGB, #RRGGBB)' : 'CSS hex color codes (#RGB, #RRGGBB)',
     sample: isFr
-      ? "Couleur d'accent : #FF6B35\nFond sombre : #09090b\nBordure neutre : #e4e4e7"
-      : 'Accent color: #FF6B35\nDark background: #09090b\nNeutral border: #e4e4e7',
+      ? "Couleur d'accent : #6366f1\nFond sombre : #09090b\nBordure neutre : #e4e4e7"
+      : 'Accent color: #6366f1\nDark background: #09090b\nNeutral border: #e4e4e7',
   },
   {
     name: isFr ? 'Numéro de téléphone international' : 'International Phone Number',
@@ -186,7 +186,7 @@ export function evaluateRegex(
       }
       if (match.groups) {
         Object.entries(match.groups).forEach(([name, val]) => {
-          const existing = groups.find((g) => g.value === val);
+          const existing = groups.find((g) => !g.name && g.value === val);
           if (existing) {
             existing.name = name;
           } else {

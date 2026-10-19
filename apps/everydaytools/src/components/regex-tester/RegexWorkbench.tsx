@@ -34,7 +34,7 @@ export function RegexWorkbench({ workflow, isFr }: RegexWorkbenchProps) {
       {workflow.isDragOver && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-zinc-900/60 backdrop-blur-xs">
           <div className="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 text-sm font-medium text-zinc-900 dark:text-zinc-100 flex items-center gap-2 shadow-lg">
-            <Upload className="w-4 h-4 text-[#FF6B35]" />
+            <Upload className="w-4 h-4 text-[var(--accent)]" />
             <span>{isFr ? 'Déposez votre fichier texte pour l’analyser' : 'Drop your text file to analyze'}</span>
           </div>
         </div>
@@ -52,6 +52,8 @@ export function RegexWorkbench({ workflow, isFr }: RegexWorkbenchProps) {
           onUndo={workflow.handleUndo}
           onClear={workflow.handleClearTestString}
           onFileUpload={workflow.handleFileUpload}
+          presets={workflow.presets}
+          onApplyPreset={workflow.handleApplyPreset}
           isFr={isFr}
         />
 

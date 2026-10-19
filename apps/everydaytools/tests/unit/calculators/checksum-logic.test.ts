@@ -37,6 +37,8 @@ describe('Checksum Logic', () => {
 
     expect(findMatchingAlgo('5EB63BBBE01EEED093CB22BB8F5ACDC3', hashes)).toBe('MD5');
     expect(findMatchingAlgo('b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9', hashes)).toBe('SHA-256');
+    expect(findMatchingAlgo('sha256: b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9', hashes)).toBe('SHA-256');
+    expect(findMatchingAlgo('b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9  ubuntu.iso', hashes)).toBe('SHA-256');
     expect(findMatchingAlgo('unknownhash123', hashes)).toBeNull();
     expect(findMatchingAlgo('', hashes)).toBeNull();
   });

@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { toast } from '@/hooks/use-toast';
@@ -11,10 +11,72 @@ import {
   triggerDownload,
   type WordToEpubResult,
 } from '@/lib/word-to-epub-logic';
+import type { ConversionFormat } from '@/components/conversion/types';
 
-export function useWordToEpubWorkflow() {
-  const { t, isFr } = useLocale();
-  const tc = t.wordToEpub;
+export interface UseWordToEpubOptions {
+  isFr?: boolean;
+}
+
+export interface UseWordToEpubWorkflowReturn {
+  t: any;
+  tc: Record<string, any>;
+  isFr: boolean;
+  sourceFormat: ConversionFormat;
+  targetFormat: ConversionFormat;
+  file: File | undefined;
+  result: WordToEpubResult | null;
+  isProcessing: boolean;
+  isDragging: boolean;
+  previewOpen: boolean;
+  setPreviewOpen: (open: boolean) => void;
+  isNextActionOpen: boolean;
+  setIsNextActionOpen: (open: boolean) => void;
+  validateAndSetFile: (selectedFile: File) => void;
+  handleDragOver: (e: React.DragEvent) => void;
+  handleDragLeave: () => void;
+  handleDrop: (e: React.DragEvent) => void;
+  handleReset: () => void;
+  handleConvert: () => Promise<void>;
+  handleDownload: () => void;
+}
+
+function useSafeLocale(options?: UseWordToEpubOptions): {
+  t: any;
+  tc: Record<string, any>;
+  isFr: boolean;
+} {
+  try {
+    const localeCtx = useLocale();
+    const isFr = options?.isFr ?? localeCtx.isFr;
+    return {
+      t: localeCtx.t,
+      tc: (localeCtx.t.wordToEpub ?? {}) as Record<string, any>,
+      isFr,
+    };
+  } catch {
+    const isFr = options?.isFr ?? false;
+    return {
+      t: {
+        tools: {
+          'word-to-epub': {
+            title: isFr ? 'Word en EPUB' : 'Word to EPUB',
+            description: isFr
+              ? 'Transformez vos manuscrits Word en livres numériques EPUB pour liseuses et smartphones.'
+              : 'Turn your Word manuscripts into EPUB e-books for any device.',
+          },
+        },
+        wordToEpub: {},
+      },
+      tc: {} as Record<string, any>,
+      isFr,
+    };
+  }
+}
+
+export function useWordToEpubWorkflow(
+  options?: UseWordToEpubOptions
+): UseWordToEpubWorkflowReturn {
+  const { t, tc, isFr } = useSafeLocale(options);
   const sourceFormat = getSourceFormat(isFr);
   const targetFormat = getTargetFormat(isFr);
 
@@ -24,6 +86,7 @@ export function useWordToEpubWorkflow() {
   const [isDragging, setIsDragging] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [isNextActionOpen, setIsNextActionOpen] = useState(false);
+  const hasConsumedHandoffRef = useRef(false);
 
   const file = files[0];
 
@@ -33,8 +96,8 @@ export function useWordToEpubWorkflow() {
       if (!validation.isValid) {
         toast({
           variant: 'destructive',
-          title: isFr ? 'Format non supporté' : 'Unsupported format',
-          description: validation.error,
+          title: validation.errorTitle || (isFr ? 'Format non supporté' : 'Unsupported format'),
+          description: validation.errorDesc || validation.error,
         });
         return;
       }
@@ -45,8 +108,10 @@ export function useWordToEpubWorkflow() {
   );
 
   useEffect(() => {
+    if (hasConsumedHandoffRef.current) return;
     const staged = consumeHandoffFile();
     if (staged) {
+      hasConsumedHandoffRef.current = true;
       validateAndSetFile(staged);
     }
   }, [validateAndSetFile]);
@@ -80,6 +145,20 @@ export function useWordToEpubWorkflow() {
     setPreviewOpen(false);
     setIsNextActionOpen(false);
   }, []);
+
+  // Global Escape shortcut to reset workflow at rest
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !isProcessing && (file || result)) {
+        if (previewOpen || isNextActionOpen) return;
+        const activeTag = document.activeElement?.tagName?.toLowerCase();
+        if (activeTag === 'input' || activeTag === 'textarea') return;
+        handleReset();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [file, handleReset, isNextActionOpen, isProcessing, previewOpen, result]);
 
   const handleConvert = useCallback(async () => {
     if (!file || isProcessing) return;

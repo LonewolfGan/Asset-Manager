@@ -15,7 +15,7 @@ describe('word-to-markdown-logic', () => {
       expect(sourceFr.name).toBe('Word');
       expect(sourceFr.extension).toBe('docx');
       expect(sourceFr.icon).toBe('/icons/word.svg');
-      expect(sourceFr.color).toBe('#185ABD');
+      expect(sourceFr.color).toBe('var(--accent, #2563eb)');
       expect(sourceFr.subLabel).toBe('Format Word (.docx)');
 
       const sourceEn = getSourceFormat(false);
@@ -27,7 +27,7 @@ describe('word-to-markdown-logic', () => {
       expect(targetFr.name).toBe('Markdown');
       expect(targetFr.extension).toBe('md');
       expect(targetFr.icon).toBe('/icons/markdown.svg');
-      expect(targetFr.color).toBe('#0284C7');
+      expect(targetFr.color).toBe('var(--accent, #0284c7)');
       expect(targetFr.subLabel).toBe('Syntaxe Markdown');
 
       const targetEn = getTargetFormat(false);
@@ -40,6 +40,7 @@ describe('word-to-markdown-logic', () => {
       expect(buildMarkdownFilename('readme.docx')).toBe('readme.md');
       expect(buildMarkdownFilename('NOTES.DOC')).toBe('NOTES.md');
       expect(buildMarkdownFilename('my.article.docx')).toBe('my.article.md');
+      expect(buildMarkdownFilename('.docx')).toBe('document.md');
     });
   });
 
@@ -125,7 +126,8 @@ describe('word-to-markdown-logic', () => {
   });
 
   describe('triggerDownload', () => {
-    it('creates anchor and clicks it to trigger download', () => {
+    it('creates anchor, clicks it, and revokes object URL with delay', () => {
+      vi.useFakeTimers();
       const createObjectURLMock = vi.fn().mockReturnValue('blob:mock-md');
       const revokeObjectURLMock = vi.fn();
       globalThis.URL.createObjectURL = createObjectURLMock;
@@ -140,7 +142,11 @@ describe('word-to-markdown-logic', () => {
       expect(createObjectURLMock).toHaveBeenCalledWith(blob);
       expect(appendChildSpy).toHaveBeenCalled();
       expect(removeChildSpy).toHaveBeenCalled();
+      expect(revokeObjectURLMock).not.toHaveBeenCalled();
+
+      vi.advanceTimersByTime(1000);
       expect(revokeObjectURLMock).toHaveBeenCalledWith('blob:mock-md');
+      vi.useRealTimers();
     });
   });
 });

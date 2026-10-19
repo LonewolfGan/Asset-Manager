@@ -83,7 +83,7 @@ export function AiScrubberOutputPane({
         <textarea
           readOnly
           value={outputText}
-          className="w-full min-h-[420px] lg:min-h-[500px] p-4 bg-transparent font-mono text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 outline-none resize-none leading-relaxed select-all"
+          className="w-full min-h-[420px] lg:min-h-[500px] p-4 bg-transparent font-mono text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 outline-none focus-visible:ring-1 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-600 rounded-lg resize-none leading-relaxed select-all"
         />
       ) : (
         <div className="w-full min-h-[420px] lg:min-h-[500px] flex flex-col items-center justify-center p-8 text-center gap-3 text-zinc-400">

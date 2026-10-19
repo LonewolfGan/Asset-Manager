@@ -5,6 +5,8 @@ import { CsvViewerWorkbench } from '@/components/csv-viewer/CsvViewerWorkbench';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { LocaleProvider } from '@/contexts/locale-context';
 
+(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
+
 describe('CsvViewerWorkbench integration with @workspace/ui (TDD)', () => {
   let container: HTMLDivElement;
   let root: Root;

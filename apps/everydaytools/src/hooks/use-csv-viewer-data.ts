@@ -38,21 +38,25 @@ export function useCsvViewerData(rows: string[][]): UseCsvViewerDataReturn {
     setCurrentPage(1);
   }, []);
 
-  const handleSort = useCallback((colIdx: number) => {
-    setSortCol((prevCol) => {
-      if (prevCol === colIdx) {
-        setSortDir((prevDir) => {
-          if (prevDir === 'asc') return 'desc';
-          if (prevDir === 'desc') return null;
-          return 'asc';
-        });
-        return prevCol;
+  const handleSort = useCallback(
+    (colIdx: number) => {
+      if (sortCol === colIdx) {
+        if (sortDir === 'asc') {
+          setSortDir('desc');
+        } else if (sortDir === 'desc') {
+          setSortDir(null);
+          setSortCol(null);
+        } else {
+          setSortDir('asc');
+        }
+      } else {
+        setSortCol(colIdx);
+        setSortDir('asc');
       }
-      setSortDir('asc');
-      return colIdx;
-    });
-    setCurrentPage(1);
-  }, []);
+      setCurrentPage(1);
+    },
+    [sortCol, sortDir]
+  );
 
   const filteredAndSortedRows = useMemo(() => {
     return filterAndSortTabularRows(rows, searchQuery, sortCol, sortDir);

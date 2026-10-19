@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { toast } from '@/hooks/use-toast';
@@ -11,10 +11,72 @@ import {
   triggerDownload,
   type WordToMarkdownResult,
 } from '@/lib/word-to-markdown-logic';
+import type { ConversionFormat } from '@/components/conversion/types';
 
-export function useWordToMarkdownWorkflow() {
-  const { t, isFr } = useLocale();
-  const tc = t.wordToMarkdown;
+export interface UseWordToMarkdownWorkflowOptions {
+  isFr?: boolean;
+}
+
+export interface UseWordToMarkdownWorkflowReturn {
+  t: any;
+  tc: Record<string, any>;
+  isFr: boolean;
+  sourceFormat: ConversionFormat;
+  targetFormat: ConversionFormat;
+  file: File | undefined;
+  result: WordToMarkdownResult | null;
+  isProcessing: boolean;
+  isDragging: boolean;
+  previewOpen: boolean;
+  setPreviewOpen: (open: boolean) => void;
+  isNextActionOpen: boolean;
+  setIsNextActionOpen: (open: boolean) => void;
+  validateAndSetFile: (selectedFile: File) => void;
+  handleDragOver: (e: React.DragEvent) => void;
+  handleDragLeave: () => void;
+  handleDrop: (e: React.DragEvent) => void;
+  handleReset: () => void;
+  handleConvert: () => Promise<void>;
+  handleDownload: () => void;
+}
+
+function useSafeLocale(options?: UseWordToMarkdownWorkflowOptions): {
+  t: any;
+  tc: Record<string, any>;
+  isFr: boolean;
+} {
+  try {
+    const localeCtx = useLocale();
+    const isFr = options?.isFr ?? localeCtx.isFr;
+    return {
+      t: localeCtx.t,
+      tc: (localeCtx.t.wordToMarkdown ?? {}) as Record<string, any>,
+      isFr,
+    };
+  } catch {
+    const isFr = options?.isFr ?? false;
+    return {
+      t: {
+        tools: {
+          'word-to-markdown': {
+            title: isFr ? 'Word en Markdown' : 'Word to Markdown',
+            description: isFr
+              ? 'Convertissez vos fichiers DOCX en syntaxe Markdown propre et lisible.'
+              : 'Convert DOCX files to clean Markdown.',
+          },
+        },
+        wordToMarkdown: {},
+      },
+      tc: {} as Record<string, any>,
+      isFr,
+    };
+  }
+}
+
+export function useWordToMarkdownWorkflow(
+  options?: UseWordToMarkdownWorkflowOptions
+): UseWordToMarkdownWorkflowReturn {
+  const { t, tc, isFr } = useSafeLocale(options);
   const sourceFormat = getSourceFormat(isFr);
   const targetFormat = getTargetFormat(isFr);
 
@@ -25,6 +87,7 @@ export function useWordToMarkdownWorkflow() {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [isNextActionOpen, setIsNextActionOpen] = useState(false);
 
+  const hasConsumedHandoffRef = useRef(false);
   const file = files[0];
 
   const validateAndSetFile = useCallback(
@@ -45,6 +108,9 @@ export function useWordToMarkdownWorkflow() {
   );
 
   useEffect(() => {
+    if (hasConsumedHandoffRef.current) return;
+    hasConsumedHandoffRef.current = true;
+
     const staged = consumeHandoffFile();
     if (staged) {
       validateAndSetFile(staged);
@@ -81,6 +147,19 @@ export function useWordToMarkdownWorkflow() {
     setIsNextActionOpen(false);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !isProcessing) {
+        if (previewOpen || isNextActionOpen) return;
+        const activeTag = document.activeElement?.tagName.toLowerCase();
+        if (activeTag === 'input' || activeTag === 'textarea') return;
+        handleReset();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isProcessing, previewOpen, isNextActionOpen, handleReset]);
+
   const handleConvert = useCallback(async () => {
     if (!file || isProcessing) return;
     setIsProcessing(true);
@@ -115,9 +194,6 @@ export function useWordToMarkdownWorkflow() {
   const handleDownload = useCallback(() => {
     if (!result) return;
     triggerDownload(result.blob, result.filename);
-    setTimeout(() => {
-      setIsNextActionOpen(true);
-    }, 450);
   }, [result]);
 
   return {

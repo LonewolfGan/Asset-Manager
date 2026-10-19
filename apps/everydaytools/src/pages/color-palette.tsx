@@ -30,6 +30,10 @@ export default function ColorPalette() {
     copiedIdx,
     isRefreshing,
     lockedCount,
+    canUndo,
+    canRedo,
+    handleUndo,
+    handleRedo,
     handleRegenerate,
     handleModeChange,
     handleCountChange,
@@ -64,6 +68,10 @@ export default function ColorPalette() {
             palette={palette}
             harmonyModes={harmonyModes}
             isRefreshing={isRefreshing}
+            canUndo={canUndo}
+            canRedo={canRedo}
+            onUndo={handleUndo}
+            onRedo={handleRedo}
             onModeChange={handleModeChange}
             onCountChange={handleCountChange}
             onFormatChange={setFormat}

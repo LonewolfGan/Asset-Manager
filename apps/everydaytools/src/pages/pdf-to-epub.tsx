@@ -10,15 +10,16 @@ import {
   ConversionConduit,
   ConversionResult,
   TextPreviewDialog,
-  DocumentNextActionModal,
+  ReciprocalTitle,
 } from '@/components/conversion';
 import { usePdfToEpubWorkflow } from '@/hooks/use-pdf-to-epub-workflow';
+import { useLocale } from '@/hooks/use-locale';
 
 export default function PdfToEpub() {
+  const { isFr } = useLocale();
   const {
     t,
     tc,
-    isFr,
     sourceFormat,
     targetFormat,
     file,
@@ -27,8 +28,6 @@ export default function PdfToEpub() {
     isDragging,
     isPreviewOpen,
     setIsPreviewOpen,
-    isNextActionOpen,
-    setIsNextActionOpen,
     validateAndSetFile,
     handleDragOver,
     handleDragLeave,
@@ -48,7 +47,14 @@ export default function PdfToEpub() {
   return (
     <ToolPageLayout
       breadcrumb={[t.nav.breadcrumb.home, t.nav.breadcrumb.pdf, title]}
-      title={title}
+      title={
+        <ReciprocalTitle
+          currentSlug="pdf-to-epub"
+          isFr={isFr}
+          getCurrentFile={() => file}
+          fallbackTitle={title}
+        />
+      }
       description={desc}
       seoSlug="pdf-to-epub"
     >
@@ -148,15 +154,7 @@ export default function PdfToEpub() {
             />
           )}
 
-          {/* Continuum Modal */}
-          <DocumentNextActionModal
-            toolId="pdf-to-epub"
-            isOpen={isNextActionOpen}
-            onClose={() => setIsNextActionOpen(false)}
-            resultBlob={result?.blob}
-            resultFilename={result?.filename}
-            formatType="epub"
-          />
+
         </div>
       </ToolWorkspace>
     </ToolPageLayout>

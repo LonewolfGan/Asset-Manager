@@ -30,7 +30,7 @@ export function ColorPaletteFooter({
         {lockedCount > 0 && (
           <>
             <span>·</span>
-            <span className="text-[#FF6B35] font-semibold">
+            <span className="text-[var(--accent)] font-semibold">
               {lockedCount}{' '}
               {isFr
                 ? lockedCount > 1

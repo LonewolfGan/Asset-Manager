@@ -1,6 +1,8 @@
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
 import { trackToolUsed } from '@/lib/analytics';
+import { downloadText } from '@/lib/download';
+import { consumeHandoffFile, consumeHandoffText } from '@/lib/file-handoff';
 import {
   evaluateRegex,
   computeHighlightedChunks,
@@ -40,6 +42,7 @@ export function useRegexTesterWorkflow(isFr: boolean) {
   const startYRef = useRef(0);
   const startHeightRef = useRef(440);
   const patternInputRef = useRef<HTMLInputElement>(null);
+  const lastHistoryPushRef = useRef<number>(0);
 
   const handleMouseDownResize = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -65,7 +68,11 @@ export function useRegexTesterWorkflow(isFr: boolean) {
   };
 
   const handleInputChange = (val: string) => {
-    setHistory((prev) => [...prev.slice(-30), testString]);
+    const now = Date.now();
+    if (now - lastHistoryPushRef.current > 1000) {
+      setHistory((prev) => [...prev.slice(-30), testString]);
+      lastHistoryPushRef.current = now;
+    }
     setTestString(val);
   };
 
@@ -90,6 +97,19 @@ export function useRegexTesterWorkflow(isFr: boolean) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleUndo, history.length]);
 
+  useEffect(() => {
+    const handoff = consumeHandoffFile();
+    if (handoff) {
+      handleFileUpload(handoff);
+    } else {
+      const textHandoff = consumeHandoffText();
+      if (textHandoff) {
+        setHistory((prev) => [...prev.slice(-30), testString]);
+        setTestString(textHandoff);
+      }
+    }
+  }, []);
+
   const toggleFlag = (flagChar: string) => {
     setFlags((prev) => (prev.includes(flagChar) ? prev.replace(flagChar, '') : prev + flagChar));
   };
@@ -104,18 +124,13 @@ export function useRegexTesterWorkflow(isFr: boolean) {
 
   const handleDownloadReplacedText = () => {
     trackToolUsed('regex-tester', 'download-replaced');
-    const blob = new Blob([replacedText], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = isFr ? 'texte-remplace.txt' : 'replaced-text.txt';
-    a.click();
-    URL.revokeObjectURL(url);
+    downloadText(replacedText, isFr ? 'texte-remplace.txt' : 'replaced-text.txt');
     toast.success(isFr ? 'Fichier téléchargé' : 'File downloaded');
   };
 
   const handleClearTestString = () => {
     setHistory((prev) => [...prev.slice(-30), testString]);
+    lastHistoryPushRef.current = 0;
     setTestString('');
     toast.info(isFr ? 'Texte de test vidé' : 'Test text cleared');
   };
@@ -126,6 +141,7 @@ export function useRegexTesterWorkflow(isFr: boolean) {
       const text = e.target?.result as string;
       if (text) {
         setHistory((prev) => [...prev.slice(-30), testString]);
+        lastHistoryPushRef.current = 0;
         setTestString(text);
         toast.success(isFr ? `Fichier « ${file.name} » importé` : `File "${file.name}" imported`);
       }
@@ -135,6 +151,7 @@ export function useRegexTesterWorkflow(isFr: boolean) {
 
   const handleApplyPreset = (preset: RegexPreset) => {
     setHistory((prev) => [...prev.slice(-30), testString]);
+    lastHistoryPushRef.current = 0;
     setPattern(preset.pattern);
     setFlags(preset.flags);
     setTestString(preset.sample);

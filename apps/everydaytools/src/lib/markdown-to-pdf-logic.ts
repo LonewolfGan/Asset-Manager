@@ -19,7 +19,7 @@ export const getSourceFormat = (isFr = false): ConversionFormat => ({
   name: 'Markdown',
   extension: 'md',
   icon: '/icons/markdown.svg',
-  color: '#0284C7',
+  color: 'var(--accent, #0284c7)',
   subLabel: isFr ? 'Syntaxe Markdown' : 'Markdown Syntax',
 });
 
@@ -27,7 +27,7 @@ export const getTargetFormat = (): ConversionFormat => ({
   name: 'PDF',
   extension: 'pdf',
   icon: '/icons/pdf.svg',
-  color: '#EC1C24',
+  color: 'var(--accent, #dc2626)',
   subLabel: 'Adobe Acrobat',
 });
 
@@ -72,13 +72,11 @@ This document outlines the key outcomes achieved during the fiscal year.
 `;
 
 export function validateMarkdownFile(selectedFile: File, isFr = false): FileValidationResult {
+  const hasValidExt = /\.(md|markdown|txt)$/i.test(selectedFile.name || '');
   const isMd =
-    selectedFile.name.toLowerCase().endsWith('.md') ||
-    selectedFile.name.toLowerCase().endsWith('.markdown') ||
-    selectedFile.name.toLowerCase().endsWith('.txt') ||
+    hasValidExt ||
     selectedFile.type === 'text/markdown' ||
-    selectedFile.type === 'text/plain' ||
-    selectedFile.type === '';
+    selectedFile.type === 'text/plain';
 
   if (!isMd) {
     return {
@@ -185,10 +183,15 @@ export function triggerDownload(blob: Blob, filename: string): void {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+  }, 1000);
 }
 
 export function openPdfPreview(blob: Blob): void {
   const url = URL.createObjectURL(blob);
   window.open(url, '_blank', 'noopener,noreferrer');
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+  }, 10000);
 }

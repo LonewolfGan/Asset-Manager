@@ -38,6 +38,8 @@ export default function BarcodeGenerator() {
     showDownloadMenu,
     setShowDownloadMenu,
     history,
+    canRedo,
+    handleRedo,
     svgRef,
     symbologies,
     activeSymbology,
@@ -72,6 +74,8 @@ export default function BarcodeGenerator() {
           onSelectSymbology={handleSelectSymbology}
           historyLength={history.length}
           onUndo={handleUndo}
+          canRedo={canRedo}
+          onRedo={handleRedo}
           validation={validation}
           onPrint={handlePrint}
           onCopyPng={handleCopyPng}

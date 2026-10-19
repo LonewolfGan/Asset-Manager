@@ -22,7 +22,7 @@ export function downloadSvgBarcode(
   a.click();
 
   setTimeout(() => {
-    document.body.removeChild(a);
+    a.parentNode?.removeChild(a);
     URL.revokeObjectURL(url);
   }, 150);
 }
@@ -43,6 +43,10 @@ export function downloadPngBarcode(
     const url = URL.createObjectURL(svgBlob);
 
     const img = new Image();
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      resolve();
+    };
     img.onload = () => {
       const scale = 3;
       const canvas = document.createElement('canvas');
@@ -50,6 +54,7 @@ export function downloadPngBarcode(
       canvas.height = (img.naturalHeight || img.height || 150) * scale;
       const ctx = canvas.getContext('2d');
       if (!ctx) {
+        URL.revokeObjectURL(url);
         resolve();
         return;
       }
@@ -77,7 +82,7 @@ export function downloadPngBarcode(
         a.click();
 
         setTimeout(() => {
-          document.body.removeChild(a);
+          a.parentNode?.removeChild(a);
           URL.revokeObjectURL(pngUrl);
         }, 150);
         resolve();
@@ -96,8 +101,9 @@ export async function copyPngBarcodeToClipboard(
 
   const serializer = new XMLSerializer();
   const svgString = serializer.serializeToString(clone);
+  const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+  const url = URL.createObjectURL(svgBlob);
   const img = new Image();
-  img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgString)));
 
   await new Promise<void>((resolve, reject) => {
     img.onload = () => {
@@ -107,6 +113,7 @@ export async function copyPngBarcodeToClipboard(
       canvas.height = (img.naturalHeight || img.height || 150) * scale;
       const ctx = canvas.getContext('2d');
       if (!ctx) {
+        URL.revokeObjectURL(url);
         reject(new Error('Canvas context unavailable'));
         return;
       }
@@ -118,6 +125,7 @@ export async function copyPngBarcodeToClipboard(
 
       ctx.scale(scale, scale);
       ctx.drawImage(img, 0, 0);
+      URL.revokeObjectURL(url);
 
       canvas.toBlob(async (blob) => {
         if (!blob) {
@@ -132,7 +140,11 @@ export async function copyPngBarcodeToClipboard(
         }
       }, 'image/png');
     };
-    img.onerror = reject;
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error('Failed to load SVG into image for clipboard copy'));
+    };
+    img.src = url;
   });
 }
 
@@ -165,7 +177,7 @@ export function printBarcodeLabel(
     <html>
       <head>
         <meta charset="utf-8">
-        <title>${symbologyName} - ${value}</title>
+        <title>Barcode Print</title>
         <style>
           @page {
             size: auto;
@@ -202,11 +214,14 @@ export function printBarcodeLabel(
   `);
   doc.close();
 
+  // Set document title safely via DOM property to eliminate DOM XSS
+  doc.title = `${symbologyName} - ${value}`;
+
   iframe.contentWindow?.focus();
   setTimeout(() => {
     iframe.contentWindow?.print();
     setTimeout(() => {
-      document.body.removeChild(iframe);
+      iframe.parentNode?.removeChild(iframe);
     }, 1200);
   }, 250);
 }

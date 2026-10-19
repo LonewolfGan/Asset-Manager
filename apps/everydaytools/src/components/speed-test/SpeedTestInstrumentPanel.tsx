@@ -62,7 +62,7 @@ export const SpeedTestInstrumentPanel: React.FC<SpeedTestInstrumentPanelProps> =
             <Button
               size="md"
               onClick={onRunTest}
-              className="bg-[#FF6B35] hover:bg-[#E55A25] text-white font-medium px-8 h-11 rounded-xl shadow-sm text-sm"
+              className="bg-[var(--accent,#f97316)] hover:bg-[var(--accent,#f97316)]/90 text-white font-medium px-8 h-11 rounded-xl shadow-sm text-sm cursor-pointer transition-colors duration-150"
             >
               <Play className="w-4 h-4 mr-2 fill-current" />
               {isFr ? 'Démarrer le test' : 'Start Speed Test'}
@@ -74,7 +74,7 @@ export const SpeedTestInstrumentPanel: React.FC<SpeedTestInstrumentPanelProps> =
               variant="outline"
               size="md"
               onClick={onCancelTest}
-              className="rounded-xl border-border/80 text-muted-foreground hover:text-foreground text-xs"
+              className="rounded-xl border-border/80 text-muted-foreground hover:text-foreground text-xs cursor-pointer transition-colors duration-150"
             >
               <X className="w-3.5 h-3.5 mr-1.5" />
               {isFr ? 'Annuler' : 'Cancel'}
@@ -86,7 +86,7 @@ export const SpeedTestInstrumentPanel: React.FC<SpeedTestInstrumentPanelProps> =
               <Button
                 size="md"
                 onClick={onRunTest}
-                className="bg-[#FF6B35] hover:bg-[#E55A25] text-white font-medium px-6 h-10 rounded-xl shadow-sm text-xs"
+                className="bg-[var(--accent,#f97316)] hover:bg-[var(--accent,#f97316)]/90 text-white font-medium px-6 h-10 rounded-xl shadow-sm text-xs cursor-pointer transition-colors duration-150"
               >
                 <RotateCcw className="w-3.5 h-3.5 mr-2" />
                 {isFr ? 'Tester à nouveau' : 'Test Again'}
@@ -109,7 +109,7 @@ export const SpeedTestInstrumentPanel: React.FC<SpeedTestInstrumentPanelProps> =
         {/* Error Message banner */}
         {phase === 'error' && errorMessage && (
           <div className="mt-4 w-full max-w-md p-3 rounded-xl border border-border bg-zinc-100/80 dark:bg-zinc-900/80 text-foreground flex items-center gap-3 text-xs">
-            <AlertCircle className="w-4 h-4 shrink-0 text-[#FF6B35]" />
+            <AlertCircle className="w-4 h-4 shrink-0 text-[var(--accent,#f97316)]" />
             <span>{errorMessage}</span>
           </div>
         )}

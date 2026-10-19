@@ -32,7 +32,7 @@ export function RegexCheatsheetTab({
                 className="flex items-center justify-between py-1.5 px-1 hover:bg-zinc-100 dark:hover:bg-zinc-800/60 rounded cursor-pointer group transition-colors"
               >
                 <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-[#FF6B35]">
+                  <span className="font-mono text-xs font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-[var(--accent)]">
                     {item.token}
                   </span>
                   <span className="text-zinc-500 text-[11px]">{item.desc}</span>

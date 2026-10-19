@@ -1,11 +1,20 @@
 import { apiUrl } from '@/lib/apiBase';
 import type { ConversionFormat } from '@/components/conversion';
 
+export type HtmlToPdfMode = 'upload' | 'paste';
+
+export interface HtmlToPdfResult {
+  blob: Blob;
+  filename: string;
+  sizeBefore?: number;
+  sizeAfter: number;
+}
+
 export const getSourceFormat = (isFr: boolean): ConversionFormat => ({
   name: 'HTML',
   extension: 'html',
   icon: '/icons/html.svg',
-  color: '#E34F26',
+  color: 'var(--accent, #ea580c)',
   subLabel: isFr ? 'Document HTML5' : 'HTML5 Document',
 });
 
@@ -13,7 +22,7 @@ export const getTargetFormat = (): ConversionFormat => ({
   name: 'PDF',
   extension: 'pdf',
   icon: '/icons/pdf.svg',
-  color: '#EC1C24',
+  color: 'var(--accent, #dc2626)',
   subLabel: 'Adobe Acrobat',
 });
 
@@ -23,30 +32,33 @@ export interface FileValidationResult {
 }
 
 export function validateHtmlFile(file: File, isFr: boolean): FileValidationResult {
-  const isHtml =
-    file.name.toLowerCase().endsWith('.html') ||
-    file.name.toLowerCase().endsWith('.htm') ||
-    file.name.toLowerCase().endsWith('.xhtml') ||
+  const lowerName = file.name.toLowerCase();
+  const hasValidExt =
+    lowerName.endsWith('.html') ||
+    lowerName.endsWith('.htm') ||
+    lowerName.endsWith('.xhtml');
+
+  const hasValidMime =
     file.type === 'text/html' ||
     file.type === 'application/xhtml+xml' ||
     file.type === 'text/plain' ||
     file.type === '';
 
-  if (!isHtml) {
+  if (!hasValidExt || !hasValidMime) {
     return {
       isValid: false,
       error: isFr
-        ? 'Veuillez sélectionner un fichier HTML (.html, .htm) valide.'
-        : 'Please select a valid HTML file (.html, .htm).',
+        ? 'Veuillez sélectionner un fichier HTML (.html, .htm, .xhtml) valide.'
+        : 'Please select a valid HTML file (.html, .htm, .xhtml).',
     };
   }
 
-  if (file.size > 20 * 1024 * 1024) {
+  if (file.size > 2 * 1024 * 1024) {
     return {
       isValid: false,
       error: isFr
-        ? 'Le fichier dépasse la taille maximale autorisée de 20 Mo.'
-        : 'File exceeds the maximum allowed size of 20 MB.',
+        ? 'Le fichier dépasse la taille maximale autorisée de 2 Mo.'
+        : 'File exceeds the maximum allowed size of 2 MB.',
     };
   }
 
@@ -54,18 +66,20 @@ export function validateHtmlFile(file: File, isFr: boolean): FileValidationResul
 }
 
 export function buildPdfFilename(
-  mode: 'upload' | 'paste',
+  mode: HtmlToPdfMode,
   file?: File,
   isFr = false
 ): string {
   if (mode === 'upload' && file) {
-    return file.name.replace(/\.(html?|xhtml)$/i, '.pdf');
+    const baseName = file.name.replace(/\.(html?|xhtml)$/i, '').trim();
+    const safeBase = baseName || 'document';
+    return `${safeBase}.pdf`;
   }
   return isFr ? 'document-web.pdf' : 'web-document.pdf';
 }
 
 export interface ConvertHtmlToPdfParams {
-  mode: 'upload' | 'paste';
+  mode: HtmlToPdfMode;
   file?: File;
   htmlInput?: string;
   fallbackError?: string;
@@ -124,4 +138,17 @@ export async function convertHtmlToPdf({
   }
 
   return res.blob();
+}
+
+export function triggerDownload(blob: Blob, filename: string): void {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+  }, 1000);
 }

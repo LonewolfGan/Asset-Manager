@@ -21,16 +21,17 @@ export function ExcelSheetSelector({
         {label}
       </span>
       <div className="flex flex-wrap items-center justify-center gap-2">
-        {sheets.map((sheet) => {
+        {sheets.map((sheet, idx) => {
           const isSelected = selectedSheet === sheet;
           return (
             <button
-              key={sheet}
+              key={`${sheet}-${idx}`}
               type="button"
+              aria-pressed={isSelected}
               onClick={() => onSelectSheet(sheet)}
-              className={`h-8 px-3.5 rounded-full text-xs font-medium transition-all active:scale-[0.98] cursor-pointer ${
+              className={`h-8 px-3.5 rounded-full text-xs font-medium transition-colors duration-150 active:scale-[0.98] cursor-pointer ${
                 isSelected
-                  ? 'bg-[#21A366] text-white shadow-sm'
+                  ? 'bg-[var(--accent,#107c41)] text-white shadow-sm'
                   : 'bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border border-black/5 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20'
               }`}
             >

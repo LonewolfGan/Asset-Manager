@@ -5,13 +5,14 @@ import {
   encodeBase64,
   decodeBase64,
   fileToBase64,
-  base64ToBlob,
   applyLineBreaks,
   detectBase64Binary,
   formatBytes,
   type ChunkSize,
   type DetectedBase64Binary,
 } from '@/lib/base64-logic';
+import { prepareEncodedFileResult, resolveDownloadInfo } from '@/lib/base64-file-helpers';
+import { consumeHandoffFile, consumeHandoffText } from '@/lib/file-handoff';
 
 export type Mode = 'encode' | 'decode';
 
@@ -41,6 +42,7 @@ export function useBase64Workflow({ isFr }: UseBase64WorkflowOptions) {
   const [history, setHistory] = useState<string[]>([]);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const lastHistoryPushRef = useRef<number>(0);
 
   const detectedBinary: DetectedBase64Binary | null = useMemo(() => {
     return detectBase64Binary(mode === 'encode' ? output : input);
@@ -82,11 +84,16 @@ export function useBase64Workflow({ isFr }: UseBase64WorkflowOptions) {
         }
         rawToDecode = rawToDecode.replace(/[\r\n\s]+/g, '');
 
+        const binaryCheck = detectBase64Binary(input);
         const res = decodeBase64(rawToDecode);
         if (res.error) {
-          setError(res.error);
-          setOutput('');
-          trackToolError('base64', 'decode-error');
+          if (binaryCheck?.isImage || binaryCheck?.isPdf) {
+            setError('');
+          } else {
+            setError(res.error);
+            setOutput('');
+            trackToolError('base64', 'decode-error');
+          }
         } else {
           setOutput(res.output);
           trackToolUsed('base64', 'decode-text');
@@ -105,7 +112,11 @@ export function useBase64Workflow({ isFr }: UseBase64WorkflowOptions) {
   }, [processConversion]);
 
   const handleInputChange = (val: string) => {
-    setHistory((prev) => [...prev.slice(-30), input]);
+    const now = Date.now();
+    if (now - lastHistoryPushRef.current > 1000) {
+      setHistory((prev) => [...prev.slice(-30), input]);
+      lastHistoryPushRef.current = now;
+    }
     setFileInfo(null);
     setInput(val);
   };
@@ -137,6 +148,7 @@ export function useBase64Workflow({ isFr }: UseBase64WorkflowOptions) {
       setMode(mode === 'encode' ? 'decode' : 'encode');
       return;
     }
+    lastHistoryPushRef.current = 0;
     setHistory((prev) => [...prev.slice(-30), input]);
     const nextInput = output;
     const nextMode: Mode = mode === 'encode' ? 'decode' : 'encode';
@@ -152,6 +164,7 @@ export function useBase64Workflow({ isFr }: UseBase64WorkflowOptions) {
 
   const handleFileUpload = async (file: File) => {
     try {
+      lastHistoryPushRef.current = 0;
       setHistory((prev) => [...prev.slice(-30), input]);
       setFileInfo({
         name: file.name,
@@ -162,24 +175,12 @@ export function useBase64Workflow({ isFr }: UseBase64WorkflowOptions) {
       setError('');
 
       const dataUrl = await fileToBase64(file);
-      let b64 = dataUrl;
-
-      if (!dataUriPrefix) {
-        const match = dataUrl.match(/^data:[^;]+;base64,(.+)$/);
-        if (match) {
-          b64 = match[1];
-        }
-      }
-
-      if (urlSafe) {
-        b64 = b64.replace(/\+/g, '-').replace(/\//g, '_');
-      }
-      if (stripPadding) {
-        b64 = b64.replace(/=+$/, '');
-      }
-      if (chunkSize > 0) {
-        b64 = applyLineBreaks(b64, chunkSize);
-      }
+      const b64 = prepareEncodedFileResult(dataUrl, {
+        urlSafe,
+        stripPadding,
+        dataUriPrefix,
+        chunkSize,
+      });
 
       setOutput(b64);
       setInput(
@@ -196,7 +197,20 @@ export function useBase64Workflow({ isFr }: UseBase64WorkflowOptions) {
     }
   };
 
+  useEffect(() => {
+    const handoffFile = consumeHandoffFile();
+    if (handoffFile) {
+      handleFileUpload(handoffFile);
+      return;
+    }
+    const handoffText = consumeHandoffText();
+    if (handoffText) {
+      handleInputChange(handoffText);
+    }
+  }, []);
+
   const handleClear = () => {
+    lastHistoryPushRef.current = 0;
     setHistory((prev) => [...prev.slice(-30), input]);
     setInput('');
     setOutput('');
@@ -209,13 +223,12 @@ export function useBase64Workflow({ isFr }: UseBase64WorkflowOptions) {
     if (!output) return;
     trackToolUsed('base64', 'download-output');
 
-    const isBinary = mode === 'decode' && detectedBinary?.dataUrl;
-    const blob = isBinary
-      ? base64ToBlob(input, detectedBinary!.mimeType)
-      : new Blob([output], { type: 'text/plain;charset=utf-8' });
-    const filename = isBinary
-      ? `decoded-file.${detectedBinary!.extension}`
-      : (mode === 'encode' ? 'encoded-base64.txt' : 'decoded-text.txt');
+    const { blob, filename, isBinary } = resolveDownloadInfo({
+      mode,
+      input,
+      output,
+      detectedBinary,
+    });
 
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

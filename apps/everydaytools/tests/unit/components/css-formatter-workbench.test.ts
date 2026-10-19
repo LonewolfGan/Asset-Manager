@@ -131,4 +131,55 @@ describe('css-formatter components', () => {
     expect(html).toContain('Source CSS');
     expect(html).toContain('Aperçu direct');
   });
+
+  it('renders sample buttons when workspace is empty', () => {
+    const html = renderToString(
+      React.createElement(
+        TooltipProvider,
+        null,
+        React.createElement(CssFormatterWorkbench, {
+          input: '',
+          setInput: () => {},
+          wordWrap: true,
+          editorHeight: 460,
+          isDragOver: false,
+          setIsDragOver: () => {},
+          metrics: calculateCssMetrics('', ''),
+          hasContent: false,
+          outputView: 'code',
+          setOutputView: () => {},
+          mode: 'format',
+          deviceWidth: 'desktop',
+          setDeviceWidth: () => {},
+          highlightedOutput: '',
+          sandboxHtml: '<html></html>',
+          isFr: true,
+          onFileUpload: () => {},
+          onMouseDownResize: () => {},
+        })
+      )
+    );
+
+    expect(html).toContain('Carte UI');
+    expect(html).toContain('Glassmorphism');
+    expect(html).toContain('Grille');
+  });
+
+  it('renders issue warning badge when issues are present', () => {
+    const html = renderToString(
+      React.createElement(CssSourcePanel, {
+        input: '.broken { color: red;',
+        setInput: () => {},
+        wordWrap: true,
+        editorHeight: 460,
+        metrics: dummyMetrics,
+        hasContent: true,
+        isFr: true,
+        issues: [{ type: 'unclosed-block', message: 'Accolade manquante' }],
+        onFileUpload: () => {},
+      })
+    );
+
+    expect(html).toContain('anomalie');
+  });
 });

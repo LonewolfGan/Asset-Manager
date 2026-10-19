@@ -16,6 +16,7 @@ interface DiffWorkbenchProps {
   onUpdateModified: (val: string) => void;
   onFileUpload: (file: File, target: 'original' | 'modified') => void;
   onSwap: () => void;
+  onLoadSample?: (key: 'text' | 'code' | 'json') => void;
   hasContent: boolean;
   editorHeight: number;
   wordWrap: boolean;
@@ -39,6 +40,7 @@ export function DiffWorkbench({
   onUpdateModified,
   onFileUpload,
   onSwap,
+  onLoadSample,
   hasContent,
   editorHeight,
   wordWrap,
@@ -82,6 +84,7 @@ export function DiffWorkbench({
           onFileUpload={onFileUpload}
           onSwap={onSwap}
           onCompare={() => onViewModeChange('split')}
+          onLoadSample={onLoadSample}
           hasContent={hasContent}
           editorHeight={editorHeight}
           wordWrap={wordWrap}
@@ -106,13 +109,24 @@ export function DiffWorkbench({
               ? 'Collez vos textes originaux et modifiés pour visualiser instantanément les différences ligne par ligne.'
               : 'Paste your original and modified texts to instantly view line-by-line differences.'}
           </p>
-          <button
-            type="button"
-            onClick={() => onViewModeChange('edit')}
-            className="px-3.5 py-1.5 text-xs font-medium rounded-lg bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors cursor-pointer"
-          >
-            {isFr ? 'Ouvrir les éditeurs de texte' : 'Open text editors'}
-          </button>
+          <div className="flex items-center gap-2 flex-wrap justify-center mb-3">
+            <button
+              type="button"
+              onClick={() => onViewModeChange('edit')}
+              className="px-3.5 py-1.5 text-xs font-medium rounded-lg bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors cursor-pointer"
+            >
+              {isFr ? 'Ouvrir les éditeurs de texte' : 'Open text editors'}
+            </button>
+            {onLoadSample && (
+              <button
+                type="button"
+                onClick={() => onLoadSample('text')}
+                className="px-3.5 py-1.5 text-xs font-medium rounded-lg border border-zinc-200 dark:border-white/10 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-colors cursor-pointer"
+              >
+                {isFr ? 'Charger un exemple' : 'Load a sample'}
+              </button>
+            )}
+          </div>
         </div>
       ) : viewMode === 'split' ? (
         <DiffSplitView

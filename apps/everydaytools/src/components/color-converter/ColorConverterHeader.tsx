@@ -1,10 +1,11 @@
 import React from 'react';
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw, Sparkles } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ActionTooltip } from '@/components/ui/tooltip';
 import { describeColor } from '@/lib/color-palette-logic';
 import { parseHex } from '@/lib/color-converter-logic';
+import { COLOR_PRESETS } from '@/lib/color-samples';
 import type { ColorConverterWorkflow } from '@/hooks/use-color-converter-workflow';
 
 interface ColorConverterHeaderProps {
@@ -63,11 +64,32 @@ export function ColorConverterHeader({
         />
       </div>
 
-      {/* Droite : Historique récent & Bouton Aléatoire */}
+      {/* Droite : Presets, Historique récent & Bouton Aléatoire */}
       <div className="flex items-center gap-3 shrink-0">
-        {/* Historique récent minimaliste */}
-        <div className="hidden sm:flex items-center gap-1.5 mr-1">
-          {recentColors.map((rc, idx) => (
+        {/* Nuances pré-calibrées */}
+        <div className="hidden md:flex items-center gap-1 mr-1">
+          {COLOR_PRESETS.map((p) => (
+            <ActionTooltip
+              key={p.id}
+              label={isFr ? p.nameFr : p.nameEn}
+              side="top"
+            >
+              <button
+                type="button"
+                onClick={() => {
+                  const parsed = parseHex(p.hex);
+                  if (parsed) updateRgb(parsed, true, true);
+                }}
+                style={{ backgroundColor: p.hex }}
+                className="w-5 h-5 rounded-sm border border-black/10 dark:border-white/20 transition-transform duration-150 hover:scale-115 active:scale-95 cursor-pointer shadow-2xs"
+              />
+            </ActionTooltip>
+          ))}
+        </div>
+
+        {/* Historique récent */}
+        <div className="hidden sm:flex items-center gap-1 border-l border-zinc-200 dark:border-zinc-800 pl-2">
+          {recentColors.slice(0, 5).map((rc, idx) => (
             <ActionTooltip key={`${rc}-${idx}`} label={rc} side="top">
               <button
                 type="button"
@@ -76,7 +98,7 @@ export function ColorConverterHeader({
                   if (parsed) updateRgb(parsed, true, false);
                 }}
                 style={{ backgroundColor: rc }}
-                className="w-5 h-5 rounded-sm border border-black/10 dark:border-white/20 transition-transform hover:scale-110 active:scale-95 cursor-pointer"
+                className="w-4 h-4 rounded-sm border border-black/10 dark:border-white/20 transition-transform duration-150 hover:scale-115 active:scale-95 cursor-pointer"
               />
             </ActionTooltip>
           ))}
@@ -92,7 +114,7 @@ export function ColorConverterHeader({
             variant="secondary"
             size="sm"
             onClick={handleRandomColor}
-            className="gap-1.5 font-mono text-xs cursor-pointer h-9 shrink-0"
+            className="gap-1.5 font-mono text-xs cursor-pointer h-9 shrink-0 transition-colors duration-150"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             <span>{isFr ? 'Aléatoire' : 'Random'}</span>

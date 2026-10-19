@@ -90,7 +90,7 @@ export function CsvEditorTopBar({
                 value={documentName}
                 onChange={(e) => onDocumentNameChange(e.target.value)}
                 placeholder={isFr ? 'Nom du fichier...' : 'File name...'}
-                className="text-xs font-medium text-zinc-900 dark:text-zinc-100 bg-transparent hover:border-b hover:border-black/20 dark:hover:border-white/20 focus:border-b focus:border-[#FF6B35] focus:outline-none transition-colors max-w-[130px] sm:max-w-[180px] truncate py-0.5"
+                className="text-xs font-medium text-zinc-900 dark:text-zinc-100 bg-transparent hover:border-b hover:border-black/20 dark:hover:border-white/20 focus:border-b focus:border-[var(--accent,#f97316)] focus:outline-none transition-colors max-w-[130px] sm:max-w-[180px] truncate py-0.5"
               />
             </ActionTooltip>
             <span className="text-[11px] font-mono text-zinc-400 dark:text-zinc-500 shrink-0">
@@ -130,7 +130,7 @@ export function CsvEditorTopBar({
             type="button"
             onClick={onUndo}
             disabled={historyLength === 0}
-            className="h-9 px-2.5 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 disabled:opacity-35 disabled:pointer-events-none text-xs font-medium text-zinc-700 dark:text-zinc-300 transition-all flex items-center gap-1.5 cursor-pointer active:scale-[0.98]"
+            className="h-9 px-2.5 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 disabled:opacity-35 disabled:pointer-events-none text-xs font-medium text-zinc-700 dark:text-zinc-300 transition-colors duration-150 flex items-center gap-1.5 cursor-pointer active:scale-[0.98]"
           >
             <Undo2 size={13} />
             <span className="hidden sm:inline">{isFr ? 'Annuler' : 'Undo'}</span>
@@ -142,7 +142,7 @@ export function CsvEditorTopBar({
             type="button"
             onClick={onRedo}
             disabled={futureLength === 0}
-            className="h-9 px-2.5 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 disabled:opacity-35 disabled:pointer-events-none text-xs font-medium text-zinc-700 dark:text-zinc-300 transition-all flex items-center gap-1.5 cursor-pointer active:scale-[0.98]"
+            className="h-9 px-2.5 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 disabled:opacity-35 disabled:pointer-events-none text-xs font-medium text-zinc-700 dark:text-zinc-300 transition-colors duration-150 flex items-center gap-1.5 cursor-pointer active:scale-[0.98]"
           >
             <Redo2 size={13} />
             <span className="hidden sm:inline">{isFr ? 'Rétablir' : 'Redo'}</span>
@@ -154,7 +154,7 @@ export function CsvEditorTopBar({
         <button
           type="button"
           onClick={onAddRow}
-          className="h-9 px-2.5 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-xs font-medium text-zinc-800 dark:text-zinc-200 transition-all flex items-center gap-1 cursor-pointer active:scale-[0.98]"
+          className="h-9 px-2.5 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-xs font-medium text-zinc-800 dark:text-zinc-200 transition-colors duration-150 flex items-center gap-1 cursor-pointer active:scale-[0.98]"
         >
           <Plus size={13} />
           <span className="hidden md:inline">{isFr ? 'Ligne' : 'Row'}</span>
@@ -163,7 +163,7 @@ export function CsvEditorTopBar({
         <button
           type="button"
           onClick={onAddCol}
-          className="h-9 px-2.5 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-xs font-medium text-zinc-800 dark:text-zinc-200 transition-all flex items-center gap-1 cursor-pointer active:scale-[0.98]"
+          className="h-9 px-2.5 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-xs font-medium text-zinc-800 dark:text-zinc-200 transition-colors duration-150 flex items-center gap-1 cursor-pointer active:scale-[0.98]"
         >
           <Plus size={13} />
           <span className="hidden md:inline">{isFr ? 'Colonne' : 'Column'}</span>
@@ -186,19 +186,19 @@ export function CsvEditorTopBar({
               }
             }}
             disabled={rowsCount === 0}
-            className="h-9 px-2.5 rounded-xl border border-red-500/20 bg-red-500/[0.04] hover:bg-red-500/[0.08] disabled:opacity-35 disabled:pointer-events-none text-xs font-medium text-red-600 dark:text-red-400 transition-all flex items-center gap-1 cursor-pointer active:scale-[0.98]"
+            className="h-9 px-2.5 rounded-xl border border-red-500/20 bg-red-500/[0.04] hover:bg-red-500/[0.08] disabled:opacity-35 disabled:pointer-events-none text-xs font-medium text-red-600 dark:text-red-400 transition-colors duration-150 flex items-center gap-1 cursor-pointer active:scale-[0.98]"
           >
             <Trash2 size={13} />
             <span className="hidden sm:inline">{isFr ? 'Vider' : 'Clear'}</span>
           </button>
         </ActionTooltip>
 
-        {/* Menu d'Exportation (#FF6B35, dernier élément à droite par Règle 25) */}
+        {/* Menu d'Exportation */}
         <Popover open={showExportMenu} onOpenChange={onShowExportMenuChange}>
           <PopoverTrigger asChild>
             <button
               type="button"
-              className="h-9 px-3.5 rounded-xl bg-[#FF6B35] hover:bg-[#E85A24] text-white text-xs font-semibold shadow-xs transition-all flex items-center gap-1.5 cursor-pointer active:scale-[0.98]"
+              className="h-9 px-3.5 rounded-xl bg-[var(--accent,#f97316)] hover:brightness-105 text-white text-xs font-semibold shadow-xs transition-colors duration-150 flex items-center gap-1.5 cursor-pointer active:scale-[0.98]"
             >
               <Download size={13} />
               <span>{isFr ? 'Exporter' : 'Export'}</span>

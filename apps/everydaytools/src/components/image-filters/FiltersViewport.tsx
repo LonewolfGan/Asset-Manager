@@ -30,7 +30,7 @@ export function FiltersViewport({
             before={
               <img
                 src={previewUrl}
-                alt="Original"
+                alt={isFr ? 'Avant' : 'Before'}
                 draggable={false}
                 className="w-full h-full object-contain"
               />
@@ -38,20 +38,20 @@ export function FiltersViewport({
             after={
               <img
                 src={previewUrl}
-                alt="Filtré"
+                alt={isFr ? 'Après' : 'After'}
                 draggable={false}
                 style={{ filter: cssFilterString }}
                 className="w-full h-full object-contain"
               />
             }
-            labels={[isFr ? 'Original' : 'Original', isFr ? 'Étalonné' : 'Graded']}
+            labels={[isFr ? 'Avant' : 'Before', isFr ? 'Après' : 'After']}
             className="!aspect-auto h-full w-full border-none rounded-none bg-transparent"
           />
         ) : (
           <div className="relative w-full h-full flex items-center justify-center p-4">
             <img
               src={previewUrl}
-              alt="Photo étalonnée"
+              alt={isFr ? 'Photo étalonnée' : 'Graded photo'}
               draggable={false}
               style={{
                 filter: isHoldingOriginal ? 'none' : cssFilterString,

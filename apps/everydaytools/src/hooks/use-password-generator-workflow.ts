@@ -1,17 +1,24 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { trackToolUsed } from '@/lib/analytics';
+import { consumeHandoffText } from '@/lib/file-handoff';
+import { usePasswordHistory } from '@/hooks/use-password-history';
 import {
   generatePassword,
   generatePassphrase,
   calculateVaultStrength,
   getTextSizeClass,
+  calculateEntropyBits,
+  estimateCrackTime,
   type PasswordVaultStrength,
 } from '@/lib/password-generator-logic';
+import type { PasswordPreset } from '@/lib/password-generator-presets';
 
 export type GeneratorMode = 'random' | 'passphrase';
 
 export interface UsePasswordGeneratorWorkflowOptions {
   onStopSpeaking?: () => void;
+  onHandoffText?: (text: string) => void;
+  isFr?: boolean;
   labels: {
     weak: string;
     fair: string;
@@ -22,9 +29,12 @@ export interface UsePasswordGeneratorWorkflowOptions {
 
 export function usePasswordGeneratorWorkflow({
   onStopSpeaking,
+  onHandoffText,
+  isFr = false,
   labels,
 }: UsePasswordGeneratorWorkflowOptions) {
   const [mode, setMode] = useState<GeneratorMode>('random');
+  const [activePresetId, setActivePresetId] = useState<string | null>(null);
 
   // Random Mode Settings
   const [length, setLength] = useState(16);
@@ -41,9 +51,17 @@ export function usePasswordGeneratorWorkflow({
   const [capitalizeWords, setCapitalizeWords] = useState(true);
   const [includeNumberInPassphrase, setIncludeNumberInPassphrase] = useState(true);
 
-  // Active Generated Key
-  const [password, setPassword] = useState('');
+  // Password History Manager (Undo / Redo)
+  const history = usePasswordHistory();
   const [isSpinning, setIsSpinning] = useState(false);
+
+  // Ingest handoff text on mount if available
+  useEffect(() => {
+    const text = consumeHandoffText();
+    if (text) {
+      onHandoffText?.(text);
+    }
+  }, [onHandoffText]);
 
   const generateNextPassword = useCallback(() => {
     if (mode === 'passphrase') {
@@ -86,28 +104,92 @@ export function usePasswordGeneratorWorkflow({
     setTimeout(() => setIsSpinning(false), 300);
 
     const next = generateNextPassword();
-    setPassword(next);
-  }, [generateNextPassword, onStopSpeaking]);
+    history.pushPassword(next);
+  }, [generateNextPassword, history, onStopSpeaking]);
 
+  // Initial password generation on mount
   useEffect(() => {
-    regenerate();
-  }, [regenerate]);
+    if (!history.currentPassword) {
+      regenerate();
+    }
+  }, [history.currentPassword, regenerate]);
 
-  // Keyboard shortcut: Spacebar to regenerate
+  const applyPreset = useCallback(
+    (preset: PasswordPreset) => {
+      onStopSpeaking?.();
+      setActivePresetId(preset.id);
+
+      if (preset.mode === 'random') {
+        setMode('random');
+        setLength(preset.length);
+        setUppercase(preset.uppercase);
+        setLowercase(preset.lowercase);
+        setNumbers(preset.numbers);
+        setSymbols(preset.symbols);
+        setExcludeAmbiguous(preset.excludeAmbiguous);
+        setPronounceable(preset.pronounceable);
+
+        const next = generatePassword({
+          length: preset.length,
+          uppercase: preset.uppercase,
+          lowercase: preset.lowercase,
+          numbers: preset.numbers,
+          symbols: preset.symbols,
+          excludeAmbiguous: preset.excludeAmbiguous,
+          pronounceable: preset.pronounceable,
+        });
+        history.pushPassword(next);
+      } else {
+        setMode('passphrase');
+        setWordCount(preset.wordCount);
+        setSeparator(preset.separator);
+        setCapitalizeWords(preset.capitalizeWords);
+        setIncludeNumberInPassphrase(preset.includeNumberInPassphrase);
+
+        const next = generatePassphrase({
+          wordCount: preset.wordCount,
+          separator: preset.separator,
+          capitalizeWords: preset.capitalizeWords,
+          includeNumberInPassphrase: preset.includeNumberInPassphrase,
+        });
+        history.pushPassword(next);
+      }
+    },
+    [history, onStopSpeaking]
+  );
+
+  // Global keyboard shortcuts: Spacebar (regenerate), Ctrl/Cmd+Z (Undo), Ctrl+Y / Cmd+Shift+Z (Redo)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (
-        e.code === 'Space' &&
-        (e.target as HTMLElement).tagName !== 'INPUT' &&
-        (e.target as HTMLElement).tagName !== 'TEXTAREA'
-      ) {
+      const target = e.target as HTMLElement | null;
+      if (target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA' || target?.isContentEditable) {
+        return;
+      }
+
+      const isMac = typeof navigator !== 'undefined' && /Mac/i.test(navigator.userAgent);
+      const isCmdOrCtrl = isMac ? e.metaKey : e.ctrlKey;
+
+      if (e.code === 'Space') {
         e.preventDefault();
         regenerate();
+      } else if (isCmdOrCtrl && e.key.toLowerCase() === 'z') {
+        e.preventDefault();
+        if (e.shiftKey) {
+          history.redo();
+        } else {
+          history.undo();
+        }
+      } else if (isCmdOrCtrl && e.key.toLowerCase() === 'y') {
+        e.preventDefault();
+        history.redo();
       }
     };
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [regenerate]);
+  }, [history, regenerate]);
+
+  const password = history.currentPassword;
 
   const strengthInfo: PasswordVaultStrength = useMemo(() => {
     return calculateVaultStrength({
@@ -126,35 +208,57 @@ export function usePasswordGeneratorWorkflow({
     return getTextSizeClass(password.length);
   }, [password.length]);
 
+  const entropyBits = useMemo(() => {
+    return calculateEntropyBits(password);
+  }, [password]);
+
+  const crackTime = useMemo(() => {
+    return estimateCrackTime(entropyBits, isFr);
+  }, [entropyBits, isFr]);
+
+  const createSetter = <T>(setter: React.Dispatch<React.SetStateAction<T>>) => (val: T) => {
+    setActivePresetId(null);
+    setter(val);
+  };
+
   return {
     mode,
-    setMode,
+    setMode: createSetter(setMode),
+    activePresetId,
+    applyPreset,
     length,
-    setLength,
+    setLength: createSetter(setLength),
     uppercase,
-    setUppercase,
+    setUppercase: createSetter(setUppercase),
     lowercase,
-    setLowercase,
+    setLowercase: createSetter(setLowercase),
     numbers,
-    setNumbers,
+    setNumbers: createSetter(setNumbers),
     symbols,
-    setSymbols,
+    setSymbols: createSetter(setSymbols),
     excludeAmbiguous,
-    setExcludeAmbiguous,
+    setExcludeAmbiguous: createSetter(setExcludeAmbiguous),
     pronounceable,
-    setPronounceable,
+    setPronounceable: createSetter(setPronounceable),
     wordCount,
-    setWordCount,
+    setWordCount: createSetter(setWordCount),
     separator,
-    setSeparator,
+    setSeparator: createSetter(setSeparator),
     capitalizeWords,
-    setCapitalizeWords,
+    setCapitalizeWords: createSetter(setCapitalizeWords),
     includeNumberInPassphrase,
-    setIncludeNumberInPassphrase,
+    setIncludeNumberInPassphrase: createSetter(setIncludeNumberInPassphrase),
     password,
     isSpinning,
     regenerate,
+    undo: history.undo,
+    redo: history.redo,
+    canUndo: history.canUndo,
+    canRedo: history.canRedo,
+    historyList: history.historyList,
     strengthInfo,
     textSizeClass,
+    entropyBits,
+    crackTime,
   };
 }

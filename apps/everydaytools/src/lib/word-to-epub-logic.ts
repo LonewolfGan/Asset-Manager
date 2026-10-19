@@ -12,13 +12,15 @@ export interface WordToEpubResult {
 export interface FileValidationResult {
   isValid: boolean;
   error?: string;
+  errorTitle?: string;
+  errorDesc?: string;
 }
 
 export const getSourceFormat = (isFr: boolean): ConversionFormat => ({
   name: 'Word',
   extension: 'docx',
   icon: '/icons/word.svg',
-  color: '#185ABD',
+  color: 'var(--accent, #2563eb)',
   subLabel: isFr ? 'Format Word (.docx)' : 'Word Format (.docx)',
 });
 
@@ -26,7 +28,7 @@ export const getTargetFormat = (isFr: boolean): ConversionFormat => ({
   name: 'EPUB',
   extension: 'epub',
   icon: '/icons/epub.svg',
-  color: '#85BA38',
+  color: 'var(--accent, #65a30d)',
   subLabel: isFr ? 'eBook universel' : 'Universal eBook',
 });
 
@@ -39,20 +41,28 @@ export function validateWordFile(selectedFile: File, isFr = false): FileValidati
     selectedFile.type === 'application/msword';
 
   if (!isWord) {
+    const errorTitle = isFr ? 'Format non supporté' : 'Unsupported format';
+    const errorDesc = isFr
+      ? 'Veuillez sélectionner un document Word (.docx ou .doc) valide.'
+      : 'Please select a valid Word (.docx or .doc) document.';
     return {
       isValid: false,
-      error: isFr
-        ? 'Veuillez sélectionner un document Word (.docx ou .doc) valide.'
-        : 'Please select a valid Word (.docx or .doc) document.',
+      error: errorDesc,
+      errorTitle,
+      errorDesc,
     };
   }
 
   if (selectedFile.size > 50 * 1024 * 1024) {
+    const errorTitle = isFr ? 'Fichier trop volumineux' : 'File too large';
+    const errorDesc = isFr
+      ? 'Le fichier dépasse la taille maximale autorisée de 50 Mo.'
+      : 'File exceeds maximum allowed size of 50 MB.';
     return {
       isValid: false,
-      error: isFr
-        ? 'Le fichier dépasse la taille maximale autorisée de 50 Mo.'
-        : 'File exceeds maximum allowed size of 50 MB.',
+      error: errorDesc,
+      errorTitle,
+      errorDesc,
     };
   }
 
@@ -60,8 +70,8 @@ export function validateWordFile(selectedFile: File, isFr = false): FileValidati
 }
 
 export function buildEpubFilename(originalName: string): string {
-  const baseTitle = originalName.replace(/\.(docx?|doc)$/i, '');
-  return `${baseTitle}.epub`;
+  const baseTitle = originalName.replace(/\.(docx?|doc)$/i, '').trim();
+  return `${baseTitle || 'document'}.epub`;
 }
 
 export async function convertWordToEpub(file: File, isFr = false): Promise<WordToEpubResult> {
@@ -71,7 +81,8 @@ export async function convertWordToEpub(file: File, isFr = false): Promise<WordT
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const epubModule = (await import('epub-gen-memory')) as any;
-  const bookTitle = file.name.replace(/\.(docx?|doc)$/i, '');
+  const bookTitle =
+    file.name.replace(/\.(docx?|doc)$/i, '').trim() || (isFr ? 'Document' : 'Document');
   const chapters = [
     {
       title: bookTitle,
@@ -132,5 +143,7 @@ export function triggerDownload(blob: Blob, filename: string): void {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+  }, 1000);
 }

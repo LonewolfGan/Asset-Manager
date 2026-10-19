@@ -12,6 +12,8 @@ import mdLang from 'highlight.js/lib/languages/markdown';
 import sqlLang from 'highlight.js/lib/languages/sql';
 import yamlLang from 'highlight.js/lib/languages/yaml';
 
+export { MARKDOWN_SAMPLES } from './markdown-samples';
+
 // Enregistrement des langages pour la coloration syntaxique
 hljs.registerLanguage('javascript', jsLang);
 hljs.registerLanguage('js', jsLang);
@@ -47,7 +49,8 @@ export function createMarkdownRenderer(isFr: boolean) {
         </div>`;
       } catch {}
     }
-    return `<pre class="p-3.5 text-xs font-mono my-4 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-950 text-zinc-200 overflow-x-auto"><code>${text}</code></pre>`;
+    const escaped = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    return `<pre class="p-3.5 text-xs font-mono my-4 rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-950 text-zinc-200 overflow-x-auto"><code>${escaped}</code></pre>`;
   };
 
   r.blockquote = ({ text }: { text: string }) => {
@@ -68,7 +71,7 @@ export function createMarkdownRenderer(isFr: boolean) {
         <div class="text-zinc-700 dark:text-zinc-300">${content}</div>
       </div>`;
     }
-    return `<blockquote class="border-l-4 border-[#FF6B35] pl-4 py-1 my-4 bg-zinc-50/50 dark:bg-zinc-900/30 text-zinc-600 dark:text-zinc-400 rounded-r-lg">${text}</blockquote>`;
+    return `<blockquote class="border-l-4 border-[var(--accent)] pl-4 py-1 my-4 bg-zinc-50/50 dark:bg-zinc-900/30 text-zinc-600 dark:text-zinc-400 rounded-r-lg">${text}</blockquote>`;
   };
 
   return r;
@@ -114,9 +117,14 @@ export function generateStandaloneHtml(safeHtml: string, isFr: boolean): string 
     tr:nth-child(even) { background: #fafafa; }
     code:not(pre code) { background: #f4f4f5; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.9em; color: #ea580c; }
     pre code { display: block; padding: 16px; background: #09090b; color: #f4f4f5; border-radius: 8px; overflow-x: auto; font-family: monospace; font-size: 13px; line-height: 1.5; }
-    blockquote { border-left: 4px solid #FF6B35; margin: 20px 0; padding: 8px 18px; background: #fafafa; color: #52525b; }
+    blockquote { border-left: 4px solid #6366f1; margin: 20px 0; padding: 8px 18px; background: #fafafa; color: #52525b; }
     img { max-width: 100%; height: auto; border-radius: 8px; }
     hr { border: 0; border-top: 1px solid #e4e4e7; margin: 32px 0; }
+    .border-sky-500 { border-color: #0284c7; } .bg-sky-500\\/5 { background-color: #f0f9ff; } .text-sky-600 { color: #0284c7; }
+    .border-emerald-500 { border-color: #10b981; } .bg-emerald-500\\/5 { background-color: #ecfdf5; } .text-emerald-600 { color: #059669; }
+    .border-purple-500 { border-color: #a855f7; } .bg-purple-500\\/5 { background-color: #faf5ff; } .text-purple-600 { color: #9333ea; }
+    .border-amber-500 { border-color: #f59e0b; } .bg-amber-500\\/5 { background-color: #fffbeb; } .text-amber-600 { color: #d97706; }
+    .border-red-500 { border-color: #ef4444; } .bg-red-500\\/5 { background-color: #fef2f2; } .text-red-600 { color: #dc2626; }
   </style>
 </head>
 <body>

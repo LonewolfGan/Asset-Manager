@@ -7,7 +7,7 @@ import {
   ConversionStaging,
   ConversionConduit,
   ConversionResult,
-  DocumentNextActionModal,
+  ReciprocalTitle,
 } from '@/components/conversion';
 import {
   TxtToDocxModeSelector,
@@ -53,7 +53,15 @@ export default function TxtToDocx() {
   return (
     <ToolPageLayout
       breadcrumb={[t.nav.breadcrumb.home, t.nav.breadcrumb.documents, pageTitle]}
-      title={pageTitle}
+      title={
+        <ReciprocalTitle
+          currentSlug="txt-to-docx"
+          isFr={isFr}
+          getCurrentFile={() => file}
+          getCurrentText={() => textInput}
+          fallbackTitle={pageTitle}
+        />
+      }
       description={pageDesc}
       seoSlug="txt-to-docx"
     >
@@ -142,15 +150,6 @@ export default function TxtToDocx() {
             )}
           </AnimatePresence>
         </div>
-
-        <DocumentNextActionModal
-          toolId="txt-to-docx"
-          isOpen={isNextActionOpen}
-          onClose={() => setIsNextActionOpen(false)}
-          resultBlob={result?.blob}
-          resultFilename={result?.filename}
-          formatType="docx"
-        />
       </ToolWorkspace>
     </ToolPageLayout>
   );

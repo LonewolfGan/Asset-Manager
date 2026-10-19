@@ -53,8 +53,9 @@ export function BarcodeDataInput({
           value={value}
           onChange={(e) => onValueChange(e.target.value)}
           placeholder={activeSymbology.placeholder}
+          aria-label={isFr ? `Données à encoder (${activeSymbology.name})` : `Data to encode (${activeSymbology.name})`}
           spellCheck={false}
-          className="w-full h-11 px-4 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900 font-mono text-base text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 outline-none focus:border-[#FF6B35] transition-colors tracking-wider"
+          className="w-full h-11 px-4 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900 font-mono text-base text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 outline-none focus:border-[var(--accent)] transition-colors duration-150 tracking-wider"
         />
 
         {/* Bouton de correction immédiate si clé de contrôle erronée */}
@@ -62,7 +63,8 @@ export function BarcodeDataInput({
           <button
             type="button"
             onClick={() => onApplyAutoFix(validation.autoFix!)}
-            className="absolute right-2 px-2.5 py-1 rounded-lg bg-[#FF6B35] text-white text-xs font-semibold hover:bg-[#e85a26] transition-colors shadow-xs cursor-pointer"
+            aria-label={isFr ? `Corriger la clé de contrôle (${validation.expectedKey})` : `Fix checksum (${validation.expectedKey})`}
+            className="absolute right-2 px-2.5 py-1 rounded-lg bg-[var(--accent)] text-white text-xs font-semibold hover:opacity-90 transition-colors duration-150 shadow-xs cursor-pointer"
           >
             {isFr
               ? `Corriger la clé (${validation.expectedKey})`

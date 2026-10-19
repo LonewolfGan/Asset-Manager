@@ -15,6 +15,8 @@ export interface CsvViewerWorkbenchProps {
   isFr: boolean;
   documentName: string;
   fileSize: string | null;
+  fileSizeBytes?: number;
+  isExcel?: boolean;
   rows: string[][];
   headers: string[];
   searchQuery: string;
@@ -41,6 +43,8 @@ export const CsvViewerWorkbench: React.FC<CsvViewerWorkbenchProps> = ({
   isFr,
   documentName,
   fileSize,
+  fileSizeBytes = 0,
+  isExcel = false,
   rows,
   headers,
   searchQuery,
@@ -74,8 +78,8 @@ export const CsvViewerWorkbench: React.FC<CsvViewerWorkbenchProps> = ({
       <StudioCommandBar
         meta={{
           name: documentName,
-          size: 0,
-          icon: getFileFormatIcon(documentName.endsWith('.xlsx') ? 'file.xlsx' : 'file.csv'),
+          size: fileSizeBytes,
+          icon: getFileFormatIcon(isExcel ? 'file.xlsx' : 'file.csv'),
         }}
         resetLabel={isFr ? 'Changer de fichier' : 'Change file'}
         onReset={onReset}
@@ -124,7 +128,7 @@ export const CsvViewerWorkbench: React.FC<CsvViewerWorkbenchProps> = ({
             <PopoverTrigger asChild>
               <button
                 type="button"
-                className="h-9 px-3.5 rounded-xl bg-[#FF6B35] hover:bg-[#E85A24] text-white text-xs font-semibold shadow-xs transition-all flex items-center gap-1.5 cursor-pointer active:scale-[0.98]"
+                className="h-9 px-3.5 rounded-xl bg-[var(--accent,#f97316)] hover:bg-[var(--accent,#f97316)]/90 text-white text-xs font-semibold shadow-xs transition-colors duration-150 flex items-center gap-1.5 cursor-pointer active:scale-[0.98]"
               >
                 <Download size={13} />
                 <span>{isFr ? 'Exporter' : 'Export'}</span>

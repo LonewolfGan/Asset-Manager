@@ -4,6 +4,8 @@ import {
 } from './js-formatter-parser';
 
 export type { QuotesStyle } from './js-formatter-parser';
+export * from './js-formatter-issues';
+export * from './js-formatter-samples';
 
 export type Mode = 'format' | 'minify';
 export type Language = 'javascript' | 'typescript';

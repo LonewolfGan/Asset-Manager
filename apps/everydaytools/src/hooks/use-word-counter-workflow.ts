@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { trackToolUsed } from '@/lib/analytics';
 import { toast } from 'sonner';
-import { consumeHandoffFile } from '@/lib/file-handoff';
+import { consumeHandoffFile, consumeHandoffText } from '@/lib/file-handoff';
 import {
   analyzeText,
   transformTextCase,
@@ -12,6 +12,7 @@ import {
   buildJsonStatisticsPayload,
   downloadTextFile,
 } from '@/lib/word-counter-export-logic';
+import { WORD_COUNTER_SAMPLES } from '@/lib/word-counter-samples';
 
 export function useWordCounterWorkflow(isFr: boolean) {
   const [text, setText] = useState<string>('');
@@ -23,6 +24,9 @@ export function useWordCounterWorkflow(isFr: boolean) {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const lastHistoryPushRef = useRef<number>(0);
+  const textRef = useRef<string>(text);
+  textRef.current = text;
 
   const stats: DetailedTextStats = useMemo(() => {
     return analyzeText(text);
@@ -41,8 +45,12 @@ export function useWordCounterWorkflow(isFr: boolean) {
   }, [text]);
 
   const handleTextChange = (newVal: string) => {
-    setUndoStack((prev) => [...prev.slice(-30), text]);
-    setRedoStack([]);
+    const now = Date.now();
+    if (now - lastHistoryPushRef.current > 1000) {
+      setUndoStack((prev) => [...prev.slice(-30), text]);
+      setRedoStack([]);
+      lastHistoryPushRef.current = now;
+    }
     setText(newVal);
   };
 
@@ -52,6 +60,7 @@ export function useWordCounterWorkflow(isFr: boolean) {
     setRedoStack((prev) => [...prev.slice(-30), text]);
     setUndoStack((prev) => prev.slice(0, -1));
     setText(previous);
+    lastHistoryPushRef.current = 0;
     toast.info(isFr ? 'Action annulée' : 'Action undone');
   }, [undoStack, text, isFr]);
 
@@ -61,13 +70,42 @@ export function useWordCounterWorkflow(isFr: boolean) {
     setUndoStack((prev) => [...prev.slice(-30), text]);
     setRedoStack((prev) => prev.slice(0, -1));
     setText(next);
+    lastHistoryPushRef.current = 0;
     toast.info(isFr ? 'Action rétablie' : 'Action redone');
   }, [redoStack, text, isFr]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const activeEl = document.activeElement;
+      const isInputFocused =
+        activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
+
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+        if (!isInputFocused || activeEl === textareaRef.current) {
+          if (e.shiftKey) {
+            e.preventDefault();
+            handleRedo();
+          } else {
+            e.preventDefault();
+            handleUndo();
+          }
+        }
+      } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') {
+        if (!isInputFocused || activeEl === textareaRef.current) {
+          e.preventDefault();
+          handleRedo();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleUndo, handleRedo]);
 
   const handleClear = () => {
     if (!text) return;
     setUndoStack((prev) => [...prev.slice(-30), text]);
     setRedoStack([]);
+    lastHistoryPushRef.current = 0;
     setText('');
     setLoadedFile(null);
     toast.info(isFr ? 'Texte effacé (Ctrl+Z pour restaurer)' : 'Text cleared (Ctrl+Z to restore)');
@@ -79,8 +117,9 @@ export function useWordCounterWorkflow(isFr: boolean) {
     reader.onload = (event) => {
       const content = event.target?.result as string;
       if (typeof content === 'string') {
-        setUndoStack((prev) => [...prev.slice(-30), text]);
+        setUndoStack((prev) => [...prev.slice(-30), textRef.current]);
         setRedoStack([]);
+        lastHistoryPushRef.current = 0;
         setText(content);
         setLoadedFile({ name: file.name, size: file.size });
         toast.success(isFr ? `Document ${file.name} chargé` : `Document ${file.name} loaded`);
@@ -88,14 +127,20 @@ export function useWordCounterWorkflow(isFr: boolean) {
       }
     };
     reader.readAsText(file);
-  }, [text, isFr]);
+  }, [isFr]);
 
   useEffect(() => {
-    const staged = consumeHandoffFile();
-    if (staged) {
-      processFile(staged);
+    const stagedFile = consumeHandoffFile();
+    if (stagedFile) {
+      processFile(stagedFile);
+      return;
     }
-  }, [processFile]);
+    const stagedText = consumeHandoffText();
+    if (stagedText && typeof stagedText === 'string') {
+      setText(stagedText);
+      toast.info(isFr ? 'Texte importé depuis le handoff' : 'Text imported from handoff');
+    }
+  }, []);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -140,9 +185,21 @@ export function useWordCounterWorkflow(isFr: boolean) {
     const transformed = transformTextCase(text, mode);
     setUndoStack((prev) => [...prev.slice(-30), text]);
     setRedoStack([]);
+    lastHistoryPushRef.current = 0;
     setText(transformed);
     toast.success(isFr ? 'Casse modifiée' : 'Case modified');
     trackToolUsed('word-counter', `case-${mode}`);
+  };
+
+  const handleLoadSample = (sampleId: string) => {
+    const sample = WORD_COUNTER_SAMPLES.find((s) => s.id === sampleId) ?? WORD_COUNTER_SAMPLES[0];
+    if (!sample) return;
+    setUndoStack((prev) => [...prev.slice(-30), text]);
+    setRedoStack([]);
+    lastHistoryPushRef.current = 0;
+    setText(sample.content);
+    setLoadedFile(null);
+    toast.success(isFr ? `Exemple « ${sample.labelFr} » chargé` : `Sample "${sample.labelEn}" loaded`);
   };
 
   const handleCopyText = async () => {
@@ -209,9 +266,12 @@ export function useWordCounterWorkflow(isFr: boolean) {
     handleDragLeave,
     handleDrop,
     handleTransformCase,
+    handleLoadSample,
     handleCopyText,
     handleDownloadTxt,
     handleCopyReport,
     handleExportJson,
   };
 }
+
+export type WordCounterWorkflow = ReturnType<typeof useWordCounterWorkflow>;

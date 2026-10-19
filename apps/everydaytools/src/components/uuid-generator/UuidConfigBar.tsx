@@ -83,7 +83,7 @@ export const UuidConfigBar: React.FC<UuidConfigBarProps> = ({
         <button
           type="button"
           onClick={onGenerate}
-          className="flex items-center justify-center gap-2 h-8 px-3 text-xs font-semibold rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-all active:scale-[0.98] shadow-xs cursor-pointer"
+          className="flex items-center justify-center gap-2 h-8 px-3 text-xs font-semibold rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors duration-150 active:scale-[0.98] shadow-xs cursor-pointer"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
           <span>{isFr ? 'Régénérer' : 'Regenerate'}</span>

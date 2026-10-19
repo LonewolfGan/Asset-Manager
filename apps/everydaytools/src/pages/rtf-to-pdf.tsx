@@ -1,21 +1,23 @@
 import { AnimatePresence } from 'framer-motion';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import { ToolWorkspace } from '@/components/ToolContent';
-import { Eye } from 'lucide-react';
+import { Eye, Sparkles } from 'lucide-react';
 import {
   ConversionDropzone,
   ConversionStaging,
   ConversionConduit,
   ConversionResult,
   NextActionModal,
+  ReciprocalTitle,
 } from '@/components/conversion';
 import { useRtfToPdfWorkflow } from '@/hooks/use-rtf-to-pdf-workflow';
+import { useLocale } from '@/hooks/use-locale';
 
 export default function RtfToPdf() {
+  const { isFr } = useLocale();
   const {
     t,
     tc,
-    isFr,
     sourceFormat,
     targetFormat,
     file,
@@ -32,6 +34,7 @@ export default function RtfToPdf() {
     handleConvert,
     handleDownload,
     handleOpenPreview,
+    handleOpenNextAction,
   } = useRtfToPdfWorkflow();
 
   const pageTitle = t.tools['rtf-to-pdf']?.title ?? 'RTF to PDF';
@@ -42,7 +45,14 @@ export default function RtfToPdf() {
   return (
     <ToolPageLayout
       breadcrumb={[t.nav.breadcrumb.home, t.nav.breadcrumb.documents, pageTitle]}
-      title={pageTitle}
+      title={
+        <ReciprocalTitle
+          currentSlug="rtf-to-pdf"
+          isFr={isFr}
+          getCurrentFile={() => file}
+          fallbackTitle={pageTitle}
+        />
+      }
       description={pageDesc}
       seoSlug="rtf-to-pdf"
     >
@@ -53,6 +63,7 @@ export default function RtfToPdf() {
             {/* ─── SCENE 1 : ARCHITECTURAL DOUBLE-BEZEL UPLOAD BOX ─── */}
             {!file && !result && !isProcessing && (
               <ConversionDropzone
+                key="dropzone"
                 sourceFormat={sourceFormat}
                 title={isFr ? 'Glissez-déposez votre document RTF' : 'Drag & drop your RTF document'}
                 description={
@@ -72,6 +83,7 @@ export default function RtfToPdf() {
             {/* ─── SCENE 2 : STANDARDIZED ARCHITECTURAL STAGING ─── */}
             {file && !result && !isProcessing && (
               <ConversionStaging
+                key="staging"
                 sourceFormat={sourceFormat}
                 targetFormat={targetFormat}
                 sourceFile={file}
@@ -85,6 +97,7 @@ export default function RtfToPdf() {
             {/* ─── SCENE 3 : UNIFIED KINETIC CONDUIT ─── */}
             {isProcessing && (
               <ConversionConduit
+                key="conduit"
                 sourceFormat={sourceFormat}
                 targetFormat={targetFormat}
                 fileName={file?.name}
@@ -100,6 +113,7 @@ export default function RtfToPdf() {
             {/* ─── SCENE 4 : HEROIC UNBOXED RESULT ─── */}
             {result && !isProcessing && (
               <ConversionResult
+                key="result"
                 targetFormat={targetFormat}
                 resultFileName={result.filename}
                 resultFileSize={result.sizeAfter}
@@ -113,27 +127,39 @@ export default function RtfToPdf() {
                 onDownload={handleDownload}
                 onReset={handleReset}
                 extraActions={
-                  <button
-                    type="button"
-                    onClick={handleOpenPreview}
-                    className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-medium text-base active:scale-[0.98] transition-all flex items-center gap-2.5 shadow-sm"
-                  >
-                    <Eye size={16} strokeWidth={2.2} />
-                    <span>{isFr ? "Ouvrir l'aperçu PDF" : 'Open PDF preview'}</span>
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={handleOpenPreview}
+                      className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-medium text-base active:scale-[0.98] transition-[background-color,border-color,transform] duration-150 flex items-center gap-2.5 shadow-sm"
+                    >
+                      <Eye size={16} strokeWidth={2.2} />
+                      <span>{isFr ? "Ouvrir l'aperçu PDF" : 'Open PDF preview'}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleOpenNextAction}
+                      className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-medium text-base active:scale-[0.98] transition-[background-color,border-color,transform] duration-150 flex items-center gap-2.5 shadow-sm"
+                    >
+                      <Sparkles size={16} strokeWidth={2.2} className="text-amber-500" />
+                      <span>{isFr ? 'Actions suivantes' : 'Next actions'}</span>
+                    </button>
+                  </div>
                 }
               />
             )}
           </AnimatePresence>
 
-          {/* Post-Download Action Continuum Modal */}
-          <NextActionModal
-            toolId="rtf-to-pdf"
-            isOpen={isNextActionOpen}
-            onClose={() => setIsNextActionOpen(false)}
-            resultBlob={result?.blob}
-            resultFilename={result?.filename}
-          />
+          {/* Next Action Workflow Chaining Modal */}
+          {result && (
+            <NextActionModal
+              isOpen={isNextActionOpen}
+              onClose={() => setIsNextActionOpen(false)}
+              toolId="rtf-to-pdf"
+              resultBlob={result.blob}
+              resultFilename={result.filename}
+            />
+          )}
         </div>
       </ToolWorkspace>
     </ToolPageLayout>

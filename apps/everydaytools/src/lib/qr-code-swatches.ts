@@ -12,7 +12,7 @@ export function getAvailableIconSwatches(
 ): IconSwatch[] {
   const candidates: IconSwatch[] = [
     { label: isFr ? 'Motif' : 'Pattern', color: fgColor },
-    { label: 'Orange', color: '#FF6B35' },
+    { label: 'Orange', color: '#f97316' },
     { label: isFr ? 'Noir' : 'Black', color: '#09090b' },
     { label: isFr ? 'Blanc' : 'White', color: '#ffffff' },
     { label: isFr ? 'Bleu' : 'Blue', color: '#2563eb' },

@@ -7,6 +7,7 @@ import {
   renderSafeHtml,
   highlightHtml,
   generateStandaloneHtml,
+  MARKDOWN_SAMPLES,
 } from '@/lib/markdown-preview-parser';
 import { applyMarkdownFormat } from '@/lib/markdown-format-helpers';
 
@@ -46,11 +47,26 @@ export function useMarkdownPreviewWorkflow(isFr: boolean) {
     }
   };
 
+  const lastHistoryTimeRef = useRef<number>(0);
   const handleMarkdownChange = (val: string) => {
-    setHistory((prev) => [...prev.slice(-30), markdown]);
+    const now = Date.now();
+    if (now - lastHistoryTimeRef.current > 1000) {
+      setHistory((prev) => [...prev.slice(-30), markdown]);
+      lastHistoryTimeRef.current = now;
+    }
     setRedoStack([]);
     setMarkdown(val);
   };
+
+  const handleLoadSample = useCallback((key: keyof typeof MARKDOWN_SAMPLES) => {
+    const sample = MARKDOWN_SAMPLES[key];
+    if (sample) {
+      setHistory((prev) => [...prev.slice(-30), markdown]);
+      setRedoStack([]);
+      setMarkdown(sample);
+      toast.success(isFr ? 'Modèle de document chargé' : 'Document template loaded');
+    }
+  }, [markdown, isFr]);
 
   const handleUndo = useCallback(() => {
     if (history.length === 0) return;
@@ -267,6 +283,7 @@ export function useMarkdownPreviewWorkflow(isFr: boolean) {
     handleDownloadHtml,
     handleClear,
     handleFileUpload,
+    handleLoadSample,
     hasContent: Boolean(markdown.trim()),
   };
 }

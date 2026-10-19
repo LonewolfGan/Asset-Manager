@@ -53,6 +53,13 @@ export function CsvEditorTable({
               {headers.map((header, colIdx) => (
                 <th
                   key={colIdx}
+                  aria-sort={
+                    sortConfig?.colIndex === colIdx
+                      ? sortConfig.direction === 'asc'
+                        ? 'ascending'
+                        : 'descending'
+                      : 'none'
+                  }
                   className="min-w-[160px] px-3 py-2 border-r border-black/[0.06] dark:border-white/5 last:border-r-0 group"
                 >
                   <div className="flex items-center justify-between gap-1.5">
@@ -69,7 +76,7 @@ export function CsvEditorTable({
                           type="button"
                           onClick={() => onSort(colIdx)}
                           className={`p-1 rounded hover:bg-black/5 dark:hover:bg-white/10 cursor-pointer ${
-                            sortConfig?.colIndex === colIdx ? 'text-[#10B981] opacity-100 font-bold' : 'text-zinc-400'
+                            sortConfig?.colIndex === colIdx ? 'text-[var(--accent,#10b981)] opacity-100 font-bold' : 'text-zinc-400'
                           }`}
                         >
                           {sortConfig?.colIndex === colIdx ? (
@@ -141,7 +148,7 @@ export function CsvEditorTable({
                     <button
                       type="button"
                       onClick={() => onDeleteRow(originalIndex)}
-                      className="p-1.5 rounded-lg text-zinc-300 hover:text-red-600 dark:text-zinc-600 dark:hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all cursor-pointer"
+                      className="p-1.5 rounded-lg text-zinc-300 hover:text-red-600 dark:text-zinc-600 dark:hover:text-red-400 opacity-0 group-hover:opacity-100 transition-[color,opacity] duration-150 cursor-pointer"
                     >
                       <Trash2 size={14} />
                     </button>

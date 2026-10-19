@@ -8,6 +8,7 @@ import {
   buildChecksumReportText,
   downloadTextFile,
 } from '@/lib/checksum-logic';
+import { consumeHandoffFile, consumeHandoffText } from '@/lib/file-handoff';
 
 export function useChecksumWorkflow(isFr: boolean) {
   const [files, setFiles] = useState<File[]>([]);
@@ -53,7 +54,6 @@ export function useChecksumWorkflow(isFr: boolean) {
   const handleFileSelected = useCallback(
     (f: File) => {
       setFiles([f]);
-      setExpectedHash('');
       void computeHashes(f);
     },
     [computeHashes]
@@ -70,13 +70,29 @@ export function useChecksumWorkflow(isFr: boolean) {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && files.length > 0 && !isProcessing) {
+      if (
+        e.key === 'Escape' &&
+        files.length > 0 &&
+        !isProcessing &&
+        !(e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement)
+      ) {
         handleReset();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [files.length, isProcessing, handleReset]);
+
+  useEffect(() => {
+    const handoffText = consumeHandoffText();
+    if (handoffText) {
+      setExpectedHash(handoffText.trim());
+    }
+    const handoffFile = consumeHandoffFile();
+    if (handoffFile) {
+      handleFileSelected(handoffFile);
+    }
+  }, [handleFileSelected]);
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -123,7 +139,7 @@ export function useChecksumWorkflow(isFr: boolean) {
   const handleCopyAll = () => {
     if (!hashes) return;
     const text = `SHA-256: ${hashes['SHA-256']}\nSHA-512: ${hashes['SHA-512']}\nMD5: ${hashes['MD5']}\nSHA-1: ${hashes['SHA-1']}\nSHA-384: ${hashes['SHA-384']}`;
-    navigator.clipboard.writeText(text);
+    navigator.clipboard.writeText(text).catch(() => {});
     setCopiedAll(true);
     setTimeout(() => setCopiedAll(false), 2000);
   };

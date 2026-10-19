@@ -9,6 +9,7 @@ import {
   ConversionConduit,
   ConversionResult,
   NextActionModal,
+  ReciprocalTitle,
 } from '@/components/conversion';
 import {
   TxtToPdfModeSelector,
@@ -54,7 +55,15 @@ export default function TxtToPdf() {
   return (
     <ToolPageLayout
       breadcrumb={[t.nav.breadcrumb.home, t.nav.breadcrumb.documents, pageTitle]}
-      title={pageTitle}
+      title={
+        <ReciprocalTitle
+          currentSlug="txt-to-pdf"
+          isFr={isFr}
+          getCurrentFile={() => file}
+          getCurrentText={() => textInput}
+          fallbackTitle={pageTitle}
+        />
+      }
       description={pageDesc}
       seoSlug="txt-to-pdf"
     >

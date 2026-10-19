@@ -73,7 +73,7 @@ export function PasswordRandomControls({
                 key={preset}
                 type="button"
                 onClick={() => onLengthChange(preset)}
-                className={`h-7 px-2.5 rounded-lg text-xs font-mono transition-all cursor-pointer ${
+                className={`h-7 px-2.5 rounded-lg text-xs font-mono transition-colors duration-150 cursor-pointer ${
                   length === preset
                     ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 font-semibold'
                     : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-zinc-950 dark:hover:text-white'
@@ -176,14 +176,14 @@ export function PasswordRandomControls({
                     e.stopPropagation();
                     onSpeak();
                   }}
-                  className={`p-1 rounded-md transition-colors cursor-pointer ${
+                  className={`p-1 rounded-md transition-colors duration-150 cursor-pointer ${
                     isSpeaking
-                      ? 'bg-[#FF6B35]/20 text-[#FF6B35]'
+                      ? 'bg-[var(--accent,#f97316)]/15 text-[var(--accent,#f97316)]'
                       : 'hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-600 dark:text-zinc-400'
                   }`}
                 >
                   {isSpeaking ? (
-                    <VolumeX className="w-3.5 h-3.5 text-[#FF6B35] animate-pulse" />
+                    <VolumeX className="w-3.5 h-3.5 text-[var(--accent,#f97316)] animate-pulse" />
                   ) : (
                     <Volume2 className="w-3.5 h-3.5" />
                   )}

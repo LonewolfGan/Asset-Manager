@@ -1,28 +1,33 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import {
   getSourceFormat,
   getTargetFormat,
   validateHtmlInputFile,
   buildMarkdownFilename,
   convertHtmlToMarkdown,
+  triggerDownload,
 } from '@/lib/html-to-markdown-logic';
 
-describe('html-to-markdown-logic', () => {
+describe('html-to-markdown-logic [TDD-Lock ECC]', () => {
   describe('Format descriptors', () => {
-    it('returns valid source format metadata for fr and en', () => {
+    it('returns valid source format metadata with tokenized color for fr and en', () => {
       const frSource = getSourceFormat(true);
       expect(frSource.name).toBe('HTML');
       expect(frSource.extension).toBe('html');
+      expect(frSource.icon).toBe('/icons/html.svg');
+      expect(frSource.color).toBe('var(--accent, #ea580c)');
       expect(frSource.subLabel).toBe('Document HTML5');
 
       const enSource = getSourceFormat(false);
       expect(enSource.subLabel).toBe('HTML5 Document');
     });
 
-    it('returns valid target format metadata for fr and en', () => {
+    it('returns valid target format metadata with tokenized color for fr and en', () => {
       const frTarget = getTargetFormat(true);
       expect(frTarget.name).toBe('Markdown');
       expect(frTarget.extension).toBe('md');
+      expect(frTarget.icon).toBe('/icons/markdown.svg');
+      expect(frTarget.color).toBe('var(--accent, #0284c7)');
       expect(frTarget.subLabel).toBe('Syntaxe Markdown');
 
       const enTarget = getTargetFormat(false);
@@ -42,11 +47,15 @@ describe('html-to-markdown-logic', () => {
       expect(validateHtmlInputFile(xhtmlFile, false)).toEqual({ isValid: true });
     });
 
-    it('rejects unsupported file formats', () => {
+    it('rejects unsupported file formats including plain text or generic bin files', () => {
       const pdfFile = new File(['%PDF-1.4'], 'test.pdf', { type: 'application/pdf' });
-      const result = validateHtmlInputFile(pdfFile, true);
-      expect(result.isValid).toBe(false);
-      expect(result.error).toContain('HTML');
+      expect(validateHtmlInputFile(pdfFile, true).isValid).toBe(false);
+
+      const txtFile = new File(['plain text'], 'notes.txt', { type: 'text/plain' });
+      expect(validateHtmlInputFile(txtFile, true).isValid).toBe(false);
+
+      const binFile = new File(['binary'], 'data.bin', { type: '' });
+      expect(validateHtmlInputFile(binFile, false).isValid).toBe(false);
     });
 
     it('rejects files larger than 20MB', () => {
@@ -65,9 +74,11 @@ describe('html-to-markdown-logic', () => {
       expect(buildMarkdownFilename('doc.xhtml')).toBe('doc.md');
     });
 
-    it('defaults to document.md when no filename is provided', () => {
+    it('defaults to document.md when no filename or empty extension is provided', () => {
       expect(buildMarkdownFilename()).toBe('document.md');
       expect(buildMarkdownFilename('')).toBe('document.md');
+      expect(buildMarkdownFilename('.html')).toBe('document.md');
+      expect(buildMarkdownFilename('   .htm')).toBe('document.md');
     });
   });
 
@@ -92,6 +103,34 @@ describe('html-to-markdown-logic', () => {
       const md = await convertHtmlToMarkdown(html);
       expect(md).toContain('```');
       expect(md).toContain('const a = 1;');
+    });
+  });
+
+  describe('triggerDownload', () => {
+    it('creates object URL, appends link, clicks, and schedules delayed revocation', () => {
+      vi.useFakeTimers();
+      const createObjectURLSpy = vi
+        .spyOn(URL, 'createObjectURL')
+        .mockReturnValue('blob:mock-url');
+      const revokeObjectURLSpy = vi
+        .spyOn(URL, 'revokeObjectURL')
+        .mockImplementation(() => {});
+
+      const appendChildSpy = vi.spyOn(document.body, 'appendChild');
+      const removeChildSpy = vi.spyOn(document.body, 'removeChild');
+
+      const blob = new Blob(['# Markdown content'], { type: 'text/markdown' });
+      triggerDownload(blob, 'export.md');
+
+      expect(createObjectURLSpy).toHaveBeenCalledWith(blob);
+      expect(appendChildSpy).toHaveBeenCalled();
+      expect(removeChildSpy).toHaveBeenCalled();
+      expect(revokeObjectURLSpy).not.toHaveBeenCalled();
+
+      // Fast forward timers
+      vi.advanceTimersByTime(1000);
+      expect(revokeObjectURLSpy).toHaveBeenCalledWith('blob:mock-url');
+      vi.useRealTimers();
     });
   });
 });

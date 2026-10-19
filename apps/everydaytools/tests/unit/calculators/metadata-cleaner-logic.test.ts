@@ -1,10 +1,12 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import {
   getSourceDropzoneFormat,
   getFileTargetFormat,
   filterInspectionTags,
   computeTelemetryDetails,
   buildResultMetadataText,
+  cleanImageMetadata,
+  cleanPdfMetadata,
 } from '@/lib/metadata-cleaner-logic';
 import type { MetadataTag } from '@/lib/metadata-inspector';
 
@@ -80,6 +82,100 @@ describe('metadata-cleaner-logic', () => {
     });
   });
 
+  describe('cleanPdfMetadata', () => {
+    it('creates cleaned PDF blob and removes metadata', async () => {
+      const { PDFDocument } = await import('pdf-lib');
+      const doc = await PDFDocument.create();
+      doc.addPage([100, 100]);
+      doc.setTitle('Secret Document');
+      doc.setAuthor('Secret Author');
+      const pdfBytes = await doc.save();
+      const file = new File([pdfBytes], 'test.pdf', { type: 'application/pdf' });
+
+      const cleanedBlob = await cleanPdfMetadata(file);
+      expect(cleanedBlob).toBeInstanceOf(Blob);
+      expect(cleanedBlob.type).toBe('application/pdf');
+
+      const arrayBuf = await cleanedBlob.arrayBuffer();
+      const reloadedDoc = await PDFDocument.load(arrayBuf);
+      expect(reloadedDoc.getTitle()).toBeFalsy();
+      expect(reloadedDoc.getAuthor()).toBeFalsy();
+    });
+  });
+
+  describe('cleanImageMetadata', () => {
+    beforeEach(() => {
+      vi.restoreAllMocks();
+    });
+
+    it('successfully calls backend /api/metadata/clean when reachable', async () => {
+      const mockBlob = new Blob(['cleaned-image-binary'], { type: 'image/jpeg' });
+      const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce({
+        ok: true,
+        blob: () => Promise.resolve(mockBlob),
+      } as unknown as Response);
+
+      const file = new File(['raw-image'], 'photo.jpg', { type: 'image/jpeg' });
+      const result = await cleanImageMetadata(file, true);
+
+      expect(fetchSpy).toHaveBeenCalledTimes(1);
+      const calledUrl = fetchSpy.mock.calls[0]?.[0] as string;
+      expect(calledUrl).toContain('/api/metadata/clean');
+      expect(result).toBe(mockBlob);
+    });
+
+    it('falls back to canvas when backend fetch fails', async () => {
+      vi.spyOn(globalThis, 'fetch').mockRejectedValueOnce(new Error('Network error'));
+
+      // Mock URL.createObjectURL and URL.revokeObjectURL
+      const origCreate = URL.createObjectURL;
+      const origRevoke = URL.revokeObjectURL;
+      URL.createObjectURL = vi.fn(() => 'blob:mock-url');
+      URL.revokeObjectURL = vi.fn();
+
+      // Mock Image and canvas in jsdom
+      const origImage = globalThis.Image;
+      class MockImage {
+        naturalWidth = 100;
+        naturalHeight = 100;
+        onload: (() => void) | null = null;
+        onerror: (() => void) | null = null;
+        set src(_v: string) {
+          setTimeout(() => this.onload && this.onload(), 0);
+        }
+      }
+      globalThis.Image = MockImage as unknown as typeof Image;
+
+      const origCreateElement = document.createElement.bind(document);
+      const mockBlob = new Blob(['canvas-fallback'], { type: 'image/png' });
+      vi.spyOn(document, 'createElement').mockImplementation((tagName: string) => {
+        if (tagName === 'canvas') {
+          return {
+            width: 0,
+            height: 0,
+            getContext: () => ({
+              drawImage: vi.fn(),
+            }),
+            toBlob: (cb: (b: Blob | null) => void, mime?: string) => {
+              cb(mockBlob);
+            },
+          } as unknown as HTMLCanvasElement;
+        }
+        return origCreateElement(tagName);
+      });
+
+      const file = new File(['png-data'], 'screenshot.png', { type: 'image/png' });
+      const result = await cleanImageMetadata(file, true);
+
+      expect(result).toBe(mockBlob);
+
+      // Restore
+      URL.createObjectURL = origCreate;
+      URL.revokeObjectURL = origRevoke;
+      globalThis.Image = origImage;
+    });
+  });
+
   describe('buildResultMetadataText', () => {
     it('formats metadata cleanup summary in French', () => {
       const summary = buildResultMetadataText(1000, 800, true);
@@ -96,3 +192,4 @@ describe('metadata-cleaner-logic', () => {
     });
   });
 });
+

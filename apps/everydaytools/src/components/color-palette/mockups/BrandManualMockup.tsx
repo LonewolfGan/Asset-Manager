@@ -70,7 +70,10 @@ export function BrandManualMockup({ palette, isFr }: BrandManualMockupProps) {
               <span className="font-semibold text-zinc-500">{curPalette.length} {isFr ? 'NUANCES ÉDITÉES' : 'CURATED SHADES'}</span>
             </div>
 
-            <div className="grid grid-cols-5 gap-2">
+            <div
+              className="grid gap-2"
+              style={{ gridTemplateColumns: `repeat(${curPalette.length}, minmax(0, 1fr))` }}
+            >
               {curPalette.map((col, idx) => {
                 const roles = isFr
                   ? ['DOMINANTE', 'ACCENT', 'SOUTIEN', 'SURFACE', 'CONTRASTE']

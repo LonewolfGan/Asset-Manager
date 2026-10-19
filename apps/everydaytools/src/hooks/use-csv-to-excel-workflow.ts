@@ -1,8 +1,8 @@
-import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { toast } from '@/hooks/use-toast';
-import { consumeHandoffFile } from '@/lib/file-handoff';
+import { consumeHandoffFile, consumeHandoffText } from '@/lib/file-handoff';
 import {
   getSourceFormat,
   getTargetFormat,
@@ -43,10 +43,23 @@ export function useCsvToExcelWorkflow() {
 
   const file = files[0];
 
+  const readEncodedText = useCallback(async (f: File, enc: string) => {
+    try {
+      if (typeof f.arrayBuffer === 'function') {
+        const buffer = await f.arrayBuffer();
+        const decoder = new TextDecoder(enc || 'utf-8');
+        return decoder.decode(buffer);
+      }
+      return await f.text();
+    } catch {
+      return await f.text();
+    }
+  }, []);
+
   useEffect(() => {
     let isCancelled = false;
     async function loadPreview() {
-      const text = mode === 'upload' && file ? await file.text() : csvText;
+      const text = mode === 'upload' && file ? await readEncodedText(file, encoding) : csvText;
       if (!text.trim()) {
         if (!isCancelled) setPreviewData({ headers: [], rows: [] });
         return;
@@ -70,7 +83,7 @@ export function useCsvToExcelWorkflow() {
     return () => {
       isCancelled = true;
     };
-  }, [file, csvText, mode, delimiter]);
+  }, [file, csvText, mode, delimiter, encoding, readEncodedText]);
 
   const validateAndSetFile = useCallback(
     (selectedFile: File) => {
@@ -89,10 +102,22 @@ export function useCsvToExcelWorkflow() {
     [isFr]
   );
 
+  const hasConsumedHandoffRef = useRef(false);
   useEffect(() => {
+    if (hasConsumedHandoffRef.current) return;
+    hasConsumedHandoffRef.current = true;
+
     const staged = consumeHandoffFile();
     if (staged) {
       validateAndSetFile(staged);
+      return;
+    }
+    const stagedText = consumeHandoffText();
+    if (stagedText) {
+      setCsvText(stagedText);
+      setMode('paste');
+      setIsPastedStaged(true);
+      setResult(null);
     }
   }, [validateAndSetFile]);
 
@@ -137,7 +162,7 @@ export function useCsvToExcelWorkflow() {
     try {
       trackToolUsed('csv-to-excel', 'documents');
 
-      const text = mode === 'upload' && file ? await file.text() : csvText;
+      const text = mode === 'upload' && file ? await readEncodedText(file, encoding) : csvText;
       const sizeBefore =
         mode === 'upload' && file ? file.size : new TextEncoder().encode(text).length;
 
@@ -172,7 +197,7 @@ export function useCsvToExcelWorkflow() {
     } finally {
       setIsProcessing(false);
     }
-  }, [mode, file, csvText, isProcessing, isFr, tc.error]);
+  }, [mode, file, csvText, isProcessing, isFr, tc.error, delimiter, encoding, readEncodedText]);
 
   const handleDownload = useCallback(() => {
     if (!result) return;
@@ -183,7 +208,7 @@ export function useCsvToExcelWorkflow() {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
 
     setTimeout(() => {
       setIsNextActionOpen(true);

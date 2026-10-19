@@ -78,9 +78,9 @@ export function BarcodeInspector({
                 key={w}
                 type="button"
                 onClick={() => onBarWidthChange(w)}
-                className={`py-1 text-xs font-mono rounded-md border transition-colors cursor-pointer ${
+                className={`py-1 text-xs font-mono rounded-md border transition-colors duration-150 cursor-pointer ${
                   barWidth === w
-                    ? 'border-[#FF6B35] bg-[#FF6B35]/10 text-[#FF6B35] font-bold'
+                    ? 'border-[var(--accent)] bg-[var(--accent)]/10 text-[var(--accent)] font-bold'
                     : 'border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800'
                 }`}
               >
@@ -132,13 +132,16 @@ export function BarcodeInspector({
           </span>
           <button
             type="button"
+            role="switch"
+            aria-checked={displayValue}
+            aria-label={isFr ? 'Afficher les chiffres en clair' : 'Show human-readable text'}
             onClick={() => onDisplayValueChange(!displayValue)}
             className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
-              displayValue ? 'bg-[#FF6B35]' : 'bg-zinc-200 dark:bg-zinc-700'
+              displayValue ? 'bg-[var(--accent)]' : 'bg-zinc-200 dark:bg-zinc-700'
             }`}
           >
             <span
-              className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-xs ring-0 transition duration-200 ease-in-out ${
+              className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-xs ring-0 transition-transform duration-200 ease-in-out ${
                 displayValue ? 'translate-x-4' : 'translate-x-0'
               }`}
             />
@@ -168,9 +171,9 @@ export function BarcodeInspector({
                 <button
                   type="button"
                   onClick={() => onTextPositionChange('bottom')}
-                  className={`flex-1 py-1 text-xs rounded-md border transition-colors cursor-pointer ${
+                  className={`flex-1 py-1 text-xs rounded-md border transition-colors duration-150 cursor-pointer ${
                     textPosition === 'bottom'
-                      ? 'border-[#FF6B35] bg-[#FF6B35]/10 text-[#FF6B35] font-semibold'
+                      ? 'border-[var(--accent)] bg-[var(--accent)]/10 text-[var(--accent)] font-semibold'
                       : 'border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800'
                   }`}
                 >
@@ -179,9 +182,9 @@ export function BarcodeInspector({
                 <button
                   type="button"
                   onClick={() => onTextPositionChange('top')}
-                  className={`flex-1 py-1 text-xs rounded-md border transition-colors cursor-pointer ${
+                  className={`flex-1 py-1 text-xs rounded-md border transition-colors duration-150 cursor-pointer ${
                     textPosition === 'top'
-                      ? 'border-[#FF6B35] bg-[#FF6B35]/10 text-[#FF6B35] font-semibold'
+                      ? 'border-[var(--accent)] bg-[var(--accent)]/10 text-[var(--accent)] font-semibold'
                       : 'border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800'
                   }`}
                 >

@@ -15,6 +15,7 @@ import {
   ConversionConduit,
   ConversionResult,
   NextActionModal,
+  ReciprocalTitle,
   type ConversionFormat,
 } from '@/components/conversion';
 
@@ -191,7 +192,14 @@ export default function PptxToPdf() {
   return (
     <ToolPageLayout
       breadcrumb={[t.nav.breadcrumb.home, t.nav.breadcrumb.documents, pageTitle]}
-      title={pageTitle}
+      title={
+        <ReciprocalTitle
+          currentSlug="pptx-to-pdf"
+          isFr={isFr}
+          getCurrentFile={() => file}
+          fallbackTitle={pageTitle}
+        />
+      }
       description={pageDesc}
       seoSlug="pptx-to-pdf"
     >

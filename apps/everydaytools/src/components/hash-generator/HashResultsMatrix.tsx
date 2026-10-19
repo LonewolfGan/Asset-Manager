@@ -17,6 +17,7 @@ interface HashResultsMatrixProps {
   isCalculating: boolean;
   isUppercase: boolean;
   enableHmac: boolean;
+  hmacSecret?: string;
   inputMode: InputMode;
   compareResult: { matched: boolean; algorithm?: string };
 }
@@ -26,6 +27,7 @@ export function HashResultsMatrix({
   isCalculating,
   isUppercase,
   enableHmac,
+  hmacSecret,
   inputMode,
   compareResult,
 }: HashResultsMatrixProps) {
@@ -81,7 +83,7 @@ export function HashResultsMatrix({
             <div className="w-full md:w-48 shrink-0 flex items-center md:flex-col md:items-start justify-between md:justify-center gap-1">
               <div className="flex items-center gap-2">
                 <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                  {enableHmac && inputMode === 'text' && id !== 'MD5'
+                  {enableHmac && hmacSecret && inputMode === 'text' && id !== 'MD5'
                     ? `HMAC-${label}`
                     : label}
                 </span>

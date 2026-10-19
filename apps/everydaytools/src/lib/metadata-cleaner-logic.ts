@@ -16,7 +16,7 @@ export function getSourceDropzoneFormat(isFr: boolean): ConversionFormat {
     name: isFr ? 'Fichier' : 'File',
     extension: 'pdf',
     icon: '/icons/file.svg',
-    color: '#52525B',
+    color: 'var(--accent, #f97316)',
     subLabel: isFr ? 'Photo, Image ou PDF' : 'Photo, Image or PDF',
   };
 }
@@ -28,7 +28,7 @@ export function getFileTargetFormat(file: File, isFr: boolean): ConversionFormat
       name: 'PDF',
       extension: 'pdf',
       icon: '/icons/pdf.svg',
-      color: '#EC1C24',
+      color: 'var(--accent, #dc2626)',
       subLabel: isFr ? 'Document PDF Anonymisé' : 'Anonymized PDF Document',
     };
   }
@@ -36,7 +36,7 @@ export function getFileTargetFormat(file: File, isFr: boolean): ConversionFormat
     name: ext.toUpperCase() || 'Image',
     extension: ext || 'png',
     icon: '/icons/image.svg',
-    color: '#FF6B35',
+    color: 'var(--accent, #f97316)',
     subLabel: isFr ? 'Image Anonymisée' : 'Anonymized Image',
   };
 }
@@ -95,13 +95,23 @@ export function cleanImageWithCanvas(
         return;
       }
       ctx.drawImage(img, 0, 0);
-      const mime = imageFile.type.startsWith('image/') ? imageFile.type : 'image/jpeg';
+      const ext = imageFile.name.split('.').pop()?.toLowerCase() || '';
+      let mime = 'image/jpeg';
+      if (imageFile.type && imageFile.type.startsWith('image/')) {
+        mime = imageFile.type;
+      } else if (ext === 'png') {
+        mime = 'image/png';
+      } else if (ext === 'webp') {
+        mime = 'image/webp';
+      }
+      const outputMime =
+        mime === 'image/png' ? 'image/png' : mime === 'image/webp' ? 'image/webp' : 'image/jpeg';
       canvas.toBlob(
         (b) => {
           if (b) resolve(b);
           else reject(new Error(isFr ? "Erreur lors de la génération de l'image" : "Error generating image"));
         },
-        mime === 'image/png' ? 'image/png' : mime === 'image/webp' ? 'image/webp' : 'image/jpeg',
+        outputMime,
         0.95
       );
     };
@@ -130,7 +140,7 @@ export async function cleanPdfMetadata(file: File): Promise<Blob> {
   newDoc.setCreator('');
 
   const bytes = await newDoc.save();
-  return new Blob([bytes.buffer as ArrayBuffer], { type: 'application/pdf' });
+  return new Blob([bytes as unknown as BlobPart], { type: 'application/pdf' });
 }
 
 export async function cleanImageMetadata(file: File, isFr: boolean): Promise<Blob> {
@@ -140,7 +150,7 @@ export async function cleanImageMetadata(file: File, isFr: boolean): Promise<Blo
     const formData = new FormData();
     formData.append('file', file);
 
-    const res = await fetch(apiUrl('/api/tools/image-metadata-clean'), {
+    const res = await fetch(apiUrl('/api/metadata/clean'), {
       method: 'POST',
       body: formData,
     });

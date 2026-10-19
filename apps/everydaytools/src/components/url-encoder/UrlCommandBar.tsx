@@ -15,9 +15,11 @@ import {
   ChevronDown,
   FileText,
   FileJson,
+  ArrowRightLeft,
 } from 'lucide-react';
 import { UrlEncodeMode, UrlDetails } from '@/lib/url-logic';
 import { UrlMode } from '@/hooks/use-url-encoder-workflow';
+import { buildUrlComponentsJsonPayload } from '@/lib/url-export-logic';
 import { toast } from 'sonner';
 
 interface UrlCommandBarProps {
@@ -38,6 +40,7 @@ interface UrlCommandBarProps {
   urlInspection: UrlDetails;
   onDownload: (content: string, filename: string, mimeType: string) => void;
   copiedLabel: string;
+  onSwap?: () => void;
 }
 
 export const UrlCommandBar: React.FC<UrlCommandBarProps> = ({
@@ -58,6 +61,7 @@ export const UrlCommandBar: React.FC<UrlCommandBarProps> = ({
   urlInspection,
   onDownload,
   copiedLabel,
+  onSwap,
 }) => {
   return (
     <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-zinc-200 dark:border-white/10">
@@ -89,6 +93,26 @@ export const UrlCommandBar: React.FC<UrlCommandBarProps> = ({
             <span>{isFr ? 'Décoder' : 'Decode'}</span>
           </button>
         </div>
+
+        {/* Bouton Inverser (Swap) */}
+        {onSwap && (
+          <ActionTooltip
+            label={
+              isFr
+                ? 'Permuter l’entrée et la sortie (Inverser le sens)'
+                : 'Swap input and output (Reverse direction)'
+            }
+          >
+            <button
+              type="button"
+              onClick={onSwap}
+              className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors active:scale-[0.98] cursor-pointer"
+            >
+              <ArrowRightLeft className="w-3.5 h-3.5 text-zinc-500" />
+              <span className="hidden sm:inline">{isFr ? 'Inverser' : 'Swap'}</span>
+            </button>
+          </ActionTooltip>
+        )}
 
         {/* Sélecteur de type d'encodage (quand le mode est 'encode') */}
         {mode === 'encode' && (
@@ -185,7 +209,7 @@ export const UrlCommandBar: React.FC<UrlCommandBarProps> = ({
             <button
               type="button"
               disabled={!hasOutput}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-[#FF6B35] text-white hover:bg-[#e85a26] transition-all active:scale-[0.98] shadow-xs cursor-pointer outline-none disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:bg-[#FF6B35]"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-[var(--accent)] text-white hover:opacity-90 transition-colors active:scale-[0.98] shadow-xs cursor-pointer outline-none disabled:opacity-35 disabled:cursor-not-allowed"
             >
               <Download className="w-3.5 h-3.5" />
               <span>{isFr ? 'Exporter' : 'Export'}</span>
@@ -208,7 +232,7 @@ export const UrlCommandBar: React.FC<UrlCommandBarProps> = ({
               <DropdownMenuItem
                 onClick={() =>
                   onDownload(
-                    JSON.stringify(urlInspection, null, 2),
+                    buildUrlComponentsJsonPayload(urlInspection),
                     'url-components.json',
                     'application/json'
                   )

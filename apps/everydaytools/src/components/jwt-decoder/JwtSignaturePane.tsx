@@ -99,7 +99,7 @@ export const JwtSignaturePane: React.FC<JwtSignaturePaneProps> = ({
             type="checkbox"
             checked={isBase64Secret}
             onChange={(e) => setIsBase64Secret(e.target.checked)}
-            className="rounded border-zinc-300 dark:border-zinc-700 text-[#FF6B35] focus:ring-0 accent-[#FF6B35]"
+            className="rounded border-zinc-300 dark:border-zinc-700 accent-[var(--accent)]"
           />
           <span>{isFr ? 'Secret Base64' : 'Base64 Secret'}</span>
         </label>

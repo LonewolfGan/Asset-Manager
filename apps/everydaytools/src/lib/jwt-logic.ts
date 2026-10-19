@@ -1,6 +1,5 @@
 /**
- * Pure JWT parsing, claim decoding, timestamp evaluation, HMAC signature validation,
- * timeline lifecycle metrics, and security vulnerability audit.
+ * Pure JWT parsing, claim decoding, timestamp evaluation, and HMAC signature validation.
  * Compliant with RFC 7519 (JSON Web Token) and RFC 7515 (JSON Web Signature).
  */
 
@@ -25,28 +24,21 @@ export interface DecodedJwt {
   claimsCount?: number;
 }
 
-export interface SecurityAuditItem {
-  id: string;
-  title: string;
-  status: 'pass' | 'warning' | 'critical';
-  detail: string;
-}
+export type {
+  SecurityAuditItem,
+  SecurityAuditResult,
+  TimelineMetrics,
+} from './jwt-audit-logic';
 
-export interface SecurityAuditResult {
-  score: 'safe' | 'warning' | 'critical';
-  passedCount: number;
-  totalCount: number;
-  items: SecurityAuditItem[];
-}
+export {
+  computeTimelineMetrics,
+  auditJwtSecurity,
+} from './jwt-audit-logic';
 
-export interface TimelineMetrics {
-  hasExp: boolean;
-  hasIat: boolean;
-  isExpired: boolean;
-  progressPct: number;
-  elapsedLabel: string;
-  remainingLabel: string;
-}
+export {
+  RFC_7519_CLAIMS,
+  SAMPLE_JWTS,
+} from './jwt-samples';
 
 /**
  * URL-safe Base64 decode to UTF-8 string
@@ -287,268 +279,3 @@ export async function verifyJwtHmac(
     };
   }
 }
-
-/**
- * Compute the lifecycle progress of the token
- */
-export function computeTimelineMetrics(decoded: DecodedJwt): TimelineMetrics {
-  const now = Date.now();
-  const hasExp = Boolean(decoded.expDate);
-  const hasIat = Boolean(decoded.iatDate);
-
-  if (!hasExp || !decoded.expDate) {
-    return {
-      hasExp: false,
-      hasIat,
-      isExpired: false,
-      progressPct: 0,
-      elapsedLabel: decoded.timeElapsed || 'Émis',
-      remainingLabel: 'Durée illimitée',
-    };
-  }
-
-  const expTime = decoded.expDate.getTime();
-  const iatTime = decoded.iatDate ? decoded.iatDate.getTime() : expTime - 3600 * 1000 * 24;
-  const isExpired = now >= expTime;
-
-  let progressPct = 0;
-  if (isExpired) {
-    progressPct = 100;
-  } else if (now <= iatTime) {
-    progressPct = 0;
-  } else {
-    const total = expTime - iatTime;
-    const elapsed = now - iatTime;
-    progressPct = Math.min(100, Math.max(0, Math.round((elapsed / total) * 100)));
-  }
-
-  return {
-    hasExp: true,
-    hasIat,
-    isExpired,
-    progressPct,
-    elapsedLabel: decoded.timeElapsed ? `il y a ${decoded.timeElapsed}` : 'Émis',
-    remainingLabel: isExpired
-      ? `Expiré il y a ${decoded.timeRemaining}`
-      : `Valide encore ${decoded.timeRemaining}`,
-  };
-}
-
-/**
- * Client-side security diagnostic audit
- */
-export function auditJwtSecurity(decoded: DecodedJwt): SecurityAuditResult {
-  if (!decoded.valid) {
-    return {
-      score: 'critical',
-      passedCount: 0,
-      totalCount: 1,
-      items: [
-        {
-          id: 'validity',
-          title: 'Structure cryptographique',
-          status: 'critical',
-          detail: decoded.error || 'Le format du jeton n’est pas un JWT valide.',
-        },
-      ],
-    };
-  }
-
-  const items: SecurityAuditItem[] = [];
-
-  // 1. Audit de l'algorithme
-  const alg = decoded.algorithm;
-  if (!alg || alg.toLowerCase() === 'none') {
-    items.push({
-      id: 'alg_none',
-      title: 'Algorithme "none" interdit',
-      status: 'critical',
-      detail:
-        'Ce jeton utilise l’algorithme « none » sans signature cryptographique. N’importe qui peut forger des privilèges administrateur (Faille CVE critique).',
-    });
-  } else if (['HS256', 'HS384', 'HS512', 'RS256', 'RS384', 'RS512', 'ES256', 'ES384', 'ES512', 'EdDSA'].includes(alg)) {
-    items.push({
-      id: 'alg_ok',
-      title: `Algorithme sécurisé (${alg})`,
-      status: 'pass',
-      detail: `Signature cryptographique standard (${alg}) protégée contre la falsification.`,
-    });
-  } else {
-    items.push({
-      id: 'alg_warn',
-      title: `Algorithme atypique (${alg})`,
-      status: 'warning',
-      detail: 'L’algorithme spécifié dans l’en-tête ne fait pas partie des normes recommandées.',
-    });
-  }
-
-  // 2. Audit de l'expiration
-  if (!decoded.expDate) {
-    items.push({
-      id: 'no_exp',
-      title: 'Absence de claim d’expiration (exp)',
-      status: 'warning',
-      detail:
-        'Le jeton n’a aucune date d’expiration définie. En cas de vol, il reste utilisable indéfiniment.',
-    });
-  } else if (decoded.isExpired) {
-    items.push({
-      id: 'is_expired',
-      title: 'Jeton expiré',
-      status: 'warning',
-      detail: `Ce jeton a expiré le ${decoded.expDate.toLocaleString()} et doit être rejeté par les API.`,
-    });
-  } else {
-    // Vérifier durée de vie excessive (> 1 an)
-    const now = Date.now();
-    const ttlDays = Math.round((decoded.expDate.getTime() - now) / (1000 * 3600 * 24));
-    if (ttlDays > 365) {
-      items.push({
-        id: 'long_ttl',
-        title: 'Durée de vie très longue (> 1 an)',
-        status: 'warning',
-        detail: `Le jeton est valide pour ${ttlDays} jours. Privilégiez des jetons courts avec refresh token.`,
-      });
-    } else {
-      items.push({
-        id: 'exp_ok',
-        title: 'Durée de validité conforme',
-        status: 'pass',
-        detail: `Expire dans ${decoded.timeRemaining}. Durée de session conforme aux bonnes pratiques.`,
-      });
-    }
-  }
-
-  // 3. Sujet et émetteur (sub & iss)
-  const hasSub = Boolean(decoded.payload?.sub);
-  const hasIss = Boolean(decoded.payload?.iss);
-
-  if (hasSub && hasIss) {
-    items.push({
-      id: 'identity_ok',
-      title: 'Identité complète (sub & iss)',
-      status: 'pass',
-      detail: 'Le sujet et l’émetteur sont clairement identifiés conformément à la RFC 7519.',
-    });
-  } else if (!hasSub) {
-    items.push({
-      id: 'missing_sub',
-      title: 'Claim sujet (sub) manquant',
-      status: 'warning',
-      detail: 'Le jeton ne spécifie pas d’identifiant principal pour l’utilisateur.',
-    });
-  }
-
-  // 4. Date d'émission (iat)
-  if (decoded.iatDate) {
-    items.push({
-      id: 'iat_ok',
-      title: 'Horodatage d’émission vérifié (iat)',
-      status: 'pass',
-      detail: `Émis le ${decoded.iatDate.toLocaleString()}.`,
-    });
-  } else {
-    items.push({
-      id: 'missing_iat',
-      title: 'Claim émis le (iat) absent',
-      status: 'warning',
-      detail: 'Impossible de déterminer précisément quand ce jeton a été forgé.',
-    });
-  }
-
-  // Score global
-  const hasCritical = items.some((i) => i.status === 'critical');
-  const hasWarning = items.some((i) => i.status === 'warning');
-  const score = hasCritical ? 'critical' : hasWarning ? 'warning' : 'safe';
-  const passedCount = items.filter((i) => i.status === 'pass').length;
-
-  return {
-    score,
-    passedCount,
-    totalCount: items.length,
-    items,
-  };
-}
-
-/**
- * Standard RFC 7519 registered claims descriptions
- */
-export const RFC_7519_CLAIMS: Record<string, { label: string; description: string; type: string }> = {
-  iss: {
-    label: 'Issuer (Émetteur)',
-    description: "Identifie le fournisseur d'identité ou le service qui a généré et émis le jeton.",
-    type: 'string',
-  },
-  sub: {
-    label: 'Subject (Sujet)',
-    description: "Identifie l'entité principale ciblée par le jeton (ex. identifiant d'utilisateur).",
-    type: 'string',
-  },
-  aud: {
-    label: 'Audience (Destinataire)',
-    description: 'Désigne les services, API ou domaines récipiendaires auxquels ce jeton est destiné.',
-    type: 'string | string[]',
-  },
-  exp: {
-    label: 'Expiration Time (Expiration)',
-    description: 'Horodatage Unix (secondes) après lequel le jeton ne doit plus être accepté.',
-    type: 'number (Unix Timestamp)',
-  },
-  nbf: {
-    label: 'Not Before (Date d’effet)',
-    description: 'Horodatage Unix (secondes) avant lequel le jeton ne doit pas être considéré comme valide.',
-    type: 'number (Unix Timestamp)',
-  },
-  iat: {
-    label: 'Issued At (Émis le)',
-    description: 'Horodatage Unix (secondes) marquant le moment précis où le jeton a été émis.',
-    type: 'number (Unix Timestamp)',
-  },
-  jti: {
-    label: 'JWT ID (Identifiant unique)',
-    description: 'Identifiant cryptographique unique pour prévenir les attaques par rejeu (replay attacks).',
-    type: 'string (UUID / Hash)',
-  },
-};
-
-/**
- * Real-world provider JWT presets
- */
-export const SAMPLE_JWTS = {
-  activeAdmin:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c3JfMTAwMSIsIm5hbWUiOiJBbGV4YW5kcmUgTWFydGluIiwiZXhwIjoyMDAwMDAwMDAwLCJpYXQiOjE2MDAwMDAwMDB9.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk',
-  expiredUser:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c3JfMTAwMiIsIm5hbWUiOiJTb3BoaWUgTWFydGluIiwiZXhwIjoxNTAwMDAwMDAwLCJpYXQiOjE0MDAwMDAwMDB9.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk',
-  supabaseAuth: {
-    name: 'Supabase Auth (Session Active)',
-    token:
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3Byb2plY3Quc3VwYWJhc2UuY28vYXV0aC92MSIsInN1YiI6ImQzYjA3Mzg0LWQxMTMtNGE3Yi1hMmM5LTE2YThkNjcyNThlMiIsImF1ZCI6ImF1dGhlbnRpY2F0ZWQiLCJleHAiOjE3OTA4NjM3NzUsImlhdCI6MTc5MDI0NDU3NSwiZW1haWwiOiJhbGV4YW5kcmUubWFydGluQGNvbXBhbnkuaW8iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImdpdGh1YiIsInByb3ZpZGVycyI6WyJnaXRodWIiXX0sInVzZXJfbWV0YWRhdGEiOnsiZnVsbF9uYW1lIjoiQWxleGFuZHJlIE1hcnRpbiIsImF2YXRhcl91cmwiOiJodHRwczovL2F2YXRhcnMuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3UvMTA0OTIifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJzZXNzaW9uX2lkIjoiOGM3OTI0ZWYtOTEyYi00MmVhLTllN2YtYjI1ODY3MTQwNDFiIn0.TlDBGWIAXZymKCpRMYRMxyB5q0CU-7UcM4acjmPcSRc',
-    secret: 'supabase-super-secret-jwt-token-key-32chars',
-    provider: 'Supabase',
-    description: 'Jeton utilisateur Supabase complet avec métadonnées GitHub et rôles.',
-  },
-  auth0Admin: {
-    name: 'Auth0 Management API (Admin)',
-    token:
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2F1dGguZXZlcnlkYXl0b29scy5kZXYvIiwic3ViIjoiYXV0aDB8NjRmMWEyYjNjNGQ1ZTZmN2E4YjljMGQxIiwiYXVkIjpbImh0dHBzOi8vYXBpLmV2ZXJ5ZGF5dG9vbHMuZGV2L3YyLyIsImh0dHBzOi8vYXV0aC5ldmVyeWRheXRvb2xzLmRldi91c2VyaW5mbyJdLCJpYXQiOjE3OTAyMTU3NzUsImV4cCI6MTc5Mjg1MDk3NSwiYXpwIjoiY2xpZW50Xzk5YThiN2M2ZDVlNGYzYTIiLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIHJlYWQ6dXNlcnMgd3JpdGU6dXNlcnMgYWRtaW46YWxsIiwicGVybWlzc2lvbnMiOlsicmVhZDpyZXBvcnRzIiwibWFuYWdlOmJpbGxpbmciLCJhZG1pbiphY2Nlc3MiXX0.WYX7FVvgQ4Fz3kOuKPvSZTxY5ILLBVKDpD1h77crLyM',
-    secret: 'auth0-management-api-secret-key-prod',
-    provider: 'Auth0',
-    description: 'Jeton API Auth0 avec scopes étendus et permissions de sécurité.',
-  },
-  expiredSession: {
-    name: 'Session Échue (Expirée)',
-    token:
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2F1dGguZXZlcnlkYXl0b29scy5kZXYiLCJzdWIiOiJ1c3JfbGVnYWN5XzQ4MTAyIiwiYXVkIjoiZXZlcnlkYXl0b29scy13ZWIiLCJpYXQiOjE3ODUwNzQ5NzUsImV4cCI6MTc4ODk2Mjk3NSwiZW1haWwiOiJzb3BoaWUuZHVwb250QGxlZ2FjeS5uZXQiLCJyb2xlIjoidmlld2VyIn0.yVmMXuQneu010uDnAjdIxPzJywH6OiuaMWIiGA4FuR4',
-    secret: 'old-session-secret-expired',
-    provider: 'Standard',
-    description: 'Jeton dont la date d’expiration (exp) est échue depuis plusieurs jours.',
-  },
-  insecureNone: {
-    name: 'Faille CVE Algorithme "none"',
-    token:
-      'eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRwczovL3Z1bG5lcmFibGUtYXV0aC5uZXQiLCJzdWIiOiJyb290X2FkbWluaXN0cmF0b3IiLCJhZG1pbiI6dHJ1ZSwicm9sZSI6InN1cGVydXNlciIsImlhdCI6MTc5MDI1NzE3NSwiZXhwIjoxNzkwMzQ1Mzc1fQ.',
-    secret: '',
-    provider: 'Test Vulnérabilité',
-    description: 'Jeton sans signature exploitant la faille classique de contournement d’auth.',
-  },
-};

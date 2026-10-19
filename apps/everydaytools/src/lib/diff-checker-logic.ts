@@ -76,7 +76,7 @@ export function computeInlineDiff(
   strB: string,
   options?: DiffOptions
 ): { tokensA: InlineToken[]; tokensB: InlineToken[] } {
-  const regex = /(\s+|[^\s\w]+|\w+)/g;
+  const regex = /(\s+|[^\s\p{L}\p{N}_]+|[\p{L}\p{N}_]+)/gu;
   const tokensA = strA.match(regex) || [strA];
   const tokensB = strB.match(regex) || [strB];
 

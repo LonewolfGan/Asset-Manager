@@ -83,7 +83,7 @@ export function QrViewport({
           type="button"
           onClick={downloadPng}
           disabled={isEmpty || !!genError}
-          className="h-11 flex-1 px-5 rounded-xl inline-flex items-center justify-center gap-2 text-xs font-mono font-semibold text-white bg-[#FF6B35] hover:bg-[#e85a24] active:scale-[0.98] shadow-xs transition-all disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
+          className="h-11 flex-1 px-5 rounded-xl inline-flex items-center justify-center gap-2 text-xs font-mono font-semibold text-white bg-[var(--accent)] hover:opacity-90 active:scale-[0.98] shadow-xs transition-opacity duration-150 disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
         >
           <Download className="w-4 h-4" />
           <span>{isFr ? 'Télécharger PNG' : 'Download PNG'}</span>
@@ -93,7 +93,7 @@ export function QrViewport({
           type="button"
           onClick={downloadSvg}
           disabled={isEmpty || !!genError}
-          className="h-11 px-5 rounded-xl inline-flex items-center justify-center gap-2 text-xs font-mono font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-700 active:scale-[0.98] border border-zinc-200/80 dark:border-white/10 transition-all disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
+          className="h-11 px-5 rounded-xl inline-flex items-center justify-center gap-2 text-xs font-mono font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-700 active:scale-[0.98] border border-zinc-200/80 dark:border-white/10 transition-colors duration-150 disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
         >
           <Download className="w-4 h-4" />
           <span>{isFr ? 'Télécharger SVG' : 'Download SVG'}</span>

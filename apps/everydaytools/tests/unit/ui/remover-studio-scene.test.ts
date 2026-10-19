@@ -77,7 +77,7 @@ describe('RemoverStudioScene integration with @workspace/ui (TDD)', () => {
     expect(container.textContent).toContain('1024×768');
     const actionBtn = container.querySelector('button[data-testid="studio-primary-action-btn"]');
     expect(actionBtn).not.toBeNull();
-    expect(actionBtn?.textContent).toContain('Télécharger PNG');
+    expect(actionBtn?.textContent).toContain('Télécharger');
   });
 
   it('triggers onFullReset when reset button is clicked', async () => {
@@ -106,5 +106,36 @@ describe('RemoverStudioScene integration with @workspace/ui (TDD)', () => {
     });
 
     expect(onDownload).toHaveBeenCalledTimes(1);
+  });
+
+  it('renders view mode controls disabled during processing without duplicate loader', async () => {
+    const processingItem = {
+      id: 'item-2',
+      file: sampleFile,
+      previewUrl: 'data:image/png;base64,mock',
+      cutoutUrl: null,
+      status: 'processing' as const,
+      progress: 45,
+      error: null,
+      dims: { w: 1024, h: 768 },
+    };
+
+    await renderWorkbench({ item: processingItem });
+
+    // No duplicate spinner or in-progress text in the studio bar
+    expect(container.textContent).not.toContain('Détourage IA en cours...');
+
+    // View modes are visible and disabled
+    expect(container.textContent).toContain('Avant / Après');
+    expect(container.textContent).toContain('Sujet détouré');
+    expect(container.textContent).toContain('Original');
+
+    const group = container.querySelector('[role="group"][aria-label="Mode d\'affichage"]');
+    expect(group).not.toBeNull();
+    expect(group?.querySelector('.animate-spin')).toBeNull();
+    expect(group?.getAttribute('aria-disabled')).toBe('true');
+
+    const splitBtn = container.querySelector('button[aria-pressed="false"]') as HTMLButtonElement;
+    expect(splitBtn?.disabled).toBe(true);
   });
 });

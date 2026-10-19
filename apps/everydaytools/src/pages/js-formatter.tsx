@@ -42,8 +42,10 @@ export default function JsFormatter() {
     output,
     highlightedOutput,
     metrics,
+    issues,
     hasContent,
     handleInputChange,
+    handleLoadSample,
     handleUndo,
     handleMouseDownResize,
     handleRunCode,
@@ -116,12 +118,14 @@ export default function JsFormatter() {
           output={output}
           highlightedOutput={highlightedOutput}
           metrics={metrics}
+          issues={issues}
           hasContent={hasContent}
           onMouseDownResize={handleMouseDownResize}
           onRunCode={handleRunCode}
           onDownload={handleDownload}
           onClear={handleClear}
           onFileUpload={handleFileUpload}
+          onLoadSample={handleLoadSample}
         />
       </div>
     </ToolPageLayout>

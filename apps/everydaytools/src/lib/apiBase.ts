@@ -2,7 +2,7 @@
  * API base URL utility.
  *
  * Development:  VITE_API_BASE_URL (or VITE_API_URL) is unset
- *               → empty string → Vite proxy forwards /api/* to localhost:8080.
+ *               → empty string → Vite proxy forwards /api/* to localhost:3001.
  *
  * Production (Vercel frontend + separate backend):
  *   Set VITE_API_URL=https://api.everydaytools.qzz.io in your Vercel
@@ -57,3 +57,24 @@ export async function getResponseError(res: Response, defaultMsg = "Operation fa
   return res.statusText ? `Error (${res.status}): ${res.statusText}` : `${defaultMsg} (${res.status})`;
 }
 
+/**
+ * Formats client-side fetch errors (e.g. NetworkError, server offline, ECONNREFUSED)
+ * into a clear, actionable user-facing message.
+ */
+export function formatFetchError(err: unknown, isFr = false): string {
+  if (err instanceof Error) {
+    const msg = err.message.toLowerCase();
+    if (
+      msg.includes("networkerror") ||
+      msg.includes("failed to fetch") ||
+      msg.includes("load failed") ||
+      msg.includes("econnrefused")
+    ) {
+      return isFr
+        ? "Impossible de joindre le serveur API. Vérifiez votre connexion ou assurez-vous que le serveur local est actif (Port 3001)."
+        : "Unable to reach the API server. Please check your network connection or verify that the local server is running (Port 3001).";
+    }
+    return err.message;
+  }
+  return isFr ? "Une erreur inattendue est survenue." : "An unexpected error occurred.";
+}

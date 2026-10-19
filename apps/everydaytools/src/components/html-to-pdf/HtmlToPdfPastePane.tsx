@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { CodeWorkspace } from '@/components/ui/code-workspace';
 
@@ -24,7 +25,13 @@ export function HtmlToPdfPastePane({
     : `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <title>Commercial Invoice</title>\n  <style>\n    body { font-family: system-ui, sans-serif; padding: 32px; color: #111; }\n    h1 { color: #0f172a; margin-bottom: 8px; }\n    table { width: 100%; border-collapse: collapse; margin-top: 24px; }\n    th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }\n    th { background-color: #f8fafc; font-weight: 600; }\n    .total { font-weight: bold; text-align: right; margin-top: 16px; }\n  </style>\n</head>\n<body>\n  <h1>Invoice #INV-2026-089</h1>\n  <p>Date: October 1, 2026</p>\n  <table>\n    <thead><tr><th>Description</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr></thead>\n    <tbody>\n      <tr><td>Cloud Platform Pro Subscription</td><td>1</td><td>$450.00</td><td>$450.00</td></tr>\n      <tr><td>Priority 24/7 Technical Support</td><td>1</td><td>$120.00</td><td>$120.00</td></tr>\n    </tbody>\n  </table>\n  <p class="total">Total: $570.00</p>\n</body>\n</html>\n`;
 
   return (
-    <div className="space-y-4">
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.98 }}
+      transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
+      className="space-y-4"
+    >
       <CodeWorkspace
         value={htmlInput}
         onChange={onHtmlInputChange}
@@ -43,12 +50,12 @@ export function HtmlToPdfPastePane({
           type="button"
           disabled={!htmlInput.trim()}
           onClick={onSubmit}
-          className="h-11 px-6 rounded-full bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-zinc-900 font-medium text-sm transition-all disabled:opacity-40 disabled:pointer-events-none active:scale-[0.98] flex items-center gap-2 shadow-sm cursor-pointer"
+          className="h-11 px-6 rounded-full bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-zinc-900 font-medium text-sm transition-[background-color,transform,opacity] duration-150 disabled:opacity-40 disabled:pointer-events-none active:scale-[0.98] flex items-center gap-2 shadow-sm cursor-pointer"
         >
           <span>{isFr ? 'Valider et configurer' : 'Confirm and configure'}</span>
           <ArrowRight size={15} />
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 }

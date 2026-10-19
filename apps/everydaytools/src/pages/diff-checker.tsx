@@ -47,6 +47,7 @@ export default function DiffChecker() {
     handleDownloadPatch,
     handleDownloadOriginal,
     handleDownloadModified,
+    loadSample,
     hasContent,
     hasDiffs,
   } = useDiffCheckerWorkflow(isFr);
@@ -100,6 +101,7 @@ export default function DiffChecker() {
           onUpdateModified={handleUpdateModified}
           onFileUpload={handleFileUpload}
           onSwap={handleSwap}
+          onLoadSample={loadSample}
           hasContent={hasContent}
           editorHeight={editorHeight}
           wordWrap={wordWrap}

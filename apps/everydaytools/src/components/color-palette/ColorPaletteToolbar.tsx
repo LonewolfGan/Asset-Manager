@@ -7,6 +7,8 @@ import {
   FileCode,
   FileText,
   Braces,
+  Undo2,
+  Redo2,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -35,6 +37,10 @@ interface ColorPaletteToolbarProps {
   palette: PaletteColor[];
   harmonyModes: HarmonyOption[];
   isRefreshing: boolean;
+  canUndo?: boolean;
+  canRedo?: boolean;
+  onUndo?: () => void;
+  onRedo?: () => void;
   onModeChange: (newMode: HarmonyMode) => void;
   onCountChange: (newCount: number) => void;
   onFormatChange: (newFormat: ColorFormat) => void;
@@ -52,6 +58,10 @@ export function ColorPaletteToolbar({
   palette,
   harmonyModes,
   isRefreshing,
+  canUndo = false,
+  canRedo = false,
+  onUndo,
+  onRedo,
   onModeChange,
   onCountChange,
   onFormatChange,
@@ -88,7 +98,7 @@ export function ColorPaletteToolbar({
               >
                 <span
                   className={`text-xs font-medium ${
-                    mode === m.id ? 'text-[#FF6B35] font-semibold' : 'text-zinc-900 dark:text-zinc-100'
+                    mode === m.id ? 'text-[var(--accent)] font-semibold' : 'text-zinc-900 dark:text-zinc-100'
                   }`}
                 >
                   {m.label}
@@ -155,6 +165,36 @@ export function ColorPaletteToolbar({
           </button>
         </ActionTooltip>
 
+        {onUndo && (
+          <ActionTooltip label={isFr ? 'Annuler (Ctrl+Z)' : 'Undo (Ctrl+Z)'} side="bottom">
+            <button
+              type="button"
+              onClick={onUndo}
+              disabled={!canUndo}
+              className={`flex items-center justify-center w-8 h-8 rounded-lg border border-zinc-200/80 dark:border-white/10 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 transition-colors ${
+                canUndo ? 'hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer active:scale-[0.96]' : 'opacity-40 cursor-not-allowed'
+              }`}
+            >
+              <Undo2 className="w-3.5 h-3.5" />
+            </button>
+          </ActionTooltip>
+        )}
+
+        {onRedo && (
+          <ActionTooltip label={isFr ? 'Rétablir (Ctrl+Y / ⌘⇧Z)' : 'Redo (Ctrl+Y / ⌘⇧Z)'} side="bottom">
+            <button
+              type="button"
+              onClick={onRedo}
+              disabled={!canRedo}
+              className={`flex items-center justify-center w-8 h-8 rounded-lg border border-zinc-200/80 dark:border-white/10 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 transition-colors ${
+                canRedo ? 'hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer active:scale-[0.96]' : 'opacity-40 cursor-not-allowed'
+              }`}
+            >
+              <Redo2 className="w-3.5 h-3.5" />
+            </button>
+          </ActionTooltip>
+        )}
+
         <button
           type="button"
           onClick={onRegenerate}
@@ -166,7 +206,7 @@ export function ColorPaletteToolbar({
           <span>{isFr ? 'Régénérer' : 'Regenerate'}</span>
         </button>
 
-        {/* Bouton Copier palette (#FF6B35) + Menu déroulant Exportations */}
+        {/* Bouton Copier palette + Menu déroulant Exportations */}
         <div className="flex items-center">
           <CopyButton
             text={() => exportHexList(palette)}
@@ -174,7 +214,7 @@ export function ColorPaletteToolbar({
             copiedLabel={isFr ? 'Copié !' : 'Copied!'}
             variant="custom"
             size="sm"
-            className="flex items-center gap-1.5 h-8 px-3.5 text-xs font-semibold rounded-l-lg rounded-r-none bg-[#FF6B35] text-white hover:bg-[#e85a24] active:scale-[0.98] shadow-xs cursor-pointer"
+            className="flex items-center gap-1.5 h-8 px-3.5 text-xs font-semibold rounded-l-lg rounded-r-none bg-[var(--accent)] text-white hover:opacity-90 active:scale-[0.98] shadow-xs cursor-pointer"
             onCopy={() => trackToolUsed('color-palette', 'copy-all')}
             toastMessage={isFr ? 'Liste des couleurs HEX copiée' : 'HEX color list copied'}
           />
@@ -184,7 +224,7 @@ export function ColorPaletteToolbar({
               <DropdownMenuTrigger asChild>
                 <button
                   type="button"
-                  className="flex items-center justify-center w-7 h-8 rounded-r-lg bg-[#FF6B35] text-white hover:bg-[#e85a26] border-l border-white/20 transition-transform active:scale-[0.98] shadow-xs cursor-pointer"
+                  className="flex items-center justify-center w-7 h-8 rounded-r-lg bg-[var(--accent)] text-white hover:opacity-90 border-l border-white/20 transition-transform active:scale-[0.98] shadow-xs cursor-pointer"
                 >
                   <ChevronDown className="w-3.5 h-3.5" />
                 </button>

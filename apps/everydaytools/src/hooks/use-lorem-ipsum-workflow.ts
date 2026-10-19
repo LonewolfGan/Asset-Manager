@@ -1,5 +1,7 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { trackToolUsed } from '@/lib/analytics';
+import { downloadText } from '@/lib/download';
+import { consumeHandoffText } from '@/lib/file-handoff';
 import {
   generateLoremText,
   generateLoremBlocks,
@@ -8,14 +10,40 @@ import {
   type LoremFlavor,
   type LoremUnit,
 } from '@/lib/lorem-ipsum-logic';
+import type { LoremPreset } from '@/lib/lorem-samples';
+
+export type LoremFormat = 'plain' | 'html' | 'markdown' | 'json';
 
 export function useLoremIpsumWorkflow() {
   const [unit, setUnit] = useState<LoremUnit>('paragraphs');
   const [count, setCount] = useState<number>(3);
   const [flavor, setFlavor] = useState<LoremFlavor>('classic');
+  const [format, setFormat] = useState<LoremFormat>('plain');
+  const [startWithClassic, setStartWithClassic] = useState<boolean>(true);
 
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [seed, setSeed] = useState<number>(0);
+  const refreshTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (refreshTimerRef.current) {
+        clearTimeout(refreshTimerRef.current);
+      }
+    };
+  }, []);
+
+  // Consume text handoff if directed from another tool
+  useEffect(() => {
+    const text = consumeHandoffText();
+    if (text && text.trim()) {
+      const wordCount = text.trim().split(/\s+/).length;
+      if (wordCount > 30) {
+        setUnit('words');
+        setCount(clampLoremCount(wordCount, 'words'));
+      }
+    }
+  }, []);
 
   const blocks = useMemo(() => {
     void seed;
@@ -23,9 +51,9 @@ export function useLoremIpsumWorkflow() {
       flavor,
       unit,
       count,
-      startWithClassic: true,
+      startWithClassic,
     });
-  }, [flavor, unit, count, seed]);
+  }, [flavor, unit, count, startWithClassic, seed]);
 
   const fullText = useMemo(() => {
     void seed;
@@ -33,10 +61,10 @@ export function useLoremIpsumWorkflow() {
       flavor,
       unit,
       count,
-      startWithClassic: true,
-      format: 'plain',
+      startWithClassic,
+      format,
     });
-  }, [flavor, unit, count, seed]);
+  }, [flavor, unit, count, startWithClassic, format, seed]);
 
   const stats = useMemo(() => {
     return calculateLoremStats(fullText);
@@ -44,10 +72,13 @@ export function useLoremIpsumWorkflow() {
 
   const handleRegenerate = useCallback(() => {
     setIsRefreshing(true);
-    setTimeout(() => setIsRefreshing(false), 240);
+    if (refreshTimerRef.current) {
+      clearTimeout(refreshTimerRef.current);
+    }
+    refreshTimerRef.current = setTimeout(() => setIsRefreshing(false), 240);
     setSeed((prev) => prev + 1);
-    trackToolUsed('lorem-ipsum', `regenerate-${unit}-${count}`);
-  }, [unit, count]);
+    trackToolUsed('lorem-ipsum', `regenerate-${unit}-${count}-${flavor}-${format}`);
+  }, [unit, count, flavor, format]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -57,6 +88,7 @@ export function useLoremIpsumWorkflow() {
           target &&
           (target.tagName === 'INPUT' ||
             target.tagName === 'TEXTAREA' ||
+            target.tagName === 'SELECT' ||
             target.isContentEditable)
         ) {
           return;
@@ -91,12 +123,39 @@ export function useLoremIpsumWorkflow() {
     [count]
   );
 
+  const handleApplyPreset = useCallback((preset: LoremPreset) => {
+    setUnit(preset.unit);
+    setCount(clampLoremCount(preset.count, preset.unit));
+    setFlavor(preset.flavor);
+    if (preset.format) {
+      setFormat(preset.format);
+    }
+    setSeed((prev) => prev + 1);
+    trackToolUsed('lorem-ipsum', `preset-${preset.id}`);
+  }, []);
+
+  const handleDownload = useCallback(() => {
+    const ext = format === 'html' ? 'html' : format === 'markdown' ? 'md' : format === 'json' ? 'json' : 'txt';
+    const mime =
+      format === 'html'
+        ? 'text/html;charset=utf-8'
+        : format === 'json'
+        ? 'application/json;charset=utf-8'
+        : 'text/plain;charset=utf-8';
+    downloadText(fullText, `lorem-ipsum-${flavor}-${unit}.${ext}`, mime);
+    trackToolUsed('lorem-ipsum', `download-${format}`);
+  }, [fullText, format, flavor, unit]);
+
   return {
     unit,
     count,
     flavor,
+    format,
+    startWithClassic,
     setCount,
     setFlavor,
+    setFormat,
+    setStartWithClassic,
     isRefreshing,
     blocks,
     fullText,
@@ -104,5 +163,7 @@ export function useLoremIpsumWorkflow() {
     handleRegenerate,
     handleCountChange,
     handleUnitSelect,
+    handleApplyPreset,
+    handleDownload,
   };
 }

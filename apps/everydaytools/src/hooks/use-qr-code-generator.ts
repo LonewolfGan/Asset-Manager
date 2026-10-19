@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolError } from '@/lib/analytics';
+import { consumeHandoffText, consumeHandoffFile } from '@/lib/file-handoff';
 import { getPresetIconSvg } from '@/lib/qr-icons';
 import {
   InputMode,
@@ -12,11 +13,13 @@ import {
   getContrastAssessment,
   buildQrPayload,
   isPayloadEmpty,
+  parseHandoffPayload,
 } from '@/lib/qr-code-logic';
 import { renderQrToCanvas } from '@/lib/qr-code-canvas';
 import { exportQrPng, exportQrSvg, copyQrImageToClipboard } from '@/lib/qr-code-export';
 import { getAvailableIconSwatches } from '@/lib/qr-code-swatches';
 import { useQrIconPicker } from './use-qr-icon-picker';
+import { useQrHistory, QrHistorySnapshot } from './use-qr-history';
 
 export function useQrCodeGenerator() {
   const { t, locale } = useLocale();
@@ -46,8 +49,111 @@ export function useQrCodeGenerator() {
   const [eyeStyle, setEyeStyle] = useState<EyeStyle>('rounded');
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [activePresetId, setActivePresetId] = useState<string | null>(null);
-  const [iconColor, setIconColor] = useState('#FF6B35');
+  const [iconColor, setIconColor] = useState('#f97316');
   const [logoScale, setLogoScale] = useState(22);
+  const [fgColor, setFgColor] = useState('#09090b');
+  const [bgColor, setBgColor] = useState('#ffffff');
+  const [genError, setGenError] = useState<string | null>(null);
+
+  const isInternalHistoryUpdateRef = useRef(false);
+
+  const applySnapshot = useCallback((s: QrHistorySnapshot) => {
+    isInternalHistoryUpdateRef.current = true;
+    setMode(s.mode);
+    setUrl(s.url);
+    setRawText(s.rawText);
+    setWifiSsid(s.wifiSsid);
+    setWifiPass(s.wifiPass);
+    setWifiEnc(s.wifiEnc);
+    setVcardName(s.vcardName);
+    setVcardOrg(s.vcardOrg);
+    setVcardEmail(s.vcardEmail);
+    setVcardPhone(s.vcardPhone);
+    setVcardUrl(s.vcardUrl);
+    setDotStyle(s.dotStyle);
+    setEyeStyle(s.eyeStyle);
+    setLogoUrl(s.logoUrl);
+    setLogoScale(s.logoScale);
+    setActivePresetId(s.activePresetId);
+    activePresetRef.current = s.activePresetId;
+    setIconColor(s.iconColor);
+    setFgColor(s.fgColor);
+    setBgColor(s.bgColor);
+  }, []);
+
+  const initialSnapshot = useMemo<QrHistorySnapshot>(() => ({
+    mode: 'url',
+    url: 'https://everydaytools.qzz.io',
+    rawText: 'EverydayTools — Fast, secure, privacy-first web utilities.',
+    wifiSsid: 'Studio_Network_5G',
+    wifiPass: 'EverydaySecure2026',
+    wifiEnc: 'WPA',
+    vcardName: 'Alexandre Martin',
+    vcardOrg: 'Design Studio',
+    vcardEmail: 'alexandre@everydaytools.app',
+    vcardPhone: '+33 6 12 34 56 78',
+    vcardUrl: 'https://everydaytools.qzz.io',
+    fgColor: '#09090b',
+    bgColor: '#ffffff',
+    dotStyle: 'rounded',
+    eyeStyle: 'rounded',
+    logoUrl: null,
+    logoScale: 22,
+    activePresetId: null,
+    iconColor: '#f97316',
+  }), []);
+
+  const { pushSnapshot, undo, redo, canUndo, canRedo } = useQrHistory(initialSnapshot, applySnapshot);
+
+  const currentSnapshot = useMemo<QrHistorySnapshot>(() => ({
+    mode, url, rawText, wifiSsid, wifiPass, wifiEnc,
+    vcardName, vcardOrg, vcardEmail, vcardPhone, vcardUrl,
+    fgColor, bgColor, dotStyle, eyeStyle, logoUrl, logoScale, activePresetId, iconColor,
+  }), [
+    mode, url, rawText, wifiSsid, wifiPass, wifiEnc,
+    vcardName, vcardOrg, vcardEmail, vcardPhone, vcardUrl,
+    fgColor, bgColor, dotStyle, eyeStyle, logoUrl, logoScale, activePresetId, iconColor,
+  ]);
+
+  // Handoff consumption at mount
+  useEffect(() => {
+    const handoffText = consumeHandoffText();
+    if (handoffText) {
+      const parsed = parseHandoffPayload(handoffText);
+      setMode(parsed.mode);
+      if (parsed.data.url !== undefined) setUrl(parsed.data.url);
+      if (parsed.data.rawText !== undefined) setRawText(parsed.data.rawText);
+      if (parsed.data.wifiSsid !== undefined) setWifiSsid(parsed.data.wifiSsid);
+      if (parsed.data.wifiPass !== undefined) setWifiPass(parsed.data.wifiPass);
+      if (parsed.data.wifiEnc !== undefined) setWifiEnc(parsed.data.wifiEnc);
+      if (parsed.data.vcardName !== undefined) setVcardName(parsed.data.vcardName);
+      if (parsed.data.vcardOrg !== undefined) setVcardOrg(parsed.data.vcardOrg);
+      if (parsed.data.vcardPhone !== undefined) setVcardPhone(parsed.data.vcardPhone);
+      if (parsed.data.vcardEmail !== undefined) setVcardEmail(parsed.data.vcardEmail);
+      if (parsed.data.vcardUrl !== undefined) setVcardUrl(parsed.data.vcardUrl);
+    }
+    const handoffFile = consumeHandoffFile();
+    if (handoffFile && handoffFile.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (typeof e.target?.result === 'string') {
+          activePresetRef.current = null;
+          setActivePresetId(null);
+          setLogoUrl(e.target.result);
+        }
+      };
+      reader.readAsDataURL(handoffFile);
+    }
+  }, []);
+
+  // Sync to history
+  useEffect(() => {
+    if (isInternalHistoryUpdateRef.current) {
+      isInternalHistoryUpdateRef.current = false;
+      return;
+    }
+    pushSnapshot(currentSnapshot);
+  }, [currentSnapshot, pushSnapshot]);
 
   const handleIconColorChange = useCallback((newColor: string) => {
     setIconColor(newColor);
@@ -68,13 +174,9 @@ export function useQrCodeGenerator() {
 
   const iconPicker = useQrIconPicker();
 
-  // Rendering parameters (HD 1024px, 2-module margin, Error Correction 'H')
   const errLevel: ErrorLevel = 'H';
   const size = 1024;
   const margin = 2;
-  const [fgColor, setFgColor] = useState('#09090b');
-  const [bgColor, setBgColor] = useState('#ffffff');
-  const [genError, setGenError] = useState<string | null>(null);
 
   const contrastRatio = useMemo(() => getContrastRatio(fgColor, bgColor), [fgColor, bgColor]);
   const contrastAssessment = useMemo(() => getContrastAssessment(contrastRatio, isFr), [contrastRatio, isFr]);
@@ -142,5 +244,6 @@ export function useQrCodeGenerator() {
     iconPicker, size, fgColor, setFgColor, bgColor, setBgColor,
     genError, contrastRatio, contrastAssessment, availableIconSwatches,
     content, isEmpty, downloadPng, downloadSvg, copyImage, invertColors,
+    undo, redo, canUndo, canRedo,
   };
 }

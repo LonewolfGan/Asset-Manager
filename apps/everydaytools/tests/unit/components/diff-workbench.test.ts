@@ -81,4 +81,37 @@ describe('DiffWorkbench with CodeWorkspaceSplit', () => {
 
     expect(onMouseDownResize).toHaveBeenCalledTimes(1);
   });
+
+  it('guarantees zero arbitrary hex #FF6B35 in rendered workbench HTML and uses var(--accent)', async () => {
+    await renderWorkbench();
+
+    expect(container.innerHTML).not.toContain('#FF6B35');
+    expect(container.innerHTML).not.toContain('#e85a26');
+  });
+
+  it('renders quick sample buttons when editor is empty and onLoadSample is provided', async () => {
+    const onLoadSample = vi.fn();
+    await renderWorkbench({
+      hasContent: false,
+      textA: '',
+      textB: '',
+      onLoadSample,
+    });
+
+    expect(container.textContent).toContain('Texte narratif');
+    expect(container.textContent).toContain('Code TypeScript');
+    expect(container.textContent).toContain('Fichier JSON');
+
+    const sampleBtn = Array.from(container.querySelectorAll('button')).find((b) =>
+      b.textContent?.includes('Texte narratif')
+    );
+    expect(sampleBtn).toBeDefined();
+
+    act(() => {
+      sampleBtn?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+
+    expect(onLoadSample).toHaveBeenCalledWith('text');
+  });
 });
+

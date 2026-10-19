@@ -25,6 +25,12 @@ export const ChecksumIntegrityVerifier: React.FC<ChecksumIntegrityVerifierProps>
         type="text"
         value={expectedHash}
         onChange={(e) => setExpectedHash(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Escape') {
+            e.stopPropagation();
+            setExpectedHash('');
+          }
+        }}
         placeholder={
           isFr
             ? 'Comparer avec une empreinte attendue (SHA-256, MD5...)...'

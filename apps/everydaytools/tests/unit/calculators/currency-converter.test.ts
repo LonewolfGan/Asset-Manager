@@ -74,12 +74,29 @@ describe('Currency Converter Logic', () => {
     expect(formatted).toContain('1,234.56');
   });
 
-  it('parses string amounts with commas or dots correctly', () => {
+  it('parses string amounts with commas, spaces, or dots correctly', () => {
     expect(parseCurrencyAmount('100')).toBe(100);
     expect(parseCurrencyAmount('100,50')).toBe(100.5);
+    expect(parseCurrencyAmount('1 500,50')).toBe(1500.5);
+    expect(parseCurrencyAmount('10 000')).toBe(10000);
     expect(parseCurrencyAmount(' 25.75 ')).toBe(25.75);
     expect(parseCurrencyAmount('invalid')).toBe(0);
     expect(parseCurrencyAmount('')).toBe(0);
+  });
+
+  it('preserves precision for micro-currencies without premature truncation to 0', () => {
+    const microRates: Record<string, number> = {
+      USD: 1,
+      VND: 25400, // 1 USD = 25400 VND -> 1 VND = 0.00003937 USD
+    };
+    const rateVndUsd = getDirectRate('VND', 'USD', microRates);
+    expect(rateVndUsd).not.toBeNull();
+    expect(rateVndUsd).toBeGreaterThan(0);
+    expect(rateVndUsd).toBeCloseTo(0.000039, 5);
+
+    const converted = convertCurrency(10, 'VND', 'USD', microRates);
+    expect(converted).not.toBeNull();
+    expect(converted).toBeGreaterThan(0);
   });
 
   it('formats converted values with proper fallbacks', () => {

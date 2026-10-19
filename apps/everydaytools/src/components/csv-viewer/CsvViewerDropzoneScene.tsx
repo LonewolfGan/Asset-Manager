@@ -47,7 +47,7 @@ export const CsvViewerDropzoneScene: React.FC<CsvViewerDropzoneSceneProps> = ({
         <button
           type="button"
           onClick={() => setInputMode('file')}
-          className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+          className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors duration-150 cursor-pointer ${
             inputMode === 'file'
               ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm'
               : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100'
@@ -58,7 +58,7 @@ export const CsvViewerDropzoneScene: React.FC<CsvViewerDropzoneSceneProps> = ({
         <button
           type="button"
           onClick={() => setInputMode('paste')}
-          className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+          className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors duration-150 cursor-pointer ${
             inputMode === 'paste'
               ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm'
               : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100'
@@ -102,7 +102,7 @@ export const CsvViewerDropzoneScene: React.FC<CsvViewerDropzoneSceneProps> = ({
             <button
               type="button"
               onClick={onLoadSample}
-              className="h-11 px-5 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-sm font-medium text-zinc-900 dark:text-zinc-100 transition-all flex items-center gap-2.5 cursor-pointer active:scale-[0.98] shadow-sm"
+              className="h-11 px-5 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-sm font-medium text-zinc-900 dark:text-zinc-100 transition-colors duration-150 flex items-center gap-2.5 cursor-pointer active:scale-[0.98] shadow-sm"
             >
               <FileSpreadsheet size={16} className="text-zinc-500 dark:text-zinc-400" />
               <span>{isFr ? "Charger des données d'exemple" : 'Load sample data'}</span>
@@ -140,7 +140,7 @@ export const CsvViewerDropzoneScene: React.FC<CsvViewerDropzoneSceneProps> = ({
               type="button"
               onClick={onPasteSubmit}
               disabled={!rawText.trim()}
-              className="h-10 px-6 rounded-xl bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-white text-white dark:text-zinc-950 text-xs font-semibold transition-all cursor-pointer active:scale-[0.98] shadow-sm disabled:opacity-40 disabled:pointer-events-none"
+              className="h-10 px-6 rounded-xl bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-white text-white dark:text-zinc-950 text-xs font-semibold transition-colors duration-150 cursor-pointer active:scale-[0.98] shadow-sm disabled:opacity-40 disabled:pointer-events-none"
             >
               {isFr ? 'Visualiser le tableau' : 'View spreadsheet'}
             </button>

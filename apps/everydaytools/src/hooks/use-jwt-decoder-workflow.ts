@@ -1,6 +1,7 @@
-import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import { toast } from 'sonner';
 import { trackToolUsed } from '@/lib/analytics';
+import { consumeHandoffFile, consumeHandoffText } from '@/lib/file-handoff';
 import {
   decodeJwt,
   verifyJwtHmac,
@@ -28,6 +29,7 @@ export function useJwtDecoderWorkflow(isFr: boolean) {
 
   // Undo history stack (up to 25 entries)
   const [history, setHistory] = useState<string[]>([]);
+  const lastHistoryPushRef = useRef<number>(0);
 
   // Verification state
   const [verificationResult, setVerificationResult] = useState<VerificationState>({
@@ -39,9 +41,13 @@ export function useJwtDecoderWorkflow(isFr: boolean) {
     return decodeJwt(tokenInput, isFr);
   }, [tokenInput, isFr]);
 
-  // Update token with history tracking
+  // Update token with history tracking and throttling
   const handleUpdateToken = useCallback((newVal: string) => {
-    setHistory((prev) => [...prev.slice(-25), tokenInput]);
+    const now = Date.now();
+    if (now - lastHistoryPushRef.current > 1000) {
+      setHistory((prev) => [...prev.slice(-25), tokenInput]);
+      lastHistoryPushRef.current = now;
+    }
     setTokenInput(newVal);
   }, [tokenInput]);
 
@@ -58,7 +64,7 @@ export function useJwtDecoderWorkflow(isFr: boolean) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
-        if (history.length > 0) {
+        if (document.activeElement?.tagName !== 'INPUT' && history.length > 0) {
           e.preventDefault();
           handleUndo();
         }
@@ -72,20 +78,24 @@ export function useJwtDecoderWorkflow(isFr: boolean) {
   const handleCleanToken = useCallback(() => {
     const cleaned = cleanJwtToken(tokenInput);
     if (cleaned !== tokenInput) {
-      handleUpdateToken(cleaned);
+      setHistory((prev) => [...prev.slice(-25), tokenInput]);
+      lastHistoryPushRef.current = 0;
+      setTokenInput(cleaned);
       toast.success(isFr ? 'Jeton nettoyé' : 'Token cleaned');
     } else {
       toast.info(isFr ? 'Jeton déjà normalisé' : 'Token already normalized');
     }
-  }, [tokenInput, handleUpdateToken, isFr]);
+  }, [tokenInput, isFr]);
 
   // Reset workspace
   const handleClear = useCallback(() => {
-    handleUpdateToken('');
+    setHistory((prev) => [...prev.slice(-25), tokenInput]);
+    lastHistoryPushRef.current = 0;
+    setTokenInput('');
     setSecretKey('');
     setVerificationResult({ status: 'idle' });
     toast.info(isFr ? 'Atelier réinitialisé' : 'Workspace reset');
-  }, [handleUpdateToken, isFr]);
+  }, [tokenInput, isFr]);
 
   // File upload reader (.jwt or .txt)
   const handleFileUpload = useCallback((file: File) => {
@@ -93,12 +103,29 @@ export function useJwtDecoderWorkflow(isFr: boolean) {
     reader.onload = (e) => {
       const content = e.target?.result as string;
       if (content) {
-        handleUpdateToken(cleanJwtToken(content));
+        setHistory((prev) => [...prev.slice(-25), tokenInput]);
+        lastHistoryPushRef.current = 0;
+        setTokenInput(cleanJwtToken(content));
         toast.success(isFr ? `Fichier ${file.name} chargé` : `File ${file.name} loaded`);
       }
     };
     reader.readAsText(file);
-  }, [handleUpdateToken, isFr]);
+  }, [tokenInput, isFr]);
+
+  // Inter-tool handoff consumption
+  useEffect(() => {
+    const handoff = consumeHandoffFile();
+    if (handoff) {
+      handleFileUpload(handoff);
+    } else {
+      const textHandoff = consumeHandoffText();
+      if (textHandoff) {
+        setHistory((prev) => [...prev.slice(-25), tokenInput]);
+        lastHistoryPushRef.current = 0;
+        setTokenInput(cleanJwtToken(textHandoff));
+      }
+    }
+  }, [handleFileUpload]);
 
   // Native HMAC verification with Web Crypto API
   useEffect(() => {

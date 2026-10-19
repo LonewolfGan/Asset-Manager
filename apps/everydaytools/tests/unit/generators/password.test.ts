@@ -100,3 +100,59 @@ describe('Passphrase Generator & Sizing (Phase RED)', () => {
     expect(getTextSizeClass(50)).toContain('text-lg');
   });
 });
+
+describe('Entropy & Crack Time Estimation (TDD RED Phase)', () => {
+  it('calculates entropy bits according to character pool diversity', async () => {
+    const { calculateEntropyBits } = await import('@/lib/password-generator-logic');
+    // 8 lowercase letters: 8 * log2(26) ≈ 37.6 bits
+    const entropy1 = calculateEntropyBits('abcdefgh');
+    expect(entropy1).toBeGreaterThanOrEqual(37);
+    expect(entropy1).toBeLessThanOrEqual(38);
+
+    // 16 chars with 4 pools: 16 * log2(94) ≈ 104.8 bits
+    const entropy2 = calculateEntropyBits('Ab1!Ab1!Ab1!Ab1!');
+    expect(entropy2).toBeGreaterThanOrEqual(104);
+  });
+
+  it('estimates realistic cracking time for both offline fast attack and online throttled attack', async () => {
+    const { estimateCrackTime } = await import('@/lib/password-generator-logic');
+    // Low entropy
+    const weakTime = estimateCrackTime(30, false);
+    expect(weakTime.offlineFast).toMatch(/instant|seconds/i);
+
+    // High entropy (> 100 bits)
+    const strongTime = estimateCrackTime(120, false);
+    expect(strongTime.offlineFast).toMatch(/centuries|millennia|years/i);
+    expect(strongTime.onlineThrottled).toMatch(/centuries|millennia/i);
+
+    // French localization
+    const strongTimeFr = estimateCrackTime(120, true);
+    expect(strongTimeFr.offlineFast).toMatch(/siècles|millénaires|années/i);
+  });
+
+  it('ensures calculateVaultStrength returns design-system compliant tokens without arbitrary hex', async () => {
+    const { calculateVaultStrength } = await import('@/lib/password-generator-logic');
+    const result = calculateVaultStrength({
+      mode: 'random',
+      wordCount: 4,
+      uppercase: true,
+      lowercase: true,
+      numbers: true,
+      symbols: true,
+      length: 24,
+      labels: {
+        weak: 'Faible',
+        fair: 'Moyen',
+        strong: 'Fort',
+        exceptional: 'Exceptionnel',
+      },
+    });
+
+    expect(result.level).toBe(4);
+    expect(result.color.toUpperCase()).not.toContain('#FF6B35');
+    expect(result.color.toUpperCase()).not.toContain('#FF8255');
+    expect(result.stroke.toUpperCase()).not.toContain('#FF6B35');
+    expect(result.stroke).toContain('var(--accent');
+  });
+});
+

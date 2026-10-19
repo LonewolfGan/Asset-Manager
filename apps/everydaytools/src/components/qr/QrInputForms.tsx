@@ -75,7 +75,7 @@ export function QrInputForms({
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder="https://example.com"
-            className="h-11 w-full pl-10 pr-4 rounded-xl font-mono text-sm bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/10 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-all"
+            className="h-11 w-full pl-10 pr-4 rounded-xl font-mono text-sm bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/10 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors duration-150"
           />
         </div>
       )}
@@ -106,7 +106,7 @@ export function QrInputForms({
               value={wifiSsid}
               onChange={(e) => setWifiSsid(e.target.value)}
               placeholder="Network_Name"
-              className="h-11 w-full px-4 rounded-xl font-mono text-sm bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/10 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-all"
+              className="h-11 w-full px-4 rounded-xl font-mono text-sm bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/10 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors duration-150"
             />
           </div>
 
@@ -120,7 +120,7 @@ export function QrInputForms({
                 value={wifiPass}
                 onChange={(e) => setWifiPass(e.target.value)}
                 placeholder="••••••••"
-                className="h-11 w-full pl-4 pr-11 rounded-xl font-mono text-sm bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/10 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-all"
+                className="h-11 w-full pl-4 pr-11 rounded-xl font-mono text-sm bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/10 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors duration-150"
               />
               <ActionTooltip label={showWifiPass ? (isFr ? 'Masquer' : 'Hide') : (isFr ? 'Afficher' : 'Show')} side="top">
                 <button
@@ -144,7 +144,7 @@ export function QrInputForms({
                   key={enc}
                   type="button"
                   onClick={() => setWifiEnc(enc)}
-                  className={`py-1.5 rounded-lg text-xs font-mono transition-all cursor-pointer ${
+                  className={`py-1.5 rounded-lg text-xs font-mono transition-colors duration-150 cursor-pointer ${
                     wifiEnc === enc
                       ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white font-semibold shadow-xs'
                       : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
@@ -169,7 +169,7 @@ export function QrInputForms({
               value={vcardName}
               onChange={(e) => setVcardName(e.target.value)}
               placeholder="Alexandre Martin"
-              className="h-11 w-full px-4 rounded-xl font-mono text-sm bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/10 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-all"
+              className="h-11 w-full px-4 rounded-xl font-mono text-sm bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/10 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors duration-150"
             />
           </div>
 
@@ -182,7 +182,7 @@ export function QrInputForms({
               value={vcardOrg}
               onChange={(e) => setVcardOrg(e.target.value)}
               placeholder="Studio"
-              className="h-11 w-full px-4 rounded-xl font-mono text-sm bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/10 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-all"
+              className="h-11 w-full px-4 rounded-xl font-mono text-sm bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/10 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors duration-150"
             />
           </div>
 
@@ -195,7 +195,7 @@ export function QrInputForms({
               value={vcardPhone}
               onChange={(e) => setVcardPhone(e.target.value)}
               placeholder="+33 6 12 34 56 78"
-              className="h-11 w-full px-4 rounded-xl font-mono text-sm bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/10 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-all"
+              className="h-11 w-full px-4 rounded-xl font-mono text-sm bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/10 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors duration-150"
             />
           </div>
 
@@ -208,7 +208,7 @@ export function QrInputForms({
               value={vcardEmail}
               onChange={(e) => setVcardEmail(e.target.value)}
               placeholder="contact@domain.com"
-              className="h-11 w-full px-4 rounded-xl font-mono text-sm bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/10 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-all"
+              className="h-11 w-full px-4 rounded-xl font-mono text-sm bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/10 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors duration-150"
             />
           </div>
 
@@ -221,7 +221,7 @@ export function QrInputForms({
               value={vcardUrl}
               onChange={(e) => setVcardUrl(e.target.value)}
               placeholder="https://mysite.com"
-              className="h-11 w-full px-4 rounded-xl font-mono text-sm bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/10 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-all"
+              className="h-11 w-full px-4 rounded-xl font-mono text-sm bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/10 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors duration-150"
             />
           </div>
         </div>

@@ -3,7 +3,13 @@ import { UNIT_CATEGORIES } from '@/config/units.config';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed } from '@/lib/analytics';
 import { getUnitSystem } from '@/lib/unit-systems';
-import { convertUnits, getFormulaExplanation } from '@/lib/unit-converter-logic';
+import {
+  convertUnits,
+  getFormulaExplanation,
+  getPopularPresetsForCategory,
+  type PopularUnitPreset,
+} from '@/lib/unit-converter-logic';
+import { consumeHandoffText } from '@/lib/file-handoff';
 
 export function useUnitConverterWorkflow() {
   const { t, locale, isFr } = useLocale();
@@ -22,6 +28,16 @@ export function useUnitConverterWorkflow() {
 
   const [isSwapping, setIsSwapping] = useState(false);
 
+  useEffect(() => {
+    const text = consumeHandoffText();
+    if (text) {
+      const cleaned = text.replace(',', '.').trim();
+      if (cleaned && !isNaN(Number(cleaned))) {
+        setFromValue(cleaned);
+      }
+    }
+  }, []);
+
   const [pickerModal, setPickerModal] = useState<{
     isOpen: boolean;
     target: 'from' | 'to';
@@ -35,14 +51,12 @@ export function useUnitConverterWorkflow() {
     const defaultTo = category.units[1] ? category.units[1].id : category.units[0].id;
     setFromUnit(defaultFrom);
     setToUnit(defaultTo);
+    trackToolUsed('unit-converter', 'calculators');
   }, [activeCategory, category]);
 
   useEffect(() => {
     const converted = convertUnits(fromValue, fromUnit, toUnit, category.units, locale);
     setToValue(converted);
-    if (fromValue) {
-      trackToolUsed('unit-converter', 'calculators');
-    }
   }, [fromValue, fromUnit, toUnit, category, locale]);
 
   const handleFromChange = useCallback(
@@ -133,6 +147,16 @@ export function useUnitConverterWorkflow() {
     setPickerModal((prev) => ({ ...prev, isOpen: false }));
   }, []);
 
+  const popularPresets = useMemo(
+    () => getPopularPresetsForCategory(activeCategory),
+    [activeCategory]
+  );
+
+  const applyPopularPreset = useCallback((preset: PopularUnitPreset) => {
+    setFromUnit(preset.fromUnit);
+    setToUnit(preset.toUnit);
+  }, []);
+
   return {
     t,
     isFr,
@@ -150,6 +174,8 @@ export function useUnitConverterWorkflow() {
     fromSystem,
     toSystem,
     formulaExplanation,
+    popularPresets,
+    applyPopularPreset,
     handleFromChange,
     handleToChange,
     handleSwap,

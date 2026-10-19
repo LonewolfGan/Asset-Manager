@@ -108,13 +108,16 @@ describe('lorem-ipsum-logic', () => {
     const stats = calculateLoremStats('Lorem ipsum dolor sit amet.');
     expect(stats.words).toBe(5);
     expect(stats.chars).toBe(27);
+    expect(stats.lines).toBe(1);
 
     const emptyStats = calculateLoremStats('');
     expect(emptyStats.words).toBe(0);
     expect(emptyStats.chars).toBe(0);
+    expect(emptyStats.lines).toBe(0);
 
     const bulletStats = calculateLoremStats('• Un\n• Deux\n• Trois');
     expect(bulletStats.words).toBe(3);
+    expect(bulletStats.lines).toBe(3);
   });
 
   it('clamps unit counts according to unit limits', () => {

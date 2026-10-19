@@ -55,11 +55,7 @@ export const ConversionResult: React.FC<ConversionResultProps> = ({
         <img
           src={targetFormat.icon}
           alt={targetFormat.name}
-          className={`relative w-24 h-24 sm:w-28 sm:h-28 object-contain drop-shadow-md hover:scale-105 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] ${
-            targetFormat.icon.includes('/file.svg') || targetFormat.icon.includes('/image.svg')
-              ? 'dark:brightness-0 dark:invert'
-              : ''
-          }`}
+          className="relative w-24 h-24 sm:w-28 sm:h-28 object-contain drop-shadow-md hover:scale-105 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]"
         />
       </div>
 

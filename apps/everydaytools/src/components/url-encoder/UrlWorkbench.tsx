@@ -37,10 +37,13 @@ export const UrlWorkbench: React.FC<UrlWorkbenchProps> = ({
     outputStats,
     handleUpdateInput,
     handleUndo,
+    handleSwap,
     handleClear,
+    handleLoadSample,
     handleRemoveParam,
     handleFileUpload,
     handleDownload,
+    samples,
   } = workflow;
 
   return (
@@ -56,6 +59,7 @@ export const UrlWorkbench: React.FC<UrlWorkbenchProps> = ({
         setWordWrap={setWordWrap}
         historyLength={history.length}
         onUndo={handleUndo}
+        onSwap={handleSwap}
         hasOutput={hasOutput}
         output={output}
         hasInput={hasInput}
@@ -80,6 +84,8 @@ export const UrlWorkbench: React.FC<UrlWorkbenchProps> = ({
           isDragging={isDragging}
           setIsDragging={setIsDragging}
           onFileUpload={handleFileUpload}
+          samples={samples}
+          onLoadSample={handleLoadSample}
         />
 
         <UrlOutputPane

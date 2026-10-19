@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { toast } from '@/hooks/use-toast';
@@ -17,16 +17,17 @@ export function useRtfToPdfWorkflow() {
   const { t, isFr } = useLocale();
   const tc = (t as any).rtfToPdf ?? {};
 
-  const sourceFormat = getSourceFormat(isFr);
-  const targetFormat = getTargetFormat(isFr);
+  const sourceFormat = useMemo(() => getSourceFormat(isFr), [isFr]);
+  const targetFormat = useMemo(() => getTargetFormat(isFr), [isFr]);
 
   const [files, setFiles] = useState<File[]>([]);
   const [result, setResult] = useState<RtfToPdfResult | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [isNextActionOpen, setIsNextActionOpen] = useState(false);
+  const hasConsumedHandoffRef = useRef(false);
 
-  const file = files[0];
+  const file = useMemo(() => files[0], [files]);
 
   const validateAndSetFile = useCallback(
     (selectedFile: File) => {
@@ -46,6 +47,8 @@ export function useRtfToPdfWorkflow() {
   );
 
   useEffect(() => {
+    if (hasConsumedHandoffRef.current) return;
+    hasConsumedHandoffRef.current = true;
     const staged = consumeHandoffFile();
     if (staged) {
       validateAndSetFile(staged);
@@ -80,6 +83,32 @@ export function useRtfToPdfWorkflow() {
     setIsProcessing(false);
     setIsNextActionOpen(false);
   }, []);
+
+  // Keyboard shortcut: Escape to reset staged file when idle
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        const target = e.target as HTMLElement | null;
+        if (
+          target &&
+          (target.tagName === 'INPUT' ||
+            target.tagName === 'TEXTAREA' ||
+            target.isContentEditable)
+        ) {
+          return;
+        }
+        if (isNextActionOpen) {
+          return;
+        }
+        if (file && !isProcessing) {
+          handleReset();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [file, isProcessing, isNextActionOpen, handleReset]);
 
   const handleConvert = useCallback(async () => {
     if (!file || isProcessing) return;
@@ -122,6 +151,10 @@ export function useRtfToPdfWorkflow() {
     openPreview(result.blob);
   }, [result]);
 
+  const handleOpenNextAction = useCallback(() => {
+    setIsNextActionOpen(true);
+  }, []);
+
   return {
     t,
     tc,
@@ -130,6 +163,7 @@ export function useRtfToPdfWorkflow() {
     targetFormat,
     file,
     result,
+    setResult,
     isProcessing,
     isDragging,
     isNextActionOpen,
@@ -142,5 +176,6 @@ export function useRtfToPdfWorkflow() {
     handleConvert,
     handleDownload,
     handleOpenPreview,
+    handleOpenNextAction,
   };
 }

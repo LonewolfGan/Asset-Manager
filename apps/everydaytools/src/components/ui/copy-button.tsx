@@ -107,9 +107,9 @@ export const CopyButton: React.FC<CopyButtonProps> = ({
     [text, copyFn, onCopy, toastMessage, copiedDuration, disabled]
   );
 
-  // Variant styles
   const baseClasses =
-    'relative inline-flex items-center justify-center gap-1.5 font-mono select-none cursor-pointer active:scale-[0.96] transition-all duration-150 focus:outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-600 focus-visible:ring-offset-1 disabled:opacity-40 disabled:pointer-events-none disabled:cursor-not-allowed';
+    'relative inline-flex items-center justify-center gap-1.5 font-mono select-none cursor-pointer active:scale-[0.96] transition-[color,background-color,border-color,transform,opacity] duration-150 focus:outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-600 focus-visible:ring-offset-1 disabled:opacity-40 disabled:pointer-events-none disabled:cursor-not-allowed';
+
 
   let variantClasses = '';
   if (variant === 'default') {

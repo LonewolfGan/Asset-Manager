@@ -88,7 +88,7 @@ export function ColorPaletteSwatchColumn({
           <button
             type="button"
             onClick={() => onToggleLock(idx)}
-            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer active:scale-[0.95] ${buttonBg} ${
+            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors duration-150 cursor-pointer active:scale-[0.95] ${buttonBg} ${
               color.isLocked ? 'ring-1 ring-current font-semibold' : ''
             }`}
           >

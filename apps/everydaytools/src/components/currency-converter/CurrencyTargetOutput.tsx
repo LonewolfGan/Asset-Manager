@@ -31,7 +31,7 @@ export function CurrencyTargetOutput({
         <button
           type="button"
           onClick={onOpenPicker}
-          className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-xl border border-border/80 bg-background hover:bg-zinc-100 dark:hover:bg-zinc-800 text-foreground transition-all shadow-xs active:scale-98 cursor-pointer"
+          className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-xl border border-border/80 bg-background hover:bg-zinc-100 dark:hover:bg-zinc-800 text-foreground transition-colors duration-150 shadow-xs active:scale-98 cursor-pointer"
           aria-label={isFr ? 'Changer la devise cible' : 'Change target currency'}
         >
           <CurrencyFlag code={currency} size="md" />
@@ -44,7 +44,11 @@ export function CurrencyTargetOutput({
       </div>
 
       <div className="flex items-center justify-between gap-4 pt-1">
-        <div className="text-4xl sm:text-5xl lg:text-6xl font-mono font-bold tracking-tight text-foreground truncate select-all">
+        <div
+          role="status"
+          aria-live="polite"
+          className="text-4xl sm:text-5xl lg:text-6xl font-mono font-bold tracking-tight text-foreground truncate select-all"
+        >
           {convertedValue}
         </div>
 

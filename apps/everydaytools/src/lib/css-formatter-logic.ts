@@ -110,3 +110,142 @@ export function calculateCssMetrics(input: string, output: string): CssMetrics {
     savingsPercent,
   };
 }
+
+export interface CssIssue {
+  type: 'unclosed-block' | 'unexpected-close' | 'unclosed-comment' | 'unclosed-string';
+  message: string;
+}
+
+export function detectCssIssues(css: string): CssIssue[] {
+  if (!css.trim()) return [];
+  const issues: CssIssue[] = [];
+
+  let braceDepth = 0;
+  let inComment = false;
+  let inString = false;
+  let quoteChar = '';
+
+  for (let i = 0; i < css.length; i++) {
+    const char = css[i];
+
+    if (inComment) {
+      if (char === '*' && css[i + 1] === '/') {
+        inComment = false;
+        i++;
+      }
+      continue;
+    }
+
+    if (inString) {
+      if (char === '\\') {
+        i++;
+      } else if (char === quoteChar) {
+        inString = false;
+      }
+      continue;
+    }
+
+    if (char === '/' && css[i + 1] === '*') {
+      inComment = true;
+      i++;
+      continue;
+    }
+
+    if (char === '"' || char === "'") {
+      inString = true;
+      quoteChar = char;
+      continue;
+    }
+
+    if (char === '{') {
+      braceDepth++;
+    } else if (char === '}') {
+      if (braceDepth === 0) {
+        issues.push({
+          type: 'unexpected-close',
+          message: 'Accolade fermante inattendue "}" sans bloc ouvert correspondant.',
+        });
+      } else {
+        braceDepth--;
+      }
+    }
+  }
+
+  if (inComment) {
+    issues.push({
+      type: 'unclosed-comment',
+      message: 'Commentaire multi-lignes "/*" non fermé dans la feuille de style.',
+    });
+  }
+
+  if (inString) {
+    issues.push({
+      type: 'unclosed-string',
+      message: `Chaîne de caractères ${quoteChar} non refermée.`,
+    });
+  }
+
+  if (braceDepth > 0) {
+    issues.push({
+      type: 'unclosed-block',
+      message: `${braceDepth} bloc(s) CSS non fermé(s) (accolade "{" manquante).`,
+    });
+  }
+
+  return issues;
+}
+
+export const CSS_SAMPLES = {
+  modernCard: `/* Modern Interactive Card */
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  background-color: var(--card-bg, #ffffff);
+  border: 1px solid var(--border-color, #e4e4e7);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-heading, #18181b);
+  margin-bottom: 0.5rem;
+}`,
+  glassmorphism: `/* Frosted Glass Container */
+.glass-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+}`,
+  responsiveGrid: `/* Responsive Auto-Fit Grid */
+.grid-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+  .grid-layout {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}`,
+};

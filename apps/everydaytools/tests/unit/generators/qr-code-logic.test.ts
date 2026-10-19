@@ -99,6 +99,16 @@ describe('QR Code Logic Unit Tests', () => {
       expect(vcard).toContain('TEL:+33612345678');
       expect(vcard).toContain('URL:https://example.com');
       expect(vcard).toContain('END:VCARD');
+
+      const emptyVcard = buildQrPayload('vcard', {
+        ...defaultParams,
+        vcardName: '',
+        vcardOrg: '',
+        vcardEmail: '',
+        vcardPhone: '',
+        vcardUrl: '',
+      });
+      expect(emptyVcard).toBe('');
     });
 
     it('detects empty payloads accurately', () => {

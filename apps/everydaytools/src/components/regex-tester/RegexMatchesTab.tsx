@@ -64,8 +64,8 @@ export function RegexMatchesTab({
                 onClick={() => onSelectMatchIndex(chunk.matchIndex ?? null)}
                 className={`rounded-xs px-1 py-0.5 cursor-pointer transition-colors ${
                   isSelected
-                    ? 'bg-[#FF6B35] text-white font-semibold'
-                    : 'bg-[#FF6B35]/20 text-zinc-950 dark:text-zinc-100 border-b border-[#FF6B35]'
+                    ? 'bg-[var(--accent)] text-white font-semibold'
+                    : 'bg-[var(--accent)]/15 text-zinc-950 dark:text-zinc-100 border-b border-[var(--accent)]'
                 }`}
               >
                 {chunk.text}
@@ -107,7 +107,7 @@ export function RegexMatchesTab({
                 {m.groups.map((grp) => (
                   <div key={grp.index} className="flex items-center gap-1.5">
                     <span className="text-zinc-400 select-none">└</span>
-                    <span className="text-[#FF6B35] font-medium">
+                    <span className="text-[var(--accent)] font-medium">
                       {grp.name ? `$${grp.name}` : (isFr ? `Groupe ${grp.index}` : `Group ${grp.index}`)} :
                     </span>
                     <span className="text-zinc-800 dark:text-zinc-200 select-all">"{grp.value}"</span>

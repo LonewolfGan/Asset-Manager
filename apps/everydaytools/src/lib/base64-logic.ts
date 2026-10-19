@@ -61,7 +61,7 @@ export function detectBase64Binary(raw: string): DetectedBase64Binary | null {
 
   // 2. Détection via signatures binaires (Magic Bytes) pour Base64 brut
   try {
-    let normalized = clean.replace(/-/g, '+').replace(/_/g, '/');
+    let normalized = clean.replace(/\s+/g, '').replace(/-/g, '+').replace(/_/g, '/');
     while (normalized.length % 4 !== 0) {
       normalized += '=';
     }
@@ -134,8 +134,8 @@ export function decodeBase64(base64Text: string): { output: string; error?: stri
   if (!clean) return { output: '' };
 
   try {
-    // Revert URL-safe characters
-    let normalized = clean.replace(/-/g, '+').replace(/_/g, '/');
+    // Revert URL-safe characters and strip whitespaces/line breaks
+    let normalized = clean.replace(/\s+/g, '').replace(/-/g, '+').replace(/_/g, '/');
     // Re-add padding if missing
     while (normalized.length % 4 !== 0) {
       normalized += '=';
@@ -182,7 +182,7 @@ export function base64ToBlob(
     rawBase64 = dataUrlMatch[2];
   }
 
-  let normalized = rawBase64.replace(/-/g, '+').replace(/_/g, '/');
+  let normalized = rawBase64.replace(/\s+/g, '').replace(/-/g, '+').replace(/_/g, '/');
   while (normalized.length % 4 !== 0) {
     normalized += '=';
   }

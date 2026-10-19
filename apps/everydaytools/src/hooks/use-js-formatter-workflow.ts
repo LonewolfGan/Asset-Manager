@@ -12,14 +12,26 @@ import {
   type QuotesStyle,
   type ViewOutput,
   type ExecutionLog,
+  type JsIssue,
   beautifyJs,
   minifyJs,
   computeJsMetrics,
+  detectJsIssues,
+  JS_SAMPLES,
 } from '../lib/js-formatter-logic';
 import { runJsInSandbox } from '../lib/js-formatter-sandbox';
 
 hljs.registerLanguage('javascript', jsLang);
 hljs.registerLanguage('typescript', tsLang);
+
+export function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
 
 export function useJsFormatterWorkflow() {
   const { isFr } = useLocale();
@@ -56,8 +68,13 @@ export function useJsFormatterWorkflow() {
     }
   }, [input]);
 
+  const lastHistoryTimeRef = useRef<number>(0);
   const handleInputChange = useCallback((val: string) => {
-    setHistory((prev) => [...prev.slice(-30), input]);
+    const now = Date.now();
+    if (now - lastHistoryTimeRef.current > 1000) {
+      setHistory((prev) => [...prev.slice(-30), input]);
+      lastHistoryTimeRef.current = now;
+    }
     setInput(val);
   }, [input]);
 
@@ -68,6 +85,20 @@ export function useJsFormatterWorkflow() {
     setInput(last);
     toast.info(isFr ? 'Action annulée' : 'Action undone');
   }, [history, isFr]);
+
+  const issues = useMemo(() => detectJsIssues(input), [input]);
+
+  const handleLoadSample = useCallback(
+    (key: keyof typeof JS_SAMPLES) => {
+      const sample = JS_SAMPLES[key];
+      if (sample) {
+        setHistory((prev) => [...prev.slice(-30), input]);
+        setInput(sample);
+        toast.success(isFr ? 'Exemple de code chargé' : 'Code sample loaded');
+      }
+    },
+    [input, isFr]
+  );
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -118,7 +149,7 @@ export function useJsFormatterWorkflow() {
     try {
       return hljs.highlight(output, { language, ignoreIllegals: true }).value;
     } catch {
-      return output;
+      return escapeHtml(output);
     }
   }, [output, language]);
 
@@ -216,8 +247,10 @@ export function useJsFormatterWorkflow() {
     output,
     highlightedOutput,
     metrics,
+    issues,
     hasContent,
     handleInputChange,
+    handleLoadSample,
     handleUndo,
     handleMouseDownResize,
     handleRunCode,

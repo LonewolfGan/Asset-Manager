@@ -241,10 +241,12 @@ export function clampLoremCount(count: number, unit: LoremUnit): number {
   return Math.max(1, Math.min(max, count));
 }
 
-export function calculateLoremStats(fullText: string): { words: number; chars: number } {
+export function calculateLoremStats(fullText: string): { words: number; chars: number; lines: number } {
   const cleanText = fullText.replace(/^[•\-]\s*/gm, '');
   const words = cleanText.trim() ? cleanText.trim().split(/\s+/).length : 0;
   const chars = cleanText.length;
-  return { words, chars };
+  const lines = fullText.trim() ? fullText.trim().split(/\r\n|\r|\n/).length : 0;
+  return { words, chars, lines };
 }
+
 

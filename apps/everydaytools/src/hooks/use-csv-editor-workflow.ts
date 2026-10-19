@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { trackToolUsed } from '@/lib/analytics';
-import { consumeHandoffFile } from '@/lib/file-handoff';
+import { consumeHandoffFile, consumeHandoffText } from '@/lib/file-handoff';
 import {
   parseCsvString,
   parseExcelArrayBuffer,
@@ -53,10 +53,8 @@ export function useCsvEditorWorkflow(isFr: boolean) {
     table.setDocumentName(cleanBaseName || (isFr ? 'tableau' : 'table'));
 
     if (isExcel) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
+      const handleBuffer = (buffer: ArrayBuffer) => {
         try {
-          const buffer = e.target?.result as ArrayBuffer;
           const { headers: extractedHeaders, rows: extractedRows } = parseExcelArrayBuffer(buffer, isFr);
           table.setHeaders(extractedHeaders);
           table.setRows(extractedRows);
@@ -71,18 +69,27 @@ export function useCsvEditorWorkflow(isFr: boolean) {
           );
         }
       };
-      reader.readAsArrayBuffer(file);
+
+      if (typeof file.arrayBuffer === 'function') {
+        file.arrayBuffer().then(handleBuffer).catch(() => {
+          const reader = new FileReader();
+          reader.onload = (e) => handleBuffer(e.target?.result as ArrayBuffer);
+          reader.readAsArrayBuffer(file);
+        });
+      } else {
+        const reader = new FileReader();
+        reader.onload = (e) => handleBuffer(e.target?.result as ArrayBuffer);
+        reader.readAsArrayBuffer(file);
+      }
     } else {
-      const reader = new FileReader();
-      reader.onload = (e) => {
+      const handleText = (text: string) => {
         try {
-          const text = e.target?.result as string;
           const { headers: extractedHeaders, rows: extractedRows } = parseCsvString(text);
           table.setHeaders(extractedHeaders);
           table.setRows(extractedRows);
           table.setIsReady(true);
           table.setError(null);
-          trackToolUsed('csv-editor', 'excel');
+          trackToolUsed('csv-editor', 'csv');
         } catch (err) {
           table.setError(
             err instanceof Error
@@ -91,7 +98,18 @@ export function useCsvEditorWorkflow(isFr: boolean) {
           );
         }
       };
-      reader.readAsText(file);
+
+      if (typeof file.text === 'function') {
+        file.text().then(handleText).catch(() => {
+          const reader = new FileReader();
+          reader.onload = (e) => handleText(e.target?.result as string);
+          reader.readAsText(file);
+        });
+      } else {
+        const reader = new FileReader();
+        reader.onload = (e) => handleText(e.target?.result as string);
+        reader.readAsText(file);
+      }
     }
   }, [isFr, table]);
 
@@ -118,12 +136,35 @@ export function useCsvEditorWorkflow(isFr: boolean) {
     [processUploadedFile]
   );
 
+  const hasConsumedHandoffRef = useRef(false);
   useEffect(() => {
+    if (hasConsumedHandoffRef.current) return;
+    hasConsumedHandoffRef.current = true;
+
     const staged = consumeHandoffFile();
     if (staged) {
       processUploadedFile(staged);
+      return;
     }
-  }, [processUploadedFile]);
+
+    const stagedText = consumeHandoffText();
+    if (stagedText && stagedText.trim()) {
+      try {
+        const { headers: extractedHeaders, rows: extractedRows } = parseCsvString(stagedText);
+        table.setHeaders(extractedHeaders);
+        table.setRows(extractedRows);
+        table.setIsReady(true);
+        table.setError(null);
+        trackToolUsed('csv-editor', 'pasted');
+      } catch (err) {
+        table.setError(
+          err instanceof Error
+            ? err.message
+            : (isFr ? 'Le texte tabulaire ne contient aucune donnée valide.' : 'Tabular text contains no valid data.')
+        );
+      }
+    }
+  }, [processUploadedFile, isFr, table]);
 
   const handleReset = useCallback(() => {
     table.resetTable();

@@ -25,7 +25,7 @@ export const SpeedTestDiagnosticCockpit: React.FC<SpeedTestDiagnosticCockpitProp
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-8 border-b border-border/60">
         <div className="flex flex-col sm:flex-row sm:items-center gap-6">
           <div className="w-28 h-28 sm:w-36 sm:h-36 shrink-0 flex items-center justify-center">
-            <NetworkStatusIllustration className="w-full h-full object-contain" primaryColor="#FF6B35" />
+            <NetworkStatusIllustration className="w-full h-full object-contain" primaryColor="var(--accent, #f97316)" />
           </div>
           <div className="space-y-1.5">
             <h3 className="text-base sm:text-lg font-semibold text-foreground tracking-tight">

@@ -57,11 +57,7 @@ export const ConversionStaging: React.FC<ConversionStagingProps> = ({
               <img
                 src={sourceFormat.icon}
                 alt={sourceFormat.name}
-                className={`relative w-24 h-24 sm:w-28 sm:h-28 object-contain drop-shadow-md group-hover:-translate-y-1 group-hover:scale-105 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] ${
-                  sourceFormat.icon.includes('/file.svg') || sourceFormat.icon.includes('/image.svg')
-                    ? 'dark:brightness-0 dark:invert'
-                    : ''
-                }`}
+                className="relative w-24 h-24 sm:w-28 sm:h-28 object-contain drop-shadow-md group-hover:-translate-y-1 group-hover:scale-105 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]"
               />
             </div>
 
@@ -111,11 +107,7 @@ export const ConversionStaging: React.FC<ConversionStagingProps> = ({
               <img
                 src={targetFormat.icon}
                 alt={targetFormat.name}
-                className={`relative w-24 h-24 sm:w-28 sm:h-28 object-contain drop-shadow-md group-hover:-translate-y-1 group-hover:scale-105 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] ${
-                  targetFormat.icon.includes('/file.svg') || targetFormat.icon.includes('/image.svg')
-                    ? 'dark:brightness-0 dark:invert'
-                    : ''
-                }`}
+                className="relative w-24 h-24 sm:w-28 sm:h-28 object-contain drop-shadow-md group-hover:-translate-y-1 group-hover:scale-105 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]"
               />
             </div>
 

@@ -36,7 +36,7 @@ export function QrShapeConfig({
               key={s.id}
               type="button"
               onClick={() => setDotStyle(s.id as DotStyle)}
-              className={`py-1.5 rounded-lg text-xs font-mono transition-all cursor-pointer ${
+              className={`py-1.5 rounded-lg text-xs font-mono transition-colors duration-150 cursor-pointer ${
                 dotStyle === s.id
                   ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white font-semibold shadow-xs'
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
@@ -66,7 +66,7 @@ export function QrShapeConfig({
               key={s.id}
               type="button"
               onClick={() => setEyeStyle(s.id as EyeStyle)}
-              className={`py-1.5 rounded-lg text-xs font-mono transition-all cursor-pointer ${
+              className={`py-1.5 rounded-lg text-xs font-mono transition-colors duration-150 cursor-pointer ${
                 eyeStyle === s.id
                   ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white font-semibold shadow-xs'
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'

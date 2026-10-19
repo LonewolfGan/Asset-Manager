@@ -10,6 +10,7 @@ interface DiffEditorViewProps {
   onFileUpload: (file: File, target: 'original' | 'modified') => void;
   onSwap: () => void;
   onCompare: () => void;
+  onLoadSample?: (key: 'text' | 'code' | 'json') => void;
   hasContent: boolean;
   editorHeight: number;
   wordWrap: boolean;
@@ -28,6 +29,7 @@ export function DiffEditorView({
   onFileUpload,
   onSwap,
   onCompare,
+  onLoadSample,
   hasContent,
   editorHeight,
   wordWrap,
@@ -38,7 +40,7 @@ export function DiffEditorView({
   isFr,
 }: DiffEditorViewProps) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-zinc-200 dark:divide-white/10">
+    <div className="relative grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-zinc-200 dark:divide-white/10">
       {/* Panneau Texte Original */}
       <div
         onDragOver={(e) => {
@@ -53,7 +55,7 @@ export function DiffEditorView({
           if (droppedFile) onFileUpload(droppedFile, 'original');
         }}
         className={`flex flex-col relative transition-colors ${
-          isDragOverOriginal ? 'bg-[#FF6B35]/5' : ''
+          isDragOverOriginal ? 'bg-[var(--accent)]/5' : ''
         }`}
       >
         <div className="h-10 px-4 border-b border-zinc-200 dark:border-white/10 bg-zinc-50/50 dark:bg-zinc-900/30 flex items-center justify-between shrink-0">
@@ -76,7 +78,11 @@ export function DiffEditorView({
               type="file"
               accept=".txt,.md,.js,.ts,.json,.css,.html,.py,.csv"
               className="hidden"
-              onChange={(e) => e.target.files?.[0] && onFileUpload(e.target.files[0], 'original')}
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                if (f) onFileUpload(f, 'original');
+                e.target.value = '';
+              }}
             />
           </label>
         </div>
@@ -112,12 +118,12 @@ export function DiffEditorView({
           if (droppedFile) onFileUpload(droppedFile, 'modified');
         }}
         className={`flex flex-col relative transition-colors ${
-          isDragOverModified ? 'bg-[#FF6B35]/5' : ''
+          isDragOverModified ? 'bg-[var(--accent)]/5' : ''
         }`}
       >
         <div className="h-10 px-4 border-b border-zinc-200 dark:border-white/10 bg-zinc-50/50 dark:bg-zinc-900/30 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#FF6B35] inline-block" />
+            <span className="w-2 h-2 rounded-full bg-[var(--accent)] inline-block" />
             <span className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
               {isFr ? 'Texte Modifié' : 'Modified Text'}
             </span>
@@ -148,7 +154,11 @@ export function DiffEditorView({
                 type="file"
                 accept=".txt,.md,.js,.ts,.json,.css,.html,.py,.csv"
                 className="hidden"
-                onChange={(e) => e.target.files?.[0] && onFileUpload(e.target.files[0], 'modified')}
+                onChange={(e) => {
+                  const f = e.target.files?.[0];
+                  if (f) onFileUpload(f, 'modified');
+                  e.target.value = '';
+                }}
               />
             </label>
 
@@ -156,7 +166,7 @@ export function DiffEditorView({
               <button
                 type="button"
                 onClick={onCompare}
-                className="px-2.5 py-1 text-xs font-medium rounded-md bg-[#FF6B35] text-white hover:bg-[#e85a26] transition-colors flex items-center gap-1 cursor-pointer"
+                className="px-2.5 py-1 text-xs font-medium rounded-md bg-[var(--accent)] text-white hover:bg-[var(--accent-hover)] transition-colors flex items-center gap-1 cursor-pointer"
               >
                 <span>{isFr ? 'Comparer' : 'Compare'}</span>
                 <span>➔</span>
@@ -179,6 +189,39 @@ export function DiffEditorView({
           }`}
         />
       </div>
+
+      {!hasContent && onLoadSample && (
+        <div className="absolute inset-x-0 bottom-8 flex flex-col items-center justify-center pointer-events-none z-20">
+          <div className="bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border border-zinc-200 dark:border-white/10 rounded-2xl p-4 shadow-lg flex flex-col items-center pointer-events-auto max-w-md mx-4">
+            <span className="text-xs text-zinc-500 dark:text-zinc-400 mb-2.5 font-medium text-center">
+              {isFr ? 'Ou commencez avec un exemple complet :' : 'Or start with a ready-made sample:'}
+            </span>
+            <div className="flex items-center gap-2 flex-wrap justify-center">
+              <button
+                type="button"
+                onClick={() => onLoadSample('text')}
+                className="px-3 py-1.5 text-xs font-medium rounded-lg border border-zinc-200 dark:border-white/10 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-colors cursor-pointer"
+              >
+                {isFr ? 'Texte narratif' : 'Narrative Text'}
+              </button>
+              <button
+                type="button"
+                onClick={() => onLoadSample('code')}
+                className="px-3 py-1.5 text-xs font-medium rounded-lg border border-zinc-200 dark:border-white/10 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-colors cursor-pointer"
+              >
+                {isFr ? 'Code TypeScript' : 'TypeScript Code'}
+              </button>
+              <button
+                type="button"
+                onClick={() => onLoadSample('json')}
+                className="px-3 py-1.5 text-xs font-medium rounded-lg border border-zinc-200 dark:border-white/10 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-colors cursor-pointer"
+              >
+                {isFr ? 'Fichier JSON' : 'JSON File'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

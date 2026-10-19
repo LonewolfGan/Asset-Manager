@@ -57,8 +57,9 @@ export function AiScrubberCommandBar({ workflow, isFr }: AiScrubberCommandBarPro
           >
             <button
               type="button"
+              aria-pressed={optInvisibles}
               onClick={() => setOptInvisibles(!optInvisibles)}
-              className={`flex items-center gap-1.5 h-8 px-2.5 text-xs font-medium rounded-lg border transition-colors cursor-pointer ${
+              className={`flex items-center gap-1.5 h-8 px-2.5 text-xs font-medium rounded-lg border transition-colors duration-150 cursor-pointer ${
                 optInvisibles
                   ? 'bg-zinc-200/80 dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700 text-zinc-950 dark:text-zinc-100 font-semibold shadow-xs'
                   : 'border-zinc-200/80 dark:border-white/10 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800'
@@ -66,7 +67,7 @@ export function AiScrubberCommandBar({ workflow, isFr }: AiScrubberCommandBarPro
             >
               <EyeOff
                 className={`w-3.5 h-3.5 shrink-0 ${
-                  optInvisibles ? 'text-[#FF6B35]' : 'text-zinc-400 dark:text-zinc-500'
+                  optInvisibles ? 'text-[var(--accent,#f97316)]' : 'text-zinc-400 dark:text-zinc-500'
                 }`}
               />
               <span>{isFr ? 'Filigranes invisibles' : 'Invisible watermarks'}</span>
@@ -83,8 +84,9 @@ export function AiScrubberCommandBar({ workflow, isFr }: AiScrubberCommandBarPro
           >
             <button
               type="button"
+              aria-pressed={optEmDashes}
               onClick={() => setOptEmDashes(!optEmDashes)}
-              className={`flex items-center gap-1.5 h-8 px-2.5 text-xs font-medium rounded-lg border transition-colors cursor-pointer ${
+              className={`flex items-center gap-1.5 h-8 px-2.5 text-xs font-medium rounded-lg border transition-colors duration-150 cursor-pointer ${
                 optEmDashes
                   ? 'bg-zinc-200/80 dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700 text-zinc-950 dark:text-zinc-100 font-semibold shadow-xs'
                   : 'border-zinc-200/80 dark:border-white/10 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800'
@@ -92,7 +94,7 @@ export function AiScrubberCommandBar({ workflow, isFr }: AiScrubberCommandBarPro
             >
               <Minus
                 className={`w-3.5 h-3.5 shrink-0 ${
-                  optEmDashes ? 'text-[#FF6B35]' : 'text-zinc-400 dark:text-zinc-500'
+                  optEmDashes ? 'text-[var(--accent,#f97316)]' : 'text-zinc-400 dark:text-zinc-500'
                 }`}
               />
               <span>{isFr ? 'Tirets IA (—)' : 'AI Dashes (—)'}</span>
@@ -109,8 +111,9 @@ export function AiScrubberCommandBar({ workflow, isFr }: AiScrubberCommandBarPro
           >
             <button
               type="button"
+              aria-pressed={optStylistic}
               onClick={() => setOptStylistic(!optStylistic)}
-              className={`flex items-center gap-1.5 h-8 px-2.5 text-xs font-medium rounded-lg border transition-colors cursor-pointer ${
+              className={`flex items-center gap-1.5 h-8 px-2.5 text-xs font-medium rounded-lg border transition-colors duration-150 cursor-pointer ${
                 optStylistic
                   ? 'bg-zinc-200/80 dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700 text-zinc-950 dark:text-zinc-100 font-semibold shadow-xs'
                   : 'border-zinc-200/80 dark:border-white/10 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800'
@@ -118,7 +121,7 @@ export function AiScrubberCommandBar({ workflow, isFr }: AiScrubberCommandBarPro
             >
               <Bot
                 className={`w-3.5 h-3.5 shrink-0 ${
-                  optStylistic ? 'text-[#FF6B35]' : 'text-zinc-400 dark:text-zinc-500'
+                  optStylistic ? 'text-[var(--accent,#f97316)]' : 'text-zinc-400 dark:text-zinc-500'
                 }`}
               />
               <span>{isFr ? 'Clichés IA' : 'AI Clichés'}</span>
@@ -135,8 +138,9 @@ export function AiScrubberCommandBar({ workflow, isFr }: AiScrubberCommandBarPro
           >
             <button
               type="button"
+              aria-pressed={optSymbols}
               onClick={() => setOptSymbols(!optSymbols)}
-              className={`flex items-center gap-1.5 h-8 px-2.5 text-xs font-medium rounded-lg border transition-colors cursor-pointer ${
+              className={`flex items-center gap-1.5 h-8 px-2.5 text-xs font-medium rounded-lg border transition-colors duration-150 cursor-pointer ${
                 optSymbols
                   ? 'bg-zinc-200/80 dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700 text-zinc-950 dark:text-zinc-100 font-semibold shadow-xs'
                   : 'border-zinc-200/80 dark:border-white/10 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800'
@@ -144,7 +148,7 @@ export function AiScrubberCommandBar({ workflow, isFr }: AiScrubberCommandBarPro
             >
               <Quote
                 className={`w-3.5 h-3.5 shrink-0 ${
-                  optSymbols ? 'text-[#FF6B35]' : 'text-zinc-400 dark:text-zinc-500'
+                  optSymbols ? 'text-[var(--accent,#f97316)]' : 'text-zinc-400 dark:text-zinc-500'
                 }`}
               />
               <span>{isFr ? 'Symboles & Puces' : 'Symbols & Quotes'}</span>
@@ -161,8 +165,9 @@ export function AiScrubberCommandBar({ workflow, isFr }: AiScrubberCommandBarPro
           >
             <button
               type="button"
+              aria-pressed={optWhitespace}
               onClick={() => setOptWhitespace(!optWhitespace)}
-              className={`flex items-center gap-1.5 h-8 px-2.5 text-xs font-medium rounded-lg border transition-colors cursor-pointer ${
+              className={`flex items-center gap-1.5 h-8 px-2.5 text-xs font-medium rounded-lg border transition-colors duration-150 cursor-pointer ${
                 optWhitespace
                   ? 'bg-zinc-200/80 dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700 text-zinc-950 dark:text-zinc-100 font-semibold shadow-xs'
                   : 'border-zinc-200/80 dark:border-white/10 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800'
@@ -170,7 +175,7 @@ export function AiScrubberCommandBar({ workflow, isFr }: AiScrubberCommandBarPro
             >
               <Space
                 className={`w-3.5 h-3.5 shrink-0 ${
-                  optWhitespace ? 'text-[#FF6B35]' : 'text-zinc-400 dark:text-zinc-500'
+                  optWhitespace ? 'text-[var(--accent,#f97316)]' : 'text-zinc-400 dark:text-zinc-500'
                 }`}
               />
               <span>{isFr ? 'Espaces' : 'Whitespace'}</span>
@@ -200,7 +205,7 @@ export function AiScrubberCommandBar({ workflow, isFr }: AiScrubberCommandBarPro
           {hasAnomalies && (
             <>
               <span>•</span>
-              <span className="text-[#FF6B35] font-medium">
+              <span className="text-[var(--accent,#f97316)] font-medium">
                 {analysis.invisiblesCount > 0 &&
                   `${analysis.invisiblesCount} ${isFr ? 'inv.' : 'inv.'} `}
                 {analysis.emDashesCount > 0 &&
@@ -220,7 +225,7 @@ export function AiScrubberCommandBar({ workflow, isFr }: AiScrubberCommandBarPro
             <button
               type="button"
               onClick={handleUndo}
-              className="flex items-center gap-1 h-8 px-2.5 rounded-lg text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+              className="flex items-center gap-1 h-8 px-2.5 rounded-lg text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors duration-150 cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">{isFr ? 'Annuler' : 'Undo'}</span>
@@ -234,7 +239,7 @@ export function AiScrubberCommandBar({ workflow, isFr }: AiScrubberCommandBarPro
           <button
             type="button"
             onClick={handleLoadSample}
-            className="flex items-center gap-1 h-8 px-2.5 rounded-lg text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+            className="flex items-center gap-1 h-8 px-2.5 rounded-lg text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors duration-150 cursor-pointer"
           >
             <FileCode className="w-3.5 h-3.5" />
             <span>{isFr ? 'Exemple' : 'Sample'}</span>
@@ -246,7 +251,7 @@ export function AiScrubberCommandBar({ workflow, isFr }: AiScrubberCommandBarPro
             <button
               type="button"
               onClick={handleClear}
-              className="flex items-center gap-1 h-8 px-2.5 rounded-lg text-xs font-medium text-zinc-500 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors cursor-pointer"
+              className="flex items-center gap-1 h-8 px-2.5 rounded-lg text-xs font-medium text-zinc-500 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors duration-150 cursor-pointer"
             >
               <Trash2 className="w-3.5 h-3.5" />
               <span>{isFr ? 'Vider' : 'Clear'}</span>
@@ -259,7 +264,7 @@ export function AiScrubberCommandBar({ workflow, isFr }: AiScrubberCommandBarPro
           size="sm"
           onClick={handleScrub}
           disabled={!hasContent || !hasActiveOptions}
-          className="h-8 px-4 text-xs font-medium bg-[#FF6B35] text-white hover:bg-[#FF6B35]/90 active:scale-[0.98] transition-all cursor-pointer shadow-xs border-transparent"
+          className="h-8 px-4 text-xs font-medium bg-[var(--accent,#f97316)] text-white hover:bg-[var(--accent,#f97316)]/90 active:scale-[0.98] transition-[background-color,transform,box-shadow] duration-150 cursor-pointer shadow-xs border-transparent"
         >
           <ShieldCheck className="w-3.5 h-3.5 mr-1.5" />
           <span>{isFr ? 'Nettoyer le texte' : 'Scrub Text'}</span>

@@ -159,7 +159,7 @@ export const JwtCommandBar: React.FC<JwtCommandBarProps> = ({
             <button
               type="button"
               disabled={!decoded.valid}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-[#FF6B35] text-white hover:bg-[#e85a26] transition-all active:scale-[0.98] shadow-xs cursor-pointer outline-none disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:bg-[#FF6B35]"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-[var(--accent)] text-white hover:opacity-90 transition-colors active:scale-[0.98] shadow-xs cursor-pointer outline-none disabled:opacity-35 disabled:cursor-not-allowed"
             >
               <Download className="w-3.5 h-3.5" />
               <span>{isFr ? 'Exporter' : 'Export'}</span>

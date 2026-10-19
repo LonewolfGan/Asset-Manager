@@ -1,218 +1,101 @@
-import { useState, useCallback, useEffect } from 'react';
+import React from 'react';
 import { AnimatePresence } from 'framer-motion';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import { ToolWorkspace } from '@/components/ToolContent';
-import { useLocale } from '@/hooks/use-locale';
-import { trackToolUsed, trackToolError } from '@/lib/analytics';
-import { apiUrl } from '@/lib/apiBase';
-import { toast } from '@/hooks/use-toast';
-import { consumeHandoffFile } from '@/lib/file-handoff';
+import { Sparkles } from 'lucide-react';
 import {
   ConversionDropzone,
   ConversionStaging,
   ConversionConduit,
   ConversionResult,
   DocumentNextActionModal,
-  type ConversionFormat,
+  ReciprocalTitle,
 } from '@/components/conversion';
-
-const SOURCE_FORMAT: ConversionFormat = {
-  name: 'Markdown',
-  extension: 'md',
-  icon: '/icons/markdown.svg',
-  color: '#0284C7',
-  subLabel: 'Syntaxe Markdown',
-};
-
-const TARGET_FORMAT: ConversionFormat = {
-  name: 'Word',
-  extension: 'docx',
-  icon: '/icons/word.svg',
-  color: '#185ABD',
-  subLabel: 'Microsoft Word',
-};
+import {
+  MarkdownToDocxModeSelector,
+  MarkdownToDocxPastePane,
+} from '@/components/markdown-to-docx';
+import { useMarkdownToDocxWorkflow } from '@/hooks/use-markdown-to-docx-workflow';
 
 export default function MarkdownToDocx() {
-  const { t, isFr } = useLocale();
-  const tc = t.markdownToDocx;
+  const {
+    t,
+    tc,
+    isFr,
+    sourceFormat,
+    targetFormat,
+    mode,
+    setMode,
+    file,
+    markdownInput,
+    setMarkdownInput,
+    setIsPastedStaged,
+    result,
+    isProcessing,
+    isDragging,
+    isNextActionOpen,
+    setIsNextActionOpen,
+    isStaged,
+    stagedFile,
+    validateAndSetFile,
+    handleDragOver,
+    handleDragLeave,
+    handleDrop,
+    handleReset,
+    handleConvert,
+    handleDownload,
+  } = useMarkdownToDocxWorkflow();
 
-  const [files, setFiles] = useState<File[]>([]);
-  const [result, setResult] = useState<{
-    blob: Blob;
-    filename: string;
-    sizeBefore?: number;
-    sizeAfter: number;
-  } | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [isNextActionOpen, setIsNextActionOpen] = useState(false);
-
-  const file = files[0];
-
-  const validateAndSetFile = useCallback(
-    (selectedFile: File) => {
-      const isMd =
-        selectedFile.name.toLowerCase().endsWith('.md') ||
-        selectedFile.name.toLowerCase().endsWith('.markdown') ||
-        selectedFile.name.toLowerCase().endsWith('.txt') ||
-        selectedFile.type === 'text/markdown' ||
-        selectedFile.type === 'text/plain' ||
-        selectedFile.type === '';
-
-      if (!isMd) {
-        toast({
-          variant: 'destructive',
-          title: isFr ? 'Format non supporté' : 'Unsupported format',
-          description: isFr ? 'Veuillez sélectionner un fichier Markdown (.md) valide.' : 'Please select a valid Markdown (.md) file.',
-        });
-        return;
-      }
-      if (selectedFile.size > 10 * 1024 * 1024) {
-        toast({
-          variant: 'destructive',
-          title: isFr ? 'Fichier trop volumineux' : 'File too large',
-          description: isFr ? 'Le fichier dépasse la taille maximale autorisée de 10 Mo.' : 'The file exceeds the maximum allowed size of 10 MB.',
-        });
-        return;
-      }
-      setFiles([selectedFile]);
-      setResult(null);
-    },
-    [isFr]
-  );
-
-  // Auto-consume handoff file from previous workflow step
-  useEffect(() => {
-    const staged = consumeHandoffFile();
-    if (staged) {
-      validateAndSetFile(staged);
-    }
-  }, [validateAndSetFile]);
-
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(true);
-  }, []);
-
-  const handleDragLeave = useCallback(() => {
-    setIsDragging(false);
-  }, []);
-
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setIsDragging(false);
-      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-        validateAndSetFile(e.dataTransfer.files[0]);
-      }
-    },
-    [validateAndSetFile]
-  );
-
-  const handleReset = () => {
-    setFiles([]);
-    setResult(null);
-    setIsProcessing(false);
-    setIsNextActionOpen(false);
-  };
-
-  const handleConvert = async () => {
-    if (!file || isProcessing) return;
-    setIsProcessing(true);
-
-    try {
-      trackToolUsed('markdown-to-docx', 'documents');
-      const fd = new FormData();
-      fd.append('file', file);
-
-      const [res] = await Promise.all([
-        fetch(apiUrl('/api/convert/markdown-to-docx'), {
-          method: 'POST',
-          body: fd,
-        }),
-        new Promise((resolve) => setTimeout(resolve, 800)),
-      ]);
-
-      if (!res.ok) {
-        const errJson = (await res.json().catch(() => ({}))) as {
-          error?: string;
-          message?: string;
-        };
-        throw new Error(
-          errJson.message ??
-            errJson.error ??
-            tc.error ??
-            (isFr ? 'Échec de la conversion en document Word. Veuillez réessayer.' : 'Failed to convert to Word document. Please try again.')
-        );
-      }
-
-      const blob = await res.blob();
-      const filename = file.name.replace(/\.(md|markdown|txt)$/i, '.docx');
-
-      setResult({
-        blob,
-        filename,
-        sizeAfter: blob.size,
-        sizeBefore: file.size,
-      });
-    } catch (err) {
-      console.error('Markdown to Word conversion error:', err);
-      trackToolError('markdown-to-docx', 'conversion-error');
-      const message =
-        err instanceof Error
-          ? err.message
-          : tc.error ?? (isFr ? 'Échec de la conversion en document Word. Veuillez réessayer.' : 'Failed to convert to Word document. Please try again.');
-      toast({
-        variant: 'destructive',
-        title: isFr ? 'Erreur de conversion' : 'Conversion error',
-        description: message,
-      });
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  const handleDownload = () => {
-    if (!result) return;
-    const url = URL.createObjectURL(result.blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = result.filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-
-    setTimeout(() => {
-      setIsNextActionOpen(true);
-    }, 450);
-  };
-
-  const pageTitle = t.tools['markdown-to-docx']?.title ?? 'Markdown to Word';
+  const pageTitle =
+    t.tools?.['markdown-to-docx']?.title ??
+    (isFr ? 'Markdown en Word' : 'Markdown to Word');
   const pageDesc =
-    t.tools['markdown-to-docx']?.description ??
-    'Convert Markdown files to Microsoft Word (.docx) format.';
+    t.tools?.['markdown-to-docx']?.description ??
+    (isFr
+      ? 'Convertissez du Markdown en un vrai document Word.'
+      : 'Convert Markdown files to Microsoft Word (.docx) format.');
 
   return (
     <ToolPageLayout
       breadcrumb={[t.nav.breadcrumb.home, t.nav.breadcrumb.documents, pageTitle]}
-      title={pageTitle}
+      title={
+        <ReciprocalTitle
+          currentSlug="markdown-to-docx"
+          isFr={isFr}
+          getCurrentFile={() => file}
+          getCurrentText={() => markdownInput}
+          fallbackTitle={pageTitle}
+        />
+      }
       description={pageDesc}
       seoSlug="markdown-to-docx"
     >
       <ToolWorkspace noGrid>
         <div className="w-full max-w-5xl mx-auto">
+          {/* Mode Switcher Tabs (Upload vs Paste) */}
+          {!result && !isProcessing && !isStaged && (
+            <MarkdownToDocxModeSelector
+              mode={mode}
+              onModeChange={setMode}
+              uploadLabel={isFr ? 'Importer un fichier (.md)' : 'Upload file (.md)'}
+              pasteLabel={isFr ? 'Coller du Markdown' : 'Paste Markdown'}
+            />
+          )}
+
           {/* Unified 4-Scene Conversion Flow */}
           <AnimatePresence mode="wait">
-            {/* ─── SCENE 1 : ARCHITECTURAL DOUBLE-BEZEL UPLOAD BOX ─── */}
-            {!file && !result && !isProcessing && (
+            {/* ─── SCENE 1A : ARCHITECTURAL DOUBLE-BEZEL UPLOAD BOX ─── */}
+            {mode === 'upload' && !file && !result && !isProcessing && (
               <ConversionDropzone
-                sourceFormat={SOURCE_FORMAT}
-                title={isFr ? "Glissez-déposez votre fichier Markdown" : "Drag and drop your Markdown file"}
-                description={isFr ? "ou cliquez pour parcourir vos dossiers et convertir en document Microsoft Word (.docx)." : "or click to browse your folders and convert to Microsoft Word (.docx)."}
-                buttonLabel={isFr ? "Sélectionner un fichier Markdown" : "Select a Markdown file"}
+                key="dropzone"
+                sourceFormat={sourceFormat}
+                title={isFr ? 'Glissez-déposez votre fichier Markdown' : 'Drag and drop your Markdown file'}
+                description={
+                  isFr
+                    ? 'ou cliquez pour parcourir vos dossiers et convertir en document Microsoft Word (.docx).'
+                    : 'or click to browse your folders and convert to Microsoft Word (.docx).'
+                }
+                buttonLabel={isFr ? 'Sélectionner un fichier Markdown' : 'Select a Markdown file'}
                 isDragging={isDragging}
                 onFileSelected={validateAndSetFile}
                 onDragOver={handleDragOver}
@@ -221,14 +104,26 @@ export default function MarkdownToDocx() {
               />
             )}
 
+            {/* ─── SCENE 1B : CODEWORKSPACE FOR PASTE MODE ─── */}
+            {mode === 'paste' && !isStaged && !result && !isProcessing && (
+              <MarkdownToDocxPastePane
+                key="paste"
+                markdownInput={markdownInput}
+                onMarkdownInputChange={setMarkdownInput}
+                onSubmit={() => setIsPastedStaged(true)}
+                isFr={isFr}
+              />
+            )}
+
             {/* ─── SCENE 2 : STANDARDIZED ARCHITECTURAL STAGING ─── */}
-            {file && !result && !isProcessing && (
+            {isStaged && stagedFile && !result && !isProcessing && (
               <ConversionStaging
-                sourceFormat={SOURCE_FORMAT}
-                targetFormat={TARGET_FORMAT}
-                sourceFile={file}
+                key="staging"
+                sourceFormat={sourceFormat}
+                targetFormat={targetFormat}
+                sourceFile={stagedFile}
                 convertBtnLabel={tc.convertBtn ?? (isFr ? 'Convertir en Word' : 'Convert to Word')}
-                changeFileBtnLabel={tc.convertAnother ?? (isFr ? 'Changer de fichier' : 'Change file')}
+                changeFileBtnLabel={tc.convertAnother ?? (isFr ? 'Changer de texte / fichier' : 'Change text / file')}
                 onConvert={handleConvert}
                 onReset={handleReset}
               />
@@ -237,28 +132,45 @@ export default function MarkdownToDocx() {
             {/* ─── SCENE 3 : UNIFIED KINETIC CONDUIT ─── */}
             {isProcessing && (
               <ConversionConduit
-                sourceFormat={SOURCE_FORMAT}
-                targetFormat={TARGET_FORMAT}
-                fileName={file?.name}
-                statusLabel={tc.converting ?? (isFr ? 'Génération du document Word DOCX en cours...' : 'Generating Word DOCX document...')}
+                key="conduit"
+                sourceFormat={sourceFormat}
+                targetFormat={targetFormat}
+                fileName={mode === 'upload' ? file?.name : 'saisie-markdown.md'}
+                statusLabel={
+                  tc.converting ??
+                  (isFr
+                    ? 'Génération du document Word DOCX en cours...'
+                    : 'Generating Word DOCX document...')
+                }
               />
             )}
 
             {/* ─── SCENE 4 : HEROIC UNBOXED RESULT ─── */}
             {result && !isProcessing && (
               <ConversionResult
-                targetFormat={TARGET_FORMAT}
+                key="result"
+                targetFormat={targetFormat}
                 resultFileName={result.filename}
                 resultFileSize={result.sizeAfter}
                 downloadBtnLabel={tc.downloadDocx ?? (isFr ? 'Télécharger le document Word' : 'Download Word document')}
                 resetBtnLabel={tc.convertAnother ?? (isFr ? 'Convertir un autre fichier' : 'Convert another file')}
                 onDownload={handleDownload}
                 onReset={handleReset}
+                extraActions={
+                  <button
+                    type="button"
+                    onClick={() => setIsNextActionOpen(true)}
+                    className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-medium text-base active:scale-[0.98] transition-[transform,background-color,border-color] duration-150 flex items-center gap-2.5 shadow-sm cursor-pointer"
+                  >
+                    <Sparkles size={16} strokeWidth={2.2} className="text-amber-500" />
+                    <span>{isFr ? 'Actions suivantes' : 'Next actions'}</span>
+                  </button>
+                }
               />
             )}
           </AnimatePresence>
 
-          {/* Continuum Modal */}
+          {/* Post-Conversion Document Continuum Modal */}
           <DocumentNextActionModal
             toolId="markdown-to-docx"
             isOpen={isNextActionOpen}

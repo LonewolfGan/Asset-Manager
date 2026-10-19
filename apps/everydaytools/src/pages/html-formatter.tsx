@@ -39,12 +39,14 @@ export default function HtmlFormatter() {
     output,
     highlightedOutput,
     metrics,
+    issues,
     hasContent,
     handleInputChange,
     handleUndo,
     handleMouseDownResize,
     handleDownload,
     handleClear,
+    handleLoadSample,
     handleFileUpload,
   } = useHtmlFormatterWorkflow();
 
@@ -104,8 +106,10 @@ export default function HtmlFormatter() {
           output={output}
           highlightedOutput={highlightedOutput}
           metrics={metrics}
+          issues={issues}
           onInputChange={handleInputChange}
           onFileUpload={handleFileUpload}
+          onLoadSample={handleLoadSample}
           onSetOutputView={setOutputView}
           onSetDeviceWidth={setDeviceWidth}
           onMouseDownResize={handleMouseDownResize}

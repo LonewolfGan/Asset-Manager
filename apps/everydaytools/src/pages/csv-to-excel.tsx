@@ -6,6 +6,7 @@ import {
   ConversionStaging,
   ConversionConduit,
   ConversionResult,
+  ReciprocalTitle,
   DocumentNextActionModal,
 } from '@/components/conversion';
 import {
@@ -64,7 +65,15 @@ export default function CsvToExcel() {
   return (
     <ToolPageLayout
       breadcrumb={[t.nav.breadcrumb.home, t.nav.breadcrumb.documents, pageTitle]}
-      title={pageTitle}
+      title={
+        <ReciprocalTitle
+          currentSlug="csv-to-excel"
+          isFr={isFr}
+          getCurrentFile={() => file}
+          getCurrentText={() => csvText}
+          fallbackTitle={pageTitle}
+        />
+      }
       description={pageDesc}
       seoSlug="csv-to-excel"
     >
@@ -192,17 +201,16 @@ export default function CsvToExcel() {
               />
             )}
           </AnimatePresence>
-
-          {/* Continuum Modal */}
-          <DocumentNextActionModal
-            toolId="csv-to-excel"
-            isOpen={isNextActionOpen}
-            onClose={() => setIsNextActionOpen(false)}
-            resultBlob={result?.blob}
-            resultFilename={result?.filename}
-            formatType="xlsx"
-          />
         </div>
+
+        <DocumentNextActionModal
+          toolId="csv-to-excel"
+          isOpen={isNextActionOpen}
+          onClose={() => setIsNextActionOpen(false)}
+          resultBlob={result?.blob}
+          resultFilename={result?.filename}
+          formatType="xlsx"
+        />
       </ToolWorkspace>
     </ToolPageLayout>
   );

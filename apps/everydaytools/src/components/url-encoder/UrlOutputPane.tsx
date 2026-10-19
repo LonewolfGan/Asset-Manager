@@ -42,7 +42,7 @@ export const UrlOutputPane: React.FC<UrlOutputPaneProps> = ({
               : 'Decoded Result'}
           </span>
           {mode === 'encode' && (
-            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#FF6B35]/10 text-[#FF6B35] font-semibold border border-[#FF6B35]/20">
+            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[var(--accent)]/10 text-[var(--accent)] font-semibold border border-[var(--accent)]/20">
               {encodeMode}
             </span>
           )}

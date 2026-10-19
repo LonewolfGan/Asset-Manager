@@ -46,6 +46,25 @@ describe('JSON Repair and Advanced Parsing Logic', () => {
       expect(JSON.parse(repaired)).toEqual({ items: [1, 2, 3], ok: true });
     });
 
+    it('preserves URLs containing // and /* inside string values', () => {
+      const input = `{\n  "url": "https://api.example.com/v1?page=1//2",\n  "note": "contains /* not comment */ text",\n  // real comment\n  "ok": true,\n}`;
+      const { repaired, modified } = autoRepairJsonString(input);
+      expect(modified).toBe(true);
+      const parsed = JSON.parse(repaired);
+      expect(parsed.url).toBe('https://api.example.com/v1?page=1//2');
+      expect(parsed.note).toBe('contains /* not comment */ text');
+      expect(parsed.ok).toBe(true);
+    });
+
+    it('preserves words like True or False inside strings while converting Python literals outside', () => {
+      const input = `{\n  "title": "True Story of False Hope",\n  "verified": True,\n  "archived": False,\n}`;
+      const { repaired } = autoRepairJsonString(input);
+      const parsed = JSON.parse(repaired);
+      expect(parsed.title).toBe('True Story of False Hope');
+      expect(parsed.verified).toBe(true);
+      expect(parsed.archived).toBe(false);
+    });
+
     it('returns modified=false when json is already clean', () => {
       const input = `{"clean": true}`;
       const { modified, repaired } = autoRepairJsonString(input);

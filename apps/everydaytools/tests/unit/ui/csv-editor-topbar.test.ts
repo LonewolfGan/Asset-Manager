@@ -4,6 +4,8 @@ import { createRoot, Root } from 'react-dom/client';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { CsvEditorTopBar } from '@/components/csv-editor/CsvEditorTopBar';
 
+(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
+
 describe('CsvEditorTopBar with DelimiterRadioGroup (TDD RED Phase)', () => {
   let container: HTMLDivElement;
   let root: Root;

@@ -59,7 +59,7 @@ export function Base64TopBar({
           <button
             type="button"
             onClick={() => onModeChange('encode')}
-            className={`px-3 py-1.5 text-xs rounded-md font-medium transition-all cursor-pointer ${
+            className={`px-3 py-1.5 text-xs rounded-md font-medium transition-colors cursor-pointer ${
               mode === 'encode'
                 ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-zinc-100 font-semibold shadow-xs'
                 : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
@@ -70,7 +70,7 @@ export function Base64TopBar({
           <button
             type="button"
             onClick={() => onModeChange('decode')}
-            className={`px-3 py-1.5 text-xs rounded-md font-medium transition-all cursor-pointer ${
+            className={`px-3 py-1.5 text-xs rounded-md font-medium transition-colors cursor-pointer ${
               mode === 'decode'
                 ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-zinc-100 font-semibold shadow-xs'
                 : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
@@ -85,7 +85,7 @@ export function Base64TopBar({
           <button
             type="button"
             onClick={onSwap}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-[0.98] cursor-pointer"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg border border-zinc-200 dark:border-white/10 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors active:scale-[0.98] cursor-pointer"
           >
             <ArrowRightLeft className="w-3.5 h-3.5 text-zinc-500" />
             <span className="hidden sm:inline">{isFr ? 'Inverser' : 'Swap'}</span>
@@ -97,9 +97,9 @@ export function Base64TopBar({
           <PopoverTrigger asChild>
             <button
               type="button"
-              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-all cursor-pointer ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors cursor-pointer ${
                 urlSafe || stripPadding || dataUriPrefix || chunkSize > 0
-                  ? 'border-[#FF6B35] bg-[#FF6B35]/10 text-[#FF6B35] font-semibold'
+                  ? 'border-[var(--accent)] bg-[var(--accent)]/10 text-[var(--accent)] font-semibold'
                   : 'border-zinc-200 dark:border-white/10 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800'
               }`}
             >
@@ -119,7 +119,7 @@ export function Base64TopBar({
                 type="checkbox"
                 checked={urlSafe}
                 onChange={(e) => onUrlSafeChange(e.target.checked)}
-                className="mt-0.5 accent-[#FF6B35]"
+                className="mt-0.5 accent-[var(--accent)]"
               />
               <div className="flex flex-col text-left">
                 <span className="text-xs font-medium text-zinc-900 dark:text-zinc-100">
@@ -136,7 +136,7 @@ export function Base64TopBar({
                 type="checkbox"
                 checked={stripPadding}
                 onChange={(e) => onStripPaddingChange(e.target.checked)}
-                className="mt-0.5 accent-[#FF6B35]"
+                className="mt-0.5 accent-[var(--accent)]"
               />
               <div className="flex flex-col text-left">
                 <span className="text-xs font-medium text-zinc-900 dark:text-zinc-100">
@@ -153,7 +153,7 @@ export function Base64TopBar({
                 type="checkbox"
                 checked={dataUriPrefix}
                 onChange={(e) => onDataUriPrefixChange(e.target.checked)}
-                className="mt-0.5 accent-[#FF6B35]"
+                className="mt-0.5 accent-[var(--accent)]"
               />
               <div className="flex flex-col text-left">
                 <span className="text-xs font-medium text-zinc-900 dark:text-zinc-100">
@@ -181,7 +181,7 @@ export function Base64TopBar({
                     onClick={() => onChunkSizeChange(size as ChunkSize)}
                     className={`py-1 text-xs rounded-md border font-medium transition-colors cursor-pointer ${
                       chunkSize === size
-                        ? 'border-[#FF6B35] bg-[#FF6B35]/10 text-[#FF6B35] font-semibold'
+                        ? 'border-[var(--accent)] bg-[var(--accent)]/10 text-[var(--accent)] font-semibold'
                         : 'border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800'
                     }`}
                   >
@@ -236,7 +236,7 @@ export function Base64TopBar({
               <button
                 type="button"
                 onClick={onDownload}
-                className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-[#FF6B35] text-white hover:bg-[#e85a26] transition-all active:scale-[0.98] shadow-xs cursor-pointer"
+                className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-[var(--accent)] text-white hover:opacity-90 transition-colors active:scale-[0.98] shadow-xs cursor-pointer"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>

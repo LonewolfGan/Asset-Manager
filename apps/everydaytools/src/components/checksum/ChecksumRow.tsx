@@ -26,7 +26,7 @@ export const ChecksumRow: React.FC<ChecksumRowProps> = ({
 }) => {
   return (
     <div
-      className={`py-3 px-3 rounded-xl transition-all duration-200 flex flex-col md:flex-row md:items-center justify-between gap-3 ${
+      className={`py-3 px-3 rounded-xl transition-colors duration-150 flex flex-col md:flex-row md:items-center justify-between gap-3 ${
         isDimmed ? 'opacity-30 hover:opacity-75' : 'opacity-100'
       } ${
         isMatched
@@ -48,7 +48,7 @@ export const ChecksumRow: React.FC<ChecksumRowProps> = ({
             <span>{isFr ? 'Vérifié' : 'Verified'}</span>
           </span>
         ) : algo.isStandard ? (
-          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#FF6B35]/10 text-[#FF6B35] font-semibold">
+          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[var(--accent,#f97316)]/10 text-[var(--accent,#f97316)] font-semibold">
             {isFr ? 'Standard' : 'Standard'}
           </span>
         ) : null}

@@ -17,7 +17,7 @@ export const getSourceFormat = (_isFr = false): ConversionFormat => ({
   name: 'Excel',
   extension: 'xlsx',
   icon: '/icons/excel.svg',
-  color: '#107C41',
+  color: 'var(--accent, #107c41)',
   subLabel: 'Microsoft Excel',
 });
 
@@ -25,7 +25,7 @@ export const getTargetFormat = (isFr = false): ConversionFormat => ({
   name: 'CSV',
   extension: 'csv',
   icon: '/icons/csv.svg',
-  color: '#21A366',
+  color: 'var(--accent, #10b981)',
   subLabel: isFr ? 'Données délimitées' : 'Comma-Separated',
 });
 
@@ -42,8 +42,8 @@ export function validateExcelFile(selectedFile: File, isFr = false): FileValidat
     return {
       isValid: false,
       error: isFr
-        ? 'Veuillez sélectionner un classeur Excel (.xlsx ou .xls) valide.'
-        : 'Please select a valid Excel workbook (.xlsx or .xls).',
+        ? 'Veuillez sélectionner un classeur Excel ou OpenDocument (.xlsx, .xls ou .ods) valide.'
+        : 'Please select a valid Excel or OpenDocument workbook (.xlsx, .xls, or .ods).',
     };
   }
 
@@ -107,11 +107,12 @@ export async function convertExcelToCsv(options: {
   const wb = XLSX.read(buf, { type: 'buffer' });
   const targetSheet = selectedSheet || wb.SheetNames[0];
   const ws = wb.Sheets[targetSheet];
-  const csv = XLSX.utils.sheet_to_csv(ws, { FS: delimiter || ',' });
+  const csv = ws ? XLSX.utils.sheet_to_csv(ws, { FS: delimiter || ',' }) : '';
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
   const baseName = file.name.replace(/\.(xlsx?|xls|ods)$/i, '');
+  const sanitizedSheet = targetSheet.replace(/[\\/:*?"<>|\s]/g, '_');
   const filename =
-    wb.SheetNames.length > 1 ? `${baseName}_${targetSheet}.csv` : `${baseName}.csv`;
+    wb.SheetNames.length > 1 ? `${baseName}_${sanitizedSheet}.csv` : `${baseName}.csv`;
 
   return {
     blob,
@@ -130,5 +131,7 @@ export function triggerDownload(blob: Blob, filename: string): void {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+  }, 1000);
 }

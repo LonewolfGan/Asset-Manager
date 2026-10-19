@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { toast } from '@/hooks/use-toast';
@@ -9,7 +9,9 @@ import {
   validateHtmlInputFile,
   buildMarkdownFilename,
   convertHtmlToMarkdown,
+  triggerDownload,
 } from '@/lib/html-to-markdown-logic';
+import type { ConversionFormat } from '@/components/conversion/types';
 
 export interface HtmlToMarkdownResult {
   blob: Blob;
@@ -19,9 +21,75 @@ export interface HtmlToMarkdownResult {
   textOutput: string;
 }
 
-export function useHtmlToMarkdownWorkflow() {
-  const { t, isFr } = useLocale();
-  const tc = (t as any).htmlToMarkdown ?? {};
+export interface UseHtmlToMarkdownOptions {
+  isFr?: boolean;
+}
+
+export interface UseHtmlToMarkdownWorkflowReturn {
+  t: any;
+  tc: Record<string, any>;
+  isFr: boolean;
+  sourceFormat: ConversionFormat;
+  targetFormat: ConversionFormat;
+  mode: 'upload' | 'paste';
+  setMode: (mode: 'upload' | 'paste') => void;
+  files: File[];
+  file: File | undefined;
+  htmlInput: string;
+  setHtmlInput: (val: string) => void;
+  isPastedStaged: boolean;
+  setIsPastedStaged: (staged: boolean) => void;
+  result: HtmlToMarkdownResult | null;
+  isProcessing: boolean;
+  isDragging: boolean;
+  previewOpen: boolean;
+  setPreviewOpen: (open: boolean) => void;
+  isNextActionOpen: boolean;
+  setIsNextActionOpen: (open: boolean) => void;
+  isStaged: boolean;
+  stagedFile: File | null;
+  validateAndSetFile: (selectedFile: File) => Promise<void>;
+  handleDragOver: (e: React.DragEvent) => void;
+  handleDragLeave: () => void;
+  handleDrop: (e: React.DragEvent) => void;
+  handleReset: () => void;
+  handleConvert: () => Promise<void>;
+  handleDownload: () => void;
+}
+
+function useSafeLocale(options?: UseHtmlToMarkdownOptions) {
+  try {
+    const localeCtx = useLocale();
+    return {
+      t: localeCtx.t,
+      tc: ((localeCtx.t as any).htmlToMarkdown ?? {}) as Record<string, any>,
+      isFr: options?.isFr ?? localeCtx.isFr,
+    };
+  } catch {
+    const isFr = options?.isFr ?? false;
+    return {
+      t: {
+        nav: { breadcrumb: { home: isFr ? 'Accueil' : 'Home', documents: 'Documents' } },
+        tools: {
+          'html-to-markdown': {
+            title: isFr ? 'HTML en Markdown' : 'HTML to Markdown',
+            description: isFr
+              ? 'Convertissez vos pages HTML en Markdown.'
+              : 'Convert HTML code into clean Markdown documents.',
+          },
+        },
+        htmlToMarkdown: {},
+      },
+      tc: {} as Record<string, any>,
+      isFr,
+    };
+  }
+}
+
+export function useHtmlToMarkdownWorkflow(
+  options?: UseHtmlToMarkdownOptions
+): UseHtmlToMarkdownWorkflowReturn {
+  const { t, tc, isFr } = useSafeLocale(options);
 
   const sourceFormat = getSourceFormat(isFr);
   const targetFormat = getTargetFormat(isFr);
@@ -36,6 +104,7 @@ export function useHtmlToMarkdownWorkflow() {
   const [isDragging, setIsDragging] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [isNextActionOpen, setIsNextActionOpen] = useState(false);
+  const hasConsumedHandoffRef = useRef(false);
 
   const file = files[0];
 
@@ -56,7 +125,7 @@ export function useHtmlToMarkdownWorkflow() {
         setHtmlInput(text);
         setFiles([selectedFile]);
         setResult(null);
-      } catch (err) {
+      } catch {
         toast({
           variant: 'destructive',
           title: isFr ? 'Erreur de lecture' : 'Read error',
@@ -70,6 +139,8 @@ export function useHtmlToMarkdownWorkflow() {
   );
 
   useEffect(() => {
+    if (hasConsumedHandoffRef.current) return;
+    hasConsumedHandoffRef.current = true;
     const staged = consumeHandoffFile();
     if (staged) {
       validateAndSetFile(staged);
@@ -105,7 +176,26 @@ export function useHtmlToMarkdownWorkflow() {
     setResult(null);
     setIsProcessing(false);
     setPreviewOpen(false);
+    setIsNextActionOpen(false);
   }, []);
+
+  // Global Escape shortcut when resting
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        e.key === 'Escape' &&
+        !isProcessing &&
+        (file || result || isPastedStaged || htmlInput.trim())
+      ) {
+        if (previewOpen || isNextActionOpen) return;
+        const activeTag = document.activeElement?.tagName?.toLowerCase();
+        if (activeTag === 'input' || activeTag === 'textarea') return;
+        handleReset();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [file, handleReset, htmlInput, isNextActionOpen, isPastedStaged, isProcessing, previewOpen, result]);
 
   const handleConvert = useCallback(async () => {
     const rawHtml = htmlInput;
@@ -121,7 +211,9 @@ export function useHtmlToMarkdownWorkflow() {
         new Promise((resolve) => setTimeout(resolve, 600)),
       ]);
 
-      const filename = buildMarkdownFilename(mode === 'upload' && file ? file.name : undefined);
+      const filename = buildMarkdownFilename(
+        mode === 'upload' && file ? file.name : stagedFile?.name
+      );
       const blob = new Blob([mdOutput], { type: 'text/markdown;charset=utf-8' });
       const sizeBefore =
         mode === 'upload' && file ? file.size : new Blob([rawHtml]).size;
@@ -134,7 +226,6 @@ export function useHtmlToMarkdownWorkflow() {
         textOutput: mdOutput,
       });
     } catch (err) {
-      console.error('HTML to Markdown conversion error:', err);
       trackToolError('html-to-markdown', 'conversion-error');
       const message =
         err instanceof Error
@@ -154,14 +245,7 @@ export function useHtmlToMarkdownWorkflow() {
 
   const handleDownload = useCallback(() => {
     if (!result) return;
-    const url = URL.createObjectURL(result.blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = result.filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    triggerDownload(result.blob, result.filename);
     setTimeout(() => {
       setIsNextActionOpen(true);
     }, 450);

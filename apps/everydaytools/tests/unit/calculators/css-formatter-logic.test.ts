@@ -6,6 +6,8 @@ import {
   minifyCssAdvanced,
   calculateCssMetrics,
   generateCssSandboxHtml,
+  detectCssIssues,
+  CSS_SAMPLES,
 } from '@/lib/css-formatter-logic';
 
 describe('css-formatter-logic (TDD Phase RED)', () => {
@@ -114,6 +116,48 @@ describe('css-formatter-logic (TDD Phase RED)', () => {
       expect(html).toContain('<style id="user-injected-css">');
       expect(html).toContain('.btn { color: red; }');
       expect(html).toContain('Bouton Principal');
+    });
+
+    it('neutralizes style tag breakouts in injected CSS', () => {
+      const malicious = '.btn { color: red; } </style><script>alert(1)</script>';
+      const html = generateCssSandboxHtml(malicious, false);
+      expect(html).not.toContain('</style><script>');
+    });
+  });
+
+  describe('detectCssIssues', () => {
+    it('returns empty array on valid CSS', () => {
+      const valid = '.card { padding: 16px; margin: 0 auto; } @media (max-width: 600px) { .card { padding: 8px; } }';
+      expect(detectCssIssues(valid)).toEqual([]);
+    });
+
+    it('detects unclosed curly braces', () => {
+      const invalid = '.card { padding: 16px;';
+      const issues = detectCssIssues(invalid);
+      expect(issues.length).toBeGreaterThan(0);
+      expect(issues.some((i) => i.type === 'unclosed-block')).toBe(true);
+    });
+
+    it('detects unexpected closing braces', () => {
+      const invalid = '.card { padding: 16px; } }';
+      const issues = detectCssIssues(invalid);
+      expect(issues.length).toBeGreaterThan(0);
+      expect(issues.some((i) => i.type === 'unexpected-close')).toBe(true);
+    });
+
+    it('detects unclosed comments', () => {
+      const invalid = '/* unclosed comment\n.card { color: red; }';
+      const issues = detectCssIssues(invalid);
+      expect(issues.some((i) => i.type === 'unclosed-comment')).toBe(true);
+    });
+  });
+
+  describe('CSS_SAMPLES', () => {
+    it('contains modern samples with valid CSS', () => {
+      expect(CSS_SAMPLES.modernCard).toBeDefined();
+      expect(CSS_SAMPLES.glassmorphism).toBeDefined();
+      expect(CSS_SAMPLES.responsiveGrid).toBeDefined();
+      expect(CSS_SAMPLES.modernCard).toContain('.card');
     });
   });
 });

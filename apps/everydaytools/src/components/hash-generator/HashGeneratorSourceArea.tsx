@@ -1,8 +1,9 @@
 import React from 'react';
-import { Upload, RefreshCw, X, FileCode } from 'lucide-react';
+import { Upload, RefreshCw, X, FileCode, Sparkles } from 'lucide-react';
 import { ActionTooltip } from '@/components/ui/tooltip';
 import { useLocale } from '@/hooks/use-locale';
 import { formatBytes } from '@/lib/hash-generator-export';
+import { HASH_SAMPLES } from '@/lib/hash-samples';
 import type { InputMode, FileData } from '@/hooks/use-hash-generator-workflow';
 
 interface HashGeneratorSourceAreaProps {
@@ -13,6 +14,7 @@ interface HashGeneratorSourceAreaProps {
   textareaRef: React.RefObject<HTMLTextAreaElement | null>;
   fileInputRef: React.RefObject<HTMLInputElement | null>;
   onTextChange: (val: string) => void;
+  onLoadSample?: (sampleText: string) => void;
   onProcessFile: (file: File) => void;
   onClearFile: () => void;
   setIsDragOver: (drag: boolean) => void;
@@ -26,6 +28,7 @@ export function HashGeneratorSourceArea({
   textareaRef,
   fileInputRef,
   onTextChange,
+  onLoadSample,
   onProcessFile,
   onClearFile,
   setIsDragOver,
@@ -35,18 +38,40 @@ export function HashGeneratorSourceArea({
   return (
     <div className="p-4 sm:p-6 bg-white dark:bg-zinc-950">
       {inputMode === 'text' ? (
-        <textarea
-          ref={textareaRef}
-          value={inputText}
-          onChange={(e) => onTextChange(e.target.value)}
-          placeholder={
-            isFr
-              ? 'Tapez ou collez une chaîne de caractères pour calculer instantanément ses empreintes cryptographiques...'
-              : 'Type or paste characters to instantly compute cryptographic hashes...'
-          }
-          spellCheck={false}
-          className="w-full min-h-[140px] sm:min-h-[160px] p-4 bg-zinc-50/50 dark:bg-zinc-900/30 rounded-xl border border-zinc-200/80 dark:border-white/10 resize-y outline-none font-mono text-xs sm:text-sm leading-relaxed text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors"
-        />
+        <div className="space-y-3">
+          <textarea
+            ref={textareaRef}
+            value={inputText}
+            onChange={(e) => onTextChange(e.target.value)}
+            placeholder={
+              isFr
+                ? 'Tapez ou collez une chaîne de caractères pour calculer instantanément ses empreintes cryptographiques...'
+                : 'Type or paste characters to instantly compute cryptographic hashes...'
+            }
+            spellCheck={false}
+            className="w-full min-h-[140px] sm:min-h-[160px] p-4 bg-zinc-50/50 dark:bg-zinc-900/30 rounded-xl border border-zinc-200/80 dark:border-white/10 resize-y outline-none font-mono text-xs sm:text-sm leading-relaxed text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors"
+          />
+
+          {!inputText && onLoadSample && (
+            <div className="flex flex-wrap items-center gap-2 pt-1">
+              <span className="text-xs text-zinc-400 flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-[var(--accent)]" />
+                <span>{isFr ? 'Exemples rapides :' : 'Quick samples:'}</span>
+              </span>
+              {HASH_SAMPLES.map((sample) => (
+                <button
+                  key={sample.id}
+                  type="button"
+                  data-sample-id={sample.id}
+                  onClick={() => onLoadSample(sample.text)}
+                  className="px-2.5 py-1 text-xs font-medium rounded-lg border border-zinc-200 dark:border-white/10 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors cursor-pointer"
+                >
+                  {isFr ? sample.label.fr : sample.label.en}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       ) : (
         <div
           onDragOver={(e) => {
@@ -62,7 +87,7 @@ export function HashGeneratorSourceArea({
           }}
           className={`min-h-[160px] rounded-xl border-2 transition-colors flex flex-col items-center justify-center p-6 ${
             isDragOver
-              ? 'border-[#FF6B35] bg-[#FF6B35]/5'
+              ? 'border-[var(--accent)] bg-[var(--accent)]/5'
               : 'border-dashed border-zinc-200 dark:border-white/10 bg-zinc-50/40 dark:bg-zinc-900/20'
           }`}
         >
@@ -71,14 +96,18 @@ export function HashGeneratorSourceArea({
             type="file"
             className="hidden"
             onChange={(e) => {
-              if (e.target.files?.[0]) onProcessFile(e.target.files[0]);
+              const file = e.target.files?.[0];
+              if (file) {
+                onProcessFile(file);
+              }
+              e.target.value = '';
             }}
           />
 
           {fileInfo ? (
             <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10">
               <div className="flex items-center gap-3.5 min-w-0">
-                <div className="w-10 h-10 rounded-lg bg-[#FF6B35]/10 text-[#FF6B35] flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-lg bg-[var(--accent)]/10 text-[var(--accent)] flex items-center justify-center shrink-0">
                   <FileCode className="w-5 h-5" />
                 </div>
                 <div className="flex flex-col min-w-0">

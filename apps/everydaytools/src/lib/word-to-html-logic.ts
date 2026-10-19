@@ -19,7 +19,7 @@ export const getSourceFormat = (isFr: boolean): ConversionFormat => ({
   name: 'Word',
   extension: 'docx',
   icon: '/icons/word.svg',
-  color: '#185ABD',
+  color: 'var(--accent, #2563eb)',
   subLabel: isFr ? 'Format Word (.docx)' : 'Word Format (.docx)',
 });
 
@@ -27,7 +27,7 @@ export const getTargetFormat = (isFr: boolean): ConversionFormat => ({
   name: 'HTML',
   extension: 'html',
   icon: '/icons/html.svg',
-  color: '#E34F26',
+  color: 'var(--accent, #ea580c)',
   subLabel: isFr ? 'Code Web HTML5' : 'HTML5 Web Code',
 });
 
@@ -124,5 +124,7 @@ export function triggerDownload(blob: Blob, filename: string): void {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+  }, 1000);
 }

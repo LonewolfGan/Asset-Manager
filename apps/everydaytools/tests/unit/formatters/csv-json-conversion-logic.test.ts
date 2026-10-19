@@ -6,6 +6,8 @@ import {
   resolveConvertedFilename,
   getCsvFormat,
   getJsonFormat,
+  parseCsvJsonPreview,
+  readEncodedText,
 } from '@/lib/csv-json-conversion-logic';
 
 describe('csv-json-conversion-logic', () => {
@@ -70,6 +72,12 @@ describe('csv-json-conversion-logic', () => {
       valid: false,
       error: 'file_too_large',
     });
+
+    const binaryEmptyMime = new File(['binary content'], 'script.sh', { type: '' });
+    expect(validateCsvJsonFile(binaryEmptyMime, 'csv-to-json')).toEqual({
+      valid: false,
+      error: 'unsupported_format',
+    });
   });
 
   it('resolves output filenames accurately', () => {
@@ -96,7 +104,60 @@ describe('csv-json-conversion-logic', () => {
     const jsonEn = getJsonFormat(false);
     expect(csvFr.extension).toBe('csv');
     expect(jsonEn.extension).toBe('json');
-    expect(csvFr.color).toBe('#21A366');
-    expect(jsonEn.color).toBe('#F5A623');
+    expect(csvFr.color).toContain('var(--accent');
+    expect(jsonEn.color).toContain('var(--accent');
+  });
+
+  it('converts CSV to JSON with custom delimiters (semicolon and pipe)', () => {
+    const csvSemicolon = 'name;role\nAlice;Admin\nBob;User';
+    const jsonSemicolon = convertCsvToJson(csvSemicolon, true, ';');
+    const parsedSemi = JSON.parse(jsonSemicolon);
+    expect(parsedSemi).toEqual([
+      { name: 'Alice', role: 'Admin' },
+      { name: 'Bob', role: 'User' },
+    ]);
+
+    const csvPipe = 'id|value\n10|A\n20|B';
+    const jsonPipe = convertCsvToJson(csvPipe, false, '|');
+    const parsedPipe = JSON.parse(jsonPipe);
+    expect(parsedPipe).toEqual([
+      { id: 10, value: 'A' },
+      { id: 20, value: 'B' },
+    ]);
+  });
+
+  it('converts JSON to CSV with custom delimiters (semicolon and tab)', () => {
+    const json = JSON.stringify([{ city: 'Paris', pop: 2161000 }]);
+    const csvSemi = convertJsonToCsv(json, true, ';');
+    expect(csvSemi).toContain('city;pop');
+    expect(csvSemi).toContain('Paris;2161000');
+
+    const csvTab = convertJsonToCsv(json, false, '\t');
+    expect(csvTab).toContain('city\tpop');
+    expect(csvTab).toContain('Paris\t2161000');
+  });
+
+  it('parses CSV preview data correctly', () => {
+    const csv = 'id,name\n1,Alpha\n2,Beta';
+    const preview = parseCsvJsonPreview(csv, 'csv-to-json', ',');
+    expect(preview.headers).toEqual(['id', 'name']);
+    expect(preview.rows.length).toBe(2);
+    expect(preview.rows[0]).toEqual(['1', 'Alpha']);
+  });
+
+  it('parses JSON preview data correctly', () => {
+    const json = JSON.stringify([{ key: 'val1' }, { key: 'val2' }]);
+    const preview = parseCsvJsonPreview(json, 'json-to-csv');
+    expect(preview.headers).toEqual(['key']);
+    expect(preview.rows.length).toBe(2);
+    expect(preview.rows[0]).toEqual(['val1']);
+  });
+
+  it('decodes encoded text from File with readEncodedText', async () => {
+    const encoder = new TextEncoder();
+    const bytes = encoder.encode('Héllo Wörld');
+    const file = new File([bytes], 'test.txt', { type: 'text/plain' });
+    const decoded = await readEncodedText(file, 'utf-8');
+    expect(decoded).toBe('Héllo Wörld');
   });
 });

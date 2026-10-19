@@ -85,3 +85,38 @@ export function hasHandoffFile(): boolean {
   }
   return true;
 }
+
+// ─────────────────────────────────────────────────────────
+// Text Handoff Support (for text/code converters)
+// ─────────────────────────────────────────────────────────
+
+let pendingTextHandoff: { text: string; timestamp: number } | null = null;
+
+export function setHandoffText(text: string): void {
+  if (!text || !text.trim()) return;
+  pendingTextHandoff = {
+    text,
+    timestamp: Date.now(),
+  };
+}
+
+export function consumeHandoffText(): string | null {
+  if (!pendingTextHandoff) return null;
+  const now = Date.now();
+  if (now - pendingTextHandoff.timestamp > 5 * 60 * 1000) {
+    pendingTextHandoff = null;
+    return null;
+  }
+  const text = pendingTextHandoff.text;
+  pendingTextHandoff = null;
+  return text;
+}
+
+export function hasHandoffText(): boolean {
+  if (!pendingTextHandoff) return false;
+  if (Date.now() - pendingTextHandoff.timestamp > 5 * 60 * 1000) {
+    pendingTextHandoff = null;
+    return false;
+  }
+  return true;
+}

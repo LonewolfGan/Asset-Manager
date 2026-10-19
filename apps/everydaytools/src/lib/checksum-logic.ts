@@ -115,10 +115,18 @@ export function findMatchingAlgo(
   expected: string,
   hashes: Record<ChecksumAlgo, string> | null
 ): ChecksumAlgo | null {
-  const normalized = expected.trim().toLowerCase();
-  if (!normalized || !hashes) return null;
+  if (!expected || !hashes) return null;
+  let clean = expected.trim().toLowerCase();
+  const colonIndex = clean.indexOf(':');
+  if (colonIndex > 0 && colonIndex <= 10) {
+    clean = clean.slice(colonIndex + 1).trim();
+  }
+  const parts = clean.split(/\s+/);
+  if (parts[0] && parts[0].length >= 8) {
+    clean = parts[0];
+  }
   return (
-    ALGO_METAS.find((m) => hashes[m.id]?.toLowerCase() === normalized)?.id ?? null
+    ALGO_METAS.find((m) => hashes[m.id]?.toLowerCase() === clean)?.id ?? null
   );
 }
 
@@ -170,7 +178,7 @@ export function downloadTextFile(content: string, filename: string): void {
   a.href = url;
   a.download = filename;
   a.click();
-  URL.revokeObjectURL(url);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 /**
@@ -181,7 +189,7 @@ export function getSourceDropzoneFormat(isFr: boolean): ConversionFormat {
     name: isFr ? 'Fichier' : 'File',
     extension: '*',
     icon: '/icons/file.svg',
-    color: '#FF6B35',
+    color: 'var(--accent, #f97316)',
     subLabel: isFr
       ? 'Tout type de fichier (ISO, ZIP, PDF, EXE, Image...)'
       : 'Any file type (ISO, ZIP, PDF, EXE, Image...)',
