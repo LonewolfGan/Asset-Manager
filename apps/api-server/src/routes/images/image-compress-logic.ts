@@ -145,9 +145,13 @@ export async function compressImageBuffer(
       throw new Error("Resize percentage must be between 1% and 500%.");
     }
     const meta = await sharp(input).metadata();
-    const w = Math.max(1, Math.min(10000, Math.round(((meta.width ?? 1000) * resizePct) / 100)));
-    const h = Math.max(1, Math.min(10000, Math.round(((meta.height ?? 1000) * resizePct) / 100)));
-    workingBuffer = await sharp(input).resize(w, h, { kernel: sharp.kernel.lanczos3 }).toBuffer();
+    const orientation = meta.orientation ?? 0;
+    const isRotated = orientation >= 5 && orientation <= 8;
+    const origW = (isRotated ? meta.height : meta.width) ?? 1000;
+    const origH = (isRotated ? meta.width : meta.height) ?? 1000;
+    const w = Math.max(1, Math.min(10000, Math.round((origW * resizePct) / 100)));
+    const h = Math.max(1, Math.min(10000, Math.round((origH * resizePct) / 100)));
+    workingBuffer = await createColorManagedPipeline(input).resize(w, h, { kernel: sharp.kernel.lanczos3 }).toBuffer();
   } else if (resizeMode === "dimensions" && (resizeW || resizeH)) {
     if (
       (resizeW !== undefined && (resizeW <= 0 || resizeW > 10000)) ||
@@ -155,7 +159,7 @@ export async function compressImageBuffer(
     ) {
       throw new Error("Resize dimensions must be between 1 and 10,000 px.");
     }
-    workingBuffer = await sharp(input)
+    workingBuffer = await createColorManagedPipeline(input)
       .resize(resizeW, resizeH, { fit: "inside", withoutEnlargement: true, kernel: sharp.kernel.lanczos3 })
       .toBuffer();
   }

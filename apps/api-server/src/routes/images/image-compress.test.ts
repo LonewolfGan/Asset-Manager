@@ -248,6 +248,30 @@ describe("Image Compression Optimization (TDD)", () => {
     assert.strictEqual(compressed instanceof Buffer, true);
     assert.strictEqual(compressed.length > 0, true);
   });
+
+  it("normalizes EXIF orientation and color profile during resize", async () => {
+    const rotated = await sharp({
+      create: {
+        width: 300,
+        height: 150,
+        channels: 3,
+        background: { r: 240, g: 80, b: 50 },
+      },
+    })
+      .withMetadata({ orientation: 6 }) // 90 deg clockwise -> 150x300
+      .jpeg()
+      .toBuffer();
+
+    const result = await compressImageBuffer(rotated, "image/jpeg", {
+      resizeMode: "percent",
+      resizePct: 50,
+    });
+
+    const meta = await sharp(result.buffer).metadata();
+    assert.strictEqual(meta.width, 75); // 150 * 0.5
+    assert.strictEqual(meta.height, 150); // 300 * 0.5
+    assert.strictEqual(meta.space, "srgb");
+  });
 });
 
 

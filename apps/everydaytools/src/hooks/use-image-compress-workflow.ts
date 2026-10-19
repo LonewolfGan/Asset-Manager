@@ -73,7 +73,8 @@ export function useImageCompressWorkflow(
       const originalSize = parseInt(res.headers.get('X-Original-Size') ?? String(file.size), 10);
       const compressedSize = parseInt(res.headers.get('X-Compressed-Size') ?? String(blob.size), 10);
       const gainHeader = res.headers.get('X-Compression-Gain');
-      const calculatedGain = Math.max(0, Math.round((1 - compressedSize / originalSize) * 100));
+      const calculatedGain =
+        originalSize > 0 ? Math.max(0, Math.round((1 - compressedSize / originalSize) * 100)) : 0;
       const gain = gainHeader ? parseInt(gainHeader, 10) : calculatedGain;
 
       trackToolUsed('image-compress', 'images');
