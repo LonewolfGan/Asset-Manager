@@ -113,6 +113,21 @@ describe('pdf-repair-logic', () => {
       vi.unstubAllGlobals();
     });
 
+    it('throws when server returns a 200 OK response with an empty 0-byte blob', async () => {
+      const emptyBlob = new Blob([], { type: 'application/pdf' });
+      const fetchSpy = vi.fn().mockResolvedValue({
+        ok: true,
+        blob: async () => emptyBlob,
+      });
+      vi.stubGlobal('fetch', fetchSpy);
+
+      await expect(
+        repairPdfDocument(corruptFile, 'https://backend/api/pdf/repair')
+      ).rejects.toThrow('La réparation du document a échoué.');
+
+      vi.unstubAllGlobals();
+    });
+
     it('throws when client-side fails and no endpointUrl is provided', async () => {
       await expect(repairPdfDocument(corruptFile)).rejects.toThrow(
         'La réparation du document a échoué.'
@@ -120,4 +135,5 @@ describe('pdf-repair-logic', () => {
     });
   });
 });
+
 

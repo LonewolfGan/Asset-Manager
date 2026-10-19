@@ -81,7 +81,9 @@ export async function repairPdfDocument(
       const res = await fetch(endpointUrl, { method: 'POST', body: fd });
       if (res.ok) {
         const repairedBlob = await res.blob();
-        return { blob: repairedBlob };
+        if (repairedBlob && repairedBlob.size > 0) {
+          return { blob: repairedBlob };
+        }
       }
     } catch {
       // Échec serveur également
