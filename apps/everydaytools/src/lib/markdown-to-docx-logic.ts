@@ -129,29 +129,21 @@ export async function convertMarkdownToDocx(options: {
     fd.append('file', file);
     sizeBefore = file.size;
 
-    const [response] = await Promise.all([
-      fetch(apiUrl('/api/convert/markdown-to-docx'), {
-        method: 'POST',
-        body: fd,
-      }),
-      new Promise((resolve) => setTimeout(resolve, 800)),
-    ]);
-    res = response;
+    res = await fetch(apiUrl('/api/convert/markdown-to-docx'), {
+      method: 'POST',
+      body: fd,
+    });
   } else {
     const bodyContent = { markdown: markdownInput };
     sizeBefore = new Blob([markdownInput]).size;
 
-    const [response] = await Promise.all([
-      fetch(apiUrl('/api/convert/markdown-to-docx'), {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(bodyContent),
-      }),
-      new Promise((resolve) => setTimeout(resolve, 800)),
-    ]);
-    res = response;
+    res = await fetch(apiUrl('/api/convert/markdown-to-docx'), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(bodyContent),
+    });
   }
 
   if (!res.ok) {

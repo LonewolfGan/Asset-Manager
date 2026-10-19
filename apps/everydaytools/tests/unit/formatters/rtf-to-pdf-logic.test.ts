@@ -92,7 +92,7 @@ describe('rtf-to-pdf-logic [TDD-Lock ECC]', () => {
     expect(enResult.errorDesc).toContain('50 MB');
   });
 
-  it('converts rtf to pdf successfully via API response with skipDelay', async () => {
+  it('converts rtf to pdf successfully without artificial delays or invoking setTimeout', async () => {
     const mockFile = new File(['content'], 'sample.rtf', {
       type: 'application/rtf',
     });
@@ -102,13 +102,15 @@ describe('rtf-to-pdf-logic [TDD-Lock ECC]', () => {
       ok: true,
       blob: async () => mockBlob,
     } as Response);
+    const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout');
 
-    const result = await convertRtfToPdf(mockFile, { isFr: false, skipDelay: true });
+    const result = await convertRtfToPdf(mockFile, { isFr: false });
 
     expect(result.filename).toBe('sample.pdf');
     expect(result.sizeBefore).toBe(mockFile.size);
     expect(result.sizeAfter).toBe(mockBlob.size);
     expect(result.blob).toBe(mockBlob);
+    expect(setTimeoutSpy).not.toHaveBeenCalled();
   });
 
   it('handles API conversion failure with proper error message', async () => {

@@ -94,7 +94,7 @@ describe('odt-to-pdf-logic [TDD-Lock ECC]', () => {
     expect(enResult.errorDesc).toContain('50 MB');
   });
 
-  it('converts odt to pdf successfully via API response with skipDelay', async () => {
+  it('converts odt to pdf successfully without artificial delays or invoking setTimeout', async () => {
     const mockFile = new File(['content'], 'sample.odt', {
       type: 'application/vnd.oasis.opendocument.text',
     });
@@ -104,13 +104,15 @@ describe('odt-to-pdf-logic [TDD-Lock ECC]', () => {
       ok: true,
       blob: async () => mockBlob,
     } as Response);
+    const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout');
 
-    const result = await convertOdtToPdf(mockFile, { isFr: false, skipDelay: true });
+    const result = await convertOdtToPdf(mockFile, { isFr: false });
 
     expect(result.filename).toBe('sample.pdf');
     expect(result.sizeBefore).toBe(mockFile.size);
     expect(result.sizeAfter).toBe(mockBlob.size);
     expect(result.blob).toBe(mockBlob);
+    expect(setTimeoutSpy).not.toHaveBeenCalled();
   });
 
   it('handles API conversion failure with proper error message', async () => {

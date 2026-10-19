@@ -85,15 +85,10 @@ export async function convertRtfToPdf(
 
   let res: Response;
   try {
-    const fetchPromise = fetch(apiUrl('/api/tools/document-convert'), {
+    res = await fetch(apiUrl('/api/tools/document-convert'), {
       method: 'POST',
       body: fd,
     });
-    const [response] = await Promise.all([
-      fetchPromise,
-      skipDelay ? Promise.resolve() : new Promise((resolve) => setTimeout(resolve, 800)),
-    ]);
-    res = response;
   } catch (err) {
     throw new Error(formatFetchError(err, isFr));
   }

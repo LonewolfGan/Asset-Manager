@@ -83,7 +83,7 @@ describe('epub-converter-logic [TDD-Lock ECC]', () => {
       vi.restoreAllMocks();
     });
 
-    it('converts EPUB to Word docx successfully', async () => {
+    it('converts EPUB to Word docx successfully without artificial delay or invoking setTimeout', async () => {
       const mockFile = new File(['epub binary'], 'novel.epub', {
         type: 'application/epub+zip',
       });
@@ -92,12 +92,14 @@ describe('epub-converter-logic [TDD-Lock ECC]', () => {
         ok: true,
         blob: async () => new Blob(['docx binary'], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }),
       } as Response);
+      const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout');
 
       const result = await convertEpub(mockFile, 'docx', { isFr: false });
       expect(result.filename).toBe('novel.docx');
       expect(result.sizeBefore).toBe(mockFile.size);
       expect(result.sizeAfter).toBeGreaterThan(0);
       expect(result.blob).toBeInstanceOf(Blob);
+      expect(setTimeoutSpy).not.toHaveBeenCalled();
     });
 
     it('throws server error message if response is not ok', async () => {

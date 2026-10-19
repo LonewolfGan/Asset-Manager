@@ -93,7 +93,7 @@ describe('html-to-word-logic [TDD-Lock ECC]', () => {
       vi.restoreAllMocks();
     });
 
-    it('converts HTML to Word docx successfully', async () => {
+    it('converts HTML to Word docx successfully without artificial delay or invoking setTimeout', async () => {
       const mockBlob = new Blob(['docx content'], {
         type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       });
@@ -101,6 +101,7 @@ describe('html-to-word-logic [TDD-Lock ECC]', () => {
         ok: true,
         blob: () => Promise.resolve(mockBlob),
       });
+      const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout');
 
       const file = new File(['<p>Hello</p>'], 'article.html', { type: 'text/html' });
       const res = await convertHtmlToWord(file, { isFr: false });
@@ -108,6 +109,7 @@ describe('html-to-word-logic [TDD-Lock ECC]', () => {
       expect(res.filename).toBe('article.docx');
       expect(res.sizeBefore).toBe(file.size);
       expect(res.sizeAfter).toBe(mockBlob.size);
+      expect(setTimeoutSpy).not.toHaveBeenCalled();
       expect(global.fetch).toHaveBeenCalledWith(
         expect.stringContaining('/api/tools/document-convert'),
         expect.objectContaining({
