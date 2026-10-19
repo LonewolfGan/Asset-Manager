@@ -1,9 +1,11 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { PDFDocument } from 'pdf-lib';
 import {
   getPdfRepairSourceFormat,
   getPdfRepairTargetFormat,
   validatePdfRepairFile,
   buildRepairedPdfFilename,
+  repairPdfDocument,
 } from '@/lib/pdf-repair-logic';
 
 describe('pdf-repair-logic', () => {
@@ -43,4 +45,79 @@ describe('pdf-repair-logic', () => {
     expect(buildRepairedPdfFilename('my_document.PDF')).toBe('my_document_repaired.pdf');
     expect(buildRepairedPdfFilename('corrupted')).toBe('corrupted_repaired.pdf');
   });
+
+  describe('repairPdfDocument', () => {
+    let validPdfFile: File;
+    const corruptFile = new File(['corrupted-non-pdf-bytes'], 'broken.pdf', {
+      type: 'application/pdf',
+    });
+
+    beforeEach(async () => {
+      const pdf = await PDFDocument.create();
+      pdf.addPage([100, 100]);
+      const bytes = await pdf.save();
+      validPdfFile = new File([bytes], 'valid.pdf', { type: 'application/pdf' });
+    });
+
+    it('prioritizes client-side repair and does not invoke fetch when client succeeds', async () => {
+      const fetchSpy = vi.fn().mockResolvedValue({
+        ok: true,
+        blob: async () => new Blob(['remote-blob']),
+      });
+      vi.stubGlobal('fetch', fetchSpy);
+
+      const result = await repairPdfDocument(validPdfFile, 'https://backend/api/pdf/repair');
+
+      expect(result.blob).toBeInstanceOf(Blob);
+      expect(result.blob.size).toBeGreaterThan(0);
+      expect(result.pageCount).toBe(1);
+      expect(fetchSpy).not.toHaveBeenCalled();
+
+      vi.unstubAllGlobals();
+    });
+
+    it('falls back to endpointUrl when client-side parsing fails', async () => {
+      const serverBlob = new Blob(['%PDF-repaired-by-qpdf'], { type: 'application/pdf' });
+      const fetchSpy = vi.fn().mockResolvedValue({
+        ok: true,
+        blob: async () => serverBlob,
+      });
+      vi.stubGlobal('fetch', fetchSpy);
+
+      const result = await repairPdfDocument(corruptFile, 'https://backend/api/pdf/repair');
+
+      expect(fetchSpy).toHaveBeenCalledTimes(1);
+      expect(fetchSpy).toHaveBeenCalledWith(
+        'https://backend/api/pdf/repair',
+        expect.objectContaining({
+          method: 'POST',
+          body: expect.any(FormData),
+        })
+      );
+      expect(result.blob).toBe(serverBlob);
+
+      vi.unstubAllGlobals();
+    });
+
+    it('throws when both client-side and remote server repair fail', async () => {
+      const fetchSpy = vi.fn().mockResolvedValue({
+        ok: false,
+        status: 500,
+      });
+      vi.stubGlobal('fetch', fetchSpy);
+
+      await expect(
+        repairPdfDocument(corruptFile, 'https://backend/api/pdf/repair')
+      ).rejects.toThrow('La réparation du document a échoué.');
+
+      vi.unstubAllGlobals();
+    });
+
+    it('throws when client-side fails and no endpointUrl is provided', async () => {
+      await expect(repairPdfDocument(corruptFile)).rejects.toThrow(
+        'La réparation du document a échoué.'
+      );
+    });
+  });
 });
+

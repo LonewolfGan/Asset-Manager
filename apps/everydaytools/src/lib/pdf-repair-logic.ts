@@ -63,38 +63,31 @@ export async function repairPdfDocument(
   file: File,
   endpointUrl?: string
 ): Promise<{ blob: Blob; pageCount?: number }> {
-  let repairedBlob: Blob | null = null;
-  let pageCount: number | undefined;
+  // 1. Tentative primaire : Moteur client pdf-lib (sub-20ms, 100% privé)
+  try {
+    const clientResult = await repairPdfClientSide(file);
+    if (clientResult.blob && clientResult.blob.size > 0) {
+      return clientResult;
+    }
+  } catch {
+    // Si la reconstruction client échoue (corruption binaire sévère), bascule vers le moteur serveur QPDF
+  }
 
-  // 1. Tentative primaire : Serveur QPDF & Ghostscript
+  // 2. Repli secondaire : Serveur QPDF
   if (endpointUrl) {
     try {
       const fd = new FormData();
       fd.append('file', file);
-
-      const res = await fetch(endpointUrl, {
-        method: 'POST',
-        body: fd,
-      });
-
+      const res = await fetch(endpointUrl, { method: 'POST', body: fd });
       if (res.ok) {
-        repairedBlob = await res.blob();
+        const repairedBlob = await res.blob();
+        return { blob: repairedBlob };
       }
     } catch {
-      // Bascule automatique vers le moteur client
+      // Échec serveur également
     }
   }
 
-  // 2. Repli client via pdf-lib
-  if (!repairedBlob) {
-    const clientResult = await repairPdfClientSide(file);
-    repairedBlob = clientResult.blob;
-    pageCount = clientResult.pageCount;
-  }
-
-  if (!repairedBlob || repairedBlob.size === 0) {
-    throw new Error('La réparation du document a échoué.');
-  }
-
-  return { blob: repairedBlob, pageCount };
+  throw new Error('La réparation du document a échoué.');
 }
+
