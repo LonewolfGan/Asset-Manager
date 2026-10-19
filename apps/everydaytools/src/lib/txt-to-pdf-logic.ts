@@ -1,7 +1,20 @@
-import { apiUrl } from '@/lib/apiBase';
+import { PDFDocument, StandardFonts, rgb, PageSizes } from 'pdf-lib';
 import type { ConversionFormat } from '@/components/conversion';
 
 export type TxtToPdfMode = 'upload' | 'paste';
+
+export interface TxtToPdfOptions {
+  mode: TxtToPdfMode;
+  file?: File | null;
+  textInput?: string;
+  errorFallback?: string;
+  isFr?: boolean;
+  fontSize?: number;
+  lineSpacing?: number;
+  margin?: number;
+  orientation?: 'portrait' | 'landscape';
+  fontFamily?: 'Helvetica' | 'TimesRoman' | 'Courier';
+}
 
 export interface TxtToPdfResult {
   blob: Blob;
@@ -13,6 +26,40 @@ export interface TxtToPdfResult {
 export interface FileValidationResult {
   isValid: boolean;
   error?: string;
+}
+
+const FONT_MAP = {
+  Helvetica: StandardFonts.Helvetica,
+  TimesRoman: StandardFonts.TimesRoman,
+  Courier: StandardFonts.Courier,
+} as const;
+
+const WIN_ANSI_EXTRA_POINTS = new Set([
+  338, 339, 352, 353, 376, 381, 382, 402, 710, 732,
+  8211, 8212, 8216, 8217, 8218, 8220, 8221, 8222, 8224, 8225,
+  8226, 8230, 8240, 8249, 8250, 8364, 8482,
+]);
+
+export function sanitizeWinAnsi(text: string): string {
+  let result = '';
+  const normalized = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  for (const char of normalized) {
+    if (char === '\n') {
+      result += '\n';
+      continue;
+    }
+    if (char === '\t') {
+      result += '    ';
+      continue;
+    }
+    const code = char.codePointAt(0) ?? 0;
+    if ((code >= 32 && code <= 126) || (code >= 160 && code <= 255) || WIN_ANSI_EXTRA_POINTS.has(code)) {
+      result += char;
+    } else {
+      result += '?';
+    }
+  }
+  return result;
 }
 
 export const getSourceFormat = (isFr: boolean): ConversionFormat => ({
@@ -35,36 +82,14 @@ export const TXT_SAMPLE_FR = `RAPPORT D'ACTIVITÉ MENSUEL
 EverydayTools Studio — Octobre 2026
 
 1. OBJET ET CONTEXTE
-Ce document présente le récapitulatif des opérations techniques, des performances d'infrastructure et des indicateurs de satisfaction du mois écoulé.
-
-2. INDICATEURS CLÉS DE PERFORMANCE
-- Taux de disponibilité de la plateforme : 99.98%
-- Temps de réponse moyen API : 42 ms
-- Volume de conversions traitées : 1 450 000 fichiers
-- Taux de complétion des tâches sans erreur : 99.85%
-
-3. PLAN D'ACTION IMMÉDIAT
-- Finalisation de la mise à l'échelle des micro-serveurs graphiques
-- Audit continu de sécurité des flux éphémères
-- Optimisation des temps de premier rendu visuel
+Ce document présente le récapitulatif des opérations techniques.
 `;
 
 export const TXT_SAMPLE_EN = `MONTHLY ACTIVITY REPORT
 EverydayTools Studio — October 2026
 
 1. PURPOSE AND CONTEXT
-This document summarizes technical operations, infrastructure performance, and user satisfaction metrics for the past month.
-
-2. KEY PERFORMANCE INDICATORS
-- Platform uptime: 99.98%
-- Average API response time: 42 ms
-- Processed conversions volume: 1,450,000 files
-- Error-free task completion rate: 99.85%
-
-3. IMMEDIATE ACTION PLAN
-- Finalize graphical micro-servers scaling
-- Continuous security audit of ephemeral pipelines
-- Optimization of first visual render times
+This document summarizes technical operations.
 `;
 
 export function validateTxtFile(selectedFile: File, isFr = false): FileValidationResult {
@@ -105,50 +130,117 @@ export function buildPdfFilename(
   return isFr ? 'texte-converti.pdf' : 'converted-text.pdf';
 }
 
-export async function convertTxtToPdf(options: {
-  mode: TxtToPdfMode;
-  file?: File | null;
-  textInput?: string;
-  errorFallback?: string;
-  isFr?: boolean;
-}): Promise<TxtToPdfResult> {
-  const { mode, file, textInput = '', errorFallback, isFr = false } = options;
+function wrapParagraph(
+  text: string,
+  font: { widthOfTextAtSize: (t: string, size: number) => number },
+  fontSize: number,
+  maxWidth: number
+): string[] {
+  if (!text) return [''];
+  const words = text.split(' ');
+  const lines: string[] = [];
+  let currentLine = '';
 
-  let text = '';
+  for (const word of words) {
+    const candidate = currentLine ? `${currentLine} ${word}` : word;
+    if (font.widthOfTextAtSize(candidate, fontSize) <= maxWidth) {
+      currentLine = candidate;
+    } else {
+      if (currentLine) {
+        lines.push(currentLine);
+        currentLine = '';
+      }
+      if (font.widthOfTextAtSize(word, fontSize) > maxWidth) {
+        let chunk = '';
+        for (const char of word) {
+          if (font.widthOfTextAtSize(chunk + char, fontSize) <= maxWidth) {
+            chunk += char;
+          } else {
+            if (chunk) lines.push(chunk);
+            chunk = char;
+          }
+        }
+        currentLine = chunk;
+      } else {
+        currentLine = word;
+      }
+    }
+  }
+  if (currentLine) {
+    lines.push(currentLine);
+  }
+  return lines;
+}
+
+export async function convertTxtToPdf(options: TxtToPdfOptions): Promise<TxtToPdfResult> {
+  const {
+    mode,
+    file,
+    textInput = '',
+    isFr = false,
+    fontSize = 11,
+    lineSpacing = 1.45,
+    margin = 48,
+    orientation = 'portrait',
+    fontFamily = 'Helvetica',
+  } = options;
+
+  let rawText = '';
   const filename = buildPdfFilename(mode, file, isFr);
   let sizeBefore = 0;
 
   if (mode === 'upload' && file) {
-    text = await file.text();
+    rawText = await file.text();
     sizeBefore = file.size;
   } else {
-    text = textInput;
+    rawText = textInput;
     sizeBefore = new TextEncoder().encode(textInput).length;
   }
 
-  const [res] = await Promise.all([
-    fetch(apiUrl('/api/convert/text-to-pdf'), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text }),
-    }),
-    new Promise((resolve) => setTimeout(resolve, 800)),
-  ]);
+  const cleanText = sanitizeWinAnsi(rawText);
+  const pdfDoc = await PDFDocument.create();
+  const fontName = FONT_MAP[fontFamily] ?? StandardFonts.Helvetica;
+  const font = await pdfDoc.embedFont(fontName);
 
-  if (!res.ok) {
-    const errJson = (await res.json().catch(() => ({}))) as {
-      error?: string;
-      message?: string;
-    };
-    throw new Error(
-      errJson.message ??
-        errJson.error ??
-        errorFallback ??
-        'Failed to convert to PDF. Please try again.'
-    );
+  const [rawWidth, rawHeight] = PageSizes.A4;
+  const pageWidth = orientation === 'landscape' ? rawHeight : rawWidth;
+  const pageHeight = orientation === 'landscape' ? rawWidth : rawHeight;
+
+  const contentWidth = pageWidth - margin * 2;
+  const lineHeight = fontSize * lineSpacing;
+
+  const paragraphs = cleanText.split('\n');
+  const lines: string[] = [];
+  for (const para of paragraphs) {
+    if (!para.trim()) {
+      lines.push('');
+    } else {
+      lines.push(...wrapParagraph(para, font, fontSize, contentWidth));
+    }
   }
 
-  const blob = await res.blob();
+  let currentPage = pdfDoc.addPage([pageWidth, pageHeight]);
+  let y = pageHeight - margin - fontSize;
+
+  for (const line of lines) {
+    if (y - lineHeight < margin) {
+      currentPage = pdfDoc.addPage([pageWidth, pageHeight]);
+      y = pageHeight - margin - fontSize;
+    }
+    if (line.length > 0) {
+      currentPage.drawText(line, {
+        x: margin,
+        y,
+        size: fontSize,
+        font,
+        color: rgb(0.12, 0.12, 0.14),
+      });
+    }
+    y -= lineHeight;
+  }
+
+  const pdfBytes = await pdfDoc.save();
+  const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
 
   return {
     blob,
@@ -166,7 +258,9 @@ export function triggerDownload(blob: Blob, filename: string): void {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+  }, 1000);
 }
 
 export function openPdfPreview(blob: Blob): void {

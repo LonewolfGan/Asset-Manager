@@ -12,9 +12,10 @@ import {
   openPdfPreview,
   type TxtToPdfResult,
   type TxtToPdfMode,
+  type TxtToPdfOptions,
 } from '@/lib/txt-to-pdf-logic';
 
-export function useTxtToPdfWorkflow() {
+export function useTxtToPdfWorkflow(workflowOptions?: Partial<TxtToPdfOptions>) {
   const { t, isFr } = useLocale();
   const tc = t.txtToPdf;
 
@@ -104,6 +105,7 @@ export function useTxtToPdfWorkflow() {
         textInput,
         errorFallback: tc.error,
         isFr,
+        ...workflowOptions,
       });
 
       setResult(conversionResult);
@@ -125,7 +127,7 @@ export function useTxtToPdfWorkflow() {
     } finally {
       setIsProcessing(false);
     }
-  }, [mode, file, textInput, isProcessing, isFr, tc.error]);
+  }, [mode, file, textInput, isProcessing, isFr, tc.error, workflowOptions]);
 
   const handleDownload = useCallback(() => {
     if (!result) return;
@@ -142,7 +144,7 @@ export function useTxtToPdfWorkflow() {
 
   const stagedFile =
     mode === 'upload'
-      ? file
+      ? (file ?? null)
       : isPastedStaged
       ? new File([textInput], isFr ? 'texte-saisi.txt' : 'pasted-text.txt', { type: 'text/plain' })
       : null;
