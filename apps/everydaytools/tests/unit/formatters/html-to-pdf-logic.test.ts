@@ -164,5 +164,21 @@ describe('html-to-pdf-logic', () => {
         convertHtmlToPdf({ mode: 'paste', htmlInput: '<p>fail</p>' })
       ).rejects.toThrow('Rendering engine failed');
     });
+
+    it('executes immediately without artificial setTimeout delays', async () => {
+      const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout');
+      const mockBlob = new Blob(['%PDF-1.4'], { type: 'application/pdf' });
+      const mockResponse = {
+        ok: true,
+        blob: vi.fn().mockResolvedValue(mockBlob),
+      };
+      (globalThis.fetch as any).mockResolvedValue(mockResponse);
+
+      const file = new File(['<h1>Test</h1>'], 'test.html', { type: 'text/html' });
+      await convertHtmlToPdf({ mode: 'upload', file });
+      await convertHtmlToPdf({ mode: 'paste', htmlInput: '<h1>Raw</h1>' });
+
+      expect(setTimeoutSpy).not.toHaveBeenCalled();
+    });
   });
 });

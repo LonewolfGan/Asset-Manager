@@ -13,6 +13,10 @@ import { defaultRateLimit, mediumRateLimit } from "../../middlewares/rateLimit.j
 import { BIN, getPythonScriptPath } from "../../lib/binaries.js";
 import { apiError } from "../../lib/errors.js";
 import { sendPdf } from "./send-pdf.js";
+import { buildContentDisposition } from "../convert/convert-image.js";
+import { guardSinglePdf } from "../pdf/guards.js";
+import { isGotenbergHealthy, convertHtmlWithGotenberg } from "../../lib/gotenberg.js";
+import { logger } from "../../lib/logger.js";
 
 const execFileAsync = promisify(execFile);
 const router = Router();
@@ -40,8 +44,19 @@ router.post("/tools/html-to-pdf", defaultRateLimit, upload.single("file"), async
       return;
     }
 
-    const pdfBuf = await htmlToPdfBuffer(html);
-    sendPdf(res, pdfBuf, filename);
+    let pdfBuf: Buffer;
+    if (await isGotenbergHealthy()) {
+      try {
+        pdfBuf = await convertHtmlWithGotenberg(html);
+      } catch (err) {
+        logger.warn({ err }, "Gotenberg Chromium conversion failed, falling back to PDFKit");
+        pdfBuf = await htmlToPdfBuffer(html);
+      }
+    } else {
+      pdfBuf = await htmlToPdfBuffer(html);
+    }
+
+    await sendPdf(res, pdfBuf, filename);
   } catch (err) {
     apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Conversion failed");
   }
@@ -67,7 +82,7 @@ router.post("/tools/markdown-to-pdf", defaultRateLimit, upload.single("file"), a
 
     const html = await marked(markdown);
     const pdfBuf = await htmlToPdfBuffer(String(html));
-    sendPdf(res, pdfBuf, filename);
+    await sendPdf(res, pdfBuf, filename);
   } catch (err) {
     apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Conversion failed");
   }
@@ -77,10 +92,8 @@ router.post("/tools/markdown-to-pdf", defaultRateLimit, upload.single("file"), a
 // POST /tools/pdf-to-html
 // Extract PDF text via pdfplumber and wrap in clean HTML.
 // ─────────────────────────────────────────────────────────
-router.post("/tools/pdf-to-html", defaultRateLimit, upload.single("file"), async (req: Request, res: Response) => {
+router.post("/tools/pdf-to-html", defaultRateLimit, upload.single("file"), guardSinglePdf, async (req: Request, res: Response) => {
   if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
-  if (req.file.mimetype !== "application/pdf") { apiError(res, 415, "UNSUPPORTED_TYPE", "Only PDF files are accepted."); return; }
-  if (req.file.size > 50 * 1024 * 1024) { apiError(res, 413, "FILE_TOO_LARGE", "File too large. Maximum 50 MB."); return; }
 
   const baseName = (req.file.originalname ?? "document").replace(/\.pdf$/i, "");
   const id = randomUUID();
@@ -128,7 +141,7 @@ ${escapedLines}
 
     res.set({
       "Content-Type": "text/html; charset=utf-8",
-      "Content-Disposition": `attachment; filename="${baseName}.html"`,
+      "Content-Disposition": buildContentDisposition(`${baseName}.html`, "html"),
       "Cache-Control": "no-store",
     });
     res.send(html);
@@ -143,10 +156,8 @@ ${escapedLines}
 // POST /tools/pdf-to-pptx
 // Convert PDF to PowerPoint using LibreOffice headless.
 // ─────────────────────────────────────────────────────────
-router.post("/tools/pdf-to-pptx", mediumRateLimit, upload.single("file"), async (req: Request, res: Response) => {
+router.post("/tools/pdf-to-pptx", mediumRateLimit, upload.single("file"), guardSinglePdf, async (req: Request, res: Response) => {
   if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
-  if (req.file.mimetype !== "application/pdf") { apiError(res, 415, "UNSUPPORTED_TYPE", "Only PDF files are accepted."); return; }
-  if (req.file.size > 50 * 1024 * 1024) { apiError(res, 413, "FILE_TOO_LARGE", "File too large. Maximum 50 MB."); return; }
 
   const baseName = (req.file.originalname ?? "document").replace(/\.pdf$/i, "");
 
@@ -154,7 +165,7 @@ router.post("/tools/pdf-to-pptx", mediumRateLimit, upload.single("file"), async 
     const pptxBuf = await convertWithLibreOffice(req.file.buffer, "pdf", "pptx");
     res.set({
       "Content-Type": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-      "Content-Disposition": `attachment; filename="${baseName}.pptx"`,
+      "Content-Disposition": buildContentDisposition(`${baseName}.pptx`, "pptx"),
       "Cache-Control": "no-store",
     });
     res.send(pptxBuf);
