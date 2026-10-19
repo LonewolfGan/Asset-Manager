@@ -9,7 +9,7 @@
     "serve": "vite preview --config vite.config.ts --host 0.0.0.0",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "sitemap": "node scripts/generate-sitemap.mjs",
-    "test": "vitest run --config vitest.config.ts",
+    "test": "node ./scripts/test-runner.mjs",
     "test:watch": "vitest --config vitest.config.ts",
     "test:coverage": "vitest run --config vitest.config.ts --coverage",
     "test:e2e": "playwright test",
