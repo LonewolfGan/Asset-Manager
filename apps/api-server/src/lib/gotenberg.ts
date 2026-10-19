@@ -3,7 +3,7 @@ const GOTENBERG_URL = process.env["GOTENBERG_URL"] ?? `http://127.0.0.1:${DEFAUL
 const REQUEST_TIMEOUT_MS = 60_000;
 
 export interface GotenbergOptions {
-  pdfa?: string;
+  pdfa?: "PDF/A-1b" | "PDF/A-2b" | "PDF/A-3b" | string;
   landscape?: boolean;
   nativePageRanges?: string;
 }

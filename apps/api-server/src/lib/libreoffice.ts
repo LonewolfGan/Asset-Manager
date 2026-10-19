@@ -13,6 +13,7 @@ import { BIN } from "./binaries.js";
 import { convertWithGotenberg } from "./gotenberg.js";
 import { logger } from "./logger.js";
 import { isValidTargetFormat, isValidInputExt } from "./document-validation.js";
+import { linearizePdf } from "./pdf-linearize.js";
 
 const execFileAsync = promisify(execFile);
 const LO_TIMEOUT_MS = 120_000;
@@ -52,15 +53,34 @@ async function prepareHardenedProfile(profileDir: string): Promise<void> {
  */
 function getHardenedSofficeArgs(profileDir: string): string[] {
   return [
-    "--headless",
-    "--invisible",
-    "--nologo",
-    "--nodefault",
-    "--nofirststartwizard",
-    "--norestore",
-    "--nolockcheck",
+    "--headless", "--invisible", "--nologo", "--nodefault",
+    "--nofirststartwizard", "--norestore", "--nolockcheck",
     `-env:UserInstallation=file://${profileDir}`,
   ];
+}
+
+export interface LibreOfficeConvertOptions {
+  pdfa?: "PDF/A-1b" | "PDF/A-2b" | "PDF/A-3b" | boolean;
+  landscape?: boolean;
+  nativePageRanges?: string;
+}
+
+const CALC_EXTS = new Set(["xlsx", "xls", "ods", "csv", "tsv", "xlsm", "xlt", "xltx"]);
+const IMPRESS_EXTS = new Set(["pptx", "ppt", "odp", "pps", "ppsx", "pot", "potx"]);
+const DRAW_EXTS = new Set(["odg", "fodg", "otg"]);
+
+export function getLibreOfficePdfExportFilter(inputExt: string, pdfa?: string | boolean): string {
+  const norm = inputExt.toLowerCase().trim().replace(/^\./, "");
+  let filter = "writer_pdf_Export";
+  if (CALC_EXTS.has(norm)) filter = "calc_pdf_Export";
+  else if (IMPRESS_EXTS.has(norm)) filter = "impress_pdf_Export";
+  else if (DRAW_EXTS.has(norm)) filter = "draw_pdf_Export";
+
+  if (pdfa) {
+    const version = (pdfa === "PDF/A-1b" || pdfa === "1") ? "1" : (pdfa === "PDF/A-3b" || pdfa === "3") ? "3" : "2";
+    return `pdf:${filter}:{"SelectPdfVersion":{"type":"long","value":"${version}"}}`;
+  }
+  return `pdf:${filter}`;
 }
 
 /**
@@ -72,6 +92,7 @@ export async function convertWithLibreOffice(
   inputBuffer: Buffer,
   inputExt: string,
   targetFormat: string,
+  options?: LibreOfficeConvertOptions,
 ): Promise<Buffer> {
   const normTarget = targetFormat.toLowerCase().trim().replace(/^\./, "");
   const normInput = inputExt.toLowerCase().trim().replace(/^\./, "");
@@ -87,7 +108,15 @@ export async function convertWithLibreOffice(
   if (normTarget === "pdf" && normInput !== "pdf") {
     try {
       const filename = `document.${normInput}`;
-      return await convertWithGotenberg(inputBuffer, filename);
+      const pdfaOpt = options?.pdfa
+        ? (typeof options.pdfa === "string" ? options.pdfa : "PDF/A-2b")
+        : undefined;
+      const gotenbergBuf = await convertWithGotenberg(inputBuffer, filename, {
+        pdfa: pdfaOpt,
+        landscape: options?.landscape,
+        nativePageRanges: options?.nativePageRanges,
+      });
+      return await linearizePdf(gotenbergBuf);
     } catch (gotenbergErr) {
       logger.debug(
         { err: gotenbergErr instanceof Error ? gotenbergErr.message : String(gotenbergErr) },
@@ -110,6 +139,8 @@ export async function convertWithLibreOffice(
 
     if (normInput === "pdf" && normTarget === "pptx") {
       args.push("--infilter=impress_pdf_import", "--convert-to", "pptx:Impress MS PowerPoint 2007 XML");
+    } else if (normTarget === "pdf") {
+      args.push("--convert-to", getLibreOfficePdfExportFilter(normInput, options?.pdfa));
     } else {
       args.push("--convert-to", normTarget);
     }
@@ -126,11 +157,19 @@ export async function convertWithLibreOffice(
         http_proxy: "",
         https_proxy: "",
         all_proxy: "",
+        HTTP_PROXY: "",
+        HTTPS_PROXY: "",
+        ALL_PROXY: "",
+        NO_PROXY: "*",
       },
     });
 
     const outputPath = join(workDir, `input.${normTarget}`);
-    return await readFile(outputPath);
+    const outBuf = await readFile(outputPath);
+    if (normTarget === "pdf") {
+      return await linearizePdf(outBuf);
+    }
+    return outBuf;
   } finally {
     await Promise.all([
       rm(workDir, { recursive: true, force: true }),
@@ -178,6 +217,10 @@ export async function convertPptxToImages(
         http_proxy: "",
         https_proxy: "",
         all_proxy: "",
+        HTTP_PROXY: "",
+        HTTPS_PROXY: "",
+        ALL_PROXY: "",
+        NO_PROXY: "*",
       },
     });
 
