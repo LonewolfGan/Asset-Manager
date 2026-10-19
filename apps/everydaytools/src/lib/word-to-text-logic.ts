@@ -1,4 +1,4 @@
-import { apiUrl } from '@/lib/apiBase';
+import mammoth from 'mammoth';
 import type { ConversionFormat } from '@/components/conversion';
 
 export interface WordToTextResult {
@@ -77,44 +77,31 @@ export async function convertWordToText(
   options: { isFr: boolean; errorFallback?: string }
 ): Promise<WordToTextResult> {
   const { isFr, errorFallback } = options;
-  const fd = new FormData();
-  fd.append('file', file);
 
-  const [res] = await Promise.all([
-    fetch(apiUrl('/api/convert/docx-to-text'), {
-      method: 'POST',
-      body: fd,
-    }),
-    new Promise((resolve) => setTimeout(resolve, 800)),
-  ]);
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const { value } = await mammoth.extractRawText({ arrayBuffer });
+    const textContent = value ?? '';
+    const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+    const filename = buildTextFilename(file.name);
 
-  if (!res.ok) {
-    const errJson = (await res.json().catch(() => ({}))) as {
-      error?: string;
-      message?: string;
+    return {
+      blob,
+      filename,
+      sizeAfter: blob.size,
+      sizeBefore: file.size,
+      textOutput: textContent,
     };
-    throw new Error(
-      errJson.message ??
-        errJson.error ??
-        errorFallback ??
-        (isFr
-          ? 'Échec de l’extraction du texte. Veuillez réessayer.'
-          : 'Failed to extract text. Please try again.')
-    );
+  } catch (err) {
+    const message =
+      err instanceof Error && err.message
+        ? err.message
+        : (errorFallback ??
+            (isFr
+              ? 'Échec de l’extraction du texte. Veuillez réessayer.'
+              : 'Failed to extract text. Please try again.'));
+    throw new Error(message);
   }
-
-  const data = (await res.json().catch(() => null)) as { text?: string } | null;
-  const textContent = data?.text ?? '';
-  const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
-  const filename = buildTextFilename(file.name);
-
-  return {
-    blob,
-    filename,
-    sizeAfter: blob.size,
-    sizeBefore: file.size,
-    textOutput: textContent,
-  };
 }
 
 export function triggerDownload(blob: Blob, filename: string): void {

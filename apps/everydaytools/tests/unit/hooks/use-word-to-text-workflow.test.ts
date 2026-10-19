@@ -177,6 +177,39 @@ describe('useWordToTextWorkflow [TDD-Lock ECC]', () => {
     hook.unmount();
   });
 
+  it('extracts text without network calls or timer delays', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch');
+    const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout');
+    const mockResult = {
+      blob: new Blob(['instant result'], { type: 'text/plain' }),
+      filename: 'instant.txt',
+      sizeBefore: 100,
+      sizeAfter: 14,
+      textOutput: 'instant result',
+    };
+    vi.mocked(wordToTextLogic.convertWordToText).mockResolvedValue(mockResult);
+
+    const hook = renderWorkflowHook();
+    const validFile = new File(['content'], 'instant.docx');
+    act(() => hook.current.validateAndSetFile(validFile));
+
+    let convertPromise: Promise<void>;
+    act(() => {
+      convertPromise = hook.current.handleConvert();
+    });
+
+    await act(async () => {
+      await convertPromise;
+    });
+
+    expect(hook.current.result).toEqual(mockResult);
+    expect(fetchSpy).not.toHaveBeenCalled();
+    expect(setTimeoutSpy).not.toHaveBeenCalled();
+    fetchSpy.mockRestore();
+    setTimeoutSpy.mockRestore();
+    hook.unmount();
+  });
+
   it('triggers download with result payload', () => {
     const hook = renderWorkflowHook();
     const mockResult = {

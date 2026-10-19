@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import mammoth from 'mammoth';
 import {
   getSourceFormat,
   getTargetFormat,
@@ -71,37 +72,61 @@ describe('word-to-text-logic', () => {
     expect(result.errorTitle).toBe('Fichier trop volumineux');
   });
 
-  it('converts word to text successfully via API response', async () => {
-    const mockFile = new File(['content'], 'sample.docx', {
+  it('converts word to text in-browser via mammoth without network or delays', async () => {
+    const mockFile = new File(['mock docx binary content'], 'sample.docx', {
       type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     });
+    const fakeBuffer = new ArrayBuffer(16);
+    vi.spyOn(mockFile, 'arrayBuffer').mockResolvedValue(fakeBuffer);
 
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: true,
-      json: async () => ({ text: 'Extracted plain text content' }),
-    } as Response);
+    const extractSpy = vi.spyOn(mammoth, 'extractRawText').mockResolvedValue({
+      value: 'Extracted plain text in browser\nLine 2',
+      messages: [],
+    });
+
+    const fetchSpy = vi.spyOn(globalThis, 'fetch');
+    const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout');
 
     const result = await convertWordToText(mockFile, { isFr: false });
 
+    expect(extractSpy).toHaveBeenCalledWith({ arrayBuffer: fakeBuffer });
+    expect(fetchSpy).not.toHaveBeenCalled();
+    expect(setTimeoutSpy).not.toHaveBeenCalled();
     expect(result.filename).toBe('sample.txt');
-    expect(result.textOutput).toBe('Extracted plain text content');
+    expect(result.textOutput).toBe('Extracted plain text in browser\nLine 2');
     expect(result.sizeBefore).toBe(mockFile.size);
-    expect(result.sizeAfter).toBe(new Blob(['Extracted plain text content']).size);
+    expect(result.sizeAfter).toBe(new Blob(['Extracted plain text in browser\nLine 2']).size);
+    expect(result.blob).toBeInstanceOf(Blob);
+    expect(result.blob.type).toBe('text/plain;charset=utf-8');
   });
 
-  it('handles API conversion failure with proper error message', async () => {
-    const mockFile = new File(['content'], 'broken.docx', {
+  it('handles in-browser extraction failure with localized error message', async () => {
+    const mockFile = new File(['corrupted content'], 'broken.docx', {
       type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     });
+    vi.spyOn(mockFile, 'arrayBuffer').mockResolvedValue(new ArrayBuffer(8));
+    vi.spyOn(mammoth, 'extractRawText').mockRejectedValue(new Error('Corrupt zip archive'));
 
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: false,
-      json: async () => ({ message: 'Extraction failed on corrupt docx' }),
-    } as Response);
+    const fetchSpy = vi.spyOn(globalThis, 'fetch');
 
     await expect(convertWordToText(mockFile, { isFr: true })).rejects.toThrow(
-      'Extraction failed on corrupt docx'
+      'Corrupt zip archive'
     );
+    expect(fetchSpy).not.toHaveBeenCalled();
+  });
+
+  it('falls back to custom error fallback or localized default if mammoth rejects without message', async () => {
+    const mockFile = new File(['bad'], 'test.docx');
+    vi.spyOn(mockFile, 'arrayBuffer').mockResolvedValue(new ArrayBuffer(4));
+    vi.spyOn(mammoth, 'extractRawText').mockRejectedValue('Unknown raw failure');
+
+    await expect(
+      convertWordToText(mockFile, { isFr: true, errorFallback: 'Erreur personnalisée' })
+    ).rejects.toThrow('Erreur personnalisée');
+
+    await expect(
+      convertWordToText(mockFile, { isFr: false })
+    ).rejects.toThrow('Failed to extract text. Please try again.');
   });
 
   it('triggers download with an anchor element and delayed URL revocation', () => {
