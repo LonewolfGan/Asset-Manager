@@ -14,7 +14,12 @@ export interface UseImageUpscaleWorkflowOptions {
   onResetLoupe?: () => void;
 }
 
+/**
+ * Image upscale workflow hook providing zero-delay Lanczos3 backend integration
+ * with resilient client-side HTML5 Canvas fallback for offline/error handling.
+ */
 export function useImageUpscaleWorkflow({ isFr, onResetLoupe }: UseImageUpscaleWorkflowOptions) {
+
   const [files, setFiles] = useState<File[]>([]);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [resultUrl, setResultUrl] = useState<string | null>(null);
