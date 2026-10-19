@@ -18,10 +18,10 @@ describe('image-upscale-logic', () => {
     expect(dim4x.targetH).toBe(2400);
   });
 
-  it('caps at maxDimension limit (8000px)', () => {
+  it('caps at maxDimension limit (8000px) while preserving aspect ratio', () => {
     const capped = calculateUpscaleDimensions(3000, 2500, 4, 8000);
     expect(capped.targetW).toBe(8000);
-    expect(capped.targetH).toBe(8000);
+    expect(capped.targetH).toBe(6667);
   });
 
   it('formats bytes accurately', () => {

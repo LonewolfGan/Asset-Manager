@@ -12,8 +12,14 @@ export function calculateUpscaleDimensions(
   scale: 2 | 4,
   maxDimension: number = 8000
 ): UpscaleDimensions {
-  const targetW = Math.min(maxDimension, Math.round(origW * scale));
-  const targetH = Math.min(maxDimension, Math.round(origH * scale));
+  let targetW = Math.round(origW * scale);
+  let targetH = Math.round(origH * scale);
+
+  if (targetW > maxDimension || targetH > maxDimension) {
+    const ratio = Math.min(maxDimension / targetW, maxDimension / targetH);
+    targetW = Math.round(targetW * ratio);
+    targetH = Math.round(targetH * ratio);
+  }
 
   return {
     origW,
@@ -79,9 +85,18 @@ export async function upscaleCanvasClientSide(
     img.src = previewUrl;
   });
 
+  let targetW = Math.round(origW * scale);
+  let targetH = Math.round(origH * scale);
+  const maxDimension = 8000;
+  if (targetW > maxDimension || targetH > maxDimension) {
+    const ratio = Math.min(maxDimension / targetW, maxDimension / targetH);
+    targetW = Math.round(targetW * ratio);
+    targetH = Math.round(targetH * ratio);
+  }
+
   const canvas = document.createElement('canvas');
-  canvas.width = Math.min(8000, origW * scale);
-  canvas.height = Math.min(8000, origH * scale);
+  canvas.width = targetW;
+  canvas.height = targetH;
   const ctx = canvas.getContext('2d');
   if (!ctx) {
     throw new Error(isFr ? 'Canevas 2D non disponible.' : '2D canvas not available.');
