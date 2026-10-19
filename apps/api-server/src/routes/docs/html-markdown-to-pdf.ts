@@ -80,6 +80,11 @@ router.post("/tools/markdown-to-pdf", defaultRateLimit, upload.single("file"), a
       return;
     }
 
+    if (markdown.length > 2_000_000) {
+      apiError(res, 413, "FILE_TOO_LARGE", "Markdown too large (max 2 MB)");
+      return;
+    }
+
     const title = filename.replace(/\.pdf$/i, "");
     const pdfBuf = await renderMarkdownToPdfBuffer(markdown, title);
     await sendPdf(res, pdfBuf, filename);

@@ -7,7 +7,7 @@ import htmlMarkdownRouter from "./html-markdown-to-pdf.js";
 
 function startTestServer(): Promise<{ server: http.Server; port: number }> {
   const app = express();
-  app.use(express.json());
+  app.use(express.json({ limit: "10mb" }));
   app.use(htmlMarkdownRouter);
   return new Promise((resolve) => {
     const server = app.listen(0, "127.0.0.1", () => {
@@ -147,6 +147,26 @@ describe("Markdown to PDF Logic & Gotenberg Modern Pipeline (TDD)", () => {
       assert.strictEqual(res.status, 400);
       const json = await res.json() as any;
       assert.strictEqual(json.code, "MISSING_FILE");
+    });
+
+    it("returns 413 when markdown payload exceeds 2MB limit", async () => {
+      const hugeMarkdown = "a".repeat(2_000_001);
+      const res = await fetch(`http://127.0.0.1:${testPort}/tools/markdown-to-pdf`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ markdown: hugeMarkdown }),
+      });
+
+      assert.strictEqual(res.status, 413);
+      const json = await res.json() as any;
+      assert.strictEqual(json.code, "FILE_TOO_LARGE");
+    });
+
+    it("sanitizes script tags safely without crashing or embedding executable script", async () => {
+      const xssMd = "# Title\n\n<script>alert('xss')</script>\n\nSafe paragraph.";
+      const buf = await renderMarkdownToPdfBuffer(xssMd, "Sanitize Test");
+      assert.ok(Buffer.isBuffer(buf));
+      assert.strictEqual(buf.subarray(0, 5).toString("ascii"), "%PDF-");
     });
   });
 });

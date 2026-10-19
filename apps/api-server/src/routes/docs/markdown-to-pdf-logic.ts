@@ -129,7 +129,11 @@ export async function renderMarkdownToPdfBuffer(
   title?: string,
 ): Promise<Buffer> {
   const rawHtml = await marked(markdownText);
-  const fullHtml = buildMarkdownHtmlDocument(String(rawHtml), title);
+  const sanitizedHtml = String(rawHtml).replace(
+    /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
+    "",
+  );
+  const fullHtml = buildMarkdownHtmlDocument(sanitizedHtml, title);
 
   if (await isGotenbergHealthy()) {
     try {
