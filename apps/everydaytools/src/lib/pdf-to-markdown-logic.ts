@@ -1,4 +1,3 @@
-import { apiUrl } from '@/lib/apiBase';
 import type { ConversionFormat } from '@/components/conversion';
 
 export interface PdfToMarkdownResult {
@@ -68,47 +67,191 @@ export function validatePdfFile(
   return { isValid: true };
 }
 
+interface ExtractedItem {
+  str: string;
+  fontSize: number;
+  x: number;
+  y: number;
+}
+
+interface LineGroup {
+  y: number;
+  maxFontSize: number;
+  items: ExtractedItem[];
+}
+
+interface FormattedLine {
+  text: string;
+  isHeader: boolean;
+  isBullet: boolean;
+  y: number;
+  fontSize: number;
+}
+
+function formatPageToMarkdown(textContent: { items: unknown[] }): string {
+  const validItems: ExtractedItem[] = [];
+  for (const raw of textContent.items) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const it = raw as any;
+    if (typeof it?.str === 'string' && Array.isArray(it.transform)) {
+      validItems.push({
+        str: it.str,
+        fontSize: Math.abs(it.transform[0]) || 0,
+        x: it.transform[4] ?? 0,
+        y: it.transform[5] ?? 0,
+      });
+    }
+  }
+
+  if (validItems.length === 0) return '';
+
+  const lineGroups: LineGroup[] = [];
+  for (const item of validItems) {
+    const lastGroup = lineGroups[lineGroups.length - 1];
+    if (lastGroup && Math.abs(item.y - lastGroup.y) <= 3) {
+      lastGroup.items.push(item);
+      if (item.fontSize > lastGroup.maxFontSize) {
+        lastGroup.maxFontSize = item.fontSize;
+      }
+    } else {
+      lineGroups.push({
+        y: item.y,
+        maxFontSize: item.fontSize,
+        items: [item],
+      });
+    }
+  }
+
+  const formattedLines: FormattedLine[] = [];
+  for (const group of lineGroups) {
+    group.items.sort((a, b) => a.x - b.x);
+    let lineText = '';
+    for (const it of group.items) {
+      const s = it.str;
+      if (!s) continue;
+      if (!lineText) {
+        lineText = s;
+      } else if (lineText.endsWith(' ') || s.startsWith(' ')) {
+        lineText += s;
+      } else {
+        lineText += ' ' + s;
+      }
+    }
+    lineText = lineText.trim();
+    if (!lineText) continue;
+
+    const isBullet = /^[-*•–—\u2022\u25E6\u25AA\u25B8]\s+/.test(lineText);
+    let isHeader = false;
+    let text = lineText;
+
+    if (isBullet) {
+      text = `- ${lineText.replace(/^[-*•–—\u2022\u25E6\u25AA\u25B8]\s+/, '')}`;
+    } else if (group.maxFontSize >= 18) {
+      isHeader = true;
+      text = lineText.startsWith('#') ? lineText : `# ${lineText}`;
+    } else if (group.maxFontSize >= 14) {
+      isHeader = true;
+      text = lineText.startsWith('#') ? lineText : `## ${lineText}`;
+    }
+
+    formattedLines.push({
+      text,
+      isHeader,
+      isBullet,
+      y: group.y,
+      fontSize: group.maxFontSize,
+    });
+  }
+
+  if (formattedLines.length === 0) return '';
+
+  const blocks: string[] = [];
+  let currentBlock = '';
+  let prevLine: FormattedLine | null = null;
+
+  for (const line of formattedLines) {
+    if (!prevLine) {
+      currentBlock = line.text;
+      prevLine = line;
+      continue;
+    }
+
+    if (prevLine.isBullet && line.isBullet) {
+      currentBlock += '\n' + line.text;
+    } else if (prevLine.isHeader || line.isHeader || prevLine.isBullet || line.isBullet) {
+      blocks.push(currentBlock);
+      currentBlock = line.text;
+    } else {
+      const isNewParagraph =
+        prevLine.y === line.y
+          ? true
+          : prevLine.y - line.y > prevLine.fontSize * 1.6;
+
+      if (isNewParagraph) {
+        blocks.push(currentBlock);
+        currentBlock = line.text;
+      } else {
+        if (currentBlock.endsWith('-')) {
+          currentBlock = currentBlock.slice(0, -1) + line.text;
+        } else {
+          currentBlock += ' ' + line.text;
+        }
+      }
+    }
+    prevLine = line;
+  }
+
+  if (currentBlock) {
+    blocks.push(currentBlock);
+  }
+
+  return blocks.join('\n\n');
+}
+
 export async function convertPdfToMarkdown(
   file: File,
   options: { isFr: boolean; errorFallback?: string }
 ): Promise<PdfToMarkdownResult> {
-  const { isFr, errorFallback } = options;
-  const fd = new FormData();
-  fd.append('file', file);
+  const { isFr } = options;
 
-  const [res] = await Promise.all([
-    fetch(apiUrl('/api/convert/pdf-to-markdown'), {
-      method: 'POST',
-      body: fd,
-    }),
-    new Promise((resolve) => setTimeout(resolve, 800)),
-  ]);
+  const pdfjsLib = await import('pdfjs-dist');
+  pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+    'pdfjs-dist/build/pdf.worker.mjs',
+    import.meta.url
+  ).href;
 
-  if (!res.ok) {
-    const errJson = (await res.json().catch(() => ({}))) as {
-      error?: string;
-      message?: string;
-    };
+  const arrayBuffer = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+
+  const pagesMarkdown: string[] = [];
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const textContent = await page.getTextContent();
+    const pageMd = formatPageToMarkdown(textContent);
+    if (pageMd.trim()) {
+      pagesMarkdown.push(pageMd.trim());
+    }
+  }
+
+  const markdownText = pagesMarkdown.join('\n\n---\n\n').trim();
+
+  if (!markdownText) {
     throw new Error(
-      errJson.message ??
-        errJson.error ??
-        errorFallback ??
-        (isFr
-          ? 'Échec de la conversion en Markdown. Veuillez réessayer.'
-          : 'Failed to convert to Markdown. Please try again.')
+      isFr
+        ? 'Aucun texte extractible trouvé dans ce document PDF.'
+        : 'No extractable text found in this PDF document.'
     );
   }
 
-  const text = await res.text();
-  const blob = new Blob([text], { type: 'text/markdown;charset=utf-8' });
+  const blob = new Blob([markdownText], { type: 'text/markdown;charset=utf-8' });
   const filename = buildMarkdownFilename(file.name);
 
   return {
     blob,
     filename,
-    sizeAfter: blob.size,
     sizeBefore: file.size,
-    textOutput: text,
+    sizeAfter: blob.size,
+    textOutput: markdownText,
   };
 }
 
@@ -120,5 +263,7 @@ export function triggerDownload(blob: Blob, filename: string): void {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+  }, 1000);
 }
