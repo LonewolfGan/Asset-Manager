@@ -4,7 +4,6 @@ import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import {
   type Level,
   type CompressionPreset,
-  calculateEstimatedSize,
   generateCompressedFilename,
 } from '@/lib/image-compress-logic';
 
@@ -27,29 +26,14 @@ export function useImageCompressWorkflow(
   const [isProcessing, setIsProcessing] = useState(false);
   const [liveBytes, setLiveBytes] = useState<number>(0);
 
-  // Fluid telemetry countdown during processing
+  // Keep liveBytes reactive to selected file
   useEffect(() => {
-    if (!isProcessing || !file) return;
-
-    const startSize = file.size;
-    const selectedPreset = presets.find((p) => p.id === level) ?? presets[1];
-    const targetSize = calculateEstimatedSize(startSize, selectedPreset.ratio);
-    const duration = 2400;
-    const startTime = performance.now();
-
-    const interval = setInterval(() => {
-      const elapsed = performance.now() - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      // Natural ease-out deceleration curve
-      const ease = 1 - Math.pow(1 - progress, 3);
-      const current = Math.round(startSize - (startSize - targetSize) * ease);
-      setLiveBytes(current);
-
-      if (progress >= 1) clearInterval(interval);
-    }, 25);
-
-    return () => clearInterval(interval);
-  }, [isProcessing, file, level, presets]);
+    if (file) {
+      setLiveBytes(file.size);
+    } else {
+      setLiveBytes(0);
+    }
+  }, [file]);
 
   const resetWorkflow = useCallback(() => {
     setResult(null);
@@ -73,13 +57,10 @@ export function useImageCompressWorkflow(
       fd.append('stripMeta', 'true');
       fd.append('resizeMode', 'none');
 
-      const [res] = await Promise.all([
-        fetch(apiUrl('/api/tools/image-compress'), {
-          method: 'POST',
-          body: fd,
-        }),
-        new Promise((resolve) => setTimeout(resolve, 2400)),
-      ]);
+      const res = await fetch(apiUrl('/api/tools/image-compress'), {
+        method: 'POST',
+        body: fd,
+      });
 
       if (!res.ok) {
         const err = (await res.json().catch(() => ({}))) as { error?: string; message?: string };

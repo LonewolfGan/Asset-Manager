@@ -2,86 +2,23 @@ import { Router } from "express";
 import sharp from "sharp";
 import { upload, guardImage } from "../../middlewares/upload.js";
 import { apiError } from "../../lib/errors.js";
-import { sharpFormatFromMime, extFromFormat } from "./image-helpers.js";
+import {
+  sharpFormatFromMime,
+  extFromFormat,
+} from "./image-helpers.js";
+import { defaultRateLimit } from "../../middlewares/rateLimit.js";
+import { cropImageBuffer } from "./image-crop-logic.js";
+import { buildContentDisposition } from "../convert/convert-image.js";
+import {
+  compressImageBuffer,
+  compressAtQuality,
+  compressToTargetBytes,
+  type CompressImageOptions,
+} from "./image-compress-logic.js";
+
+export { compressAtQuality, compressToTargetBytes, compressImageBuffer };
 
 const router = Router();
-
-export async function compressAtQuality(
-  input: Buffer,
-  mime: string,
-  quality: number,
-  cachedDeflate?: Buffer,
-  strictTarget?: boolean,
-): Promise<{ output: Buffer; outMime: string }> {
-  const q = Math.min(100, Math.max(1, quality));
-  if (mime === "image/jpeg" || mime === "image/jpg") {
-    return {
-      output: await sharp(input).jpeg({ quality: q, mozjpeg: true }).toBuffer(),
-      outMime: "image/jpeg",
-    };
-  }
-  if (mime === "image/png") {
-    const colours = Math.max(16, Math.min(256, Math.round((q / 100) * 256)));
-    const deflate = cachedDeflate ?? await sharp(input).png({ compressionLevel: 9, effort: 7 }).toBuffer();
-    const palette = await sharp(input).png({ compressionLevel: 9, effort: 7, palette: true, colours, dither: 1 }).toBuffer();
-    let best = deflate.length < input.length ? deflate : input;
-    const threshold = strictTarget ? 1.0 : 0.85;
-    if (palette.length < best.length * threshold) best = palette;
-    return { output: best, outMime: "image/png" };
-  }
-  if (mime === "image/webp") {
-    return {
-      output: await sharp(input).webp({ quality: q, effort: 6 }).toBuffer(),
-      outMime: "image/webp",
-    };
-  }
-  if (mime === "image/avif") {
-    return {
-      output: await sharp(input).avif({ quality: Math.min(q, 80), effort: 7 }).toBuffer(),
-      outMime: "image/avif",
-    };
-  }
-  return {
-    output: await sharp(input).jpeg({ quality: 82, mozjpeg: true }).toBuffer(),
-    outMime: "image/jpeg",
-  };
-}
-
-export async function compressToTargetBytes(
-  input: Buffer,
-  mime: string,
-  targetBytes: number,
-): Promise<Buffer> {
-  let cachedDeflate: Buffer | undefined;
-  if (mime === "image/png") {
-    cachedDeflate = await sharp(input).png({ compressionLevel: 9, effort: 7 }).toBuffer();
-    if (cachedDeflate.length <= targetBytes) {
-      return cachedDeflate;
-    }
-  }
-
-  let lo = 1;
-  let hi = 95;
-  let best: Buffer | null = null;
-
-  for (let i = 0; i < 6; i++) {
-    const mid = Math.round((lo + hi) / 2);
-    const { output } = await compressAtQuality(input, mime, mid, cachedDeflate, true);
-    if (output.length <= targetBytes) {
-      best = output;
-      lo = mid + 1;
-    } else {
-      hi = mid - 1;
-    }
-    if (lo > hi) break;
-  }
-
-  if (!best) {
-    const { output } = await compressAtQuality(input, mime, 1, cachedDeflate, true);
-    best = output;
-  }
-  return best;
-}
 
 // ─────────────────────────────────────────────────────────
 // POST /tools/image-compress
@@ -90,62 +27,57 @@ router.post("/tools/image-compress", upload.single("file"), guardImage, async (r
   if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
 
   try {
-    const input = req.file.buffer;
-    const mime = req.file.mimetype;
     const quality = Math.min(100, Math.max(1, parseInt(String(req.body.quality ?? "82")) || 82));
     const targetKB = parseFloat(String(req.body.targetKB ?? "0")) || 0;
 
-    const resizeMode = String(req.body.resizeMode ?? "none");
+    const resizeMode = (req.body.resizeMode === "percent" || req.body.resizeMode === "dimensions")
+      ? req.body.resizeMode
+      : "none";
     const resizePct = parseFloat(String(req.body.resizePct ?? "100")) || 100;
     const resizeW = parseInt(String(req.body.resizeW ?? "0")) || undefined;
     const resizeH = parseInt(String(req.body.resizeH ?? "0")) || undefined;
+    const isGraphic = req.body.isGraphic === "true" || req.body.isGraphic === true;
 
-    if ((resizeW && resizeW > 10000) || (resizeH && resizeH > 10000)) {
-      apiError(res, 400, "INVALID_PARAM", "Resize dimensions must not exceed 10,000 px.");
+    if (
+      (resizeW !== undefined && (resizeW <= 0 || resizeW > 10000)) ||
+      (resizeH !== undefined && (resizeH <= 0 || resizeH > 10000))
+    ) {
+      apiError(res, 400, "INVALID_PARAM", "Resize dimensions must be between 1 and 10,000 px.");
       return;
     }
 
-    let workingBuffer = input;
-
-    if (resizeMode === "percent" && resizePct !== 100) {
-      const meta = await sharp(input).metadata();
-      const w = Math.round((meta.width ?? 1000) * resizePct / 100);
-      const h = Math.round((meta.height ?? 1000) * resizePct / 100);
-      workingBuffer = await sharp(input).resize(w, h).toBuffer();
-    } else if (resizeMode === "dimensions" && (resizeW || resizeH)) {
-      workingBuffer = await sharp(input)
-        .resize(resizeW, resizeH, { fit: "inside", withoutEnlargement: true })
-        .toBuffer();
+    if (resizeMode === "percent" && (resizePct < 1 || resizePct > 500)) {
+      apiError(res, 400, "INVALID_PARAM", "Resize percentage must be between 1% and 500%.");
+      return;
     }
 
-    let output: Buffer;
-    let outMime: string;
+    const options: CompressImageOptions = {
+      quality,
+      targetKB,
+      resizeMode,
+      resizePct,
+      resizeW,
+      resizeH,
+      isGraphic,
+    };
 
-    if (targetKB > 0) {
-      output = await compressToTargetBytes(workingBuffer, mime, targetKB * 1024);
-      outMime = mime === "image/jpg" ? "image/jpeg" : mime;
-    } else {
-      ({ output, outMime } = await compressAtQuality(workingBuffer, mime, quality));
-    }
+    const result = await compressImageBuffer(req.file.buffer, req.file.mimetype, options);
 
-    const finalBuffer = output.length < workingBuffer.length ? output : workingBuffer;
-    const effectiveMime = finalBuffer === workingBuffer ? (mime === "image/jpg" ? "image/jpeg" : mime) : outMime;
-    const gain = Math.round((1 - finalBuffer.length / input.length) * 100);
-    const fmt = sharpFormatFromMime(effectiveMime);
-    const ext = extFromFormat(fmt);
-    const baseName = (req.file.originalname ?? "image").replace(/\.[^.]+$/, "");
+    const baseName = (req.file.originalname ?? "image")
+      .replace(/\.[^.]+$/, "")
+      .replace(/["\r\n\\]/g, "_");
 
     res.set({
-      "Content-Type": effectiveMime,
-      "Content-Length": String(finalBuffer.length),
-      "X-Original-Size": String(input.length),
-      "X-Compressed-Size": String(finalBuffer.length),
-      "X-Compression-Gain": String(gain),
-      "Content-Disposition": `attachment; filename="compressed_${baseName}.${ext}"`,
+      "Content-Type": result.mime,
+      "Content-Length": String(result.compressedSize),
+      "X-Original-Size": String(result.originalSize),
+      "X-Compressed-Size": String(result.compressedSize),
+      "X-Compression-Gain": String(result.gain),
+      "Content-Disposition": `attachment; filename="compressed_${baseName}.${result.ext}"`,
       "Cache-Control": "no-store",
       "Access-Control-Expose-Headers": "X-Original-Size,X-Compressed-Size,X-Compression-Gain",
     });
-    res.send(finalBuffer);
+    res.send(result.buffer);
   } catch (err) {
     apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Compression failed");
   }
@@ -205,38 +137,45 @@ router.post("/tools/image-resize", upload.single("file"), guardImage, async (req
 // ─────────────────────────────────────────────────────────
 // POST /tools/image-crop
 // ─────────────────────────────────────────────────────────
-router.post("/tools/image-crop", upload.single("file"), guardImage, async (req, res) => {
+router.post("/tools/image-crop", defaultRateLimit, upload.single("file"), guardImage, async (req, res) => {
   if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
 
   try {
-    const input = req.file.buffer;
-    const mime = req.file.mimetype;
-    const left = Math.round(parseFloat(String(req.body.left ?? "0")) || 0);
-    const top = Math.round(parseFloat(String(req.body.top ?? "0")) || 0);
-    const width = Math.round(parseFloat(String(req.body.width ?? "0")));
-    const height = Math.round(parseFloat(String(req.body.height ?? "0")));
+    const left = parseFloat(String(req.body.left ?? "0")) || 0;
+    const top = parseFloat(String(req.body.top ?? "0")) || 0;
+    const width = parseFloat(String(req.body.width ?? "0"));
+    const height = parseFloat(String(req.body.height ?? "0"));
 
-    if (!width || !height || width < 1 || height < 1) {
-      apiError(res, 400, "MISSING_PARAM", "Provide left, top, width, height.");
+    if (!Number.isFinite(width) || !Number.isFinite(height) || width < 1 || height < 1) {
+      apiError(res, 400, "MISSING_PARAM", "Provide valid left, top, width, height.");
       return;
     }
 
-    const fmt = sharpFormatFromMime(mime);
-    const outMime = fmt === "jpeg" ? "image/jpeg" : `image/${fmt}`;
-    const ext = extFromFormat(fmt);
-    const baseName = (req.file.originalname ?? "image").replace(/\.[^.]+$/, "");
+    const isGraphic = req.body.isGraphic === "true" || req.body.isGraphic === true;
+    const requestedFormat = req.body.outputFormat ? String(req.body.outputFormat) : undefined;
+    const parsedQ = req.body.quality ? parseInt(String(req.body.quality), 10) : undefined;
+    const quality = parsedQ !== undefined && Number.isFinite(parsedQ) ? Math.min(100, Math.max(1, parsedQ)) : undefined;
 
-    const output = await sharp(input)
-      .extract({ left, top, width, height })
-      .toFormat(fmt, { quality: 92 })
-      .toBuffer();
+    const { buffer, mime, ext } = await cropImageBuffer(req.file.buffer, {
+      left,
+      top,
+      width,
+      height,
+      outputFormat: requestedFormat,
+      quality,
+      isGraphic,
+    });
+
+    const originalName = req.file.originalname ?? "image";
+    const rawBase = originalName.replace(/\.[^.]+$/, "");
+    const disposition = buildContentDisposition(`${rawBase}_cropped.${ext}`, ext);
 
     res.set({
-      "Content-Type": outMime,
-      "Content-Disposition": `attachment; filename="${baseName}_cropped.${ext}"`,
+      "Content-Type": mime,
+      "Content-Disposition": disposition,
       "Cache-Control": "no-store",
     });
-    res.send(output);
+    res.send(buffer);
   } catch (err) {
     apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Crop failed");
   }
