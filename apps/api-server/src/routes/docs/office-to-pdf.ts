@@ -7,6 +7,7 @@ import { convertWithLibreOffice, convertPptxToImages } from "../../lib/libreoffi
 import { mediumRateLimit } from "../../middlewares/rateLimit.js";
 import { apiError } from "../../lib/errors.js";
 import { sendPdf } from "./send-pdf.js";
+import { buildContentDisposition } from "../convert/convert-image.js";
 
 const router = Router();
 
@@ -28,13 +29,13 @@ router.post("/tools/word-to-pdf", mediumRateLimit, upload.single("file"), guardD
   try {
     const ext = /\.docx$/i.test(req.file.originalname ?? "") ? "docx" : "doc";
     const pdfBuf = await convertWithLibreOffice(req.file.buffer, ext, "pdf");
-    sendPdf(res, pdfBuf, `${baseName}.pdf`);
+    await sendPdf(res, pdfBuf, `${baseName}.pdf`);
   } catch (_loErr) {
     // Fallback: mammoth → pdfkit (layout-lossy but always works)
     try {
       const result = await mammoth.convertToHtml({ buffer: req.file.buffer });
       const pdfBuf = await htmlToPdfBuffer(result.value);
-      sendPdf(res, pdfBuf, `${baseName}.pdf`);
+      await sendPdf(res, pdfBuf, `${baseName}.pdf`);
     } catch (err) {
       apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Conversion failed");
     }
@@ -51,11 +52,11 @@ router.post("/tools/excel-to-pdf", mediumRateLimit, upload.single("file"), guard
 
   const rawName = req.file.originalname ?? "spreadsheet";
   const baseName = rawName.replace(/\.(xlsx?|xls|ods|csv)$/i, "");
-  const ext = rawName.split(".").pop()?.toLowerCase() ?? "xlsx";
+  const ext = rawName.includes(".") ? rawName.split(".").pop()?.toLowerCase() ?? "xlsx" : "xlsx";
 
   try {
     const pdfBuf = await convertWithLibreOffice(req.file.buffer, ext, "pdf");
-    sendPdf(res, pdfBuf, `${baseName}.pdf`);
+    await sendPdf(res, pdfBuf, `${baseName}.pdf`);
   } catch (_loErr) {
     // Fallback: xlsx → pdfkit (text-only grid)
     try {
@@ -83,7 +84,7 @@ router.post("/tools/excel-to-pdf", mediumRateLimit, upload.single("file"), guard
         doc.end();
       });
 
-      sendPdf(res, pdfBuf, `${baseName}.pdf`);
+      await sendPdf(res, pdfBuf, `${baseName}.pdf`);
     } catch (err) {
       apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Conversion failed");
     }
@@ -103,7 +104,7 @@ router.post("/tools/pptx-to-pdf", mediumRateLimit, upload.single("file"), guardD
   try {
     const ext = /\.ppt$/i.test(req.file.originalname ?? "") ? "ppt" : "pptx";
     const pdfBuf = await convertWithLibreOffice(req.file.buffer, ext, "pdf");
-    sendPdf(res, pdfBuf, `${baseName}.pdf`);
+    await sendPdf(res, pdfBuf, `${baseName}.pdf`);
   } catch (_loErr) {
     // Fallback: XML text extraction → pdfkit
     try {
@@ -156,7 +157,7 @@ router.post("/tools/pptx-to-pdf", mediumRateLimit, upload.single("file"), guardD
         doc.end();
       });
 
-      sendPdf(res, pdfBuf, `${baseName}.pdf`);
+      await sendPdf(res, pdfBuf, `${baseName}.pdf`);
     } catch (err) {
       apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Conversion failed");
     }
@@ -187,7 +188,7 @@ router.post("/tools/pptx-to-images", mediumRateLimit, upload.single("file"), gua
 
     res.set({
       "Content-Type": "application/zip",
-      "Content-Disposition": `attachment; filename="${baseName}_slides.zip"`,
+      "Content-Disposition": buildContentDisposition(`${baseName}_slides.zip`, "zip"),
       "X-Slide-Count": String(slides.length),
       "Cache-Control": "no-store",
       "Access-Control-Expose-Headers": "X-Slide-Count",

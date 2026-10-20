@@ -1,11 +1,11 @@
 import { useState, useCallback, useEffect } from 'react';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
-import { apiUrl } from '@/lib/apiBase';
 import { consumeHandoffFile } from '@/lib/file-handoff';
-import type {
-  WatermarkPattern,
-  WatermarkPagesScope,
-  WatermarkAngle,
+import {
+  applyWatermarkToPdf,
+  type WatermarkPattern,
+  type WatermarkPagesScope,
+  type WatermarkAngle,
 } from '@/lib/pdf-watermark-logic';
 
 export interface UsePdfWatermarkWorkflowOptions {
@@ -136,32 +136,16 @@ export function usePdfWatermarkWorkflow({
 
     try {
       trackToolUsed('pdf-watermark', 'pdf');
-      const fd = new FormData();
-      fd.append('file', file);
-      fd.append('text', text.trim());
-      fd.append('opacity', String(opacity));
-      fd.append('fontSize', String(fontSize));
-      fd.append('angle', String(angle));
-      fd.append('color', colorHex);
-      fd.append('pages', pagesScope);
-      fd.append('pattern', pattern);
+      const blob = await applyWatermarkToPdf(file, {
+        text: text.trim(),
+        opacity,
+        fontSize,
+        angle,
+        colorHex,
+        pagesScope,
+        pattern,
+      });
 
-      const [res] = await Promise.all([
-        fetch(apiUrl('/api/tools/pdf-watermark'), {
-          method: 'POST',
-          body: fd,
-        }),
-        new Promise((resolve) => setTimeout(resolve, 800)),
-      ]);
-
-      if (!res.ok) {
-        const err = (await res.json().catch(() => ({ error: tc.error }))) as {
-          error?: string;
-        };
-        throw new Error(err.error ?? tc.error);
-      }
-
-      const blob = await res.blob();
       setResult({
         blob,
         filename: file.name.replace(/\.pdf$/i, '_watermarked.pdf'),

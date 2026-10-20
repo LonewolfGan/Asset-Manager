@@ -1,220 +1,223 @@
 import { Router } from "express";
-import { PDFDocument, degrees } from "pdf-lib";
 import { upload } from "../../middlewares/upload.js";
 import { defaultRateLimit } from "../../middlewares/rateLimit.js";
 import { apiError } from "../../lib/errors.js";
-import { linearizePdf } from "../../lib/pdf-linearize.js";
-import { guardSinglePdf, guardMultiPdf, pdfBaseName, parsePageRanges } from "./guards.js";
-import { zipSync } from "fflate";
+import { guardSinglePdf, guardMultiPdf, pdfBaseName } from "./guards.js";
+import { buildContentDisposition } from "../convert/convert-image.js";
+import {
+  reorderPdfPages,
+  mergePdfDocuments,
+  splitPdfDocument,
+  rotatePdfPages,
+} from "./pdf-transform-logic.js";
 
 const router = Router();
 
 // ─────────────────────────────────────────────────────────
 // POST /tools/pdf-reorder
 // ─────────────────────────────────────────────────────────
-router.post("/tools/pdf-reorder", defaultRateLimit, upload.single("file"), guardSinglePdf, async (req, res) => {
-  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
-
-  const pagesParam = String(req.body.pages ?? "");
-  if (!pagesParam.trim()) {
-    apiError(res, 400, "MISSING_PARAM", "pages parameter required (comma-separated 1-based page numbers)");
-    return;
-  }
-
-  try {
-    const src = await PDFDocument.load(req.file.buffer, { ignoreEncryption: true });
-    const numPages = src.getPageCount();
-    const pageIndices = pagesParam.split(",")
-      .map((s) => parseInt(s.trim()) - 1)
-      .filter((i) => !isNaN(i) && i >= 0 && i < numPages);
-
-    if (pageIndices.length === 0) {
-      apiError(res, 400, "INVALID_PARAM", "No valid page indices. Pages must be 1-based integers within document range.");
+router.post(
+  "/tools/pdf-reorder",
+  defaultRateLimit,
+  upload.single("file"),
+  guardSinglePdf,
+  async (req, res) => {
+    if (!req.file) {
+      apiError(res, 400, "NO_FILE", "No file uploaded");
       return;
     }
 
-    const dest = await PDFDocument.create();
-    const copied = await dest.copyPages(src, pageIndices);
-    for (const page of copied) dest.addPage(page);
+    const pagesParam = String(req.body.pages ?? "");
+    if (!pagesParam.trim()) {
+      apiError(
+        res,
+        400,
+        "MISSING_PARAM",
+        "pages parameter required (comma-separated 1-based page numbers)"
+      );
+      return;
+    }
 
-    const pdfBytes = await dest.save();
-    const finalBuffer = await linearizePdf(Buffer.from(pdfBytes));
+    try {
+      const pageNumbers = pagesParam
+        .split(",")
+        .map((s) => parseInt(s.trim(), 10))
+        .filter((n) => !isNaN(n) && n > 0);
 
-    const baseName = pdfBaseName(req.file.originalname);
-    res.set({
-      "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="${baseName}_reordered.pdf"`,
-      "X-Page-Count": String(pageIndices.length),
-      "Cache-Control": "no-store",
-      "Access-Control-Expose-Headers": "X-Page-Count",
-    });
-    res.send(finalBuffer);
-  } catch (err) {
-    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Reorder failed");
+      if (pageNumbers.length === 0) {
+        apiError(
+          res,
+          400,
+          "INVALID_PARAM",
+          "No valid page indices. Pages must be 1-based integers within document range."
+        );
+        return;
+      }
+
+      const result = await reorderPdfPages(req.file.buffer, pageNumbers);
+      const baseName = pdfBaseName(req.file.originalname);
+      const disposition = buildContentDisposition(`${baseName}_reordered.pdf`, "pdf");
+
+      res.set({
+        "Content-Type": "application/pdf",
+        "Content-Disposition": disposition,
+        "X-Page-Count": String(result.pageCount),
+        "Cache-Control": "no-store",
+        "Access-Control-Expose-Headers": "X-Page-Count",
+      });
+      res.send(result.buffer);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Reorder failed";
+      const status = msg.includes("No valid page") || msg.includes("Invalid") ? 400 : 500;
+      apiError(res, status, "CONVERSION_FAILED", msg);
+    }
   }
-});
+);
 
 // ─────────────────────────────────────────────────────────
 // POST /tools/pdf-merge
 // ─────────────────────────────────────────────────────────
-router.post("/tools/pdf-merge", upload.array("files", 20), guardMultiPdf, async (req, res) => {
-  const files = req.files as Express.Multer.File[] | undefined;
-  if (!files || files.length < 2) {
-    apiError(res, 400, "MISSING_FILES", "At least 2 PDF files are required."); return;
-  }
-
-  try {
-    const merged = await PDFDocument.create();
-    for (const file of files) {
-      const src = await PDFDocument.load(file.buffer);
-      const pages = await merged.copyPages(src, src.getPageIndices());
-      pages.forEach((p) => merged.addPage(p));
+router.post(
+  "/tools/pdf-merge",
+  defaultRateLimit,
+  upload.array("files", 20),
+  guardMultiPdf,
+  async (req, res) => {
+    const files = req.files as Express.Multer.File[] | undefined;
+    if (!files || files.length < 2) {
+      apiError(res, 400, "MISSING_FILES", "At least 2 PDF files are required.");
+      return;
     }
-    const pdfBytes = await merged.save();
-    const finalBuffer = await linearizePdf(Buffer.from(pdfBytes));
-    res.set({
-      "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="merged_document.pdf"`,
-      "Cache-Control": "no-store",
-    });
-    res.send(finalBuffer);
-  } catch (err) {
-    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Merge failed");
+
+    try {
+      const buffers = files.map((f) => f.buffer);
+      const result = await mergePdfDocuments(buffers);
+      const disposition = buildContentDisposition("merged_document.pdf", "pdf");
+
+      res.set({
+        "Content-Type": "application/pdf",
+        "Content-Disposition": disposition,
+        "X-Page-Count": String(result.pageCount),
+        "Cache-Control": "no-store",
+        "Access-Control-Expose-Headers": "X-Page-Count",
+      });
+      res.send(result.buffer);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Merge failed";
+      const isClientErr = msg.includes("Invalid") || msg.includes("required") || msg.includes("corrupt");
+      apiError(res, isClientErr ? 400 : 500, "CONVERSION_FAILED", msg);
+    }
   }
-});
+);
 
 // ─────────────────────────────────────────────────────────
 // POST /tools/pdf-split
 // ─────────────────────────────────────────────────────────
-router.post("/tools/pdf-split", upload.single("file"), guardSinglePdf, async (req, res) => {
-  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
-
-  try {
-    const mode = String(req.body.mode ?? "every");
-    const rangesStr = String(req.body.ranges ?? "");
-    const mergeOutput = String(req.body.merge ?? "false") === "true";
-    const src = await PDFDocument.load(req.file.buffer);
-    const numPages = src.getPageCount();
-    const baseName = pdfBaseName(req.file.originalname);
-
-    let segments: number[][];
-    if (mode === "every") {
-      segments = Array.from({ length: numPages }, (_, i) => [i]);
-    } else {
-      segments = parsePageRanges(rangesStr, numPages);
-      if (segments.length === 0) {
-        apiError(res, 400, "INVALID_PARAM", "Invalid or empty range. Use format: '1-3, 5, 7-9'"); return;
-      }
+router.post(
+  "/tools/pdf-split",
+  defaultRateLimit,
+  upload.single("file"),
+  guardSinglePdf,
+  async (req, res) => {
+    if (!req.file) {
+      apiError(res, 400, "NO_FILE", "No file uploaded");
+      return;
     }
 
-    if (segments.length === 1 || (mergeOutput && mode !== "every")) {
-      const out = await PDFDocument.create();
-      const allIndices = segments.flat();
-      const pages = await out.copyPages(src, allIndices);
-      pages.forEach((p) => out.addPage(p));
-      const bytes = await out.save();
-      res.set({
-        "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="${baseName}_extracted.pdf"`,
-        "Cache-Control": "no-store",
+    try {
+      const mode = (String(req.body.mode ?? "every") as "every" | "ranges");
+      const rangesStr = String(req.body.ranges ?? "");
+      const mergeOutput = String(req.body.merge ?? "false") === "true";
+      const baseName = pdfBaseName(req.file.originalname);
+
+      const result = await splitPdfDocument(req.file.buffer, {
+        mode,
+        rangesStr,
+        mergeOutput,
+        baseName,
       });
-      res.send(Buffer.from(bytes));
-    } else {
-      const zipEntries: Record<string, Uint8Array> = {};
-      for (let i = 0; i < segments.length; i++) {
-        const seg = segments[i];
-        const out = await PDFDocument.create();
-        const pages = await out.copyPages(src, seg);
-        pages.forEach((p) => out.addPage(p));
-        const bytes = await out.save();
-        const fname = seg.length === 1
-          ? `${baseName}_page_${seg[0] + 1}.pdf`
-          : `${baseName}_pages_${seg[0] + 1}-${seg[seg.length - 1] + 1}.pdf`;
-        zipEntries[fname] = new Uint8Array(bytes);
+
+      if (result.isZip) {
+        const disposition = buildContentDisposition(`${baseName}_split.zip`, "zip");
+        res.set({
+          "Content-Type": "application/zip",
+          "Content-Disposition": disposition,
+          "X-Segment-Count": String(result.segmentCount),
+          "Cache-Control": "no-store",
+          "Access-Control-Expose-Headers": "X-Segment-Count",
+        });
+      } else {
+        const disposition = buildContentDisposition(`${baseName}_extracted.pdf`, "pdf");
+        res.set({
+          "Content-Type": "application/pdf",
+          "Content-Disposition": disposition,
+          "X-Segment-Count": String(result.segmentCount),
+          "Cache-Control": "no-store",
+          "Access-Control-Expose-Headers": "X-Segment-Count",
+        });
       }
-      const zipBuf = Buffer.from(zipSync(zipEntries, { level: 6 }));
-      res.set({
-        "Content-Type": "application/zip",
-        "Content-Disposition": `attachment; filename="${baseName}_split.zip"`,
-        "Cache-Control": "no-store",
-      });
-      res.send(zipBuf);
+      res.send(result.buffer);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Split failed";
+      const status = msg.includes("Invalid or empty") || msg.includes("corrupt") ? 400 : 500;
+      apiError(res, status, "CONVERSION_FAILED", msg);
     }
-  } catch (err) {
-    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Split failed");
   }
-});
+);
 
 // ─────────────────────────────────────────────────────────
 // POST /tools/pdf-rotate
 // ─────────────────────────────────────────────────────────
-router.post("/tools/pdf-rotate", defaultRateLimit, upload.single("file"), guardSinglePdf, async (req, res) => {
-  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
-
-  const rotationDeg = parseInt(String(req.body.rotation ?? "90")) || 90;
-  const pageList    = String(req.body.pages ?? "all");
-  const rotationsRaw = req.body.rotations;
-
-  try {
-    const pdfDoc = await PDFDocument.load(req.file.buffer);
-    const pages = pdfDoc.getPages();
-    const totalPages = pages.length;
-
-    let perPageRotations: Record<number, number> | null = null;
-    if (rotationsRaw) {
-      try {
-        const parsed = typeof rotationsRaw === "string" ? JSON.parse(rotationsRaw) : rotationsRaw;
-        if (Array.isArray(parsed)) {
-          perPageRotations = {};
-          parsed.forEach((deg, idx) => {
-            if (typeof deg === "number" && deg % 360 !== 0) perPageRotations![idx] = deg;
-          });
-        } else if (typeof parsed === "object" && parsed !== null) {
-          perPageRotations = {};
-          for (const [k, v] of Object.entries(parsed)) {
-            const idx = parseInt(k);
-            if (!isNaN(idx) && typeof v === "number") {
-              perPageRotations[idx] = v;
-            }
-          }
-        }
-      } catch {
-        perPageRotations = null;
-      }
+router.post(
+  "/tools/pdf-rotate",
+  defaultRateLimit,
+  upload.single("file"),
+  guardSinglePdf,
+  async (req, res) => {
+    if (!req.file) {
+      apiError(res, 400, "NO_FILE", "No file uploaded");
+      return;
     }
 
-    if (perPageRotations) {
-      for (const [idxStr, deg] of Object.entries(perPageRotations)) {
-        const idx = Number(idxStr);
-        if (idx >= 0 && idx < totalPages) {
-          const current = pages[idx].getRotation().angle;
-          pages[idx].setRotation(degrees((current + (deg % 360) + 360) % 360));
+    const parsed = parseInt(String(req.body.rotation ?? "90"), 10);
+    const rotationDeg = Number.isFinite(parsed) ? parsed : 90;
+    const pageList = String(req.body.pages ?? "all");
+    const rotationsRaw = req.body.rotations;
+
+    try {
+      let perPageRotations: Record<string | number, number> | number[] | undefined;
+      if (rotationsRaw) {
+        try {
+          perPageRotations =
+            typeof rotationsRaw === "string" ? JSON.parse(rotationsRaw) : rotationsRaw;
+        } catch {
+          perPageRotations = undefined;
         }
       }
-    } else {
-      const pageIndices = pageList === "all"
-        ? Array.from({ length: totalPages }, (_, i) => i)
-        : pageList.split(",").map((s) => parseInt(s.trim()) - 1).filter((i) => i >= 0 && i < totalPages);
 
-      for (const idx of pageIndices) {
-        const current = pages[idx].getRotation().angle;
-        pages[idx].setRotation(degrees((current + rotationDeg) % 360));
-      }
+      const result = await rotatePdfPages(req.file.buffer, {
+        rotationDeg,
+        pages: pageList,
+        perPageRotations,
+      });
+
+      const baseName = pdfBaseName(req.file.originalname);
+      const disposition = buildContentDisposition(`${baseName}_rotated.pdf`, "pdf");
+
+      res.set({
+        "Content-Type": "application/pdf",
+        "Content-Disposition": disposition,
+        "X-Page-Count": String(result.pageCount),
+        "Cache-Control": "no-store",
+        "Access-Control-Expose-Headers": "X-Page-Count",
+      });
+      res.send(result.buffer);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Rotation failed";
+      const isClientErr = msg.includes("Invalid") || msg.includes("corrupt");
+      apiError(res, isClientErr ? 400 : 500, "CONVERSION_FAILED", msg);
     }
-
-    const pdfBytes = await pdfDoc.save();
-    const finalBuffer = await linearizePdf(Buffer.from(pdfBytes));
-
-    const baseName = pdfBaseName(req.file.originalname);
-    res.set({
-      "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="${baseName}_rotated.pdf"`,
-      "Cache-Control": "no-store",
-    });
-    res.send(finalBuffer);
-  } catch (err) {
-    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Rotation failed");
   }
-});
+);
 
 export default router;

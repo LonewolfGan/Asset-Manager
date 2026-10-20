@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import React, { act } from 'react';
 import { createRoot } from 'react-dom/client';
 import { useCsvJsonWorkflow } from '@/hooks/use-csv-json-workflow';
@@ -154,6 +154,28 @@ describe('useCsvJsonWorkflow direction & handoff (TDD)', () => {
 
     expect(hook.current.encoding).toBe('iso-8859-1');
     expect(hook.current.rawText).toBeTruthy();
+    hook.unmount();
+  });
+
+  it('does not introduce artificial delays during conversion (TDD RED)', async () => {
+    const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout');
+    const hook = renderCustomHook(() => useCsvJsonWorkflow(false));
+
+    act(() => {
+      hook.current.setRawText('col1,col2\nval1,val2');
+      hook.current.setIsPastedStaged(true);
+    });
+
+    await act(async () => {
+      await hook.current.handleConvert();
+    });
+
+    const artificialDelays = setTimeoutSpy.mock.calls.filter(
+      ([_, delay]) => typeof delay === 'number' && delay >= 600
+    );
+    expect(artificialDelays).toHaveLength(0);
+
+    setTimeoutSpy.mockRestore();
     hook.unmount();
   });
 });

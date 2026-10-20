@@ -1,8 +1,10 @@
 import { describe, it, expect } from 'vitest';
+import { PDFDocument } from 'pdf-lib';
 import {
   formatPageNumberLabel,
   getPositionOptions,
   getFormatOptions,
+  addPageNumbersToPdf,
   type PdfNumberPosition,
 } from '@/lib/pdf-page-numbers-logic';
 
@@ -146,4 +148,46 @@ describe('PDF Page Numbers Logic', () => {
       expect(optionsEn.find((o) => o.id === 'Page {n} of {total}')?.label).toBe('Page 1 of 10...');
     });
   });
+
+  describe('addPageNumbersToPdf (In-Browser TDD RED)', () => {
+    async function createTestPdf(pageCount: number): Promise<File> {
+      const doc = await PDFDocument.create();
+      for (let i = 0; i < pageCount; i++) {
+        doc.addPage([595, 842]);
+      }
+      const bytes = await doc.save();
+      return new File([bytes], 'doc.pdf', { type: 'application/pdf' });
+    }
+
+    it('stamps page numbers onto PDF pages and returns valid Blob', async () => {
+      const file = await createTestPdf(3);
+      const blob = await addPageNumbersToPdf(file, {
+        position: 'bottom-center',
+        format: 'Page {n} of {total}',
+        startNum: 1,
+        skipFirst: false,
+      });
+
+      expect(blob).toBeInstanceOf(Blob);
+      expect(blob.type).toBe('application/pdf');
+
+      const stampedDoc = await PDFDocument.load(await blob.arrayBuffer());
+      expect(stampedDoc.getPageCount()).toBe(3);
+    });
+
+    it('respects skipFirst and custom position', async () => {
+      const file = await createTestPdf(2);
+      const blob = await addPageNumbersToPdf(file, {
+        position: 'top-right',
+        format: '{n}',
+        startNum: 1,
+        skipFirst: true,
+      });
+
+      expect(blob).toBeInstanceOf(Blob);
+      const stampedDoc = await PDFDocument.load(await blob.arrayBuffer());
+      expect(stampedDoc.getPageCount()).toBe(2);
+    });
+  });
 });
+

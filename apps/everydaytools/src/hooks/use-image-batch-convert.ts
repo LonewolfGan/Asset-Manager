@@ -164,6 +164,9 @@ export function useImageBatchConvert({
 
     fd.append('format', toMime);
     fd.append('quality', (quality / 100).toString());
+    if (toMime === 'image/gif') {
+      fd.append('animated', 'true');
+    }
     const res = await fetch(apiUrl('/api/convert/image'), { method: 'POST', body: fd });
 
     if (!res.ok) {

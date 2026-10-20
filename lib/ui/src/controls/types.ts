@@ -17,6 +17,10 @@ export interface ColorPickerFieldProps {
   disabled?: boolean;
   align?: 'start' | 'end' | 'auto';
   side?: 'top' | 'bottom' | 'auto';
+  size?: 'sm' | 'md';
+  placeholder?: string;
+  onOpen?: () => void;
+  isActive?: boolean;
 }
 
 export interface DimensionLockGroupProps {

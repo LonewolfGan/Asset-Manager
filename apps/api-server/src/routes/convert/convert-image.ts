@@ -46,6 +46,7 @@ export interface ConvertImageOptions {
   width?: number;
   height?: number;
   isGeometric?: boolean;
+  animated?: boolean;
 }
 
 /**
@@ -56,7 +57,7 @@ export async function convertImageBuffer(
   inputBuffer: Buffer,
   options: ConvertImageOptions
 ): Promise<{ buffer: Buffer; mime: string; ext: string }> {
-  const { format, quality, width, height, isGeometric } = options;
+  const { format, quality, width, height, isGeometric, animated } = options;
   if (format === "image/svg+xml") {
     const svgBuf = await convertToSvgWithPotrace(inputBuffer, isGeometric);
     return { buffer: svgBuf, mime: "image/svg+xml", ext: "svg" };
@@ -74,7 +75,7 @@ export async function convertImageBuffer(
   }
 
   const qualityNum = quality ? Math.min(100, Math.max(1, quality)) : 80;
-  let pipeline = createColorManagedPipeline(inputBuffer);
+  let pipeline = createColorManagedPipeline(inputBuffer, Boolean(animated));
 
   if (sharpFormat === "jpeg") {
     pipeline = pipeline.flatten({ background: { r: 255, g: 255, b: 255 } });
@@ -97,8 +98,8 @@ export async function convertImageBuffer(
 // POST /convert/image
 router.post("/convert/image", defaultRateLimit, upload.single("file"), guardImage, async (req, res) => {
   if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
-  const { format, quality, width, height, isGeometric } = req.body as {
-    format?: string; quality?: string; width?: string; height?: string; isGeometric?: string;
+  const { format, quality, width, height, isGeometric, animated } = req.body as {
+    format?: string; quality?: string; width?: string; height?: string; isGeometric?: string; animated?: string | boolean;
   };
   if (!format) { apiError(res, 400, "MISSING_PARAM", "format field required"); return; }
 
@@ -112,7 +113,12 @@ router.post("/convert/image", defaultRateLimit, upload.single("file"), guardImag
 
   try {
     const { buffer, mime, ext } = await convertImageBuffer(req.file.buffer, {
-      format, quality: resolvedQuality, width: widthNum, height: heightNum, isGeometric: isGeometric === "true",
+      format,
+      quality: resolvedQuality,
+      width: widthNum,
+      height: heightNum,
+      isGeometric: isGeometric === "true",
+      animated: animated === undefined ? format === "image/gif" : (animated === true || animated === "true"),
     });
     res.set({
       "Content-Type": mime,

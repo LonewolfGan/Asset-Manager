@@ -56,4 +56,59 @@ export function getOutputFilename(originalName: string, ext: string): string {
   return `${base}_oriented.${ext}`;
 }
 
+export async function flipRotateImageInBrowser(
+  file: File,
+  rotation: number,
+  flipH: boolean,
+  flipV: boolean,
+  mimeType: string = 'image/png',
+  quality: number = 0.92
+): Promise<Blob> {
+  const url = URL.createObjectURL(file);
+  try {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      throw new Error('Canvas 2D context not available');
+    }
+
+    const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => resolve(image);
+      image.onerror = (err) => reject(err);
+      image.src = file.name && !url.includes(file.name) ? `${url}#${file.name}` : url;
+    });
+
+    const norm = normalizeRotation(rotation);
+    const { w: newW, h: newH } = getSwappedDimensions(img.naturalWidth, img.naturalHeight, norm);
+
+    canvas.width = newW;
+    canvas.height = newH;
+
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+
+    ctx.translate(newW / 2, newH / 2);
+    ctx.rotate((norm * Math.PI) / 180);
+    ctx.scale(flipH ? -1 : 1, flipV ? -1 : 1);
+    ctx.drawImage(img, -img.naturalWidth / 2, -img.naturalHeight / 2);
+
+    return await new Promise<Blob>((resolve, reject) => {
+      canvas.toBlob(
+        (b) => {
+          if (b) {
+            resolve(b);
+          } else {
+            reject(new Error('Canvas export to blob failed'));
+          }
+        },
+        mimeType || 'image/png',
+        quality
+      );
+    });
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
 

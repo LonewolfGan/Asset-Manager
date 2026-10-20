@@ -1,10 +1,10 @@
 import { useState, useMemo, useCallback } from 'react';
-import { apiUrl } from '@/lib/apiBase';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import {
   type Tranche,
   formatPagesToRangeString,
   generateBatchSlices,
+  splitPdfFile,
 } from '@/lib/pdf-split-logic';
 import type { SplitResultData } from '@/components/pdf-split/PdfSplitResultView';
 
@@ -84,31 +84,14 @@ export function usePdfSplitWorkflow(file: File | undefined, totalPages: number, 
 
     try {
       trackToolUsed('pdf-split', 'pdf');
-      const fd = new FormData();
-      fd.append('file', file);
-      fd.append('mode', 'range');
+      const splitRes = await splitPdfFile(file, {
+        mode: activeMode,
+        selectedPages: activeMode === 'extract' ? selectedPages : undefined,
+        extractAsSinglePdf: activeMode === 'extract' ? extractAsSinglePdf : undefined,
+        tranches: activeMode === 'split' ? tranches : undefined,
+      });
 
-      if (activeMode === 'extract') {
-        fd.append('ranges', formatPagesToRangeString(selectedPages));
-        fd.append('merge', extractAsSinglePdf ? 'true' : 'false');
-      } else {
-        fd.append('ranges', tranches.map((t) => `${t.from}-${t.to}`).join(', '));
-        fd.append('merge', 'false');
-      }
-
-      const [res] = await Promise.all([
-        fetch(apiUrl('/api/tools/pdf-split'), { method: 'POST', body: fd }),
-        new Promise((resolve) => setTimeout(resolve, 1500)),
-      ]);
-
-      if (!res.ok) {
-        const err = (await res.json().catch(() => ({}))) as { error?: string; message?: string };
-        throw new Error(err.message ?? err.error ?? (isFr ? 'Échec de la découpe.' : 'Failed to split.'));
-      }
-
-      const blob = await res.blob();
-      const ct = res.headers.get('Content-Type') ?? '';
-      const isZip = ct.includes('zip') || (activeMode === 'extract' && !extractAsSinglePdf) || activeMode === 'split';
+      const isZip = splitRes.isZip;
       const filename = file.name.replace(/\.pdf$/i, isZip ? '_split.zip' : isFr ? '_extraits.pdf' : '_extracted.pdf');
 
       const details =
@@ -119,10 +102,10 @@ export function usePdfSplitWorkflow(file: File | undefined, totalPages: number, 
           : `${tranches.length} PDF générés`;
 
       setResult({
-        blob,
+        blob: splitRes.blob,
         filename,
         isZip,
-        sizeAfter: blob.size,
+        sizeAfter: splitRes.blob.size,
         sizeBefore: file.size,
         title: isZip ? (isFr ? 'Archive ZIP' : 'ZIP Archive') : (isFr ? 'Document extrait' : 'Extracted PDF'),
         details,

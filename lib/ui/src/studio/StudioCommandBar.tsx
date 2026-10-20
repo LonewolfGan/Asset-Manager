@@ -61,7 +61,7 @@ export const StudioCommandBar: React.FC<StudioCommandBarProps> = ({
 
       {/* 2. Zone Centrale : Contrôles d'outils injectés à plat (zéro card-slop) */}
       {centerControls && (
-        <div className="flex items-center gap-2 justify-center flex-1 min-w-[200px] order-last md:order-none">
+        <div className="flex items-center gap-2 justify-center flex-1 min-w-[200px]">
           {centerControls}
         </div>
       )}
@@ -93,7 +93,7 @@ export const StudioCommandBar: React.FC<StudioCommandBarProps> = ({
               'h-9 px-4 rounded-xl text-xs font-semibold shadow-xs flex items-center gap-2 transition-colors',
               isActionDisabled
                 ? 'bg-zinc-200 dark:bg-zinc-800 text-zinc-400 cursor-not-allowed opacity-70'
-                : 'bg-[#FF6B35] text-white hover:bg-[#ff5519] cursor-pointer active:scale-[0.98]'
+                : 'bg-[var(--accent)] text-white hover:bg-[var(--accent-hover)] cursor-pointer active:scale-[0.98]'
             )}
           >
             {primaryAction.isLoading ? (

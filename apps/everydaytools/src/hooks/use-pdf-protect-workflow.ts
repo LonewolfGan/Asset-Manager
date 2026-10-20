@@ -153,13 +153,10 @@ export function usePdfProtectWorkflow() {
       formData.append('allowCopying', String(allowCopying));
       formData.append('allowModifying', String(allowModifying));
 
-      const [res] = await Promise.all([
-        fetch(apiUrl('/api/tools/pdf-protect'), {
-          method: 'POST',
-          body: formData,
-        }),
-        new Promise((resolve) => setTimeout(resolve, 2000)),
-      ]);
+      const res = await fetch(apiUrl('/api/tools/pdf-protect'), {
+        method: 'POST',
+        body: formData,
+      });
 
       if (!res.ok) {
         const json = await res.json().catch(() => ({ error: tc.error }));

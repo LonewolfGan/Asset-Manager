@@ -4,8 +4,24 @@ import { submitConversionJob, getJobStatus, getJobOutputPath } from "../lib/queu
 import { defaultRateLimit } from "../middlewares/rateLimit.js";
 import { apiError } from "../lib/errors.js";
 import { isValidTargetFormat, isValidInputExt } from "../lib/document-validation.js";
+import { buildContentDisposition } from "./convert/convert-image.js";
 
 const router = Router();
+
+export const SAFE_JOB_ID_REGEX = /^[a-zA-Z0-9_-]{1,64}$/;
+
+export function isValidJobId(jobId: unknown): boolean {
+  if (typeof jobId !== "string") return false;
+  const trimmed = jobId.trim();
+  if (!trimmed || trimmed !== jobId) return false;
+  return SAFE_JOB_ID_REGEX.test(trimmed);
+}
+
+export function getParamId(req: Request): string {
+  const raw = req.params["id"];
+  const val = Array.isArray(raw) ? raw[0] : (raw ?? "");
+  return typeof val === "string" ? val.trim() : "";
+}
 
 /**
  * POST /api/jobs/create
@@ -17,14 +33,14 @@ router.post(
   upload.single("file"),
   guardDocument,
   async (req: Request, res: Response) => {
-    if (!req.file) {
-      apiError(res, 400, "NO_FILE", "No file uploaded");
+    if (!req.file || !req.file.buffer || req.file.buffer.length === 0) {
+      apiError(res, 400, "NO_FILE", "No file uploaded or file is empty");
       return;
     }
 
     const taskType = (req.body?.taskType as any) ?? "word-to-pdf";
-    const targetFormat = String(req.body?.targetFormat ?? "pdf").toLowerCase().trim();
-    const originalName = req.file.originalname ?? "document.docx";
+    const targetFormat = String(req.body?.targetFormat ?? "pdf").toLowerCase().trim().replace(/^\./, "");
+    const originalName = req.file.originalname?.trim() || "document.docx";
 
     if (!isValidTargetFormat(targetFormat)) {
       apiError(res, 400, "INVALID_PARAM", `Unsupported target format: ${targetFormat}`);
@@ -62,19 +78,14 @@ router.post(
   },
 );
 
-function getParamId(req: Request): string {
-  const raw = req.params["id"];
-  return Array.isArray(raw) ? raw[0] : (raw ?? "");
-}
-
 /**
  * GET /api/jobs/:id
  * Query current job status and progress (Polling fallback).
  */
-router.get("/jobs/:id", async (req: Request, res: Response) => {
+router.get("/jobs/:id", defaultRateLimit, async (req: Request, res: Response) => {
   const jobId = getParamId(req);
-  if (!jobId) {
-    apiError(res, 400, "INVALID_ID", "Job ID is required");
+  if (!isValidJobId(jobId)) {
+    apiError(res, 400, "INVALID_ID", "Job ID is required and must be alphanumeric");
     return;
   }
 
@@ -91,10 +102,10 @@ router.get("/jobs/:id", async (req: Request, res: Response) => {
  * GET /api/jobs/:id/events
  * Real-time Server-Sent Events (SSE) stream for live 60fps progress updates.
  */
-router.get("/jobs/:id/events", async (req: Request, res: Response) => {
+router.get("/jobs/:id/events", defaultRateLimit, async (req: Request, res: Response) => {
   const jobId = getParamId(req);
-  if (!jobId) {
-    apiError(res, 400, "INVALID_ID", "Job ID is required");
+  if (!isValidJobId(jobId)) {
+    apiError(res, 400, "INVALID_ID", "Job ID is required and must be alphanumeric");
     return;
   }
 
@@ -110,23 +121,43 @@ router.get("/jobs/:id/events", async (req: Request, res: Response) => {
   res.write(`data: ${JSON.stringify({ type: "connected", jobId })}\n\n`);
 
   let isClosed = false;
-  req.on("close", () => {
+  let interval: NodeJS.Timeout | null = null;
+  let timeout: NodeJS.Timeout | null = null;
+
+  const cleanup = () => {
     isClosed = true;
-  });
+    if (interval) clearInterval(interval);
+    if (timeout) clearTimeout(timeout);
+  };
+
+  req.on("close", cleanup);
+  res.on("finish", cleanup);
+
+  // Safety: close stream if hanging more than 10 minutes
+  timeout = setTimeout(() => {
+    if (!isClosed) {
+      res.write(`data: ${JSON.stringify({ type: "error", error: "Stream timeout" })}\n\n`);
+      cleanup();
+      res.end();
+    }
+  }, 10 * 60_000);
+  timeout.unref?.();
 
   // Poll state and emit delta events every 400ms until finished or client disconnects
   let lastPercent = -1;
-  const interval = setInterval(async () => {
-    if (isClosed) {
-      clearInterval(interval);
+  let isPolling = false;
+  interval = setInterval(async () => {
+    if (isClosed || isPolling) {
+      if (isClosed) cleanup();
       return;
     }
 
+    isPolling = true;
     try {
       const job = await getJobStatus(jobId);
       if (job.status === "not_found") {
         res.write(`data: ${JSON.stringify({ type: "error", error: "Job not found" })}\n\n`);
-        clearInterval(interval);
+        cleanup();
         res.end();
         return;
       }
@@ -137,24 +168,27 @@ router.get("/jobs/:id/events", async (req: Request, res: Response) => {
       }
 
       if (job.status === "completed" || job.status === "failed") {
-        clearInterval(interval);
+        cleanup();
         res.end();
       }
     } catch {
-      clearInterval(interval);
+      cleanup();
       res.end();
+    } finally {
+      isPolling = false;
     }
   }, 400);
+  interval.unref?.();
 });
 
 /**
  * GET /api/jobs/:id/download
- * Download the converted output file.
+ * Download the converted output file with RFC 5987 Content-Disposition.
  */
-router.get("/jobs/:id/download", async (req: Request, res: Response) => {
+router.get("/jobs/:id/download", defaultRateLimit, async (req: Request, res: Response) => {
   const jobId = getParamId(req);
-  if (!jobId) {
-    apiError(res, 400, "INVALID_ID", "Job ID is required");
+  if (!isValidJobId(jobId)) {
+    apiError(res, 400, "INVALID_ID", "Job ID is required and must be alphanumeric");
     return;
   }
 
@@ -164,7 +198,16 @@ router.get("/jobs/:id/download", async (req: Request, res: Response) => {
     return;
   }
 
-  res.download(fileInfo.path, fileInfo.filename, (err) => {
+  const extMatch = fileInfo.filename.match(/\.([a-zA-Z0-9]+)$/);
+  const ext = extMatch ? extMatch[1].toLowerCase() : "bin";
+
+  res.set({
+    "Content-Disposition": buildContentDisposition(fileInfo.filename, ext),
+    "Cache-Control": "no-store",
+    "X-Content-Type-Options": "nosniff",
+  });
+
+  res.sendFile(fileInfo.path, (err) => {
     if (err && !res.headersSent) {
       apiError(res, 404, "NOT_FOUND", "Result file not found or expired");
     }

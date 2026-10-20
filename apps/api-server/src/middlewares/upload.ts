@@ -54,7 +54,8 @@ const ALLOWED_DOCUMENT_EXTS = new Set([
   ".odt", ".ods", ".odp", ".rtf", ".txt", ".html", ".htm", ".md", ".markdown"
 ]);
 
-const ALLOWED_METADATA_MIMES = new Set(["image/jpeg", "image/png", "application/pdf"]);
+const ALLOWED_METADATA_MIMES = new Set(["image/jpeg", "image/jpg", "image/png", "image/webp", "image/tiff", "application/pdf"]);
+const ALLOWED_METADATA_EXTS = new Set([".jpg", ".jpeg", ".png", ".webp", ".tiff", ".tif", ".pdf"]);
 
 const ALLOWED_BACKGROUND_MIMES = new Set(["image/jpeg", "image/jpg", "image/png", "image/webp"]);
 
@@ -110,5 +111,5 @@ function makeMimeGuard(allowed: Set<string>, sizeLimit: number, allowedExts?: Se
 
 export const guardImage = makeMimeGuard(ALLOWED_IMAGE_MIMES, SIZE_LIMITS.image, ALLOWED_IMAGE_EXTS);
 export const guardDocument = makeMimeGuard(ALLOWED_DOCUMENT_MIMES, SIZE_LIMITS.document, ALLOWED_DOCUMENT_EXTS);
-export const guardMetadata = makeMimeGuard(ALLOWED_METADATA_MIMES, SIZE_LIMITS.document);
+export const guardMetadata = makeMimeGuard(ALLOWED_METADATA_MIMES, SIZE_LIMITS.document, ALLOWED_METADATA_EXTS);
 export const guardBackground = makeMimeGuard(ALLOWED_BACKGROUND_MIMES, SIZE_LIMITS.background, ALLOWED_IMAGE_EXTS);

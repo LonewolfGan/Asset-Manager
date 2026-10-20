@@ -1,5 +1,5 @@
-import { useState, useCallback, useEffect, useMemo } from 'react';
-import { useLocale } from './use-locale';
+import { useState, useCallback, useEffect, useMemo, useContext } from 'react';
+import { LocaleContext } from '@/contexts/locale-context';
 import { trackToolUsed, trackToolError } from '../lib/analytics';
 import { consumeHandoffFile } from '../lib/file-handoff';
 import {
@@ -10,6 +10,7 @@ import {
   computeSwapOrientation,
   centerCropRect,
   maximizeCropRect,
+  cropImageInBrowser,
 } from '../lib/image-crop-logic';
 import {
   type CropResult,
@@ -17,8 +18,9 @@ import {
   downloadCropResult,
 } from '../services/image-crop-api';
 
-export function useImageCropWorkflow() {
-  const { isFr } = useLocale();
+export function useImageCropWorkflow(propIsFr?: boolean) {
+  const localeCtx = useContext(LocaleContext);
+  const isFr = propIsFr ?? localeCtx?.isFr ?? true;
 
   const [files, setFiles] = useState<File[]>([]);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -173,16 +175,36 @@ export function useImageCropWorkflow() {
 
   const handleProcessCrop = useCallback(async () => {
     trackToolUsed('image-crop', 'images');
-    if (!file || crop.w <= 0 || crop.h <= 0) return;
+    if (!file) return;
 
     setError(null);
     setIsProcessing(true);
 
     try {
-      const cropRes = await cropImageOnServer(file, crop, isFr);
-      setResult(cropRes);
-      setResultPreviewUrl(URL.createObjectURL(cropRes.blob));
-      setIsProcessing(false);
+      try {
+        const blob = await cropImageInBrowser(file, crop, file.type, 0.92);
+        const finalW = Math.round(crop.w);
+        const finalH = Math.round(crop.h);
+        const outputFilename = file.name.replace(/\.(png|jpe?g|webp|avif)$/i, '_cropped.$1');
+        const cropRes: CropResult = {
+          blob,
+          filename: outputFilename !== file.name ? outputFilename : `cropped_${file.name}`,
+          sizeBefore: file.size,
+          sizeAfter: blob.size,
+          finalW,
+          finalH,
+        };
+        setResult(cropRes);
+        setResultPreviewUrl(URL.createObjectURL(blob));
+        setIsProcessing(false);
+        return;
+      } catch {
+        // Fallback to server crop
+        const cropRes = await cropImageOnServer(file, crop, isFr);
+        setResult(cropRes);
+        setResultPreviewUrl(URL.createObjectURL(cropRes.blob));
+        setIsProcessing(false);
+      }
     } catch (e) {
       trackToolError('image-crop', 'general-error');
       setError(

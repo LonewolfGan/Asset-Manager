@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { PDFDocument } from 'pdf-lib';
 import {
   rotatePageDeg,
   calculateModifiedPagesCount,
@@ -6,6 +7,7 @@ import {
   applyRotationToAll,
   applyRotationToSelected,
   togglePageSelection,
+  rotatePdfFile,
 } from '@/lib/pdf-rotate-logic';
 
 describe('pdf-rotate-logic (TDD Phase RED)', () => {
@@ -72,4 +74,38 @@ describe('pdf-rotate-logic (TDD Phase RED)', () => {
       expect(togglePageSelection([1, 2, 4], 2)).toEqual([1, 4]);
     });
   });
+
+  describe('rotatePdfFile (In-Browser TDD RED)', () => {
+    async function createTestPdf(pageCount: number): Promise<File> {
+      const doc = await PDFDocument.create();
+      for (let i = 0; i < pageCount; i++) {
+        doc.addPage([200, 200]);
+      }
+      const bytes = await doc.save();
+      return new File([bytes], 'doc.pdf', { type: 'application/pdf' });
+    }
+
+    it('applies per-page rotations in-browser and returns valid Blob', async () => {
+      const file = await createTestPdf(2);
+      const blob = await rotatePdfFile(file, { 0: 90, 1: 180 });
+
+      expect(blob).toBeInstanceOf(Blob);
+      expect(blob.type).toBe('application/pdf');
+
+      const rotatedDoc = await PDFDocument.load(await blob.arrayBuffer());
+      expect(rotatedDoc.getPage(0).getRotation().angle).toBe(90);
+      expect(rotatedDoc.getPage(1).getRotation().angle).toBe(180);
+    });
+
+    it('applies uniform rotation to all pages', async () => {
+      const file = await createTestPdf(2);
+      const blob = await rotatePdfFile(file, 270);
+
+      expect(blob).toBeInstanceOf(Blob);
+      const rotatedDoc = await PDFDocument.load(await blob.arrayBuffer());
+      expect(rotatedDoc.getPage(0).getRotation().angle).toBe(270);
+      expect(rotatedDoc.getPage(1).getRotation().angle).toBe(270);
+    });
+  });
 });
+

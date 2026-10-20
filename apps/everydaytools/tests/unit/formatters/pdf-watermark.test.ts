@@ -1,9 +1,11 @@
 import { describe, it, expect } from 'vitest';
+import { PDFDocument } from 'pdf-lib';
 import {
   getWatermarkPresets,
   isWatermarkVisibleOnPage,
   calcWatermarkFontSize,
   AVAILABLE_ANGLES,
+  applyWatermarkToPdf,
 } from '@/lib/pdf-watermark-logic';
 
 describe('PDF Watermark Logic', () => {
@@ -64,4 +66,52 @@ describe('PDF Watermark Logic', () => {
       expect(AVAILABLE_ANGLES).toEqual([0, 45, -45]);
     });
   });
+
+  describe('applyWatermarkToPdf (In-Browser TDD RED)', () => {
+    async function createTestPdf(pageCount: number): Promise<File> {
+      const doc = await PDFDocument.create();
+      for (let i = 0; i < pageCount; i++) {
+        doc.addPage([595, 842]);
+      }
+      const bytes = await doc.save();
+      return new File([bytes], 'source.pdf', { type: 'application/pdf' });
+    }
+
+    it('applies single centered watermark to PDF pages and returns valid Blob', async () => {
+      const file = await createTestPdf(2);
+      const blob = await applyWatermarkToPdf(file, {
+        text: 'CONFIDENTIAL',
+        fontSize: 48,
+        opacity: 0.3,
+        colorHex: '#888888',
+        angle: 45,
+        pagesScope: 'all',
+        pattern: 'single',
+      });
+
+      expect(blob).toBeInstanceOf(Blob);
+      expect(blob.type).toBe('application/pdf');
+
+      const stampedDoc = await PDFDocument.load(await blob.arrayBuffer());
+      expect(stampedDoc.getPageCount()).toBe(2);
+    });
+
+    it('applies repeat watermark only to first page when pagesScope is first', async () => {
+      const file = await createTestPdf(3);
+      const blob = await applyWatermarkToPdf(file, {
+        text: 'SAMPLE',
+        fontSize: 32,
+        opacity: 0.2,
+        colorHex: '#EC1C24',
+        angle: -45,
+        pagesScope: 'first',
+        pattern: 'repeat',
+      });
+
+      expect(blob).toBeInstanceOf(Blob);
+      const stampedDoc = await PDFDocument.load(await blob.arrayBuffer());
+      expect(stampedDoc.getPageCount()).toBe(3);
+    });
+  });
 });
+

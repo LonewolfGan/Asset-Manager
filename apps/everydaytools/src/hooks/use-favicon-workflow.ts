@@ -2,12 +2,14 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { consumeHandoffFile } from '@/lib/file-handoff';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { apiUrl } from '@/lib/apiBase';
+import { downloadBlob } from '@/lib/download';
 import {
   type IconShape,
   generateHtmlSnippet,
   generateWebManifestSnippet,
   generateNextJsSnippet,
   buildClientIco,
+  buildClientFaviconZip,
 } from '@/lib/favicon-logic';
 import { renderCompositedCanvas, canvasToPngBytes } from '@/lib/favicon-canvas-renderer';
 
@@ -117,6 +119,24 @@ export function useFaviconWorkflow(isFr: boolean) {
     }, 'image/png');
   }, [imageElement, padding, bgColor, previewShape]);
 
+  const generateZipOnServer = useCallback(async (): Promise<Blob> => {
+    if (!file) throw new Error(isFr ? 'Aucun fichier sélectionné' : 'No file selected');
+    const fd = new FormData();
+    if (compositedBlob && (padding !== 0 || bgColor !== 'transparent' || previewShape !== 'square')) {
+      fd.append('file', compositedBlob, 'icon-source.png');
+    } else {
+      fd.append('file', file);
+    }
+
+    const res = await fetch(apiUrl('/api/tools/favicon-generate'), { method: 'POST', body: fd });
+    if (!res.ok) {
+      const err = (await res.json()) as { error?: string };
+      throw new Error(err.error ?? (isFr ? 'Échec de la génération des favicons' : 'Failed to generate favicons'));
+    }
+
+    return await res.blob();
+  }, [file, compositedBlob, padding, bgColor, previewShape, isFr]);
+
   const handleGenerateZip = useCallback(async () => {
     if (!file) return;
     trackToolUsed('favicon-generator', 'images');
@@ -124,35 +144,26 @@ export function useFaviconWorkflow(isFr: boolean) {
     setIsProcessing(true);
 
     try {
-      const fd = new FormData();
-      if (compositedBlob && (padding !== 0 || bgColor !== 'transparent' || previewShape !== 'square')) {
-        fd.append('file', compositedBlob, 'icon-source.png');
+      let blob: Blob;
+      if (imageElement) {
+        try {
+          blob = await buildClientFaviconZip(imageElement, padding, bgColor, previewShape, isFr);
+        } catch {
+          blob = await generateZipOnServer();
+        }
       } else {
-        fd.append('file', file);
+        blob = await generateZipOnServer();
       }
 
-      const res = await fetch(apiUrl('/api/tools/favicon-generate'), { method: 'POST', body: fd });
-      if (!res.ok) {
-        const err = (await res.json()) as { error?: string };
-        throw new Error(err.error ?? (isFr ? 'Échec de la génération des favicons' : 'Failed to generate favicons'));
-      }
-
-      const blob = await res.blob();
       setResult({ blob, filename: 'favicons.zip', sizeBefore: file.size, sizeAfter: blob.size });
-
-      const dlUrl = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = dlUrl;
-      a.download = 'favicons.zip';
-      a.click();
-      URL.revokeObjectURL(dlUrl);
+      downloadBlob(blob, 'favicons.zip');
     } catch (e) {
       trackToolError('favicon-generator', 'general-error');
       setError(e instanceof Error ? e.message : (isFr ? 'Erreur lors de la génération. Veuillez réessayer.' : 'Generation failed. Please try again.'));
     } finally {
       setIsProcessing(false);
     }
-  }, [file, compositedBlob, padding, bgColor, previewShape, isFr]);
+  }, [file, imageElement, padding, bgColor, previewShape, isFr, generateZipOnServer]);
 
   const handleDownloadSingle = useCallback(
     async (size: number, filename: string) => {
@@ -174,25 +185,14 @@ export function useFaviconWorkflow(isFr: boolean) {
           { size: 32, bytes: b32 },
           { size: 48, bytes: b48 },
         ]);
-
-        const url = URL.createObjectURL(icoBlob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'favicon.ico';
-        a.click();
-        URL.revokeObjectURL(url);
+        downloadBlob(icoBlob, 'favicon.ico');
         return;
       }
 
       const canvas = renderCompositedCanvas(imageElement, padding, bgColor, previewShape, size, true);
       canvas.toBlob((blob) => {
         if (!blob) return;
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        a.click();
-        URL.revokeObjectURL(url);
+        downloadBlob(blob, filename);
       }, 'image/png');
     },
     [imageElement, padding, bgColor, previewShape]
@@ -203,12 +203,7 @@ export function useFaviconWorkflow(isFr: boolean) {
       handleGenerateZip();
       return;
     }
-    const dlUrl = URL.createObjectURL(result.blob);
-    const a = document.createElement('a');
-    a.href = dlUrl;
-    a.download = result.filename;
-    a.click();
-    URL.revokeObjectURL(dlUrl);
+    downloadBlob(result.blob, result.filename);
   }, [result, handleGenerateZip]);
 
   const htmlSnippet = useMemo(() => generateHtmlSnippet(bgColor, isFr), [bgColor, isFr]);
@@ -223,12 +218,7 @@ export function useFaviconWorkflow(isFr: boolean) {
 
   const handleDownloadManifestFile = useCallback(() => {
     const blob = new Blob([webmanifestSnippet], { type: 'application/manifest+json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'site.webmanifest';
-    a.click();
-    URL.revokeObjectURL(url);
+    downloadBlob(blob, 'site.webmanifest');
   }, [webmanifestSnippet]);
 
   return {

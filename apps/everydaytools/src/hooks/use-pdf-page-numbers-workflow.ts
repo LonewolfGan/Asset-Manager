@@ -1,8 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
-import { apiUrl } from '@/lib/apiBase';
 import { consumeHandoffFile } from '@/lib/file-handoff';
-import type { PdfNumberPosition } from '@/lib/pdf-page-numbers-logic';
+import { addPageNumbersToPdf, type PdfNumberPosition } from '@/lib/pdf-page-numbers-logic';
 
 export interface UsePdfPageNumbersWorkflowOptions {
   isFr: boolean;
@@ -132,30 +131,14 @@ export function usePdfPageNumbersWorkflow({
 
     try {
       trackToolUsed('pdf-page-numbers', 'pdf');
-      const fd = new FormData();
-      fd.append('file', file);
-      fd.append('position', position);
-      fd.append('startFrom', String(startNum));
-      fd.append('fontSize', String(fontSize));
-      fd.append('skipFirst', String(skipFirst));
-      fd.append('format', format);
+      const blob = await addPageNumbersToPdf(file, {
+        position,
+        startNum,
+        fontSize,
+        skipFirst,
+        format,
+      });
 
-      const [res] = await Promise.all([
-        fetch(apiUrl('/api/tools/pdf-page-numbers'), {
-          method: 'POST',
-          body: fd,
-        }),
-        new Promise((resolve) => setTimeout(resolve, 800)),
-      ]);
-
-      if (!res.ok) {
-        const err = (await res.json().catch(() => ({ error: tc.error }))) as {
-          error?: string;
-        };
-        throw new Error(err.error ?? tc.error);
-      }
-
-      const blob = await res.blob();
       setResult({
         blob,
         filename: file.name.replace(/\.pdf$/i, '_numbered.pdf'),

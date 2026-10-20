@@ -1,5 +1,4 @@
 import { useState, useMemo, useCallback } from 'react';
-import { apiUrl } from '@/lib/apiBase';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import {
   calculateModifiedPagesCount,
@@ -7,6 +6,7 @@ import {
   applyRotationToAll,
   applyRotationToSelected,
   togglePageSelection,
+  rotatePdfFile,
 } from '@/lib/pdf-rotate-logic';
 import type { PageThumb } from '@/hooks/use-pdf-thumbnails';
 
@@ -95,27 +95,9 @@ export function usePdfRotateWorkflow(
 
     try {
       trackToolUsed('pdf-rotate', 'pdf');
-      const fd = new FormData();
-      fd.append('file', file);
-
-      if (Object.keys(pageRotations).length > 0) {
-        fd.append('rotations', JSON.stringify(pageRotations));
-      } else {
-        fd.append('rotation', '90');
-        fd.append('pages', 'all');
-      }
-
-      const res = await fetch(apiUrl('/api/tools/pdf-rotate'), {
-        method: 'POST',
-        body: fd,
-      });
-
-      if (!res.ok) {
-        const err = (await res.json().catch(() => ({}))) as { error?: string; message?: string };
-        throw new Error(err.message ?? err.error ?? defaultErrorText ?? 'Échec de la rotation.');
-      }
-
-      const blob = await res.blob();
+      const rotationsInput =
+        Object.keys(pageRotations).length > 0 ? pageRotations : 90;
+      const blob = await rotatePdfFile(file, rotationsInput);
       const baseName = file.name.replace(/\.pdf$/i, '');
       const count = modifiedPagesCount > 0 ? modifiedPagesCount : pages.length;
 

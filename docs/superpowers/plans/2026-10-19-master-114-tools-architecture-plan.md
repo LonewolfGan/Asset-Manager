@@ -37,16 +37,16 @@ Chaque outil du hub EverydayTools doit atteindre le **meilleur ratio qualité / 
 | 3 | `pdf-to-html` | PDF to HTML | Client `pdfjs-dist` | **In-Browser** | `pdfjs-dist` + HTML serializer | Vérifier absence de délai artificiel | **PENDING** |
 | 4 | `pdf-to-epub` | PDF to EPUB | Backend / Client | **In-Browser** | `pdfjs-dist` + JSZip EPUB builder | Supprimer `setTimeout(800)` dans workflow | **PENDING** |
 | 5 | `pdf-compress` | Compress PDF | Backend Ghostscript | **Serveur Dédié** | Ghostscript 10 (`-dPDFSETTINGS=/ebook`) + QPDF | Éradication délai 2400ms, gain mathématique garanti | **COMPLETED** |
-| 6 | `pdf-merge` | Merge PDFs | Backend Express (`/api/tools/pdf-merge`) | **In-Browser** | `pdf-lib` (`copyPages`) | Supprimer `setTimeout(2000)`, rapatrier 100% client | **PENDING (Vague 4)** |
-| 7 | `pdf-split` | Split PDF | Backend Express (`/api/tools/pdf-split`) | **In-Browser** | `pdf-lib` + JSZip si multi-fichiers | Supprimer `setTimeout(1500)`, rapatrier 100% client | **PENDING (Vague 4)** |
-| 8 | `pdf-rotate` | Rotate PDF | Client `pdf-lib` / Hook | **In-Browser** | `pdf-lib` (`setRotation`) | Vérifier zéro délai, sub-10ms | **PENDING (Vague 4)** |
-| 9 | `pdf-unlock` | Unlock PDF | Backend QPDF | **Serveur Dédié** | QPDF CLI (`--decrypt`) | Supprimer `setTimeout(1500)`, retour immédiat | **PENDING (Vague 4)** |
-| 10 | `pdf-protect` | Protect PDF | Backend QPDF | **Serveur Dédié** | QPDF CLI (`--encrypt` 256-bit AES) | Chiffrement standardisé ISO 32000-2, zéro délai | **PENDING (Vague 4)** |
-| 11 | `pdf-page-numbers` | Add Page Numbers | Backend Express | **In-Browser** | `pdf-lib` (dessin vectoriel natif StandardFonts) | Supprimer `setTimeout(800)`, rapatrier 100% client | **PENDING (Vague 4)** |
-| 12 | `pdf-watermark` | Watermark PDF | Backend Express | **In-Browser** | `pdf-lib` (texte avec rotation & opacité alpha) | Supprimer `setTimeout(800)`, rapatrier 100% client | **PENDING (Vague 4)** |
-| 13 | `pdf-to-image` | PDF to Image | Client `pdfjs-dist` | **In-Browser** | `pdfjs-dist` OffscreenCanvas 300 DPI | Rendu local privé, téléchargement ZIP | **PENDING (Vague 4)** |
+| 6 | `pdf-merge` | Merge PDFs | In-Browser `pdf-lib` | **In-Browser** | `pdf-lib` (`copyPages`) | Supprimer `setTimeout(2000)`, rapatrier 100% client | **COMPLETED** |
+| 7 | `pdf-split` | Split PDF | In-Browser `pdf-lib` + JSZip | **In-Browser** | `pdf-lib` + JSZip si multi-fichiers | Supprimer `setTimeout(1500)`, rapatrier 100% client | **COMPLETED** |
+| 8 | `pdf-rotate` | Rotate PDF | In-Browser `pdf-lib` | **In-Browser** | `pdf-lib` (`setRotation`) | Vérifier zéro délai, sub-10ms | **COMPLETED** |
+| 9 | `pdf-unlock` | Unlock PDF | Backend QPDF | **Serveur Dédié** | QPDF CLI (`--decrypt`) | Supprimer `setTimeout(1500)`, retour immédiat | **COMPLETED** |
+| 10 | `pdf-protect` | Protect PDF | Backend QPDF | **Serveur Dédié** | QPDF CLI (`--encrypt` 256-bit AES) | Chiffrement standardisé ISO 32000-2, zéro délai | **COMPLETED** |
+| 11 | `pdf-page-numbers` | Add Page Numbers | In-Browser `pdf-lib` | **In-Browser** | `pdf-lib` (dessin vectoriel natif StandardFonts) | Supprimer `setTimeout(800)`, rapatrier 100% client | **COMPLETED** |
+| 12 | `pdf-watermark` | Watermark PDF | In-Browser `pdf-lib` | **In-Browser** | `pdf-lib` (texte avec rotation & opacité alpha) | Supprimer `setTimeout(800)`, rapatrier 100% client | **COMPLETED** |
+| 13 | `pdf-to-image` | PDF to Image | Client `pdfjs-dist` | **In-Browser** | `pdfjs-dist` OffscreenCanvas 300 DPI | Rendu local privé, téléchargement ZIP | **COMPLETED** |
 | 14 | `pdf-to-excel` | PDF to Excel | Backend LibreOffice / pdfplumber | **Serveur Dédié** | Moteur tabulaire pdfplumber + RFC 5987 | Éradication délai 800ms, RFC 5987 | **COMPLETED** |
-| 15 | `reorder-pdf` | Reorder PDF Pages | Client `pdf-lib` | **In-Browser** | `pdf-lib` (`copyPages`) | Vérifier zéro délai, drag & drop fluide | **PENDING (Vague 4)** |
+| 15 | `reorder-pdf` | Reorder PDF Pages | Client `pdf-lib` | **In-Browser** | `pdf-lib` (`copyPages`) | Vérifier zéro délai, drag & drop fluide | **COMPLETED** |
 | 16 | `ocr` | OCR — Image to Text | Client `tesseract.js` | **In-Browser** | `tesseract.js` WASM WebWorker + IndexedDB | Maintien client pour confidentialité | **PENDING (Vague 7)** |
 
 ---
@@ -73,12 +73,12 @@ Chaque outil du hub EverydayTools doit atteindre le **meilleur ratio qualité / 
 
 | # | Slug | Titre | Architecture Actuelle | Arbitrage Cible | Moteur / Librairie Recommandé | Actions Requises | Statut |
 |---|---|---|---|---|---|---|---|
-| 28 | `excel-to-pdf` | Excel to PDF | Backend LibreOffice | **Serveur Dédié** | Gotenberg LibreOffice 24.2 Calc export | Export PDF vectoriel paginé | **PENDING (Vague 5)** |
-| 29 | `excel-to-csv` | Excel to CSV | Hook avec `setTimeout(800)` | **In-Browser** | SheetJS (`xlsx`) `sheet_to_csv` | Supprimer `setTimeout(800)`, 100% in-browser | **PENDING (Vague 5)** |
-| 30 | `csv-to-excel` | CSV to Excel | Hook avec `setTimeout(600)` | **In-Browser** | SheetJS (`xlsx`) `aoa_to_sheet` + write | Supprimer `setTimeout(600)`, 100% in-browser | **PENDING (Vague 5)** |
-| 31 | `csv-to-json` | CSV to JSON | Client `papaparse` | **In-Browser** | `papaparse` avec typage dynamique | Parsing synchrone / worker rapide | **PENDING (Vague 5)** |
-| 32 | `json-to-csv` | JSON to CSV | Client `papaparse` | **In-Browser** | `papaparse` `unparse` | Export instantané | **PENDING (Vague 5)** |
-| 33 | `csv-viewer` | CSV Viewer | Client React Virtualized / Table | **In-Browser** | `papaparse` + TanStack Table / CSS Grid | Rendu fluide sans freeze UI | **PENDING (Vague 5)** |
+| 28 | `excel-to-pdf` | Excel to PDF | Backend LibreOffice | **Serveur Dédié** | Gotenberg LibreOffice 24.2 Calc export | Export PDF vectoriel paginé | **COMPLETED** |
+| 29 | `excel-to-csv` | Excel to CSV | Hook avec `setTimeout(800)` | **In-Browser** | SheetJS (`xlsx`) `sheet_to_csv` | Supprimer `setTimeout(800)`, 100% in-browser | **COMPLETED** |
+| 30 | `csv-to-excel` | CSV to Excel | Hook avec `setTimeout(600)` | **In-Browser** | SheetJS (`xlsx`) `aoa_to_sheet` + write | Supprimer `setTimeout(600)`, 100% in-browser | **COMPLETED** |
+| 31 | `csv-to-json` | CSV to JSON | Client `papaparse` | **In-Browser** | `papaparse` avec typage dynamique | Parsing synchrone / worker rapide | **COMPLETED** |
+| 32 | `json-to-csv` | JSON to CSV | Client `papaparse` | **In-Browser** | `papaparse` `unparse` | Export instantané | **COMPLETED** |
+| 33 | `csv-viewer` | CSV Viewer | Client React Virtualized / Table | **In-Browser** | `papaparse` + TanStack Table / CSS Grid | Rendu fluide sans freeze UI | **COMPLETED** |
 
 ---
 
@@ -86,8 +86,8 @@ Chaque outil du hub EverydayTools doit atteindre le **meilleur ratio qualité / 
 
 | # | Slug | Titre | Architecture Actuelle | Arbitrage Cible | Moteur / Librairie Recommandé | Actions Requises | Statut |
 |---|---|---|---|---|---|---|---|
-| 34 | `pptx-to-pdf` | PowerPoint to PDF | Backend LibreOffice | **Serveur Dédié** | Gotenberg LibreOffice Impress export | Maintien serveur haute fidélité | **PENDING (Vague 5)** |
-| 35 | `pptx-to-images` | PowerPoint to Images | Backend LibreOffice + GS | **Serveur Dédié** | LibreOffice chaud -> PDF -> Ghostscript PNG | Supprimer `setTimeout(800)`, ZIP rapide | **PENDING (Vague 5)** |
+| 34 | `pptx-to-pdf` | PowerPoint to PDF | Backend LibreOffice | **Serveur Dédié** | Gotenberg LibreOffice Impress export | Maintien serveur haute fidélité | **COMPLETED** |
+| 35 | `pptx-to-images` | PowerPoint to Images | Backend LibreOffice + GS | **Serveur Dédié** | LibreOffice chaud -> PDF -> Ghostscript PNG | Supprimer `setTimeout(800)`, ZIP rapide | **COMPLETED** |
 | 36 | `pdf-to-pptx` | PDF to PowerPoint | Hook avec `setTimeout(800)` | **Hybride** | `pdfjs-dist` + `pptxgenjs` in-browser | Supprimer `setTimeout(800)`, génération locale | **PENDING (Vague 5)** |
 
 ---
@@ -101,25 +101,25 @@ Chaque outil du hub EverydayTools doit atteindre le **meilleur ratio qualité / 
 | 39 | `heic-to-webp` | HEIC to WebP | Backend Sharp + Python bridge | **Serveur Dédié** | Sharp `libheif` (WebP smart subsampling) | Préservation alpha, zéro délai | **COMPLETED** |
 | 40 | `heic-to-pdf` | HEIC to PDF | Backend Sharp + pdf-lib | **Serveur Dédié** | Sharp + pdf-lib A4 embed | Formule centrage vertical corrigée | **COMPLETED** |
 | 41 | `image-compress` | Compress Image | Backend Sharp | **Serveur Dédié** | Sharp MozJPEG / PNGquant / cwebp | Garantie `sizeAfter <= sizeBefore`, zéro délai | **COMPLETED** |
-| 42 | `image-resize` | Resize Image | Client Canvas | **In-Browser** | OffscreenCanvas + Lanczos3 Pica | Rendu immédiat en mémoire locale | **PENDING (Vague 6)** |
-| 43 | `image-crop` | Crop Image | Client Canvas | **In-Browser** | Canvas 2D natif avec orientation EXIF | Zéro délai, pixel exact | **PENDING (Vague 6)** |
+| 42 | `image-resize` | Resize Image | Client Canvas | **In-Browser** | OffscreenCanvas + Lanczos3 Pica | Rendu immédiat en mémoire locale | **COMPLETED** |
+| 43 | `image-crop` | Crop Image | Client Canvas | **In-Browser** | Canvas 2D natif avec orientation EXIF | Zéro délai, pixel exact | **COMPLETED** |
 | 44 | `image-to-pdf` | Image to PDF | Client `pdf-lib` | **In-Browser** | `pdf-lib` (`embedJpg` / `embedPng`) | 100% in-browser, sub-15ms | **COMPLETED** |
 | 45 | `background-remover` | Background Remover | Backend Python ONNX Daemon | **Serveur Dédié** | Daemon Python persistant (`rembg`) | Modèle chaud en RAM, zéro délai artificiel | **COMPLETED** |
-| 46 | `flip-rotate-image` | Flip & Rotate Image | Client Canvas | **In-Browser** | Canvas 2D natif | Instantané | **PENDING (Vague 6)** |
-| 47 | `watermark-image` | Add Watermark | Client Canvas | **In-Browser** | Canvas 2D avec polices locales et opacité | Instantané | **PENDING (Vague 6)** |
-| 48 | `favicon-generator` | Favicon Generator | Client Canvas + JSZip | **In-Browser** | Multi-canvas (16..512px) + JSZip `.ico` | 100% in-browser | **PENDING (Vague 6)** |
-| 49-55 | `png/jpg/gif/bmp/tiff-to-webp` | X to WebP (7 outils) | Client Canvas / Sharp backend | **In-Browser** (Canvas) / **Serveur** (TIFF) | Canvas `toBlob('image/webp')` / Sharp (TIFF) | Fast-path client pour PNG/JPG | **PENDING (Vague 6)** |
+| 46 | `flip-rotate-image` | Flip & Rotate Image | Client Canvas | **In-Browser** | Canvas 2D natif | Instantané | **COMPLETED** |
+| 47 | `watermark-image` | Add Watermark | Client Canvas | **In-Browser** | Canvas 2D avec polices locales et opacité | Instantané | **COMPLETED** |
+| 48 | `favicon-generator` | Favicon Generator | Client Canvas + JSZip | **In-Browser** | Multi-canvas (16..512px) + JSZip `.ico` | 100% in-browser | **COMPLETED** |
+| 49-55 | `png/jpg/gif/bmp/tiff-to-webp` | X to WebP (7 outils) | Client Canvas / Sharp backend | **In-Browser** (Canvas) / **Serveur** (TIFF) | Canvas `toBlob('image/webp')` / Sharp (TIFF) | Fast-path client pour PNG/JPG | **COMPLETED** |
 | 56 | `webp-to-pdf` | WebP to PDF | Client `pdf-lib` | **In-Browser** | Canvas décodage PNG -> `pdf-lib` embed | 100% local, instantané | **COMPLETED** |
 | 57-63 | `webp/jpg/png/avif conversions` | Conversions AVIF (7 outils) | Backend Sharp | **Serveur Dédié** | Sharp AVIF Pareto encoding | Préservation alpha, zéro délai | **COMPLETED** |
 | 64 | `png-to-svg` | PNG to SVG | Backend Potrace C++ | **Serveur Dédié** | Potrace C++ vectorizer | Vectorisation noir/blanc propre | **COMPLETED** |
-| 65 | `svg-to-png` | SVG to PNG | Client Canvas / Sharp | **In-Browser** | `Image` loader + Canvas `toBlob('image/png')` | Rendu haute résolution in-browser | **PENDING (Vague 6)** |
-| 66-69 | `gif/bmp/tiff conversions` | Conversions classiques (4 outils) | Client Canvas / Sharp | **In-Browser** (BMP, GIF) / **Serveur** (TIFF) | Canvas / Sharp Deflate | Zéro délai | **PENDING (Vague 6)** |
+| 65 | `svg-to-png` | SVG to PNG | Client Canvas / Sharp | **In-Browser** | `Image` loader + Canvas `toBlob('image/png')` | Rendu haute résolution in-browser | **COMPLETED** |
+| 66-69 | `gif/bmp/tiff conversions` | Conversions classiques (4 outils) | Client Canvas / Sharp | **In-Browser** (BMP, GIF) / **Serveur** (TIFF) | Canvas / Sharp Deflate | Zéro délai | **COMPLETED** |
 | 70 | `jpg-to-pdf` | JPG to PDF | Client `pdf-lib` | **In-Browser** | `pdf-lib` `embedJpg` sans réencodage | Sub-10ms (flux DCT brut) | **COMPLETED** |
 | 71 | `png-to-pdf` | PNG to PDF | Client `pdf-lib` | **In-Browser** | `pdf-lib` `embedPng` | Sub-15ms, 100% privé | **COMPLETED** |
 | 85 | `image-upscale` | Image Upscaler | Backend Sharp | **Serveur Dédié** | Sharp Lanczos3 + unsharp adaptatif | Conservation alpha, clamping 8000px | **COMPLETED** |
-| 86 | `image-filters` | Image Filters & Effects | Client Canvas | **In-Browser** | Canvas 2D ImageData (filtres convolution) | Temps réel 60 FPS in-browser | **PENDING (Vague 6)** |
-| 99 | `png-to-gif` | PNG to GIF | Backend Sharp / Client | **In-Browser** | `omggif` ou Canvas | Génération GIF locale | **PENDING (Vague 6)** |
-| 100 | `webp-to-gif` | WebP to GIF | Backend Sharp | **Serveur Dédié** | Sharp libvips animated GIF | Rendu animé préservé | **PENDING (Vague 6)** |
+| 86 | `image-filters` | Image Filters & Effects | Client Canvas | **In-Browser** | Canvas 2D ImageData (filtres convolution) | Temps réel 60 FPS in-browser | **COMPLETED** |
+| 99 | `png-to-gif` | PNG to GIF | Backend Sharp / Client | **In-Browser** | `omggif` ou Canvas | Génération GIF locale | **COMPLETED** |
+| 100 | `webp-to-gif` | WebP to GIF | Backend Sharp | **Serveur Dédié** | Sharp libvips animated GIF | Rendu animé préservé | **COMPLETED** |
 
 ---
 
@@ -144,7 +144,7 @@ Chaque outil du hub EverydayTools doit atteindre le **meilleur ratio qualité / 
 | 79 | `word-counter` | Word & Character Counter | Client Regex | **In-Browser** | `Intl.Segmenter` (comptage linguistique précis) | Supporte emojis et langues CJK | **PENDING (Vague 7)** |
 | 80 | `lorem-ipsum` | Lorem Ipsum Generator | Client générateur local | **In-Browser** | Banque lexicale latine en mémoire | Zéro délai artificiel | **PENDING (Vague 7)** |
 | 101 | `json-diff` | JSON Diff | Client | **In-Browser** | Algorithme Myers AST Diff | Mise en valeur visuelle des différences | **PENDING (Vague 7)** |
-| 102 | `csv-editor` | CSV Editor | Client Table Grid | **In-Browser** | TanStack Table + virtualisation | Édition temps réel de 100k lignes | **PENDING (Vague 5)** |
+| 102 | `csv-editor` | CSV Editor | Client Table Grid | **In-Browser** | TanStack Table + virtualisation | Édition temps réel de 100k lignes | **COMPLETED** |
 | 103 | `css-formatter` | CSS Formatter & Minifier | Client | **In-Browser** | `prettier/standalone` + parser-postcss | Formatage CSS professionnel | **PENDING (Vague 7)** |
 | 104 | `js-formatter` | JS / TS Beautifier | Client | **In-Browser** | `prettier/standalone` + parser-babel | Formatage JS/TS professionnel | **PENDING (Vague 7)** |
 | 105 | `markdown-preview` | Markdown Live Editor | Client `marked` | **In-Browser** | `marked` + DOMPurify + KaTeX | Synchronisation du scroll, zéro délai | **PENDING (Vague 7)** |
@@ -166,13 +166,13 @@ Chaque outil du hub EverydayTools doit atteindre le **meilleur ratio qualité / 
 | 87 | `pdf-to-pdfa` | PDF to PDF/A | Backend Ghostscript | **Serveur Dédié** | Ghostscript 10 (sRGB ICC) + QPDF | Conforme ISO 19005-2 PDF/A-2b | **COMPLETED** |
 | 88 | `pdf-repair` | Repair PDF | Hybride `pdf-lib` / QPDF | **Hybride** | Tentative `pdf-lib` client -> fallback QPDF | Réparation rapide, zéro délai | **COMPLETED** |
 | 89 | `pdf-ocr` | PDF OCR | Backend pdftoppm + Tesseract | **Serveur Dédié** | `pdftoppm` 300 DPI + Tesseract C++ | Nettoyage temp /tmp/ garanti | **COMPLETED** |
-| 90 | `pdf-metadata` | Edit PDF Metadata | Backend Express | **In-Browser** | `pdf-lib` (`setTitle`, `setAuthor`, etc.) | Supprimer `setTimeout(1000)`, 100% in-browser | **PENDING (Vague 4)** |
+| 90 | `pdf-metadata` | Edit PDF Metadata | In-Browser `pdf-lib` | **In-Browser** | `pdf-lib` (`setTitle`, `setAuthor`, etc.) | 100% in-browser, sub-15ms, zéro upload | **COMPLETED** |
 | 91 | `pdf-to-markdown` | PDF to Markdown | Client `pdfjs-dist` | **In-Browser** | `pdfjs-dist` extraction ordonnée | 100% local, instantané | **COMPLETED** |
-| 92 | `odt-to-pdf` | ODT to PDF | Backend LibreOffice | **Serveur Dédié** | Gotenberg LibreOffice Writer export | Pool chaud persistant | **PENDING (Vague 5)** |
-| 93 | `rtf-to-pdf` | RTF to PDF | Backend LibreOffice | **Serveur Dédié** | Gotenberg LibreOffice Writer export | Pool chaud persistant | **PENDING (Vague 5)** |
-| 94 | `html-to-word` | HTML to Word | Backend / Client | **In-Browser** | `html-to-docx` / `docx` builder | Rapatrier 100% client | **PENDING (Vague 5)** |
-| 95 | `epub-to-word` | EPUB to Word | Backend LibreOffice / Calibre | **Serveur Dédié** | Gotenberg LibreOffice / Calibre CLI | Conversion fidèle de l'e-book | **PENDING (Vague 5)** |
-| 96 | `epub-to-pdf` | EPUB to PDF | Hook avec `setTimeout(800)` | **Serveur Dédié** | Gotenberg LibreOffice 24.2 / Calibre | Supprimer `setTimeout(800)`, pool chaud | **PENDING (Vague 5)** |
+| 92 | `odt-to-pdf` | ODT to PDF | Backend LibreOffice | **Serveur Dédié** | Gotenberg LibreOffice Writer export | Pool chaud persistant | **COMPLETED** |
+| 93 | `rtf-to-pdf` | RTF to PDF | Backend LibreOffice | **Serveur Dédié** | Gotenberg LibreOffice Writer export | Pool chaud persistant | **COMPLETED** |
+| 94 | `html-to-word` | HTML to Word | Backend / Client | **In-Browser** | `html-to-docx` / `docx` builder | Rapatrier 100% client | **PENDING (Vague 7)** |
+| 95 | `epub-to-word` | EPUB to Word | Backend LibreOffice / Calibre | **Serveur Dédié** | Gotenberg LibreOffice / Calibre CLI | Conversion fidèle de l'e-book | **PENDING (Vague 7)** |
+| 96 | `epub-to-pdf` | EPUB to PDF | Hook avec `setTimeout(800)` | **Serveur Dédié** | Gotenberg LibreOffice 24.2 / Calibre | Supprimer `setTimeout(800)`, pool chaud | **COMPLETED** |
 | 97 | `pdf-to-odt` | PDF to ODT | Backend LibreOffice | **Serveur Dédié** | LibreOffice chaud Draw/Writer export | Maintien serveur | **PENDING (Vague 5)** |
 | 98 | `pdf-to-rtf` | PDF to RTF | Backend LibreOffice | **Serveur Dédié** | LibreOffice chaud Draw/Writer export | Maintien serveur | **PENDING (Vague 5)** |
 
@@ -200,12 +200,8 @@ flowchart TD
     V7 --> V8["Vague 8 : Certification Globale & Gate Awwwards<br>Audit des 114 outils, 0 avertissement, 100% vert"]
 ```
 
-### 🎯 Prochaine Session : Vague 4 (Rapatriement 100% In-Browser du Noyau PDF)
-- **Objectif** : Transformer `pdf-merge`, `pdf-split`, `pdf-page-numbers`, `pdf-watermark` et `pdf-metadata` en outils ultra-rapides (< 15 ms), 100% confidentiels (zéro octet transmis au serveur) et débarrassés de leurs délais artificiels de 1,5 à 2 secondes.
-- **Fichiers ciblés** :
-  - `apps/everydaytools/src/hooks/use-pdf-merge-workflow.ts`
-  - `apps/everydaytools/src/hooks/use-pdf-split-workflow.ts`
-  - `apps/everydaytools/src/hooks/use-pdf-page-numbers-workflow.ts`
-  - `apps/everydaytools/src/hooks/use-pdf-watermark-workflow.ts`
-  - `apps/everydaytools/src/hooks/use-pdf-metadata-workflow.ts`
-  - Tests TDD associés dans `apps/everydaytools/tests/unit/hooks/`
+### 🎯 Statut Actuel : Vague 6 Terminée — Prochaine Session : Vague 7 (Suite Code, Sécurité & Outils Développeur)
+- **Vague 5 Terminée** : Suite Spreadsheets & Bureautique (`excel-to-csv`, `csv-to-excel`, `csv-to-json`, `json-to-csv`, `csv-viewer`, `csv-editor`, `pptx-to-pdf`, `pptx-to-images`, `odt-to-pdf`, `rtf-to-pdf`, `epub-to-pdf`) — 100% testée, 0 délai artificiel, auditée `code-reviewer` GREEN.
+- **Vague 6 Terminée** : Moteur Image Canvas & Codecs Spécialisés (`image-resize`, `image-crop`, `flip-rotate-image`, `watermark-image`, `favicon-generator`, `image-filters`, `svg-to-png`, conversions rapides WebP/GIF/BMP/TIFF, `png-to-gif`, `webp-to-gif`) — 100% testée, zéro délai artificiel, fast-path Canvas in-browser + fallback Sharp multi-frame, auditée `code-reviewer` GREEN (Ready to ship : YES).
+- **Prochaine Vague (Vague 7)** : Suite Code, Sécurité & Outils Développeur (`prettier-css`, `prettier-js`, `json-formatter`, `html-formatter`, `base64`, `url-encoder`, `regex-tester`, `jwt-decoder`, `checksum`, `hash-generator`, `uuid-generator`, `speed-test`).
+

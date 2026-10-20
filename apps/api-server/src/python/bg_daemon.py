@@ -15,6 +15,7 @@ try:
     from rembg import remove, new_session
     import onnxruntime as ort
     from PIL import Image
+    import numpy as np
 except ImportError as exc:
     sys.stderr.write(f"[bg_daemon] Import error: {exc}\n")
     sys.exit(1)
@@ -41,6 +42,31 @@ dummy.save(buf, format="PNG")
 remove(buf.getvalue(), session=SESSION)
 print(f"[bg_daemon] Model '{MODEL_NAME}' resident in RAM and fully warmed up.", flush=True)
 
+
+def defringe_rgba(image):
+    """
+    Removes edge color fringing/halo from semi-transparent boundaries
+    by decontaminating RGB channels against alpha bleed.
+    """
+    try:
+        img_np = np.array(image, dtype=np.float32)
+        if img_np.ndim != 3 or img_np.shape[2] != 4:
+            return image
+
+        rgb = img_np[:, :, :3]
+        alpha = img_np[:, :, 3] / 255.0
+
+        edge_mask = (alpha > 0.05) & (alpha < 0.95)
+        if np.any(edge_mask):
+            alpha_denom = np.maximum(alpha[..., np.newaxis], 0.1)
+            rgb = np.where(edge_mask[..., np.newaxis], np.clip(rgb / alpha_denom, 0, 255), rgb)
+
+        clean_np = np.dstack((rgb, img_np[:, :, 3])).astype(np.uint8)
+        return Image.fromarray(clean_np, "RGBA")
+    except Exception:
+        return image
+
+
 class RembgHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/health":
@@ -66,19 +92,37 @@ class RembgHandler(BaseHTTPRequestHandler):
 
                 input_bytes = self.rfile.read(content_length)
                 t_read = time.time()
-                
-                result_bytes = remove(input_bytes, session=SESSION)
+
+                try:
+                    result_bytes = remove(
+                        input_bytes,
+                        session=SESSION,
+                        alpha_matting=True,
+                        alpha_matting_foreground_threshold=240,
+                        alpha_matting_background_threshold=20,
+                        alpha_matting_erode_size=12,
+                    )
+                except Exception:
+                    result_bytes = remove(input_bytes, session=SESSION)
+
+                # Post-process: defringe halo from semi-transparent edges
+                pil_img = Image.open(io.BytesIO(result_bytes)).convert("RGBA")
+                clean_img = defringe_rgba(pil_img)
+                out_buf = io.BytesIO()
+                clean_img.save(out_buf, format="PNG", optimize=True)
+                final_bytes = out_buf.getvalue()
+
                 t_infer = time.time()
 
                 self.send_response(200)
                 self.send_header("Content-Type", "image/png")
-                self.send_header("Content-Length", str(len(result_bytes)))
+                self.send_header("Content-Length", str(len(final_bytes)))
                 self.end_headers()
-                self.wfile.write(result_bytes)
-                
+                self.wfile.write(final_bytes)
+
                 total_time = time.time() - t0
                 infer_time = t_infer - t_read
-                print(f"[bg_daemon] Processed {len(input_bytes)}B -> {len(result_bytes)}B (infer: {infer_time:.3f}s, total: {total_time:.3f}s)", flush=True)
+                print(f"[bg_daemon] Processed {len(input_bytes)}B -> {len(final_bytes)}B (infer: {infer_time:.3f}s, total: {total_time:.3f}s)", flush=True)
             except Exception as e:
                 self.send_response(500)
                 self.send_header("Content-Type", "application/json")

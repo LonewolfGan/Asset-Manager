@@ -1,3 +1,6 @@
+import { PDFDocument } from 'pdf-lib';
+import JSZip from 'jszip';
+
 export interface Tranche {
   id: string;
   from: number;
@@ -99,3 +102,96 @@ export function generateBatchSlices(totalPages: number, chunkSize: number): Tran
 
   return slices;
 }
+
+export interface SplitPdfOptions {
+  mode: 'extract' | 'split';
+  selectedPages?: number[];
+  extractAsSinglePdf?: boolean;
+  tranches?: { from: number; to: number }[];
+  baseName?: string;
+}
+
+export interface SplitPdfResult {
+  blob: Blob;
+  isZip: boolean;
+  segmentCount: number;
+}
+
+/**
+ * Splits or extracts pages from a PDF document 100% in-browser using pdf-lib and jszip.
+ * Zero upload, instantaneous execution, privacy guaranteed.
+ */
+export async function splitPdfFile(
+  file: File,
+  options: SplitPdfOptions
+): Promise<SplitPdfResult> {
+  const arrayBuffer = await file.arrayBuffer();
+  const src = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+  const totalPages = src.getPageCount();
+  const baseName = options.baseName ?? file.name.replace(/\.[^/.]+$/, '');
+
+  let segments: number[][] = [];
+
+  if (options.mode === 'extract') {
+    const rawPages = options.selectedPages ?? [];
+    const valid0Based = rawPages
+      .filter((p) => p >= 1 && p <= totalPages)
+      .map((p) => p - 1);
+
+    if (valid0Based.length === 0) {
+      throw new Error('No valid pages selected for extraction.');
+    }
+
+    if (options.extractAsSinglePdf) {
+      const out = await PDFDocument.create();
+      const pages = await out.copyPages(src, valid0Based);
+      for (const p of pages) {
+        out.addPage(p);
+      }
+      const bytes = await out.save();
+      const blob = new Blob([bytes as unknown as BlobPart], { type: 'application/pdf' });
+      return { blob, isZip: false, segmentCount: 1 };
+    }
+
+    segments = valid0Based.map((p) => [p]);
+  } else {
+    const rawTranches = options.tranches ?? [];
+    if (rawTranches.length === 0) {
+      throw new Error('No split tranches specified.');
+    }
+    for (const tr of rawTranches) {
+      const from = Math.max(1, Math.min(tr.from, tr.to));
+      const to = Math.min(totalPages, Math.max(tr.from, tr.to));
+      const tranchePages: number[] = [];
+      for (let p = from; p <= to; p++) {
+        tranchePages.push(p - 1);
+      }
+      if (tranchePages.length > 0) {
+        segments.push(tranchePages);
+      }
+    }
+    if (segments.length === 0) {
+      throw new Error('No valid tranches specified.');
+    }
+  }
+
+  const zip = new JSZip();
+  for (let i = 0; i < segments.length; i++) {
+    const seg = segments[i];
+    const out = await PDFDocument.create();
+    const pages = await out.copyPages(src, seg);
+    for (const p of pages) {
+      out.addPage(p);
+    }
+    const bytes = await out.save();
+    const fname =
+      seg.length === 1
+        ? `${baseName}_p${seg[0] + 1}.pdf`
+        : `${baseName}_p${seg[0] + 1}-${seg[seg.length - 1] + 1}.pdf`;
+    zip.file(fname, bytes);
+  }
+
+  const zipBlob = await zip.generateAsync({ type: 'blob' });
+  return { blob: zipBlob, isZip: true, segmentCount: segments.length };
+}
+

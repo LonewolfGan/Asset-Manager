@@ -35,7 +35,7 @@ for (let i = 0; i < rawArgs.length; i++) {
 const localTarget = localFiles.length > 0 ? localFiles : ["src/**/*.test.ts"];
 const localResult = spawnSync(
   "npx",
-  ["tsx", "--test", ...localTarget, ...passthroughFlags],
+  ["tsx", "--test", "--test-timeout=30000", ...localTarget, ...passthroughFlags],
   {
     cwd: apiServerRoot,
     stdio: "inherit",

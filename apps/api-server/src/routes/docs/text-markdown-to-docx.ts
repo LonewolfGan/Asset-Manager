@@ -1,7 +1,7 @@
 import { Router, type Request, type Response } from "express";
 import mammoth from "mammoth";
 import { marked } from "marked";
-import { Document, Packer, Paragraph, TextRun, HeadingLevel } from "docx";
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } from "docx";
 import { execFile } from "child_process";
 import { promisify } from "util";
 import { tmpdir } from "os";
@@ -12,6 +12,9 @@ import { upload } from "../../middlewares/upload.js";
 import { defaultRateLimit } from "../../middlewares/rateLimit.js";
 import { BIN, getPythonScriptPath } from "../../lib/binaries.js";
 import { apiError } from "../../lib/errors.js";
+import { buildContentDisposition } from "../convert/convert-image.js";
+import { convertWithLibreOffice } from "../../lib/libreoffice.js";
+import { guardSinglePdf } from "../pdf/guards.js";
 
 const execFileAsync = promisify(execFile);
 const router = Router();
@@ -39,14 +42,15 @@ router.post("/convert/txt-to-docx", defaultRateLimit, upload.single("file"), asy
   }
 
   try {
-    const paragraphs = textContent.split("\n").map(
+    const normalized = textContent.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+    const paragraphs = normalized.split("\n").map(
       (line) => new Paragraph({ children: [new TextRun(line)], spacing: { after: 80 } }),
     );
     const doc = new Document({ sections: [{ properties: {}, children: paragraphs }] });
     const buffer = await Packer.toBuffer(doc);
     res.set({
       "Content-Type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      "Content-Disposition": `attachment; filename="${filename}"`,
+      "Content-Disposition": buildContentDisposition(filename, "docx"),
       "Cache-Control": "no-store",
     });
     res.send(buffer);
@@ -85,15 +89,24 @@ export function markdownToDocxParagraphs(markdown: string): InstanceType<typeof 
         }),
       );
     } else if (token.type === "list") {
-      for (const item of token.items) {
+      const isOrdered = Boolean(token.ordered);
+      token.items.forEach((item: { text: string }, idx: number) => {
         paragraphs.push(
           new Paragraph({
-            bullet: { level: 0 },
-            children: [new TextRun(item.text)],
+            bullet: isOrdered ? undefined : { level: 0 },
+            children: [new TextRun(isOrdered ? `${idx + 1}.  ${item.text}` : item.text)],
             spacing: { after: 40 },
           }),
         );
-      }
+      });
+    } else if (token.type === "hr") {
+      paragraphs.push(
+        new Paragraph({
+          alignment: AlignmentType.CENTER,
+          children: [new TextRun({ text: "───", color: "888888" })],
+          spacing: { before: 120, after: 120 },
+        }),
+      );
     } else if (token.type === "code") {
       paragraphs.push(
         new Paragraph({
@@ -146,7 +159,7 @@ router.post("/convert/markdown-to-docx", defaultRateLimit, upload.single("file")
     const buffer = await Packer.toBuffer(doc);
     res.set({
       "Content-Type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      "Content-Disposition": `attachment; filename="${filename}"`,
+      "Content-Disposition": buildContentDisposition(filename, "docx"),
       "Cache-Control": "no-store",
     });
     res.send(buffer);
@@ -167,14 +180,20 @@ router.post("/convert/word-to-markdown", defaultRateLimit, upload.single("file")
   if (req.file.size > 30 * 1024 * 1024) { apiError(res, 413, "FILE_TOO_LARGE", "File too large. Maximum 30 MB."); return; }
 
   try {
-    const result = await mammoth.convertToHtml({ buffer: req.file.buffer });
+    const isLegacyDoc = /\.doc$/i.test(req.file.originalname ?? "");
+    let docxBuffer = req.file.buffer;
+    if (isLegacyDoc) {
+      docxBuffer = await convertWithLibreOffice(req.file.buffer, "doc", "docx");
+    }
+
+    const result = await mammoth.convertToHtml({ buffer: docxBuffer });
     const TurndownService = (await import("turndown")).default;
     const td = new TurndownService({ headingStyle: "atx", codeBlockStyle: "fenced" });
     const markdown = td.turndown(result.value);
     const baseName = (req.file.originalname ?? "document").replace(/\.docx?$/i, "");
     res.set({
       "Content-Type": "text/markdown; charset=utf-8",
-      "Content-Disposition": `attachment; filename="${baseName}.md"`,
+      "Content-Disposition": buildContentDisposition(`${baseName}.md`, "md"),
       "Cache-Control": "no-store",
     });
     res.send(markdown);
@@ -186,12 +205,8 @@ router.post("/convert/word-to-markdown", defaultRateLimit, upload.single("file")
 // ─────────────────────────────────────────────────────────
 // POST /convert/pdf-to-markdown
 // ─────────────────────────────────────────────────────────
-router.post("/convert/pdf-to-markdown", defaultRateLimit, upload.single("file"), async (req: Request, res: Response) => {
+router.post("/convert/pdf-to-markdown", defaultRateLimit, upload.single("file"), guardSinglePdf, async (req: Request, res: Response) => {
   if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
-  if (req.file.mimetype !== "application/pdf" && !req.file.originalname?.match(/\.pdf$/i)) {
-    apiError(res, 415, "UNSUPPORTED_TYPE", "Please upload a PDF file");
-    return;
-  }
 
   const id = randomUUID();
   const workDir = join(tmpdir(), "everydaytools", id);
@@ -214,7 +229,7 @@ router.post("/convert/pdf-to-markdown", defaultRateLimit, upload.single("file"),
 
     res.set({
       "Content-Type": "text/markdown; charset=utf-8",
-      "Content-Disposition": `attachment; filename="${baseName}.md"`,
+      "Content-Disposition": buildContentDisposition(`${baseName}.md`, "md"),
       "Cache-Control": "no-store",
     });
     res.send(rawText);

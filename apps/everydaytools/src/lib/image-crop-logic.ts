@@ -219,3 +219,76 @@ export function computeSwapOrientation(
 
   return { crop: centered, aspectRatio: newRatio };
 }
+
+export async function cropImageInBrowser(
+  file: File,
+  crop: CropRect,
+  mimeType?: string,
+  quality: number = 0.92
+): Promise<Blob> {
+  if (crop.w <= 0 || crop.h <= 0) {
+    throw new Error('Crop dimensions (w, h) must be strictly positive.');
+  }
+
+  return new Promise<Blob>((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+
+    const cleanup = () => {
+      URL.revokeObjectURL(url);
+    };
+
+    img.onload = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.round(crop.w);
+        canvas.height = Math.round(crop.h);
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          cleanup();
+          reject(new Error('Canvas 2D context is not available.'));
+          return;
+        }
+
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(
+          img,
+          crop.x,
+          crop.y,
+          crop.w,
+          crop.h,
+          0,
+          0,
+          crop.w,
+          crop.h
+        );
+
+        const outputMime = mimeType || file.type || 'image/jpeg';
+        canvas.toBlob(
+          (blob) => {
+            cleanup();
+            if (!blob) {
+              reject(new Error('Failed to generate cropped image blob.'));
+              return;
+            }
+            resolve(blob);
+          },
+          outputMime,
+          quality
+        );
+      } catch (err) {
+        cleanup();
+        reject(err);
+      }
+    };
+
+    img.onerror = () => {
+      cleanup();
+      reject(new Error('Failed to load or decode image file for cropping.'));
+    };
+
+    img.src = file.name && !url.includes(file.name) ? `${url}#${file.name}` : url;
+  });
+}

@@ -134,10 +134,12 @@ export function useExcelToCsvWorkflow() {
     try {
       trackToolUsed('excel-to-csv', 'documents');
 
-      const [{ blob, filename, textOutput }] = await Promise.all([
-        convertExcelToCsv({ file, fileData, selectedSheet, delimiter }),
-        new Promise((resolve) => setTimeout(resolve, 800)),
-      ]);
+      const { blob, filename, textOutput } = await convertExcelToCsv({
+        file,
+        fileData,
+        selectedSheet,
+        delimiter,
+      });
 
       setResult({
         blob,

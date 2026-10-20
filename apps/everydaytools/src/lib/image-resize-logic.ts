@@ -157,3 +157,67 @@ export function calculatePercentageDimensions(
     height: Math.max(1, Math.round(origH * pct)),
   };
 }
+
+export async function resizeImageInBrowser(
+  file: File,
+  targetW: number,
+  targetH: number,
+  mimeType?: string,
+  quality: number = 0.92
+): Promise<Blob> {
+  if (targetW <= 0 || targetH <= 0) {
+    throw new Error('Target dimensions (targetW, targetH) must be strictly positive.');
+  }
+
+  return new Promise<Blob>((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+
+    const cleanup = () => {
+      URL.revokeObjectURL(url);
+    };
+
+    img.onload = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = targetW;
+        canvas.height = targetH;
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          cleanup();
+          reject(new Error('Canvas 2D context is not available.'));
+          return;
+        }
+
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(img, 0, 0, targetW, targetH);
+
+        const outputMime = mimeType || file.type || 'image/jpeg';
+        canvas.toBlob(
+          (blob) => {
+            cleanup();
+            if (!blob) {
+              reject(new Error('Failed to generate image blob from canvas.'));
+              return;
+            }
+            resolve(blob);
+          },
+          outputMime,
+          quality
+        );
+      } catch (err) {
+        cleanup();
+        reject(err);
+      }
+    };
+
+    img.onerror = () => {
+      cleanup();
+      reject(new Error('Failed to load or decode image file.'));
+    };
+
+    img.src = file.name && !url.includes(file.name) ? `${url}#${file.name}` : url;
+  });
+}

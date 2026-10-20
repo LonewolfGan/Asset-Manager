@@ -13,7 +13,9 @@
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./apps/**\" --filter \"./scripts\" --if-present run typecheck",
     "check:rules": "node scripts/check-rules.mjs",
-    "check": "pnpm run check:rules && pnpm run typecheck"
+    "clean:codebase": "node scripts/clean-codebase.mjs",
+    "check": "pnpm run clean:codebase && pnpm run check:rules && pnpm run typecheck",
+    "test": "pnpm -r --if-present run test"
   },
   "private": true,
   "devDependencies": {

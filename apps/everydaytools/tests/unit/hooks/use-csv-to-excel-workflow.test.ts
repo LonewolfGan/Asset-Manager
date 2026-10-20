@@ -172,4 +172,32 @@ describe('useCsvToExcelWorkflow (TDD)', () => {
       vi.useRealTimers();
     }
   });
+
+  it('converts instantly without artificial delay (no setTimeout >= 600ms during handleConvert)', async () => {
+    await renderComponent();
+
+    const file = new File(['Col1,Col2\nVal1,Val2'], 'instant.csv', { type: 'text/csv' });
+    act(() => {
+      hookValue.validateAndSetFile(file);
+    });
+
+    const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout');
+
+    try {
+      await act(async () => {
+        await hookValue.handleConvert();
+      });
+
+      expect(hookValue.result).not.toBeNull();
+      expect(hookValue.result?.sizeAfter).toBeGreaterThan(0);
+
+      const artificialDelayCalls = setTimeoutSpy.mock.calls.filter(
+        ([, delay]) => typeof delay === 'number' && delay >= 600
+      );
+
+      expect(artificialDelayCalls).toHaveLength(0);
+    } finally {
+      setTimeoutSpy.mockRestore();
+    }
+  });
 });

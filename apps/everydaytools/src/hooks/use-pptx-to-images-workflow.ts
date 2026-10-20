@@ -120,13 +120,10 @@ export function usePptxToImagesWorkflow(isFr: boolean, errorMessageFallback?: st
       const form = new FormData();
       form.append('file', file);
 
-      const [res] = await Promise.all([
-        fetch(apiUrl('/api/tools/pptx-to-images'), {
-          method: 'POST',
-          body: form,
-        }),
-        new Promise((resolve) => setTimeout(resolve, 800)),
-      ]);
+      const res = await fetch(apiUrl('/api/tools/pptx-to-images'), {
+        method: 'POST',
+        body: form,
+      });
 
       if (!res.ok) {
         const data = (await res.json().catch(() => ({}))) as { error?: string };

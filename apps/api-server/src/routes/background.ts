@@ -27,6 +27,13 @@ router.post(
       return;
     }
 
+    const rawBaseName = (req.file.originalname ?? "image").replace(/\.[^.]+$/, "");
+    const asciiBaseName =
+      rawBaseName.replace(/[^\x20-\x7E]/g, "_").replace(/["\r\n\\]/g, "_").trim() || "image";
+    const outFileName = `${asciiBaseName}_nobg.png`;
+    const encodedFileName = encodeURIComponent(`${rawBaseName}_nobg.png`);
+    const contentDisposition = `attachment; filename="${outFileName}"; filename*=UTF-8''${encodedFileName}`;
+
     // 1. Try persistent in-memory daemon first (fastest, keeps model resident in RAM)
     try {
       const daemonUrl = `${getRembgDaemonUrl()}/remove`;
@@ -41,7 +48,7 @@ router.post(
         const outArray = await daemonRes.arrayBuffer();
         const outBuffer = Buffer.from(outArray);
         res.set("Content-Type", "image/png");
-        res.set("Content-Disposition", `attachment; filename="no-bg.png"`);
+        res.set("Content-Disposition", contentDisposition);
         res.set("Cache-Control", "no-store");
         res.send(outBuffer);
         return;
@@ -52,7 +59,8 @@ router.post(
 
     // 2. Fallback: CLI process execution
     const id = `rembg-${Date.now()}-${Math.random().toString(36).slice(2)}`;
-    const ext = req.file.mimetype === "image/png" ? "png" : "jpg";
+    const mime = req.file.mimetype.toLowerCase();
+    const ext = mime.includes("webp") ? "webp" : mime === "image/png" ? "png" : "jpg";
     const inputPath  = join(tmpdir(), `${id}-in.${ext}`);
     const outputPath = join(tmpdir(), `${id}-out.png`);
 
@@ -69,7 +77,7 @@ router.post(
       const outBuffer = await readFile(outputPath);
 
       res.set("Content-Type", "image/png");
-      res.set("Content-Disposition", `attachment; filename="no-bg.png"`);
+      res.set("Content-Disposition", contentDisposition);
       res.set("Cache-Control", "no-store");
       res.send(outBuffer);
     } catch (err) {
@@ -84,7 +92,7 @@ router.post(
           );
           const outBuffer = await readFile(outputPath);
           res.set("Content-Type", "image/png");
-          res.set("Content-Disposition", `attachment; filename="no-bg.png"`);
+          res.set("Content-Disposition", contentDisposition);
           res.set("Cache-Control", "no-store");
           res.send(outBuffer);
           return;

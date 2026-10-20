@@ -19,8 +19,8 @@ export function extFromFormat(fmt: string): string {
  * Creates a Sharp pipeline with proper EXIF orientation handling
  * and sRGB color profile transformation (prevents washed out Display P3 photos).
  */
-export function createColorManagedPipeline(input: Buffer): sharp.Sharp {
-  return sharp(input)
+export function createColorManagedPipeline(input: Buffer, animated: boolean = false): sharp.Sharp {
+  return sharp(input, { animated })
     .rotate()
     .withIccProfile("srgb");
 }

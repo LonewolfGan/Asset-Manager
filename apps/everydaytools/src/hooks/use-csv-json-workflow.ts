@@ -166,8 +166,6 @@ export function useCsvJsonWorkflow(
     try {
       trackToolUsed(direction, 'documents');
 
-      await new Promise((resolve) => setTimeout(resolve, 600));
-
       const isCsvToJson = direction === 'csv-to-json';
       const outputText = isCsvToJson
         ? convertCsvToJson(rawText, isFr, delimiter)

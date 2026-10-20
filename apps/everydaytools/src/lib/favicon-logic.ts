@@ -1,3 +1,6 @@
+import JSZip from 'jszip';
+import { renderCompositedCanvas, canvasToPngBytes } from './favicon-canvas-renderer';
+
 export interface FaviconSizeInfo {
   size: number;
   label: string;
@@ -167,3 +170,53 @@ export function buildClientIco(images: Array<{ size: number; bytes: Uint8Array }
 
   return new Blob([buffer], { type: 'image/x-icon' });
 }
+
+export async function buildClientFaviconZip(
+  sourceImg: HTMLImageElement,
+  padding: number,
+  bgColor: string,
+  shape: IconShape,
+  isFr: boolean = true
+): Promise<Blob> {
+  const zip = new JSZip();
+
+  // 1. Build multi-frame favicon.ico (16, 32, 48)
+  const c16 = renderCompositedCanvas(sourceImg, padding, bgColor, shape, 16, true);
+  const c32 = renderCompositedCanvas(sourceImg, padding, bgColor, shape, 32, true);
+  const c48 = renderCompositedCanvas(sourceImg, padding, bgColor, shape, 48, true);
+
+  const [b16, b32, b48] = await Promise.all([
+    canvasToPngBytes(c16),
+    canvasToPngBytes(c32),
+    canvasToPngBytes(c48),
+  ]);
+
+  const icoBlob = buildClientIco([
+    { size: 16, bytes: b16 },
+    { size: 32, bytes: b32 },
+    { size: 48, bytes: b48 },
+  ]);
+  zip.file('favicon.ico', await icoBlob.arrayBuffer());
+
+  // 2. Build standard PNG icons
+  const pngAssets: Array<{ name: string; size: number }> = [
+    { name: 'favicon-16x16.png', size: 16 },
+    { name: 'favicon-32x32.png', size: 32 },
+    { name: 'apple-touch-icon.png', size: 180 },
+    { name: 'android-chrome-192x192.png', size: 192 },
+    { name: 'android-chrome-512x512.png', size: 512 },
+  ];
+
+  for (const asset of pngAssets) {
+    const canvas = renderCompositedCanvas(sourceImg, padding, bgColor, shape, asset.size, asset.size <= 48);
+    const pngBytes = await canvasToPngBytes(canvas);
+    zip.file(asset.name, pngBytes);
+  }
+
+  // 3. Web App Manifest
+  const manifestContent = generateWebManifestSnippet(bgColor, isFr);
+  zip.file('site.webmanifest', manifestContent);
+
+  return await zip.generateAsync({ type: 'blob', mimeType: 'application/zip' });
+}
+

@@ -1,33 +1,11 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const rootDir = path.resolve(__dirname, "..");
-const srcDir = path.join(rootDir, "apps", "everydaytools", "src");
-
-export function checkPageLocaleUsage(pageContent, srcDirectory = srcDir) {
-  let usesLocale = pageContent.includes("useLocale") || pageContent.includes("use-locale");
-  if (!usesLocale) {
-    const workflowMatch = pageContent.match(/from\s+['"](@\/hooks\/use-[^'"]+-workflow)['"]/);
-    if (workflowMatch) {
-      const hookRelative = workflowMatch[1].replace("@/", "");
-      const hookPath = path.join(srcDirectory, `${hookRelative}.ts`);
-      const hookAltPath = path.join(srcDirectory, `${hookRelative}.tsx`);
-      const targetPath = fs.existsSync(hookPath) ? hookPath : (fs.existsSync(hookAltPath) ? hookAltPath : null);
-      if (targetPath) {
-        const hookContent = fs.readFileSync(targetPath, "utf8");
-        if (hookContent.includes("useLocale") || hookContent.includes("use-locale")) {
-          usesLocale = true;
-        }
-      }
-    }
-  }
-  return usesLocale;
-}
+import {
+  checkPageLocaleUsage,
+  checkForbiddenTransitions,
+  checkMisleadingCopy,
+  checkForbiddenDoubleRings,
+} from "./check-rules.mjs";
 
 describe("Check Rules i18n Detection (TDD - P5)", () => {
   it("detects direct useLocale hook import", () => {
@@ -43,5 +21,25 @@ describe("Check Rules i18n Detection (TDD - P5)", () => {
   it("returns false when neither useLocale nor localized workflow is present", () => {
     const unlocalizedContent = `export default function UnlocalizedPage() { return <div>Unlocalized</div>; }`;
     assert.strictEqual(checkPageLocaleUsage(unlocalizedContent), false);
+  });
+});
+
+describe("Design System Anti-Slop Linter Functions", () => {
+  it("flags transition-all and transition: all", () => {
+    assert.strictEqual(checkForbiddenTransitions("className='transition-all duration-200'"), true);
+    assert.strictEqual(checkForbiddenTransitions("style={{ transition: 'all 0.3s ease' }}"), true);
+    assert.strictEqual(checkForbiddenTransitions("className='transition-transform duration-200'"), false);
+  });
+
+  it("flags banned misleading client-only copywriting", () => {
+    assert.strictEqual(checkMisleadingCopy("All file conversions runs entirely in the browser"), true);
+    assert.strictEqual(checkMisleadingCopy("Your files never leave your device"), true);
+    assert.strictEqual(checkMisleadingCopy("Fast & private processing on dedicated servers"), false);
+  });
+
+  it("flags banned double-ring anti-pattern (ring-offset-2 or ring-2 with ring-offset)", () => {
+    assert.strictEqual(checkForbiddenDoubleRings("ring-2 ring-zinc-900 ring-offset-2"), true);
+    assert.strictEqual(checkForbiddenDoubleRings("border-zinc-900 ring-2 ring-offset-2"), true);
+    assert.strictEqual(checkForbiddenDoubleRings("border-zinc-900 bg-white"), false);
   });
 });

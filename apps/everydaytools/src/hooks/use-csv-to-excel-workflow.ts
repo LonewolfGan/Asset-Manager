@@ -166,10 +166,7 @@ export function useCsvToExcelWorkflow() {
       const sizeBefore =
         mode === 'upload' && file ? file.size : new TextEncoder().encode(text).length;
 
-      const [blob] = await Promise.all([
-        convertCsvToExcel(text, isFr, delimiter),
-        new Promise((resolve) => setTimeout(resolve, 600)),
-      ]);
+      const blob = await convertCsvToExcel(text, isFr, delimiter);
 
       const filename = buildExcelFilename(mode, file, isFr);
 

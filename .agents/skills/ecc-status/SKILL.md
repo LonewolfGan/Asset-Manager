@@ -36,5 +36,6 @@ Quand l'utilisateur invoque `/ecc-status` ou demande l'état du système ECC :
    - **Zéro Hypothèse (Ask First)** : `✔ ACTIF` (Interdiction de deviner sur besoin ambigu, modale `ask_question` obligatoire).
    - **Validation Humaine (Human Gate)** : `✔ ACTIF` (Seul un message explicite dans le chat autorise l'action).
    - **Quality Gate Stop (Phase GREEN)** : `✔ VERROUILLÉ` (0 erreur TypeScript, 0 test en échec pour terminer).
+   - **Anti-Slop Gate (Zéro Cliché IA)** : `✔ VERROUILLÉ` (Sous-agents Anti-Slop obligatoires sur fichiers UI/textes, commande `/anti-slop`).
 
 3. Conclure par une seule question claire sur la prochaine action à mener.

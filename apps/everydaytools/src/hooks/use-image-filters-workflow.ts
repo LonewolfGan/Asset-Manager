@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { consumeHandoffFile } from '@/lib/file-handoff';
+import { downloadBlob } from '@/lib/download';
 import {
   type FilterSettings,
   DEFAULT_FILTER_SETTINGS,
@@ -194,15 +195,7 @@ export function useImageFiltersWorkflow(isFr: boolean) {
         const blob = await renderFilteredBlob(file, settings, format, 0.95);
 
         const outName = getFilteredFilename(file.name, activePresetId, targetExt);
-        const downloadUrl = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = downloadUrl;
-        link.download = outName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        URL.revokeObjectURL(downloadUrl);
+        downloadBlob(blob, outName);
         trackToolUsed('image-filters', 'image');
 
         setDownloadedFile(new File([blob], outName, { type: format }));

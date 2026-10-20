@@ -40,10 +40,14 @@ export function parsePageRanges(str: string, maxPages: number): number[][] {
   const parsed: number[][] = [];
   for (const part of str.split(",").map((s) => s.trim()).filter(Boolean)) {
     if (part.includes("-")) {
-      const [a, b] = part.split("-").map((s) => parseInt(s.trim()));
-      if (isNaN(a) || isNaN(b) || a < 1) continue;
-      const lo = Math.min(Math.min(a, maxPages), Math.min(b, maxPages));
-      const hi = Math.max(Math.min(a, maxPages), Math.min(b, maxPages));
+      const [a, b] = part.split("-").map((s) => parseInt(s.trim(), 10));
+      if (isNaN(a) || isNaN(b) || (a < 1 && b < 1)) continue;
+      const start = Math.min(a, b);
+      const end = Math.max(a, b);
+      if (start > maxPages) continue;
+      const lo = Math.max(1, start);
+      const hi = Math.min(maxPages, end);
+      if (lo > hi) continue;
       const indices: number[] = [];
       for (let i = lo; i <= hi; i++) indices.push(i - 1);
       if (indices.length) parsed.push(indices);

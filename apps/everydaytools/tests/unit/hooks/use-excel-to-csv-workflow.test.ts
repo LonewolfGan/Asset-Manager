@@ -200,4 +200,41 @@ describe('useExcelToCsvWorkflow (TDD RED Phase)', () => {
       vi.useRealTimers();
     }
   });
+
+  it('converts instantly without artificial delay (no setTimeout >= 600ms during handleConvert)', async () => {
+    await renderComponent();
+
+    const XLSX = await import('xlsx');
+    const ws = XLSX.utils.aoa_to_sheet([['ID', 'Name'], [1, 'InstantItem']]);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    const buf = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
+
+    const file = new File([buf], 'instant.xlsx', {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
+
+    await act(async () => {
+      await hookValue.validateAndSetFile(file);
+    });
+
+    const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout');
+
+    try {
+      await act(async () => {
+        await hookValue.handleConvert();
+      });
+
+      expect(hookValue.result).not.toBeNull();
+      expect(hookValue.result?.textOutput).toContain('InstantItem');
+
+      const artificialDelayCalls = setTimeoutSpy.mock.calls.filter(
+        ([, delay]) => typeof delay === 'number' && delay >= 600
+      );
+
+      expect(artificialDelayCalls).toHaveLength(0);
+    } finally {
+      setTimeoutSpy.mockRestore();
+    }
+  });
 });

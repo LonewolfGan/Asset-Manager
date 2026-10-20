@@ -25,54 +25,70 @@ const srcDir = path.join(rootDir, 'apps', 'everydaytools', 'src');
 const pagesDir = path.join(srcDir, 'pages');
 
 const colors = {
-  reset: '\x1b[0m',
-  bold: '\x1b[1m',
-  dim: '\x1b[2m',
-  red: '\x1b[31m',
-  green: '\x1b[32m',
-  yellow: '\x1b[33m',
-  blue: '\x1b[34m',
-  cyan: '\x1b[36m',
+  reset: '\x1b[0m', bold: '\x1b[1m', dim: '\x1b[2m', red: '\x1b[31m',
+  green: '\x1b[32m', yellow: '\x1b[33m', blue: '\x1b[34m', cyan: '\x1b[36m',
 };
 
 // Files excluded from certain strict checks
-const EXCLUDED_FROM_I18N = new Set([
-  'break-test.tsx', // internal dev harness
-]);
+const EXCLUDED_FROM_I18N = new Set(['break-test.tsx']);
 
 // 1-liner wrapper pages that simply delegate to ImageConvertPage
-const isWrapperPage = (content) => {
-  return content.includes('ImageConvertPage') && content.split('\n').length <= 15;
-};
+const isWrapperPage = (content) => content.includes('ImageConvertPage') && content.split('\n').length <= 15;
 
 // Emoji regex matching extended pictographic symbols (excluding standard typography)
 const EMOJI_REGEX = /\p{Extended_Pictographic}/u;
 const ALLOWED_TYPO_SYMBOLS = /[©®™↔↕→←↑↓↗↘↖↙•°…±×÷—–✓✔✕✖\u2000-\u206F\u2190-\u21FF]/gu;
 
-// AI Clichés (case-insensitive words)
-const AI_CLICHES = [
-  /\bgame-changer\b/i,
-  /\bgame changer\b/i,
-  /\bnext-gen\b/i,
-  /\bseamlessly\b/i,
-  /\belevate your\b/i,
+// AI Clichés & placeholders
+const AI_CLICHES = [/\bgame-changer\b/i, /\bgame changer\b/i, /\bnext-gen\b/i, /\bseamlessly\b/i, /\belevate your\b/i];
+const PLACEHOLDER_PATTERNS = [/\/\/\s*\.\.\./, /\/\*\s*\.\.\.\s*\*\//, /\/\/\s*rest of code/i, /\/\*\s*rest of code/i, /\/\/\s*TODO:\s*implement/i];
+const FORBIDDEN_CLASSES = [/bg-gradient-to-[a-z]+/i, /blur-2xl\b/, /blur-3xl\b/];
+
+// Banned generic transition: all
+const FORBIDDEN_TRANSITIONS = /\btransition-all\b|\btransition:\s*['"]?all\b/i;
+
+// Banned misleading client-only copy
+export const MISLEADING_COPY = [
+  /runs entirely in the browser/i,
+  /files never leave your device/i,
+  /aucun fichier n'est téléversé sur nos serveurs/i,
+  /no files are uploaded to our servers/i,
 ];
 
-// Placeholder patterns
-const PLACEHOLDER_PATTERNS = [
-  /\/\/\s*\.\.\./,
-  /\/\*\s*\.\.\.\s*\*\//,
-  /\/\/\s*rest of code/i,
-  /\/\*\s*rest of code/i,
-  /\/\/\s*TODO:\s*implement/i,
-];
+export function checkForbiddenTransitions(lineText) {
+  return FORBIDDEN_TRANSITIONS.test(lineText);
+}
 
-// Forbidden gradient / halo classes
-const FORBIDDEN_CLASSES = [
-  /bg-gradient-to-[a-z]+/i,
-  /blur-2xl\b/,
-  /blur-3xl\b/,
-];
+export function checkMisleadingCopy(lineText) {
+  return MISLEADING_COPY.some((re) => re.test(lineText));
+}
+
+// Banned double-ring patterns (ring-offset-2 or ring-2 with ring-offset)
+export const FORBIDDEN_DOUBLE_RINGS = /\bring-offset-2\b|\bring-2[^\n]*\bring-offset\b|\bring-offset[^\n]*\bring-2\b/i;
+
+export function checkForbiddenDoubleRings(lineText) {
+  return FORBIDDEN_DOUBLE_RINGS.test(lineText);
+}
+
+export function checkPageLocaleUsage(content, customSrcDir = srcDir) {
+  let usesLocale = content.includes('useLocale') || content.includes('use-locale');
+  if (!usesLocale) {
+    const workflowMatch = content.match(/from\s+['"](@\/hooks\/use-[^'"]+-workflow)['"]/);
+    if (workflowMatch) {
+      const hookRelative = workflowMatch[1].replace('@/', '');
+      const hookPath = path.join(customSrcDir, `${hookRelative}.ts`);
+      const hookAltPath = path.join(customSrcDir, `${hookRelative}.tsx`);
+      const targetPath = fs.existsSync(hookPath) ? hookPath : (fs.existsSync(hookAltPath) ? hookAltPath : null);
+      if (targetPath) {
+        const hookContent = fs.readFileSync(targetPath, 'utf8');
+        if (hookContent.includes('useLocale') || hookContent.includes('use-locale')) {
+          usesLocale = true;
+        }
+      }
+    }
+  }
+  return usesLocale;
+}
 
 function getAllTsxFiles(dir) {
   const results = [];
@@ -102,13 +118,32 @@ function addIssue(file, line, message, type = 'error') {
   reports.push({ file: path.relative(rootDir, file), line, message, type });
 }
 
-console.log(`${colors.bold}${colors.cyan} EverydayTools Design & Quality Rules Audit${colors.reset}`);
-console.log(`${colors.dim}Scanning workspace: apps/everydaytools/src ...${colors.reset}\n`);
+export function runCli() {
+  console.log(`${colors.bold}${colors.cyan} EverydayTools Design & Quality Rules Audit${colors.reset}`);
+  console.log(`${colors.dim}Scanning workspace: apps/everydaytools/src ...${colors.reset}\n`);
 
-const allFiles = getAllTsxFiles(srcDir);
+  const targetDirs = [srcDir, path.join(rootDir, 'lib', 'ui', 'src')];
+  const allFiles = targetDirs.flatMap((dir) => fs.existsSync(dir) ? getAllTsxFiles(dir) : []);
 const pageFiles = fs.existsSync(pagesDir)
   ? fs.readdirSync(pagesDir).filter(f => f.endsWith('.tsx')).map(f => path.join(pagesDir, f))
   : [];
+
+// 0. Repository Sanitation Gate
+const bannedRootFiles = ['.replit', '.replitignore', 'replit.md', 'replit.nix', 'tests.txt'];
+for (const bf of bannedRootFiles) {
+  if (fs.existsSync(path.join(rootDir, bf))) {
+    addIssue(path.join(rootDir, bf), 1, `Banned zombie/temp file '${bf}' detected in root. Run 'pnpm run clean:codebase'.`, 'error');
+  }
+}
+if (fs.existsSync(path.join(rootDir, 'apps', 'api-server', 'python'))) {
+  addIssue(path.join(rootDir, 'apps/api-server/python'), 1, 'Duplicate directory apps/api-server/python detected. Canonical is apps/api-server/src/python.', 'error');
+}
+if (fs.existsSync(path.join(rootDir, 'agent'))) {
+  addIssue(path.join(rootDir, 'agent'), 1, 'Duplicate directory agent detected. Canonical is .agents.', 'error');
+}
+if (fs.existsSync(path.join(rootDir, 'apps', 'api-server', '.replit-artifact')) || fs.existsSync(path.join(rootDir, 'apps', 'everydaytools', '.replit-artifact'))) {
+  addIssue(path.join(rootDir, '.replit-artifact'), 1, 'Banned .replit-artifact directory detected.', 'error');
+}
 
 // 1. Scan all TSX/TS files
 for (const file of allFiles) {
@@ -168,6 +203,25 @@ for (const file of allFiles) {
         addIssue(file, lineNum, 'Non-canonical dropzone container width detected. Dropzone must always use max-w-5xl mx-auto (AGENTS.md Rule 23).', 'error');
       }
     }
+
+    // F. Check for banned generic transition: all
+    if (FORBIDDEN_TRANSITIONS.test(lineText)) {
+      addIssue(file, lineNum, 'Prohibited transition-all or transition: all detected (Design System Contract). Use explicit targeted transitions.', 'warning');
+    }
+
+    // G. Check for misleading client-only copy (pages & components)
+    if (file.includes('/pages/') || file.includes('/components/')) {
+      for (const pattern of MISLEADING_COPY) {
+        if (pattern.test(lineText)) {
+          addIssue(file, lineNum, `Misleading client-only copy detected: '${pattern.source}'. Accurately describe hybrid Oracle VM architecture.`, 'error');
+        }
+      }
+    }
+
+    // H. Check for banned double-ring anti-pattern (ring-offset-2 or ring-2 with ring-offset)
+    if (checkForbiddenDoubleRings(lineText)) {
+      addIssue(file, lineNum, 'Prohibited double-ring anti-pattern detected (Design System Contract). Active controls must use single clean borders.', 'error');
+    }
   });
 }
 
@@ -181,25 +235,7 @@ for (const file of pageFiles) {
   // Skip wrapper pages (e.g. avif-to-jpg.tsx)
   if (isWrapperPage(content)) continue;
 
-  // Check for useLocale hook usage (directly or through an orchestrating workflow hook)
-  let usesLocale = content.includes('useLocale') || content.includes('use-locale');
-  if (!usesLocale) {
-    const workflowMatch = content.match(/from\s+['"](@\/hooks\/use-[^'"]+-workflow)['"]/);
-    if (workflowMatch) {
-      const hookRelative = workflowMatch[1].replace('@/', '');
-      const hookPath = path.join(srcDir, `${hookRelative}.ts`);
-      const hookAltPath = path.join(srcDir, `${hookRelative}.tsx`);
-      const targetPath = fs.existsSync(hookPath) ? hookPath : (fs.existsSync(hookAltPath) ? hookAltPath : null);
-      if (targetPath) {
-        const hookContent = fs.readFileSync(targetPath, 'utf8');
-        if (hookContent.includes('useLocale') || hookContent.includes('use-locale')) {
-          usesLocale = true;
-        }
-      }
-    }
-  }
-
-  if (!usesLocale) {
+  if (!checkPageLocaleUsage(content, srcDir)) {
     addIssue(file, 1, 'Missing useLocale hook. Tool pages must be localized with useLocale (i18n Lock).', 'error');
   }
 }
@@ -226,4 +262,10 @@ if (reports.length === 0) {
     console.log(`${colors.yellow}Audit passed with warnings.${colors.reset}\n`);
     process.exit(0);
   }
+}
+}
+
+const isDirectRun = process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1]);
+if (isDirectRun) {
+  runCli();
 }

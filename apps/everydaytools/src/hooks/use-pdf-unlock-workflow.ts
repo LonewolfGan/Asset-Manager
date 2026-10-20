@@ -120,11 +120,7 @@ export function usePdfUnlockWorkflow(isFr: boolean, errorMessageFallback?: strin
     try {
       trackToolUsed('pdf-unlock', 'pdf');
       const endpoint = apiUrl('/api/tools/pdf-unlock');
-
-      const [blob] = await Promise.all([
-        unlockPdfDocument(file, password, endpoint),
-        new Promise((resolve) => setTimeout(resolve, 1500)),
-      ]);
+      const blob = await unlockPdfDocument(file, password, endpoint);
 
       setResult({
         blob,

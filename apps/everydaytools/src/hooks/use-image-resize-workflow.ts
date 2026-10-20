@@ -6,6 +6,7 @@ import { consumeHandoffFile } from '@/lib/file-handoff';
 import {
   type ResizeResult,
   validateImageFile,
+  resizeImageInBrowser,
 } from '@/lib/image-resize-logic';
 import { useImageResizeDimensions } from './use-image-resize-dimensions';
 
@@ -122,6 +123,27 @@ export function useImageResizeWorkflow(isFr: boolean) {
     setIsProcessing(true);
     setError(null);
 
+    // Try in-browser canvas resize first
+    try {
+      const blob = await resizeImageInBrowser(file, targetW, targetH, file.type, 0.92);
+      const outputFilename = `resized_${file.name}`;
+      const resObjUrl = URL.createObjectURL(blob);
+      setResultPreviewUrl(resObjUrl);
+      setResult({
+        blob,
+        filename: outputFilename,
+        sizeBefore: file.size,
+        sizeAfter: blob.size,
+        finalW: targetW,
+        finalH: targetH,
+      });
+      setIsProcessing(false);
+      trackToolUsed('image-resize', 'image');
+      return;
+    } catch {
+      // Fallback to server resize
+    }
+
     try {
       const formData = new FormData();
       formData.append('file', file);
@@ -151,32 +173,16 @@ export function useImageResizeWorkflow(isFr: boolean) {
       const resObjUrl = URL.createObjectURL(blob);
       setResultPreviewUrl(resObjUrl);
 
-      const resImg = new Image();
-      resImg.onload = () => {
-        setResult({
-          blob,
-          filename: outputFilename,
-          sizeBefore,
-          sizeAfter: blob.size,
-          finalW: resImg.naturalWidth || targetW,
-          finalH: resImg.naturalHeight || targetH,
-        });
-        setIsProcessing(false);
-        trackToolUsed('image-resize', 'image');
-      };
-      resImg.onerror = () => {
-        setResult({
-          blob,
-          filename: outputFilename,
-          sizeBefore,
-          sizeAfter: blob.size,
-          finalW: targetW,
-          finalH: targetH,
-        });
-        setIsProcessing(false);
-        trackToolUsed('image-resize', 'image');
-      };
-      resImg.src = resObjUrl;
+      setResult({
+        blob,
+        filename: outputFilename,
+        sizeBefore,
+        sizeAfter: blob.size,
+        finalW: targetW,
+        finalH: targetH,
+      });
+      setIsProcessing(false);
+      trackToolUsed('image-resize', 'image');
     } catch (err: unknown) {
       const msg =
         err instanceof Error

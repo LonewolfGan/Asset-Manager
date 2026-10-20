@@ -1,5 +1,4 @@
 import { useState, useMemo, useCallback } from 'react';
-import { apiUrl } from '@/lib/apiBase';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import {
   type StagedFile,
@@ -8,6 +7,7 @@ import {
   sortAZFiles,
   reverseFiles,
   sanitizeOutputFilename,
+  mergePdfFiles,
 } from '@/lib/pdf-merge-logic';
 
 export interface MergeResultData {
@@ -151,27 +151,7 @@ export function usePdfMergeWorkflow(isFr: boolean, errorMin2Text?: string) {
 
     try {
       trackToolUsed('pdf-merge', 'pdf');
-      const fd = new FormData();
-      for (const item of files) {
-        fd.append('files', item.file);
-      }
-
-      const [res] = await Promise.all([
-        fetch(apiUrl('/api/tools/pdf-merge'), {
-          method: 'POST',
-          body: fd,
-        }),
-        new Promise((resolve) => setTimeout(resolve, 2000)),
-      ]);
-
-      if (!res.ok) {
-        const err = (await res.json().catch(() => ({}))) as { error?: string; message?: string };
-        throw new Error(
-          err.message ?? err.error ?? (isFr ? 'Échec de la fusion des documents.' : 'Failed to merge documents.')
-        );
-      }
-
-      const blob = await res.blob();
+      const blob = await mergePdfFiles(files.map((item) => item.file));
       const defaultFilename = isFr ? 'document_fusionne.pdf' : 'merged_document.pdf';
       const sanitizedName = sanitizeOutputFilename(outputFilename, defaultFilename);
 

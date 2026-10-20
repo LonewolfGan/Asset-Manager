@@ -17,11 +17,16 @@ Le PreDeploy-Gate ECC bloque mécaniquement toute tentative de release tant que 
    - Exécuter la vérification des types : `rtk pnpm typecheck` (ou `npx tsc --noEmit`).
    - Si une seule vérification échoue, stopper immédiatement et corriger les erreurs.
 
-2. **Délégation Parallèle aux Sous-Agents** :
-   Invoquer simultanément les 3 sous-agents d'audit spécialisés :
-   - **`security-auditor`** : Scanner l'authentification, les API, la validation des entrées et l'absence de secrets.
-   - **`code-reviewer`** : Scanner la qualité du code, l'absence de dead code / zombie code, et la détection de bugs sur le contrat 5 axes.
-   - **`web-performance-auditor`** : Analyser les bundles, les routes lazy-loadées et les métriques de performance.
+2. **Délégation Parallèle aux Sous-Agents (Swarm PreDeploy)** :
+   Invoquer simultanément les auditeurs spécialisés :
+   - **`security-auditor`** : Authentification, API, validation des entrées, zéro secret.
+   - **`code-reviewer`** : Qualité algorithmique, absence de régression et contrat 5 axes.
+   - **`web-performance-auditor`** : Taille des bundles, lazy loading et Core Web Vitals.
+   - **`anti-slop-ui`** : Absence de clichés visuels IA (sparkles, faux badges, halos violets).
+   - **`anti-slop-copywriting`** : Textes sobres et honnêtes sans verbiage IA ("delve", "seamless").
+   - **`anti-slop-human`** : Accessibilité WCAG (contraste strict non arrondi >= 4.5:1, focus clavier).
+   - **`anti-slop-layoutmobile`** : Zéro débordement horizontal, cibles tactiles >= 44px, adaptabilité mobile.
+   - **`anti-slop-code`** : Zéro bannière ASCII, suppression du bruit mental et des commentaires superflus.
 
 3. **Consolidation & Décision** :
    - Si des vulnérabilités critiques ou régressions majeures sont détectées : fixer le statut à `FAILED` et résoudre les anomalies.

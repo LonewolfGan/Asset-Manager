@@ -1,10 +1,12 @@
 import { describe, it, expect } from 'vitest';
+import { PDFDocument } from 'pdf-lib';
 import {
   formatPagesToRangeString,
   parseRangeStringToPages,
   selectOddPages,
   selectEvenPages,
   generateBatchSlices,
+  splitPdfFile,
 } from '@/lib/pdf-split-logic';
 
 describe('PDF Split Logic (TDD Phase RED)', () => {
@@ -72,4 +74,60 @@ describe('PDF Split Logic (TDD Phase RED)', () => {
       expect(slices[0]).toMatchObject({ from: 1, to: 3 });
     });
   });
+
+  describe('splitPdfFile (In-Browser TDD RED)', () => {
+    async function createTestPdf(pageCount: number): Promise<File> {
+      const doc = await PDFDocument.create();
+      for (let i = 0; i < pageCount; i++) {
+        doc.addPage([200, 200]);
+      }
+      const bytes = await doc.save();
+      return new File([bytes], 'source.pdf', { type: 'application/pdf' });
+    }
+
+    it('extracts selected pages into a single PDF blob', async () => {
+      const file = await createTestPdf(5);
+      const res = await splitPdfFile(file, {
+        mode: 'extract',
+        selectedPages: [1, 3, 5],
+        extractAsSinglePdf: true,
+      });
+
+      expect(res.isZip).toBe(false);
+      expect(res.blob).toBeInstanceOf(Blob);
+      expect(res.blob.type).toBe('application/pdf');
+
+      const extractedDoc = await PDFDocument.load(await res.blob.arrayBuffer());
+      expect(extractedDoc.getPageCount()).toBe(3);
+    });
+
+    it('splits into multiple parts as a ZIP archive when extractAsSinglePdf is false', async () => {
+      const file = await createTestPdf(4);
+      const res = await splitPdfFile(file, {
+        mode: 'extract',
+        selectedPages: [1, 2],
+        extractAsSinglePdf: false,
+      });
+
+      expect(res.isZip).toBe(true);
+      expect(res.blob).toBeInstanceOf(Blob);
+      expect(res.segmentCount).toBe(2);
+    });
+
+    it('splits by tranches into a ZIP archive in split mode', async () => {
+      const file = await createTestPdf(6);
+      const res = await splitPdfFile(file, {
+        mode: 'split',
+        tranches: [
+          { from: 1, to: 3 },
+          { from: 4, to: 6 },
+        ],
+      });
+
+      expect(res.isZip).toBe(true);
+      expect(res.blob).toBeInstanceOf(Blob);
+      expect(res.segmentCount).toBe(2);
+    });
+  });
 });
+

@@ -2,9 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { apiUrl } from '@/lib/apiBase';
 import { consumeHandoffFile } from '@/lib/file-handoff';
+import { downloadBlob } from '@/lib/download';
 import {
   getSwappedDimensions,
   getOutputFilename,
+  flipRotateImageInBrowser,
 } from '@/lib/flip-rotate-logic';
 import {
   type OutputFormat,
@@ -56,9 +58,6 @@ export function useFlipRotateWorkflow(isFr: boolean) {
 
     const url = URL.createObjectURL(file);
     setPreviewUrl(url);
-    setRotation(0);
-    setFlipH(false);
-    setFlipV(false);
     setError(null);
 
     setOutputFormat(resolveDefaultOutputFormat(file.type));
@@ -78,6 +77,10 @@ export function useFlipRotateWorkflow(isFr: boolean) {
     const valid = files.find((f) => f.type.startsWith('image/'));
     if (valid) {
       setFile(valid);
+      setRotation(0);
+      setFlipH(false);
+      setFlipV(false);
+      setError(null);
     }
   }, []);
 
@@ -115,7 +118,8 @@ export function useFlipRotateWorkflow(isFr: boolean) {
   const rotateLeft = () => {
     setRotation((r) => {
       let next = r - 90;
-      while (next < -180) next += 360;
+      while (next <= -180) next += 360;
+      while (next > 180) next -= 360;
       return next;
     });
   };
@@ -124,6 +128,7 @@ export function useFlipRotateWorkflow(isFr: boolean) {
     setRotation((r) => {
       let next = r + 90;
       while (next > 180) next -= 360;
+      while (next <= -180) next += 360;
       return next;
     });
   };
@@ -132,6 +137,7 @@ export function useFlipRotateWorkflow(isFr: boolean) {
     setRotation((r) => {
       let next = r + 180;
       while (next > 180) next -= 360;
+      while (next <= -180) next += 360;
       return next;
     });
   };
@@ -179,35 +185,34 @@ export function useFlipRotateWorkflow(isFr: boolean) {
     setIsProcessing(true);
 
     try {
-      const fd = buildFlipRotateFormData(file, rotation, flipH, flipV, outputFormat);
+      let blob: Blob;
+      try {
+        blob = await flipRotateImageInBrowser(file, rotation, flipH, flipV, outputFormat);
+      } catch {
+        const fd = buildFlipRotateFormData(file, rotation, flipH, flipV, outputFormat);
 
-      const res = await fetch(apiUrl('/api/tools/flip-rotate'), {
-        method: 'POST',
-        body: fd,
-      });
+        const res = await fetch(apiUrl('/api/tools/flip-rotate'), {
+          method: 'POST',
+          body: fd,
+        });
 
-      if (!res.ok) {
-        let msg = isFr ? 'Échec de la transformation' : 'Transformation failed';
-        try {
-          const err = await res.json();
-          if (err?.error) msg = err.error;
-        } catch {}
-        throw new Error(msg);
+        if (!res.ok) {
+          let msg = isFr ? 'Échec de la transformation' : 'Transformation failed';
+          try {
+            const err = await res.json();
+            if (err?.error) msg = err.error;
+          } catch {}
+          throw new Error(msg);
+        }
+
+        blob = await res.blob();
       }
 
-      const blob = await res.blob();
       const currentOpt = FORMAT_OPTIONS.find((o) => o.value === outputFormat);
       const ext = currentOpt ? currentOpt.ext : 'png';
       const filename = getOutputFilename(file.name, ext);
 
-      const dlUrl = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = dlUrl;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(dlUrl), 2000);
+      downloadBlob(blob, filename);
 
       setExportedResult({ blob, filename });
       setTimeout(() => {

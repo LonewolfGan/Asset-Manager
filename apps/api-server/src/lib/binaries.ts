@@ -46,9 +46,7 @@ export function getPythonScriptPath(scriptName: string): string {
   }
   const searchDirs = [
     resolve(process.cwd(), "src/python"),
-    resolve(process.cwd(), "python"),
-    resolve(process.cwd(), "artifacts/api-server/src/python"),
-    resolve(process.cwd(), "artifacts/api-server/python"),
+    resolve(process.cwd(), "apps/api-server/src/python"),
   ];
   for (const dir of searchDirs) {
     const full = join(dir, scriptName);

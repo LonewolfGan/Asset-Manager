@@ -43,3 +43,18 @@ Pour préserver la fraîcheur de son contexte et garantir une rigueur maximale, 
 
 5. **Performance & Vitesse Frontend (`web-performance-auditor`)** :
    - Pour les pages ou composants UI lourds, invoquer `web-performance-auditor` pour analyser le bundle, les Core Web Vitals (LCP, INP, CLS) et les re-rendus inutiles.
+
+6. **Anti-Slop Interface & Clichés Visuels (`anti-slop-ui`)** :
+   - Invoquer pour purger les étoiles "sparkles", faux badges "AI 2.0", dégradés violets génériques et sur-décoration sans hiérarchie.
+
+7. **Anti-Slop Rédaction & Textes Authentiques (`anti-slop-copywriting`)** :
+   - Invoquer pour éliminer le verbiage IA ("delve", "seamless", "revolutionize"), fausses statistiques ("10 000% ROI") et emojis superflus.
+
+8. **Anti-Slop Accessibilité Humaine (`anti-slop-human`)** :
+   - Invoquer pour valider les ratios de contraste réels non arrondis (>= 4.5:1), la navigabilité clavier (:focus-visible) et les cibles tactiles >= 44px.
+
+9. **Anti-Slop Responsive & Mobile (`anti-slop-layoutmobile`)** :
+   - Invoquer pour vérifier l'absence totale de scroll horizontal, l'adaptation sur mobile (320px-480px) et la fluidité des conteneurs.
+
+10. **Anti-Slop Hygiène du Code (`anti-slop-code`)** :
+    - Invoquer pour supprimer les bannières ASCII (// === SECTION ===), les commentaires redondants paraphrasant le code et le bruit mental inutile.

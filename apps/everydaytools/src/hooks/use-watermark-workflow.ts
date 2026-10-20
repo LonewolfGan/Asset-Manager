@@ -110,11 +110,12 @@ export function useWatermarkWorkflow(isFr: boolean) {
   }, []);
 
   const handleResetConfig = useCallback(() => {
-    if (!imgElement) return;
-    const autoFontSize = Math.max(
-      18,
-      Math.min(160, Math.round(Math.min(imgElement.naturalWidth, imgElement.naturalHeight) * 0.055))
-    );
+    const autoFontSize = imgElement
+      ? Math.max(
+          18,
+          Math.min(160, Math.round(Math.min(imgElement.naturalWidth, imgElement.naturalHeight) * 0.055))
+        )
+      : DEFAULT_WATERMARK_CONFIG.fontSize;
     setConfig({
       ...DEFAULT_WATERMARK_CONFIG,
       fontSize: autoFontSize,
