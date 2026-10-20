@@ -1,3 +1,4 @@
+import { downloadBlob } from '@/lib/download';
 import type { ConversionFormat } from '@/components/conversion';
 
 export interface PdfToEpubResult {
@@ -136,12 +137,5 @@ export async function convertPdfToEpub(file: File, isFr = false): Promise<PdfToE
 }
 
 export function triggerDownload(blob: Blob, filename: string): void {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  downloadBlob(blob, filename);
 }

@@ -128,6 +128,7 @@ describe('pdf-to-html-logic', () => {
 
   describe('triggerDownload', () => {
     it('creates anchor and triggers click for download', () => {
+      vi.useFakeTimers();
       const createObjectURLMock = vi.fn().mockReturnValue('blob:mock-html');
       const revokeObjectURLMock = vi.fn();
       globalThis.URL.createObjectURL = createObjectURLMock;
@@ -142,7 +143,9 @@ describe('pdf-to-html-logic', () => {
       expect(createObjectURLMock).toHaveBeenCalledWith(blob);
       expect(appendChildSpy).toHaveBeenCalled();
       expect(removeChildSpy).toHaveBeenCalled();
+      vi.advanceTimersByTime(1500);
       expect(revokeObjectURLMock).toHaveBeenCalledWith('blob:mock-html');
+      vi.useRealTimers();
     });
   });
 });

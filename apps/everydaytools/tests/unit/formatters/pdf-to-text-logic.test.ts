@@ -134,6 +134,7 @@ describe('pdf-to-text-logic', () => {
 
   describe('downloadPdfToTextResult', () => {
     it('creates download anchor and clicks it', () => {
+      vi.useFakeTimers();
       const createObjectURLMock = vi.fn().mockReturnValue('blob:mock-url');
       const revokeObjectURLMock = vi.fn();
       globalThis.URL.createObjectURL = createObjectURLMock;
@@ -156,8 +157,10 @@ describe('pdf-to-text-logic', () => {
       expect(createObjectURLMock).toHaveBeenCalledWith(mockResult.blob);
       expect(appendChildSpy).toHaveBeenCalled();
       expect(removeChildSpy).toHaveBeenCalled();
+      vi.advanceTimersByTime(1500);
       expect(revokeObjectURLMock).toHaveBeenCalledWith('blob:mock-url');
       expect(onAfterDownload).toHaveBeenCalled();
+      vi.useRealTimers();
     });
   });
 });

@@ -1,4 +1,5 @@
 import { apiUrl } from '@/lib/apiBase';
+import { downloadBlob } from '@/lib/download';
 import type { ConversionFormat } from '@/components/conversion';
 
 export type ImageFormat = 'png' | 'jpeg' | 'webp' | 'avif' | 'tiff' | 'gif';
@@ -116,13 +117,10 @@ export async function convertPdfToImages(
   fd.append('file', file);
   fd.append('format', format);
 
-  const [res] = await Promise.all([
-    fetch(apiUrl('/api/tools/pdf-to-images'), {
-      method: 'POST',
-      body: fd,
-    }),
-    new Promise((resolve) => setTimeout(resolve, 800)),
-  ]);
+  const res = await fetch(apiUrl('/api/tools/pdf-to-images'), {
+    method: 'POST',
+    body: fd,
+  });
 
   if (!res.ok) {
     const err = (await res.json().catch(() => ({}))) as {
@@ -152,12 +150,5 @@ export async function convertPdfToImages(
 }
 
 export function triggerDownload(blob: Blob, filename: string): void {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  downloadBlob(blob, filename);
 }

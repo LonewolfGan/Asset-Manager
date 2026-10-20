@@ -1,4 +1,5 @@
 import { apiUrl } from '@/lib/apiBase';
+import { downloadBlob } from '@/lib/download';
 import type { ConversionFormat } from '@/components/conversion';
 
 export interface PdfToTextResult {
@@ -71,13 +72,10 @@ export async function convertPdfToText(
   const fd = new FormData();
   fd.append('file', file);
 
-  const [res] = await Promise.all([
-    fetch(apiUrl('/api/convert/pdf-to-text'), {
-      method: 'POST',
-      body: fd,
-    }),
-    new Promise((resolve) => setTimeout(resolve, 800)),
-  ]);
+  const res = await fetch(apiUrl('/api/convert/pdf-to-text'), {
+    method: 'POST',
+    body: fd,
+  });
 
   if (!res.ok) {
     const errJson = (await res.json().catch(() => ({}))) as {
@@ -106,14 +104,7 @@ export function downloadPdfToTextResult(
   result: PdfToTextResult,
   onAfterDownload?: () => void
 ): void {
-  const url = URL.createObjectURL(result.blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = result.filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  downloadBlob(result.blob, result.filename);
 
   if (onAfterDownload) {
     onAfterDownload();

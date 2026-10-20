@@ -83,6 +83,7 @@ describe('excel-to-pdf-logic', () => {
     });
 
     it('creates object URL and simulates anchor click on download', () => {
+      vi.useFakeTimers();
       const createObjectURLMock = vi.fn().mockReturnValue('blob:mock-pdf');
       const revokeObjectURLMock = vi.fn();
       globalThis.URL.createObjectURL = createObjectURLMock;
@@ -97,7 +98,9 @@ describe('excel-to-pdf-logic', () => {
       expect(createObjectURLMock).toHaveBeenCalledWith(blob);
       expect(appendChildSpy).toHaveBeenCalled();
       expect(removeChildSpy).toHaveBeenCalled();
+      vi.advanceTimersByTime(1500);
       expect(revokeObjectURLMock).toHaveBeenCalledWith('blob:mock-pdf');
+      vi.useRealTimers();
     });
 
     it('opens window with object URL on preview', () => {

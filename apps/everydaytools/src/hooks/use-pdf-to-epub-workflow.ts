@@ -88,11 +88,8 @@ export function usePdfToEpubWorkflow() {
     try {
       trackToolUsed('pdf-to-epub', 'pdf');
 
-      const [{ blob, filename, sizeAfter, sizeBefore, textOutput }] =
-        await Promise.all([
-          convertPdfToEpub(file, isFr),
-          new Promise((resolve) => setTimeout(resolve, 800)),
-        ]);
+      const { blob, filename, sizeAfter, sizeBefore, textOutput } =
+        await convertPdfToEpub(file, isFr);
 
       setResult({
         blob,

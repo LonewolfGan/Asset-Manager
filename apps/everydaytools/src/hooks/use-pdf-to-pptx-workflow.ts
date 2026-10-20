@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
 import { apiUrl } from '@/lib/apiBase';
+import { downloadBlob } from '@/lib/download';
 import { consumeHandoffFile } from '@/lib/file-handoff';
 import type { ConversionFormat } from '@/components/conversion';
 
@@ -119,13 +120,10 @@ export function usePdfToPptxWorkflow() {
       const fd = new FormData();
       fd.append('file', file);
 
-      const [res] = await Promise.all([
-        fetch(apiUrl('/api/tools/pdf-to-pptx'), {
-          method: 'POST',
-          body: fd,
-        }),
-        new Promise((resolve) => setTimeout(resolve, 800)),
-      ]);
+      const res = await fetch(apiUrl('/api/tools/pdf-to-pptx'), {
+        method: 'POST',
+        body: fd,
+      });
 
       if (!res.ok) {
         const err = (await res.json().catch(() => ({}))) as {
@@ -159,14 +157,7 @@ export function usePdfToPptxWorkflow() {
 
   const handleDownload = useCallback(() => {
     if (!result) return;
-    const url = URL.createObjectURL(result.blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = result.filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    downloadBlob(result.blob, result.filename);
 
     setTimeout(() => {
       setIsNextActionOpen(true);

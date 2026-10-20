@@ -1,4 +1,5 @@
 import mammoth from 'mammoth';
+import { downloadBlob } from '@/lib/download';
 import type { ConversionFormat } from '@/components/conversion';
 
 export interface WordToTextResult {
@@ -105,15 +106,6 @@ export async function convertWordToText(
 }
 
 export function triggerDownload(blob: Blob, filename: string): void {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(() => {
-    URL.revokeObjectURL(url);
-  }, 1000);
+  downloadBlob(blob, filename);
 }
 

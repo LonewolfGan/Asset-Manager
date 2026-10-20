@@ -167,11 +167,8 @@ export function useWordToEpubWorkflow(
     try {
       trackToolUsed('word-to-epub', 'documents');
 
-      const [{ blob, filename, sizeAfter, sizeBefore, textOutput }] =
-        await Promise.all([
-          convertWordToEpub(file, isFr),
-          new Promise((resolve) => setTimeout(resolve, 800)),
-        ]);
+      const { blob, filename, sizeAfter, sizeBefore, textOutput } =
+        await convertWordToEpub(file, isFr);
 
       setResult({
         blob,

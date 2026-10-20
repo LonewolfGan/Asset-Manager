@@ -206,10 +206,7 @@ export function useHtmlToMarkdownWorkflow(
     try {
       trackToolUsed('html-to-markdown', 'textCode');
 
-      const [mdOutput] = await Promise.all([
-        convertHtmlToMarkdown(rawHtml),
-        new Promise((resolve) => setTimeout(resolve, 600)),
-      ]);
+      const mdOutput = await convertHtmlToMarkdown(rawHtml);
 
       const filename = buildMarkdownFilename(
         mode === 'upload' && file ? file.name : stagedFile?.name

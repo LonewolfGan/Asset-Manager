@@ -1,4 +1,5 @@
 import { apiUrl } from '@/lib/apiBase';
+import { downloadBlob } from '@/lib/download';
 import type { ConversionFormat } from '@/components/conversion';
 
 export interface PdfExportConvertResult {
@@ -81,13 +82,10 @@ export async function convertPdfToDoc(
   fd.append('file', file);
   fd.append('targetFormat', targetFormat);
 
-  const [res] = await Promise.all([
-    fetch(apiUrl('/api/tools/document-convert'), {
-      method: 'POST',
-      body: fd,
-    }),
-    new Promise((resolve) => setTimeout(resolve, 800)),
-  ]);
+  const res = await fetch(apiUrl('/api/tools/document-convert'), {
+    method: 'POST',
+    body: fd,
+  });
 
   if (!res.ok) {
     const errJson = (await res.json().catch(() => ({}))) as {
@@ -117,12 +115,5 @@ export async function convertPdfToDoc(
 }
 
 export function triggerDownload(blob: Blob, filename: string): void {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  downloadBlob(blob, filename);
 }
