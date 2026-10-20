@@ -4,6 +4,7 @@ import {
   getFormatInfo,
   canConvertClientSide,
   canvasToBlob,
+  parseSvgDimensions,
 } from '@/lib/image-convert-logic';
 
 describe('image-convert-logic pure helpers', () => {
@@ -105,6 +106,12 @@ describe('image-convert-logic pure helpers', () => {
       const arrayBuffer = await blob.arrayBuffer();
       const header = new TextDecoder().decode(new Uint8Array(arrayBuffer.slice(0, 5)));
       expect(header).toBe('%PDF-');
+    });
+  });
+
+  describe('parseSvgDimensions pure helper', () => {
+    it('parses svg dimensions accurately', () => {
+      expect(parseSvgDimensions('<svg width="400" height="300"></svg>')).toEqual({ width: 400, height: 300 });
     });
   });
 });
