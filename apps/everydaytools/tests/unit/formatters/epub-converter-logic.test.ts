@@ -121,7 +121,7 @@ describe('epub-converter-logic [TDD-Lock ECC]', () => {
       vi.restoreAllMocks();
     });
 
-    it('creates anchor, triggers download, and delays revokeObjectURL', () => {
+    it('delegates to downloadBlob and delays revokeObjectURL', () => {
       vi.useFakeTimers();
       const createObjectURLMock = vi.fn().mockReturnValue('blob:mock-docx');
       const revokeObjectURLMock = vi.fn();

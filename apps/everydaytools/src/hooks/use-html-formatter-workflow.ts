@@ -2,6 +2,7 @@ import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import hljs from 'highlight.js/lib/core';
 import xmlLang from 'highlight.js/lib/languages/xml';
 import { trackToolUsed } from '@/lib/analytics';
+import { downloadText } from '@/lib/download';
 import { useLocale } from '@/hooks/use-locale';
 import { toast } from 'sonner';
 import {
@@ -162,13 +163,8 @@ export function useHtmlFormatterWorkflow(isFrProp?: boolean) {
   const handleDownload = useCallback(() => {
     if (!output) return;
     trackToolUsed('html-formatter', 'download');
-    const blob = new Blob([output], { type: 'text/html;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = mode === 'minify' ? 'index.min.html' : 'formatted.html';
-    a.click();
-    URL.revokeObjectURL(url);
+    const filename = mode === 'minify' ? 'index.min.html' : 'formatted.html';
+    downloadText(output, filename, 'text/html;charset=utf-8');
     toast.success(isFr ? 'Fichier HTML téléchargé' : 'HTML file downloaded');
   }, [output, mode, isFr]);
 

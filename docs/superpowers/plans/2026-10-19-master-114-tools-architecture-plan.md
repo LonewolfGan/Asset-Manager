@@ -200,8 +200,9 @@ flowchart TD
     V7 --> V8["Vague 8 : Certification Globale & Gate Awwwards<br>Audit des 114 outils, 0 avertissement, 100% vert"]
 ```
 
-### 🎯 Statut Actuel : Vague 6 Terminée — Prochaine Session : Vague 7 (Suite Code, Sécurité & Outils Développeur)
+### 🎯 Statut Actuel : Vague 7 Terminée — Prochaine Étape : Vague 8 (Certification Globale & Gate Awwwards)
 - **Vague 5 Terminée** : Suite Spreadsheets & Bureautique (`excel-to-csv`, `csv-to-excel`, `csv-to-json`, `json-to-csv`, `csv-viewer`, `csv-editor`, `pptx-to-pdf`, `pptx-to-images`, `odt-to-pdf`, `rtf-to-pdf`, `epub-to-pdf`) — 100% testée, 0 délai artificiel, auditée `code-reviewer` GREEN.
 - **Vague 6 Terminée** : Moteur Image Canvas & Codecs Spécialisés (`image-resize`, `image-crop`, `flip-rotate-image`, `watermark-image`, `favicon-generator`, `image-filters`, `svg-to-png`, conversions rapides WebP/GIF/BMP/TIFF, `png-to-gif`, `webp-to-gif`) — 100% testée, zéro délai artificiel, fast-path Canvas in-browser + fallback Sharp multi-frame, auditée `code-reviewer` GREEN (Ready to ship : YES).
-- **Prochaine Vague (Vague 7)** : Suite Code, Sécurité & Outils Développeur (`prettier-css`, `prettier-js`, `json-formatter`, `html-formatter`, `base64`, `url-encoder`, `regex-tester`, `jwt-decoder`, `checksum`, `hash-generator`, `uuid-generator`, `speed-test`).
+- **Vague 7 Terminée** : Suite Code, Sécurité & Outils Développeur (`checksum` #74, `hash-generator` #110, `uuid-generator` #111, `jwt-decoder` #108, `json-formatter` #75, `html-formatter` #76, `css-formatter` #103, `js-formatter` #104, `ai-text-scrubber` #73, `regex-tester` #107, `diff-checker` #106, `json-diff` #101, `base64` #77, `url-encoder` #78, `barcode-generator` #109, `word-counter` #79, `lorem-ipsum` #80, `color-converter` #112, `color-palette` #113, `speed-test` #114, `html-to-word` #94, `epub-to-word` #95) — 100% testée, éradication intégrale des créations manuelles d'ancre DOM au profit du SSOT `@/lib/download`, suppression de tous les délais artificiels (pause 200ms dans speed-test, timeouts 1000ms), 100% respect de la règle Anti-Monolithe (< 300 LOC), auditée `code-reviewer` GREEN (Ready to ship : YES).
+- **Prochaine Vague (Vague 8)** : Certification Globale & Gate Awwwards (Audit exhaustif des 114 outils, 0 avertissement, 100% vert, conformité Awwwards).
 

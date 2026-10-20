@@ -66,7 +66,7 @@ describe('JWT Export and Annotation Logic', () => {
     expect(expAnnotationEn).toContain('Expired on');
   });
 
-  it('exports triggerJwtDownload without throwing', () => {
+  it('exports triggerJwtDownload and delegates to downloadText', () => {
     expect(typeof triggerJwtDownload).toBe('function');
   });
 });

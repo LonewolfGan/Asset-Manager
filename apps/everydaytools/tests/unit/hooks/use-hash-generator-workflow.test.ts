@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import React, { act } from 'react';
 import { createRoot, Root } from 'react-dom/client';
+import * as downloadModule from '@/lib/download';
 import { useHashGeneratorWorkflow } from '@/hooks/use-hash-generator-workflow';
 
 (globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
@@ -158,5 +159,24 @@ describe('useHashGeneratorWorkflow', () => {
     });
 
     expect(hook.isUppercase).toBe(true);
+  });
+
+  it('triggers download via downloadText on handleDownloadManifest', async () => {
+    const downloadTextSpy = vi.spyOn(downloadModule, 'downloadText');
+    let hook!: ReturnType<typeof useHashGeneratorWorkflow>;
+    function Harness() {
+      hook = useHashGeneratorWorkflow();
+      return null;
+    }
+
+    await act(async () => {
+      root.render(React.createElement(Harness));
+    });
+
+    act(() => {
+      hook.handleDownloadManifest();
+    });
+
+    expect(downloadTextSpy).toHaveBeenCalled();
   });
 });

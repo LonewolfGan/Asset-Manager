@@ -13,6 +13,7 @@ import {
 } from '@/lib/base64-logic';
 import { prepareEncodedFileResult, resolveDownloadInfo } from '@/lib/base64-file-helpers';
 import { consumeHandoffFile, consumeHandoffText } from '@/lib/file-handoff';
+import { downloadBlob } from '@/lib/download';
 
 export type Mode = 'encode' | 'decode';
 
@@ -229,18 +230,7 @@ export function useBase64Workflow({ isFr }: UseBase64WorkflowOptions) {
       output,
       detectedBinary,
     });
-
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => {
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }, 150);
-
+    downloadBlob(blob, filename);
     toast.success(
       isBinary
         ? (isFr ? `Fichier téléchargé (${detectedBinary!.extension.toUpperCase()})` : `File downloaded (${detectedBinary!.extension.toUpperCase()})`)

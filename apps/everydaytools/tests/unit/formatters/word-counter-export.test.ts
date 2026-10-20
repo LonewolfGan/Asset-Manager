@@ -1,9 +1,10 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import {
   formatDuration,
   formatFileSize,
   buildStatisticalReport,
   buildJsonStatisticsPayload,
+  downloadTextFile,
 } from '@/lib/word-counter-export-logic';
 import type { DetailedTextStats } from '@/lib/word-counter-logic';
 
@@ -127,6 +128,14 @@ describe('word-counter-export-logic', () => {
       URL.createObjectURL = originalCreateObjectURL;
       URL.revokeObjectURL = originalRevokeObjectURL;
       document.body.appendChild = originalAppendChild;
+    });
+
+    it('delegates to downloadText from @/lib/download without manual anchor creation', async () => {
+      const downloadModule = await import('@/lib/download');
+      const spy = vi.spyOn(downloadModule, 'downloadText').mockImplementation(() => {});
+      downloadTextFile('Test content', 'test-file.txt');
+      expect(spy).toHaveBeenCalledWith('Test content', 'test-file.txt', 'text/plain;charset=utf-8');
+      spy.mockRestore();
     });
   });
 });

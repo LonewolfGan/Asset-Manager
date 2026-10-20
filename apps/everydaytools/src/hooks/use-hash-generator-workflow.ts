@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed, trackToolError } from '@/lib/analytics';
+import { downloadText } from '@/lib/download';
 import { toast } from 'sonner';
 import { verifyHashMatch, type SupportedHashAlgo } from '@/lib/hash-logic';
 import {
@@ -205,14 +206,9 @@ export function useHashGeneratorWorkflow() {
   }, [manifestContent, isFr]);
 
   const handleDownloadManifest = useCallback(() => {
-    const blob = new Blob([manifestContent], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download =
+    const filename =
       inputMode === 'file' && fileInfo ? `${fileInfo.name}.checksums.txt` : 'checksums.txt';
-    a.click();
-    URL.revokeObjectURL(url);
+    downloadText(manifestContent, filename);
     toast.success(isFr ? 'Manifeste checksums téléchargé' : 'Checksums manifest downloaded');
     trackToolUsed('hash-generator', 'download-manifest');
   }, [manifestContent, inputMode, fileInfo, isFr]);

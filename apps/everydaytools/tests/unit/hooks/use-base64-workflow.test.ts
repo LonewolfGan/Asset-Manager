@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import React, { act } from 'react';
 import { createRoot, Root } from 'react-dom/client';
 import { useBase64Workflow } from '@/hooks/use-base64-workflow';
@@ -90,5 +90,38 @@ describe('useBase64Workflow', () => {
     });
 
     expect(hook.history.length).toBeLessThanOrEqual(2);
+  });
+
+  it('delegates handleDownload to downloadBlob from @/lib/download without <a> elements', async () => {
+    const downloadModule = await import('@/lib/download');
+    const downloadSpy = vi.spyOn(downloadModule, 'downloadBlob').mockImplementation(() => {});
+    const createElementSpy = vi.spyOn(document, 'createElement');
+
+    let hook!: ReturnType<typeof useBase64Workflow>;
+    function Harness() {
+      hook = useBase64Workflow({ isFr: true });
+      return null;
+    }
+
+    await act(async () => {
+      root.render(React.createElement(Harness));
+    });
+
+    await act(async () => {
+      hook.handleInputChange('Text to encode');
+    });
+
+    createElementSpy.mockClear();
+
+    await act(async () => {
+      hook.handleDownload();
+    });
+
+    expect(downloadSpy).toHaveBeenCalled();
+    const anchorCalls = createElementSpy.mock.calls.filter(([tag]) => tag.toLowerCase() === 'a');
+    expect(anchorCalls).toHaveLength(0);
+
+    downloadSpy.mockRestore();
+    createElementSpy.mockRestore();
   });
 });

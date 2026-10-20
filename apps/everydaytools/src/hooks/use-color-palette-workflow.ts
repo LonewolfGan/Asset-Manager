@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { trackToolUsed } from '@/lib/analytics';
 import { toast } from 'sonner';
+import { downloadText } from '@/lib/download';
 import { consumeHandoffText } from '@/lib/file-handoff';
 import {
   generateHarmonyPalette,
@@ -208,13 +209,7 @@ export function useColorPaletteWorkflow(isFr: boolean) {
   }, [isFr]);
 
   const handleDownload = useCallback((content: string, filename: string, mimeType: string) => {
-    const blob = new Blob([content], { type: mimeType });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    downloadText(content, filename, mimeType);
     toast.success(isFr ? `Fichier ${filename} téléchargé` : `File ${filename} downloaded`);
     trackToolUsed('color-palette', 'download');
   }, [isFr]);

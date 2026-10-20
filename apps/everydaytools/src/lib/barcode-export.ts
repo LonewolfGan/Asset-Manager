@@ -1,3 +1,5 @@
+import { downloadText, downloadBlob } from '@/lib/download';
+
 export function serializeSvgToString(svgElement: SVGSVGElement): string {
   const clone = svgElement.cloneNode(true) as SVGSVGElement;
   clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
@@ -12,19 +14,8 @@ export function downloadSvgBarcode(
   value: string
 ): void {
   const svgString = serializeSvgToString(svgElement);
-  const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.style.display = 'none';
-  a.href = url;
-  a.download = `barcode-${symbologyId.toLowerCase()}-${value.trim().replace(/[^a-zA-Z0-9_-]/g, '_')}.svg`;
-  document.body.appendChild(a);
-  a.click();
-
-  setTimeout(() => {
-    a.parentNode?.removeChild(a);
-    URL.revokeObjectURL(url);
-  }, 150);
+  const filename = `barcode-${symbologyId.toLowerCase()}-${value.trim().replace(/[^a-zA-Z0-9_-]/g, '_')}.svg`;
+  downloadText(svgString, filename, 'image/svg+xml;charset=utf-8');
 }
 
 export function downloadPngBarcode(
@@ -73,18 +64,8 @@ export function downloadPngBarcode(
           resolve();
           return;
         }
-        const pngUrl = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = pngUrl;
-        a.download = `barcode-${symbologyId.toLowerCase()}-${value.trim().replace(/[^a-zA-Z0-9_-]/g, '_')}.png`;
-        document.body.appendChild(a);
-        a.click();
-
-        setTimeout(() => {
-          a.parentNode?.removeChild(a);
-          URL.revokeObjectURL(pngUrl);
-        }, 150);
+        const filename = `barcode-${symbologyId.toLowerCase()}-${value.trim().replace(/[^a-zA-Z0-9_-]/g, '_')}.png`;
+        downloadBlob(blob, filename);
         resolve();
       }, 'image/png');
     };

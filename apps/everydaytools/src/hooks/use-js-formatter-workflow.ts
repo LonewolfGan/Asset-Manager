@@ -1,6 +1,7 @@
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { useLocale } from '@/hooks/use-locale';
 import { trackToolUsed } from '@/lib/analytics';
+import { downloadText } from '@/lib/download';
 import { toast } from 'sonner';
 import hljs from 'highlight.js/lib/core';
 import jsLang from 'highlight.js/lib/languages/javascript';
@@ -179,13 +180,8 @@ export function useJsFormatterWorkflow() {
     if (!output) return;
     trackToolUsed('js-formatter', 'download');
     const ext = language === 'typescript' ? 'ts' : 'js';
-    const blob = new Blob([output], { type: 'text/javascript;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = mode === 'minify' ? `script.min.${ext}` : `formatted.${ext}`;
-    a.click();
-    URL.revokeObjectURL(url);
+    const filename = mode === 'minify' ? `script.min.${ext}` : `formatted.${ext}`;
+    downloadText(output, filename, 'text/javascript;charset=utf-8');
     toast.success(isFr ? `Fichier .${ext} téléchargé` : `File .${ext} downloaded`);
   }, [output, language, mode, isFr]);
 

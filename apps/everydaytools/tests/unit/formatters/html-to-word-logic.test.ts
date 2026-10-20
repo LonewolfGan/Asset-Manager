@@ -132,7 +132,7 @@ describe('html-to-word-logic [TDD-Lock ECC]', () => {
   });
 
   describe('triggerDownload', () => {
-    it('creates object URL, appends link, clicks, and schedules delayed revocation', () => {
+    it('delegates to downloadBlob and schedules delayed revocation', () => {
       vi.useFakeTimers();
       const createObjectURLSpy = vi
         .spyOn(URL, 'createObjectURL')

@@ -1,4 +1,5 @@
 import { md5Bytes } from './hash-logic';
+import { downloadText } from '@/lib/download';
 import type { ConversionFormat } from '@/components/conversion';
 
 export type ChecksumAlgo = 'SHA-256' | 'SHA-512' | 'MD5' | 'SHA-1' | 'SHA-384';
@@ -172,13 +173,7 @@ export function buildChecksumReportText(
  * Trigger text file download in browser
  */
 export function downloadTextFile(content: string, filename: string): void {
-  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  downloadText(content, filename);
 }
 
 /**

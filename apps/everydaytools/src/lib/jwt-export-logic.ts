@@ -1,3 +1,4 @@
+import { downloadText } from '@/lib/download';
 import { DecodedJwt } from './jwt-logic';
 
 export interface JwtTokenStats {
@@ -87,17 +88,7 @@ export function buildJwtExportPayload(
 export function triggerJwtDownload(
   content: string,
   filename: string,
-  mimeType: string
+  mimeType: string = 'application/json'
 ): void {
-  const blob = new Blob([content], { type: mimeType });
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement('a');
-  anchor.href = url;
-  anchor.download = filename;
-  document.body.appendChild(anchor);
-  anchor.click();
-  document.body.removeChild(anchor);
-  setTimeout(() => {
-    URL.revokeObjectURL(url);
-  }, 200);
+  downloadText(content, filename, mimeType);
 }

@@ -5,6 +5,7 @@ import hljs from 'highlight.js/lib/core';
 import jsonLang from 'highlight.js/lib/languages/json';
 import yamlLang from 'highlight.js/lib/languages/yaml';
 import { trackToolUsed } from '@/lib/analytics';
+import { downloadText } from '@/lib/download';
 import { consumeHandoffFile } from '@/lib/file-handoff';
 import {
   autoRepairJsonString,
@@ -204,20 +205,11 @@ export function useJsonFormatterWorkflow(isFr: boolean) {
     const mime = yamlMode ? 'text/yaml' : 'application/json';
     const blob = new Blob([outputCode], { type: mime });
     const filename = `data-${Date.now()}.${ext}`;
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    downloadText(outputCode, filename, mime);
     toast.success(isFr ? `Fichier .${ext} téléchargé` : `File .${ext} downloaded`);
 
     setDownloadResult({ blob, filename, formatType: ext === 'yaml' ? 'txt' : 'json' });
-    setTimeout(() => {
-      setIsNextActionOpen(true);
-    }, 450);
+    setIsNextActionOpen(true);
   };
 
   const handleFileUpload = (file: File) => {

@@ -33,7 +33,13 @@ export interface UseCssFormatterWorkflowOptions {
   isFr: boolean;
 }
 
-export function useCssFormatterWorkflow({ isFr }: UseCssFormatterWorkflowOptions) {
+export function useCssFormatterWorkflow(
+  optionsOrIsFr: UseCssFormatterWorkflowOptions | boolean = { isFr: true }
+) {
+  const isFr =
+    typeof optionsOrIsFr === 'boolean'
+      ? optionsOrIsFr
+      : (optionsOrIsFr?.isFr ?? true);
   // Input and undo history
   const [input, setInput] = useState<string>('');
   const [history, setHistory] = useState<string[]>([]);

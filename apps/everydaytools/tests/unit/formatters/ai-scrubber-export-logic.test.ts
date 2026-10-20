@@ -1,7 +1,9 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
+import * as downloadModule from '@/lib/download';
 import {
   executeTextScrubbing,
   formatAnomaliesSummary,
+  downloadCleanedTextFile,
 } from '@/lib/ai-scrubber-export-logic';
 import { analyzeText } from '@/lib/ai-scrubber-logic';
 
@@ -50,4 +52,45 @@ describe('AI Text Scrubber Export and Execution Logic', () => {
     const summaryEn = formatAnomaliesSummary(analysis, false);
     expect(summaryEn).toContain('dashes');
   });
+
+  describe('downloadCleanedTextFile SSOT delegation', () => {
+    beforeEach(() => {
+      vi.restoreAllMocks();
+    });
+
+    it('delegates to downloadText with correct params and no DOM element or setTimeout delay', () => {
+      const downloadTextSpy = vi.spyOn(downloadModule, 'downloadText').mockImplementation(() => {});
+      const createElementSpy = vi.spyOn(document, 'createElement');
+      const setTimeoutSpy = vi.spyOn(window, 'setTimeout');
+
+      downloadCleanedTextFile('Cleaned output', 'cleaned.txt');
+
+      expect(downloadTextSpy).toHaveBeenCalledTimes(1);
+      expect(downloadTextSpy).toHaveBeenCalledWith(
+        'Cleaned output',
+        'cleaned.txt',
+        'text/plain;charset=utf-8'
+      );
+      expect(createElementSpy).not.toHaveBeenCalledWith('a');
+
+      const longTimeouts = setTimeoutSpy.mock.calls.filter(
+        ([, delay]) => typeof delay === 'number' && delay >= 600
+      );
+      expect(longTimeouts).toHaveLength(0);
+    });
+
+    it('uses default filename scrubbed_text.txt when not provided', () => {
+      const downloadTextSpy = vi.spyOn(downloadModule, 'downloadText').mockImplementation(() => {});
+
+      downloadCleanedTextFile('Default content');
+
+      expect(downloadTextSpy).toHaveBeenCalledTimes(1);
+      expect(downloadTextSpy).toHaveBeenCalledWith(
+        'Default content',
+        'scrubbed_text.txt',
+        'text/plain;charset=utf-8'
+      );
+    });
+  });
 });
+

@@ -1,9 +1,11 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
+import * as downloadModule from '@/lib/download';
 import {
   buildUuidTextFileContent,
   buildUuidCsvFileContent,
   buildFormatOptions,
   getUuidExportFilename,
+  triggerFileDownload,
 } from '@/lib/uuid-export-logic';
 
 describe('uuid-export-logic', () => {
@@ -69,6 +71,14 @@ describe('uuid-export-logic', () => {
       expect(getUuidExportFilename('v4', 10, 'txt')).toBe('uuids-v4-10.txt');
       expect(getUuidExportFilename('v7', 50, 'csv')).toBe('uuids-v7-50.csv');
       expect(getUuidExportFilename('nil', 1, 'json')).toBe('uuids-nil-1.json');
+    });
+  });
+
+  describe('triggerFileDownload', () => {
+    it('delegates to downloadText', () => {
+      const downloadTextSpy = vi.spyOn(downloadModule, 'downloadText');
+      triggerFileDownload('uuid-content', 'uuids.txt', 'text/plain;charset=utf-8');
+      expect(downloadTextSpy).toHaveBeenCalledWith('uuid-content', 'uuids.txt', 'text/plain;charset=utf-8');
     });
   });
 });

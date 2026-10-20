@@ -1,3 +1,4 @@
+import { downloadText } from '@/lib/download';
 import type { DetailedTextStats } from '@/lib/word-counter-logic';
 
 export function formatDuration(seconds: number): string {
@@ -55,13 +56,5 @@ export function buildJsonStatisticsPayload(stats: DetailedTextStats): string {
 }
 
 export function downloadTextFile(content: string, filename: string): void {
-  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  downloadText(content, filename, 'text/plain;charset=utf-8');
 }

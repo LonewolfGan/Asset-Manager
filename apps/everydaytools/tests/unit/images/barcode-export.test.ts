@@ -3,7 +3,9 @@ import {
   serializeSvgToString,
   printBarcodeLabel,
   downloadPngBarcode,
+  downloadSvgBarcode,
 } from '../../../src/lib/barcode-export';
+import * as downloadModule from '../../../src/lib/download';
 
 describe('barcode-export', () => {
   it('serializeSvgToString clones svg and outputs valid serialized XML with xml namespaces', () => {
@@ -84,5 +86,18 @@ describe('barcode-export', () => {
     } finally {
       globalThis.Image = origImage;
     }
+  });
+
+  it('downloadSvgBarcode delegates to downloadText without creating anchor elements', () => {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    const spy = vi.spyOn(downloadModule, 'downloadText').mockImplementation(() => {});
+    downloadSvgBarcode(svg, 'CODE128', 'ABC-123');
+
+    expect(spy).toHaveBeenCalledWith(
+      expect.stringContaining('<?xml version="1.0"'),
+      'barcode-code128-ABC-123.svg',
+      'image/svg+xml;charset=utf-8'
+    );
+    spy.mockRestore();
   });
 });

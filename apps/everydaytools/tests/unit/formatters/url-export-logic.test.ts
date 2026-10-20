@@ -1,8 +1,9 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import {
   getUrlByteStats,
   getConversionPlaceholder,
   buildUrlComponentsJsonPayload,
+  triggerUrlFileDownload,
 } from '@/lib/url-export-logic';
 
 describe('URL Export and Helper Logic', () => {
@@ -40,5 +41,13 @@ describe('URL Export and Helper Logic', () => {
     const parsed = JSON.parse(jsonStr);
     expect(parsed.host).toBe('example.com');
     expect(parsed.params[0].key).toBe('q');
+  });
+
+  it('delegates triggerUrlFileDownload to downloadText without creating anchor directly', async () => {
+    const downloadModule = await import('@/lib/download');
+    const spy = vi.spyOn(downloadModule, 'downloadText').mockImplementation(() => {});
+    triggerUrlFileDownload('https%3A%2F%2Ftest', 'encoded.txt', 'text/plain;charset=utf-8');
+    expect(spy).toHaveBeenCalledWith('https%3A%2F%2Ftest', 'encoded.txt', 'text/plain;charset=utf-8');
+    spy.mockRestore();
   });
 });

@@ -1,3 +1,4 @@
+import { downloadText } from '@/lib/download';
 import type { UuidVersion, UuidFormatOptions } from '@/lib/uuid-logic';
 
 export type EnclosureType = 'none' | 'braces' | 'quotes';
@@ -38,13 +39,7 @@ export function getUuidExportFilename(
 export function triggerFileDownload(
   content: string,
   filename: string,
-  mimeType: string
+  mimeType: string = 'text/plain;charset=utf-8'
 ): void {
-  const blob = new Blob([content], { type: mimeType });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(url);
+  downloadText(content, filename, mimeType);
 }

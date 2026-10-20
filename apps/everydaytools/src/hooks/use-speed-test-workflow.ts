@@ -77,8 +77,6 @@ export function useSpeedTestWorkflow(isFr: boolean) {
       setDownloadSpeed(finalDownloadMbps);
       setCurrentSpeed(finalDownloadMbps);
 
-      await new Promise((r) => setTimeout(r, 200));
-
       // 3. UPLOAD BANDWIDTH
       setPhase('upload');
       setCurrentSpeed(0);
