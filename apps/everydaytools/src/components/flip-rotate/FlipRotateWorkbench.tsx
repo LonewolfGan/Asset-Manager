@@ -104,7 +104,7 @@ export const FlipRotateWorkbench: React.FC<FlipRotateWorkbenchProps> = ({
                 <button
                   type="button"
                   onClick={onRotateLeft}
-                  className="flex items-center gap-1 h-8 px-2 rounded-lg text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 active:scale-[0.98] transition-all cursor-pointer"
+                  className="flex items-center gap-1 h-8 px-2 rounded-lg text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 active:scale-[0.98] transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                   <span>-90°</span>
@@ -115,7 +115,7 @@ export const FlipRotateWorkbench: React.FC<FlipRotateWorkbenchProps> = ({
                 <button
                   type="button"
                   onClick={onRotateRight}
-                  className="flex items-center gap-1 h-8 px-2 rounded-lg text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 active:scale-[0.98] transition-all cursor-pointer"
+                  className="flex items-center gap-1 h-8 px-2 rounded-lg text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 active:scale-[0.98] transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer"
                 >
                   <RotateCw className="w-3.5 h-3.5" />
                   <span>+90°</span>
@@ -126,7 +126,7 @@ export const FlipRotateWorkbench: React.FC<FlipRotateWorkbenchProps> = ({
                 <button
                   type="button"
                   onClick={onRotate180}
-                  className="flex items-center gap-1 h-8 px-2 rounded-lg text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 active:scale-[0.98] transition-all cursor-pointer"
+                  className="flex items-center gap-1 h-8 px-2 rounded-lg text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 active:scale-[0.98] transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
                   <span>180°</span>
@@ -143,7 +143,7 @@ export const FlipRotateWorkbench: React.FC<FlipRotateWorkbenchProps> = ({
                   type="button"
                   onClick={onToggleFlipH}
                   className={cn(
-                    'flex items-center justify-center h-8 w-8 rounded-lg text-xs font-medium transition-all cursor-pointer active:scale-[0.98]',
+                    'flex items-center justify-center h-8 w-8 rounded-lg text-xs font-medium transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer active:scale-[0.98]',
                     flipH
                       ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 font-semibold shadow-xs'
                       : 'text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700'
@@ -158,7 +158,7 @@ export const FlipRotateWorkbench: React.FC<FlipRotateWorkbenchProps> = ({
                   type="button"
                   onClick={onToggleFlipV}
                   className={cn(
-                    'flex items-center justify-center h-8 w-8 rounded-lg text-xs font-medium transition-all cursor-pointer active:scale-[0.98]',
+                    'flex items-center justify-center h-8 w-8 rounded-lg text-xs font-medium transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer active:scale-[0.98]',
                     flipV
                       ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 font-semibold shadow-xs'
                       : 'text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700'

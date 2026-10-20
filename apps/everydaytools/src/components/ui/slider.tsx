@@ -265,7 +265,7 @@ const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
             onClick={handleDecrement}
             disabled={disabled || currentVal <= resolvedMin}
             aria-label="Diminuer"
-            className="w-6 h-6 flex items-center justify-center rounded-lg text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-zinc-200/60 dark:hover:bg-zinc-800 active:scale-[0.92] transition-all cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed shrink-0"
+            className="w-6 h-6 flex items-center justify-center rounded-lg text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-zinc-200/60 dark:hover:bg-zinc-800 active:scale-[0.92] transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed shrink-0"
           >
             <Minus className="w-3 h-3" />
           </button>
@@ -313,7 +313,7 @@ const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
             onClick={handleIncrement}
             disabled={disabled || currentVal >= resolvedMax}
             aria-label="Augmenter"
-            className="w-6 h-6 flex items-center justify-center rounded-lg text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-zinc-200/60 dark:hover:bg-zinc-800 active:scale-[0.92] transition-all cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed shrink-0"
+            className="w-6 h-6 flex items-center justify-center rounded-lg text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-zinc-200/60 dark:hover:bg-zinc-800 active:scale-[0.92] transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed shrink-0"
           >
             <Plus className="w-3 h-3" />
           </button>

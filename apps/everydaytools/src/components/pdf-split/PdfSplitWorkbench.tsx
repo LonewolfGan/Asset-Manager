@@ -117,7 +117,7 @@ export const PdfSplitWorkbench: React.FC<PdfSplitWorkbenchProps> = ({
               type="button"
               onClick={() => onModeChange('extract')}
               className={cn(
-                'h-7 px-2.5 rounded-md text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5 active:scale-[0.98]',
+                'h-7 px-2.5 rounded-md text-xs font-medium transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer flex items-center gap-1.5 active:scale-[0.98]',
                 activeMode === 'extract'
                   ? 'bg-white dark:bg-zinc-700 text-zinc-950 dark:text-zinc-50 shadow-xs font-semibold'
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
@@ -131,7 +131,7 @@ export const PdfSplitWorkbench: React.FC<PdfSplitWorkbenchProps> = ({
               type="button"
               onClick={() => onModeChange('split')}
               className={cn(
-                'h-7 px-2.5 rounded-md text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5 active:scale-[0.98]',
+                'h-7 px-2.5 rounded-md text-xs font-medium transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer flex items-center gap-1.5 active:scale-[0.98]',
                 activeMode === 'split'
                   ? 'bg-white dark:bg-zinc-700 text-zinc-950 dark:text-zinc-50 shadow-xs font-semibold'
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'

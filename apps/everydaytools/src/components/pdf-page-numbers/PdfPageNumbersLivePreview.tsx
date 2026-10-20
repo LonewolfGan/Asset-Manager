@@ -95,7 +95,7 @@ export const PdfPageNumbersLivePreview: React.FC<PdfPageNumbersLivePreviewProps>
                   {position === 'top-left' && stampLabel && (
                     <span
                       style={{ fontSize: `${Math.max(9, Math.min(16, fontSize))}px` }}
-                      className="inline-flex items-center px-1.5 py-0.5 rounded font-mono font-semibold text-zinc-950 dark:text-zinc-50 bg-white/95 dark:bg-zinc-900/95 ring-1.5 ring-zinc-950 dark:ring-white shadow-md backdrop-blur-sm transition-all"
+                      className="inline-flex items-center px-1.5 py-0.5 rounded font-mono font-semibold text-zinc-950 dark:text-zinc-50 bg-white/95 dark:bg-zinc-900/95 ring-1.5 ring-zinc-950 dark:ring-white shadow-md backdrop-blur-sm transition-[color,background-color,border-color,box-shadow]"
                     >
                       {stampLabel}
                     </span>
@@ -105,7 +105,7 @@ export const PdfPageNumbersLivePreview: React.FC<PdfPageNumbersLivePreviewProps>
                   {position === 'top-center' && stampLabel && (
                     <span
                       style={{ fontSize: `${Math.max(9, Math.min(16, fontSize))}px` }}
-                      className="inline-flex items-center px-1.5 py-0.5 rounded font-mono font-semibold text-zinc-950 dark:text-zinc-50 bg-white/95 dark:bg-zinc-900/95 ring-1.5 ring-zinc-950 dark:ring-white shadow-md backdrop-blur-sm transition-all"
+                      className="inline-flex items-center px-1.5 py-0.5 rounded font-mono font-semibold text-zinc-950 dark:text-zinc-50 bg-white/95 dark:bg-zinc-900/95 ring-1.5 ring-zinc-950 dark:ring-white shadow-md backdrop-blur-sm transition-[color,background-color,border-color,box-shadow]"
                     >
                       {stampLabel}
                     </span>
@@ -115,7 +115,7 @@ export const PdfPageNumbersLivePreview: React.FC<PdfPageNumbersLivePreviewProps>
                   {position === 'top-right' && stampLabel && (
                     <span
                       style={{ fontSize: `${Math.max(9, Math.min(16, fontSize))}px` }}
-                      className="inline-flex items-center px-1.5 py-0.5 rounded font-mono font-semibold text-zinc-950 dark:text-zinc-50 bg-white/95 dark:bg-zinc-900/95 ring-1.5 ring-zinc-950 dark:ring-white shadow-md backdrop-blur-sm transition-all"
+                      className="inline-flex items-center px-1.5 py-0.5 rounded font-mono font-semibold text-zinc-950 dark:text-zinc-50 bg-white/95 dark:bg-zinc-900/95 ring-1.5 ring-zinc-950 dark:ring-white shadow-md backdrop-blur-sm transition-[color,background-color,border-color,box-shadow]"
                     >
                       {stampLabel}
                     </span>
@@ -150,7 +150,7 @@ export const PdfPageNumbersLivePreview: React.FC<PdfPageNumbersLivePreviewProps>
                   {position === 'bottom-left' && stampLabel && (
                     <span
                       style={{ fontSize: `${Math.max(9, Math.min(16, fontSize))}px` }}
-                      className="inline-flex items-center px-1.5 py-0.5 rounded font-mono font-semibold text-zinc-950 dark:text-zinc-50 bg-white/95 dark:bg-zinc-900/95 ring-1.5 ring-zinc-950 dark:ring-white shadow-md backdrop-blur-sm transition-all"
+                      className="inline-flex items-center px-1.5 py-0.5 rounded font-mono font-semibold text-zinc-950 dark:text-zinc-50 bg-white/95 dark:bg-zinc-900/95 ring-1.5 ring-zinc-950 dark:ring-white shadow-md backdrop-blur-sm transition-[color,background-color,border-color,box-shadow]"
                     >
                       {stampLabel}
                     </span>
@@ -160,7 +160,7 @@ export const PdfPageNumbersLivePreview: React.FC<PdfPageNumbersLivePreviewProps>
                   {position === 'bottom-center' && stampLabel && (
                     <span
                       style={{ fontSize: `${Math.max(9, Math.min(16, fontSize))}px` }}
-                      className="inline-flex items-center px-1.5 py-0.5 rounded font-mono font-semibold text-zinc-950 dark:text-zinc-50 bg-white/95 dark:bg-zinc-900/95 ring-1.5 ring-zinc-950 dark:ring-white shadow-md backdrop-blur-sm transition-all"
+                      className="inline-flex items-center px-1.5 py-0.5 rounded font-mono font-semibold text-zinc-950 dark:text-zinc-50 bg-white/95 dark:bg-zinc-900/95 ring-1.5 ring-zinc-950 dark:ring-white shadow-md backdrop-blur-sm transition-[color,background-color,border-color,box-shadow]"
                     >
                       {stampLabel}
                     </span>
@@ -170,7 +170,7 @@ export const PdfPageNumbersLivePreview: React.FC<PdfPageNumbersLivePreviewProps>
                   {position === 'bottom-right' && stampLabel && (
                     <span
                       style={{ fontSize: `${Math.max(9, Math.min(16, fontSize))}px` }}
-                      className="inline-flex items-center px-1.5 py-0.5 rounded font-mono font-semibold text-zinc-950 dark:text-zinc-50 bg-white/95 dark:bg-zinc-900/95 ring-1.5 ring-zinc-950 dark:ring-white shadow-md backdrop-blur-sm transition-all"
+                      className="inline-flex items-center px-1.5 py-0.5 rounded font-mono font-semibold text-zinc-950 dark:text-zinc-50 bg-white/95 dark:bg-zinc-900/95 ring-1.5 ring-zinc-950 dark:ring-white shadow-md backdrop-blur-sm transition-[color,background-color,border-color,box-shadow]"
                     >
                       {stampLabel}
                     </span>

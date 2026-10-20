@@ -119,7 +119,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
           aria-label={ariaLabel}
           className={
             triggerClassName ??
-            `h-9 px-3 rounded-xl border transition-all flex items-center justify-between gap-2.5 cursor-pointer shadow-2xs text-xs font-mono select-none active:scale-[0.98] ${
+            `h-9 px-3 rounded-xl border transition-[color,background-color,border-color,opacity,box-shadow,transform] flex items-center justify-between gap-2.5 cursor-pointer shadow-2xs text-xs font-mono select-none active:scale-[0.98] ${
               isOpen
                 ? 'border-zinc-900 dark:border-white bg-zinc-100 dark:bg-zinc-800 text-zinc-950 dark:text-zinc-50 shadow-xs'
                 : 'border-zinc-200/90 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900/80 hover:bg-zinc-100 dark:hover:bg-zinc-850 hover:border-zinc-300 dark:hover:border-white/20 text-zinc-700 dark:text-zinc-300'

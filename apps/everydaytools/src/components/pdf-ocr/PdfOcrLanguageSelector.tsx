@@ -29,7 +29,7 @@ export function PdfOcrLanguageSelector({
           onChange={(e) => onLangChange(e.target.value)}
           disabled={disabled}
           aria-label={ariaLabel}
-          className="h-10 pl-9 pr-8 rounded-full text-xs font-medium bg-black/[0.04] dark:bg-white/[0.06] hover:bg-black/[0.07] dark:hover:bg-white/[0.09] text-zinc-700 dark:text-zinc-300 border border-black/[0.08] dark:border-white/10 hover:border-black/15 dark:hover:border-white/20 transition-all cursor-pointer appearance-none focus:outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-600 disabled:opacity-50 disabled:pointer-events-none"
+          className="h-10 pl-9 pr-8 rounded-full text-xs font-medium bg-black/[0.04] dark:bg-white/[0.06] hover:bg-black/[0.07] dark:hover:bg-white/[0.09] text-zinc-700 dark:text-zinc-300 border border-black/[0.08] dark:border-white/10 hover:border-black/15 dark:hover:border-white/20 transition-colors cursor-pointer appearance-none focus:outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-600 disabled:opacity-50 disabled:pointer-events-none"
         >
           {supportedLanguages.map((l) => (
             <option

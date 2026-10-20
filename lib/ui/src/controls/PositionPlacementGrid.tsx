@@ -52,7 +52,7 @@ export const PositionPlacementGrid: React.FC<PositionPlacementGridProps> = ({
               onClick={() => onSelectPosition(pos.id)}
               aria-label={posName}
               title={posName}
-              className={`w-7 h-7 sm:w-8 sm:h-8 rounded flex items-center justify-center transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#FF6B35]/40 disabled:opacity-40 disabled:pointer-events-none ${
+              className={`w-7 h-7 sm:w-8 sm:h-8 rounded flex items-center justify-center transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-[#FF6B35]/40 disabled:opacity-40 disabled:pointer-events-none ${
                 isActive
                   ? 'bg-[#FF6B35] text-white shadow-sm ring-1 ring-[#FF6B35]'
                   : 'bg-white dark:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-700/60 border border-zinc-200/80 dark:border-zinc-700/60'

@@ -186,7 +186,7 @@ export default function WatermarkImage() {
                         <button
                           type="button"
                           disabled={isExporting}
-                          className="flex items-center gap-2 h-9 px-4 rounded-xl font-semibold text-xs text-white bg-[#FF6B35] hover:bg-[#ff5a1f] active:scale-[0.98] transition-all cursor-pointer shadow-xs disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="flex items-center gap-2 h-9 px-4 rounded-xl font-semibold text-xs text-white bg-[#FF6B35] hover:bg-[#ff5a1f] active:scale-[0.98] transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer shadow-xs disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           {isExporting ? (
                             <>

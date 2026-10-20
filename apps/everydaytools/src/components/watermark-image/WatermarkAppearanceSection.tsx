@@ -107,7 +107,7 @@ export function WatermarkAppearanceSection({
                 }))
               }
               disabled={config.fontSize <= 12}
-              className="w-5 h-5 flex items-center justify-center rounded text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-zinc-200/60 dark:hover:bg-zinc-800 active:scale-90 transition-all cursor-pointer disabled:opacity-30"
+              className="w-5 h-5 flex items-center justify-center rounded text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-zinc-200/60 dark:hover:bg-zinc-800 active:scale-90 transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer disabled:opacity-30"
             >
               <Minus className="w-3 h-3" />
             </button>
@@ -125,7 +125,7 @@ export function WatermarkAppearanceSection({
                 }))
               }
               disabled={config.fontSize >= 220}
-              className="w-5 h-5 flex items-center justify-center rounded text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-zinc-200/60 dark:hover:bg-zinc-800 active:scale-90 transition-all cursor-pointer disabled:opacity-30"
+              className="w-5 h-5 flex items-center justify-center rounded text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-zinc-200/60 dark:hover:bg-zinc-800 active:scale-90 transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer disabled:opacity-30"
             >
               <Plus className="w-3 h-3" />
             </button>
@@ -181,7 +181,7 @@ export function WatermarkAppearanceSection({
             type="button"
             onClick={() => setConfig((prev) => ({ ...prev, hasShadow: !prev.hasShadow }))}
             className={cn(
-              'h-6 px-2.5 rounded-md text-[11px] font-medium transition-all cursor-pointer',
+              'h-6 px-2.5 rounded-md text-[11px] font-medium transition-colors cursor-pointer',
               config.hasShadow
                 ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-xs'
                 : 'bg-zinc-100 text-zinc-500 dark:bg-zinc-900 dark:text-zinc-500'

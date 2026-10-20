@@ -166,7 +166,7 @@ export function PdfMetadataFormFields({
                     onAddTag(sug);
                   }
                 }}
-                className={`text-xs px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
+                className={`text-xs px-2.5 py-1 rounded-lg transition-colors cursor-pointer ${
                   isSelected
                     ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 font-medium'
                     : 'border border-black/10 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-black/[0.04] dark:hover:bg-white/[0.06]'

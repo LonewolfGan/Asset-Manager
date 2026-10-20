@@ -64,7 +64,7 @@ export function BatchResultGallery({
             type="button"
             onClick={onDownloadAllZip}
             style={{ backgroundColor: targetFormat.color }}
-            className="h-12 px-8 rounded-full text-white font-medium text-base shadow-lg hover:brightness-105 active:scale-[0.98] transition-all flex items-center gap-3"
+            className="h-12 px-8 rounded-full text-white font-medium text-base shadow-lg hover:brightness-105 active:scale-[0.98] transition-[color,background-color,border-color,opacity,box-shadow,transform] flex items-center gap-3"
           >
             <span>{isFr ? 'Télécharger le pack ZIP (.zip)' : 'Download ZIP package (.zip)'}</span>
             <span className="w-7 h-7 rounded-full bg-white/25 flex items-center justify-center">
@@ -75,7 +75,7 @@ export function BatchResultGallery({
           <button
             type="button"
             onClick={onResetAll}
-            className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-medium text-base active:scale-[0.98] transition-all flex items-center gap-2.5 shadow-sm"
+            className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-medium text-base active:scale-[0.98] transition-[color,background-color,border-color,opacity,box-shadow,transform] flex items-center gap-2.5 shadow-sm"
           >
             <RotateCcw size={15} strokeWidth={2.2} />
             <span>{isFr ? 'Convertir d’autres fichiers' : 'Convert more files'}</span>

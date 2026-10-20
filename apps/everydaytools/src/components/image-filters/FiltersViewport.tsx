@@ -69,7 +69,7 @@ export function FiltersViewport({
                 onTouchStart={() => setIsHoldingOriginal(true)}
                 onTouchEnd={() => setIsHoldingOriginal(false)}
                 className={cn(
-                  'flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium backdrop-blur-md border transition-all cursor-pointer select-none',
+                  'flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium backdrop-blur-md border transition-colors cursor-pointer select-none',
                   isHoldingOriginal
                     ? 'bg-[#FF6B35] text-white border-transparent shadow-md scale-[1.02]'
                     : 'bg-black/60 text-white/90 border-white/20 hover:bg-black/80 active:scale-[0.98]'

@@ -90,7 +90,7 @@ export function RemoverBatchGallery({
         {queue.map((item, index) => (
           <div
             key={item.id}
-            className="group relative rounded-xl border border-black/[0.08] dark:border-white/10 overflow-hidden bg-white dark:bg-zinc-900/40 p-3 flex flex-col justify-between transition-all hover:shadow-md"
+            className="group relative rounded-xl border border-black/[0.08] dark:border-white/10 overflow-hidden bg-white dark:bg-zinc-900/40 p-3 flex flex-col justify-between transition-[color,background-color,border-color,box-shadow] hover:shadow-md"
           >
             {/* Vignette avec damier de transparence */}
             <div
@@ -189,7 +189,7 @@ export function RemoverBatchGallery({
             <button
               type="button"
               onClick={onDownloadBatchZip}
-              className="h-11 px-6 rounded-xl text-sm font-semibold bg-[#18181b] dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100 active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer shadow-sm"
+              className="h-11 px-6 rounded-xl text-sm font-semibold bg-[#18181b] dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100 active:scale-[0.98] transition-[color,background-color,border-color,opacity,box-shadow,transform] flex items-center gap-2 cursor-pointer shadow-sm"
             >
               <Download className="w-4 h-4" />
               <span>{isFr ? 'Télécharger toutes les images (.ZIP)' : 'Download all images (.ZIP)'}</span>

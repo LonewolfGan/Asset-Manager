@@ -222,7 +222,7 @@ export const ColorStudioPopover: React.FC<ColorStudioPopoverProps> = ({
                   updateHsv(rgbToHsv(rgb.r, rgb.g, rgb.b));
                   onChange(hex);
                 }}
-                className={`h-5 rounded-md relative flex items-center justify-center transition-all cursor-pointer shadow-2xs ${
+                className={`h-5 rounded-md relative flex items-center justify-center transition-[color,background-color,border-color,box-shadow] cursor-pointer shadow-2xs ${
                   isLight
                     ? 'border border-zinc-300 dark:border-zinc-700'
                     : 'border border-black/10 dark:border-white/15'

@@ -50,7 +50,7 @@ export const ConversionStaging: React.FC<ConversionStagingProps> = ({
       {/* Visual Transformation Canvas: Heroic Architectural Format Slabs */}
       <div className="w-full flex flex-col md:flex-row items-center justify-center gap-6 sm:gap-10 mb-14">
         {/* Source Card: Pure Architectural Slab (NO Badges, Large Authentic SVG 96px-112px) */}
-        <div className="w-full sm:w-84 md:w-96 rounded-[2rem] p-2 bg-neutral-200/40 dark:bg-white/[0.04] border border-black/5 dark:border-white/10 shadow-lg shadow-black/[0.03] dark:shadow-black/20 group hover:shadow-xl hover:border-black/10 dark:hover:border-white/15 transition-all duration-300">
+        <div className="w-full sm:w-84 md:w-96 rounded-[2rem] p-2 bg-neutral-200/40 dark:bg-white/[0.04] border border-black/5 dark:border-white/10 shadow-lg shadow-black/[0.03] dark:shadow-black/20 group hover:shadow-xl hover:border-black/10 dark:hover:border-white/15 transition-[color,background-color,border-color,box-shadow] duration-300">
           <div className="rounded-[calc(2rem-8px)] bg-white dark:bg-zinc-950 border border-black/[0.04] dark:border-white/5 py-10 px-8 flex flex-col items-center text-center relative overflow-hidden backdrop-blur-xl min-h-[290px] justify-center">
             {/* Heroic Source Vector */}
             <div className="relative mb-6 flex items-center justify-center">
@@ -88,7 +88,7 @@ export const ConversionStaging: React.FC<ConversionStagingProps> = ({
 
         {/* Target Card: Pure Architectural Slab */}
         <div
-          className="w-full sm:w-84 md:w-96 rounded-[2rem] p-2 shadow-lg group hover:shadow-xl transition-all duration-300"
+          className="w-full sm:w-84 md:w-96 rounded-[2rem] p-2 shadow-lg group hover:shadow-xl transition-[color,background-color,border-color,box-shadow] duration-300"
           style={{
             backgroundColor: `${targetFormat.color}0D`,
             borderColor: `${targetFormat.color}25`,
@@ -139,7 +139,7 @@ export const ConversionStaging: React.FC<ConversionStagingProps> = ({
           type="button"
           onClick={onConvert}
           disabled={disabled}
-          className="h-12 px-8 rounded-full bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-white text-white dark:text-zinc-950 font-medium text-base shadow-xl shadow-zinc-950/10 hover:shadow-2xl active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none transition-all flex items-center gap-3 group"
+          className="h-12 px-8 rounded-full bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-white text-white dark:text-zinc-950 font-medium text-base shadow-xl shadow-zinc-950/10 hover:shadow-2xl active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none transition-[color,background-color,border-color,opacity,box-shadow,transform] flex items-center gap-3 group"
         >
           <span>{convertBtnLabel}</span>
           <span className="w-7 h-7 rounded-full bg-white/20 dark:bg-black/10 flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
@@ -151,7 +151,7 @@ export const ConversionStaging: React.FC<ConversionStagingProps> = ({
         <button
           type="button"
           onClick={onReset}
-          className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-medium text-base active:scale-[0.98] transition-all flex items-center gap-2.5"
+          className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-medium text-base active:scale-[0.98] transition-[color,background-color,border-color,opacity,box-shadow,transform] flex items-center gap-2.5"
         >
           <RotateCcw size={15} strokeWidth={2.2} />
           <span>{changeFileBtnLabel}</span>

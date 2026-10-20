@@ -494,7 +494,7 @@ function CompareRevealBase({
           onKeyDown={onKeyDown}
           className={cn(
             "pointer-events-auto absolute left-1/2 top-1/2 grid h-[42px] w-[42px] -translate-x-1/2 -translate-y-1/2",
-            "cursor-ew-resize place-items-center rounded-full p-0 backdrop-blur-[8px] transition-all duration-150",
+            "cursor-ew-resize place-items-center rounded-full p-0 backdrop-blur-[8px] transition-colors duration-150",
             "border border-white/30 text-white",
             "bg-zinc-900/95 shadow-xl hover:scale-105 active:scale-95 hover:bg-black",
             "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/60 focus-visible:ring-offset-1 focus-visible:ring-offset-zinc-950",

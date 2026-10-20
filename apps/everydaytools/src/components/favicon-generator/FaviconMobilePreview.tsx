@@ -8,7 +8,7 @@ interface FaviconMobilePreviewProps {
 export function FaviconMobilePreview({ compositedUrl, isFr }: FaviconMobilePreviewProps) {
   return (
     <div className="flex flex-col items-center gap-5 py-6 select-none">
-      <div className="w-36 h-36 flex items-center justify-center drop-shadow-xl transition-all">
+      <div className="w-36 h-36 flex items-center justify-center drop-shadow-xl transition-[filter,transform]">
         {compositedUrl ? (
           <img
             src={compositedUrl}

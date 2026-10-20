@@ -104,7 +104,7 @@ export const StudioGeometryResult: React.FC<StudioGeometryResultProps> = ({
           type="button"
           onClick={onDownload}
           data-testid="studio-geometry-download-btn"
-          className="h-11 px-6 bg-[#FF6B35] hover:bg-[#E85A24] text-white font-medium text-sm rounded-xl flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98] transition-all shadow-xs whitespace-nowrap shrink-0"
+          className="h-11 px-6 bg-[#FF6B35] hover:bg-[#E85A24] text-white font-medium text-sm rounded-xl flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98] transition-[color,background-color,border-color,opacity,box-shadow,transform] shadow-xs whitespace-nowrap shrink-0"
         >
           <Download size={16} />
           <span>{downloadLabel || defaultDownloadLabel}</span>

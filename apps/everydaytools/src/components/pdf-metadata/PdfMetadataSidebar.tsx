@@ -55,7 +55,7 @@ export function PdfMetadataSidebar({
           <button
             type="button"
             onClick={onInferTitle}
-            className="w-full h-11 px-4 rounded-xl border border-black/10 dark:border-white/10 bg-neutral-100/80 dark:bg-zinc-900/80 hover:bg-neutral-200/70 dark:hover:bg-zinc-800 text-sm font-medium text-zinc-900 dark:text-zinc-100 transition-all flex items-center justify-between gap-3 active:scale-[0.98] cursor-pointer group"
+            className="w-full h-11 px-4 rounded-xl border border-black/10 dark:border-white/10 bg-neutral-100/80 dark:bg-zinc-900/80 hover:bg-neutral-200/70 dark:hover:bg-zinc-800 text-sm font-medium text-zinc-900 dark:text-zinc-100 transition-[color,background-color,border-color,opacity,box-shadow,transform] flex items-center justify-between gap-3 active:scale-[0.98] cursor-pointer group"
           >
             <span className="flex items-center gap-2.5">
               <FileText
@@ -73,7 +73,7 @@ export function PdfMetadataSidebar({
           <button
             type="button"
             onClick={onWipeMetadata}
-            className="w-full h-11 px-4 rounded-xl border border-red-500/20 bg-red-500/[0.04] hover:bg-red-500/[0.08] text-sm font-medium text-red-600 dark:text-red-400 transition-all flex items-center justify-between gap-3 active:scale-[0.98] cursor-pointer group"
+            className="w-full h-11 px-4 rounded-xl border border-red-500/20 bg-red-500/[0.04] hover:bg-red-500/[0.08] text-sm font-medium text-red-600 dark:text-red-400 transition-[color,background-color,border-color,opacity,box-shadow,transform] flex items-center justify-between gap-3 active:scale-[0.98] cursor-pointer group"
           >
             <span className="flex items-center gap-2.5">
               <Trash2 size={16} className="shrink-0" />

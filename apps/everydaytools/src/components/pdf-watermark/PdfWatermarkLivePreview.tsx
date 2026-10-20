@@ -140,7 +140,7 @@ export const PdfWatermarkLivePreview: React.FC<PdfWatermarkLivePreviewProps> = (
                   /* Filigrane central unique */
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
                     <span
-                      className="font-bold tracking-widest text-center whitespace-nowrap uppercase transition-all duration-150"
+                      className="font-bold tracking-widest text-center whitespace-nowrap uppercase transition-[color,opacity,transform] duration-150"
                       style={{
                         transform: `rotate(${-angle}deg)`,
                         fontSize: `${previewFontSize}px`,

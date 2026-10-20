@@ -61,7 +61,7 @@ export const DelimiterRadioGroup: React.FC<DelimiterRadioGroupProps> = ({
               role="radio"
               aria-checked={isActive}
               onClick={() => onChange(opt.value)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#FF6B35]/40 disabled:opacity-40 disabled:pointer-events-none ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-[#FF6B35]/40 disabled:opacity-40 disabled:pointer-events-none ${
                 isActive
                   ? 'bg-[#FF6B35] text-white shadow-sm ring-1 ring-[#FF6B35]'
                   : 'bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border border-zinc-200/80 dark:border-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-800/60'
@@ -81,7 +81,7 @@ export const DelimiterRadioGroup: React.FC<DelimiterRadioGroupProps> = ({
               role="radio"
               aria-checked={isCustomActive}
               onClick={handleCustomSelect}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#FF6B35]/40 disabled:opacity-40 disabled:pointer-events-none ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-[#FF6B35]/40 disabled:opacity-40 disabled:pointer-events-none ${
                 isCustomActive
                   ? 'bg-[#FF6B35] text-white shadow-sm ring-1 ring-[#FF6B35]'
                   : 'bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border border-zinc-200/80 dark:border-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-800/60'

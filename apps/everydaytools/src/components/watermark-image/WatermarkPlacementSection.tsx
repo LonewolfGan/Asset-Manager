@@ -75,7 +75,7 @@ export function WatermarkPlacementSection({
             }
           }}
           className={cn(
-            'h-7 rounded-lg text-xs font-medium transition-all cursor-pointer flex items-center justify-center gap-1.5',
+            'h-7 rounded-lg text-xs font-medium transition-colors cursor-pointer flex items-center justify-center gap-1.5',
             config.mode === 'points'
               ? 'bg-white dark:bg-zinc-800 text-zinc-950 dark:text-zinc-50 shadow-xs'
               : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
@@ -93,7 +93,7 @@ export function WatermarkPlacementSection({
             }));
           }}
           className={cn(
-            'h-7 rounded-lg text-xs font-medium transition-all cursor-pointer flex items-center justify-center gap-1.5',
+            'h-7 rounded-lg text-xs font-medium transition-colors cursor-pointer flex items-center justify-center gap-1.5',
             config.mode === 'tile'
               ? 'bg-white dark:bg-zinc-800 text-zinc-950 dark:text-zinc-50 shadow-xs'
               : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
@@ -117,7 +117,7 @@ export function WatermarkPlacementSection({
                   type="button"
                   onClick={() => onTogglePosition(pt.id)}
                   className={cn(
-                    'w-full h-full rounded-md transition-all cursor-pointer flex items-center justify-center relative',
+                    'w-full h-full rounded-md transition-colors cursor-pointer flex items-center justify-center relative',
                     isSelected
                       ? 'bg-[#FF6B35] text-white shadow-xs'
                       : 'bg-zinc-200/60 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-zinc-300/70 dark:hover:bg-zinc-700'
@@ -125,7 +125,7 @@ export function WatermarkPlacementSection({
                 >
                   <span
                     className={cn(
-                      'w-2.5 h-2.5 rounded-full transition-all',
+                      'w-2.5 h-2.5 rounded-full transition-[color,background-color,transform]',
                       isSelected ? 'bg-white scale-110' : 'bg-current opacity-60'
                     )}
                   />

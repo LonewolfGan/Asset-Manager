@@ -28,7 +28,7 @@ export function ImageResizeCanvas({
       {/* Wireframe fantôme discret quand l'image est réduite */}
       {previewUrl && visualScaleFactor < 0.95 && (
         <div
-          className="absolute pointer-events-none border border-dashed border-zinc-300 dark:border-zinc-700 rounded-lg transition-all duration-200"
+          className="absolute pointer-events-none border border-dashed border-zinc-300 dark:border-zinc-700 rounded-lg transition-opacity duration-200"
           style={{
             width: '100%',
             height: '100%',

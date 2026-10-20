@@ -43,7 +43,7 @@ export const PdfSplitTrancheControls: React.FC<PdfSplitTrancheControlsProps> = (
             <button
               type="button"
               onClick={() => onSplitViewModeChange('list')}
-              className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all flex items-center gap-1.5 cursor-pointer active:scale-[0.98] ${
+              className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-[color,background-color,border-color,opacity,box-shadow,transform] flex items-center gap-1.5 cursor-pointer active:scale-[0.98] ${
                 splitViewMode === 'list'
                   ? 'bg-white dark:bg-zinc-700 text-zinc-950 dark:text-zinc-50 shadow-xs font-semibold'
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
@@ -55,7 +55,7 @@ export const PdfSplitTrancheControls: React.FC<PdfSplitTrancheControlsProps> = (
             <button
               type="button"
               onClick={() => onSplitViewModeChange('pages')}
-              className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all flex items-center gap-1.5 cursor-pointer active:scale-[0.98] ${
+              className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-[color,background-color,border-color,opacity,box-shadow,transform] flex items-center gap-1.5 cursor-pointer active:scale-[0.98] ${
                 splitViewMode === 'pages'
                   ? 'bg-white dark:bg-zinc-700 text-zinc-950 dark:text-zinc-50 shadow-xs font-semibold'
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
@@ -112,7 +112,7 @@ export const PdfSplitTrancheControls: React.FC<PdfSplitTrancheControlsProps> = (
           <button
             type="button"
             onClick={onGenerateBatchSlices}
-            className="h-8 px-3 rounded-lg text-xs font-semibold bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:opacity-90 active:scale-[0.98] transition-all cursor-pointer"
+            className="h-8 px-3 rounded-lg text-xs font-semibold bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:opacity-90 active:scale-[0.98] transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer"
           >
             {isFr ? 'Appliquer' : 'Apply'}
           </button>

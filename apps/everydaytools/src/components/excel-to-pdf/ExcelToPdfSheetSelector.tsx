@@ -28,7 +28,7 @@ export function ExcelToPdfSheetSelector({
               key={sheet}
               type="button"
               onClick={() => onSelectSheet(sheet)}
-              className={`h-8 px-3.5 rounded-full text-xs font-medium transition-all active:scale-[0.98] cursor-pointer ${
+              className={`h-8 px-3.5 rounded-full text-xs font-medium transition-[color,background-color,border-color,opacity,box-shadow,transform] active:scale-[0.98] cursor-pointer ${
                 isSelected
                   ? 'bg-[#107C41] text-white shadow-sm'
                   : 'bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border border-black/5 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20'

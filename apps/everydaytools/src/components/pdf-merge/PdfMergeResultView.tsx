@@ -98,7 +98,7 @@ export const PdfMergeResultView: React.FC<PdfMergeResultViewProps> = ({
         <button
           type="button"
           onClick={handleDownload}
-          className="group w-full sm:w-auto h-12 px-8 rounded-xl bg-[#FF6B35] hover:bg-[#E85A24] text-white text-sm font-semibold active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-3 shadow-xs cursor-pointer"
+          className="group w-full sm:w-auto h-12 px-8 rounded-xl bg-[#FF6B35] hover:bg-[#E85A24] text-white text-sm font-semibold active:scale-[0.98] transition-[color,background-color,border-color,opacity,box-shadow,transform] duration-200 flex items-center justify-center gap-3 shadow-xs cursor-pointer"
         >
           <Download size={16} strokeWidth={2.2} />
           <span>
@@ -110,7 +110,7 @@ export const PdfMergeResultView: React.FC<PdfMergeResultViewProps> = ({
         <button
           type="button"
           onClick={onReset}
-          className="w-full sm:w-auto h-12 px-6 rounded-xl border border-zinc-200 dark:border-zinc-800 text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+          className="w-full sm:w-auto h-12 px-6 rounded-xl border border-zinc-200 dark:border-zinc-800 text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] active:scale-[0.98] transition-[color,background-color,border-color,opacity,box-shadow,transform] flex items-center justify-center gap-2 cursor-pointer"
         >
           <RotateCcw size={14} />
           <span>{isFr ? 'Nouvelle fusion' : 'Merge another'}</span>

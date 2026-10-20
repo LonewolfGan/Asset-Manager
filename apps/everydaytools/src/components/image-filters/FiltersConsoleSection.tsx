@@ -49,7 +49,7 @@ export function FiltersConsoleSection({
             type="button"
             onClick={() => setConsoleTab('presets')}
             className={cn(
-              'h-8 px-3 rounded-lg text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5',
+              'h-8 px-3 rounded-lg text-xs font-medium transition-colors cursor-pointer flex items-center gap-1.5',
               consoleTab === 'presets'
                 ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-xs'
                 : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800'
@@ -65,7 +65,7 @@ export function FiltersConsoleSection({
             type="button"
             onClick={() => setConsoleTab('adjust')}
             className={cn(
-              'h-8 px-3 rounded-lg text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5',
+              'h-8 px-3 rounded-lg text-xs font-medium transition-colors cursor-pointer flex items-center gap-1.5',
               consoleTab === 'adjust'
                 ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-xs'
                 : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800'

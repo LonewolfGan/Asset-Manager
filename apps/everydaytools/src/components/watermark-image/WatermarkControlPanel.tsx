@@ -67,7 +67,7 @@ export function WatermarkControlPanel({
             maxLength={100}
             placeholder={isFr ? 'Saisir votre texte...' : 'Enter your text...'}
             onChange={(e) => setConfig((prev) => ({ ...prev, text: e.target.value }))}
-            className="w-full h-9 px-3 rounded-lg border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900/90 text-xs text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500 dark:placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-all"
+            className="w-full h-9 px-3 rounded-lg border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900/90 text-xs text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500 dark:placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors"
           />
         </div>
 
@@ -81,7 +81,7 @@ export function WatermarkControlPanel({
                 type="button"
                 onClick={() => setConfig((prev) => ({ ...prev, text: preset }))}
                 className={cn(
-                  'h-6 px-2 rounded-md text-[11px] font-medium transition-all cursor-pointer',
+                  'h-6 px-2 rounded-md text-[11px] font-medium transition-colors cursor-pointer',
                   isCurrent
                     ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-xs'
                     : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-900 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800'

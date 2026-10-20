@@ -72,7 +72,7 @@ export const PdfWatermarkControls: React.FC<PdfWatermarkControlsProps> = ({
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder={isFr ? 'Ex : CONFIDENTIEL, SPÉCIMEN...' : 'Ex: CONFIDENTIAL, SAMPLE...'}
-            className="w-full px-4 py-3 text-sm font-mono font-semibold uppercase tracking-wider bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.08] dark:border-white/15 rounded-xl text-zinc-950 dark:text-zinc-50 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 outline-none focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-all"
+            className="w-full px-4 py-3 text-sm font-mono font-semibold uppercase tracking-wider bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.08] dark:border-white/15 rounded-xl text-zinc-950 dark:text-zinc-50 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 outline-none focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors"
           />
         </div>
 
@@ -86,7 +86,7 @@ export const PdfWatermarkControls: React.FC<PdfWatermarkControlsProps> = ({
               key={preset}
               type="button"
               onClick={() => setText(preset)}
-              className={`text-xs font-mono px-2.5 py-1 rounded-lg transition-all cursor-pointer active:scale-[0.96] ${
+              className={`text-xs font-mono px-2.5 py-1 rounded-lg transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer active:scale-[0.96] ${
                 text === preset
                   ? 'bg-zinc-800 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100 ring-1 ring-zinc-700 font-semibold'
                   : 'bg-black/[0.02] dark:bg-white/[0.03] text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-black/[0.04] dark:hover:bg-white/[0.05] ring-1 ring-black/[0.06] dark:ring-white/10 font-medium'
@@ -109,7 +109,7 @@ export const PdfWatermarkControls: React.FC<PdfWatermarkControlsProps> = ({
             <button
               type="button"
               onClick={() => setPattern('repeat')}
-              className={`flex-1 h-full rounded-lg text-xs font-mono transition-all flex items-center justify-center gap-1.5 cursor-pointer select-none active:scale-[0.97] ${
+              className={`flex-1 h-full rounded-lg text-xs font-mono transition-[color,background-color,border-color,opacity,box-shadow,transform] flex items-center justify-center gap-1.5 cursor-pointer select-none active:scale-[0.97] ${
                 pattern === 'repeat'
                   ? 'bg-zinc-800 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100 ring-1 ring-zinc-700 shadow-xs font-semibold'
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-black/[0.03] dark:hover:bg-white/[0.04] font-medium'
@@ -122,7 +122,7 @@ export const PdfWatermarkControls: React.FC<PdfWatermarkControlsProps> = ({
             <button
               type="button"
               onClick={() => setPattern('single')}
-              className={`flex-1 h-full rounded-lg text-xs font-mono transition-all flex items-center justify-center gap-1.5 cursor-pointer select-none active:scale-[0.97] ${
+              className={`flex-1 h-full rounded-lg text-xs font-mono transition-[color,background-color,border-color,opacity,box-shadow,transform] flex items-center justify-center gap-1.5 cursor-pointer select-none active:scale-[0.97] ${
                 pattern === 'single'
                   ? 'bg-zinc-800 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100 ring-1 ring-zinc-700 shadow-xs font-semibold'
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-black/[0.03] dark:hover:bg-white/[0.04] font-medium'
@@ -201,7 +201,7 @@ export const PdfWatermarkControls: React.FC<PdfWatermarkControlsProps> = ({
                   key={deg}
                   type="button"
                   onClick={() => setAngle(deg)}
-                  className={`flex-1 h-full rounded-lg text-xs font-mono transition-all flex items-center justify-center cursor-pointer select-none active:scale-[0.96] ${
+                  className={`flex-1 h-full rounded-lg text-xs font-mono transition-[color,background-color,border-color,opacity,box-shadow,transform] flex items-center justify-center cursor-pointer select-none active:scale-[0.96] ${
                     angle === deg
                       ? 'bg-zinc-800 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100 ring-1 ring-zinc-700 shadow-xs font-semibold'
                       : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-black/[0.03] dark:hover:bg-white/[0.04] font-medium'
@@ -240,7 +240,7 @@ export const PdfWatermarkControls: React.FC<PdfWatermarkControlsProps> = ({
                   key={opt.id}
                   type="button"
                   onClick={() => setPagesScope(opt.id)}
-                  className={`flex items-center justify-between p-3.5 rounded-xl transition-all text-left cursor-pointer select-none active:scale-[0.98] ${
+                  className={`flex items-center justify-between p-3.5 rounded-xl transition-[color,background-color,border-color,opacity,box-shadow,transform] text-left cursor-pointer select-none active:scale-[0.98] ${
                     isSelected
                       ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-zinc-50 ring-1.5 ring-zinc-950 dark:ring-white shadow-xs font-semibold'
                       : 'bg-black/[0.015] dark:bg-white/[0.02] text-zinc-600 dark:text-zinc-400 ring-1 ring-black/[0.06] dark:ring-white/10 hover:bg-black/[0.03] dark:hover:bg-white/[0.04] font-normal'

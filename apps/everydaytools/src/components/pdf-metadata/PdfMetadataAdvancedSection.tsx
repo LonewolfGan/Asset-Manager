@@ -74,7 +74,7 @@ export function PdfMetadataAdvancedSection({
                 <button
                   type="button"
                   onClick={() => onDateModeChange('keep')}
-                  className={`py-2 px-2.5 rounded-lg border transition-all cursor-pointer font-medium text-center ${
+                  className={`py-2 px-2.5 rounded-lg border transition-colors cursor-pointer font-medium text-center ${
                     dateMode === 'keep'
                       ? 'border-zinc-900 dark:border-zinc-100 bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900'
                       : 'border-black/10 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:bg-black/[0.03]'
@@ -86,7 +86,7 @@ export function PdfMetadataAdvancedSection({
                 <button
                   type="button"
                   onClick={() => onDateModeChange('today')}
-                  className={`py-2 px-2.5 rounded-lg border transition-all cursor-pointer font-medium text-center ${
+                  className={`py-2 px-2.5 rounded-lg border transition-colors cursor-pointer font-medium text-center ${
                     dateMode === 'today'
                       ? 'border-zinc-900 dark:border-zinc-100 bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900'
                       : 'border-black/10 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:bg-black/[0.03]'
@@ -98,7 +98,7 @@ export function PdfMetadataAdvancedSection({
                 <button
                   type="button"
                   onClick={() => onDateModeChange('custom')}
-                  className={`py-2 px-2.5 rounded-lg border transition-all cursor-pointer font-medium text-center ${
+                  className={`py-2 px-2.5 rounded-lg border transition-colors cursor-pointer font-medium text-center ${
                     dateMode === 'custom'
                       ? 'border-zinc-900 dark:border-zinc-100 bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900'
                       : 'border-black/10 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:bg-black/[0.03]'
@@ -110,7 +110,7 @@ export function PdfMetadataAdvancedSection({
                 <button
                   type="button"
                   onClick={() => onDateModeChange('clear')}
-                  className={`py-2 px-2.5 rounded-lg border transition-all cursor-pointer font-medium text-center ${
+                  className={`py-2 px-2.5 rounded-lg border transition-colors cursor-pointer font-medium text-center ${
                     dateMode === 'clear'
                       ? 'border-red-500 bg-red-500 text-white'
                       : 'border-black/10 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:bg-black/[0.03]'

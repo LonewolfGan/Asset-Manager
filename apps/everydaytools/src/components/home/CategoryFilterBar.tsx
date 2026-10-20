@@ -50,7 +50,7 @@ export function CategoryFilterBar({
           fontSize: "var(--text-xs)",
           fontWeight: isAllActive ? 600 : 500,
           cursor: "pointer",
-          transition: "all 120ms ease",
+          transition: "color 120ms ease, background-color 120ms ease, border-color 120ms ease, opacity 120ms ease, transform 120ms ease",
           whiteSpace: "nowrap",
         }}
         onMouseEnter={(e) => {
@@ -103,7 +103,7 @@ export function CategoryFilterBar({
               fontSize: "var(--text-xs)",
               fontWeight: isActive ? 600 : 500,
               cursor: "pointer",
-              transition: "all 120ms ease",
+              transition: "color 120ms ease, background-color 120ms ease, border-color 120ms ease, opacity 120ms ease, transform 120ms ease",
               whiteSpace: "nowrap",
             }}
             onMouseEnter={(e) => {

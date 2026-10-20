@@ -89,7 +89,7 @@ export function ImageUpscaleWorkbench({
                 <button
                   type="button"
                   onClick={() => onScaleChange(2)}
-                  className={`h-7 px-3 rounded-lg text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5 active:scale-[0.97] ${
+                  className={`h-7 px-3 rounded-lg text-xs font-medium transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer flex items-center gap-1.5 active:scale-[0.97] ${
                     scale === 2
                       ? 'bg-white dark:bg-zinc-750 text-zinc-950 dark:text-zinc-50 shadow-xs font-semibold'
                       : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
@@ -103,7 +103,7 @@ export function ImageUpscaleWorkbench({
                 <button
                   type="button"
                   onClick={() => onScaleChange(4)}
-                  className={`h-7 px-3 rounded-lg text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5 active:scale-[0.97] ${
+                  className={`h-7 px-3 rounded-lg text-xs font-medium transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer flex items-center gap-1.5 active:scale-[0.97] ${
                     scale === 4
                       ? 'bg-white dark:bg-zinc-750 text-zinc-950 dark:text-zinc-50 shadow-xs font-semibold'
                       : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
@@ -165,7 +165,7 @@ export function ImageUpscaleWorkbench({
                 <button
                   type="button"
                   onClick={() => setViewMode('split')}
-                  className={`h-7 px-2.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer active:scale-[0.97] ${
+                  className={`h-7 px-2.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer active:scale-[0.97] ${
                     viewMode === 'split'
                       ? 'bg-white dark:bg-zinc-750 text-zinc-950 dark:text-zinc-50 shadow-xs font-semibold'
                       : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
@@ -177,7 +177,7 @@ export function ImageUpscaleWorkbench({
                 <button
                   type="button"
                   onClick={() => setViewMode('side-by-side')}
-                  className={`h-7 px-2.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer active:scale-[0.97] ${
+                  className={`h-7 px-2.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer active:scale-[0.97] ${
                     viewMode === 'side-by-side'
                       ? 'bg-white dark:bg-zinc-750 text-zinc-950 dark:text-zinc-50 shadow-xs font-semibold'
                       : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
@@ -189,7 +189,7 @@ export function ImageUpscaleWorkbench({
                 <button
                   type="button"
                   onClick={() => setViewMode('single')}
-                  className={`h-7 px-2.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer active:scale-[0.97] ${
+                  className={`h-7 px-2.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer active:scale-[0.97] ${
                     viewMode === 'single'
                       ? 'bg-white dark:bg-zinc-750 text-zinc-950 dark:text-zinc-50 shadow-xs font-semibold'
                       : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'

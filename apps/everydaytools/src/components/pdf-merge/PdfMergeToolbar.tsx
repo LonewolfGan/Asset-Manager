@@ -48,7 +48,7 @@ export const PdfMergeToolbar: React.FC<PdfMergeToolbarProps> = ({
               type="button"
               onClick={() => onViewModeChange('grid')}
               className={cn(
-                'flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium transition-all cursor-pointer',
+                'flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium transition-colors cursor-pointer',
                 viewMode === 'grid'
                   ? 'bg-white dark:bg-zinc-700 text-zinc-950 dark:text-zinc-50 shadow-xs font-semibold'
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
@@ -63,7 +63,7 @@ export const PdfMergeToolbar: React.FC<PdfMergeToolbarProps> = ({
               type="button"
               onClick={() => onViewModeChange('list')}
               className={cn(
-                'flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium transition-all cursor-pointer',
+                'flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium transition-colors cursor-pointer',
                 viewMode === 'list'
                   ? 'bg-white dark:bg-zinc-700 text-zinc-950 dark:text-zinc-50 shadow-xs font-semibold'
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
@@ -88,7 +88,7 @@ export const PdfMergeToolbar: React.FC<PdfMergeToolbarProps> = ({
             value={outputFilename}
             onChange={(e) => onOutputFilenameChange(e.target.value)}
             placeholder={isFr ? 'document_fusionne.pdf' : 'merged_document.pdf'}
-            className="h-7 px-2.5 rounded-lg bg-zinc-100 dark:bg-zinc-800/90 border border-zinc-200/80 dark:border-white/10 text-xs font-mono text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-[#FF6B35] w-48 sm:w-60 transition-all"
+            className="h-7 px-2.5 rounded-lg bg-zinc-100 dark:bg-zinc-800/90 border border-zinc-200/80 dark:border-white/10 text-xs font-mono text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-[#FF6B35] w-48 sm:w-60 transition-colors"
           />
         </div>
       </div>
@@ -98,7 +98,7 @@ export const PdfMergeToolbar: React.FC<PdfMergeToolbarProps> = ({
         <button
           type="button"
           onClick={onAddMore}
-          className="flex items-center gap-1.5 h-7 px-2.5 rounded-lg text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200/80 dark:border-white/10 active:scale-[0.98] transition-all cursor-pointer"
+          className="flex items-center gap-1.5 h-7 px-2.5 rounded-lg text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200/80 dark:border-white/10 active:scale-[0.98] transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer"
         >
           <Plus size={13} strokeWidth={2.2} />
           <span>{t.pdfMerge?.addMore ?? (isFr ? 'Ajouter' : 'Add')}</span>
@@ -109,7 +109,7 @@ export const PdfMergeToolbar: React.FC<PdfMergeToolbarProps> = ({
             type="button"
             onClick={onSortAZ}
             disabled={filesCount < 2}
-            className="flex items-center gap-1.5 h-7 px-2.5 rounded-lg text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200/80 dark:border-white/10 active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none transition-all cursor-pointer"
+            className="flex items-center gap-1.5 h-7 px-2.5 rounded-lg text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200/80 dark:border-white/10 active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer"
           >
             <ArrowDownAZ size={13} strokeWidth={2.2} />
             <span className="hidden sm:inline">{t.pdfMerge?.sortAZ ?? (isFr ? 'Trier A-Z' : 'Sort A-Z')}</span>
@@ -121,7 +121,7 @@ export const PdfMergeToolbar: React.FC<PdfMergeToolbarProps> = ({
             type="button"
             onClick={onReverseOrder}
             disabled={filesCount < 2}
-            className="flex items-center gap-1.5 h-7 px-2.5 rounded-lg text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200/80 dark:border-white/10 active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none transition-all cursor-pointer"
+            className="flex items-center gap-1.5 h-7 px-2.5 rounded-lg text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200/80 dark:border-white/10 active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer"
           >
             <ArrowUpDown size={13} strokeWidth={2.2} />
             <span className="hidden sm:inline">{isFr ? 'Inverser' : 'Reverse'}</span>
@@ -132,7 +132,7 @@ export const PdfMergeToolbar: React.FC<PdfMergeToolbarProps> = ({
           <button
             type="button"
             onClick={onReset}
-            className="flex items-center gap-1.5 h-7 px-2 rounded-lg text-xs font-medium text-zinc-500 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-500/10 active:scale-[0.98] transition-all cursor-pointer"
+            className="flex items-center gap-1.5 h-7 px-2 rounded-lg text-xs font-medium text-zinc-500 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-500/10 active:scale-[0.98] transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer"
           >
             <Trash2 size={13} />
             <span className="hidden sm:inline">{isFr ? 'Effacer' : 'Clear'}</span>

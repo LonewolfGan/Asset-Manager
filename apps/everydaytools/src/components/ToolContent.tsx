@@ -286,7 +286,7 @@ export function ToolModeSwitch<T extends string>({
             fontFamily: 'var(--font-ui)', fontSize: fSize,
             fontWeight: active === m ? 600 : 400,
             cursor: 'pointer',
-            transition: 'all 120ms ease',
+            transition: 'color 120ms ease, background-color 120ms ease, border-color 120ms ease, opacity 120ms ease, transform 120ms ease',
             whiteSpace: 'nowrap',
             lineHeight: 1.3,
           }}
@@ -448,7 +448,7 @@ export function ToolSegmentedControl<T extends string>({
             fontFamily: 'var(--font-ui)', fontSize: fSize,
             fontWeight: value === opt.value ? 600 : 400,
             cursor: 'pointer',
-            transition: 'all 120ms ease',
+            transition: 'color 120ms ease, background-color 120ms ease, border-color 120ms ease, opacity 120ms ease, transform 120ms ease',
             whiteSpace: 'nowrap',
             lineHeight: 1.3,
           }}
@@ -556,7 +556,7 @@ export function ToolDownloadButton({ onClick, label = 'Download' }: ToolDownload
         fontFamily: 'var(--font-ui)', fontSize: 11,
         color: 'var(--text-secondary)',
         cursor: 'pointer',
-        transition: 'all 150ms ease',
+        transition: 'color 150ms ease, background-color 150ms ease, border-color 150ms ease, opacity 150ms ease, transform 150ms ease',
         display: 'inline-flex', alignItems: 'center', gap: 4,
         lineHeight: 1,
       }}

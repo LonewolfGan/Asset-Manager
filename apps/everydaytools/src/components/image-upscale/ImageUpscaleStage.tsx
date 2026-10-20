@@ -46,7 +46,7 @@ export function ImageUpscaleStage({
         <button
           type="button"
           onClick={onToggleLoupe}
-          className={`pointer-events-auto h-9 px-3.5 rounded-xl text-sm font-medium flex items-center gap-2 transition-all cursor-pointer shadow-xs ${
+          className={`pointer-events-auto h-9 px-3.5 rounded-xl text-sm font-medium flex items-center gap-2 transition-[color,background-color,border-color,box-shadow] cursor-pointer shadow-xs ${
             isLoupeActive
               ? 'bg-[#FF6B35] text-white'
               : 'bg-white/90 dark:bg-zinc-900/90 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-white dark:hover:bg-zinc-800'
@@ -65,7 +65,7 @@ export function ImageUpscaleStage({
         </button>
 
         {/* Option Améliorer les contours */}
-        <label className="pointer-events-auto h-9 px-3.5 rounded-xl bg-white/90 dark:bg-zinc-900/90 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-white dark:hover:bg-zinc-800 flex items-center gap-2.5 cursor-pointer select-none transition-all shadow-xs text-sm font-medium">
+        <label className="pointer-events-auto h-9 px-3.5 rounded-xl bg-white/90 dark:bg-zinc-900/90 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-white dark:hover:bg-zinc-800 flex items-center gap-2.5 cursor-pointer select-none transition-[color,background-color,border-color,box-shadow] shadow-xs text-sm font-medium">
           <input
             type="checkbox"
             checked={sharpen}

@@ -65,7 +65,7 @@ export function PdfProtectMasterPasswordSection({
                 }
                 value={ownerPassword}
                 onChange={(e) => onOwnerPasswordChange(e.target.value)}
-                className="w-full pl-11 pr-12 py-3 text-sm font-mono bg-transparent border border-black/[0.12] dark:border-white/15 rounded-xl text-zinc-950 dark:text-zinc-50 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 outline-none focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-all"
+                className="w-full pl-11 pr-12 py-3 text-sm font-mono bg-transparent border border-black/[0.12] dark:border-white/15 rounded-xl text-zinc-950 dark:text-zinc-50 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 outline-none focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors"
               />
               <button
                 type="button"

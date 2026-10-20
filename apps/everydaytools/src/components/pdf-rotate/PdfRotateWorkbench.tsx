@@ -91,7 +91,7 @@ export const PdfRotateWorkbench: React.FC<PdfRotateWorkbenchProps> = ({
               <button
                 type="button"
                 onClick={() => onRotateSelectedPages(-90)}
-                className="h-7 px-2.5 rounded-lg text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-white dark:hover:bg-zinc-700 transition-all flex items-center gap-1.5 cursor-pointer active:scale-[0.97]"
+                className="h-7 px-2.5 rounded-lg text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-white dark:hover:bg-zinc-700 transition-[color,background-color,border-color,opacity,box-shadow,transform] flex items-center gap-1.5 cursor-pointer active:scale-[0.97]"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>-90°</span>
@@ -110,7 +110,7 @@ export const PdfRotateWorkbench: React.FC<PdfRotateWorkbenchProps> = ({
               <button
                 type="button"
                 onClick={() => onRotateSelectedPages(90)}
-                className="h-7 px-2.5 rounded-lg text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-white dark:hover:bg-zinc-700 transition-all flex items-center gap-1.5 cursor-pointer active:scale-[0.97]"
+                className="h-7 px-2.5 rounded-lg text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-white dark:hover:bg-zinc-700 transition-[color,background-color,border-color,opacity,box-shadow,transform] flex items-center gap-1.5 cursor-pointer active:scale-[0.97]"
               >
                 <RotateCw className="w-3.5 h-3.5" />
                 <span>+90°</span>
@@ -131,7 +131,7 @@ export const PdfRotateWorkbench: React.FC<PdfRotateWorkbenchProps> = ({
               <button
                 type="button"
                 onClick={() => onRotateSelectedPages(180)}
-                className="h-7 px-2.5 rounded-lg text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-white dark:hover:bg-zinc-700 transition-all flex items-center gap-1.5 cursor-pointer active:scale-[0.97]"
+                className="h-7 px-2.5 rounded-lg text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-white dark:hover:bg-zinc-700 transition-[color,background-color,border-color,opacity,box-shadow,transform] flex items-center gap-1.5 cursor-pointer active:scale-[0.97]"
               >
                 <RotateCw className="w-3.5 h-3.5" />
                 <span>180°</span>

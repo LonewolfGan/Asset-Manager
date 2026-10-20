@@ -72,7 +72,7 @@ export const NumberStepper: React.FC<NumberStepperProps> = ({
 
   return (
     <div
-      className={`h-10 flex items-center rounded-xl bg-black/[0.02] dark:bg-white/[0.03] ring-1 ring-black/[0.08] dark:ring-white/15 focus-within:ring-1 focus-within:ring-zinc-400/40 dark:focus-within:ring-zinc-600/40 focus-within:border-zinc-400 dark:focus-within:border-zinc-600 transition-all overflow-hidden ${
+      className={`h-10 flex items-center rounded-xl bg-black/[0.02] dark:bg-white/[0.03] ring-1 ring-black/[0.08] dark:ring-white/15 focus-within:ring-1 focus-within:ring-zinc-400/40 dark:focus-within:ring-zinc-600/40 focus-within:border-zinc-400 dark:focus-within:border-zinc-600 transition-colors overflow-hidden ${
         disabled ? 'opacity-40 pointer-events-none' : ''
       } ${className}`}
     >
@@ -82,7 +82,7 @@ export const NumberStepper: React.FC<NumberStepperProps> = ({
         onClick={handleDecrement}
         disabled={disabled || isMin}
         aria-label="Diminuer la valeur"
-        className="w-10 h-full flex items-center justify-center text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] active:scale-[0.94] transition-all cursor-pointer disabled:opacity-25 disabled:cursor-not-allowed select-none"
+        className="w-10 h-full flex items-center justify-center text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] active:scale-[0.94] transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer disabled:opacity-25 disabled:cursor-not-allowed select-none"
       >
         <Minus size={14} />
       </button>
@@ -115,7 +115,7 @@ export const NumberStepper: React.FC<NumberStepperProps> = ({
         onClick={handleIncrement}
         disabled={disabled || isMax}
         aria-label="Augmenter la valeur"
-        className="w-10 h-full flex items-center justify-center text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] active:scale-[0.94] transition-all cursor-pointer disabled:opacity-25 disabled:cursor-not-allowed select-none"
+        className="w-10 h-full flex items-center justify-center text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] active:scale-[0.94] transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer disabled:opacity-25 disabled:cursor-not-allowed select-none"
       >
         <Plus size={14} />
       </button>

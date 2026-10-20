@@ -26,7 +26,7 @@ export function PdfToImageFormatSwitcher({
             key={fmt}
             type="button"
             onClick={() => onFormatChange(fmt)}
-            className={`h-9 px-4 rounded-lg text-xs font-semibold tracking-wider active:scale-[0.98] transition-all cursor-pointer ${
+            className={`h-9 px-4 rounded-lg text-xs font-semibold tracking-wider active:scale-[0.98] transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer ${
               isSelected
                 ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 shadow-xs'
                 : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-black/5 dark:hover:bg-white/5'

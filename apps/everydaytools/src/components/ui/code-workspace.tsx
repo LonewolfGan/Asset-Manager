@@ -365,7 +365,7 @@ export const CodeWorkspace: React.FC<CodeWorkspaceProps> = ({
         }}
         onDragLeave={() => setIsDragOver(false)}
         onDrop={handleDrop}
-        className={`group relative flex flex-col w-full rounded-2xl bg-white dark:bg-zinc-950 border transition-all duration-200 shadow-sm ${
+        className={`group relative flex flex-col w-full rounded-2xl bg-white dark:bg-zinc-950 border transition-[color,background-color,border-color,box-shadow] duration-200 shadow-sm ${
           isDragOver
             ? 'border-zinc-500 ring-2 ring-zinc-400/30'
             : 'border-zinc-200/80 dark:border-white/10 hover:border-zinc-300 dark:hover:border-white/15'

@@ -73,7 +73,7 @@ export const ReorderPdfWorkbench: React.FC<ReorderPdfWorkbenchProps> = ({
             <button
               type="button"
               onClick={reversePages}
-              className="flex items-center gap-1.5 h-7 px-2.5 rounded-lg text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200/80 dark:border-white/10 active:scale-[0.98] transition-all cursor-pointer"
+              className="flex items-center gap-1.5 h-7 px-2.5 rounded-lg text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200/80 dark:border-white/10 active:scale-[0.98] transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer"
             >
               <ArrowLeftRight className="w-3.5 h-3.5" />
               <span>{labels.reverseOrder || (isFr ? "Inverser l'ordre" : 'Reverse order')}</span>
@@ -82,7 +82,7 @@ export const ReorderPdfWorkbench: React.FC<ReorderPdfWorkbenchProps> = ({
               <button
                 type="button"
                 onClick={resetOrder}
-                className="flex items-center gap-1.5 h-7 px-2.5 rounded-lg text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-400 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200/80 dark:border-white/10 active:scale-[0.98] transition-all cursor-pointer"
+                className="flex items-center gap-1.5 h-7 px-2.5 rounded-lg text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-400 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200/80 dark:border-white/10 active:scale-[0.98] transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer"
               >
                 <Undo2 className="w-3.5 h-3.5" />
                 <span>{labels.resetOrder || (isFr ? 'Ordre initial' : 'Original order')}</span>

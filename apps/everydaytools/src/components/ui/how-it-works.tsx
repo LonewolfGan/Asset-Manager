@@ -63,7 +63,7 @@ const Card = ({
 
   return (
     <div
-      className={`relative w-full max-w-[340px] lg:max-w-[360px] shrink-0 transition-all duration-300 hover:z-30 hover:scale-[1.03] hover:rotate-0 ${rotate} ${className}`}
+      className={`relative w-full max-w-[340px] lg:max-w-[360px] shrink-0 transition-[color,background-color,border-color,opacity,box-shadow,transform] duration-300 hover:z-30 hover:scale-[1.03] hover:rotate-0 ${rotate} ${className}`}
     >
       <div className="bg-white dark:bg-zinc-900 p-2.5 sm:p-3 rounded-[26px] shadow-[0px_12px_28px_-6px_rgba(0,0,0,0.08)] dark:shadow-none border border-neutral-200/80 dark:border-zinc-800 h-full flex flex-col">
         <Pin className={`w-8 h-8 ${textColor} z-20 mb-4 sm:mb-5 mx-auto drop-shadow-sm shrink-0`} />

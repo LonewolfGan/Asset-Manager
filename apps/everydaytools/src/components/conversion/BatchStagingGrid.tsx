@@ -115,7 +115,7 @@ export function BatchStagingGrid({
         {files.map((item) => (
           <div
             key={item.id}
-            className="rounded-2xl p-3 bg-white dark:bg-zinc-900 border border-black/5 dark:border-white/10 shadow-xs flex items-center justify-between gap-3 group hover:border-black/15 dark:hover:border-white/20 transition-all"
+            className="rounded-2xl p-3 bg-white dark:bg-zinc-900 border border-black/5 dark:border-white/10 shadow-xs flex items-center justify-between gap-3 group hover:border-black/15 dark:hover:border-white/20 transition-[color,background-color,border-color,box-shadow]"
           >
             <div className="flex items-center gap-3 min-w-0 flex-1">
               <div className="w-10 h-10 rounded-xl bg-neutral-100 dark:bg-zinc-950 border border-black/5 dark:border-white/5 flex items-center justify-center shrink-0 overflow-hidden p-0.5">
@@ -191,7 +191,7 @@ export function BatchStagingGrid({
         <button
           type="button"
           onClick={onConvertAll}
-          className="h-12 px-8 rounded-full bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-white text-white dark:text-zinc-950 font-medium text-base shadow-xl shadow-zinc-950/10 hover:shadow-2xl active:scale-[0.98] transition-all flex items-center gap-3 group"
+          className="h-12 px-8 rounded-full bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-white text-white dark:text-zinc-950 font-medium text-base shadow-xl shadow-zinc-950/10 hover:shadow-2xl active:scale-[0.98] transition-[color,background-color,border-color,opacity,box-shadow,transform] flex items-center gap-3 group"
         >
           <span>
             {isFr
@@ -206,7 +206,7 @@ export function BatchStagingGrid({
         <button
           type="button"
           onClick={onResetAll}
-          className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-medium text-base active:scale-[0.98] transition-all flex items-center gap-2.5"
+          className="h-12 px-6 rounded-full border border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-medium text-base active:scale-[0.98] transition-[color,background-color,border-color,opacity,box-shadow,transform] flex items-center gap-2.5"
         >
           <RotateCcw size={15} strokeWidth={2.2} />
           <span>{isFr ? 'Changer de fichiers' : 'Change files'}</span>

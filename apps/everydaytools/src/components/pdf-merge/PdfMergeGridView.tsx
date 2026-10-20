@@ -130,7 +130,7 @@ export const PdfMergeGridView: React.FC<PdfMergeGridViewProps> = ({
                       onMoveItem(idx, 'prev');
                     }}
                     disabled={idx === 0}
-                    className="w-7 h-7 rounded-lg flex items-center justify-center text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50 hover:bg-black/[0.05] dark:hover:bg-white/[0.08] disabled:opacity-20 disabled:pointer-events-none active:scale-95 transition-all cursor-pointer"
+                    className="w-7 h-7 rounded-lg flex items-center justify-center text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50 hover:bg-black/[0.05] dark:hover:bg-white/[0.08] disabled:opacity-20 disabled:pointer-events-none active:scale-95 transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer"
                   >
                     <ChevronLeft size={15} strokeWidth={2.2} />
                   </button>
@@ -148,7 +148,7 @@ export const PdfMergeGridView: React.FC<PdfMergeGridViewProps> = ({
                       onMoveItem(idx, 'next');
                     }}
                     disabled={idx === files.length - 1}
-                    className="w-7 h-7 rounded-lg flex items-center justify-center text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50 hover:bg-black/[0.05] dark:hover:bg-white/[0.08] disabled:opacity-20 disabled:pointer-events-none active:scale-95 transition-all cursor-pointer"
+                    className="w-7 h-7 rounded-lg flex items-center justify-center text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50 hover:bg-black/[0.05] dark:hover:bg-white/[0.08] disabled:opacity-20 disabled:pointer-events-none active:scale-95 transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer"
                   >
                     <ChevronRight size={15} strokeWidth={2.2} />
                   </button>

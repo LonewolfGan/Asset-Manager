@@ -91,7 +91,7 @@ export const PdfPageCard: React.FC<PdfPageCardProps> = ({
       onDragOver={onDragOver}
       onDrop={onDrop}
       onDragEnd={onDragEnd}
-      className={`group relative rounded-xl border transition-all duration-150 p-3 flex flex-col justify-between cursor-pointer select-none text-left w-full ${
+      className={`group relative rounded-xl border transition-colors duration-150 p-3 flex flex-col justify-between cursor-pointer select-none text-left w-full ${
         draggable ? 'cursor-grab active:cursor-grabbing' : ''
       } ${cardBorderClass}`}
     >
@@ -204,7 +204,7 @@ export const PdfPageCard: React.FC<PdfPageCardProps> = ({
             <button
               type="button"
               onClick={onRotateLeft}
-              className="w-7 h-7 rounded-lg flex items-center justify-center text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-black/[0.05] dark:hover:bg-white/[0.08] active:scale-90 transition-all cursor-pointer"
+              className="w-7 h-7 rounded-lg flex items-center justify-center text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-black/[0.05] dark:hover:bg-white/[0.08] active:scale-90 transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer"
             >
               <RotateCcw size={13} />
             </button>
@@ -218,7 +218,7 @@ export const PdfPageCard: React.FC<PdfPageCardProps> = ({
             <button
               type="button"
               onClick={onRotateRight}
-              className="w-7 h-7 rounded-lg flex items-center justify-center text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-black/[0.05] dark:hover:bg-white/[0.08] active:scale-90 transition-all cursor-pointer"
+              className="w-7 h-7 rounded-lg flex items-center justify-center text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-black/[0.05] dark:hover:bg-white/[0.08] active:scale-90 transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer"
             >
               <RotateCw size={13} />
             </button>
@@ -237,7 +237,7 @@ export const PdfPageCard: React.FC<PdfPageCardProps> = ({
               type="button"
               disabled={!canMoveLeft}
               onClick={onMoveLeft}
-              className="w-7 h-7 rounded-lg flex items-center justify-center text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-black/[0.05] dark:hover:bg-white/[0.08] active:scale-90 transition-all cursor-pointer disabled:opacity-20 disabled:hover:bg-transparent disabled:cursor-not-allowed"
+              className="w-7 h-7 rounded-lg flex items-center justify-center text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-black/[0.05] dark:hover:bg-white/[0.08] active:scale-90 transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer disabled:opacity-20 disabled:hover:bg-transparent disabled:cursor-not-allowed"
             >
               <ChevronLeft size={14} />
             </button>
@@ -252,7 +252,7 @@ export const PdfPageCard: React.FC<PdfPageCardProps> = ({
               type="button"
               disabled={!canMoveRight}
               onClick={onMoveRight}
-              className="w-7 h-7 rounded-lg flex items-center justify-center text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-black/[0.05] dark:hover:bg-white/[0.08] active:scale-90 transition-all cursor-pointer disabled:opacity-20 disabled:hover:bg-transparent disabled:cursor-not-allowed"
+              className="w-7 h-7 rounded-lg flex items-center justify-center text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-black/[0.05] dark:hover:bg-white/[0.08] active:scale-90 transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer disabled:opacity-20 disabled:hover:bg-transparent disabled:cursor-not-allowed"
             >
               <ChevronRight size={14} />
             </button>

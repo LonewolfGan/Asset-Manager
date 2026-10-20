@@ -70,7 +70,7 @@ export const PdfPageNumbersControls: React.FC<PdfPageNumbersControlsProps> = ({
                 key={opt.id}
                 type="button"
                 onClick={() => setFormat(opt.id)}
-                className={`py-2.5 px-3 rounded-xl text-xs font-mono transition-all text-center cursor-pointer select-none active:scale-[0.97] ${
+                className={`py-2.5 px-3 rounded-xl text-xs font-mono transition-[color,background-color,border-color,opacity,box-shadow,transform] text-center cursor-pointer select-none active:scale-[0.97] ${
                   isSelected
                     ? 'bg-zinc-800 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100 ring-1 ring-zinc-700 shadow-sm font-semibold'
                     : 'bg-black/[0.015] dark:bg-white/[0.02] text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-black/[0.04] dark:hover:bg-white/[0.05] ring-1 ring-black/[0.06] dark:ring-white/10 font-normal'

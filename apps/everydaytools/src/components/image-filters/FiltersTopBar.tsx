@@ -98,7 +98,7 @@ export function FiltersTopBar({
           type="button"
           onClick={() => onViewModeChange('split')}
           className={cn(
-            'flex items-center gap-1.5 h-7 px-2.5 rounded-lg text-xs font-medium transition-all cursor-pointer active:scale-[0.97]',
+            'flex items-center gap-1.5 h-7 px-2.5 rounded-lg text-xs font-medium transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer active:scale-[0.97]',
             viewMode === 'split'
               ? 'bg-white dark:bg-zinc-700 text-zinc-950 dark:text-zinc-50 shadow-xs'
               : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
@@ -111,7 +111,7 @@ export function FiltersTopBar({
           type="button"
           onClick={() => onViewModeChange('direct')}
           className={cn(
-            'flex items-center gap-1.5 h-7 px-2.5 rounded-lg text-xs font-medium transition-all cursor-pointer active:scale-[0.97]',
+            'flex items-center gap-1.5 h-7 px-2.5 rounded-lg text-xs font-medium transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer active:scale-[0.97]',
             viewMode === 'direct'
               ? 'bg-white dark:bg-zinc-700 text-zinc-950 dark:text-zinc-50 shadow-xs'
               : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
@@ -150,7 +150,7 @@ export function FiltersTopBar({
             <button
               type="button"
               disabled={isExporting}
-              className="flex items-center gap-1.5 h-9 px-4 rounded-xl font-semibold text-xs text-white bg-[#FF6B35] hover:bg-[#ff5519] active:scale-[0.98] transition-all cursor-pointer shadow-xs disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-1.5 h-9 px-4 rounded-xl font-semibold text-xs text-white bg-[#FF6B35] hover:bg-[#ff5519] active:scale-[0.98] transition-[color,background-color,border-color,opacity,box-shadow,transform] cursor-pointer shadow-xs disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isExporting ? (
                 <>
