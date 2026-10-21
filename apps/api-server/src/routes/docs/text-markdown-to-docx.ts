@@ -14,7 +14,6 @@ import { BIN, getPythonScriptPath } from "../../lib/binaries.js";
 import { apiError } from "../../lib/errors.js";
 import { buildContentDisposition } from "../convert/convert-image.js";
 import { convertWithLibreOffice } from "../../lib/libreoffice.js";
-import { guardSinglePdf } from "../pdf/guards.js";
 
 const execFileAsync = promisify(execFile);
 const router = Router();
@@ -202,42 +201,5 @@ router.post("/convert/word-to-markdown", defaultRateLimit, upload.single("file")
   }
 });
 
-// ─────────────────────────────────────────────────────────
-// POST /convert/pdf-to-markdown
-// ─────────────────────────────────────────────────────────
-router.post("/convert/pdf-to-markdown", defaultRateLimit, upload.single("file"), guardSinglePdf, async (req: Request, res: Response) => {
-  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
-
-  const id = randomUUID();
-  const workDir = join(tmpdir(), "everydaytools", id);
-  await mkdir(workDir, { recursive: true });
-  const pdfPath = join(workDir, "input.pdf");
-
-  try {
-    await writeFile(pdfPath, req.file.buffer);
-    const pdfExtractScript = getPythonScriptPath("pdf_extract.py");
-    const { stdout } = await execFileAsync(
-      BIN.python3,
-      [pdfExtractScript, "--pdf", pdfPath, "--mode", "text"],
-      { timeout: 120_000, maxBuffer: 50 * 1024 * 1024 },
-    );
-    const extracted = JSON.parse(stdout) as { text?: string; error?: string };
-    if (extracted.error) throw new Error(extracted.error);
-
-    const baseName = (req.file.originalname ?? "document").replace(/\.pdf$/i, "");
-    const rawText = extracted.text ?? "";
-
-    res.set({
-      "Content-Type": "text/markdown; charset=utf-8",
-      "Content-Disposition": buildContentDisposition(`${baseName}.md`, "md"),
-      "Cache-Control": "no-store",
-    });
-    res.send(rawText);
-  } catch (err) {
-    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "PDF to Markdown failed");
-  } finally {
-    await rm(workDir, { recursive: true, force: true }).catch(() => {});
-  }
-});
 
 export default router;

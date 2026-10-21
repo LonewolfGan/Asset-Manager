@@ -5,11 +5,14 @@ import mammoth from "mammoth";
 import { upload, guardDocument } from "../../middlewares/upload.js";
 import { sanitizeWinAnsi } from "../../lib/pdf-text.js";
 import { buildContentDisposition } from "./convert-image.js";
+import { defaultRateLimit } from "../../middlewares/rateLimit.js";
+import { guardSinglePdf } from "../pdf/guards.js";
 import { handlePdfToWord } from "./pdf-to-word-handler.js";
 import { handlePdfToExcel } from "./pdf-to-excel-handler.js";
 import { handlePdfToPptx } from "./pdf-to-pptx-handler.js";
 import { handlePdfToHtml } from "./pdf-to-html-handler.js";
 import { handlePdfToText } from "./pdf-to-text-handler.js";
+import { handlePdfToMarkdown } from "./pdf-to-markdown-handler.js";
 
 const router: IRouter = Router();
 
@@ -97,5 +100,10 @@ router.post("/convert/pdf-to-pptx", upload.single("file"), guardDocument, handle
 // POST /convert/pdf-to-html (High-Fidelity Engine via PyMuPDF 2.0 SVG Container)
 // ─────────────────────────────────────────────────────────
 router.post("/convert/pdf-to-html", upload.single("file"), guardDocument, handlePdfToHtml);
+
+// ─────────────────────────────────────────────────────────
+// POST /convert/pdf-to-markdown (High-Fidelity Engine via PyMuPDF4LLM 2.0)
+// ─────────────────────────────────────────────────────────
+router.post("/convert/pdf-to-markdown", defaultRateLimit, upload.single("file"), guardSinglePdf, handlePdfToMarkdown);
 
 export default router;

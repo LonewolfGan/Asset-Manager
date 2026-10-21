@@ -20,8 +20,8 @@ vi.mock('@/components/conversion/ReciprocalTitle', () => ({
 }));
 
 let mockWorkflowState: any = null;
-vi.mock('@/hooks/use-pdf-to-markdown-workflow', () => ({
-  usePdfToMarkdownWorkflow: () => mockWorkflowState,
+vi.mock('@/engine/use-tool-workflow', () => ({
+  useToolWorkflow: () => mockWorkflowState,
 }));
 
 vi.mock('@/hooks/use-locale', () => ({
@@ -47,6 +47,7 @@ vi.mock('@/hooks/use-locale', () => ({
         copyMd: 'Copy Markdown',
         copiedMd: 'Copied!',
         error: 'Conversion failed',
+        previewText: 'Preview',
       },
       pdfToText: {
         previewText: 'Preview',
@@ -65,54 +66,14 @@ describe('PdfToMarkdown UI Workflow Integration', () => {
     vi.restoreAllMocks();
     lastTitleProps = null;
     mockWorkflowState = {
-      t: {
-        nav: { breadcrumb: { home: 'Home', pdf: 'PDF Tools' } },
-        tools: {
-          'pdf-to-markdown': {
-            title: 'PDF to Markdown',
-            description: 'Convert PDF documents to Markdown.',
-          },
-        },
-        pdfToMarkdown: {
-          convertBtn: 'Convert to Markdown',
-          converting: 'Converting to Markdown...',
-          convertAnother: 'Convert Another',
-          downloadMd: 'Download .md file',
-          copyMd: 'Copy Markdown',
-          copiedMd: 'Copied!',
-          error: 'Conversion failed',
-        },
-        pdfToText: {
-          previewText: 'Preview',
-        },
-      },
-      tc: {
-        convertBtn: 'Convert to Markdown',
-        converting: 'Converting to Markdown...',
-        convertAnother: 'Convert Another',
-        downloadMd: 'Download .md file',
-        copyMd: 'Copy Markdown',
-        copiedMd: 'Copied!',
-        error: 'Conversion failed',
-      },
-      isFr: false,
-      sourceFormat: { name: 'PDF', extension: 'pdf', icon: '/icons/pdf.svg', color: '#EC1C24' },
-      targetFormat: { name: 'Markdown', extension: 'md', icon: '/icons/markdown.svg', color: '#0284C7' },
-      file: undefined,
+      inputFile: undefined,
       result: null,
+      error: null,
       isProcessing: false,
-      isDragging: false,
-      isPreviewOpen: false,
-      setIsPreviewOpen: vi.fn(),
-      isNextActionOpen: false,
-      setIsNextActionOpen: vi.fn(),
-      validateAndSetFile: vi.fn(),
-      handleDragOver: vi.fn(),
-      handleDragLeave: vi.fn(),
-      handleDrop: vi.fn(),
+      handleFileSelect: vi.fn(),
+      handleExecute: vi.fn(),
       handleReset: vi.fn(),
-      handleConvert: vi.fn(),
-      handleDownload: vi.fn(),
+      setError: vi.fn(),
     };
 
     container = document.createElement('div');
@@ -146,9 +107,9 @@ describe('PdfToMarkdown UI Workflow Integration', () => {
     expect(container.textContent).toContain('PDF');
   });
 
-  it('renders staging scene when file is selected and triggers in-browser convert without fetch', async () => {
+  it('renders staging scene when file is selected and triggers convert without fetch', async () => {
     const fetchSpy = vi.spyOn(globalThis, 'fetch');
-    mockWorkflowState.file = new File(['%PDF content'], 'document.pdf', {
+    mockWorkflowState.inputFile = new File(['%PDF content'], 'document.pdf', {
       type: 'application/pdf',
     });
 
@@ -165,21 +126,21 @@ describe('PdfToMarkdown UI Workflow Integration', () => {
       convertBtn?.click();
     });
 
-    expect(mockWorkflowState.handleConvert).toHaveBeenCalled();
+    expect(mockWorkflowState.handleExecute).toHaveBeenCalled();
     expect(fetchSpy).not.toHaveBeenCalled();
   });
 
   it('renders heroic result scene with copy button and preview dialog when conversion finishes', async () => {
     const fetchSpy = vi.spyOn(globalThis, 'fetch');
-    mockWorkflowState.file = new File(['%PDF content'], 'document.pdf', {
+    mockWorkflowState.inputFile = new File(['%PDF content'], 'document.pdf', {
       type: 'application/pdf',
     });
     mockWorkflowState.result = {
-      blob: new Blob(['# Heading\n\nContent'], { type: 'text/markdown' }),
+      data: new Blob(['# Heading\n\nContent'], { type: 'text/markdown' }),
       filename: 'document.md',
-      sizeBefore: 1024,
-      sizeAfter: 24,
-      textOutput: '# Heading\n\nContent',
+      originalSize: 1024,
+      resultSize: 24,
+      mimeType: 'text/markdown; charset=utf-8',
     };
 
     await act(async () => {
