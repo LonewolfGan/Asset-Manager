@@ -727,3 +727,5 @@
 [2026-10-20T00:56:32.704Z] Modifiés: use-csv-json-workflow.ts
 [2026-10-20T01:30:59.012Z] Modifiés: use-pptx-to-images-workflow.ts
 [2026-10-20T15:02:35.127Z] Modifiés: url-export-logic.test.ts, url-export-logic.ts, barcode-export.test.ts, barcode-export.ts, word-counter-export.test.ts, word-counter-export-logic.ts, use-base64-workflow.test.ts, use-base64-workflow.ts
+[2026-10-20T22:02:34.357Z] Modifiés: process-pool.ts
+[2026-10-21T18:28:14.726Z] Modifiés: pdf_to_markdown.test.ts, pdf_to_markdown.py, pdf-to-markdown-handler.ts, text-markdown-to-docx.ts, convert-doc.ts, pdf-to-markdown-engine.ts, pdf-to-markdown.tsx, pdf-to-markdown.test.ts

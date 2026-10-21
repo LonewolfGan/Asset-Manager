@@ -323,3 +323,120 @@ Faire de `pdf-to-markdown` un convertisseur Markdown haute fidélité (PyMuPDF4L
 - [x] **Step 1: Pipeline de vérification mécanique (clean, check:rules, typecheck, test).**
 - [x] **Step 2: Revue de code par le sous-agent `code-reviewer` & vérification par `spec-reviewer`.**
 - [x] **Step 3: Test d'honnêteté du jury Awwwards et verrouillage de l'outil #6.**
+
+---
+
+## Phase 9 : Septième Outil — `pdf-to-epub` (#7)
+
+**Problème actuel identifié :**
+Actuellement, `pdf-to-epub` manque de pipeline de conversion robuste préservant la pagination, la table des matières (NCX / Nav EPUB3), le flux de texte reflowable, et les images intégrées. L'outil UI doit être branché sur `useToolWorkflow` avec design Awwwards 100% sanctuarisé.
+
+**Objectif du Deep-Dive :**
+Faire de `pdf-to-epub` un convertisseur EPUB3 valide et responsive (Pandoc / Calibre / EbookLib Python / PyMuPDF structuré), exécuté sous `ProcessPool`, adaptateur `pdfToEpubEngine`, et raccordement à `useToolWorkflow`.
+
+### Task 9.1 : Recherche d'État de l'Art pour PDF to EPUB (2026)
+- [ ] **Step 1: Diagnostic et benchmark des moteurs EPUB3 :**
+  - Pandoc vs Calibre CLI (`ebook-convert`) vs Python `ebooklib` + PyMuPDF structuré.
+  - Évaluation de la conformité EPUB3, reflowabilité, table des matières et assets graphiques.
+- [ ] **Step 2: Arbitrer la configuration cible et la stack retenue.**
+
+### Task 9.2 : Implémentation TDD du Moteur Haute Fidélité
+- [ ] **Step 1: Créer la suite de tests unitaires et d'intégration TDD RED (`pdf-to-epub.test.ts` et `pdf-to-epub-engine.test.ts`).**
+- [ ] **Step 2: Implémenter le worker/handler `pdf-to-epub-handler.ts` sous `ProcessPool`.**
+- [ ] **Step 3: Vérifier que 100% des tests passent GREEN.**
+
+### Task 9.3 : Branchage sur l'Interface UI Existante (Zéro Changement Visuel)
+- [ ] **Step 1: Créer l'adaptateur de contrat `pdf-to-epub-engine.ts`.**
+- [ ] **Step 2: Raccorder la page `apps/everydaytools/src/pages/pdf-to-epub.tsx` sur `useToolWorkflow` (Design Awwwards 4 scènes 100% sanctuarisé).**
+- [ ] **Step 3: Vérifier l'absence totale de régression visuelle ou ergonomique.**
+
+### Task 9.4 : Revue Indépendante & Certification
+- [ ] **Step 1: Pipeline de vérification mécanique (clean, check:rules, typecheck, test).**
+- [ ] **Step 2: Revue de code par le sous-agent `code-reviewer` & vérification par `spec-reviewer`.**
+- [ ] **Step 3: Test d'honnêteté du jury Awwwards et verrouillage de l'outil #7.**
+
+---
+
+## Phase 10 : Huitième Outil — `pdf-to-image` (#8)
+
+**Problème actuel identifié :**
+Actuellement, `pdf-to-image` doit garantir un rendu haute résolution (150/300 DPI) page par page sous format ZIP ou image unique, avec gestion des mémoires volumineuses et sans bloquer l'UI client.
+
+**Objectif du Deep-Dive :**
+Rendu haute fidélité via WebWorker client OffscreenCanvas (`pdfjs-dist` à 300 DPI) avec fallback serveur haute performance (Poppler `pdftoppm` sous `ProcessPool`), adaptateur `pdfToImageEngine`, et raccordement à `useToolWorkflow`.
+
+### Task 10.1 : Recherche d'État de l'Art pour PDF to Image (2026)
+- [ ] **Step 1: Benchmark de rendu vectoriel :** Poppler `pdftoppm` vs MuPDF rasterizer vs client `pdfjs-dist` OffscreenCanvas.
+- [ ] **Step 2: Arbitrer le mode hybride (Client-first 300 DPI, fallback serveur multi-pages).**
+
+### Task 10.2 : Implémentation TDD du Moteur Haute Fidélité
+- [ ] **Step 1: Créer la suite de tests unitaires et d'intégration TDD RED.**
+- [ ] **Step 2: Implémenter le moteur et handler sous `ProcessPool` / WebWorker.**
+- [ ] **Step 3: Vérifier que 100% des tests passent GREEN.**
+
+### Task 10.3 : Branchage sur l'Interface UI Existante
+- [ ] **Step 1: Créer l'adaptateur `pdf-to-image-engine.ts`.**
+- [ ] **Step 2: Raccorder `apps/everydaytools/src/pages/pdf-to-image.tsx` sur `useToolWorkflow`.**
+- [ ] **Step 3: Vérification de conformité visuelle Awwwards.**
+
+### Task 10.4 : Revue Indépendante & Certification
+- [ ] **Step 1: Pipeline mécanique (clean, check:rules, typecheck, test).**
+- [ ] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
+- [ ] **Step 3: Validation Awwwards et verrouillage de l'outil #8.**
+
+---
+
+## Phase 11 : Neuvième Outil — `pdf-to-pdfa` (#9)
+
+**Problème actuel identifié :**
+Nécessité de conversion stricte vers la norme d'archivage ISO 19005 (PDF/A-2b / PDF/A-1b) avec intégration de profil colorimétrique ICC sRGB standardisé, validation des polices vectorielles incorporées et métadonnées XMP conformes.
+
+**Objectif du Deep-Dive :**
+Moteur Ghostscript 10.x / LibreOffice avec profil ICC sRGB certifié et validation PDF/A sous `ProcessPool`, adaptateur `pdfToPdfaEngine`, et raccordement à `useToolWorkflow`.
+
+### Task 11.1 : Recherche d'État de l'Art PDF/A (2026)
+- [ ] **Step 1: Benchmark des profils ICC et conformité PDF/A-2b :** Ghostscript 10 vs LibreOffice PDF/A filter.
+- [ ] **Step 2: Définir la configuration cible et validation VeraPDF.**
+
+### Task 11.2 : Implémentation TDD du Moteur Haute Fidélité
+- [ ] **Step 1: Créer la suite de tests TDD RED.**
+- [ ] **Step 2: Implémenter le handler `pdf-to-pdfa-handler.ts` sous `ProcessPool`.**
+- [ ] **Step 3: Vérifier que 100% des tests passent GREEN.**
+
+### Task 11.3 : Branchage sur l'Interface UI Existante
+- [ ] **Step 1: Créer l'adaptateur `pdf-to-pdfa-engine.ts`.**
+- [ ] **Step 2: Raccorder `apps/everydaytools/src/pages/pdf-to-pdfa.tsx` sur `useToolWorkflow`.**
+- [ ] **Step 3: Vérification Awwwards.**
+
+### Task 11.4 : Revue Indépendante & Certification
+- [ ] **Step 1: Pipeline mécanique.**
+- [ ] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
+- [ ] **Step 3: Validation et verrouillage de l'outil #9.**
+
+---
+
+## Phase 12 : Dixième Outil — `pdf-metadata` (#10)
+
+**Problème actuel identifié :**
+Édition et nettoyage sécurisé des métadonnées PDF (Titre, Auteur, Sujet, Mots-clés, Créateur, Date de modification) sans altération du flux vectoriel et avec suppression des identifiants sensibles.
+
+**Objectif du Deep-Dive :**
+Moteur instantané in-browser (Client `pdf-lib` + XMP parsing) avec fallback serveur `qpdf / exiftool`, adaptateur `pdfMetadataEngine`, et raccordement à `useToolWorkflow`.
+
+### Task 12.1 : Recherche d'État de l'Art Métadonnées PDF
+- [ ] **Step 1: Benchmark lecture/écriture XMP et Info dict :** `pdf-lib` vs `qpdf` vs `exiftool`.
+- [ ] **Step 2: Définir l'arbitrage in-browser 100% privé.**
+
+### Task 12.2 : Implémentation TDD du Moteur
+- [ ] **Step 1: Tests TDD RED.**
+- [ ] **Step 2: Implémentation de l'engine et handler.**
+- [ ] **Step 3: Tests GREEN.**
+
+### Task 12.3 : Branchage UI
+- [ ] **Step 1: Créer l'adaptateur `pdf-metadata-engine.ts`.**
+- [ ] **Step 2: Raccorder `apps/everydaytools/src/pages/pdf-metadata.tsx` sur `useToolWorkflow`.**
+
+### Task 12.4 : Revue Indépendante & Certification
+- [ ] **Step 1: Pipeline mécanique.**
+- [ ] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
+- [ ] **Step 3: Validation finale et verrouillage du Sprint 1.**
