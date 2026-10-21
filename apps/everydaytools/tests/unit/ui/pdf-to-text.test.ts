@@ -3,6 +3,8 @@ import React, { act } from 'react';
 import { createRoot, Root } from 'react-dom/client';
 import PdfToText from '@/pages/pdf-to-text';
 
+(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
+
 vi.mock('wouter', () => ({
   useLocation: () => ['/pdf-to-text', vi.fn()],
   Link: ({ children, href }: any) => React.createElement('a', { href }, children),
@@ -44,7 +46,7 @@ vi.mock('@/hooks/use-locale', () => ({
   }),
 }));
 
-describe('PdfToText Page Reciprocal Title (TDD)', () => {
+describe('PdfToText Page UI & Workflow (TDD)', () => {
   let container: HTMLDivElement;
   let root: Root;
 
@@ -62,12 +64,15 @@ describe('PdfToText Page Reciprocal Title (TDD)', () => {
     container.remove();
   });
 
-  it('renders ReciprocalTitle with pdf-to-text slug in page header', async () => {
+  it('renders Scene 1 (Dropzone) and ReciprocalTitle with pdf-to-text slug on initial idle state', async () => {
     await act(async () => {
       root.render(React.createElement(PdfToText));
     });
     const title = container.querySelector('[data-testid="reciprocal-title"]');
     expect(title).not.toBeNull();
     expect(lastTitleProps?.currentSlug).toBe('pdf-to-text');
+
+    const dropzone = container.querySelector('[role="region"]') || container.querySelector('button');
+    expect(dropzone).toBeTruthy();
   });
 });

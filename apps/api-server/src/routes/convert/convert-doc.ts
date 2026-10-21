@@ -2,60 +2,21 @@ import { Router, type IRouter } from "express";
 import { apiError } from "../../lib/errors.js";
 import { PDFDocument } from "pdf-lib";
 import mammoth from "mammoth";
-import { execFile } from "child_process";
-import { promisify } from "util";
-import { tmpdir } from "os";
-import { randomUUID } from "crypto";
-import { writeFile, rm, mkdir } from "fs/promises";
-import { join } from "path";
 import { upload, guardDocument } from "../../middlewares/upload.js";
-import { BIN, getPythonScriptPath } from "../../lib/binaries.js";
 import { sanitizeWinAnsi } from "../../lib/pdf-text.js";
 import { buildContentDisposition } from "./convert-image.js";
 import { handlePdfToWord } from "./pdf-to-word-handler.js";
 import { handlePdfToExcel } from "./pdf-to-excel-handler.js";
 import { handlePdfToPptx } from "./pdf-to-pptx-handler.js";
 import { handlePdfToHtml } from "./pdf-to-html-handler.js";
+import { handlePdfToText } from "./pdf-to-text-handler.js";
 
-const execFileAsync = promisify(execFile);
 const router: IRouter = Router();
 
 // ─────────────────────────────────────────────────────────
-// pdfplumber helper: call Python script, parse JSON
+// POST /convert/pdf-to-text (High-Fidelity Engine via PyMuPDF 2.0 & OCR)
 // ─────────────────────────────────────────────────────────
-async function callPdfExtract(pdfBuffer: Buffer, mode: "word" | "excel" | "text"): Promise<unknown> {
-  const id = randomUUID();
-  const workDir = join(tmpdir(), "everydaytools", id);
-  await mkdir(workDir, { recursive: true });
-  const pdfPath = join(workDir, "input.pdf");
-  await writeFile(pdfPath, pdfBuffer);
-
-  try {
-    const pdfExtractScript = getPythonScriptPath("pdf_extract.py");
-    const { stdout } = await execFileAsync(
-      BIN.python3,
-      [pdfExtractScript, "--pdf", pdfPath, "--mode", mode],
-      { timeout: 120_000, maxBuffer: 50 * 1024 * 1024 },
-    );
-    return JSON.parse(stdout);
-  } finally {
-    await rm(workDir, { recursive: true, force: true }).catch(() => {});
-  }
-}
-
-// ─────────────────────────────────────────────────────────
-// POST /convert/pdf-to-text
-// ─────────────────────────────────────────────────────────
-router.post("/convert/pdf-to-text", upload.single("file"), guardDocument, async (req, res) => {
-  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
-  try {
-    const extracted = await callPdfExtract(req.file.buffer, "text") as { text?: string; error?: string };
-    if (extracted.error) throw new Error(extracted.error);
-    res.json({ text: extracted.text ?? "" });
-  } catch (err) {
-    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "PDF parsing failed");
-  }
-});
+router.post("/convert/pdf-to-text", upload.single("file"), guardDocument, handlePdfToText);
 
 // ─────────────────────────────────────────────────────────
 // POST /convert/docx-to-html
