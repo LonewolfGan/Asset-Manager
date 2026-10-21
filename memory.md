@@ -1,38 +1,43 @@
-# Memory — EverydayTools Hub Architecture & Excellence Reboot
+# Memory — EverydayTools Hub Architecture & Deep Tool-by-Tool Roadmap
 
-Last updated: 2026-10-19 01:30 UTC
+Last updated: 2026-10-21 00:38 UTC
 
-## Strategic Realignment: Excellence & Performance Over Routine Standardisation
+## 1. Vision & Cadre Stratégique (Verrouillé)
+- **Le vrai travail** : Refonte de l'architecture plateforme la plus solide (WebWorkers client off-main-thread, ProcessPool serveur avec workspaces éphémères `/tmp/everydaytools/<uuid>`, hook réactif unifié `useToolWorkflow`) puis refonte outil par outil avec recherche d'état de l'art (WASM vs Serveur dédié).
+- **Sanctuaire Absolu** : **Zéro dégradation visuelle**. L'interface Awwwards (4 scènes `ConversionDropzone`, `ConversionStaging`, `ConversionConduit`, `ConversionResult`, `ReciprocalTitle`, double-bezel, palette Radix) est 100% sanctuarisée. On ne touche pas au design, on branche le moteur dessus via `ToolEngineContract`.
+- **Anti-Superficiel** : Interdiction formelle de faire du refactoring cosmétique passif ou des micro-nettoyages de styles. Chaque étape doit apporter un vrai moteur haute-fidélité validé par TDD et benchmarks.
 
-- **Audit Forensic & Diagnostic Réel** :
-  - **Outils 1 à 57 (Clusters 1 à 7)** : Authentiques et conformes à l'exigence d'excellence (vraie ingénierie d'algorithmes backend pour Images/PDFs, et architecture 100% Client-side browser pour Dev, Text, Color, Spreadsheets et Privacy).
-  - **Outils 58 à 71 (Cluster 8 Document Studio)** : Déraillement identifié dès l'Outil 59 (`word-to-text`). Abandon de la doctrine "Browser-First" (envoi injustifié de fichiers Word au backend alors que `mammoth.js` est présent dans le navigateur), régression de vitesse masquée par des `setTimeout(800)` artificiels, et absence d'utilisation de Chromium headless pour `html-to-pdf` ou des filtres d'exportation de haute fidélité.
-- **Décision Produit** :
-  - Le design unifié en 4 scènes (`ConversionDropzone` ➔ `ConversionStaging` ➔ `ConversionConduit` ➔ `ConversionResult`) est un **choix délibéré et validé**.
-  - En revanche, **l'architecture technique, la vitesse brute (< 20ms client / < 400ms serveur) et la qualité/fidélité maximale doivent être restaurées.**
+---
 
-## Master Implementation Plan
+## 2. État d'Avancement Exact
 
-Le plan complet d'exécution est formalisé dans :
-`docs/superpowers/plans/2026-10-19-document-studio-excellence.md`
+### Phase 1 : Le Socle d'Architecture Global (100% TERMINÉ & COMMITTÉ)
+- **Task 1.1** (`5b5d8ae`) : Contrat universel `ToolEngineContract` ([`tool-contract.ts`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/everydaytools/src/engine/tool-contract.ts)) et hook unifié réactif ([`use-tool-workflow.ts`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/everydaytools/src/engine/use-tool-workflow.ts)). 10/10 tests unitaires GREEN.
+- **Task 1.2** (`304262c`) : Pipeline WebWorker client universel ([`worker-engine-host.ts`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/everydaytools/src/engine/worker-engine-host.ts)) avec Transferables et fallback. 14/14 tests GREEN.
+- **Task 1.3** (`7036416`) : Pipeline serveur haute performance et isolation ([`process-pool.ts`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/api-server/src/lib/process-pool.ts)) avec limitation de concurrence, timeout dur et workspaces éphémères `/tmp/everydaytools/<uuid>` auto-nettoyés. 7/7 tests GREEN.
 
-### Directives Absolues pour la Nouvelle Session :
-1. **Élimination immédiate de tout délai artificiel** : Banning et suppression de tout `setTimeout(...)` dans la logique métier.
-2. **Rapatriement 100% Browser-First** :
-   - `word-to-text` (Outil 59) : `mammoth.extractRawText` client-side (< 5ms, zéro réseau, 100% vie privée).
-   - `word-to-html` (Outil 60) : `mammoth.convertToHtml` client-side avec images inline base64 (< 10ms).
-   - `word-to-markdown` (Outil 61) : `mammoth` + `turndown` GFM client-side (< 15ms).
-   - `txt-to-pdf` : `pdf-lib` client-side (< 20ms).
-3. **Moteur d'Élite pour le Serveur** :
-   - `html-to-pdf` (Outil 69) : Gotenberg Chromium Headless (`/forms/chromium/convert/html`) avec CSS3 Print, Flexbox, Grid, web fonts et `@page`.
-   - Conversions Office (`word-to-pdf`, `odt-to-pdf`, `rtf-to-pdf`) : Gotenberg warm pool (`/forms/libreoffice/convert`) avec `pdfa=PDF/A-2b` et filtres `writer_pdf_Export`.
-4. **Méthode d'Exécution Superpowers** :
-   - Utiliser `superpowers:subagent-driven-development` tâche par tâche.
-   - Utiliser le sous-agent `research` pour mener des recherches en ligne approfondies sur chaque configuration binaire/moteur avant implémentation.
+### Phase 2 : Outil Pilote — `pdf-to-word` (#1) (100% TERMINÉ, CERTIFIÉ & COMMITTÉ `13339c1`)
+- **Recherche d'état de l'art** : Abandon de l'extraction naïve `pdfplumber` / `docx.js`. Choix du moteur serveur haute-fidélité Python `pdf2docx` + `PyMuPDF`.
+- **Implémentation Moteur** :
+  - Worker Python : [`apps/api-server/src/python/pdf_to_word.py`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/api-server/src/python/pdf_to_word.py) (48 LOC).
+  - Handler serveur : [`apps/api-server/src/routes/convert/pdf-to-word-handler.ts`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/api-server/src/routes/convert/pdf-to-word-handler.ts) (118 LOC).
+  - Allègement routeur : [`apps/api-server/src/routes/convert/convert-doc.ts`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/api-server/src/routes/convert/convert-doc.ts) réduit à 160 LOC.
+- **Branchage UI (Design Inchangé)** :
+  - Adaptateur moteur : [`apps/everydaytools/src/engine/engines/pdf-to-word-engine.ts`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/everydaytools/src/engine/engines/pdf-to-word-engine.ts) (39 LOC).
+  - Page UI : [`apps/everydaytools/src/pages/pdf-to-word.tsx`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/everydaytools/src/pages/pdf-to-word.tsx) (197 LOC) branchée sur `useToolWorkflow` avec préservation intégrale des 4 scènes.
+- **Vérification TDD** :
+  - [`apps/api-server/src/routes/convert/pdf-to-word.test.ts`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/api-server/src/routes/convert/pdf-to-word.test.ts) (178 LOC) : validation des tableaux `<w:tbl>`, extraction et zéro fuite temporaire.
+  - Review indépendante : **APPROVED ✅** par le sous-agent `code-reviewer`.
+  - Tests monorepo : 312 tests GREEN côté API server, tests Vitest GREEN côté everydaytools.
 
-## Current State
+---
 
-- **Web App** : `http://localhost:5000` (Opérationnel, réactif).
-- **API Server** : `http://localhost:3001` (Opérationnel).
-- **Cluster Actif** : Cluster 8 (Document & Office Studio).
-- **Prochaine Action Immédiate** : Démarrer la nouvelle session propre et exécuter la Task 1 du plan d'excellence (`docs/superpowers/plans/2026-10-19-document-studio-excellence.md`).
+## 3. Plan Directeur & Prochaine Action Immédiate
+- **Plan Actif sur Disque** : [`docs/superpowers/plans/2026-10-20-deep-engine-architecture-and-tool-by-tool-roadmap.md`](file:///home/lonewolf/WebstormProjects/Asset-Manager/docs/superpowers/plans/2026-10-20-deep-engine-architecture-and-tool-by-tool-roadmap.md)
+- **Ledger SDD sur Disque** : [`.superpowers/sdd/engine-architecture-and-deep-tools/progress.md`](file:///home/lonewolf/WebstormProjects/Asset-Manager/.superpowers/sdd/engine-architecture-and-deep-tools/progress.md)
+- **Prochain Outil à traiter** : **`pdf-to-excel` (#2)**.
+  - Étape 1 : Recherche d'état de l'art (benchmark des moteurs d'extraction tabulaire PDF : `pdfplumber` vs `tabula-py` vs WASM / `pymupdf` tables / `pdf2docx` table matrix).
+  - Étape 2 : TDD RED sur `apps/api-server/src/routes/convert/pdf-to-excel.test.ts`.
+  - Étape 3 : Implémentation du worker haute-fidélité (`pdf_to_excel.py` + `pdf-to-excel-handler.ts`).
+  - Étape 4 : Branchage sur `apps/everydaytools/src/pages/pdf-to-excel.tsx` avec `useToolWorkflow` (Design 100% sanctuarisé).
+  - Étape 5 : Double revue indépendante et verrouillage.

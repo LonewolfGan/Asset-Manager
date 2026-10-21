@@ -9,12 +9,14 @@
 </topology>
 
 <hard-gates>
-1. SINGLE TOOL LOCK: Strictly 1 tool modified at a time. No multi-tool parallel edits.
-2. TDD RED-GREEN DISCIPLINE: Every logic change requires a failing test before implementation.
-3. ANTI-MONOLITH RULE: Every file must strictly contain < 300 lines of code (SRP).
-4. CODEBASE SANITATION: Zero obsolete platform configs (Replit), zero zombie directories, zero temp dumps.
-5. ZERO REGRESSION: 100% preservation of TypeScript types, routes, and backend contracts.
-6. AWWWARDS HONESTY GATE: UI must pass the 3-question excellence check before completion.
+1. ACTIVE ROADMAP LOCK: The ONLY active plan is `docs/superpowers/plans/2026-10-20-deep-engine-architecture-and-tool-by-tool-roadmap.md`. Forbidden to create new plans or do cosmetic tweaks.
+2. SINGLE TOOL LOCK: Strictly 1 tool modified at a time. No multi-tool parallel edits. Next tool in queue: `pdf-to-excel` (#2).
+3. SANCTUARIZED UI DESIGN: Zero modification to existing visual designs (Awwwards 4 scenes, double-bezel, Radix colors). UI connects to engines strictly via `useToolWorkflow`.
+4. TDD RED-GREEN DISCIPLINE: Every logic change requires a failing test before implementation.
+5. ANTI-MONOLITH RULE: Every file must strictly contain < 300 lines of code (SRP).
+6. CODEBASE SANITATION: Zero obsolete platform configs (Replit), zero zombie directories, zero temp dumps.
+7. ZERO REGRESSION: 100% preservation of TypeScript types, routes, and backend contracts.
+8. AWWWARDS HONESTY GATE: UI must pass the 3-question excellence check before completion.
 </hard-gates>
 
 <awwwards-jury-gate>
