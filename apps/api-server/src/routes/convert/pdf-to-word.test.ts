@@ -1,9 +1,13 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { readdir } from "node:fs/promises";
+import { readdir, rm } from "node:fs/promises";
 import { existsSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { randomUUID } from "node:crypto";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { unzipSync, strFromU8 } from "fflate";
+import { ProcessPool } from "../../lib/process-pool.js";
 import {
   convertPdfToWord,
   DOCX_MIME_TYPE,
@@ -145,37 +149,35 @@ describe("PDF to Word High-Fidelity Engine — Unit & Integration (TDD RED)", ()
   // 4. Ephemeral Workspace Isolation & Zero-Leak Assurance
   // =========================================================================
   it("executes inside an isolated workspace and cleans up temporary directories without leaks", async () => {
-    const baseTempDir = "/tmp/everydaytools";
-    const beforeDirs = existsSync(baseTempDir) ? await readdir(baseTempDir) : [];
+    const testTempDir = join(tmpdir(), "everydaytools-word-test-" + randomUUID());
+    const testPool = new ProcessPool({ baseTempDir: testTempDir });
 
     const pdfBuffer = await createSamplePdfWithTable();
-    const docxBuffer = await convertPdfToWord(pdfBuffer);
+    const docxBuffer = await convertPdfToWord(pdfBuffer, { pool: testPool });
     assert.ok(docxBuffer.length > 0);
 
-    const afterDirs = existsSync(baseTempDir) ? await readdir(baseTempDir) : [];
-    const leakedDirs = afterDirs.filter((dir) => !beforeDirs.includes(dir));
-
+    const remaining = existsSync(testTempDir) ? await readdir(testTempDir) : [];
     assert.deepStrictEqual(
-      leakedDirs,
+      remaining,
       [],
       "Temporary workspace directory must be pruned immediately upon success"
     );
+    await rm(testTempDir, { recursive: true, force: true }).catch(() => {});
   });
 
   it("cleans up isolated ephemeral workspace even if conversion fails", async () => {
-    const baseTempDir = "/tmp/everydaytools";
-    const beforeDirs = existsSync(baseTempDir) ? await readdir(baseTempDir) : [];
+    const testTempDir = join(tmpdir(), "everydaytools-word-fail-test-" + randomUUID());
+    const testPool = new ProcessPool({ baseTempDir: testTempDir });
 
     const corruptBuffer = Buffer.from("CORRUPT_PAYLOAD_FOR_LEAK_CHECK");
-    await assert.rejects(convertPdfToWord(corruptBuffer));
+    await assert.rejects(convertPdfToWord(corruptBuffer, { pool: testPool }));
 
-    const afterDirs = existsSync(baseTempDir) ? await readdir(baseTempDir) : [];
-    const leakedDirs = afterDirs.filter((dir) => !beforeDirs.includes(dir));
-
+    const remaining = existsSync(testTempDir) ? await readdir(testTempDir) : [];
     assert.deepStrictEqual(
-      leakedDirs,
+      remaining,
       [],
       "Temporary workspace directory must be pruned even when task throws an error"
     );
+    await rm(testTempDir, { recursive: true, force: true }).catch(() => {});
   });
 });

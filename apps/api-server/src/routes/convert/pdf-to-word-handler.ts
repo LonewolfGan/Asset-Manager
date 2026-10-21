@@ -3,7 +3,7 @@ import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { writeFile, readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { defaultProcessPool } from "../../lib/process-pool.js";
+import { ProcessPool, defaultProcessPool } from "../../lib/process-pool.js";
 import { BIN, getPythonScriptPath } from "../../lib/binaries.js";
 import { apiError } from "../../lib/errors.js";
 import { buildContentDisposition } from "./convert-image.js";
@@ -15,6 +15,7 @@ export const DOCX_MIME_TYPE =
 
 export interface ConvertPdfToWordOptions {
   timeoutMs?: number;
+  pool?: ProcessPool;
 }
 
 /**
@@ -49,8 +50,9 @@ export async function convertPdfToWord(
   }
 
   const timeoutMs = options?.timeoutMs ?? 120_000;
+  const pool = options?.pool ?? defaultProcessPool;
 
-  return defaultProcessPool.run(
+  return pool.run(
     async (ctx) => {
       const inputPdfPath = join(ctx.workspaceDir, "input.pdf");
       const outputDocxPath = join(ctx.workspaceDir, "output.docx");

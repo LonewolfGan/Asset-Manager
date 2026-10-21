@@ -1,15 +1,15 @@
 ---
-title: "Dernière Session & Rulings"
-date: "2026-10-20T15:02:35.127Z"
+title: "EverydayTools Hub — Reprise Session & Architecture Outil par Outil"
+date: "2026-10-21T00:39:00.000Z"
 ---
 
-### Derniers fichiers modifiés
-- `apps/everydaytools/tests/unit/formatters/url-export-logic.test.ts`
-- `apps/everydaytools/src/lib/url-export-logic.ts`
-- `apps/everydaytools/tests/unit/images/barcode-export.test.ts`
-- `apps/everydaytools/src/lib/barcode-export.ts`
-- `apps/everydaytools/tests/unit/formatters/word-counter-export.test.ts`
-- `apps/everydaytools/src/lib/word-counter-export-logic.ts`
-- `apps/everydaytools/tests/unit/hooks/use-base64-workflow.test.ts`
-- `apps/everydaytools/src/hooks/use-base64-workflow.ts`
+### Statut Actuel
+- **Phase 1 (Architecture Globale)** : 100% Complète (ToolEngineContract, WorkerEngineHost, ProcessPool).
+- **Phase 2 (Outil Pilote #1 pdf-to-word)** : 100% Complète, testée TDD, certifiée par code-reviewer et commitée (`13339c1`).
+- **Phase 3 (Outil #2 pdf-to-excel)** : 100% Complète, testée TDD (7/7 tests backend, 3/3 tests contrat frontend, 1/1 UI test), certifiée par re-reviewer (APPROVED), vérification mécanique 100% GREEN.
+- **Prochaine étape** : Selon la roadmap active (`docs/superpowers/plans/2026-10-20-deep-engine-architecture-and-tool-by-tool-roadmap.md`).
 
+### Documents de Référence
+- Plan maître : `docs/superpowers/plans/2026-10-20-deep-engine-architecture-and-tool-by-tool-roadmap.md`
+- Ledger SDD : `.superpowers/sdd/engine-architecture-and-deep-tools/progress.md`
+- Mémoire globale : `memory.md`

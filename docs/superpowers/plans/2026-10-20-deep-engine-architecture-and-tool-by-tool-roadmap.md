@@ -167,3 +167,34 @@ Faire de `pdf-to-word` un convertisseur de niveau professionnel (préservation d
 - [x] **Step 1: Revue de spécification (`spec-reviewer`).**
 - [x] **Step 2: Revue de code et performance (`code-reviewer`).**
 - [x] **Step 3: Clôture et verrouillage de l'outil #1 avant de passer à l'outil suivant.**
+
+---
+
+## Phase 4 : Deuxième Outil — `pdf-to-excel` (#2)
+
+**Problème actuel identifié :**
+Actuellement, `pdf-to-excel` fait une extraction rudimentaire via `pdfplumber` et `pdf_extract.py`, sérialise tout sous forme de chaînes de caractères brutes sans détection de types numériques, et reconstruit un fichier `.xlsx` sans styles d'en-tête, sans ajustement automatique des largeurs de colonnes, sans figeage des volets et sans utilisation de `ProcessPool` ni de `useToolWorkflow`.
+
+**Objectif du Deep-Dive :**
+Faire de `pdf-to-excel` un extracteur tabulaire de niveau professionnel (détection multi-tables PyMuPDF 2.0 ultra-rapide avec fallback géométrique, conversion en types numériques natifs Excel via `openpyxl`, auto-fit des colonnes, styles de cellules élégants, isolation `ProcessPool` et intégration réactive `useToolWorkflow` avec design 100% sanctuarisé).
+
+### Task 4.1 : Recherche d'État de l'Art pour PDF to Excel (2026)
+- [x] **Step 1: Benchmark des solutions leaders du marché :**
+  - Moteur d'extraction : PyMuPDF 2.0 C-native `find_tables()` (10x-50x plus rapide) avec fallback d'alignement géométrique.
+  - Moteur de génération : `openpyxl` avec détection de types (`int`, `float`, `percentage`), formatage de colonnes, figeage de volets et auto-filtres.
+- [x] **Step 2: Produire la matrice comparative et spécifier l'architecture.**
+
+### Task 4.2 : Implémentation TDD du Moteur Haute Fidélité
+- [x] **Step 1: Créer la suite de tests unitaires et d'intégration TDD RED pour l'API et le moteur client.**
+- [x] **Step 2: Implémenter le worker Python `pdf_to_excel.py` et le handler `pdf-to-excel-handler.ts` sous `ProcessPool`.**
+- [x] **Step 3: Vérifier que 100% des tests passent GREEN.**
+
+### Task 4.3 : Branchage sur l'Interface UI Existante (Zéro Changement Visuel)
+- [x] **Step 1: Créer l'adaptateur de contrat `pdf-to-excel-engine.ts`.**
+- [x] **Step 2: Brancher la page `apps/everydaytools/src/pages/pdf-to-excel.tsx` sur `useToolWorkflow`.**
+- [x] **Step 3: Vérifier l'absence totale de régression visuelle ou ergonomique (4 scènes préservées).**
+
+### Task 4.4 : Revue Indépendante & Certification
+- [x] **Step 1: Pipeline de vérification mécanique (clean, check:rules, typecheck, test).**
+- [x] **Step 2: Revue de code par le sous-agent `code-reviewer`.**
+- [x] **Step 3: Test d'honnêteté du jury Awwwards et verrouillage de l'outil #2.**

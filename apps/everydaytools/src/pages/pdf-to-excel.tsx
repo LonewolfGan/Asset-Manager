@@ -1,11 +1,11 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import { ToolWorkspace } from '@/components/ToolContent';
 import { useLocale } from '@/hooks/use-locale';
-import { trackToolUsed, trackToolError } from '@/lib/analytics';
-import { apiUrl } from '@/lib/apiBase';
-import { consumeHandoffFile } from '@/lib/file-handoff';
+import { downloadBlob } from '@/lib/download';
+import { useToolWorkflow } from '@/engine/use-tool-workflow';
+import { pdfToExcelEngine } from '@/engine/engines/pdf-to-excel-engine';
 import { AlertCircle } from 'lucide-react';
 import {
   ConversionDropzone,
@@ -38,138 +38,52 @@ export default function PdfToExcel() {
   const sourceFormat = getSourceFormat(isFr);
   const targetFormat = getTargetFormat(isFr);
 
-  const [files, setFiles] = useState<File[]>([]);
-  const [result, setResult] = useState<{
-    blob: Blob;
-    filename: string;
-    sizeAfter: number;
-    sizeBefore?: number;
-  } | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
-  const file = files[0];
+  const {
+    inputFile,
+    result,
+    error,
+    isProcessing,
+    handleFileSelect,
+    handleExecute,
+    handleReset,
+    setError,
+  } = useToolWorkflow<File, Blob>({
+    engine: pdfToExcelEngine,
+    acceptedMimeTypes: ['application/pdf', '.pdf'],
+    maxFileSizeBytes: 50 * 1024 * 1024,
+    toolSlug: 'pdf-to-excel',
+    category: 'documents',
+    autoConsumeHandoff: true,
+  });
 
-  const handleReset = () => {
-    setFiles([]);
-    setResult(null);
-    setError(null);
-    setIsProcessing(false);
-  };
-
-  const validateAndSetFile = (selectedFile: File) => {
-    const isPdf =
-      selectedFile.type === 'application/pdf' ||
-      selectedFile.name.toLowerCase().endsWith('.pdf');
-
-    if (!isPdf) {
-      setError(
-        isFr
-          ? 'Veuillez sélectionner un document au format PDF valide.'
-          : 'Please select a valid PDF document.'
-      );
-      return;
-    }
-
-    if (selectedFile.size > 50 * 1024 * 1024) {
-      setError(
-        isFr
-          ? 'Le fichier dépasse la taille maximale autorisée de 50 Mo.'
-          : 'File exceeds maximum allowed size of 50 MB.'
-      );
-      return;
-    }
-
-    setError(null);
-    setResult(null);
-    setFiles([selectedFile]);
-  };
-
-  // Auto-consume handoff file from previous workflow step
-  useEffect(() => {
-    const staged = consumeHandoffFile();
-    if (staged) {
-      validateAndSetFile(staged);
-    }
-  }, []);
-
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
-
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      validateAndSetFile(e.dataTransfer.files[0]);
-    }
-  };
-
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(true);
-  };
+  }, []);
 
-  const handleDragLeave = () => {
+  const handleDragLeave = useCallback(() => {
     setIsDragging(false);
-  };
+  }, []);
 
-  const handleConvert = async () => {
-    if (!file || isProcessing) return;
-    setError(null);
-    setIsProcessing(true);
-
-    try {
-      trackToolUsed('pdf-to-excel', 'pdf');
-      const form = new FormData();
-      form.append('file', file);
-
-      const res = await fetch(apiUrl('/api/convert/pdf-to-excel'), {
-        method: 'POST',
-        body: form,
-      });
-
-      if (!res.ok) {
-        const data = (await res.json().catch(() => ({}))) as {
-          message?: string;
-          error?: unknown;
-        };
-        const msg =
-          typeof data.message === 'string'
-            ? data.message
-            : typeof data.error === 'string'
-            ? data.error
-            : tc.error;
-        throw new Error(msg);
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setIsDragging(false);
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        handleFileSelect(e.dataTransfer.files[0]);
       }
+    },
+    [handleFileSelect]
+  );
 
-      const blob = await res.blob();
-      setResult({
-        blob,
-        filename: file.name.replace(/\.pdf$/i, '.xlsx'),
-        sizeAfter: blob.size,
-        sizeBefore: file.size,
-      });
-      setIsProcessing(false);
-    } catch (e) {
-      trackToolError('pdf-to-excel', 'general-error');
-      const msg = e instanceof Error ? e.message : tc.error;
-      setError(msg === 'true' ? tc.error : msg);
-      setIsProcessing(false);
-    }
-  };
-
-  const handleDownload = () => {
-    if (!result) return;
-    const url = URL.createObjectURL(result.blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = result.filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-  };
+  const handleDownload = useCallback(() => {
+    if (!result?.data || !result.filename) return;
+    downloadBlob(result.data, result.filename);
+  }, [result]);
 
   const title = t.tools['pdf-to-excel']?.title ?? (isFr ? 'PDF en Excel' : 'PDF to Excel');
   const desc =
@@ -185,7 +99,7 @@ export default function PdfToExcel() {
         <ReciprocalTitle
           currentSlug="pdf-to-excel"
           isFr={isFr}
-          getCurrentFile={() => file}
+          getCurrentFile={() => inputFile ?? undefined}
           fallbackTitle={title}
         />
       }
@@ -194,7 +108,7 @@ export default function PdfToExcel() {
     >
       <ToolWorkspace noGrid>
         <div className="w-full max-w-5xl mx-auto">
-          {/* Error Banner */}
+          {/* Error Alert */}
           <AnimatePresence>
             {error && (
               <motion.div
@@ -222,7 +136,7 @@ export default function PdfToExcel() {
           {/* Unified 4-Scene Conversion Flow */}
           <AnimatePresence mode="wait">
             {/* ─── SCÈNE 1 : DÉPÔT INITIAL CADRÉ (ConversionDropzone) ─── */}
-            {!file && !result && !isProcessing && (
+            {!inputFile && !result && !isProcessing && (
               <ConversionDropzone
                 sourceFormat={sourceFormat}
                 title={isFr ? 'Glissez-déposez votre document PDF' : 'Drag and drop your PDF document'}
@@ -233,7 +147,7 @@ export default function PdfToExcel() {
                 }
                 buttonLabel={isFr ? 'Sélectionner un fichier' : 'Select a file'}
                 isDragging={isDragging}
-                onFileSelected={validateAndSetFile}
+                onFileSelected={handleFileSelect}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
@@ -241,14 +155,14 @@ export default function PdfToExcel() {
             )}
 
             {/* ─── SCÈNE 2 : ATELIER STAGING NOBLE (ConversionStaging) ─── */}
-            {file && !result && !isProcessing && (
+            {inputFile && !result && !isProcessing && (
               <ConversionStaging
                 sourceFormat={sourceFormat}
                 targetFormat={targetFormat}
-                sourceFile={file}
-                convertBtnLabel={tc.convertBtn ?? (isFr ? 'Convertir en Excel (XLSX)' : 'Convert to Excel (XLSX)')}
-                changeFileBtnLabel={tc.convertAnother ?? (isFr ? 'Changer de fichier' : 'Change file')}
-                onConvert={handleConvert}
+                sourceFile={inputFile}
+                convertBtnLabel={tc?.convertBtn ?? (isFr ? 'Convertir en Excel (XLSX)' : 'Convert to Excel (XLSX)')}
+                changeFileBtnLabel={tc?.convertAnother ?? (isFr ? 'Changer de fichier' : 'Change file')}
+                onConvert={handleExecute}
                 onReset={handleReset}
               />
             )}
@@ -258,8 +172,8 @@ export default function PdfToExcel() {
               <ConversionConduit
                 sourceFormat={sourceFormat}
                 targetFormat={targetFormat}
-                fileName={file?.name}
-                statusLabel={tc.converting ?? (isFr ? 'Extraction des données tabulaires...' : 'Extracting tabular data...')}
+                fileName={inputFile?.name}
+                statusLabel={tc?.converting ?? (isFr ? 'Extraction des données tabulaires...' : 'Extracting tabular data...')}
               />
             )}
 
@@ -267,10 +181,10 @@ export default function PdfToExcel() {
             {result && !isProcessing && (
               <ConversionResult
                 targetFormat={targetFormat}
-                resultFileName={result.filename}
-                resultFileSize={result.sizeAfter}
-                downloadBtnLabel={tc.downloadXlsx ?? (isFr ? 'Télécharger le classeur Excel' : 'Download Excel workbook')}
-                resetBtnLabel={tc.convertAnother ?? (isFr ? 'Convertir un autre document' : 'Convert another document')}
+                resultFileName={result.filename ?? 'extracted.xlsx'}
+                resultFileSize={result.resultSize ?? 0}
+                downloadBtnLabel={tc?.downloadXlsx ?? (isFr ? 'Télécharger le classeur Excel' : 'Download Excel workbook')}
+                resetBtnLabel={tc?.convertAnother ?? (isFr ? 'Convertir un autre document' : 'Convert another document')}
                 onDownload={handleDownload}
                 onReset={handleReset}
               />

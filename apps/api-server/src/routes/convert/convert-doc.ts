@@ -13,6 +13,7 @@ import { BIN, getPythonScriptPath } from "../../lib/binaries.js";
 import { sanitizeWinAnsi } from "../../lib/pdf-text.js";
 import { buildContentDisposition } from "./convert-image.js";
 import { handlePdfToWord } from "./pdf-to-word-handler.js";
+import { handlePdfToExcel } from "./pdf-to-excel-handler.js";
 
 const execFileAsync = promisify(execFile);
 const router: IRouter = Router();
@@ -120,41 +121,8 @@ router.post("/convert/text-to-pdf", async (req, res) => {
 router.post("/convert/pdf-to-word", upload.single("file"), guardDocument, handlePdfToWord);
 
 // ─────────────────────────────────────────────────────────
-// POST /convert/pdf-to-excel
+// POST /convert/pdf-to-excel (High-Fidelity Engine via PyMuPDF 2.0 & openpyxl)
 // ─────────────────────────────────────────────────────────
-router.post("/convert/pdf-to-excel", upload.single("file"), guardDocument, async (req, res) => {
-  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
-
-  const baseName = (req.file.originalname ?? "document").replace(/\.pdf$/i, "");
-
-  try {
-    const extracted = await callPdfExtract(req.file.buffer, "excel") as {
-      tables: Array<{ page: number; rows: string[][]; is_table: boolean }>;
-    };
-
-    const XLSX = await import("xlsx");
-    const wb = XLSX.utils.book_new();
-
-    if (extracted.tables.length === 0) {
-      XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["(no tables found)"]]), "Extracted");
-    } else if (extracted.tables.length === 1) {
-      XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(extracted.tables[0].rows), "Extracted");
-    } else {
-      for (let i = 0; i < extracted.tables.length; i++) {
-        const t = extracted.tables[i];
-        const sheetName = `Page ${t.page}${extracted.tables.filter((x) => x.page === t.page).length > 1 ? ` (${i + 1})` : ""}`;
-        XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(t.rows), sheetName.slice(0, 31));
-      }
-    }
-
-    const buf = XLSX.write(wb, { type: "buffer", bookType: "xlsx" });
-    res.set("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-    res.set("Content-Disposition", buildContentDisposition(`${baseName}.xlsx`, "xlsx"));
-    res.set("Cache-Control", "no-store");
-    res.send(buf);
-  } catch (err) {
-    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Extraction failed");
-  }
-});
+router.post("/convert/pdf-to-excel", upload.single("file"), guardDocument, handlePdfToExcel);
 
 export default router;
