@@ -1,41 +1,119 @@
-import React from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import { ToolWorkspace } from '@/components/ToolContent';
 import { BookOpen } from 'lucide-react';
 import { CopyButton } from '@/components/ui/copy-button';
+import { useLocale } from '@/hooks/use-locale';
+import { downloadBlob } from '@/lib/download';
+import { useToolWorkflow } from '@/engine/use-tool-workflow';
+import { pdfToEpubEngine } from '@/engine/engines/pdf-to-epub-engine';
+import { getSourceFormat, getTargetFormat } from '@/lib/pdf-to-epub-logic';
 import {
   ConversionDropzone,
   ConversionStaging,
   ConversionConduit,
   ConversionResult,
   TextPreviewDialog,
+  DocumentNextActionModal,
   ReciprocalTitle,
 } from '@/components/conversion';
-import { usePdfToEpubWorkflow } from '@/hooks/use-pdf-to-epub-workflow';
-import { useLocale } from '@/hooks/use-locale';
 
 export default function PdfToEpub() {
-  const { isFr } = useLocale();
+  const { t, isFr } = useLocale();
+  const tc = (t as any).pdfToEpub ?? {};
+  const sourceFormat = getSourceFormat(isFr);
+  const targetFormat = getTargetFormat(isFr);
+
+  const [isDragging, setIsDragging] = useState(false);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [isNextActionOpen, setIsNextActionOpen] = useState(false);
+  const [extractedText, setExtractedText] = useState<string>('');
+
   const {
-    t,
-    tc,
-    sourceFormat,
-    targetFormat,
-    file,
+    inputFile,
     result,
+    error,
     isProcessing,
-    isDragging,
-    isPreviewOpen,
-    setIsPreviewOpen,
-    validateAndSetFile,
-    handleDragOver,
-    handleDragLeave,
-    handleDrop,
-    handleReset,
-    handleConvert,
-    handleDownload,
-  } = usePdfToEpubWorkflow();
+    handleFileSelect,
+    handleExecute,
+    handleReset: baseReset,
+    setError,
+  } = useToolWorkflow<File, Blob>({
+    engine: pdfToEpubEngine,
+    acceptedMimeTypes: ['application/pdf', '.pdf'],
+    maxFileSizeBytes: 50 * 1024 * 1024,
+    toolSlug: 'pdf-to-epub',
+    category: 'documents',
+    autoConsumeHandoff: true,
+  });
+
+  // Extract plain text preview dynamically from the generated EPUB archive
+  useEffect(() => {
+    let isCancelled = false;
+    if (result?.data) {
+      import('jszip')
+        .then(({ default: JSZip }) => JSZip.loadAsync(result.data))
+        .then(async (zip) => {
+          const xhtmlFiles = Object.keys(zip.files)
+            .filter((f) => f.startsWith('EPUB/chapter_') && f.endsWith('.xhtml'))
+            .sort();
+          let fullText = '';
+          for (const fname of xhtmlFiles) {
+            const raw = await zip.files[fname].async('text');
+            const clean = raw.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+            if (clean) fullText += clean + '\n\n';
+          }
+          if (!isCancelled) setExtractedText(fullText.trim());
+        })
+        .catch(() => {
+          if (!isCancelled) setExtractedText('');
+        });
+    } else {
+      setExtractedText('');
+    }
+    return () => {
+      isCancelled = true;
+    };
+  }, [result]);
+
+  const handleReset = useCallback(() => {
+    baseReset();
+    setIsDragging(false);
+    setIsPreviewOpen(false);
+    setIsNextActionOpen(false);
+    setExtractedText('');
+  }, [baseReset]);
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setIsDragging(false);
+      const droppedFiles = Array.from(e.dataTransfer.files);
+      if (droppedFiles.length > 0) {
+        handleFileSelect(droppedFiles[0]);
+      }
+    },
+    [handleFileSelect]
+  );
+
+  const handleDownload = useCallback(() => {
+    if (result?.data && result.filename) {
+      downloadBlob(result.data, result.filename);
+      setIsNextActionOpen(true);
+    }
+  }, [result]);
 
   const title = t.tools['pdf-to-epub']?.title ?? (isFr ? 'PDF en EPUB' : 'PDF to EPUB');
   const desc =
@@ -51,7 +129,7 @@ export default function PdfToEpub() {
         <ReciprocalTitle
           currentSlug="pdf-to-epub"
           isFr={isFr}
-          getCurrentFile={() => file}
+          getCurrentFile={() => inputFile}
           fallbackTitle={title}
         />
       }
@@ -60,10 +138,23 @@ export default function PdfToEpub() {
     >
       <ToolWorkspace noGrid>
         <div className="w-full max-w-5xl mx-auto">
+          {error && (
+            <div className="mb-6 p-4 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 text-sm flex items-center justify-between">
+              <span>{error}</span>
+              <button
+                type="button"
+                onClick={() => setError(null)}
+                className="text-xs font-semibold underline ml-4 hover:opacity-80"
+              >
+                {isFr ? 'Ignorer' : 'Dismiss'}
+              </button>
+            </div>
+          )}
+
           {/* Unified 4-Scene Conversion Flow */}
           <AnimatePresence mode="wait">
             {/* ─── SCENE 1 : ARCHITECTURAL DOUBLE-BEZEL UPLOAD BOX ─── */}
-            {!file && !result && !isProcessing && (
+            {!inputFile && !result && !isProcessing && (
               <ConversionDropzone
                 sourceFormat={sourceFormat}
                 title={isFr ? 'Glissez-déposez votre document PDF' : 'Drag and drop your PDF document'}
@@ -74,7 +165,7 @@ export default function PdfToEpub() {
                 }
                 buttonLabel={isFr ? 'Sélectionner un fichier' : 'Select a file'}
                 isDragging={isDragging}
-                onFileSelected={validateAndSetFile}
+                onFileSelected={handleFileSelect}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
@@ -82,14 +173,14 @@ export default function PdfToEpub() {
             )}
 
             {/* ─── SCENE 2 : STANDARDIZED ARCHITECTURAL STAGING ─── */}
-            {file && !result && !isProcessing && (
+            {inputFile && !result && !isProcessing && (
               <ConversionStaging
                 sourceFormat={sourceFormat}
                 targetFormat={targetFormat}
-                sourceFile={file}
+                sourceFile={inputFile}
                 convertBtnLabel={tc.convertBtn ?? (isFr ? 'Convertir en EPUB' : 'Convert to EPUB')}
                 changeFileBtnLabel={tc.convertAnother ?? (isFr ? 'Changer de fichier' : 'Change file')}
-                onConvert={handleConvert}
+                onConvert={handleExecute}
                 onReset={handleReset}
               />
             )}
@@ -99,7 +190,7 @@ export default function PdfToEpub() {
               <ConversionConduit
                 sourceFormat={sourceFormat}
                 targetFormat={targetFormat}
-                fileName={file?.name}
+                fileName={inputFile?.name}
                 statusLabel={tc.converting ?? (isFr ? 'Génération du livre EPUB en cours...' : 'Generating EPUB e-book...')}
               />
             )}
@@ -109,7 +200,7 @@ export default function PdfToEpub() {
               <ConversionResult
                 targetFormat={targetFormat}
                 resultFileName={result.filename}
-                resultFileSize={result.sizeAfter}
+                resultFileSize={result.resultSize}
                 downloadBtnLabel={tc.downloadEpub ?? (isFr ? 'Télécharger le fichier .epub' : 'Download .epub file')}
                 resetBtnLabel={tc.convertAnother ?? (isFr ? 'Convertir un autre PDF' : 'Convert another PDF')}
                 downloadBtnColor="#558B2F"
@@ -118,7 +209,7 @@ export default function PdfToEpub() {
                 extraActions={
                   <>
                     <CopyButton
-                      text={result.textOutput}
+                      text={extractedText}
                       label={isFr ? 'Copier le texte' : 'Copy text'}
                       copiedLabel={isFr ? 'Copié !' : 'Copied!'}
                       variant="pill"
@@ -145,7 +236,7 @@ export default function PdfToEpub() {
               open={isPreviewOpen}
               onOpenChange={setIsPreviewOpen}
               filename={result.filename}
-              text={result.textOutput}
+              text={extractedText}
               formatTag="EPUB 3.0 · E-Book"
               onDownload={handleDownload}
               copyLabel={isFr ? 'Copier le texte' : 'Copy text'}
@@ -154,7 +245,15 @@ export default function PdfToEpub() {
             />
           )}
 
-
+          {/* Continuum Next Action Modal */}
+          <DocumentNextActionModal
+            toolId="pdf-to-epub"
+            isOpen={isNextActionOpen}
+            onClose={() => setIsNextActionOpen(false)}
+            resultBlob={result?.data}
+            resultFilename={result?.filename}
+            formatType="epub"
+          />
         </div>
       </ToolWorkspace>
     </ToolPageLayout>

@@ -13,6 +13,7 @@ import { handlePdfToPptx } from "./pdf-to-pptx-handler.js";
 import { handlePdfToHtml } from "./pdf-to-html-handler.js";
 import { handlePdfToText } from "./pdf-to-text-handler.js";
 import { handlePdfToMarkdown } from "./pdf-to-markdown-handler.js";
+import { handlePdfToEpub } from "./pdf-to-epub-handler.js";
 
 const router: IRouter = Router();
 
@@ -105,5 +106,10 @@ router.post("/convert/pdf-to-html", upload.single("file"), guardDocument, handle
 // POST /convert/pdf-to-markdown (High-Fidelity Engine via PyMuPDF4LLM 2.0)
 // ─────────────────────────────────────────────────────────
 router.post("/convert/pdf-to-markdown", defaultRateLimit, upload.single("file"), guardSinglePdf, handlePdfToMarkdown);
+
+// ─────────────────────────────────────────────────────────
+// POST /convert/pdf-to-epub (High-Fidelity Engine via PyMuPDF 2.0 + EPUB3 Builder)
+// ─────────────────────────────────────────────────────────
+router.post("/convert/pdf-to-epub", defaultRateLimit, upload.single("file"), guardSinglePdf, handlePdfToEpub);
 
 export default router;

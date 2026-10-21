@@ -21,7 +21,6 @@ const DELAY_FILES = [
   'src/lib/pdf-to-image-logic.ts',
   'src/lib/pdf-export-converter-logic.ts',
   'src/hooks/use-html-to-markdown-workflow.ts',
-  'src/hooks/use-pdf-to-epub-workflow.ts',
   'src/hooks/use-pdf-to-pptx-workflow.ts',
   'src/hooks/use-word-to-epub-workflow.ts',
 ];
