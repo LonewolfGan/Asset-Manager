@@ -16,6 +16,7 @@ import { sendPdf } from "./send-pdf.js";
 import { buildContentDisposition } from "../convert/convert-image.js";
 import { guardSinglePdf } from "../pdf/guards.js";
 import { handlePdfToPptx } from "../convert/pdf-to-pptx-handler.js";
+import { handlePdfToHtml } from "../convert/pdf-to-html-handler.js";
 import { isGotenbergHealthy, convertHtmlWithGotenberg } from "../../lib/gotenberg.js";
 import { logger } from "../../lib/logger.js";
 
@@ -95,68 +96,9 @@ router.post("/tools/markdown-to-pdf", defaultRateLimit, upload.single("file"), a
 });
 
 // ─────────────────────────────────────────────────────────
-// POST /tools/pdf-to-html
-// Extract PDF text via pdfplumber and wrap in clean HTML.
+// POST /tools/pdf-to-html (Legacy endpoint redirected to high-fidelity engine)
 // ─────────────────────────────────────────────────────────
-router.post("/tools/pdf-to-html", defaultRateLimit, upload.single("file"), guardSinglePdf, async (req: Request, res: Response) => {
-  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
-
-  const baseName = (req.file.originalname ?? "document").replace(/\.pdf$/i, "");
-  const id = randomUUID();
-  const workDir = join(tmpdir(), "everydaytools", id);
-  await mkdir(workDir, { recursive: true });
-  const pdfPath = join(workDir, "input.pdf");
-
-  try {
-    await writeFile(pdfPath, req.file.buffer);
-
-    const pdfExtractScript = getPythonScriptPath("pdf_extract.py");
-    const { stdout } = await execFileAsync(
-      BIN.python3,
-      [pdfExtractScript, "--pdf", pdfPath, "--mode", "text"],
-      { timeout: 120_000, maxBuffer: 50 * 1024 * 1024 },
-    );
-    const extracted = JSON.parse(stdout) as { text?: string; error?: string };
-    if (extracted.error) throw new Error(extracted.error);
-
-    const rawText = extracted.text ?? "";
-    const escapedLines = rawText
-      .split("\n")
-      .map((line) => {
-        const safe = line.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        return safe.trim() ? `<p>${safe}</p>` : "";
-      })
-      .filter(Boolean)
-      .join("\n");
-
-    const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>${baseName}</title>
-  <style>
-    body { font-family: Georgia, serif; max-width: 800px; margin: 0 auto; padding: 2em; line-height: 1.7; color: #222; }
-    p { margin: 0 0 1em; }
-  </style>
-</head>
-<body>
-${escapedLines}
-</body>
-</html>`;
-
-    res.set({
-      "Content-Type": "text/html; charset=utf-8",
-      "Content-Disposition": buildContentDisposition(`${baseName}.html`, "html"),
-      "Cache-Control": "no-store",
-    });
-    res.send(html);
-  } catch (err) {
-    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Conversion failed");
-  } finally {
-    await rm(workDir, { recursive: true, force: true }).catch(() => {});
-  }
-});
+router.post("/tools/pdf-to-html", defaultRateLimit, upload.single("file"), guardSinglePdf, handlePdfToHtml);
 
 // ─────────────────────────────────────────────────────────
 // POST /tools/pdf-to-pptx (Legacy endpoint redirected to high-fidelity engine)

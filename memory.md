@@ -43,7 +43,7 @@ Last updated: 2026-10-21 00:38 UTC
   - Frontend : [`apps/everydaytools/tests/unit/engine/pdf-to-excel-engine.test.ts`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/everydaytools/tests/unit/engine/pdf-to-excel-engine.test.ts) (3/3 tests GREEN) et [`apps/everydaytools/tests/unit/ui/pdf-to-excel.test.ts`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/everydaytools/tests/unit/ui/pdf-to-excel.test.ts) (1/1 test GREEN sans act warning).
   - Double revue indépendante : **APPROVED ✅** par le sous-agent `re-reviewer`.
 
-### Phase 5 : Troisième Outil — `pdf-to-pptx` (#3) (100% TERMINÉ, CERTIFIÉ & VALIDÉ)
+### Phase 5 : Troisième Outil — `pdf-to-pptx` (#3) (100% TERMINÉ, CERTIFIÉ & VALIDÉ `3cfed40`)
 - **Recherche d'état de l'art** : Échec prouvé de LibreOffice headless CLI (`no export filter for pptx`). Conception d'une architecture hybride C-native haute fidélité : PyMuPDF 2.0 pour la rédaction textuelle du flux graphique (zéro ghosting) et le rendu du fond à 150 DPI couplé à `python-pptx` 1.0.2 pour la reconstruction de zones de texte vectorielles 100% éditables superposées aux coordonnées exactes (avec typographie, taille en points, styles gras/italique et couleurs RGB).
 - **Implémentation Moteur** :
   - Worker Python : [`apps/api-server/src/python/pdf_to_pptx.py`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/api-server/src/python/pdf_to_pptx.py) (152 LOC) avec dimensions en points exactes `Pt(w_pt)`, `Pt(h_pt)`, rédaction vectorielle de texte sans perte d'images de fond, marges à zéro, word-wrap activé, gestion propre de fermeture et GC (`del pix`, `img_stream.close()`).
@@ -56,8 +56,22 @@ Last updated: 2026-10-21 00:38 UTC
   - Backend : [`apps/api-server/src/routes/convert/pdf-to-pptx.test.ts`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/api-server/src/routes/convert/pdf-to-pptx.test.ts) (7/7 tests GREEN).
   - Frontend : [`apps/everydaytools/tests/unit/engine/pdf-to-pptx-engine.test.ts`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/everydaytools/tests/unit/engine/pdf-to-pptx-engine.test.ts) (3/3 tests GREEN) et [`apps/everydaytools/tests/unit/ui/pdf-to-pptx.test.ts`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/everydaytools/tests/unit/ui/pdf-to-pptx.test.ts) (1/1 test GREEN).
   - Double revue indépendante : **APPROVED ✅** (`code-reviewer`) & **SPEC_COMPLIANT ✅** (`spec-reviewer`).
-  - Suite globale monorepo : 326/326 tests API Server GREEN, 127/127 suites Vitest everydaytools GREEN (981 tests).
-- **Prochain Outil en file** : `pdf-to-html` (#4).
+
+### Phase 6 : Quatrième Outil — `pdf-to-html` (#4) (100% TERMINÉ, CERTIFIÉ & VALIDÉ)
+- **Recherche d'état de l'art** : Abandon de `pdftohtml` Poppler obsolète (XHTML 1.0, 892px fixe non responsive) et de PyMuPDF `get_text("html")` (perte des bordures et fonds vectoriels). Choix de l'architecture vectorielle haute fidélité PyMuPDF 2.0 SVG container (`page.get_svg_image(text_as_path=False)`) encapsulé dans une coquille responsive HTML5 100% autonome (embedded styles, `@media print`, extraction native de texte pour copie presse-papier 1-clic).
+- **Implémentation Moteur** :
+  - Worker Python : [`apps/api-server/src/python/pdf_to_html.py`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/api-server/src/python/pdf_to_html.py) (231 LOC) avec gestion des erreurs (code 1 invalide/vide, code 2 chiffré/mot de passe), échappement du titre, conteneur SVG responsive et `@media print`.
+  - Handler serveur : [`apps/api-server/src/routes/convert/pdf-to-html-handler.ts`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/api-server/src/routes/convert/pdf-to-html-handler.ts) (133 LOC) sous `ProcessPool` avec isolation `/tmp/everydaytools/<uuid>`, encodage RFC 5987 / RFC 6266 et classification 400/500 robuste.
+  - Routeurs Express : [`apps/api-server/src/routes/convert/convert-doc.ts`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/api-server/src/routes/convert/convert-doc.ts) et legacy route purgée dans [`apps/api-server/src/routes/docs/html-markdown-to-pdf.ts`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/api-server/src/routes/docs/html-markdown-to-pdf.ts).
+- **Branchage UI (Design Inchangé)** :
+  - Adaptateur moteur : [`apps/everydaytools/src/engine/engines/pdf-to-html-engine.ts`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/everydaytools/src/engine/engines/pdf-to-html-engine.ts) (38 LOC).
+  - Page UI : [`apps/everydaytools/src/pages/pdf-to-html.tsx`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/everydaytools/src/pages/pdf-to-html.tsx) (262 LOC) branchée sur `useToolWorkflow` avec préservation intégrale des 4 scènes canoniques, bouton de copie rapide du code HTML, et modal de prévisualisation source `TextPreviewDialog`.
+- **Vérification TDD & Certification** :
+  - Backend : [`apps/api-server/src/routes/convert/pdf-to-html.test.ts`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/api-server/src/routes/convert/pdf-to-html.test.ts) (7/7 tests GREEN).
+  - Frontend : [`apps/everydaytools/tests/unit/engine/pdf-to-html-engine.test.ts`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/everydaytools/tests/unit/engine/pdf-to-html-engine.test.ts) (3/3 tests GREEN) et [`apps/everydaytools/tests/unit/ui/pdf-to-html.test.ts`](file:///home/lonewolf/WebstormProjects/Asset-Manager/apps/everydaytools/tests/unit/ui/pdf-to-html.test.ts) (1/1 test GREEN).
+  - Double revue indépendante : **APPROVED ✅** (`code-reviewer`) & **SPEC_COMPLIANT ✅** (`spec-reviewer`).
+  - Suite globale monorepo : 333/333 tests API Server GREEN, 985/985 tests everydaytools GREEN (1318 tests monorepo au total).
+- **Prochain Outil en file** : `pdf-to-text` (#5).
 
 ---
 

@@ -241,22 +241,54 @@ Actuellement, `pdf-to-html` s'appuie sur une extraction basique sans préservati
 Faire de `pdf-to-html` un convertisseur haute fidélité produisant du HTML5 sémantique, autonome et responsive (PyMuPDF 2.0 `page.get_text('html')` ou rendu vectoriel SVG/HTML5 structuré), exécuté sous `ProcessPool`, adaptateur `pdfToHtmlEngine`, et raccordement à `useToolWorkflow` avec design Awwwards 100% sanctuarisé.
 
 ### Task 6.1 : Recherche d'État de l'Art pour PDF to HTML (2026)
-- [ ] **Step 1: Diagnostic et benchmark des solutions d'exportation HTML5 :**
+- [x] **Step 1: Diagnostic et benchmark des solutions d'exportation HTML5 :**
   - PyMuPDF 2.0 (`page.get_text("html")` vs multi-page SVG container vs pdf2htmlEX C-native).
   - Évaluation de l'autonomie (CSS inline/embedded, images base64 vs bundle zip).
-- [ ] **Step 2: Valider la fidélité typographique et le comportement responsive.**
+- [x] **Step 2: Valider la fidélité typographique et le comportement responsive.**
 
 ### Task 6.2 : Implémentation TDD du Moteur Haute Fidélité
-- [ ] **Step 1: Créer la suite de tests unitaires et d'intégration TDD RED (`pdf-to-html.test.ts` et `pdf-to-html-engine.test.ts`).**
-- [ ] **Step 2: Implémenter le worker Python/handler `pdf-to-html-handler.ts` sous `ProcessPool`.**
-- [ ] **Step 3: Vérifier que 100% des tests passent GREEN.**
+- [x] **Step 1: Créer la suite de tests unitaires et d'intégration TDD RED (`pdf-to-html.test.ts` et `pdf-to-html-engine.test.ts`).**
+- [x] **Step 2: Implémenter le worker Python/handler `pdf-to-html-handler.ts` sous `ProcessPool`.**
+- [x] **Step 3: Vérifier que 100% des tests passent GREEN.**
 
 ### Task 6.3 : Branchage sur l'Interface UI Existante (Zéro Changement Visuel)
-- [ ] **Step 1: Créer l'adaptateur de contrat `pdf-to-html-engine.ts`.**
-- [ ] **Step 2: Raccorder la page `apps/everydaytools/src/pages/pdf-to-html.tsx` sur `useToolWorkflow` (Design Awwwards 4 scènes 100% sanctuarisé).**
-- [ ] **Step 3: Vérifier l'absence totale de régression visuelle ou ergonomique.**
+- [x] **Step 1: Créer l'adaptateur de contrat `pdf-to-html-engine.ts`.**
+- [x] **Step 2: Raccorder la page `apps/everydaytools/src/pages/pdf-to-html.tsx` sur `useToolWorkflow` (Design Awwwards 4 scènes 100% sanctuarisé).**
+- [x] **Step 3: Vérifier l'absence totale de régression visuelle ou ergonomique.**
 
 ### Task 6.4 : Revue Indépendante & Certification
+- [x] **Step 1: Pipeline de vérification mécanique (clean, check:rules, typecheck, test).**
+- [x] **Step 2: Revue de code par le sous-agent `code-reviewer` & vérification par `spec-reviewer`.**
+- [x] **Step 3: Test d'honnêteté du jury Awwwards et verrouillage de l'outil #4.**
+
+---
+
+## Phase 7 : Cinquième Outil — `pdf-to-text` (#5)
+
+**Problème actuel identifié :**
+Actuellement, `pdf-to-text` repose sur des scripts ad-hoc sans normalisation d'encodage (UTF-8 / WinAnsi), sans préservation sémantique des retours à la ligne ou césures de mots (hyphenation), sans détection intelligente des colonnes et tableaux, et sans fallback OCR robuste pour les PDF scannés ou bitmap-only. Côté client, il doit être rigoureusement branché sur `useToolWorkflow` avec design Awwwards 100% sanctuarisé.
+
+**Objectif du Deep-Dive :**
+Faire de `pdf-to-text` un extracteur de texte haute fidélité supportant l'analyse sémantique de mise en page (PyMuPDF 2.0 `page.get_text("layout")` / `sort=True`), détection automatique des scans avec OCR Tesseract, export direct en `.txt` ou presse-papier en 1 clic, exécuté sous `ProcessPool`, adaptateur `pdfToTextEngine`, et raccordement à `useToolWorkflow`.
+
+### Task 7.1 : Recherche d'État de l'Art pour PDF to Text & Extraction Sémantique (2026)
+- [ ] **Step 1: Diagnostic et benchmark des moteurs d'extraction textuelle :**
+  - PyMuPDF 2.0 (`get_text("text", sort=True)` vs `get_text("blocks")` vs Poppler `pdftotext -layout`).
+  - Détection automatique des PDF numérisés/scannés (ratio caractères / surface) et fallback OCR Tesseract 5.x.
+  - Normalisation Unicode (NFKC, suppression des soft hyphens `\u00ad`, préservation des sauts de paragraphe réels vs wrapping arbitraire).
+- [ ] **Step 2: Arbitrer la configuration cible et la stack retenue.**
+
+### Task 7.2 : Implémentation TDD du Moteur Haute Fidélité
+- [ ] **Step 1: Créer la suite de tests unitaires et d'intégration TDD RED (`pdf-to-text.test.ts` et `pdf-to-text-engine.test.ts`).**
+- [ ] **Step 2: Implémenter le worker Python/handler `pdf-to-text-handler.ts` sous `ProcessPool`.**
+- [ ] **Step 3: Vérifier que 100% des tests passent GREEN.**
+
+### Task 7.3 : Branchage sur l'Interface UI Existante (Zéro Changement Visuel)
+- [ ] **Step 1: Créer l'adaptateur de contrat `pdf-to-text-engine.ts`.**
+- [ ] **Step 2: Raccorder la page `apps/everydaytools/src/pages/pdf-to-text.tsx` sur `useToolWorkflow` (Design Awwwards 4 scènes 100% sanctuarisé).**
+- [ ] **Step 3: Vérifier l'absence totale de régression visuelle ou ergonomique.**
+
+### Task 7.4 : Revue Indépendante & Certification
 - [ ] **Step 1: Pipeline de vérification mécanique (clean, check:rules, typecheck, test).**
 - [ ] **Step 2: Revue de code par le sous-agent `code-reviewer` & vérification par `spec-reviewer`.**
-- [ ] **Step 3: Test d'honnêteté du jury Awwwards et verrouillage de l'outil #4.**
+- [ ] **Step 3: Test d'honnêteté du jury Awwwards et verrouillage de l'outil #5.**
