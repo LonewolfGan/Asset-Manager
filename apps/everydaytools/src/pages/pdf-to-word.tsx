@@ -1,11 +1,11 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import { ToolWorkspace } from '@/components/ToolContent';
 import { useLocale } from '@/hooks/use-locale';
-import { trackToolUsed, trackToolError } from '@/lib/analytics';
-import { apiUrl } from '@/lib/apiBase';
-import { consumeHandoffFile } from '@/lib/file-handoff';
+import { downloadBlob } from '@/lib/download';
+import { useToolWorkflow } from '@/engine/use-tool-workflow';
+import { pdfToWordEngine } from '@/engine/engines/pdf-to-word-engine';
 import { AlertCircle } from 'lucide-react';
 import {
   ConversionDropzone,
@@ -38,61 +38,25 @@ export default function PdfToWord() {
   const sourceFormat = getSourceFormat(isFr);
   const targetFormat = getTargetFormat(isFr);
 
-  const [files, setFiles] = useState<File[]>([]);
-  const [result, setResult] = useState<{
-    blob: Blob;
-    filename: string;
-    sizeAfter: number;
-    sizeBefore?: number;
-  } | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
-  const file = files[0];
-
-  const handleReset = () => {
-    setFiles([]);
-    setResult(null);
-    setError(null);
-    setIsProcessing(false);
-  };
-
-  const validateAndSetFile = useCallback((selectedFile: File) => {
-    const isPdf =
-      selectedFile.type === 'application/pdf' ||
-      selectedFile.name.toLowerCase().endsWith('.pdf');
-
-    if (!isPdf) {
-      setError(
-        isFr
-          ? 'Veuillez sélectionner un document au format PDF valide.'
-          : 'Please select a valid PDF document.'
-      );
-      return;
-    }
-
-    if (selectedFile.size > 50 * 1024 * 1024) {
-      setError(
-        isFr
-          ? 'Le fichier dépasse la taille maximale autorisée de 50 Mo.'
-          : 'File exceeds maximum allowed size of 50 MB.'
-      );
-      return;
-    }
-
-    setError(null);
-    setResult(null);
-    setFiles([selectedFile]);
-  }, [isFr]);
-
-  // Auto-consume handoff file from previous workflow step
-  useEffect(() => {
-    const staged = consumeHandoffFile();
-    if (staged) {
-      validateAndSetFile(staged);
-    }
-  }, [validateAndSetFile]);
+  const {
+    inputFile,
+    result,
+    error,
+    isProcessing,
+    handleFileSelect,
+    handleExecute,
+    handleReset,
+    setError,
+  } = useToolWorkflow<File, Blob>({
+    engine: pdfToWordEngine,
+    acceptedMimeTypes: ['application/pdf', '.pdf'],
+    maxFileSizeBytes: 50 * 1024 * 1024,
+    toolSlug: 'pdf-to-word',
+    category: 'documents',
+    autoConsumeHandoff: true,
+  });
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -110,58 +74,16 @@ export default function PdfToWord() {
       e.stopPropagation();
       setIsDragging(false);
       if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-        validateAndSetFile(e.dataTransfer.files[0]);
+        handleFileSelect(e.dataTransfer.files[0]);
       }
     },
-    [validateAndSetFile]
+    [handleFileSelect]
   );
 
-  const handleConvert = async () => {
-    if (!file || isProcessing) return;
-    setError(null);
-    setIsProcessing(true);
-
-    try {
-      trackToolUsed('pdf-to-word', 'documents');
-      const fd = new FormData();
-      fd.append('file', file);
-
-      const res = await fetch(apiUrl('/api/convert/pdf-to-word'), {
-        method: 'POST',
-        body: fd,
-      });
-
-      if (!res.ok) {
-        const err = (await res.json().catch(() => ({}))) as { error?: string };
-        throw new Error(err.error ?? tc.error);
-      }
-
-      const blob = await res.blob();
-      setResult({
-        blob,
-        filename: file.name.replace(/\.pdf$/i, '.docx'),
-        sizeAfter: blob.size,
-        sizeBefore: file.size,
-      });
-    } catch (e) {
-      trackToolError('pdf-to-word', 'general-error');
-      setError(e instanceof Error ? e.message : tc.error);
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  const handleDownload = () => {
-    if (!result) return;
-    const url = URL.createObjectURL(result.blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = result.filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-  };
+  const handleDownload = useCallback(() => {
+    if (!result?.data || !result.filename) return;
+    downloadBlob(result.data, result.filename);
+  }, [result]);
 
   const title = t.tools['pdf-to-word']?.title ?? (isFr ? 'PDF en Word' : 'PDF to Word');
   const desc =
@@ -177,7 +99,7 @@ export default function PdfToWord() {
         <ReciprocalTitle
           currentSlug="pdf-to-word"
           isFr={isFr}
-          getCurrentFile={() => file}
+          getCurrentFile={() => inputFile ?? undefined}
           fallbackTitle={title}
         />
       }
@@ -214,7 +136,7 @@ export default function PdfToWord() {
           {/* Unified 4-Scene Conversion Flow */}
           <AnimatePresence mode="wait">
             {/* ─── SCENE 1 : ARCHITECTURAL DOUBLE-BEZEL UPLOAD BOX ─── */}
-            {!file && !result && !isProcessing && (
+            {!inputFile && !result && !isProcessing && (
               <ConversionDropzone
                 sourceFormat={sourceFormat}
                 title={isFr ? 'Glissez-déposez votre document PDF' : 'Drag and drop your PDF document'}
@@ -225,7 +147,7 @@ export default function PdfToWord() {
                 }
                 buttonLabel={isFr ? 'Sélectionner un fichier' : 'Select a file'}
                 isDragging={isDragging}
-                onFileSelected={validateAndSetFile}
+                onFileSelected={handleFileSelect}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
@@ -233,14 +155,14 @@ export default function PdfToWord() {
             )}
 
             {/* ─── SCENE 2 : STANDARDIZED ARCHITECTURAL STAGING ─── */}
-            {file && !result && !isProcessing && (
+            {inputFile && !result && !isProcessing && (
               <ConversionStaging
                 sourceFormat={sourceFormat}
                 targetFormat={targetFormat}
-                sourceFile={file}
+                sourceFile={inputFile}
                 convertBtnLabel={tc.convertBtn ?? (isFr ? 'Convertir en Word (DOCX)' : 'Convert to Word (DOCX)')}
                 changeFileBtnLabel={tc.convertAnother ?? (isFr ? 'Changer de fichier' : 'Change file')}
-                onConvert={handleConvert}
+                onConvert={handleExecute}
                 onReset={handleReset}
               />
             )}
@@ -250,7 +172,7 @@ export default function PdfToWord() {
               <ConversionConduit
                 sourceFormat={sourceFormat}
                 targetFormat={targetFormat}
-                fileName={file?.name}
+                fileName={inputFile?.name}
                 statusLabel={tc.converting ?? (isFr ? 'Conversion en cours...' : 'Converting...')}
               />
             )}
@@ -259,8 +181,8 @@ export default function PdfToWord() {
             {result && !isProcessing && (
               <ConversionResult
                 targetFormat={targetFormat}
-                resultFileName={result.filename}
-                resultFileSize={result.sizeAfter}
+                resultFileName={result.filename ?? 'converted.docx'}
+                resultFileSize={result.resultSize ?? 0}
                 downloadBtnLabel={tc.downloadDocx ?? (isFr ? 'Télécharger le fichier Word' : 'Download Word file')}
                 resetBtnLabel={tc.convertAnother ?? (isFr ? 'Convertir un autre PDF' : 'Convert another PDF')}
                 onDownload={handleDownload}

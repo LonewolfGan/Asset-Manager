@@ -166,3 +166,12 @@ export class ProcessPool {
     }
   }
 }
+
+/**
+ * Shared singleton process pool for server document processing.
+ */
+export const defaultProcessPool = new ProcessPool({
+  concurrencyLimit: 4,
+  defaultTimeoutMs: 120_000,
+});
+

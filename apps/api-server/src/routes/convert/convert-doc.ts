@@ -2,7 +2,6 @@ import { Router, type IRouter } from "express";
 import { apiError } from "../../lib/errors.js";
 import { PDFDocument } from "pdf-lib";
 import mammoth from "mammoth";
-import { Document, Packer, Paragraph, TextRun, HeadingLevel } from "docx";
 import { execFile } from "child_process";
 import { promisify } from "util";
 import { tmpdir } from "os";
@@ -13,6 +12,7 @@ import { upload, guardDocument } from "../../middlewares/upload.js";
 import { BIN, getPythonScriptPath } from "../../lib/binaries.js";
 import { sanitizeWinAnsi } from "../../lib/pdf-text.js";
 import { buildContentDisposition } from "./convert-image.js";
+import { handlePdfToWord } from "./pdf-to-word-handler.js";
 
 const execFileAsync = promisify(execFile);
 const router: IRouter = Router();
@@ -115,83 +115,9 @@ router.post("/convert/text-to-pdf", async (req, res) => {
 });
 
 // ─────────────────────────────────────────────────────────
-// POST /convert/pdf-to-word
+// POST /convert/pdf-to-word (High-Fidelity Engine via pdf2docx)
 // ─────────────────────────────────────────────────────────
-router.post("/convert/pdf-to-word", upload.single("file"), guardDocument, async (req, res) => {
-  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
-
-  const baseName = (req.file.originalname ?? "document").replace(/\.pdf$/i, "");
-  const children: Paragraph[] = [];
-
-  try {
-    const extracted = await callPdfExtract(req.file.buffer, "word") as {
-      pages: Array<{
-        page: number;
-        paragraphs: Array<{ text: string; heading: number; table_row?: boolean }>;
-      }>;
-    };
-
-    for (let pi = 0; pi < extracted.pages.length; pi++) {
-      if (pi > 0) {
-        children.push(new Paragraph({ children: [new TextRun("")], spacing: { before: 400 } }));
-      }
-      for (const para of extracted.pages[pi].paragraphs) {
-        if (!para.text.trim()) { children.push(new Paragraph({ children: [new TextRun("")] })); continue; }
-        if (para.heading === 1) {
-          children.push(new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun({ text: para.text, bold: true })] }));
-        } else if (para.heading === 2) {
-          children.push(new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun({ text: para.text, bold: true })] }));
-        } else if (para.heading === 3) {
-          children.push(new Paragraph({ heading: HeadingLevel.HEADING_3, children: [new TextRun({ text: para.text })] }));
-        } else if (para.table_row) {
-          children.push(new Paragraph({ children: [new TextRun({ text: para.text, font: "Courier New", size: 18 })], spacing: { after: 40 } }));
-        } else {
-          children.push(new Paragraph({ children: [new TextRun(para.text)], spacing: { after: 80 } }));
-        }
-      }
-    }
-  } catch (_plumberErr) {
-    const { getDocument, GlobalWorkerOptions } = await import("pdfjs-dist");
-    GlobalWorkerOptions.workerSrc = "";
-    const pdf = await getDocument({
-      data: new Uint8Array(req.file.buffer),
-      useWorkerFetch: false, useSystemFonts: true,
-    }).promise;
-
-    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-      if (pageNum > 1) children.push(new Paragraph({ children: [new TextRun("")], spacing: { before: 200 } }));
-      const page = await pdf.getPage(pageNum);
-      const textContent = await page.getTextContent();
-      const items = textContent.items as Array<{ str: string; transform?: number[]; height?: number }>;
-      const lineMap = new Map<number, string[]>();
-      for (const item of items) {
-        const y = Math.round((item.transform?.[5] ?? 0) / 4) * 4;
-        if (!lineMap.has(y)) lineMap.set(y, []);
-        lineMap.get(y)!.push(item.str);
-      }
-      for (const y of [...lineMap.keys()].sort((a, b) => b - a)) {
-        const lineText = lineMap.get(y)!.join("").trim();
-        if (!lineText) continue;
-        const lineItems = items.filter((it) => Math.round((it.transform?.[5] ?? 0) / 4) * 4 === y);
-        const maxH = Math.max(0, ...lineItems.map((it) => it.height ?? 0));
-        if (maxH >= 18) children.push(new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun({ text: lineText, bold: true })] }));
-        else if (maxH >= 14) children.push(new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun({ text: lineText, bold: true })] }));
-        else children.push(new Paragraph({ children: [new TextRun(lineText)], spacing: { after: 80 } }));
-      }
-    }
-  }
-
-  try {
-    const doc = new Document({ sections: [{ properties: {}, children }] });
-    const buffer = await Packer.toBuffer(doc);
-    res.set("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-    res.set("Content-Disposition", buildContentDisposition(`${baseName}.docx`, "docx"));
-    res.set("Cache-Control", "no-store");
-    res.send(buffer);
-  } catch (err) {
-    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Conversion failed");
-  }
-});
+router.post("/convert/pdf-to-word", upload.single("file"), guardDocument, handlePdfToWord);
 
 // ─────────────────────────────────────────────────────────
 // POST /convert/pdf-to-excel
