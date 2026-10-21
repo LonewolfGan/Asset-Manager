@@ -25,7 +25,7 @@ export const pdfToMarkdownEngine: ToolEngineContract<File, ToolExecuteOptions, B
     }
 
     const blob = await res.blob();
-    const filename = file.name.replace(/\.pdf$/i, '.md');
+    const filename = `${file.name.replace(/\.pdf$/i, '')}.md`;
 
     return {
       data: blob,

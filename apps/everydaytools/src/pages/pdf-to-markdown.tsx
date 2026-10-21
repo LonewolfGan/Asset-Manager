@@ -66,11 +66,22 @@ export default function PdfToMarkdown() {
 
   // Extract raw markdown text from result blob for preview dialog and quick-copy
   useEffect(() => {
+    let isCancelled = false;
     if (result?.data) {
-      result.data.text().then((text) => setExtractedMarkdown(text)).catch(() => setExtractedMarkdown(''));
+      result.data
+        .text()
+        .then((text) => {
+          if (!isCancelled) setExtractedMarkdown(text);
+        })
+        .catch(() => {
+          if (!isCancelled) setExtractedMarkdown('');
+        });
     } else {
       setExtractedMarkdown('');
     }
+    return () => {
+      isCancelled = true;
+    };
   }, [result]);
 
   const handleReset = useCallback(() => {

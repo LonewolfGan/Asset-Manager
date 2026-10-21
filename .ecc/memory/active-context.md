@@ -1,18 +1,15 @@
 ---
-title: "EverydayTools Hub — Reprise Session & Architecture Outil par Outil"
-date: "2026-10-21T00:39:00.000Z"
+title: "Dernière Session & Rulings"
+date: "2026-10-21T18:28:14.726Z"
 ---
 
-### Statut Actuel
-- **Phase 1 (Architecture Globale)** : 100% Complète (ToolEngineContract, WorkerEngineHost, ProcessPool).
-- **Phase 2 (Outil Pilote #1 pdf-to-word)** : 100% Complète, testée TDD, certifiée par code-reviewer et commitée (`13339c1`).
-- **Phase 3 (Outil #2 pdf-to-excel)** : 100% Complète, testée TDD (7/7 tests backend, 3/3 tests contrat frontend, 1/1 UI test), certifiée par re-reviewer (APPROVED), commitée (`d59c47f`).
-- **Phase 5 (Outil #3 pdf-to-pptx)** : 100% Complète, testée TDD, certifiée (APPROVED & SPEC_COMPLIANT), commitée (`3cfed40`).
-- **Phase 6 (Outil #4 pdf-to-html)** : 100% Complète, testée TDD (7/7 backend, 3/3 engine, 1/1 UI), certifiée (APPROVED & SPEC_COMPLIANT), commitée (`4d2e04c`).
-- **Phase 7 (Outil #5 pdf-to-text)** : 100% Complète, testée TDD (8/8 backend, 3/3 engine, 1/1 UI), certifiée (APPROVED & SPEC_COMPLIANT), extraction multi-colonnes PyMuPDF 2.0, fallback OCR Tesseract, de-hyphenation, branchage unifié `useToolWorkflow`.
-- **Prochaine étape** : Outil #6 (`pdf-to-markdown`) selon `docs/superpowers/plans/2026-10-20-deep-engine-architecture-and-tool-by-tool-roadmap.md`.
+### Derniers fichiers modifiés
+- `apps/api-server/src/python/pdf_to_markdown.test.ts`
+- `apps/api-server/src/python/pdf_to_markdown.py`
+- `apps/api-server/src/routes/convert/pdf-to-markdown-handler.ts`
+- `apps/api-server/src/routes/docs/text-markdown-to-docx.ts`
+- `apps/api-server/src/routes/convert/convert-doc.ts`
+- `apps/everydaytools/src/engine/engines/pdf-to-markdown-engine.ts`
+- `apps/everydaytools/src/pages/pdf-to-markdown.tsx`
+- `apps/everydaytools/tests/unit/ui/pdf-to-markdown.test.ts`
 
-### Documents de Référence
-- Plan maître : `docs/superpowers/plans/2026-10-20-deep-engine-architecture-and-tool-by-tool-roadmap.md`
-- Ledger SDD : `.superpowers/sdd/engine-architecture-and-deep-tools/progress.md`
-- Mémoire globale : `memory.md`
