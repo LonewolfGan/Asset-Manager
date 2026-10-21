@@ -198,3 +198,65 @@ Faire de `pdf-to-excel` un extracteur tabulaire de niveau professionnel (détect
 - [x] **Step 1: Pipeline de vérification mécanique (clean, check:rules, typecheck, test).**
 - [x] **Step 2: Revue de code par le sous-agent `code-reviewer`.**
 - [x] **Step 3: Test d'honnêteté du jury Awwwards et verrouillage de l'outil #2.**
+
+---
+
+## Phase 5 : Troisième Outil — `pdf-to-pptx` (#3)
+
+**Problème actuel identifié :**
+Actuellement, `pdf-to-pptx` est logé de façon hétérogène dans `apps/api-server/src/routes/docs/html-markdown-to-pdf.ts` et appelle `convertWithLibreOffice` qui échoue systématiquement en ligne de commande (`Error: no export filter for /tmp/....pptx`). Côté frontend, un hook ad-hoc `usePdfToPptxWorkflow` n'utilise ni `ToolEngineContract` ni `useToolWorkflow`, causant une dérive architecturale.
+
+**Objectif du Deep-Dive :**
+Faire de `pdf-to-pptx` un convertisseur de présentations haute fidélité (séparation de la plaque graphique/illustrations sans dédoublement via PyMuPDF 2.0 et reconstruction de blocs de texte vectoriels 100% éditables dans PowerPoint via `python-pptx`, isolation sous `ProcessPool`, adaptateur de contrat unifié `pdfToPptxEngine` et raccordement à `useToolWorkflow` avec design Awwwards 100% sanctuarisé).
+
+### Task 5.1 : Recherche d'État de l'Art pour PDF to PPTX (2026)
+- [x] **Step 1: Diagnostic et benchmark des solutions d'exportation :**
+  - Échec prouvé de LibreOffice headless CLI (`no export filter`).
+  - Sélection de l'architecture hybride C-native : PyMuPDF 2.0 (redaction textuelle pour fond graphique sans ghosting) + `python-pptx` 1.0.2 (zones de texte éditables avec styles, tailles et couleurs RGB exactes).
+- [x] **Step 2: Valider la faisabilité et les ratios de diapositives (proportions exactes en points Pt).**
+
+### Task 5.2 : Implémentation TDD du Moteur Haute Fidélité
+- [x] **Step 1: Créer la suite de tests unitaires et d'intégration TDD RED (`pdf-to-pptx.test.ts` et `pdf-to-pptx-engine.test.ts`).**
+- [x] **Step 2: Implémenter le worker Python `pdf_to_pptx.py` et le handler `pdf-to-pptx-handler.ts` sous `ProcessPool`.**
+- [x] **Step 3: Vérifier que 100% des tests passent GREEN.**
+
+### Task 5.3 : Branchage sur l'Interface UI Existante (Zéro Changement Visuel)
+- [x] **Step 1: Créer l'adaptateur de contrat `pdf-to-pptx-engine.ts`.**
+- [x] **Step 2: Raccorder la page `apps/everydaytools/src/pages/pdf-to-pptx.tsx` sur `useToolWorkflow` (Design Awwwards 4 scènes 100% sanctuarisé).**
+- [x] **Step 3: Vérifier l'absence totale de régression visuelle ou ergonomique.**
+
+### Task 5.4 : Revue Indépendante & Certification
+- [x] **Step 1: Pipeline de vérification mécanique (clean, check:rules, typecheck, test).**
+- [x] **Step 2: Revue de code par le sous-agent `code-reviewer` & vérification par `spec-reviewer`.**
+- [x] **Step 3: Test d'honnêteté du jury Awwwards et verrouillage de l'outil #3.**
+
+---
+
+## Phase 6 : Quatrième Outil — `pdf-to-html` (#4)
+
+**Problème actuel identifié :**
+Actuellement, `pdf-to-html` s'appuie sur une extraction basique sans préservation de mise en page responsive ni vectorielle CSS. Côté client, `pdf-to-html` n'est pas encore raccordé au contrat unifié `useToolWorkflow`.
+
+**Objectif du Deep-Dive :**
+Faire de `pdf-to-html` un convertisseur haute fidélité produisant du HTML5 sémantique, autonome et responsive (PyMuPDF 2.0 `page.get_text('html')` ou rendu vectoriel SVG/HTML5 structuré), exécuté sous `ProcessPool`, adaptateur `pdfToHtmlEngine`, et raccordement à `useToolWorkflow` avec design Awwwards 100% sanctuarisé.
+
+### Task 6.1 : Recherche d'État de l'Art pour PDF to HTML (2026)
+- [ ] **Step 1: Diagnostic et benchmark des solutions d'exportation HTML5 :**
+  - PyMuPDF 2.0 (`page.get_text("html")` vs multi-page SVG container vs pdf2htmlEX C-native).
+  - Évaluation de l'autonomie (CSS inline/embedded, images base64 vs bundle zip).
+- [ ] **Step 2: Valider la fidélité typographique et le comportement responsive.**
+
+### Task 6.2 : Implémentation TDD du Moteur Haute Fidélité
+- [ ] **Step 1: Créer la suite de tests unitaires et d'intégration TDD RED (`pdf-to-html.test.ts` et `pdf-to-html-engine.test.ts`).**
+- [ ] **Step 2: Implémenter le worker Python/handler `pdf-to-html-handler.ts` sous `ProcessPool`.**
+- [ ] **Step 3: Vérifier que 100% des tests passent GREEN.**
+
+### Task 6.3 : Branchage sur l'Interface UI Existante (Zéro Changement Visuel)
+- [ ] **Step 1: Créer l'adaptateur de contrat `pdf-to-html-engine.ts`.**
+- [ ] **Step 2: Raccorder la page `apps/everydaytools/src/pages/pdf-to-html.tsx` sur `useToolWorkflow` (Design Awwwards 4 scènes 100% sanctuarisé).**
+- [ ] **Step 3: Vérifier l'absence totale de régression visuelle ou ergonomique.**
+
+### Task 6.4 : Revue Indépendante & Certification
+- [ ] **Step 1: Pipeline de vérification mécanique (clean, check:rules, typecheck, test).**
+- [ ] **Step 2: Revue de code par le sous-agent `code-reviewer` & vérification par `spec-reviewer`.**
+- [ ] **Step 3: Test d'honnêteté du jury Awwwards et verrouillage de l'outil #4.**

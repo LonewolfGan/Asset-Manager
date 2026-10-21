@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import { ToolWorkspace } from '@/components/ToolContent';
+import { useLocale } from '@/hooks/use-locale';
+import { downloadBlob } from '@/lib/download';
+import { useToolWorkflow } from '@/engine/use-tool-workflow';
+import { pdfToPptxEngine } from '@/engine/engines/pdf-to-pptx-engine';
 import { AlertCircle } from 'lucide-react';
 import {
   ConversionDropzone,
@@ -10,32 +14,78 @@ import {
   ConversionResult,
   DocumentNextActionModal,
   ReciprocalTitle,
+  type ConversionFormat,
 } from '@/components/conversion';
-import { usePdfToPptxWorkflow } from '@/hooks/use-pdf-to-pptx-workflow';
+
+const getSourceFormat = (isFr: boolean): ConversionFormat => ({
+  name: 'PDF',
+  extension: 'pdf',
+  icon: '/icons/pdf.svg',
+  color: '#EC1C24',
+  subLabel: isFr ? 'Document Adobe Acrobat' : 'Adobe Acrobat Document',
+});
+
+const getTargetFormat = (isFr: boolean): ConversionFormat => ({
+  name: 'PPTX',
+  extension: 'pptx',
+  icon: '/icons/pptx.svg',
+  color: '#D24726',
+  subLabel: isFr ? 'Présentation PowerPoint (.pptx)' : 'PowerPoint Presentation (.pptx)',
+});
 
 export default function PdfToPptx() {
+  const { t, isFr } = useLocale();
+  const tc = (t as any).pdfToPptx ?? {};
+  const sourceFormat = getSourceFormat(isFr);
+  const targetFormat = getTargetFormat(isFr);
+
+  const [isDragging, setIsDragging] = useState(false);
+  const [isNextActionOpen, setIsNextActionOpen] = useState(false);
+
   const {
-    t,
-    tc,
-    isFr,
-    sourceFormat,
-    targetFormat,
-    file,
+    inputFile,
     result,
     error,
-    setError,
     isProcessing,
-    isDragging,
-    isNextActionOpen,
-    setIsNextActionOpen,
-    validateAndSetFile,
+    handleFileSelect,
+    handleExecute,
     handleReset,
-    handleDrop,
-    handleDragOver,
-    handleDragLeave,
-    handleConvert,
-    handleDownload,
-  } = usePdfToPptxWorkflow();
+    setError,
+  } = useToolWorkflow<File, Blob>({
+    engine: pdfToPptxEngine,
+    acceptedMimeTypes: ['application/pdf', '.pdf'],
+    maxFileSizeBytes: 50 * 1024 * 1024,
+    toolSlug: 'pdf-to-pptx',
+    category: 'documents',
+    autoConsumeHandoff: true,
+  });
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setIsDragging(false);
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        handleFileSelect(e.dataTransfer.files[0]);
+      }
+    },
+    [handleFileSelect]
+  );
+
+  const handleDownload = useCallback(() => {
+    if (!result?.data || !result.filename) return;
+    downloadBlob(result.data, result.filename);
+  }, [result]);
 
   const title = t.tools['pdf-to-pptx']?.title ?? (isFr ? 'PDF en PowerPoint' : 'PDF to PowerPoint');
   const desc =
@@ -51,7 +101,7 @@ export default function PdfToPptx() {
         <ReciprocalTitle
           currentSlug="pdf-to-pptx"
           isFr={isFr}
-          getCurrentFile={() => file}
+          getCurrentFile={() => inputFile ?? undefined}
           fallbackTitle={title}
         />
       }
@@ -88,7 +138,7 @@ export default function PdfToPptx() {
           {/* Unified 4-Scene Conversion Flow */}
           <AnimatePresence mode="wait">
             {/* ─── SCÈNE 1 : DÉPÔT INITIAL CADRÉ (ConversionDropzone) ─── */}
-            {!file && !result && !isProcessing && (
+            {!inputFile && !result && !isProcessing && (
               <ConversionDropzone
                 sourceFormat={sourceFormat}
                 title={isFr ? 'Glissez-déposez votre document PDF' : 'Drag and drop your PDF document'}
@@ -99,7 +149,7 @@ export default function PdfToPptx() {
                 }
                 buttonLabel={isFr ? 'Sélectionner un fichier' : 'Select a file'}
                 isDragging={isDragging}
-                onFileSelected={validateAndSetFile}
+                onFileSelected={handleFileSelect}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
@@ -107,14 +157,14 @@ export default function PdfToPptx() {
             )}
 
             {/* ─── SCÈNE 2 : ATELIER STAGING NOBLE (ConversionStaging) ─── */}
-            {file && !result && !isProcessing && (
+            {inputFile && !result && !isProcessing && (
               <ConversionStaging
                 sourceFormat={sourceFormat}
                 targetFormat={targetFormat}
-                sourceFile={file}
-                convertBtnLabel={tc.convertBtn ?? (isFr ? 'Convertir en PowerPoint (PPTX)' : 'Convert to PowerPoint (PPTX)')}
-                changeFileBtnLabel={tc.convertAnother ?? (isFr ? 'Changer de fichier' : 'Change file')}
-                onConvert={handleConvert}
+                sourceFile={inputFile}
+                convertBtnLabel={tc?.convertBtn ?? (isFr ? 'Convertir en PowerPoint (PPTX)' : 'Convert to PowerPoint (PPTX)')}
+                changeFileBtnLabel={tc?.convertAnother ?? (isFr ? 'Changer de fichier' : 'Change file')}
+                onConvert={handleExecute}
                 onReset={handleReset}
               />
             )}
@@ -124,8 +174,8 @@ export default function PdfToPptx() {
               <ConversionConduit
                 sourceFormat={sourceFormat}
                 targetFormat={targetFormat}
-                fileName={file?.name}
-                statusLabel={tc.converting ?? (isFr ? 'Conversion des diapositives...' : 'Converting slides...')}
+                fileName={inputFile?.name}
+                statusLabel={tc?.converting ?? (isFr ? 'Conversion des diapositives...' : 'Converting slides...')}
               />
             )}
 
@@ -133,10 +183,10 @@ export default function PdfToPptx() {
             {result && !isProcessing && (
               <ConversionResult
                 targetFormat={targetFormat}
-                resultFileName={result.filename}
-                resultFileSize={result.sizeAfter}
-                downloadBtnLabel={tc.downloadPptx ?? (isFr ? 'Télécharger la présentation PowerPoint' : 'Download PowerPoint presentation')}
-                resetBtnLabel={tc.convertAnother ?? (isFr ? 'Convertir un autre document' : 'Convert another document')}
+                resultFileName={result.filename ?? 'presentation.pptx'}
+                resultFileSize={result.resultSize ?? 0}
+                downloadBtnLabel={tc?.downloadPptx ?? (isFr ? 'Télécharger la présentation PowerPoint' : 'Download PowerPoint presentation')}
+                resetBtnLabel={tc?.convertAnother ?? (isFr ? 'Convertir un autre document' : 'Convert another document')}
                 onDownload={handleDownload}
                 onReset={handleReset}
               />
@@ -148,7 +198,7 @@ export default function PdfToPptx() {
             toolId="pdf-to-pptx"
             isOpen={isNextActionOpen}
             onClose={() => setIsNextActionOpen(false)}
-            resultBlob={result?.blob}
+            resultBlob={result?.data}
             resultFilename={result?.filename}
             formatType="pptx"
           />

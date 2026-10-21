@@ -14,6 +14,7 @@ import { sanitizeWinAnsi } from "../../lib/pdf-text.js";
 import { buildContentDisposition } from "./convert-image.js";
 import { handlePdfToWord } from "./pdf-to-word-handler.js";
 import { handlePdfToExcel } from "./pdf-to-excel-handler.js";
+import { handlePdfToPptx } from "./pdf-to-pptx-handler.js";
 
 const execFileAsync = promisify(execFile);
 const router: IRouter = Router();
@@ -124,5 +125,10 @@ router.post("/convert/pdf-to-word", upload.single("file"), guardDocument, handle
 // POST /convert/pdf-to-excel (High-Fidelity Engine via PyMuPDF 2.0 & openpyxl)
 // ─────────────────────────────────────────────────────────
 router.post("/convert/pdf-to-excel", upload.single("file"), guardDocument, handlePdfToExcel);
+
+// ─────────────────────────────────────────────────────────
+// POST /convert/pdf-to-pptx (High-Fidelity Engine via PyMuPDF 2.0 & python-pptx)
+// ─────────────────────────────────────────────────────────
+router.post("/convert/pdf-to-pptx", upload.single("file"), guardDocument, handlePdfToPptx);
 
 export default router;

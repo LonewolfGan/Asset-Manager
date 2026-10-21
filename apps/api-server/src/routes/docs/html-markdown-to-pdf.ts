@@ -15,6 +15,7 @@ import { apiError } from "../../lib/errors.js";
 import { sendPdf } from "./send-pdf.js";
 import { buildContentDisposition } from "../convert/convert-image.js";
 import { guardSinglePdf } from "../pdf/guards.js";
+import { handlePdfToPptx } from "../convert/pdf-to-pptx-handler.js";
 import { isGotenbergHealthy, convertHtmlWithGotenberg } from "../../lib/gotenberg.js";
 import { logger } from "../../lib/logger.js";
 
@@ -158,25 +159,8 @@ ${escapedLines}
 });
 
 // ─────────────────────────────────────────────────────────
-// POST /tools/pdf-to-pptx
-// Convert PDF to PowerPoint using LibreOffice headless.
+// POST /tools/pdf-to-pptx (Legacy endpoint redirected to high-fidelity engine)
 // ─────────────────────────────────────────────────────────
-router.post("/tools/pdf-to-pptx", mediumRateLimit, upload.single("file"), guardSinglePdf, async (req: Request, res: Response) => {
-  if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
-
-  const baseName = (req.file.originalname ?? "document").replace(/\.pdf$/i, "");
-
-  try {
-    const pptxBuf = await convertWithLibreOffice(req.file.buffer, "pdf", "pptx");
-    res.set({
-      "Content-Type": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-      "Content-Disposition": buildContentDisposition(`${baseName}.pptx`, "pptx"),
-      "Cache-Control": "no-store",
-    });
-    res.send(pptxBuf);
-  } catch (err) {
-    apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "PDF to PPTX conversion failed. Ensure LibreOffice is installed.");
-  }
-});
+router.post("/tools/pdf-to-pptx", mediumRateLimit, upload.single("file"), guardSinglePdf, handlePdfToPptx);
 
 export default router;
