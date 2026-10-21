@@ -78,11 +78,11 @@ flowchart TD
 - `ToolEngineContract<TInput, TOutput>`: interface standardisée avec méthodes `execute(input, options): Promise<TOutput>` et `abort(): void`.
 - `useToolWorkflow(options)`: hook réactif connectant n'importe quel moteur aux composants UI existants (`ConversionDropzone`, `ConversionConduit`, `StudioResultCard`).
 
-- [ ] **Step 1: Écrire le test TDD RED pour ToolEngineContract et useToolWorkflow**
-- [ ] **Step 2: Vérifier le statut RED du test**
-- [ ] **Step 3: Implémenter `tool-contract.ts` et `use-tool-workflow.ts` (< 300 LOC)**
-- [ ] **Step 4: Vérifier que le test passe GREEN**
-- [ ] **Step 5: Valider et commiter**
+- [x] **Step 1: Écrire le test TDD RED pour ToolEngineContract et useToolWorkflow**
+- [x] **Step 2: Vérifier le statut RED du test**
+- [x] **Step 3: Implémenter `tool-contract.ts` et `use-tool-workflow.ts` (< 300 LOC)**
+- [x] **Step 4: Vérifier que le test passe GREEN**
+- [x] **Step 5: Valider et commiter**
 
 ---
 
@@ -97,11 +97,11 @@ flowchart TD
 - Offload transparent de calculs lourds (Canvas, parsing, hachage, compression) avec passage de `Transferable ArrayBuffer`.
 - Suivi de progression native en pourcentage réel `(current, total) => number` sans estimation factice.
 
-- [ ] **Step 1: Écrire le test TDD RED simulant un calcul lourd avec transfert mémoire et annulation**
-- [ ] **Step 2: Vérifier le statut RED**
-- [ ] **Step 3: Implémenter le dispatch et l'hôte de WebWorkers**
-- [ ] **Step 4: Vérifier le statut GREEN**
-- [ ] **Step 5: Valider et commiter**
+- [x] **Step 1: Écrire le test TDD RED simulant un calcul lourd avec transfert mémoire et annulation**
+- [x] **Step 2: Vérifier le statut RED**
+- [x] **Step 3: Implémenter le dispatch et l'hôte de WebWorkers**
+- [x] **Step 4: Vérifier le statut GREEN**
+- [x] **Step 5: Valider et commiter**
 
 ---
 
@@ -116,11 +116,11 @@ flowchart TD
 - Pool de processus géré avec limitation de concurrence, timeout dur et éviction automatique `/tmp/everydaytools/<uuid>`.
 - Mode streaming HTTP/2 chunked pour les gros uploads (> 50 Mo) évitant l'épuisement de la RAM Node.js.
 
-- [ ] **Step 1: Écrire le test unitaire pour la gestion du pool et de la concurrence**
-- [ ] **Step 2: Vérifier le statut RED**
-- [ ] **Step 3: Implémenter `process-pool.ts` avec gestion de files d'attente et TTL de nettoyage**
-- [ ] **Step 4: Vérifier le statut GREEN**
-- [ ] **Step 5: Valider et commiter**
+- [x] **Step 1: Écrire le test unitaire pour la gestion du pool et de la concurrence**
+- [x] **Step 2: Vérifier le statut RED**
+- [x] **Step 3: Implémenter `process-pool.ts` avec gestion de files d'attente et TTL de nettoyage**
+- [x] **Step 4: Vérifier le statut GREEN**
+- [x] **Step 5: Valider et commiter**
 
 ---
 
@@ -147,23 +147,23 @@ Actuellement, `pdf-to-word` fait une extraction texte basique via `pdfplumber`/`
 Faire de `pdf-to-word` un convertisseur de niveau professionnel (préservation des tableaux vectoriels, polices, colonnes et images).
 
 ### Task 2.1 : Recherche d'État de l'Art pour PDF to Word (2026)
-- [ ] **Step 1: Lancer le sous-agent `research` pour benchmarker les solutions leaders du marché :**
+- [x] **Step 1: Lancer le sous-agent `research` pour benchmarker les solutions leaders du marché :**
   - Moteurs WASM (ex: Rust pdf2docx compilé en WASM, Poppler pdftoppm + layout analysis).
   - Moteurs Serveur Dédié (Gotenberg 8 LibreOffice 24.2 Writer avec filtre PDF-Import vs PyMuPDF/pdf2docx Python daemon).
-- [ ] **Step 2: Produire la matrice comparative : Fidélité de mise en page, Vitesse, Consommation RAM, Préservation des tableaux.**
-- [ ] **Step 3: Arbitrer la configuration cible et la stack retenue.**
+- [x] **Step 2: Produire la matrice comparative : Fidélité de mise en page, Vitesse, Consommation RAM, Préservation des tableaux.**
+- [x] **Step 3: Arbitrer la configuration cible et la stack retenue.**
 
 ### Task 2.2 : Implémentation TDD du Moteur Haute Fidélité
-- [ ] **Step 1: Créer la suite de tests avec de vrais documents PDF complexes (rapports financiers, colonnes multiples, tableaux, graphiques vectoriels).**
-- [ ] **Step 2: Implémenter le moteur retenu (par exemple : daemon persistant optimisé avec `pdf2docx` + layout analysis préservant le format vectoriel).**
-- [ ] **Step 3: Vérifier que 100% des tests de fidélité passent GREEN.**
+- [x] **Step 1: Créer la suite de tests avec de vrais documents PDF complexes (rapports financiers, colonnes multiples, tableaux, graphiques vectoriels).**
+- [x] **Step 2: Implémenter le moteur retenu (daemon persistant optimisé avec `pdf2docx` + layout analysis préservant le format vectoriel).**
+- [x] **Step 3: Vérifier que 100% des tests de fidélité passent GREEN.**
 
 ### Task 2.3 : Branchage sur l'Interface UI Existante (Zéro Changement Visuel)
-- [ ] **Step 1: Brancher la page `apps/everydaytools/src/pages/pdf-to-word.tsx` sur le nouveau moteur via `useToolWorkflow`.**
-- [ ] **Step 2: Conserver exactement la Dropzone canonique, les animations Framer Motion, la barre de progression réelle et la carte de résultat.**
-- [ ] **Step 3: Vérifier l'absence totale de régression visuelle ou ergonomique.**
+- [x] **Step 1: Brancher la page `apps/everydaytools/src/pages/pdf-to-word.tsx` sur le nouveau moteur via `useToolWorkflow`.**
+- [x] **Step 2: Conserver exactement la Dropzone canonique, les animations Framer Motion, la barre de progression réelle et la carte de résultat.**
+- [x] **Step 3: Vérifier l'absence totale de régression visuelle ou ergonomique.**
 
 ### Task 2.4 : Revue Indépendante & Certification
-- [ ] **Step 1: Revue de spécification (`spec-reviewer`).**
-- [ ] **Step 2: Revue de code et performance (`code-reviewer`).**
-- [ ] **Step 3: Clôture et verrouillage de l'outil #1 avant de passer à l'outil suivant.**
+- [x] **Step 1: Revue de spécification (`spec-reviewer`).**
+- [x] **Step 2: Revue de code et performance (`code-reviewer`).**
+- [x] **Step 3: Clôture et verrouillage de l'outil #1 avant de passer à l'outil suivant.**
