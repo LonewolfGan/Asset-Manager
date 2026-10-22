@@ -366,23 +366,23 @@ Actuellement, `pdf-to-image` doit garantir un rendu haute résolution (150/300 D
 Rendu haute fidélité via WebWorker client OffscreenCanvas (`pdfjs-dist` à 300 DPI) avec fallback serveur haute performance (Poppler `pdftoppm` sous `ProcessPool`), adaptateur `pdfToImageEngine`, et raccordement à `useToolWorkflow`.
 
 ### Task 10.1 : Recherche d'État de l'Art pour PDF to Image (2026)
-- [ ] **Step 1: Benchmark de rendu vectoriel :** Poppler `pdftoppm` vs MuPDF rasterizer vs client `pdfjs-dist` OffscreenCanvas.
-- [ ] **Step 2: Arbitrer le mode hybride (Client-first 300 DPI, fallback serveur multi-pages).**
+- [x] **Step 1: Benchmark de rendu vectoriel :** Poppler `pdftoppm` vs MuPDF rasterizer vs client `pdfjs-dist` OffscreenCanvas.
+- [x] **Step 2: Arbitrer le mode hybride (Client-first 300 DPI, fallback serveur multi-pages).**
 
 ### Task 10.2 : Implémentation TDD du Moteur Haute Fidélité
-- [ ] **Step 1: Créer la suite de tests unitaires et d'intégration TDD RED.**
-- [ ] **Step 2: Implémenter le moteur et handler sous `ProcessPool` / WebWorker.**
-- [ ] **Step 3: Vérifier que 100% des tests passent GREEN.**
+- [x] **Step 1: Créer la suite de tests unitaires et d'intégration TDD RED.**
+- [x] **Step 2: Implémenter le moteur et handler sous `ProcessPool` / WebWorker.**
+- [x] **Step 3: Vérifier que 100% des tests passent GREEN.**
 
 ### Task 10.3 : Branchage sur l'Interface UI Existante
-- [ ] **Step 1: Créer l'adaptateur `pdf-to-image-engine.ts`.**
-- [ ] **Step 2: Raccorder `apps/everydaytools/src/pages/pdf-to-image.tsx` sur `useToolWorkflow`.**
-- [ ] **Step 3: Vérification de conformité visuelle Awwwards.**
+- [x] **Step 1: Créer l'adaptateur `pdf-to-image-engine.ts`.**
+- [x] **Step 2: Raccorder `apps/everydaytools/src/pages/pdf-to-image.tsx` sur `useToolWorkflow`.**
+- [x] **Step 3: Vérification de conformité visuelle Awwwards.**
 
 ### Task 10.4 : Revue Indépendante & Certification
-- [ ] **Step 1: Pipeline mécanique (clean, check:rules, typecheck, test).**
-- [ ] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
-- [ ] **Step 3: Validation Awwwards et verrouillage de l'outil #8.**
+- [x] **Step 1: Pipeline mécanique (clean, check:rules, typecheck, test).**
+- [x] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
+- [x] **Step 3: Validation Awwwards et verrouillage de l'outil #8.**
 
 ---
 
