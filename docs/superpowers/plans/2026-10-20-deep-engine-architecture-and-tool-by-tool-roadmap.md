@@ -395,23 +395,23 @@ Nécessité de conversion stricte vers la norme d'archivage ISO 19005 (PDF/A-2b 
 Moteur Ghostscript 10.x / LibreOffice avec profil ICC sRGB certifié et validation PDF/A sous `ProcessPool`, adaptateur `pdfToPdfaEngine`, et raccordement à `useToolWorkflow`.
 
 ### Task 11.1 : Recherche d'État de l'Art PDF/A (2026)
-- [ ] **Step 1: Benchmark des profils ICC et conformité PDF/A-2b :** Ghostscript 10 vs LibreOffice PDF/A filter.
-- [ ] **Step 2: Définir la configuration cible et validation VeraPDF.**
+- [x] **Step 1: Benchmark des profils ICC et conformité PDF/A-2b :** Ghostscript 10 vs LibreOffice PDF/A filter.
+- [x] **Step 2: Définir la configuration cible et validation VeraPDF.**
 
 ### Task 11.2 : Implémentation TDD du Moteur Haute Fidélité
-- [ ] **Step 1: Créer la suite de tests TDD RED.**
-- [ ] **Step 2: Implémenter le handler `pdf-to-pdfa-handler.ts` sous `ProcessPool`.**
-- [ ] **Step 3: Vérifier que 100% des tests passent GREEN.**
+- [x] **Step 1: Créer la suite de tests TDD RED.**
+- [x] **Step 2: Implémenter le handler `pdf-to-pdfa-handler.ts` sous `ProcessPool`.**
+- [x] **Step 3: Vérifier que 100% des tests passent GREEN.**
 
 ### Task 11.3 : Branchage sur l'Interface UI Existante
-- [ ] **Step 1: Créer l'adaptateur `pdf-to-pdfa-engine.ts`.**
-- [ ] **Step 2: Raccorder `apps/everydaytools/src/pages/pdf-to-pdfa.tsx` sur `useToolWorkflow`.**
-- [ ] **Step 3: Vérification Awwwards.**
+- [x] **Step 1: Créer l'adaptateur `pdf-to-pdfa-engine.ts`.**
+- [x] **Step 2: Raccorder `apps/everydaytools/src/pages/pdf-to-pdfa.tsx` sur `useToolWorkflow`.**
+- [x] **Step 3: Vérification Awwwards.**
 
 ### Task 11.4 : Revue Indépendante & Certification
-- [ ] **Step 1: Pipeline mécanique.**
-- [ ] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
-- [ ] **Step 3: Validation et verrouillage de l'outil #9.**
+- [x] **Step 1: Pipeline mécanique.**
+- [x] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
+- [x] **Step 3: Validation et verrouillage de l'outil #9.**
 
 ---
 
