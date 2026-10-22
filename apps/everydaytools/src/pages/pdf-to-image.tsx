@@ -1,58 +1,120 @@
-import React from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import { ToolWorkspace } from '@/components/ToolContent';
+import { useLocale } from '@/hooks/use-locale';
+import { downloadBlob } from '@/lib/download';
+import { useToolWorkflow } from '@/engine/use-tool-workflow';
+import { createPdfToImageEngine } from '@/engine/engines/pdf-to-image-engine';
+import {
+  type ImageFormat,
+  getSourceFormat,
+  getFormatConfigs,
+} from '@/lib/pdf-to-image-logic';
 import {
   ConversionDropzone,
   ConversionStaging,
   ConversionConduit,
   ConversionResult,
   ImageNextActionModal,
+  ReciprocalTitle,
 } from '@/components/conversion';
 import {
   PdfToImageFormatSwitcher,
   PdfToImageErrorBanner,
 } from '@/components/pdf-to-image';
-import { usePdfToImageWorkflow } from '@/hooks/use-pdf-to-image-workflow';
 
 export default function PdfToImage() {
+  const { t, isFr } = useLocale();
+  const tc = (t as any).pdfToImage ?? {};
+  const sourceFormat = getSourceFormat(isFr);
+  const formatConfigs = getFormatConfigs(isFr);
+
+  const [format, setFormat] = useState<ImageFormat>('png');
+  const [isDragging, setIsDragging] = useState(false);
+  const [isNextActionOpen, setIsNextActionOpen] = useState(false);
+
+  const targetFormat = formatConfigs[format];
+
+  const engine = useMemo(
+    () => createPdfToImageEngine({ format, dpi: 150 }),
+    [format]
+  );
+
   const {
-    t,
-    tc,
-    isFr,
-    sourceFormat,
-    formatConfigs,
-    targetFormat,
-    file,
-    format,
-    setFormat,
+    inputFile,
     result,
     error,
-    setError,
     isProcessing,
-    isDragging,
-    isNextActionOpen,
-    setIsNextActionOpen,
-    validateAndSetFile,
-    handleDrop,
-    handleDragOver,
-    handleDragLeave,
-    handleConvert,
-    handleReset,
-    handleDownload,
-  } = usePdfToImageWorkflow();
+    handleFileSelect,
+    handleExecute,
+    handleReset: baseReset,
+    setError,
+  } = useToolWorkflow<File, Blob>({
+    engine,
+    acceptedMimeTypes: ['application/pdf', '.pdf'],
+    maxFileSizeBytes: 50 * 1024 * 1024,
+    toolSlug: 'pdf-to-image',
+    category: 'documents',
+    autoConsumeHandoff: true,
+  });
 
-  const title = t.tools['pdf-to-image']?.title ?? (isFr ? 'PDF en Images' : 'PDF to Image');
+  const handleReset = useCallback(() => {
+    baseReset();
+    setIsDragging(false);
+    setIsNextActionOpen(false);
+  }, [baseReset]);
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setIsDragging(false);
+      const droppedFiles = Array.from(e.dataTransfer.files);
+      if (droppedFiles.length > 0) {
+        handleFileSelect(droppedFiles[0]);
+      }
+    },
+    [handleFileSelect]
+  );
+
+  const handleDownload = useCallback(() => {
+    if (result?.data && result.filename) {
+      downloadBlob(result.data, result.filename);
+      setTimeout(() => setIsNextActionOpen(true), 450);
+    }
+  }, [result]);
+
+  const title = (t as any).tools?.['pdf-to-image']?.title ?? (isFr ? 'PDF en Images' : 'PDF to Image');
   const desc =
-    t.tools['pdf-to-image']?.description ??
+    (t as any).tools?.['pdf-to-image']?.description ??
     (isFr
-      ? 'Convertissez vos pages PDF en images haute définition (PNG, JPG, WEBP, AVIF, TIFF, GIF).'
-      : 'Convert PDF pages into crisp images in PNG, JPG, WEBP, AVIF, TIFF or GIF.');
+      ? 'Convertissez vos pages PDF en images haute définition (PNG, JPG, WEBP).'
+      : 'Convert PDF pages into crisp images in PNG, JPG, or WEBP.');
+
+  const isZip = result?.filename.endsWith('.zip') ?? false;
 
   return (
     <ToolPageLayout
-      breadcrumb={[t.nav.breadcrumb.home, t.nav.breadcrumb.pdf, title]}
-      title={title}
+      breadcrumb={[(t as any).nav?.breadcrumb?.home ?? 'Home', (t as any).nav?.breadcrumb?.pdf ?? 'PDF', title]}
+      title={
+        <ReciprocalTitle
+          currentSlug="pdf-to-image"
+          isFr={isFr}
+          getCurrentFile={() => inputFile ?? undefined}
+          fallbackTitle={title}
+        />
+      }
       description={desc}
       seoSlug="pdf-to-image"
     >
@@ -68,34 +130,32 @@ export default function PdfToImage() {
           {/* Unified 4-Scene Conversion Flow */}
           <AnimatePresence mode="wait">
             {/* ─── SCÈNE 1 : DÉPÔT INITIAL CADRÉ (ConversionDropzone) ─── */}
-            {!file && !result && !isProcessing && (
-              <div className="w-full max-w-5xl mx-auto" key="dropzone-scene">
-                <ConversionDropzone
-                  sourceFormat={sourceFormat}
-                  title={isFr ? 'Glissez-déposez votre document PDF' : 'Drag and drop your PDF document'}
-                  description={
-                    isFr
-                      ? 'ou cliquez pour parcourir vos fichiers et convertir vos pages en images haute définition (PNG, JPG, WEBP, AVIF, TIFF, GIF).'
-                      : 'or click to browse your files and convert your pages into high-definition images (PNG, JPG, WEBP, AVIF, TIFF, GIF).'
-                  }
-                  buttonLabel={isFr ? 'Sélectionner un fichier' : 'Select a file'}
-                  isDragging={isDragging}
-                  onFileSelected={validateAndSetFile}
-                  onDragOver={handleDragOver}
-                  onDragLeave={handleDragLeave}
-                  onDrop={handleDrop}
-                />
-              </div>
+            {!inputFile && !result && !isProcessing && (
+              <ConversionDropzone
+                sourceFormat={sourceFormat}
+                title={isFr ? 'Glissez-déposez votre document PDF' : 'Drag and drop your PDF document'}
+                description={
+                  isFr
+                    ? 'ou cliquez pour parcourir vos fichiers et convertir vos pages en images haute définition (PNG, JPG, WEBP).'
+                    : 'or click to browse your files and convert your pages into high-definition images (PNG, JPG, WEBP).'
+                }
+                buttonLabel={isFr ? 'Sélectionner un fichier' : 'Select a file'}
+                isDragging={isDragging}
+                onFileSelected={handleFileSelect}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+              />
             )}
 
             {/* ─── SCÈNE 2 : ATELIER STAGING NOBLE (ConversionStaging) ─── */}
-            {file && !result && !isProcessing && (
+            {inputFile && !result && !isProcessing && (
               <ConversionStaging
                 sourceFormat={sourceFormat}
                 targetFormat={targetFormat}
-                sourceFile={file}
+                sourceFile={inputFile}
                 targetFileName={
-                  file.name.replace(/\.[^/.]+$/, '') +
+                  inputFile.name.replace(/\.[^/.]+$/, '') +
                   `_images.${targetFormat.extension}`
                 }
                 targetSubLabel={targetFormat.subLabel}
@@ -108,7 +168,7 @@ export default function PdfToImage() {
                 }
                 convertBtnLabel={tc.convertBtn ?? (isFr ? `Convertir en ${targetFormat.name}` : `Convert to ${targetFormat.name}`)}
                 changeFileBtnLabel={tc.convertAnother ?? (isFr ? 'Changer de fichier' : 'Change file')}
-                onConvert={handleConvert}
+                onConvert={handleExecute}
                 onReset={handleReset}
               />
             )}
@@ -118,7 +178,7 @@ export default function PdfToImage() {
               <ConversionConduit
                 sourceFormat={sourceFormat}
                 targetFormat={targetFormat}
-                fileName={file?.name}
+                fileName={inputFile?.name}
                 statusLabel={tc.converting ?? (isFr ? 'Extraction des images en cours...' : 'Extracting images...')}
               />
             )}
@@ -128,9 +188,9 @@ export default function PdfToImage() {
               <ConversionResult
                 targetFormat={targetFormat}
                 resultFileName={result.filename}
-                resultFileSize={result.sizeAfter}
+                resultFileSize={result.resultSize}
                 downloadBtnLabel={
-                  result.isZip
+                  isZip
                     ? (isFr ? 'Télécharger le pack ZIP des images' : 'Download images ZIP archive')
                     : (isFr ? `Télécharger l'image ${targetFormat.name}` : `Download ${targetFormat.name} image`)
                 }
@@ -147,7 +207,7 @@ export default function PdfToImage() {
         isOpen={isNextActionOpen}
         onClose={() => setIsNextActionOpen(false)}
         toolId="pdf-to-image"
-        file={result && !result.isZip ? new File([result.blob], result.filename, { type: 'image/' + (format === 'jpeg' ? 'jpeg' : format) }) : null}
+        file={result && !isZip ? new File([result.data], result.filename, { type: result.mimeType }) : null}
       />
     </ToolPageLayout>
   );

@@ -13,6 +13,8 @@ import {
   getOptimizedTiffOptions,
 } from "../images/image-helpers.js";
 import { convertHeicBuffer } from "./heic-logic.js";
+import { guardSinglePdf } from "../pdf/guards.js";
+import { handlePdfToImage } from "./pdf-to-image-handler.js";
 
 const router: IRouter = Router();
 
@@ -207,6 +209,11 @@ router.post("/convert/image-to-pdf", defaultRateLimit, upload.single("file"), gu
     apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Conversion failed");
   }
 });
+
+// ─────────────────────────────────────────────────────────
+// POST /convert/pdf-to-image (High-Fidelity Engine via PyMuPDF 2.0)
+// ─────────────────────────────────────────────────────────
+router.post("/convert/pdf-to-image", defaultRateLimit, upload.single("file"), guardSinglePdf, handlePdfToImage);
 
 export default router;
 

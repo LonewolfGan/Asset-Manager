@@ -1,10 +1,8 @@
-import { apiUrl } from '@/lib/apiBase';
-import { downloadBlob } from '@/lib/download';
 import type { ConversionFormat } from '@/components/conversion';
 
-export type ImageFormat = 'png' | 'jpeg' | 'webp' | 'avif' | 'tiff' | 'gif';
+export type ImageFormat = 'png' | 'jpeg' | 'webp';
 
-export const IMAGE_FORMATS: ImageFormat[] = ['png', 'jpeg', 'webp', 'avif', 'tiff', 'gif'];
+export const IMAGE_FORMATS: ImageFormat[] = ['png', 'jpeg', 'webp'];
 
 export interface PdfToImageResult {
   blob: Blob;
@@ -49,27 +47,6 @@ export const getFormatConfigs = (isFr: boolean): Record<ImageFormat, ConversionF
     color: '#009688',
     subLabel: isFr ? 'Format web moderne & léger' : 'Lightweight modern web format',
   },
-  avif: {
-    name: 'AVIF',
-    extension: 'avif',
-    icon: '/icons/avif.svg',
-    color: '#7C3AED',
-    subLabel: isFr ? 'Haute compression moderne' : 'Modern high compression',
-  },
-  tiff: {
-    name: 'TIFF',
-    extension: 'tiff',
-    icon: '/icons/tiff.svg',
-    color: '#D97706',
-    subLabel: isFr ? 'Archivage & impression pro' : 'Archival & pro printing',
-  },
-  gif: {
-    name: 'GIF',
-    extension: 'gif',
-    icon: '/icons/gif.svg',
-    color: '#EC4899',
-    subLabel: isFr ? 'Graphique standard' : 'Standard graphic format',
-  },
 });
 
 export function validatePdfFile(selectedFile: File, isFr = false): FileValidationResult {
@@ -106,49 +83,4 @@ export function buildOutputFilename(
   const ext = format === 'jpeg' ? 'jpg' : format;
   const base = originalName.replace(/\.[^/.]+$/, '');
   return isZip ? `${base}_${ext}_images.zip` : `${base}_page_1.${ext}`;
-}
-
-export async function convertPdfToImages(
-  file: File,
-  format: ImageFormat,
-  errorFallback?: string
-): Promise<PdfToImageResult> {
-  const fd = new FormData();
-  fd.append('file', file);
-  fd.append('format', format);
-
-  const res = await fetch(apiUrl('/api/tools/pdf-to-images'), {
-    method: 'POST',
-    body: fd,
-  });
-
-  if (!res.ok) {
-    const err = (await res.json().catch(() => ({}))) as {
-      message?: string;
-      error?: unknown;
-    };
-    const msg =
-      typeof err.message === 'string'
-        ? err.message
-        : typeof err.error === 'string'
-        ? err.error
-        : errorFallback ?? 'Failed to convert PDF to images.';
-    throw new Error(msg);
-  }
-
-  const blob = await res.blob();
-  const isZip = blob.type === 'application/zip';
-  const filename = buildOutputFilename(file.name, format, isZip);
-
-  return {
-    blob,
-    filename,
-    sizeAfter: blob.size,
-    sizeBefore: file.size,
-    isZip,
-  };
-}
-
-export function triggerDownload(blob: Blob, filename: string): void {
-  downloadBlob(blob, filename);
 }
