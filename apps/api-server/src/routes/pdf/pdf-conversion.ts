@@ -4,9 +4,9 @@ import { defaultRateLimit } from "../../middlewares/rateLimit.js";
 import { apiError } from "../../lib/errors.js";
 import { guardSinglePdf, pdfBaseName } from "./guards.js";
 import { buildContentDisposition } from "../convert/convert-image.js";
+import { handlePdfToPdfa } from "../convert/pdf-to-pdfa-handler.js";
 import {
   rasterizePdfToImages,
-  convertPdfToPdfa,
   convertImagesToPdf,
 } from "./pdf-conversion-logic.js";
 
@@ -96,51 +96,7 @@ router.post(
   defaultRateLimit,
   upload.single("file"),
   guardSinglePdf,
-  async (req, res) => {
-    if (!req.file) {
-      apiError(res, 400, "NO_FILE", "No file uploaded");
-      return;
-    }
-
-    const conformance = String(req.body.conformance ?? "2b").toLowerCase();
-    const suffix = conformance.startsWith("1")
-      ? "pdfa1b"
-      : conformance.startsWith("3")
-      ? "pdfa3b"
-      : "pdfa2b";
-    const baseName = pdfBaseName(req.file.originalname);
-
-    try {
-      const result = await convertPdfToPdfa(req.file.buffer, { conformance });
-      const disposition = buildContentDisposition(`${baseName}_${suffix}.pdf`, "pdf");
-
-      res.set({
-        "Content-Type": "application/pdf",
-        "Content-Disposition": disposition,
-        "X-Page-Count": String(result.pageCount),
-        "Cache-Control": "no-store",
-        "Access-Control-Expose-Headers": "X-Page-Count",
-      });
-      res.send(result.buffer);
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "PDF/A conversion failed";
-      const isMissing = msg.includes("ENOENT");
-      const isClient = /invalid|corrupt|empty|unsupported|check that the pdf is valid/i.test(msg);
-      const status = isMissing ? 503 : isClient ? 400 : 500;
-      const code = isMissing
-        ? "BINARY_UNAVAILABLE"
-        : isClient
-        ? "INVALID_INPUT"
-        : "CONVERSION_FAILED";
-
-      apiError(
-        res,
-        status,
-        code,
-        isMissing ? "Ghostscript is not installed on this server." : msg
-      );
-    }
-  }
+  handlePdfToPdfa
 );
 
 // ─────────────────────────────────────────────────────────

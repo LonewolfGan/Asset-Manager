@@ -1,0 +1,1 @@
+export { PdfaConformanceSwitcher } from './PdfaConformanceSwitcher';

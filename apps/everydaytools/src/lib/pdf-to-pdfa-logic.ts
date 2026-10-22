@@ -1,12 +1,40 @@
-import { apiUrl } from '@/lib/apiBase';
 import type { ConversionFormat } from '@/components/conversion';
 
-export interface PdfToPdfaResult {
-  blob: Blob;
-  filename: string;
-  sizeBefore: number;
-  sizeAfter: number;
+export type PdfaConformance = '1b' | '2b' | '3b';
+
+export interface ConformanceOption {
+  id: PdfaConformance;
+  label: string;
+  badge: string;
+  description: string;
 }
+
+export const getConformanceOptions = (isFr: boolean): ConformanceOption[] => [
+  {
+    id: '2b',
+    label: 'PDF/A-2b',
+    badge: isFr ? 'Recommandé' : 'Recommended',
+    description: isFr
+      ? 'Archivage moderne ISO 19005-2 avec graphiques vectoriels et transparences'
+      : 'Modern ISO 19005-2 archival preserving vectors and transparency',
+  },
+  {
+    id: '1b',
+    label: 'PDF/A-1b',
+    badge: 'ISO 19005-1',
+    description: isFr
+      ? 'Format d’archivage hérité à compatibilité maximale'
+      : 'Legacy archival format ensuring maximal cross-viewer baseline',
+  },
+  {
+    id: '3b',
+    label: 'PDF/A-3b',
+    badge: 'ISO 19005-3',
+    description: isFr
+      ? 'Archivage étendu autorisant l’incorporation de fichiers joints (XML, factures Factur-X)'
+      : 'Extended archival allowing embedded file attachments (XML, Factur-X)',
+  },
+];
 
 export interface PdfFileValidationResult {
   isValid: boolean;
@@ -32,8 +60,10 @@ export const getTargetFormat = (isFr: boolean): ConversionFormat => ({
 
 const MAX_PDF_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
 
-export function buildPdfaFilename(filename: string): string {
-  return filename.replace(/\.[^/.]+$/, '') + '_pdfa.pdf';
+export function buildPdfaFilename(filename: string, conformance: PdfaConformance = '2b'): string {
+  const base = filename.replace(/\.[^/.]+$/, '');
+  const suffix = conformance === '1b' ? 'pdfa1b' : conformance === '3b' ? 'pdfa3b' : 'pdfa2b';
+  return `${base}_${suffix}.pdf`;
 }
 
 export function validatePdfFile(
@@ -65,60 +95,4 @@ export function validatePdfFile(
   }
 
   return { isValid: true };
-}
-
-export async function convertPdfToPdfa(
-  file: File,
-  options: { isFr: boolean; errorFallback?: string }
-): Promise<PdfToPdfaResult> {
-  const { isFr, errorFallback } = options;
-  const fd = new FormData();
-  fd.append('file', file);
-  fd.append('conformance', '2b');
-
-  const res = await fetch(apiUrl('/api/tools/pdf-to-pdfa'), {
-    method: 'POST',
-    body: fd,
-  });
-
-  if (!res.ok) {
-    const errJson = (await res.json().catch(() => ({}))) as {
-      error?: string;
-      message?: string;
-    };
-    throw new Error(
-      errJson.message ??
-        errJson.error ??
-        errorFallback ??
-        (isFr
-          ? 'Échec de la conversion en PDF/A. Veuillez réessayer.'
-          : 'Failed to convert to PDF/A. Please try again.')
-    );
-  }
-
-  const blob = await res.blob();
-  const filename = buildPdfaFilename(file.name);
-
-  return {
-    blob,
-    filename,
-    sizeAfter: blob.size,
-    sizeBefore: file.size,
-  };
-}
-
-export function triggerDownload(blob: Blob, filename: string): void {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
-export function openPreview(blob: Blob): void {
-  const url = URL.createObjectURL(blob);
-  window.open(url, '_blank');
 }

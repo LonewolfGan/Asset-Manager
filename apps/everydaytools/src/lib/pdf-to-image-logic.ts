@@ -1,4 +1,5 @@
 import type { ConversionFormat } from '@/components/conversion';
+import { downloadBlob } from '@/lib/download';
 
 export type ImageFormat = 'png' | 'jpeg' | 'webp';
 
@@ -83,4 +84,8 @@ export function buildOutputFilename(
   const ext = format === 'jpeg' ? 'jpg' : format;
   const base = originalName.replace(/\.[^/.]+$/, '');
   return isZip ? `${base}_${ext}_images.zip` : `${base}_page_1.${ext}`;
+}
+
+export function triggerDownload(blob: Blob, filename: string): void {
+  downloadBlob(blob, filename);
 }
