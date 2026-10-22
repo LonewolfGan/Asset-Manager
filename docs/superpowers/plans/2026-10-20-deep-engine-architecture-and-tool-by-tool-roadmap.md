@@ -335,25 +335,25 @@ Actuellement, `pdf-to-epub` manque de pipeline de conversion robuste préservant
 Faire de `pdf-to-epub` un convertisseur EPUB3 valide et responsive (Pandoc / Calibre / EbookLib Python / PyMuPDF structuré), exécuté sous `ProcessPool`, adaptateur `pdfToEpubEngine`, et raccordement à `useToolWorkflow`.
 
 ### Task 9.1 : Recherche d'État de l'Art pour PDF to EPUB (2026)
-- [ ] **Step 1: Diagnostic et benchmark des moteurs EPUB3 :**
+- [x] **Step 1: Diagnostic et benchmark des moteurs EPUB3 :**
   - Pandoc vs Calibre CLI (`ebook-convert`) vs Python `ebooklib` + PyMuPDF structuré.
   - Évaluation de la conformité EPUB3, reflowabilité, table des matières et assets graphiques.
-- [ ] **Step 2: Arbitrer la configuration cible et la stack retenue.**
+- [x] **Step 2: Arbitrer la configuration cible et la stack retenue.**
 
 ### Task 9.2 : Implémentation TDD du Moteur Haute Fidélité
-- [ ] **Step 1: Créer la suite de tests unitaires et d'intégration TDD RED (`pdf-to-epub.test.ts` et `pdf-to-epub-engine.test.ts`).**
-- [ ] **Step 2: Implémenter le worker/handler `pdf-to-epub-handler.ts` sous `ProcessPool`.**
-- [ ] **Step 3: Vérifier que 100% des tests passent GREEN.**
+- [x] **Step 1: Créer la suite de tests unitaires et d'intégration TDD RED (`pdf-to-epub.test.ts` et `pdf-to-epub-engine.test.ts`).**
+- [x] **Step 2: Implémenter le worker/handler `pdf-to-epub-handler.ts` sous `ProcessPool`.**
+- [x] **Step 3: Vérifier que 100% des tests passent GREEN.**
 
 ### Task 9.3 : Branchage sur l'Interface UI Existante (Zéro Changement Visuel)
-- [ ] **Step 1: Créer l'adaptateur de contrat `pdf-to-epub-engine.ts`.**
-- [ ] **Step 2: Raccorder la page `apps/everydaytools/src/pages/pdf-to-epub.tsx` sur `useToolWorkflow` (Design Awwwards 4 scènes 100% sanctuarisé).**
-- [ ] **Step 3: Vérifier l'absence totale de régression visuelle ou ergonomique.**
+- [x] **Step 1: Créer l'adaptateur de contrat `pdf-to-epub-engine.ts`.**
+- [x] **Step 2: Raccorder la page `apps/everydaytools/src/pages/pdf-to-epub.tsx` sur `useToolWorkflow` (Design Awwwards 4 scènes 100% sanctuarisé).**
+- [x] **Step 3: Vérifier l'absence totale de régression visuelle ou ergonomique.**
 
 ### Task 9.4 : Revue Indépendante & Certification
-- [ ] **Step 1: Pipeline de vérification mécanique (clean, check:rules, typecheck, test).**
-- [ ] **Step 2: Revue de code par le sous-agent `code-reviewer` & vérification par `spec-reviewer`.**
-- [ ] **Step 3: Test d'honnêteté du jury Awwwards et verrouillage de l'outil #7.**
+- [x] **Step 1: Pipeline de vérification mécanique (clean, check:rules, typecheck, test).**
+- [x] **Step 2: Revue de code par le sous-agent `code-reviewer` & vérification par `spec-reviewer`.**
+- [x] **Step 3: Test d'honnêteté du jury Awwwards et verrouillage de l'outil #7.**
 
 ---
 
