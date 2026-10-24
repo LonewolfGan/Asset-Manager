@@ -440,3 +440,121 @@ Moteur instantané in-browser (Client `pdf-lib` + XMP parsing) avec fallback ser
 - [x] **Step 1: Pipeline mécanique.**
 - [x] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
 - [x] **Step 3: Validation finale et verrouillage du Sprint 1.**
+
+---
+
+## Phase 13 : Onzième Outil — `pdf-compress` (#11)
+
+**Problème actuel identifié :**
+Actuellement, `pdf-compress` s'appuie sur un hook ad-hoc `usePdfCompressWorkflow` et un appel serveur direct sans contrat unifié `ToolEngineContract` / `useToolWorkflow`, sans garantie mathématique de non-régression de taille (`sizeAfter <= sizeBefore`), et sans linéarisation QPDF pour fast web view.
+
+**Objectif du Deep-Dive :**
+Moteur de compression hybride haute performance : Ghostscript 10 (`-dPDFSETTINGS=/screen`, `/ebook`, `/printer`, `/prepress`, downsampling bi-cubique d'images) sous `ProcessPool` avec fallback in-browser, linéarisation QPDF (`--linearize`), adaptateur `pdfCompressEngine` et raccordement à `useToolWorkflow` avec design Awwwards 100% sanctuarisé.
+
+### Task 13.1 : Recherche d'État de l'Art Compression PDF (2026)
+- [ ] **Step 1: Diagnostic et benchmark des moteurs de compression :**
+  - Ghostscript 10 (`-dPDFSETTINGS`, downsample DPI) vs QPDF (`--recompress-flate`, `--object-streams=generate`) vs Mutool clean.
+  - Garantie de taille : retour du fichier d'origine si la taille compressée est supérieure.
+- [ ] **Step 2: Produire la matrice comparative et spécifier l'architecture.**
+
+### Task 13.2 : Implémentation TDD du Moteur Haute Fidélité
+- [ ] **Step 1: Créer la suite de tests unitaires et d'intégration TDD RED (`pdf-compress.test.ts` et `pdf-compress-engine.test.ts`).**
+- [ ] **Step 2: Implémenter le handler sous `ProcessPool` et l'adaptateur `pdf-compress-engine.ts`.**
+- [ ] **Step 3: Vérifier que 100% des tests passent GREEN.**
+
+### Task 13.3 : Branchage sur l'Interface UI Existante (Zéro Changement Visuel)
+- [ ] **Step 1: Raccorder la page `apps/everydaytools/src/pages/pdf-compress.tsx` sur `useToolWorkflow`.**
+- [ ] **Step 2: Conserver exactement la Dropzone canonique, le sélecteur de présets, la barre de progression réelle et le résultat.**
+- [ ] **Step 3: Vérifier l'absence totale de régression visuelle ou ergonomique.**
+
+### Task 13.4 : Revue Indépendante & Certification
+- [ ] **Step 1: Pipeline de vérification mécanique (clean, check:rules, typecheck, test).**
+- [ ] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
+- [ ] **Step 3: Validation et verrouillage de l'outil #11.**
+
+---
+
+## Phase 14 : Douzième Outil — `pdf-merge` (#12)
+
+**Problème actuel identifié :**
+Actuellement, `pdf-merge` utilise un hook custom `usePdfMergeWorkflow` au lieu du contrat unifié `useToolWorkflow`. L'outil doit garantir un assemblage in-browser 100% privé via `pdf-lib` (avec préservation des formulaires interactifs AcroForm, signets et métadonnées), zéro upload réseau, avec fallback QPDF serveur si PDF corrompu ou protégé.
+
+**Objectif du Deep-Dive :**
+Moteur d'assemblage multi-fichiers instantané in-browser (`pdf-lib`), adaptateur unifié `pdfMergeEngine` et raccordement à `useToolWorkflow` avec design Awwwards 100% sanctuarisé.
+
+### Task 14.1 : Recherche d'État de l'Art Fusion PDF (2026)
+- [ ] **Step 1: Benchmark in-browser vs serveur :** `pdf-lib` (`copyPages`, préservation AcroForms) vs QPDF `--empty --pages`.
+- [ ] **Step 2: Arbitrer la configuration in-browser 100% locale et privée.**
+
+### Task 14.2 : Implémentation TDD du Moteur Haute Fidélité
+- [ ] **Step 1: Créer la suite de tests TDD RED pour la fusion multi-PDF.**
+- [ ] **Step 2: Implémenter l'adaptateur de moteur `pdf-merge-engine.ts` et handler fallback.**
+- [ ] **Step 3: Vérifier que 100% des tests passent GREEN.**
+
+### Task 14.3 : Branchage sur l'Interface UI Existante
+- [ ] **Step 1: Raccorder `apps/everydaytools/src/pages/pdf-merge.tsx` sur `useToolWorkflow`.**
+- [ ] **Step 2: Nettoyer le hook obsolète `use-pdf-merge-workflow.ts`.**
+- [ ] **Step 3: Vérification de conformité Awwwards.**
+
+### Task 14.4 : Revue Indépendante & Certification
+- [ ] **Step 1: Pipeline mécanique.**
+- [ ] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
+- [ ] **Step 3: Validation et verrouillage de l'outil #12.**
+
+---
+
+## Phase 15 : Treizième Outil — `pdf-split` (#13)
+
+**Problème actuel identifié :**
+Actuellement, `pdf-split` repose sur un hook spécifique `usePdfSplitWorkflow` non standardisé. L'outil doit supporter la découpe par pages individuelles, par plages personnalisées (`1-3, 5, 7-9`) et exporter soit un PDF ciblé, soit une archive ZIP de pages, 100% in-browser et sans délai artificiel.
+
+**Objectif du Deep-Dive :**
+Moteur de découpage in-browser (`pdf-lib` + JSZip), adaptateur `pdfSplitEngine` et raccordement à `useToolWorkflow` avec design Awwwards 100% sanctuarisé.
+
+### Task 15.1 : Recherche d'État de l'Art Découpage PDF (2026)
+- [ ] **Step 1: Benchmark du découpage et parsing de plages :** `pdf-lib` + JSZip vs QPDF CLI.
+- [ ] **Step 2: Spécifier la gestion mémoire des gros PDF multi-pages.**
+
+### Task 15.2 : Implémentation TDD du Moteur Haute Fidélité
+- [ ] **Step 1: Créer la suite de tests TDD RED (plages, pages simples, erreurs de syntaxe).**
+- [ ] **Step 2: Implémenter le moteur `pdf-split-engine.ts`.**
+- [ ] **Step 3: Vérifier que 100% des tests passent GREEN.**
+
+### Task 15.3 : Branchage sur l'Interface UI Existante
+- [ ] **Step 1: Raccorder `apps/everydaytools/src/pages/pdf-split.tsx` sur `useToolWorkflow`.**
+- [ ] **Step 2: Nettoyer le hook obsolète `use-pdf-split-workflow.ts`.**
+- [ ] **Step 3: Vérification Awwwards.**
+
+### Task 15.4 : Revue Indépendante & Certification
+- [ ] **Step 1: Pipeline mécanique.**
+- [ ] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
+- [ ] **Step 3: Validation et verrouillage de l'outil #13.**
+
+---
+
+## Phase 16 : Quatorzième Outil — `pdf-rotate` (#14)
+
+**Problème actuel identifié :**
+Actuellement, `pdf-rotate` utilise `usePdfRotateWorkflow`. La rotation doit opérer au niveau des métadonnées géométriques des pages (`/Rotate` dict entry) sans recalcul raster ni perte de netteté vectorielle, en sub-10ms in-browser, avec options par page ou globale (90°, 180°, 270°).
+
+**Objectif du Deep-Dive :**
+Moteur de rotation vectorielle in-browser (`pdf-lib` `page.setRotation`), adaptateur `pdfRotateEngine` et raccordement à `useToolWorkflow` avec design Awwwards 100% sanctuarisé.
+
+### Task 16.1 : Recherche d'État de l'Art Rotation PDF (2026)
+- [ ] **Step 1: Benchmark de rotation non destructive :** `pdf-lib` in-browser vs QPDF `--rotate`.
+- [ ] **Step 2: Arbitrer la solution in-browser native instantanée.**
+
+### Task 16.2 : Implémentation TDD du Moteur Haute Fidélité
+- [ ] **Step 1: Créer la suite de tests TDD RED (rotations cumulées, 90/180/270, conservation vectorielle).**
+- [ ] **Step 2: Implémenter le moteur `pdf-rotate-engine.ts`.**
+- [ ] **Step 3: Tests GREEN.**
+
+### Task 16.3 : Branchage sur l'Interface UI Existante
+- [ ] **Step 1: Raccorder `apps/everydaytools/src/pages/pdf-rotate.tsx` sur `useToolWorkflow`.**
+- [ ] **Step 2: Nettoyer le hook obsolète `use-pdf-rotate-workflow.ts`.**
+- [ ] **Step 3: Vérification Awwwards.**
+
+### Task 16.4 : Revue Indépendante & Certification
+- [ ] **Step 1: Pipeline mécanique.**
+- [ ] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
+- [ ] **Step 3: Validation finale et verrouillage du Sprint 2.**
