@@ -6,7 +6,7 @@ import { upload, guardDocument } from "../../middlewares/upload.js";
 import { sanitizeWinAnsi } from "../../lib/pdf-text.js";
 import { buildContentDisposition } from "./convert-image.js";
 import { defaultRateLimit } from "../../middlewares/rateLimit.js";
-import { guardSinglePdf } from "../pdf/guards.js";
+import { guardSinglePdf, guardMultiPdf } from "../pdf/guards.js";
 import { handlePdfToWord } from "./pdf-to-word-handler.js";
 import { handlePdfToExcel } from "./pdf-to-excel-handler.js";
 import { handlePdfToPptx } from "./pdf-to-pptx-handler.js";
@@ -17,6 +17,7 @@ import { handlePdfToEpub } from "./pdf-to-epub-handler.js";
 import { handlePdfToPdfa } from "./pdf-to-pdfa-handler.js";
 import { handlePdfMetadata } from "./pdf-metadata-handler.js";
 import { handlePdfCompress } from "./pdf-compress-handler.js";
+import { handlePdfMerge } from "./pdf-merge-handler.js";
 
 const router: IRouter = Router();
 
@@ -129,5 +130,10 @@ router.post("/convert/pdf-metadata", defaultRateLimit, upload.single("file"), gu
 // POST /convert/pdf-compress (High-Fidelity Engine via Ghostscript 10 under ProcessPool)
 // ─────────────────────────────────────────────────────────
 router.post("/convert/pdf-compress", defaultRateLimit, upload.single("file"), guardSinglePdf, handlePdfCompress);
+
+// ─────────────────────────────────────────────────────────
+// POST /convert/pdf-merge (High-Fidelity Engine via QPDF & ProcessPool)
+// ─────────────────────────────────────────────────────────
+router.post("/convert/pdf-merge", defaultRateLimit, upload.array("files", 20), guardMultiPdf, handlePdfMerge);
 
 export default router;

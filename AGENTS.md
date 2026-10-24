@@ -10,7 +10,7 @@
 
 <hard-gates>
 1. ACTIVE ROADMAP LOCK: The ONLY active plan is `docs/superpowers/plans/2026-10-20-deep-engine-architecture-and-tool-by-tool-roadmap.md`. Forbidden to create new plans or do cosmetic tweaks.
-2. SINGLE TOOL LOCK: Strictly 1 tool modified at a time. No multi-tool parallel edits. Sprint 1 completed (#7 pdf-to-epub, #8 pdf-to-image, #9 pdf-to-pdfa, #10 pdf-metadata). Sprint 2: #11 pdf-compress completed. Next queue: #12 pdf-merge.
+2. SINGLE TOOL LOCK: Strictly 1 tool modified at a time. No multi-tool parallel edits. Sprint 1 completed (#7 pdf-to-epub, #8 pdf-to-image, #9 pdf-to-pdfa, #10 pdf-metadata). Sprint 2: #11 pdf-compress completed, #12 pdf-merge completed. Next queue: #13 pdf-split.
 3. SANCTUARIZED UI DESIGN: Zero modification to existing visual designs (Awwwards 4 scenes, double-bezel, Radix colors). UI connects to engines strictly via `useToolWorkflow`.
 4. TDD RED-GREEN DISCIPLINE: Every logic change requires a failing test before implementation.
 5. ANTI-MONOLITH RULE: Every file must strictly contain < 300 lines of code (SRP).

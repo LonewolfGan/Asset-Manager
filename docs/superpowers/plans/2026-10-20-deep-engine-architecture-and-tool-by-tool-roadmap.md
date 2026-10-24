@@ -483,23 +483,23 @@ Actuellement, `pdf-merge` utilise un hook custom `usePdfMergeWorkflow` au lieu d
 Moteur d'assemblage multi-fichiers instantané in-browser (`pdf-lib`), adaptateur unifié `pdfMergeEngine` et raccordement à `useToolWorkflow` avec design Awwwards 100% sanctuarisé.
 
 ### Task 14.1 : Recherche d'État de l'Art Fusion PDF (2026)
-- [ ] **Step 1: Benchmark in-browser vs serveur :** `pdf-lib` (`copyPages`, préservation AcroForms) vs QPDF `--empty --pages`.
-- [ ] **Step 2: Arbitrer la configuration in-browser 100% locale et privée.**
+- [x] **Step 1: Benchmark in-browser vs serveur :** `pdf-lib` (`copyPages`, préservation AcroForms) vs QPDF `--empty --pages`.
+- [x] **Step 2: Arbitrer la configuration in-browser 100% locale et privée.**
 
 ### Task 14.2 : Implémentation TDD du Moteur Haute Fidélité
-- [ ] **Step 1: Créer la suite de tests TDD RED pour la fusion multi-PDF.**
-- [ ] **Step 2: Implémenter l'adaptateur de moteur `pdf-merge-engine.ts` et handler fallback.**
-- [ ] **Step 3: Vérifier que 100% des tests passent GREEN.**
+- [x] **Step 1: Créer la suite de tests TDD RED pour la fusion multi-PDF.**
+- [x] **Step 2: Implémenter l'adaptateur de moteur `pdf-merge-engine.ts` et handler fallback.**
+- [x] **Step 3: Vérifier que 100% des tests passent GREEN.**
 
 ### Task 14.3 : Branchage sur l'Interface UI Existante
-- [ ] **Step 1: Raccorder `apps/everydaytools/src/pages/pdf-merge.tsx` sur `useToolWorkflow`.**
-- [ ] **Step 2: Nettoyer le hook obsolète `use-pdf-merge-workflow.ts`.**
-- [ ] **Step 3: Vérification de conformité Awwwards.**
+- [x] **Step 1: Raccorder `apps/everydaytools/src/pages/pdf-merge.tsx` sur `useToolWorkflow`.**
+- [x] **Step 2: Nettoyer le hook obsolète `use-pdf-merge-workflow.ts`.**
+- [x] **Step 3: Vérification de conformité Awwwards.**
 
 ### Task 14.4 : Revue Indépendante & Certification
-- [ ] **Step 1: Pipeline mécanique.**
-- [ ] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
-- [ ] **Step 3: Validation et verrouillage de l'outil #12.**
+- [x] **Step 1: Pipeline mécanique.**
+- [x] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
+- [x] **Step 3: Validation et verrouillage de l'outil #12.**
 
 ---
 

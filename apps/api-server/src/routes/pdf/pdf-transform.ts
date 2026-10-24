@@ -4,6 +4,7 @@ import { defaultRateLimit } from "../../middlewares/rateLimit.js";
 import { apiError } from "../../lib/errors.js";
 import { guardSinglePdf, guardMultiPdf, pdfBaseName } from "./guards.js";
 import { buildContentDisposition } from "../convert/convert-image.js";
+import { handlePdfMerge } from "../convert/pdf-merge-handler.js";
 import {
   reorderPdfPages,
   mergePdfDocuments,
@@ -75,39 +76,14 @@ router.post(
 );
 
 // ─────────────────────────────────────────────────────────
-// POST /tools/pdf-merge
+// POST /tools/pdf-merge (Delegated to High-Fidelity Merge Engine)
 // ─────────────────────────────────────────────────────────
 router.post(
   "/tools/pdf-merge",
   defaultRateLimit,
   upload.array("files", 20),
   guardMultiPdf,
-  async (req, res) => {
-    const files = req.files as Express.Multer.File[] | undefined;
-    if (!files || files.length < 2) {
-      apiError(res, 400, "MISSING_FILES", "At least 2 PDF files are required.");
-      return;
-    }
-
-    try {
-      const buffers = files.map((f) => f.buffer);
-      const result = await mergePdfDocuments(buffers);
-      const disposition = buildContentDisposition("merged_document.pdf", "pdf");
-
-      res.set({
-        "Content-Type": "application/pdf",
-        "Content-Disposition": disposition,
-        "X-Page-Count": String(result.pageCount),
-        "Cache-Control": "no-store",
-        "Access-Control-Expose-Headers": "X-Page-Count",
-      });
-      res.send(result.buffer);
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "Merge failed";
-      const isClientErr = msg.includes("Invalid") || msg.includes("required") || msg.includes("corrupt");
-      apiError(res, isClientErr ? 400 : 500, "CONVERSION_FAILED", msg);
-    }
-  }
+  handlePdfMerge
 );
 
 // ─────────────────────────────────────────────────────────

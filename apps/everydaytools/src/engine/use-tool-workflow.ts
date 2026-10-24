@@ -20,7 +20,7 @@ export interface UseToolWorkflowOptions<TInput = File, TOutput = Blob> {
   onError?: (error: Error | string) => void;
 }
 
-export interface UseToolWorkflowReturn<TOutput = Blob> {
+export interface UseToolWorkflowReturn<TOutput = Blob, TInput = File> {
   status: ToolWorkflowStatus;
   inputFile: File | null;
   isProcessing: boolean;
@@ -28,7 +28,7 @@ export interface UseToolWorkflowReturn<TOutput = Blob> {
   result: ToolResult<TOutput> | null;
   error: string | null;
   handleFileSelect: (file: File) => boolean;
-  handleExecute: () => Promise<ToolResult<TOutput> | null>;
+  handleExecute: (overrideInput?: TInput) => Promise<ToolResult<TOutput> | null>;
   handleCancel: () => void;
   handleReset: () => void;
   setInputFile: (file: File | null) => void;
@@ -38,7 +38,7 @@ export interface UseToolWorkflowReturn<TOutput = Blob> {
 
 export function useToolWorkflow<TInput = File, TOutput = Blob>(
   options: UseToolWorkflowOptions<TInput, TOutput>
-): UseToolWorkflowReturn<TOutput> {
+): UseToolWorkflowReturn<TOutput, TInput> {
   const {
     engine,
     acceptedMimeTypes,
@@ -119,9 +119,14 @@ export function useToolWorkflow<TInput = File, TOutput = Blob>(
     [acceptedMimeTypes, maxFileSizeBytes, toolSlug]
   );
 
-  const handleExecute = useCallback(async (): Promise<ToolResult<TOutput> | null> => {
-    const currentFile = inputFileRef.current;
-    if (!currentFile || isProcessingRef.current) {
+  const handleExecute = useCallback(async (overrideInput?: TInput): Promise<ToolResult<TOutput> | null> => {
+    const isEvent = overrideInput && typeof (overrideInput as any).preventDefault === 'function';
+    const currentInput =
+      overrideInput !== undefined && !isEvent
+        ? overrideInput
+        : (inputFileRef.current as unknown as TInput);
+
+    if (!currentInput || isProcessingRef.current) {
       return null;
     }
 
@@ -134,7 +139,7 @@ export function useToolWorkflow<TInput = File, TOutput = Blob>(
     setProgress({ percent: 0, stage: 'starting', message: 'Initialisation...' });
 
     try {
-      const res = await engineRef.current.execute(currentFile as unknown as TInput, {
+      const res = await engineRef.current.execute(currentInput, {
         signal: controller.signal,
         onProgress: (p: ToolProgress) => {
           setProgress(p);

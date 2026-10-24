@@ -1,34 +1,19 @@
-import { useState, useMemo, useCallback } from 'react';
-import { trackToolUsed, trackToolError } from '@/lib/analytics';
+import { useState, useCallback, useMemo } from 'react';
+import type { StagedFile } from '@/lib/pdf-merge-logic';
 import {
-  type StagedFile,
   moveItem as moveItemLogic,
   reorderItem as reorderItemLogic,
   sortAZFiles,
   reverseFiles,
-  sanitizeOutputFilename,
-  mergePdfFiles,
 } from '@/lib/pdf-merge-logic';
 
-export interface MergeResultData {
-  blob: Blob;
-  filename: string;
-  sizeAfter: number;
-  sizeBefore?: number;
-  count: number;
+export interface UsePdfMergeFilesOptions {
+  isFr: boolean;
+  setError: (err: string | null) => void;
 }
 
-export function usePdfMergeWorkflow(isFr: boolean, errorMin2Text?: string) {
+export function usePdfMergeFiles({ isFr, setError }: UsePdfMergeFilesOptions) {
   const [files, setFiles] = useState<StagedFile[]>([]);
-  const [outputFilename, setOutputFilename] = useState<string>(
-    isFr ? 'document_fusionne.pdf' : 'merged_document.pdf'
-  );
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [result, setResult] = useState<MergeResultData | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
-
-  // Drag and drop reordering
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
@@ -48,7 +33,6 @@ export function usePdfMergeWorkflow(isFr: boolean, errorMin2Text?: string) {
       }
 
       setError(null);
-      setResult(null);
       setFiles((prev) => {
         const incomingStaged: StagedFile[] = validPdfs.map((file, i) => ({
           id: `${file.name}-${file.size}-${file.lastModified}-${Date.now()}-${i}-${Math.random().toString(36).slice(2, 7)}`,
@@ -66,7 +50,7 @@ export function usePdfMergeWorkflow(isFr: boolean, errorMin2Text?: string) {
         return combined;
       });
     },
-    [isFr]
+    [isFr, setError]
   );
 
   const removeFile = useCallback((id: string) => {
@@ -85,13 +69,9 @@ export function usePdfMergeWorkflow(isFr: boolean, errorMin2Text?: string) {
     setFiles((prev) => reverseFiles(prev));
   }, []);
 
-  const resetWorkflow = useCallback(() => {
+  const resetFiles = useCallback(() => {
     setFiles([]);
-    setOutputFilename(isFr ? 'document_fusionne.pdf' : 'merged_document.pdf');
-    setResult(null);
-    setError(null);
-    setIsProcessing(false);
-  }, [isFr]);
+  }, []);
 
   const handleItemDragStart = useCallback((e: React.DragEvent, index: number) => {
     e.dataTransfer.setData('text/plain', String(index));
@@ -124,7 +104,6 @@ export function usePdfMergeWorkflow(isFr: boolean, errorMin2Text?: string) {
       setDraggedIndex(null);
       setDragOverIndex(null);
 
-      // If external files dropped on item
       if (e.dataTransfer.files && e.dataTransfer.files.length > 0 && sourceIndex === null) {
         handleFilesAdded(Array.from(e.dataTransfer.files));
         return;
@@ -136,67 +115,21 @@ export function usePdfMergeWorkflow(isFr: boolean, errorMin2Text?: string) {
     [draggedIndex, handleFilesAdded]
   );
 
-  const handleMerge = useCallback(async () => {
-    if (files.length < 2) {
-      setError(
-        errorMin2Text ??
-          (isFr
-            ? 'Veuillez ajouter au moins 2 fichiers PDF pour lancer la fusion.'
-            : 'Please select at least 2 PDF files to merge.')
-      );
-      return false;
-    }
-    setError(null);
-    setIsProcessing(true);
-
-    try {
-      trackToolUsed('pdf-merge', 'pdf');
-      const blob = await mergePdfFiles(files.map((item) => item.file));
-      const defaultFilename = isFr ? 'document_fusionne.pdf' : 'merged_document.pdf';
-      const sanitizedName = sanitizeOutputFilename(outputFilename, defaultFilename);
-
-      setResult({
-        blob,
-        filename: sanitizedName,
-        sizeAfter: blob.size,
-        sizeBefore: totalSize,
-        count: files.length,
-      });
-      return true;
-    } catch (e) {
-      trackToolError('pdf-merge', 'general-error');
-      setError(e instanceof Error ? e.message : (isFr ? 'La fusion a échoué. Vérifiez vos documents et réessayez.' : 'Merge failed. Check your documents and try again.'));
-      return false;
-    } finally {
-      setIsProcessing(false);
-    }
-  }, [files, errorMin2Text, isFr, outputFilename, totalSize]);
-
   return {
     files,
     setFiles,
-    outputFilename,
-    setOutputFilename,
-    viewMode,
-    setViewMode,
-    result,
-    setResult,
-    error,
-    setError,
-    isProcessing,
+    totalSize,
     draggedIndex,
     dragOverIndex,
-    totalSize,
     handleFilesAdded,
     removeFile,
     moveItem,
     sortAZ,
     reverseOrder,
-    resetWorkflow,
+    resetFiles,
     handleItemDragStart,
     handleItemDragOver,
     handleItemDragEnd,
     handleItemDrop,
-    handleMerge,
   };
 }

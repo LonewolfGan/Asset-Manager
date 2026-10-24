@@ -4,7 +4,7 @@ import { Download, RotateCcw, ArrowRight } from 'lucide-react';
 import { ActionTooltip } from '@/components/ui/tooltip';
 import { formatBytes } from '@/lib/utils';
 import { downloadBlob } from '@/lib/download';
-import type { MergeResultData } from '@/hooks/use-pdf-merge-workflow';
+import type { MergeResultData } from '@/lib/pdf-merge-logic';
 
 export interface PdfMergeResultViewProps {
   result: MergeResultData;

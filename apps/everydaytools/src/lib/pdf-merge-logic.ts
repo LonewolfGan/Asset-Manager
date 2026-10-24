@@ -5,6 +5,14 @@ export interface StagedFile {
   file: File;
 }
 
+export interface MergeResultData {
+  blob: Blob;
+  filename: string;
+  sizeAfter: number;
+  sizeBefore?: number;
+  count: number;
+}
+
 /**
  * Move item in array by one position (prev/next) with bounds checking
  */
