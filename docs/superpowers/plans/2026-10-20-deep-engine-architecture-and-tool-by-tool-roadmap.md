@@ -558,3 +558,119 @@ Moteur de rotation vectorielle in-browser (`pdf-lib` `page.setRotation`), adapta
 - [x] **Step 1: Pipeline mécanique.**
 - [x] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
 - [x] **Step 3: Validation finale et verrouillage du Sprint 2.**
+
+---
+
+## Phase 17 : Quinzième Outil — `pdf-protect` (#15)
+
+**Problème actuel identifié :**
+Actuellement, `pdf-protect` utilise `usePdfProtectWorkflow`. Le chiffrement doit appliquer les standards PDF ISO 32000 (AES-256 / Standard 128-bit) pour protéger les documents via mot de passe utilisateur et propriétaire, avec gestion fine des permissions (impression, copie, modification).
+
+**Objectif du Deep-Dive :**
+Moteur de protection haute sécurité (QPDF `--encrypt` sous `ProcessPool` pour AES-256 standard + fallback in-browser si possible), adaptateur `pdfProtectEngine` et raccordement à `useToolWorkflow` avec design Awwwards 100% sanctuarisé (< 300 LOC).
+
+### Task 17.1 : Recherche d'État de l'Art Chiffrement PDF (2026)
+- [ ] **Step 1: Benchmark du chiffrement PDF :** QPDF AES-256 vs PyMuPDF vs solutions WASM/in-browser.
+- [ ] **Step 2: Spécifier la matrice de permissions et compatibilité Adobe Acrobat.**
+
+### Task 17.2 : Implémentation TDD du Moteur Haute Fidélité
+- [ ] **Step 1: Créer la suite de tests TDD RED (mots de passe vides, robustesse AES, permissions).**
+- [ ] **Step 2: Implémenter le handler backend et l'adaptateur `pdf-protect-engine.ts`.**
+- [ ] **Step 3: Tests GREEN.**
+
+### Task 17.3 : Branchage sur l'Interface UI Existante
+- [ ] **Step 1: Raccorder `apps/everydaytools/src/pages/pdf-protect.tsx` sur `useToolWorkflow`.**
+- [ ] **Step 2: Nettoyer le hook obsolète `use-pdf-protect-workflow.ts`.**
+- [ ] **Step 3: Vérification Awwwards.**
+
+### Task 17.4 : Revue Indépendante & Certification
+- [ ] **Step 1: Pipeline mécanique.**
+- [ ] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
+- [ ] **Step 3: Validation et verrouillage de l'outil #15.**
+
+---
+
+## Phase 18 : Seizième Outil — `pdf-unlock` (#16)
+
+**Problème actuel identifié :**
+Actuellement, `pdf-unlock` s'appuie sur `usePdfUnlockWorkflow`. L'outil doit permettre de déverrouiller un document PDF protégé par mot de passe utilisateur ou de supprimer les restrictions de permissions (mot de passe propriétaire) de manière propre et pérenne.
+
+**Objectif du Deep-Dive :**
+Moteur de déchiffrement haute performance (QPDF `--decrypt` sous `ProcessPool` / pdf-lib in-browser), adaptateur `pdfUnlockEngine` et raccordement à `useToolWorkflow` avec design Awwwards 100% sanctuarisé (< 300 LOC).
+
+### Task 18.1 : Recherche d'État de l'Art Déchiffrement PDF (2026)
+- [ ] **Step 1: Benchmark du déchiffrement :** QPDF `--decrypt` vs pdf-lib in-browser.
+- [ ] **Step 2: Spécifier la gestion des erreurs de mot de passe incorrect et corruption.**
+
+### Task 18.2 : Implémentation TDD du Moteur Haute Fidélité
+- [ ] **Step 1: Créer la suite de tests TDD RED (mot de passe valide, invalide, document non chiffré).**
+- [ ] **Step 2: Implémenter le handler backend et l'adaptateur `pdf-unlock-engine.ts`.**
+- [ ] **Step 3: Tests GREEN.**
+
+### Task 18.3 : Branchage sur l'Interface UI Existante
+- [ ] **Step 1: Raccorder `apps/everydaytools/src/pages/pdf-unlock.tsx` sur `useToolWorkflow`.**
+- [ ] **Step 2: Nettoyer le hook obsolète `use-pdf-unlock-workflow.ts`.**
+- [ ] **Step 3: Vérification Awwwards.**
+
+### Task 18.4 : Revue Indépendante & Certification
+- [ ] **Step 1: Pipeline mécanique.**
+- [ ] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
+- [ ] **Step 3: Validation et verrouillage de l'outil #16.**
+
+---
+
+## Phase 19 : Dix-septième Outil — `pdf-watermark` (#17)
+
+**Problème actuel identifié :**
+Actuellement, `pdf-watermark` utilise `usePdfWatermarkWorkflow`. L'application de filigranes (texte vectoriel ou image PNG/SVG en calque) doit être précise, supporter l'opacité alpha, l'angle de rotation et le centrage optique sans recalcul matriciel lourd.
+
+**Objectif du Deep-Dive :**
+Moteur de filigrane in-browser vectoriel instantané (`pdf-lib` vector overlay) avec fallback serveur sous `ProcessPool`, adaptateur `pdfWatermarkEngine` et raccordement à `useToolWorkflow` avec design Awwwards 100% sanctuarisé (< 300 LOC).
+
+### Task 19.1 : Recherche d'État de l'Art Filigrane PDF (2026)
+- [ ] **Step 1: Benchmark vector overlay :** `pdf-lib` in-browser vs QPDF vs PyMuPDF.
+- [ ] **Step 2: Spécifier la gestion des calques (over vs under) et gestion des polices embarquées.**
+
+### Task 19.2 : Implémentation TDD du Moteur Haute Fidélité
+- [ ] **Step 1: Créer la suite de tests TDD RED (filigrane texte, image, opacité, rotation).**
+- [ ] **Step 2: Implémenter le moteur `pdf-watermark-engine.ts`.**
+- [ ] **Step 3: Tests GREEN.**
+
+### Task 19.3 : Branchage sur l'Interface UI Existante
+- [ ] **Step 1: Raccorder `apps/everydaytools/src/pages/pdf-watermark.tsx` sur `useToolWorkflow`.**
+- [ ] **Step 2: Nettoyer le hook obsolète `use-pdf-watermark-workflow.ts`.**
+- [ ] **Step 3: Vérification Awwwards.**
+
+### Task 19.4 : Revue Indépendante & Certification
+- [ ] **Step 1: Pipeline mécanique.**
+- [ ] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
+- [ ] **Step 3: Validation et verrouillage de l'outil #17.**
+
+---
+
+## Phase 20 : Dix-huitième Outil — `pdf-page-numbers` (#18)
+
+**Problème actuel identifié :**
+Actuellement, `pdf-page-numbers` utilise `usePdfPageNumbersWorkflow`. La pagination dynamique (format `{page}/{total}`, numérotation romaine/arabe, positionnement coins/centre) doit être nette, vectorielle et s'adapter automatiquement aux dimensions des différentes pages du PDF.
+
+**Objectif du Deep-Dive :**
+Moteur de numérotation in-browser instantané (`pdf-lib`), adaptateur `pdfPageNumbersEngine` et raccordement à `useToolWorkflow` avec design Awwwards 100% sanctuarisé (< 300 LOC).
+
+### Task 20.1 : Recherche d'État de l'Art Numérotation de Pages (2026)
+- [ ] **Step 1: Benchmark de pagination :** `pdf-lib` in-browser vs solutions backend.
+- [ ] **Step 2: Spécifier le positionnement dynamique et le respect des marges imprimables.**
+
+### Task 20.2 : Implémentation TDD du Moteur Haute Fidélité
+- [ ] **Step 1: Créer la suite de tests TDD RED (formats de labels, alignements, marges).**
+- [ ] **Step 2: Implémenter le moteur `pdf-page-numbers-engine.ts`.**
+- [ ] **Step 3: Tests GREEN.**
+
+### Task 20.3 : Branchage sur l'Interface UI Existante
+- [ ] **Step 1: Raccorder `apps/everydaytools/src/pages/pdf-page-numbers.tsx` sur `useToolWorkflow`.**
+- [ ] **Step 2: Nettoyer le hook obsolète `use-pdf-page-numbers-workflow.ts`.**
+- [ ] **Step 3: Vérification Awwwards.**
+
+### Task 20.4 : Revue Indépendante & Certification
+- [ ] **Step 1: Pipeline mécanique.**
+- [ ] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
+- [ ] **Step 3: Validation finale et verrouillage du Sprint 3.**
