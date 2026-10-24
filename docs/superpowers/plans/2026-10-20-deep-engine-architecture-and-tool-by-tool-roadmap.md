@@ -424,19 +424,19 @@ Moteur Ghostscript 10.x / LibreOffice avec profil ICC sRGB certifié et validati
 Moteur instantané in-browser (Client `pdf-lib` + XMP parsing) avec fallback serveur `qpdf / exiftool`, adaptateur `pdfMetadataEngine`, et raccordement à `useToolWorkflow`.
 
 ### Task 12.1 : Recherche d'État de l'Art Métadonnées PDF
-- [ ] **Step 1: Benchmark lecture/écriture XMP et Info dict :** `pdf-lib` vs `qpdf` vs `exiftool`.
-- [ ] **Step 2: Définir l'arbitrage in-browser 100% privé.**
+- [x] **Step 1: Benchmark lecture/écriture XMP et Info dict :** `pdf-lib` vs `qpdf` vs `exiftool`.
+- [x] **Step 2: Définir l'arbitrage in-browser 100% privé.**
 
 ### Task 12.2 : Implémentation TDD du Moteur
-- [ ] **Step 1: Tests TDD RED.**
-- [ ] **Step 2: Implémentation de l'engine et handler.**
-- [ ] **Step 3: Tests GREEN.**
+- [x] **Step 1: Tests TDD RED.**
+- [x] **Step 2: Implémentation de l'engine et handler.**
+- [x] **Step 3: Tests GREEN.**
 
 ### Task 12.3 : Branchage UI
-- [ ] **Step 1: Créer l'adaptateur `pdf-metadata-engine.ts`.**
-- [ ] **Step 2: Raccorder `apps/everydaytools/src/pages/pdf-metadata.tsx` sur `useToolWorkflow`.**
+- [x] **Step 1: Créer l'adaptateur `pdf-metadata-engine.ts`.**
+- [x] **Step 2: Raccorder `apps/everydaytools/src/pages/pdf-metadata.tsx` sur `useToolWorkflow`.**
 
 ### Task 12.4 : Revue Indépendante & Certification
-- [ ] **Step 1: Pipeline mécanique.**
-- [ ] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
-- [ ] **Step 3: Validation finale et verrouillage du Sprint 1.**
+- [x] **Step 1: Pipeline mécanique.**
+- [x] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
+- [x] **Step 3: Validation finale et verrouillage du Sprint 1.**
