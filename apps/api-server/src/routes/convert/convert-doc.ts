@@ -18,6 +18,7 @@ import { handlePdfToPdfa } from "./pdf-to-pdfa-handler.js";
 import { handlePdfMetadata } from "./pdf-metadata-handler.js";
 import { handlePdfCompress } from "./pdf-compress-handler.js";
 import { handlePdfMerge } from "./pdf-merge-handler.js";
+import { handlePdfSplit } from "./pdf-split-handler.js";
 
 const router: IRouter = Router();
 
@@ -135,5 +136,10 @@ router.post("/convert/pdf-compress", defaultRateLimit, upload.single("file"), gu
 // POST /convert/pdf-merge (High-Fidelity Engine via QPDF & ProcessPool)
 // ─────────────────────────────────────────────────────────
 router.post("/convert/pdf-merge", defaultRateLimit, upload.array("files", 20), guardMultiPdf, handlePdfMerge);
+
+// ─────────────────────────────────────────────────────────
+// POST /convert/pdf-split (High-Fidelity Engine via pdf-lib & ProcessPool)
+// ─────────────────────────────────────────────────────────
+router.post("/convert/pdf-split", defaultRateLimit, upload.single("file"), guardSinglePdf, handlePdfSplit);
 
 export default router;

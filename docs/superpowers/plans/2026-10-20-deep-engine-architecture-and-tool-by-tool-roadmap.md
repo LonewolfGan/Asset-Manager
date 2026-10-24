@@ -512,23 +512,23 @@ Actuellement, `pdf-split` repose sur un hook spécifique `usePdfSplitWorkflow` n
 Moteur de découpage in-browser (`pdf-lib` + JSZip), adaptateur `pdfSplitEngine` et raccordement à `useToolWorkflow` avec design Awwwards 100% sanctuarisé.
 
 ### Task 15.1 : Recherche d'État de l'Art Découpage PDF (2026)
-- [ ] **Step 1: Benchmark du découpage et parsing de plages :** `pdf-lib` + JSZip vs QPDF CLI.
-- [ ] **Step 2: Spécifier la gestion mémoire des gros PDF multi-pages.**
+- [x] **Step 1: Benchmark du découpage et parsing de plages :** `pdf-lib` + JSZip vs QPDF CLI.
+- [x] **Step 2: Spécifier la gestion mémoire des gros PDF multi-pages.**
 
 ### Task 15.2 : Implémentation TDD du Moteur Haute Fidélité
-- [ ] **Step 1: Créer la suite de tests TDD RED (plages, pages simples, erreurs de syntaxe).**
-- [ ] **Step 2: Implémenter le moteur `pdf-split-engine.ts`.**
-- [ ] **Step 3: Vérifier que 100% des tests passent GREEN.**
+- [x] **Step 1: Créer la suite de tests TDD RED (plages, pages simples, erreurs de syntaxe).**
+- [x] **Step 2: Implémenter le moteur `pdf-split-engine.ts`.**
+- [x] **Step 3: Vérifier que 100% des tests passent GREEN.**
 
 ### Task 15.3 : Branchage sur l'Interface UI Existante
-- [ ] **Step 1: Raccorder `apps/everydaytools/src/pages/pdf-split.tsx` sur `useToolWorkflow`.**
-- [ ] **Step 2: Nettoyer le hook obsolète `use-pdf-split-workflow.ts`.**
-- [ ] **Step 3: Vérification Awwwards.**
+- [x] **Step 1: Raccorder `apps/everydaytools/src/pages/pdf-split.tsx` sur `useToolWorkflow`.**
+- [x] **Step 2: Nettoyer le hook obsolète `use-pdf-split-workflow.ts`.**
+- [x] **Step 3: Vérification Awwwards.**
 
 ### Task 15.4 : Revue Indépendante & Certification
-- [ ] **Step 1: Pipeline mécanique.**
-- [ ] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
-- [ ] **Step 3: Validation et verrouillage de l'outil #13.**
+- [x] **Step 1: Pipeline mécanique.**
+- [x] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
+- [x] **Step 3: Validation et verrouillage de l'outil #13.**
 
 ---
 

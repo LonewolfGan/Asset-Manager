@@ -5,10 +5,10 @@ import { apiError } from "../../lib/errors.js";
 import { guardSinglePdf, guardMultiPdf, pdfBaseName } from "./guards.js";
 import { buildContentDisposition } from "../convert/convert-image.js";
 import { handlePdfMerge } from "../convert/pdf-merge-handler.js";
+import { handlePdfSplit } from "../convert/pdf-split-handler.js";
 import {
   reorderPdfPages,
   mergePdfDocuments,
-  splitPdfDocument,
   rotatePdfPages,
 } from "./pdf-transform-logic.js";
 
@@ -94,51 +94,7 @@ router.post(
   defaultRateLimit,
   upload.single("file"),
   guardSinglePdf,
-  async (req, res) => {
-    if (!req.file) {
-      apiError(res, 400, "NO_FILE", "No file uploaded");
-      return;
-    }
-
-    try {
-      const mode = (String(req.body.mode ?? "every") as "every" | "ranges");
-      const rangesStr = String(req.body.ranges ?? "");
-      const mergeOutput = String(req.body.merge ?? "false") === "true";
-      const baseName = pdfBaseName(req.file.originalname);
-
-      const result = await splitPdfDocument(req.file.buffer, {
-        mode,
-        rangesStr,
-        mergeOutput,
-        baseName,
-      });
-
-      if (result.isZip) {
-        const disposition = buildContentDisposition(`${baseName}_split.zip`, "zip");
-        res.set({
-          "Content-Type": "application/zip",
-          "Content-Disposition": disposition,
-          "X-Segment-Count": String(result.segmentCount),
-          "Cache-Control": "no-store",
-          "Access-Control-Expose-Headers": "X-Segment-Count",
-        });
-      } else {
-        const disposition = buildContentDisposition(`${baseName}_extracted.pdf`, "pdf");
-        res.set({
-          "Content-Type": "application/pdf",
-          "Content-Disposition": disposition,
-          "X-Segment-Count": String(result.segmentCount),
-          "Cache-Control": "no-store",
-          "Access-Control-Expose-Headers": "X-Segment-Count",
-        });
-      }
-      res.send(result.buffer);
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "Split failed";
-      const status = msg.includes("Invalid or empty") || msg.includes("corrupt") ? 400 : 500;
-      apiError(res, status, "CONVERSION_FAILED", msg);
-    }
-  }
+  handlePdfSplit
 );
 
 // ─────────────────────────────────────────────────────────

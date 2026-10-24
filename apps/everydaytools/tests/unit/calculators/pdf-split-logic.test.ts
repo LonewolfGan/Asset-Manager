@@ -30,6 +30,7 @@ describe('PDF Split Logic (TDD Phase RED)', () => {
     it('parses comma, space, and hyphen syntax correctly', () => {
       expect(parseRangeStringToPages('1-3, 5', 10)).toEqual([1, 2, 3, 5]);
       expect(parseRangeStringToPages('1, 2, 4-6', 10)).toEqual([1, 2, 4, 5, 6]);
+      expect(parseRangeStringToPages('1 , 4 - 6 , 8', 10)).toEqual([1, 4, 5, 6, 8]);
       expect(parseRangeStringToPages('5-2', 10)).toEqual([2, 3, 4, 5]);
     });
 

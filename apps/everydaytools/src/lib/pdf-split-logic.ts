@@ -37,7 +37,8 @@ export function formatPagesToRangeString(pages: number[]): string {
  */
 export function parseRangeStringToPages(str: string, maxPages: number): number[] {
   const result = new Set<number>();
-  const parts = str.split(/[,;\s]+/).filter(Boolean);
+  const normalized = str.replace(/\s*-\s*/g, '-');
+  const parts = normalized.split(/[,;\s]+/).filter(Boolean);
   for (const part of parts) {
     if (part.includes('-')) {
       const [fromStr, toStr] = part.split('-');

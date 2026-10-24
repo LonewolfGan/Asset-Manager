@@ -40,11 +40,13 @@ export function usePdfMergeFiles({ isFr, setError }: UsePdfMergeFilesOptions) {
         }));
         const combined = [...prev, ...incomingStaged];
         if (combined.length > 20) {
-          setError(
-            isFr
-              ? 'Vous pouvez assembler jusqu’à 20 documents à la fois.'
-              : 'You can merge up to 20 documents at a time.'
-          );
+          queueMicrotask(() => {
+            setError(
+              isFr
+                ? 'Vous pouvez assembler jusqu’à 20 documents à la fois.'
+                : 'You can merge up to 20 documents at a time.'
+            );
+          });
           return combined.slice(0, 20);
         }
         return combined;
