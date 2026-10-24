@@ -4,10 +4,10 @@ import { defaultRateLimit } from "../../middlewares/rateLimit.js";
 import { apiError } from "../../lib/errors.js";
 import { buildContentDisposition } from "../convert/convert-image.js";
 import { guardSinglePdf, pdfBaseName } from "./guards.js";
+import { handlePdfMetadata } from "../convert/pdf-metadata-handler.js";
 import {
   applyPdfWatermark,
   addPdfPageNumbers,
-  updatePdfMetadata,
 } from "./pdf-annotate-logic.js";
 
 const router = Router();
@@ -81,41 +81,14 @@ router.post(
 );
 
 // ─────────────────────────────────────────────────────────
-// POST /tools/pdf-metadata
+// POST /tools/pdf-metadata (Alias forwarded to handlePdfMetadata)
 // ─────────────────────────────────────────────────────────
 router.post(
   "/tools/pdf-metadata",
   defaultRateLimit,
   upload.single("file"),
   guardSinglePdf,
-  async (req: Request, res: Response) => {
-    if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
-
-    try {
-      const finalBuffer = await updatePdfMetadata(req.file.buffer, {
-        title: req.body.title !== undefined ? String(req.body.title) : undefined,
-        author: req.body.author !== undefined ? String(req.body.author) : undefined,
-        subject: req.body.subject !== undefined ? String(req.body.subject) : undefined,
-        keywords: req.body.keywords !== undefined
-          ? (Array.isArray(req.body.keywords)
-              ? req.body.keywords
-              : String(req.body.keywords).split(",").map((s) => s.trim()))
-          : undefined,
-        creator: req.body.creator !== undefined ? String(req.body.creator) : undefined,
-        producer: req.body.producer !== undefined ? String(req.body.producer) : undefined,
-      });
-
-      const baseName = pdfBaseName(req.file.originalname);
-      res.set({
-        "Content-Type": "application/pdf",
-        "Content-Disposition": buildContentDisposition(`${baseName}_metadata.pdf`, "pdf"),
-        "Cache-Control": "no-store",
-      });
-      res.send(finalBuffer);
-    } catch (err) {
-      apiError(res, 500, "METADATA_FAILED", err instanceof Error ? err.message : "Metadata update failed");
-    }
-  },
+  handlePdfMetadata,
 );
 
 export default router;

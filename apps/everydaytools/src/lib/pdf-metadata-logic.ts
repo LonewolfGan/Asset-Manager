@@ -1,5 +1,6 @@
-import { PDFDocument } from 'pdf-lib';
+import { PDFDocument, PDFName, PDFDict } from 'pdf-lib';
 import type { ConversionFormat } from '@/components/conversion';
+import { downloadBlob } from '@/lib/download';
 
 export const SOURCE_FORMAT: ConversionFormat = {
   name: 'PDF',
@@ -194,6 +195,13 @@ export async function savePdfMetadata(
     if (!isNaN(d.getTime())) {
       doc.setCreationDate(d);
     }
+  } else if (form.dateMode === 'clear') {
+    try {
+      const info = doc.context.lookup(doc.context.trailerInfo.Info, PDFDict);
+      info?.delete(PDFName.of('CreationDate'));
+    } catch {
+      // ignore
+    }
   }
 
   doc.setModificationDate(new Date());
@@ -211,4 +219,8 @@ export async function savePdfMetadata(
     sizeAfter: blob.size,
     sizeBefore: originalSize,
   };
+}
+
+export function triggerDownload(blob: Blob, filename: string): void {
+  downloadBlob(blob, filename);
 }

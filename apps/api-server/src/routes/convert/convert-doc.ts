@@ -15,6 +15,7 @@ import { handlePdfToText } from "./pdf-to-text-handler.js";
 import { handlePdfToMarkdown } from "./pdf-to-markdown-handler.js";
 import { handlePdfToEpub } from "./pdf-to-epub-handler.js";
 import { handlePdfToPdfa } from "./pdf-to-pdfa-handler.js";
+import { handlePdfMetadata } from "./pdf-metadata-handler.js";
 
 const router: IRouter = Router();
 
@@ -117,5 +118,10 @@ router.post("/convert/pdf-to-epub", defaultRateLimit, upload.single("file"), gua
 // POST /convert/pdf-to-pdfa (High-Fidelity Engine via Ghostscript 10 under ProcessPool)
 // ─────────────────────────────────────────────────────────
 router.post("/convert/pdf-to-pdfa", defaultRateLimit, upload.single("file"), guardSinglePdf, handlePdfToPdfa);
+
+// ─────────────────────────────────────────────────────────
+// POST /convert/pdf-metadata (High-Fidelity Engine via pdf-lib & ProcessPool)
+// ─────────────────────────────────────────────────────────
+router.post("/convert/pdf-metadata", defaultRateLimit, upload.single("file"), guardSinglePdf, handlePdfMetadata);
 
 export default router;

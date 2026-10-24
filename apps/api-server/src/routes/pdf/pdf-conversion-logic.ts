@@ -202,7 +202,7 @@ export async function convertPdfToPdfa(
         "-sProcessColorModel=DeviceRGB",
         "-sColorConversionStrategy=RGB",
         "-sDEVICE=pdfwrite",
-        "-sPDFACompatibilityPolicy=1",
+        "-dPDFACompatibilityPolicy=1",
         `-sOutputFile=${rawOutputPath}`,
         inputPath,
       ],
