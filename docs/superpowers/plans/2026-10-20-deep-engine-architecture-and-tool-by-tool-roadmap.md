@@ -570,23 +570,23 @@ Actuellement, `pdf-protect` utilise `usePdfProtectWorkflow`. Le chiffrement doit
 Moteur de protection haute sécurité (QPDF `--encrypt` sous `ProcessPool` pour AES-256 standard + fallback in-browser si possible), adaptateur `pdfProtectEngine` et raccordement à `useToolWorkflow` avec design Awwwards 100% sanctuarisé (< 300 LOC).
 
 ### Task 17.1 : Recherche d'État de l'Art Chiffrement PDF (2026)
-- [ ] **Step 1: Benchmark du chiffrement PDF :** QPDF AES-256 vs PyMuPDF vs solutions WASM/in-browser.
-- [ ] **Step 2: Spécifier la matrice de permissions et compatibilité Adobe Acrobat.**
+- [x] **Step 1: Benchmark du chiffrement PDF :** QPDF AES-256 vs PyMuPDF vs solutions WASM/in-browser.
+- [x] **Step 2: Spécifier la matrice de permissions et compatibilité Adobe Acrobat.**
 
 ### Task 17.2 : Implémentation TDD du Moteur Haute Fidélité
-- [ ] **Step 1: Créer la suite de tests TDD RED (mots de passe vides, robustesse AES, permissions).**
-- [ ] **Step 2: Implémenter le handler backend et l'adaptateur `pdf-protect-engine.ts`.**
-- [ ] **Step 3: Tests GREEN.**
+- [x] **Step 1: Créer la suite de tests TDD RED (mots de passe vides, robustesse AES, permissions).**
+- [x] **Step 2: Implémenter le handler backend et l'adaptateur `pdf-protect-engine.ts`.**
+- [x] **Step 3: Tests GREEN.**
 
 ### Task 17.3 : Branchage sur l'Interface UI Existante
-- [ ] **Step 1: Raccorder `apps/everydaytools/src/pages/pdf-protect.tsx` sur `useToolWorkflow`.**
-- [ ] **Step 2: Nettoyer le hook obsolète `use-pdf-protect-workflow.ts`.**
-- [ ] **Step 3: Vérification Awwwards.**
+- [x] **Step 1: Raccorder `apps/everydaytools/src/pages/pdf-protect.tsx` sur `useToolWorkflow`.**
+- [x] **Step 2: Nettoyer le hook obsolète `use-pdf-protect-workflow.ts`.**
+- [x] **Step 3: Vérification Awwwards.**
 
 ### Task 17.4 : Revue Indépendante & Certification
-- [ ] **Step 1: Pipeline mécanique.**
-- [ ] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
-- [ ] **Step 3: Validation et verrouillage de l'outil #15.**
+- [x] **Step 1: Pipeline mécanique.**
+- [x] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
+- [x] **Step 3: Validation et verrouillage de l'outil #15.**
 
 ---
 
