@@ -4,7 +4,15 @@ import { Download, RotateCcw, ArrowRight } from 'lucide-react';
 import { ActionTooltip } from '@/components/ui/tooltip';
 import { formatBytes } from '@/lib/utils';
 import { downloadBlob } from '@/lib/download';
-import type { RotateResultData } from '@/hooks/use-pdf-rotate-workflow';
+
+export interface RotateResultData {
+  blob: Blob;
+  filename: string;
+  sizeAfter: number;
+  sizeBefore: number;
+  rotatedCount: number;
+  totalPages: number;
+}
 
 export interface PdfRotateResultViewProps {
   result: RotateResultData;

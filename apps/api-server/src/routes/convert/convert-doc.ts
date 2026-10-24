@@ -19,6 +19,7 @@ import { handlePdfMetadata } from "./pdf-metadata-handler.js";
 import { handlePdfCompress } from "./pdf-compress-handler.js";
 import { handlePdfMerge } from "./pdf-merge-handler.js";
 import { handlePdfSplit } from "./pdf-split-handler.js";
+import { handlePdfRotate } from "./pdf-rotate-handler.js";
 
 const router: IRouter = Router();
 
@@ -141,5 +142,10 @@ router.post("/convert/pdf-merge", defaultRateLimit, upload.array("files", 20), g
 // POST /convert/pdf-split (High-Fidelity Engine via pdf-lib & ProcessPool)
 // ─────────────────────────────────────────────────────────
 router.post("/convert/pdf-split", defaultRateLimit, upload.single("file"), guardSinglePdf, handlePdfSplit);
+
+// ─────────────────────────────────────────────────────────
+// POST /convert/pdf-rotate (High-Fidelity Engine via pdf-lib/qpdf & ProcessPool)
+// ─────────────────────────────────────────────────────────
+router.post("/convert/pdf-rotate", defaultRateLimit, upload.single("file"), guardSinglePdf, handlePdfRotate);
 
 export default router;

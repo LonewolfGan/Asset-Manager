@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AlertCircle } from 'lucide-react';
 import ToolPageLayout from '@/components/ToolPageLayout';
@@ -7,14 +7,20 @@ import { useLocale } from '@/hooks/use-locale';
 import { consumeHandoffFile } from '@/lib/file-handoff';
 import { useFileDrop } from '@/hooks/use-file-drop';
 import { usePdfThumbnails } from '@/hooks/use-pdf-thumbnails';
-import { usePdfRotateWorkflow } from '@/hooks/use-pdf-rotate-workflow';
+import { usePdfRotateOptions } from '@/hooks/use-pdf-rotate-options';
+import { useToolWorkflow } from '@/engine/use-tool-workflow';
+import { createPdfRotateEngine } from '@/engine/engines/pdf-rotate-engine';
 import {
   ConversionDropzone,
   NextActionModal,
   type ConversionFormat,
 } from '@/components/conversion';
 import { ProcessingAperture } from '@/components/conversion/ProcessingAperture';
-import { PdfRotateWorkbench, PdfRotateResultView } from '@/components/pdf-rotate';
+import {
+  PdfRotateWorkbench,
+  PdfRotateResultView,
+  type RotateResultData,
+} from '@/components/pdf-rotate';
 
 const PDF_FORMAT: ConversionFormat = {
   name: 'PDF',
@@ -30,11 +36,28 @@ export default function PdfRotate() {
   const [isNextActionOpen, setIsNextActionOpen] = useState(false);
 
   const { pages, isLoadingThumbs, loadPdfThumbnails, resetThumbnails } = usePdfThumbnails();
-  const workflow = usePdfRotateWorkflow(
-    file ?? undefined,
-    pages,
-    t.pdfRotate?.error ?? (isFr ? 'Échec de la rotation du document.' : 'Failed to rotate document.')
-  );
+  const options = usePdfRotateOptions(pages.length);
+
+  const engine = useMemo(() => {
+    return createPdfRotateEngine({
+      pageRotations: Object.keys(options.pageRotations).length > 0 ? options.pageRotations : undefined,
+      rotationDeg: Object.keys(options.pageRotations).length === 0 ? 90 : undefined,
+    });
+  }, [options.pageRotations]);
+
+  const {
+    isProcessing,
+    result: rawResult,
+    error,
+    handleExecute,
+    handleReset: resetWorkflow,
+    setError,
+  } = useToolWorkflow<File, Blob>({
+    engine,
+    toolSlug: 'pdf-rotate',
+    category: 'pdf',
+    autoConsumeHandoff: false,
+  });
 
   const validateAndSetFile = useCallback(
     async (selectedFile: File) => {
@@ -43,14 +66,14 @@ export default function PdfRotate() {
         selectedFile.name.toLowerCase().endsWith('.pdf');
 
       if (!isPdf) {
-        workflow.setError(
+        setError(
           isFr ? 'Veuillez sélectionner un fichier PDF valide.' : 'Please select a valid PDF file.'
         );
         return;
       }
 
       if (selectedFile.size > 50 * 1024 * 1024) {
-        workflow.setError(
+        setError(
           isFr
             ? 'Le fichier dépasse la taille maximale autorisée de 50 Mo.'
             : 'File exceeds maximum allowed size of 50 MB.'
@@ -58,12 +81,13 @@ export default function PdfRotate() {
         return;
       }
 
-      workflow.resetWorkflow();
+      resetWorkflow();
+      options.resetOptions();
       resetThumbnails();
       setFile(selectedFile);
       await loadPdfThumbnails(selectedFile);
     },
-    [isFr, loadPdfThumbnails, resetThumbnails, workflow]
+    [isFr, loadPdfThumbnails, options, resetThumbnails, resetWorkflow, setError]
   );
 
   const { isDragging, handleDragOver, handleDragLeave, handleDrop } = useFileDrop({
@@ -71,7 +95,6 @@ export default function PdfRotate() {
     accept: '.pdf,application/pdf',
   });
 
-  // Auto-consume handoff file if transferred from another tool
   useEffect(() => {
     const staged = consumeHandoffFile();
     if (staged && (staged.type === 'application/pdf' || staged.name.toLowerCase().endsWith('.pdf'))) {
@@ -82,20 +105,44 @@ export default function PdfRotate() {
   const handleResetAll = useCallback(() => {
     setFile(null);
     resetThumbnails();
-    workflow.resetWorkflow();
+    options.resetOptions();
+    resetWorkflow();
     setIsNextActionOpen(false);
-  }, [resetThumbnails, workflow]);
+  }, [options, resetThumbnails, resetWorkflow]);
 
-  // Keyboard shortcut Esc to reset
+  const handleApplyRotation = useCallback(async () => {
+    if (!file) return;
+    await handleExecute(file);
+  }, [file, handleExecute]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && file && !workflow.isProcessing && !workflow.result) {
+      if (e.key === 'Escape' && file && !isProcessing && !rawResult) {
         handleResetAll();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [file, workflow.isProcessing, workflow.result, handleResetAll]);
+  }, [file, isProcessing, rawResult, handleResetAll]);
+
+  const result: RotateResultData | null = useMemo(() => {
+    if (!rawResult || !file) return null;
+    const engineCount = (rawResult.metadata as Record<string, unknown> | undefined)?.rotatedCount;
+    const count = typeof engineCount === 'number'
+      ? engineCount
+      : options.modifiedPagesCount > 0
+        ? options.modifiedPagesCount
+        : pages.length;
+
+    return {
+      blob: rawResult.data,
+      filename: rawResult.filename,
+      sizeAfter: rawResult.resultSize ?? rawResult.data.size,
+      sizeBefore: file.size,
+      rotatedCount: count,
+      totalPages: pages.length,
+    };
+  }, [file, options.modifiedPagesCount, pages.length, rawResult]);
 
   return (
     <ToolPageLayout
@@ -111,9 +158,8 @@ export default function PdfRotate() {
     >
       <ToolWorkspace noGrid>
         <div className="w-full">
-          {/* Bannière d'erreur */}
           <AnimatePresence>
-            {workflow.error && (
+            {error && (
               <motion.div
                 initial={{ opacity: 0, y: -8 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -123,11 +169,11 @@ export default function PdfRotate() {
               >
                 <div className="flex items-center gap-3">
                   <AlertCircle size={18} className="shrink-0 text-red-500" />
-                  <span className="font-medium">{workflow.error}</span>
+                  <span className="font-medium">{error}</span>
                 </div>
                 <button
                   type="button"
-                  onClick={() => workflow.setError(null)}
+                  onClick={() => setError(null)}
                   className="text-xs font-semibold uppercase tracking-wider opacity-70 hover:opacity-100 transition-opacity px-2 py-1 cursor-pointer"
                 >
                   {isFr ? 'Fermer' : 'Close'}
@@ -137,8 +183,7 @@ export default function PdfRotate() {
           </AnimatePresence>
 
           <AnimatePresence mode="wait">
-            {/* Scène 1 : Dépôt initial cadré */}
-            {!file && !workflow.result && !workflow.isProcessing && (
+            {!file && !result && !isProcessing && (
               <div key="dropzone" className="w-full max-w-5xl mx-auto">
                 <ConversionDropzone
                   sourceFormat={PDF_FORMAT}
@@ -163,45 +208,43 @@ export default function PdfRotate() {
               </div>
             )}
 
-            {/* Scène 2 : L'atelier de rotation */}
-            {file && !workflow.result && !workflow.isProcessing && (
+            {file && !result && !isProcessing && (
               <PdfRotateWorkbench
                 key="workbench"
                 file={file}
                 format={PDF_FORMAT}
                 pages={pages}
                 isLoadingThumbs={isLoadingThumbs}
-                pageRotations={workflow.pageRotations}
-                selectedPages={workflow.selectedPages}
-                modifiedPagesCount={workflow.modifiedPagesCount}
-                isProcessing={workflow.isProcessing}
+                pageRotations={options.pageRotations}
+                selectedPages={options.selectedPages}
+                modifiedPagesCount={options.modifiedPagesCount}
+                isProcessing={isProcessing}
                 isFr={isFr}
                 t={t}
                 onReset={handleResetAll}
-                onApplyRotation={workflow.handleApplyRotation}
-                onRotateSelectedPages={workflow.rotateSelectedPages}
-                onResetAllRotations={workflow.resetAllRotations}
-                onSelectAllPages={workflow.selectAllPages}
-                onClearSelection={workflow.clearSelection}
-                onSelectOddPages={workflow.selectOddPages}
-                onSelectEvenPages={workflow.selectEvenPages}
-                onToggleSelectPage={workflow.toggleSelectPage}
-                onRotateSinglePage={workflow.rotateSinglePage}
+                onApplyRotation={handleApplyRotation}
+                onRotateSelectedPages={options.rotateSelectedPages}
+                onResetAllRotations={options.resetAllRotations}
+                onSelectAllPages={options.selectAllPages}
+                onClearSelection={options.clearSelection}
+                onSelectOddPages={options.selectOddPages}
+                onSelectEvenPages={options.selectEvenPages}
+                onToggleSelectPage={options.toggleSelectPage}
+                onRotateSinglePage={options.rotateSinglePage}
               />
             )}
 
-            {/* Scène 3 : Aperture optique cinétique centralisée */}
-            {workflow.isProcessing && (
+            {isProcessing && (
               <div key="processing" className="w-full py-20 flex justify-center">
                 <ProcessingAperture
                   formatIcon={PDF_FORMAT.icon}
                   formatAlt="PDF"
                   stageLabel={isFr ? 'Rotation en cours' : 'Rotating in progress'}
                   title={
-                    workflow.modifiedPagesCount > 0
+                    options.modifiedPagesCount > 0
                       ? isFr
-                        ? `Application de la rotation sur ${workflow.modifiedPagesCount} page${workflow.modifiedPagesCount > 1 ? 's' : ''}`
-                        : `Applying rotation to ${workflow.modifiedPagesCount} page${workflow.modifiedPagesCount > 1 ? 's' : ''}`
+                        ? `Application de la rotation sur ${options.modifiedPagesCount} page${options.modifiedPagesCount > 1 ? 's' : ''}`
+                        : `Applying rotation to ${options.modifiedPagesCount} page${options.modifiedPagesCount > 1 ? 's' : ''}`
                       : isFr
                       ? 'Rotation de toutes les pages (+90°)'
                       : 'Rotating all pages (+90°)'
@@ -210,11 +253,10 @@ export default function PdfRotate() {
               </div>
             )}
 
-            {/* Scène 4 : Résultat monumental */}
-            {workflow.result && !workflow.isProcessing && (
+            {result && !isProcessing && (
               <PdfRotateResultView
                 key="result"
-                result={workflow.result}
+                result={result}
                 formatIcon={PDF_FORMAT.icon}
                 isFr={isFr}
                 t={t}
@@ -230,8 +272,8 @@ export default function PdfRotate() {
         isOpen={isNextActionOpen}
         onClose={() => setIsNextActionOpen(false)}
         toolId="pdf-rotate"
-        resultBlob={workflow.result?.blob}
-        resultFilename={workflow.result?.filename}
+        resultBlob={result?.blob}
+        resultFilename={result?.filename}
       />
     </ToolPageLayout>
   );

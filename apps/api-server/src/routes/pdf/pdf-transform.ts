@@ -6,10 +6,10 @@ import { guardSinglePdf, guardMultiPdf, pdfBaseName } from "./guards.js";
 import { buildContentDisposition } from "../convert/convert-image.js";
 import { handlePdfMerge } from "../convert/pdf-merge-handler.js";
 import { handlePdfSplit } from "../convert/pdf-split-handler.js";
+import { handlePdfRotate } from "../convert/pdf-rotate-handler.js";
 import {
   reorderPdfPages,
   mergePdfDocuments,
-  rotatePdfPages,
 } from "./pdf-transform-logic.js";
 
 const router = Router();
@@ -105,51 +105,7 @@ router.post(
   defaultRateLimit,
   upload.single("file"),
   guardSinglePdf,
-  async (req, res) => {
-    if (!req.file) {
-      apiError(res, 400, "NO_FILE", "No file uploaded");
-      return;
-    }
-
-    const parsed = parseInt(String(req.body.rotation ?? "90"), 10);
-    const rotationDeg = Number.isFinite(parsed) ? parsed : 90;
-    const pageList = String(req.body.pages ?? "all");
-    const rotationsRaw = req.body.rotations;
-
-    try {
-      let perPageRotations: Record<string | number, number> | number[] | undefined;
-      if (rotationsRaw) {
-        try {
-          perPageRotations =
-            typeof rotationsRaw === "string" ? JSON.parse(rotationsRaw) : rotationsRaw;
-        } catch {
-          perPageRotations = undefined;
-        }
-      }
-
-      const result = await rotatePdfPages(req.file.buffer, {
-        rotationDeg,
-        pages: pageList,
-        perPageRotations,
-      });
-
-      const baseName = pdfBaseName(req.file.originalname);
-      const disposition = buildContentDisposition(`${baseName}_rotated.pdf`, "pdf");
-
-      res.set({
-        "Content-Type": "application/pdf",
-        "Content-Disposition": disposition,
-        "X-Page-Count": String(result.pageCount),
-        "Cache-Control": "no-store",
-        "Access-Control-Expose-Headers": "X-Page-Count",
-      });
-      res.send(result.buffer);
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "Rotation failed";
-      const isClientErr = msg.includes("Invalid") || msg.includes("corrupt");
-      apiError(res, isClientErr ? 400 : 500, "CONVERSION_FAILED", msg);
-    }
-  }
+  handlePdfRotate
 );
 
 export default router;

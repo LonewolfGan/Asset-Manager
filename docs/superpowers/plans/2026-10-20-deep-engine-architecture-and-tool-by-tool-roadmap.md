@@ -541,20 +541,20 @@ Actuellement, `pdf-rotate` utilise `usePdfRotateWorkflow`. La rotation doit opé
 Moteur de rotation vectorielle in-browser (`pdf-lib` `page.setRotation`), adaptateur `pdfRotateEngine` et raccordement à `useToolWorkflow` avec design Awwwards 100% sanctuarisé.
 
 ### Task 16.1 : Recherche d'État de l'Art Rotation PDF (2026)
-- [ ] **Step 1: Benchmark de rotation non destructive :** `pdf-lib` in-browser vs QPDF `--rotate`.
-- [ ] **Step 2: Arbitrer la solution in-browser native instantanée.**
+- [x] **Step 1: Benchmark de rotation non destructive :** `pdf-lib` in-browser vs QPDF `--rotate`.
+- [x] **Step 2: Arbitrer la solution in-browser native instantanée.**
 
 ### Task 16.2 : Implémentation TDD du Moteur Haute Fidélité
-- [ ] **Step 1: Créer la suite de tests TDD RED (rotations cumulées, 90/180/270, conservation vectorielle).**
-- [ ] **Step 2: Implémenter le moteur `pdf-rotate-engine.ts`.**
-- [ ] **Step 3: Tests GREEN.**
+- [x] **Step 1: Créer la suite de tests TDD RED (rotations cumulées, 90/180/270, conservation vectorielle).**
+- [x] **Step 2: Implémenter le moteur `pdf-rotate-engine.ts`.**
+- [x] **Step 3: Tests GREEN.**
 
 ### Task 16.3 : Branchage sur l'Interface UI Existante
-- [ ] **Step 1: Raccorder `apps/everydaytools/src/pages/pdf-rotate.tsx` sur `useToolWorkflow`.**
-- [ ] **Step 2: Nettoyer le hook obsolète `use-pdf-rotate-workflow.ts`.**
-- [ ] **Step 3: Vérification Awwwards.**
+- [x] **Step 1: Raccorder `apps/everydaytools/src/pages/pdf-rotate.tsx` sur `useToolWorkflow`.**
+- [x] **Step 2: Nettoyer le hook obsolète `use-pdf-rotate-workflow.ts`.**
+- [x] **Step 3: Vérification Awwwards.**
 
 ### Task 16.4 : Revue Indépendante & Certification
-- [ ] **Step 1: Pipeline mécanique.**
-- [ ] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
-- [ ] **Step 3: Validation finale et verrouillage du Sprint 2.**
+- [x] **Step 1: Pipeline mécanique.**
+- [x] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
+- [x] **Step 3: Validation finale et verrouillage du Sprint 2.**
