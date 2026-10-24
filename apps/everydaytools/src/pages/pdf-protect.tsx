@@ -1,68 +1,130 @@
-import React from 'react';
+import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AlertCircle } from 'lucide-react';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import { ToolWorkspace } from '@/components/ToolContent';
 import { useLocale } from '@/hooks/use-locale';
 import { SOURCE_FORMAT, TARGET_FORMAT } from '@/lib/pdf-protect-logic';
-import { usePdfProtectWorkflow } from '@/hooks/use-pdf-protect-workflow';
+import { usePdfProtectOptions } from '@/hooks/use-pdf-protect-options';
+import { useToolWorkflow } from '@/engine/use-tool-workflow';
+import { createPdfProtectEngine } from '@/engine/engines/pdf-protect-engine';
+import { downloadBlob } from '@/lib/download';
+import { formatBytes } from '@/lib/utils';
 import {
   ConversionDropzone,
   ConversionResult,
   NextActionModal,
 } from '@/components/conversion';
+import { ProcessingAperture } from '@/components/conversion/ProcessingAperture';
 import { PdfProtectWorkbench } from '@/components/pdf-protect';
 
 export default function PdfProtect() {
   const { t, isFr } = useLocale();
   const tc = t.pdfProtect;
 
+  const [isDragging, setIsDragging] = useState(false);
+  const [isNextActionOpen, setIsNextActionOpen] = useState(false);
+  const passwordInputRef = useRef<HTMLInputElement | null>(null);
+
+  const opts = usePdfProtectOptions({
+    isFr,
+    strengthLabels: {
+      weak: tc.strengthWeak ?? 'Faible',
+      medium: tc.strengthMedium ?? 'Bon',
+      strong: tc.strengthStrong ?? 'Très fort',
+    },
+  });
+
+  const engine = useMemo(
+    () =>
+      createPdfProtectEngine({
+        userPassword: opts.userPassword,
+        ownerPassword: opts.ownerPassword,
+        allowPrinting: opts.allowPrinting,
+        allowCopying: opts.allowCopying,
+        allowModifying: opts.allowModifying,
+        isFr,
+      }),
+    [opts.userPassword, opts.ownerPassword, opts.allowPrinting, opts.allowCopying, opts.allowModifying, isFr]
+  );
+
   const {
-    file,
+    inputFile,
     result,
-    error,
-    passwordError,
     isProcessing,
-    isDragging,
-    isNextActionOpen,
-    userPassword,
-    ownerPassword,
-    showUserPassword,
-    showOwnerPassword,
-    showAdvanced,
-    allowPrinting,
-    allowCopying,
-    allowModifying,
-    strength,
-    passwordInputRef,
-    setUserPassword,
-    setOwnerPassword,
-    setShowUserPassword,
-    setShowOwnerPassword,
-    setShowAdvanced,
-    setAllowPrinting,
-    setAllowCopying,
-    setAllowModifying,
+    error,
+    handleFileSelect,
+    handleExecute,
+    handleReset: handleWorkflowReset,
     setError,
-    setIsNextActionOpen,
-    handleReset,
-    validateAndSetFile,
-    handleDragOver,
-    handleDragLeave,
-    handleDrop,
-    handleGeneratePassword,
-    handleConvert,
-    handleDownload,
-  } = usePdfProtectWorkflow();
+  } = useToolWorkflow<File, Blob>({
+    engine,
+    acceptedMimeTypes: ['application/pdf', '.pdf'],
+    maxFileSizeBytes: 50 * 1024 * 1024,
+    toolSlug: 'pdf-protect',
+    category: 'pdf',
+    autoConsumeHandoff: true,
+  });
+
+  const protectResult = useMemo(() => {
+    if (!result?.data || !inputFile) return null;
+    return {
+      blob: result.data,
+      filename: result.filename,
+      sizeAfter: result.resultSize ?? result.data.size,
+      sizeBefore: result.originalSize ?? inputFile.size,
+    };
+  }, [result, inputFile]);
+
+  const handleReset = useCallback(() => {
+    handleWorkflowReset();
+    opts.resetOptions();
+    setIsNextActionOpen(false);
+  }, [handleWorkflowReset, opts]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && inputFile && !isProcessing) handleReset();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [inputFile, isProcessing, handleReset]);
+
+  const handleConvert = useCallback(() => {
+    if (!opts.userPassword.trim() && !opts.ownerPassword.trim()) {
+      opts.setPasswordError(
+        tc.errorNoPassword ?? (isFr ? "Veuillez définir un mot de passe d'ouverture." : 'Please enter a password.')
+      );
+      passwordInputRef.current?.focus();
+      return;
+    }
+    handleExecute();
+  }, [opts, tc, isFr, handleExecute]);
+
+  const handleDownload = useCallback(() => {
+    if (!protectResult) return;
+    downloadBlob(protectResult.blob, protectResult.filename);
+    setTimeout(() => setIsNextActionOpen(true), 450);
+  }, [protectResult]);
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const dropped = e.dataTransfer.files?.[0];
+    if (dropped) handleFileSelect(dropped);
+  }, [handleFileSelect]);
+
+  const title = t.tools['pdf-protect']?.title ?? (isFr ? 'Protéger le PDF' : 'Protect PDF');
 
   return (
     <ToolPageLayout
-      breadcrumb={[
-        t.nav.breadcrumb.home,
-        t.nav.breadcrumb.pdf,
-        t.tools['pdf-protect']?.title ?? (isFr ? 'Protéger le PDF' : 'Protect PDF'),
-      ]}
-      title={t.tools['pdf-protect']?.title ?? (isFr ? 'Protéger le PDF' : 'Protect PDF')}
+      breadcrumb={[t.nav.breadcrumb.home, t.nav.breadcrumb.pdf, title]}
+      title={title}
       description={
         t.tools['pdf-protect']?.description ??
         (isFr
@@ -73,15 +135,13 @@ export default function PdfProtect() {
     >
       <ToolWorkspace noGrid>
         <div className="w-full">
-          {/* Error Alert */}
           <AnimatePresence>
             {error && (
               <motion.div
                 initial={{ opacity: 0, y: -8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.2, ease: [0.32, 0.72, 0, 1] }}
-                className="mb-8 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 flex items-center justify-between gap-3 text-sm max-w-3xl mx-auto shadow-sm"
+                className="mb-8 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 flex items-center justify-between gap-3 text-sm max-w-3xl mx-auto"
               >
                 <div className="flex items-center gap-3">
                   <AlertCircle size={18} className="shrink-0 text-red-500" />
@@ -90,7 +150,7 @@ export default function PdfProtect() {
                 <button
                   type="button"
                   onClick={() => setError(null)}
-                  className="text-xs font-semibold uppercase tracking-wider opacity-70 hover:opacity-100 transition-opacity px-2 py-1 cursor-pointer"
+                  className="text-xs font-semibold uppercase tracking-wider opacity-70 hover:opacity-100 transition-opacity px-2 py-1"
                 >
                   {isFr ? 'Fermer' : 'Close'}
                 </button>
@@ -99,8 +159,7 @@ export default function PdfProtect() {
           </AnimatePresence>
 
           <AnimatePresence mode="wait">
-            {/* ─── SCÈNE 1 : DÉPÔT INITIAL CADRÉ (max-w-5xl mx-auto) ─── */}
-            {!file && !result && !isProcessing && (
+            {!inputFile && !protectResult && !isProcessing && (
               <div className="w-full max-w-5xl mx-auto">
                 <ConversionDropzone
                   sourceFormat={SOURCE_FORMAT}
@@ -113,58 +172,61 @@ export default function PdfProtect() {
                   }
                   buttonLabel={isFr ? 'Sélectionner un fichier PDF' : 'Select a PDF file'}
                   isDragging={isDragging}
-                  onFileSelected={validateAndSetFile}
+                  onFileSelected={handleFileSelect}
                   onDragOver={handleDragOver}
-                  onDragLeave={handleDragLeave}
+                  onDragLeave={() => setIsDragging(false)}
                   onDrop={handleDrop}
                 />
               </div>
             )}
 
-            {/* ─── SCÈNE 2 : L'ATELIER DE CHIFFREMENT (ZERO CARD, ZERO BOX SLOP) ─── */}
-            {file && !result && (
+            {inputFile && !protectResult && !isProcessing && (
               <PdfProtectWorkbench
-                file={file}
+                file={inputFile}
                 isProcessing={isProcessing}
-                userPassword={userPassword}
-                ownerPassword={ownerPassword}
-                showUserPassword={showUserPassword}
-                showOwnerPassword={showOwnerPassword}
-                showAdvanced={showAdvanced}
-                allowPrinting={allowPrinting}
-                allowCopying={allowCopying}
-                allowModifying={allowModifying}
-                passwordError={passwordError}
-                strength={strength}
+                isFr={isFr}
+                userPassword={opts.userPassword}
+                ownerPassword={opts.ownerPassword}
+                showUserPassword={opts.showUserPassword}
+                showOwnerPassword={opts.showOwnerPassword}
+                showAdvanced={opts.showAdvanced}
+                allowPrinting={opts.allowPrinting}
+                allowCopying={opts.allowCopying}
+                allowModifying={opts.allowModifying}
+                passwordError={opts.passwordError}
+                strength={opts.strength}
                 passwordInputRef={passwordInputRef}
                 onReset={handleReset}
                 onConvert={handleConvert}
-                onUserPasswordChange={setUserPassword}
-                onOwnerPasswordChange={setOwnerPassword}
-                onToggleShowUserPassword={() => setShowUserPassword(!showUserPassword)}
-                onToggleShowOwnerPassword={() => setShowOwnerPassword(!showOwnerPassword)}
-                onToggleShowAdvanced={() => setShowAdvanced(!showAdvanced)}
-                onToggleAllowPrinting={() => setAllowPrinting(!allowPrinting)}
-                onToggleAllowCopying={() => setAllowCopying(!allowCopying)}
-                onToggleAllowModifying={() => setAllowModifying(!allowModifying)}
-                onGeneratePassword={handleGeneratePassword}
+                onUserPasswordChange={opts.setUserPassword}
+                onOwnerPasswordChange={opts.setOwnerPassword}
+                onToggleShowUserPassword={opts.toggleShowUserPassword}
+                onToggleShowOwnerPassword={opts.toggleShowOwnerPassword}
+                onToggleShowAdvanced={opts.toggleShowAdvanced}
+                onToggleAllowPrinting={opts.toggleAllowPrinting}
+                onToggleAllowCopying={opts.toggleAllowCopying}
+                onToggleAllowModifying={opts.toggleAllowModifying}
+                onGeneratePassword={opts.handleGeneratePassword}
               />
             )}
 
-            {/* ─── SCÈNE 3 : RÉSULTAT ET TÉLÉCHARGEMENT DIRECT ─── */}
-            {result && (
+            {isProcessing && (
+              <ProcessingAperture
+                formatIcon={SOURCE_FORMAT.icon}
+                formatAlt="PDF"
+                stageLabel={isFr ? 'Chiffrement AES-256 en cours' : 'AES-256 Encryption in progress'}
+                title={formatBytes(inputFile?.size ?? 0)}
+                detail={inputFile?.name}
+              />
+            )}
+
+            {protectResult && !isProcessing && (
               <ConversionResult
                 targetFormat={TARGET_FORMAT}
-                resultFileName={result.filename}
-                resultFileSize={result.sizeAfter}
-                downloadBtnLabel={
-                  tc.downloadPdf ??
-                  (isFr ? 'Télécharger le PDF protégé' : 'Download protected PDF')
-                }
-                resetBtnLabel={
-                  tc.protectAnother ??
-                  (isFr ? 'Protéger un autre PDF' : 'Protect another PDF')
-                }
+                resultFileName={protectResult.filename}
+                resultFileSize={protectResult.sizeAfter}
+                downloadBtnLabel={tc.downloadPdf ?? (isFr ? 'Télécharger le PDF protégé' : 'Download protected PDF')}
+                resetBtnLabel={tc.protectAnother ?? (isFr ? 'Protéger un autre PDF' : 'Protect another PDF')}
                 onDownload={handleDownload}
                 onReset={handleReset}
               />
@@ -177,8 +239,8 @@ export default function PdfProtect() {
         isOpen={isNextActionOpen}
         onClose={() => setIsNextActionOpen(false)}
         toolId="pdf-protect"
-        resultBlob={result?.blob}
-        resultFilename={result?.filename}
+        resultBlob={protectResult?.blob}
+        resultFilename={protectResult?.filename}
       />
     </ToolPageLayout>
   );

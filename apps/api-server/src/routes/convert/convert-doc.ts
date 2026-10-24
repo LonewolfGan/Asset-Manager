@@ -20,6 +20,7 @@ import { handlePdfCompress } from "./pdf-compress-handler.js";
 import { handlePdfMerge } from "./pdf-merge-handler.js";
 import { handlePdfSplit } from "./pdf-split-handler.js";
 import { handlePdfRotate } from "./pdf-rotate-handler.js";
+import { handlePdfProtect } from "./pdf-protect-handler.js";
 
 const router: IRouter = Router();
 
@@ -147,5 +148,10 @@ router.post("/convert/pdf-split", defaultRateLimit, upload.single("file"), guard
 // POST /convert/pdf-rotate (High-Fidelity Engine via pdf-lib/qpdf & ProcessPool)
 // ─────────────────────────────────────────────────────────
 router.post("/convert/pdf-rotate", defaultRateLimit, upload.single("file"), guardSinglePdf, handlePdfRotate);
+
+// ─────────────────────────────────────────────────────────
+// POST /convert/pdf-protect (High-Fidelity Engine via QPDF AES-256 & ProcessPool)
+// ─────────────────────────────────────────────────────────
+router.post("/convert/pdf-protect", defaultRateLimit, upload.single("file"), guardSinglePdf, handlePdfProtect);
 
 export default router;
