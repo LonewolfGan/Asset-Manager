@@ -1,45 +1,109 @@
-import React from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import { ToolWorkspace } from '@/components/ToolContent';
 import { useLocale } from '@/hooks/use-locale';
 import { AlertCircle } from 'lucide-react';
 import { formatBytes } from '@/lib/utils';
+import { downloadBlob } from '@/lib/download';
+import { useToolWorkflow } from '@/engine/use-tool-workflow';
+import {
+  createPdfCompressEngine,
+  type PdfCompressMetadata,
+} from '@/engine/engines/pdf-compress-engine';
 import {
   ConversionDropzone,
   NextActionModal,
 } from '@/components/conversion';
 import { ProcessingAperture } from '@/components/conversion/ProcessingAperture';
-import { getPdfFormat } from '@/lib/pdf-compress-logic';
-import { usePdfCompressWorkflow } from '@/hooks/use-pdf-compress-workflow';
+import {
+  type Level,
+  type PdfCompressResult,
+  getPdfFormat,
+  getPresets,
+  calculateGain,
+} from '@/lib/pdf-compress-logic';
 import { PdfCompressWorkbench } from '@/components/pdf-compress/PdfCompressWorkbench';
 import { PdfCompressResultShowcase } from '@/components/pdf-compress/PdfCompressResultShowcase';
 
 export default function PdfCompress() {
   const { t, isFr } = useLocale();
   const pdfFormat = getPdfFormat(isFr);
+  const presets = useMemo(() => getPresets(isFr), [isFr]);
+
+  const [level, setLevel] = useState<Level>('ebook');
+  const [isDragging, setIsDragging] = useState(false);
+  const [isNextActionOpen, setIsNextActionOpen] = useState(false);
+
+  const engine = useMemo(
+    () => createPdfCompressEngine({ level, isFr }),
+    [level, isFr]
+  );
 
   const {
-    presets,
-    file,
-    level,
-    setLevel,
+    inputFile,
     result,
-    error,
-    setError,
     isProcessing,
-    isDragging,
-    liveBytes,
-    isNextActionOpen,
-    setIsNextActionOpen,
+    error,
+    handleFileSelect,
+    handleExecute,
     handleReset,
-    validateAndSetFile,
-    handleDragOver,
-    handleDragLeave,
-    handleDrop,
-    handleCompress,
-    handleDownload,
-  } = usePdfCompressWorkflow({ isFr });
+    setError,
+  } = useToolWorkflow<File, Blob>({
+    engine,
+    acceptedMimeTypes: ['application/pdf', '.pdf'],
+    maxFileSizeBytes: 50 * 1024 * 1024,
+    toolSlug: 'pdf-compress',
+    category: 'pdf',
+    autoConsumeHandoff: true,
+  });
+
+  const compressResult: PdfCompressResult | null = useMemo(() => {
+    if (!result?.data || !inputFile) return null;
+    const meta = result.metadata as (PdfCompressMetadata | undefined);
+    const sizeBefore = meta?.sizeBefore ?? result.originalSize ?? inputFile.size;
+    const sizeAfter = meta?.sizeAfter ?? result.resultSize ?? result.data.size;
+    const gain = meta?.gain ?? calculateGain(sizeBefore, sizeAfter);
+
+    return {
+      blob: result.data,
+      filename: result.filename,
+      sizeBefore,
+      sizeAfter,
+      gain,
+    };
+  }, [result, inputFile]);
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setIsDragging(false);
+      const droppedFile = e.dataTransfer.files?.[0];
+      if (droppedFile) {
+        handleFileSelect(droppedFile);
+      }
+    },
+    [handleFileSelect]
+  );
+
+  const handleDownload = useCallback(() => {
+    if (!compressResult) return;
+    downloadBlob(compressResult.blob, compressResult.filename);
+    setTimeout(() => {
+      setIsNextActionOpen(true);
+    }, 450);
+  }, [compressResult]);
 
   return (
     <ToolPageLayout
@@ -86,7 +150,7 @@ export default function PdfCompress() {
 
           <AnimatePresence mode="wait">
             {/* ─── SCÈNE 1 : DROPZONE PLEINE LARGEUR (MAX-W-5XL) ─── */}
-            {!file && !result && !isProcessing && (
+            {!inputFile && !compressResult && !isProcessing && (
               <ConversionDropzone
                 sourceFormat={pdfFormat}
                 title={isFr ? 'Compresser un document PDF' : 'Compress a PDF document'}
@@ -97,7 +161,7 @@ export default function PdfCompress() {
                 }
                 buttonLabel={isFr ? 'Sélectionner un fichier PDF' : 'Select a PDF file'}
                 isDragging={isDragging}
-                onFileSelected={validateAndSetFile}
+                onFileSelected={handleFileSelect}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
@@ -105,16 +169,16 @@ export default function PdfCompress() {
             )}
 
             {/* ─── SCÈNE 2 : L'ATELIER DE CALIBRAGE ─── */}
-            {file && !result && !isProcessing && (
+            {inputFile && !compressResult && !isProcessing && (
               <PdfCompressWorkbench
-                file={file}
+                file={inputFile}
                 pdfFormat={pdfFormat}
                 presets={presets}
                 level={level}
                 isFr={isFr}
                 isProcessing={isProcessing}
                 onReset={handleReset}
-                onCompress={handleCompress}
+                onCompress={handleExecute}
                 onSelectLevel={setLevel}
               />
             )}
@@ -125,15 +189,15 @@ export default function PdfCompress() {
                 formatIcon={pdfFormat.icon}
                 formatAlt="PDF"
                 stageLabel={isFr ? 'Compression en cours' : 'Compression in progress'}
-                title={formatBytes(liveBytes)}
-                detail={file?.name}
+                title={formatBytes(inputFile?.size ?? 0)}
+                detail={inputFile?.name}
               />
             )}
 
             {/* ─── SCÈNE 4 : TRANSFORMATION DE MASSE ─── */}
-            {result && !isProcessing && (
+            {compressResult && !isProcessing && (
               <PdfCompressResultShowcase
-                result={result}
+                result={compressResult}
                 pdfFormat={pdfFormat}
                 isFr={isFr}
                 onDownload={handleDownload}
@@ -148,8 +212,8 @@ export default function PdfCompress() {
         isOpen={isNextActionOpen}
         onClose={() => setIsNextActionOpen(false)}
         toolId="pdf-compress"
-        resultBlob={result?.blob}
-        resultFilename={result?.filename}
+        resultBlob={compressResult?.blob}
+        resultFilename={compressResult?.filename}
       />
     </ToolPageLayout>
   );

@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { StudioResultCard } from '@workspace/ui';
 import type { ConversionFormat } from '@/components/conversion';
-import type { PdfCompressResult } from '@/hooks/use-pdf-compress-workflow';
+import type { PdfCompressResult } from '@/lib/pdf-compress-logic';
 
 export interface PdfCompressResultShowcaseProps {
   result: PdfCompressResult;

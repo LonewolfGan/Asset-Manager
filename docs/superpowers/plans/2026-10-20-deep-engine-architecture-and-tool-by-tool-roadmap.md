@@ -452,25 +452,25 @@ Actuellement, `pdf-compress` s'appuie sur un hook ad-hoc `usePdfCompressWorkflow
 Moteur de compression hybride haute performance : Ghostscript 10 (`-dPDFSETTINGS=/screen`, `/ebook`, `/printer`, `/prepress`, downsampling bi-cubique d'images) sous `ProcessPool` avec fallback in-browser, linéarisation QPDF (`--linearize`), adaptateur `pdfCompressEngine` et raccordement à `useToolWorkflow` avec design Awwwards 100% sanctuarisé.
 
 ### Task 13.1 : Recherche d'État de l'Art Compression PDF (2026)
-- [ ] **Step 1: Diagnostic et benchmark des moteurs de compression :**
+- [x] **Step 1: Diagnostic et benchmark des moteurs de compression :**
   - Ghostscript 10 (`-dPDFSETTINGS`, downsample DPI) vs QPDF (`--recompress-flate`, `--object-streams=generate`) vs Mutool clean.
   - Garantie de taille : retour du fichier d'origine si la taille compressée est supérieure.
-- [ ] **Step 2: Produire la matrice comparative et spécifier l'architecture.**
+- [x] **Step 2: Produire la matrice comparative et spécifier l'architecture.**
 
 ### Task 13.2 : Implémentation TDD du Moteur Haute Fidélité
-- [ ] **Step 1: Créer la suite de tests unitaires et d'intégration TDD RED (`pdf-compress.test.ts` et `pdf-compress-engine.test.ts`).**
-- [ ] **Step 2: Implémenter le handler sous `ProcessPool` et l'adaptateur `pdf-compress-engine.ts`.**
-- [ ] **Step 3: Vérifier que 100% des tests passent GREEN.**
+- [x] **Step 1: Créer la suite de tests unitaires et d'intégration TDD RED (`pdf-compress.test.ts` et `pdf-compress-engine.test.ts`).**
+- [x] **Step 2: Implémenter le handler sous `ProcessPool` et l'adaptateur `pdf-compress-engine.ts`.**
+- [x] **Step 3: Vérifier que 100% des tests passent GREEN.**
 
 ### Task 13.3 : Branchage sur l'Interface UI Existante (Zéro Changement Visuel)
-- [ ] **Step 1: Raccorder la page `apps/everydaytools/src/pages/pdf-compress.tsx` sur `useToolWorkflow`.**
-- [ ] **Step 2: Conserver exactement la Dropzone canonique, le sélecteur de présets, la barre de progression réelle et le résultat.**
-- [ ] **Step 3: Vérifier l'absence totale de régression visuelle ou ergonomique.**
+- [x] **Step 1: Raccorder la page `apps/everydaytools/src/pages/pdf-compress.tsx` sur `useToolWorkflow`.**
+- [x] **Step 2: Conserver exactement la Dropzone canonique, le sélecteur de présets, la barre de progression réelle et le résultat.**
+- [x] **Step 3: Vérifier l'absence totale de régression visuelle ou ergonomique.**
 
 ### Task 13.4 : Revue Indépendante & Certification
-- [ ] **Step 1: Pipeline de vérification mécanique (clean, check:rules, typecheck, test).**
-- [ ] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
-- [ ] **Step 3: Validation et verrouillage de l'outil #11.**
+- [x] **Step 1: Pipeline de vérification mécanique (clean, check:rules, typecheck, test).**
+- [x] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
+- [x] **Step 3: Validation et verrouillage de l'outil #11.**
 
 ---
 

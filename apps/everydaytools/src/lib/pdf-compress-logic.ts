@@ -2,6 +2,14 @@ import type { ConversionFormat } from '@/components/conversion';
 
 export type Level = 'prepress' | 'ebook' | 'screen';
 
+export interface PdfCompressResult {
+  blob: Blob;
+  filename: string;
+  sizeBefore: number;
+  sizeAfter: number;
+  gain: number;
+}
+
 export interface CompressionPreset {
   id: Level;
   index: string;

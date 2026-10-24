@@ -6,6 +6,7 @@ import { randomUUID } from "crypto";
 import { writeFile, readFile, rm, mkdir, stat } from "fs/promises";
 import { join } from "path";
 import { BIN } from "../../lib/binaries.js";
+import { compressPdf } from "../convert/pdf-compress-handler.js";
 
 const execFileAsync = promisify(execFile);
 
@@ -49,142 +50,14 @@ export interface CompressPdfResult {
 
 /**
  * Universal Multi-Stage PDF Compression Engine.
- * Combines Ghostscript bicubic downsampling, qpdf Fast Web View linearization & flate recompression,
- * and pdf-lib metadata stripping to find the smallest valid PDF representation.
+ * Delegates to ProcessPool-isolated compressPdf implementation with Ghostscript 10,
+ * QPDF Fast Web View linearization, and non-regression size clamping.
  */
 export async function compressPdfBuffer(
   input: Buffer,
   options: CompressPdfOptions = {}
 ): Promise<CompressPdfResult> {
-  if (!input || input.length < 5) {
-    throw new Error("Invalid or empty PDF buffer");
-  }
-
-  const levelParam = String(options.level ?? "recommended").toLowerCase();
-  const preset = COMPRESS_PRESETS[levelParam] ?? COMPRESS_PRESETS["recommended"];
-
-  const id = randomUUID();
-  const workDir = join(tmpdir(), "everydaytools", id);
-  await mkdir(workDir, { recursive: true });
-
-  const inPath = join(workDir, "input.pdf");
-  const gsOutPath = join(workDir, "gs_out.pdf");
-  const qpdfOutPath = join(workDir, "final.pdf");
-
-  let finalBuffer: Buffer = input;
-
-  try {
-    await writeFile(inPath, input);
-
-    // Stage 1: Ghostscript bicubic downsampling & font compression
-    const gsArgs = [
-      "-dNOPAUSE", "-dBATCH", "-dSAFER",
-      "-sDEVICE=pdfwrite",
-      `-dPDFSETTINGS=${preset.pdfSettings}`,
-      "-dCompatibilityLevel=1.6",
-      "-dDownsampleColorImages=true",
-      "-dColorImageDownsampleType=/Bicubic",
-      `-dColorImageResolution=${preset.colorRes}`,
-      "-dDownsampleGrayImages=true",
-      "-dGrayImageDownsampleType=/Bicubic",
-      `-dGrayImageResolution=${preset.grayRes}`,
-      "-dDownsampleMonoImages=true",
-      "-dMonoImageDownsampleType=/Subsample",
-      `-dMonoImageResolution=${preset.monoRes}`,
-      "-dPassThroughJPEGImages=false",
-      "-dDetectDuplicateImages=true",
-      "-dCompressFonts=true",
-    ];
-
-    if (preset.forceDct) {
-      gsArgs.push(
-        "-dAutoFilterColorImages=false",
-        "-dColorImageFilter=/DCTEncode",
-        "-dAutoFilterGrayImages=false",
-        "-dGrayImageFilter=/DCTEncode"
-      );
-    }
-
-    gsArgs.push(`-sOutputFile=${gsOutPath}`, inPath);
-
-    let gsSuccess = false;
-    try {
-      await execFileAsync(BIN.gs, gsArgs, { timeout: 90_000 });
-      const gsStat = await stat(gsOutPath);
-      if (gsStat.size > 0) gsSuccess = true;
-    } catch {
-      // Continue to qpdf
-    }
-
-    const stage1File = gsSuccess ? gsOutPath : inPath;
-
-    // Stage 2: QPDF Fast Web View linearization & object streams
-    let qpdfSuccess = false;
-    try {
-      await execFileAsync(BIN.qpdf, [
-        "--warning-exit-0",
-        "--linearize",
-        "--object-streams=generate",
-        "--recompress-flate",
-        stage1File,
-        qpdfOutPath,
-      ], { timeout: 60_000 });
-      const qpdfStat = await stat(qpdfOutPath);
-      if (qpdfStat.size > 0) qpdfSuccess = true;
-    } catch {
-      // Continue
-    }
-
-    // Select the best candidate
-    const candidates: Buffer[] = [input];
-    if (gsSuccess) {
-      try {
-        const gsBuf = await readFile(gsOutPath);
-        if (gsBuf.length > 0) candidates.push(gsBuf);
-      } catch {}
-    }
-    if (qpdfSuccess) {
-      try {
-        const qpdfBuf = await readFile(qpdfOutPath);
-        if (qpdfBuf.length > 0) candidates.push(qpdfBuf);
-      } catch {}
-    }
-
-    candidates.sort((a, b) => a.length - b.length);
-    finalBuffer = candidates[0];
-
-    // Stage 3: Fallback metadata stripping if no gain achieved
-    if (finalBuffer.length >= input.length) {
-      try {
-        const pdfDoc = await PDFDocument.load(input, { ignoreEncryption: true });
-        pdfDoc.setTitle("");
-        pdfDoc.setAuthor("");
-        pdfDoc.setSubject("");
-        pdfDoc.setKeywords([]);
-        pdfDoc.setProducer("EverydayTools");
-        pdfDoc.setCreator("EverydayTools");
-        const stripped = Buffer.from(await pdfDoc.save({ useObjectStreams: true }));
-        if (stripped.length > 0 && stripped.length < finalBuffer.length) {
-          finalBuffer = stripped;
-        }
-      } catch {}
-    }
-  } finally {
-    await rm(workDir, { recursive: true, force: true }).catch(() => {});
-  }
-
-  if (finalBuffer.length > input.length) {
-    finalBuffer = input;
-  }
-
-  const gain = Math.max(0, Math.round((1 - finalBuffer.length / input.length) * 100));
-
-  return {
-    buffer: finalBuffer,
-    originalSize: input.length,
-    compressedSize: finalBuffer.length,
-    gain,
-  };
+  return compressPdf(input, options);
 }
 
 /**
