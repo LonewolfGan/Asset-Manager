@@ -628,23 +628,23 @@ Actuellement, `pdf-watermark` utilise `usePdfWatermarkWorkflow`. L'application d
 Moteur de filigrane in-browser vectoriel instantané (`pdf-lib` vector overlay) avec fallback serveur sous `ProcessPool`, adaptateur `pdfWatermarkEngine` et raccordement à `useToolWorkflow` avec design Awwwards 100% sanctuarisé (< 300 LOC).
 
 ### Task 19.1 : Recherche d'État de l'Art Filigrane PDF (2026)
-- [ ] **Step 1: Benchmark vector overlay :** `pdf-lib` in-browser vs QPDF vs PyMuPDF.
-- [ ] **Step 2: Spécifier la gestion des calques (over vs under) et gestion des polices embarquées.**
+- [x] **Step 1: Benchmark vector overlay :** `pdf-lib` in-browser vs QPDF vs PyMuPDF.
+- [x] **Step 2: Spécifier la gestion des calques (over vs under) et gestion des polices embarquées.**
 
 ### Task 19.2 : Implémentation TDD du Moteur Haute Fidélité
-- [ ] **Step 1: Créer la suite de tests TDD RED (filigrane texte, image, opacité, rotation).**
-- [ ] **Step 2: Implémenter le moteur `pdf-watermark-engine.ts`.**
-- [ ] **Step 3: Tests GREEN.**
+- [x] **Step 1: Créer la suite de tests TDD RED (filigrane texte, image, opacité, rotation).**
+- [x] **Step 2: Implémenter le moteur `pdf-watermark-engine.ts`.**
+- [x] **Step 3: Tests GREEN.**
 
 ### Task 19.3 : Branchage sur l'Interface UI Existante
-- [ ] **Step 1: Raccorder `apps/everydaytools/src/pages/pdf-watermark.tsx` sur `useToolWorkflow`.**
-- [ ] **Step 2: Nettoyer le hook obsolète `use-pdf-watermark-workflow.ts`.**
-- [ ] **Step 3: Vérification Awwwards.**
+- [x] **Step 1: Raccorder `apps/everydaytools/src/pages/pdf-watermark.tsx` sur `useToolWorkflow`.**
+- [x] **Step 2: Nettoyer le hook obsolète `use-pdf-watermark-workflow.ts`.**
+- [x] **Step 3: Vérification Awwwards.**
 
 ### Task 19.4 : Revue Indépendante & Certification
-- [ ] **Step 1: Pipeline mécanique.**
-- [ ] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
-- [ ] **Step 3: Validation et verrouillage de l'outil #17.**
+- [x] **Step 1: Pipeline mécanique.**
+- [x] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
+- [x] **Step 3: Validation et verrouillage de l'outil #17.**
 
 ---
 
