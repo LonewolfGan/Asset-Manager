@@ -599,23 +599,23 @@ Actuellement, `pdf-unlock` s'appuie sur `usePdfUnlockWorkflow`. L'outil doit per
 Moteur de déchiffrement haute performance (QPDF `--decrypt` sous `ProcessPool` / pdf-lib in-browser), adaptateur `pdfUnlockEngine` et raccordement à `useToolWorkflow` avec design Awwwards 100% sanctuarisé (< 300 LOC).
 
 ### Task 18.1 : Recherche d'État de l'Art Déchiffrement PDF (2026)
-- [ ] **Step 1: Benchmark du déchiffrement :** QPDF `--decrypt` vs pdf-lib in-browser.
-- [ ] **Step 2: Spécifier la gestion des erreurs de mot de passe incorrect et corruption.**
+- [x] **Step 1: Benchmark du déchiffrement :** QPDF `--decrypt` vs pdf-lib in-browser.
+- [x] **Step 2: Spécifier la gestion des erreurs de mot de passe incorrect et corruption.**
 
 ### Task 18.2 : Implémentation TDD du Moteur Haute Fidélité
-- [ ] **Step 1: Créer la suite de tests TDD RED (mot de passe valide, invalide, document non chiffré).**
-- [ ] **Step 2: Implémenter le handler backend et l'adaptateur `pdf-unlock-engine.ts`.**
-- [ ] **Step 3: Tests GREEN.**
+- [x] **Step 1: Créer la suite de tests TDD RED (mot de passe valide, invalide, document non chiffré).**
+- [x] **Step 2: Implémenter le handler backend et l'adaptateur `pdf-unlock-engine.ts`.**
+- [x] **Step 3: Tests GREEN.**
 
 ### Task 18.3 : Branchage sur l'Interface UI Existante
-- [ ] **Step 1: Raccorder `apps/everydaytools/src/pages/pdf-unlock.tsx` sur `useToolWorkflow`.**
-- [ ] **Step 2: Nettoyer le hook obsolète `use-pdf-unlock-workflow.ts`.**
-- [ ] **Step 3: Vérification Awwwards.**
+- [x] **Step 1: Raccorder `apps/everydaytools/src/pages/pdf-unlock.tsx` sur `useToolWorkflow`.**
+- [x] **Step 2: Nettoyer le hook obsolète `use-pdf-unlock-workflow.ts`.**
+- [x] **Step 3: Vérification Awwwards.**
 
 ### Task 18.4 : Revue Indépendante & Certification
-- [ ] **Step 1: Pipeline mécanique.**
-- [ ] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
-- [ ] **Step 3: Validation et verrouillage de l'outil #16.**
+- [x] **Step 1: Pipeline mécanique.**
+- [x] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
+- [x] **Step 3: Validation et verrouillage de l'outil #16.**
 
 ---
 

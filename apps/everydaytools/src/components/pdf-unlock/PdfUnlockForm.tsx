@@ -2,7 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 import { PasswordSecureField } from '@workspace/ui/controls';
-import type { PdfUnlockWorkflow } from '@/hooks/use-pdf-unlock-workflow';
+import type { PdfUnlockWorkflow } from './PdfUnlockWorkbench';
 
 interface PdfUnlockFormProps {
   workflow: PdfUnlockWorkflow;
@@ -100,7 +100,7 @@ export function PdfUnlockForm({
           value={password}
           onChange={(val) => {
             setPassword(val);
-            if (error) setError(null);
+            if (error) setError?.(null);
           }}
           isFr={isFr}
           disabled={isProcessing}

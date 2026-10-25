@@ -3,8 +3,24 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { StudioCommandBar } from '@workspace/ui';
 import { getFileFormatIcon } from '@/lib/file-format-icon';
-import type { PdfUnlockWorkflow } from '@/hooks/use-pdf-unlock-workflow';
 import { PdfUnlockForm } from './PdfUnlockForm';
+
+export interface PdfUnlockWorkflow {
+  file: File | null;
+  password: string;
+  showPassword?: boolean;
+  isProcessing: boolean;
+  isSuccess?: boolean;
+  unlockedBlob?: Blob | null;
+  error: string | null;
+  passwordInputRef?: React.RefObject<HTMLInputElement | null>;
+  setPassword: (password: string) => void;
+  setShowPassword?: (show: boolean) => void;
+  handleReset: () => void;
+  handleConvert: () => void;
+  handleDownload?: () => void;
+  setError?: (err: string | null) => void;
+}
 
 interface PdfUnlockWorkbenchProps {
   workflow: PdfUnlockWorkflow;
