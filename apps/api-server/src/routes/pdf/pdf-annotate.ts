@@ -6,7 +6,7 @@ import { buildContentDisposition } from "../convert/convert-image.js";
 import { guardSinglePdf, pdfBaseName } from "./guards.js";
 import { handlePdfMetadata } from "../convert/pdf-metadata-handler.js";
 import { handlePdfWatermark } from "../convert/pdf-watermark-handler.js";
-import { addPdfPageNumbers } from "./pdf-annotate-logic.js";
+import { handlePdfPageNumbers } from "../convert/pdf-page-numbers-handler.js";
 
 const router = Router();
 
@@ -22,36 +22,14 @@ router.post(
 );
 
 // ─────────────────────────────────────────────────────────
-// POST /tools/pdf-page-numbers
+// POST /tools/pdf-page-numbers (Forwarded to handlePdfPageNumbers)
 // ─────────────────────────────────────────────────────────
 router.post(
   "/tools/pdf-page-numbers",
   defaultRateLimit,
   upload.single("file"),
   guardSinglePdf,
-  async (req: Request, res: Response) => {
-    if (!req.file) { apiError(res, 400, "NO_FILE", "No file uploaded"); return; }
-
-    try {
-      const finalBuffer = await addPdfPageNumbers(req.file.buffer, {
-        position: req.body.position !== undefined ? String(req.body.position) : undefined,
-        startFrom: req.body.startFrom !== undefined ? parseInt(String(req.body.startFrom)) : undefined,
-        fontSize: req.body.fontSize !== undefined ? parseInt(String(req.body.fontSize)) : undefined,
-        skipFirst: String(req.body.skipFirst ?? "false").toLowerCase() === "true",
-        format: req.body.format !== undefined ? String(req.body.format) : undefined,
-      });
-
-      const baseName = pdfBaseName(req.file.originalname);
-      res.set({
-        "Content-Type": "application/pdf",
-        "Content-Disposition": buildContentDisposition(`${baseName}_numbered.pdf`, "pdf"),
-        "Cache-Control": "no-store",
-      });
-      res.send(finalBuffer);
-    } catch (err) {
-      apiError(res, 500, "CONVERSION_FAILED", err instanceof Error ? err.message : "Page numbering failed");
-    }
-  },
+  handlePdfPageNumbers,
 );
 
 // ─────────────────────────────────────────────────────────

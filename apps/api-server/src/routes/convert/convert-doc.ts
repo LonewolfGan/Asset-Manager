@@ -23,6 +23,7 @@ import { handlePdfRotate } from "./pdf-rotate-handler.js";
 import { handlePdfProtect } from "./pdf-protect-handler.js";
 import { handlePdfUnlock } from "./pdf-unlock-handler.js";
 import { handlePdfWatermark } from "./pdf-watermark-handler.js";
+import { handlePdfPageNumbers } from "./pdf-page-numbers-handler.js";
 
 const router: IRouter = Router();
 
@@ -165,5 +166,10 @@ router.post("/convert/pdf-unlock", defaultRateLimit, upload.single("file"), guar
 // POST /convert/pdf-watermark (High-Fidelity Engine via pdf-lib & ProcessPool)
 // ─────────────────────────────────────────────────────────
 router.post("/convert/pdf-watermark", defaultRateLimit, upload.single("file"), guardSinglePdf, handlePdfWatermark);
+
+// ─────────────────────────────────────────────────────────
+// POST /convert/pdf-page-numbers (High-Fidelity Engine via pdf-lib & ProcessPool)
+// ─────────────────────────────────────────────────────────
+router.post("/convert/pdf-page-numbers", defaultRateLimit, upload.single("file"), guardSinglePdf, handlePdfPageNumbers);
 
 export default router;
