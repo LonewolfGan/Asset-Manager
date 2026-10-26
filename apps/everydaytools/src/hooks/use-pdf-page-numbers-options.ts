@@ -1,7 +1,8 @@
 import { useState, useCallback, useMemo } from 'react';
+import type { PdfNumberPosition } from '@/lib/pdf-page-numbers-logic';
 
 export interface UsePdfPageNumbersOptionsProps {
-  initialPosition?: 'bottom-center' | 'bottom-left' | 'bottom-right' | 'top-center' | 'top-left' | 'top-right' | string;
+  initialPosition?: PdfNumberPosition;
   initialFormat?: string;
   initialStartFrom?: number;
   initialSkipFirst?: boolean;
@@ -11,7 +12,7 @@ export interface UsePdfPageNumbersOptionsProps {
 }
 
 export function usePdfPageNumbersOptions(props?: UsePdfPageNumbersOptionsProps) {
-  const [position, setPosition] = useState<string>(props?.initialPosition ?? 'bottom-center');
+  const [position, setPosition] = useState<PdfNumberPosition>(props?.initialPosition ?? 'bottom-center');
   const [format, setFormat] = useState<string>(props?.initialFormat ?? '{n} / {total}');
   const [startFrom, setStartFrom] = useState<number>(props?.initialStartFrom ?? 1);
   const [skipFirst, setSkipFirst] = useState<boolean>(props?.initialSkipFirst ?? false);

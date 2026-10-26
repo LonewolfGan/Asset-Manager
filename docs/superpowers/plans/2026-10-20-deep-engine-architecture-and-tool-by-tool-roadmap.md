@@ -657,20 +657,20 @@ Actuellement, `pdf-page-numbers` utilise `usePdfPageNumbersWorkflow`. La paginat
 Moteur de numérotation in-browser instantané (`pdf-lib`), adaptateur `pdfPageNumbersEngine` et raccordement à `useToolWorkflow` avec design Awwwards 100% sanctuarisé (< 300 LOC).
 
 ### Task 20.1 : Recherche d'État de l'Art Numérotation de Pages (2026)
-- [ ] **Step 1: Benchmark de pagination :** `pdf-lib` in-browser vs solutions backend.
-- [ ] **Step 2: Spécifier le positionnement dynamique et le respect des marges imprimables.**
+- [x] **Step 1: Benchmark de pagination :** `pdf-lib` in-browser vs solutions backend.
+- [x] **Step 2: Spécifier le positionnement dynamique et le respect des marges imprimables.**
 
 ### Task 20.2 : Implémentation TDD du Moteur Haute Fidélité
-- [ ] **Step 1: Créer la suite de tests TDD RED (formats de labels, alignements, marges).**
-- [ ] **Step 2: Implémenter le moteur `pdf-page-numbers-engine.ts`.**
-- [ ] **Step 3: Tests GREEN.**
+- [x] **Step 1: Créer la suite de tests TDD RED (formats de labels, alignements, marges).**
+- [x] **Step 2: Implémenter le moteur `pdf-page-numbers-engine.ts`.**
+- [x] **Step 3: Tests GREEN.**
 
 ### Task 20.3 : Branchage sur l'Interface UI Existante
-- [ ] **Step 1: Raccorder `apps/everydaytools/src/pages/pdf-page-numbers.tsx` sur `useToolWorkflow`.**
-- [ ] **Step 2: Nettoyer le hook obsolète `use-pdf-page-numbers-workflow.ts`.**
-- [ ] **Step 3: Vérification Awwwards.**
+- [x] **Step 1: Raccorder `apps/everydaytools/src/pages/pdf-page-numbers.tsx` sur `useToolWorkflow`.**
+- [x] **Step 2: Nettoyer le hook obsolète `use-pdf-page-numbers-workflow.ts`.**
+- [x] **Step 3: Vérification Awwwards.**
 
 ### Task 20.4 : Revue Indépendante & Certification
-- [ ] **Step 1: Pipeline mécanique.**
-- [ ] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
-- [ ] **Step 3: Validation finale et verrouillage du Sprint 3.**
+- [x] **Step 1: Pipeline mécanique.**
+- [x] **Step 2: Double revue `code-reviewer` & `spec-reviewer`.**
+- [x] **Step 3: Validation finale et verrouillage du Sprint 3.**

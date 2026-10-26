@@ -17,7 +17,6 @@ import {
   formatPageNumberLabel,
   getPositionOptions,
   getFormatOptions,
-  type PdfNumberPosition,
 } from '@/lib/pdf-page-numbers-logic';
 import { usePdfPagePreview } from '@/hooks/use-pdf-page-preview';
 import { usePdfPageNumbersOptions } from '@/hooks/use-pdf-page-numbers-options';
@@ -226,8 +225,8 @@ export default function PdfPageNumbers() {
                 tc={tc}
                 onReset={handleReset}
                 onConvert={handleExecute}
-                position={opts.position as PdfNumberPosition}
-                setPosition={opts.setPosition as (pos: PdfNumberPosition) => void}
+                position={opts.position}
+                setPosition={opts.setPosition}
                 format={opts.format}
                 setFormat={opts.setFormat}
                 startNum={opts.startFrom}
