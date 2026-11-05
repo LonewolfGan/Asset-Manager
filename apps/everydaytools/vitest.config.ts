@@ -10,8 +10,8 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
-    include: ['tests/unit/**/*.test.ts', 'tests/integration/**/*.test.ts'],
-    exclude: ['tests/e2e/**', 'node_modules/**', 'dist/**'],
+    include: ['tests/unit/**/*.test.{ts,tsx}', 'tests/integration/**/*.test.{ts,tsx}'],
+    exclude: ['node_modules/**', 'dist/**'],
     setupFiles: ['./tests/setup.ts'],
     coverage: {
       reporter: ['text', 'html'],
