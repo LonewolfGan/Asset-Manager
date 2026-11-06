@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import type { ContentBlock } from "@/config/blog-data";
 
 export interface BlogTocProps {
@@ -54,7 +54,7 @@ export function extractTocItems(blocks?: ContentBlock[]): TocItem[] {
 }
 
 export function BlogToc({ blocks, activeId: propActiveId, lang = "en" }: BlogTocProps): React.JSX.Element | null {
-  const items = extractTocItems(blocks);
+  const items = useMemo(() => extractTocItems(blocks), [blocks]);
   const [internalActiveId, setInternalActiveId] = useState<string>("");
 
   const activeId = propActiveId !== undefined ? propActiveId : internalActiveId;

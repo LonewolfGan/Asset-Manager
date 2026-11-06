@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Link } from "wouter";
 import { BLOG_POSTS, type BlogPost } from "@/config/blog-data";
 
@@ -30,20 +30,22 @@ export function BlogRelatedPosts({
 }: BlogRelatedPostsProps): React.JSX.Element | null {
   const allPosts = posts !== undefined ? posts : BLOG_POSTS;
 
-  if (!Array.isArray(allPosts) || allPosts.length === 0) {
-    return null;
-  }
-
   const normalizedCurrent = (currentSlug || "").trim().toLowerCase();
 
-  const filtered = allPosts.filter((post) => {
-    if (!post || !post.slug) return false;
-    const enSlug = (post.slug.en || "").toLowerCase();
-    const frSlug = (post.slug.fr || "").toLowerCase();
-    return enSlug !== normalizedCurrent && frSlug !== normalizedCurrent;
-  });
+  const selectedPosts = useMemo(() => {
+    if (!Array.isArray(allPosts) || allPosts.length === 0) {
+      return [];
+    }
 
-  const selectedPosts = filtered.slice(0, maxPosts);
+    const filtered = allPosts.filter((post) => {
+      if (!post || !post.slug) return false;
+      const enSlug = (post.slug.en || "").toLowerCase();
+      const frSlug = (post.slug.fr || "").toLowerCase();
+      return enSlug !== normalizedCurrent && frSlug !== normalizedCurrent;
+    });
+
+    return filtered.slice(0, maxPosts);
+  }, [allPosts, normalizedCurrent, maxPosts]);
 
   if (selectedPosts.length === 0) {
     return null;
