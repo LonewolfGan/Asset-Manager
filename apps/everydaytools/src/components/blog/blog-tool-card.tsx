@@ -57,7 +57,7 @@ export function BlogToolCard({
 
         <Link
           href={href}
-          className="group inline-flex items-center justify-between sm:justify-center gap-3 px-4 py-2.5 rounded-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 text-xs font-medium hover:bg-zinc-800 dark:hover:bg-white active:scale-[0.98] transition-all duration-150 shrink-0"
+          className="group inline-flex items-center justify-between sm:justify-center gap-3 px-4 py-2.5 rounded-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 text-xs font-medium hover:bg-zinc-800 dark:hover:bg-white active:scale-[0.98] transition-[background-color,transform] duration-150 shrink-0"
         >
           <span className="truncate">{ctaText}</span>
           <span

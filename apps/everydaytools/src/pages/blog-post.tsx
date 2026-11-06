@@ -1,9 +1,13 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "wouter";
-import { getBlogPostByEitherSlug, type ContentBlock } from "@/config/blog-data";
+import { getBlogPostByEitherSlug } from "@/config/blog-data";
 import { useLocale } from "@/hooks/use-locale";
 import NotFound from "@/pages/not-found";
-import { PageTitle, PageSubtitle } from "@/components/Typography";
+import { BlogProgressBar } from "@/components/blog/blog-progress-bar";
+import { BlogToc } from "@/components/blog/blog-toc";
+import { BlogToolCard } from "@/components/blog/blog-tool-card";
+import { BlogContentRenderer } from "@/components/blog/blog-content-renderer";
+import { BlogRelatedPosts } from "@/components/blog/blog-related-posts";
 
 const BASE_URL = "https://everydaytools.qzz.io";
 
@@ -12,130 +16,33 @@ interface BlogPostPageProps {
 }
 
 function formatDate(dateStr: string, locale: "en" | "fr"): string {
-  const date = new Date(dateStr + "T00:00:00");
-  return date.toLocaleDateString(locale === "fr" ? "fr-FR" : "en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-}
-
-function renderBlock(block: ContentBlock, idx: number) {
-  switch (block.type) {
-    case "h2":
-      return (
-        <h2
-          key={idx}
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "var(--article-h2-size)",
-            fontWeight: "var(--article-h2-weight)" as React.CSSProperties["fontWeight"],
-            color: "var(--text-primary)",
-            letterSpacing: "-0.02em",
-            margin: "40px 0 16px",
-            lineHeight: 1.25,
-          }}
-        >
-          {block.text}
-        </h2>
-      );
-    case "h3":
-      return (
-        <h3
-          key={idx}
-          style={{
-            fontFamily: "var(--font-ui)",
-            fontSize: "var(--text-base)",
-            fontWeight: "var(--article-h3-weight)" as React.CSSProperties["fontWeight"],
-            color: "var(--text-primary)",
-            margin: "28px 0 10px",
-            lineHeight: 1.4,
-          }}
-        >
-          {block.text}
-        </h3>
-      );
-    case "p":
-      return (
-        <p
-          key={idx}
-          style={{
-            fontSize: "var(--text-sm)",
-            lineHeight: 1.8,
-            color: "var(--text-secondary)",
-            margin: "0 0 16px",
-          }}
-        >
-          {block.text}
-        </p>
-      );
-    case "ul":
-      return (
-        <ul
-          key={idx}
-          style={{
-            margin: "0 0 20px",
-            paddingLeft: 20,
-            display: "flex",
-            flexDirection: "column",
-            gap: 8,
-          }}
-        >
-          {block.items.map((item, i) => (
-            <li key={i} style={{ fontSize: "var(--text-sm)", lineHeight: 1.7, color: "var(--text-secondary)" }}>
-              {item}
-            </li>
-          ))}
-        </ul>
-      );
-    case "ol":
-      return (
-        <ol
-          key={idx}
-          style={{
-            margin: "0 0 20px",
-            paddingLeft: 20,
-            display: "flex",
-            flexDirection: "column",
-            gap: 10,
-          }}
-        >
-          {block.items.map((item, i) => (
-            <li key={i} style={{ fontSize: "var(--text-sm)", lineHeight: 1.7, color: "var(--text-secondary)" }}>
-              {item}
-            </li>
-          ))}
-        </ol>
-      );
-    case "callout":
-      return (
-        <div
-          key={idx}
-          style={{
-            background: "var(--bg-subtle)",
-            border: "1px solid var(--border-strong)",
-            borderRadius: "var(--radius-md)",
-            padding: "16px 20px",
-            margin: "24px 0",
-          }}
-        >
-          <p style={{ fontSize: "var(--text-sm)", lineHeight: 1.7, color: "var(--text-secondary)", margin: 0 }}>
-            {block.text}
-          </p>
-        </div>
-      );
-    default:
-      return null;
+  try {
+    const date = new Date(dateStr + "T00:00:00");
+    return date.toLocaleDateString(locale === "fr" ? "fr-FR" : "en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  } catch {
+    return dateStr;
   }
 }
 
 export default function BlogPost({ params }: BlogPostPageProps) {
-  const { locale } = useLocale();
-  const lang: "en" | "fr" = locale?.toLowerCase().startsWith("fr") ? "fr" : "en";
   const slug = params?.slug ?? "";
   const post = getBlogPostByEitherSlug(slug);
 
   if (!post) return <NotFound />;
+
+  const { locale } = useLocale();
+  const lang: "en" | "fr" =
+    post.slug.fr === slug
+      ? "fr"
+      : post.slug.en === slug
+      ? "en"
+      : locale?.toLowerCase().startsWith("fr")
+      ? "fr"
+      : "en";
 
   const canonical = `${BASE_URL}/${lang}/blog/${post.slug[lang]}`;
   const altLang: "en" | "fr" = lang === "fr" ? "en" : "fr";
@@ -150,7 +57,12 @@ export default function BlogPost({ params }: BlogPostPageProps) {
     datePublished: post.publishedAt,
     dateModified: post.publishedAt,
     author: { "@type": "Organization", name: "EverydayTools Hub", url: BASE_URL },
-    publisher: { "@type": "Organization", name: "EverydayTools Hub", url: BASE_URL, logo: { "@type": "ImageObject", url: `${BASE_URL}/favicon.svg` } },
+    publisher: {
+      "@type": "Organization",
+      name: "EverydayTools Hub",
+      url: BASE_URL,
+      logo: { "@type": "ImageObject", url: `${BASE_URL}/favicon.svg` },
+    },
     mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
     inLanguage: lang === "fr" ? "fr-FR" : "en-US",
     keywords: post.keywords[lang].join(", "),
@@ -160,7 +72,6 @@ export default function BlogPost({ params }: BlogPostPageProps) {
   const homeLabel = lang === "fr" ? "Accueil" : "Home";
   const blogLabel = "Blog";
   const ctaLabel = post.relatedToolLabel[lang];
-  const toolPath = `/${post.relatedToolSlug}`;
 
   return (
     <>
@@ -188,92 +99,78 @@ export default function BlogPost({ params }: BlogPostPageProps) {
         <script type="application/ld+json">{JSON.stringify(ARTICLE_SCHEMA)}</script>
       </Helmet>
 
-      <div className="container-wide" style={{ paddingTop: 40, paddingBottom: 80 }}>
-        {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 32, fontSize: "var(--text-xs)", color: "var(--text-tertiary)", flexWrap: "wrap" }}>
-          <Link href="/" style={{ color: "var(--text-tertiary)", textDecoration: "none" }}>
+      {/* Reading Progress Indicator */}
+      <BlogProgressBar />
+
+      <div className="container-wide py-8 sm:py-12">
+        {/* Breadcrumb Navigation */}
+        <nav
+          aria-label="Breadcrumb"
+          className="flex items-center gap-2 mb-8 text-xs text-[var(--text-tertiary)] flex-wrap"
+        >
+          <Link href="/" className="hover:text-[var(--text-primary)] transition-colors">
             {homeLabel}
           </Link>
-          <span>›</span>
-          <Link href={`/${lang}/blog`} style={{ color: "var(--text-tertiary)", textDecoration: "none" }}>
+          <span aria-hidden="true" className="opacity-50">›</span>
+          <Link href={`/${lang}/blog`} className="hover:text-[var(--text-primary)] transition-colors">
             {blogLabel}
           </Link>
-          <span>›</span>
-          <span style={{ color: "var(--text-primary)" }}>{post.title[lang]}</span>
+          <span aria-hidden="true" className="opacity-50">›</span>
+          <span className="text-[var(--text-primary)] font-medium truncate max-w-[260px] sm:max-w-md">
+            {post.title[lang]}
+          </span>
         </nav>
 
-        {/* Header */}
-        <header style={{ marginBottom: 40 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: "var(--text-xs)", color: "var(--text-tertiary)", fontFamily: "var(--font-mono)", marginBottom: 16 }}>
+        {/* Editorial Header */}
+        <header className="mb-12 max-w-3xl">
+          <div className="flex items-center gap-2 text-xs font-mono text-[var(--text-tertiary)] mb-4">
             <time dateTime={post.publishedAt}>{formatDate(post.publishedAt, lang)}</time>
             <span>·</span>
-            <span>{post.readingMinutes} {readLabel}</span>
+            <span>
+              {post.readingMinutes} {readLabel}
+            </span>
           </div>
-          <PageTitle style={{ marginBottom: 16 }}>{post.title[lang]}</PageTitle>
-          <PageSubtitle>{post.description[lang]}</PageSubtitle>
+          <h1 className="font-display text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-[var(--text-primary)] leading-[1.18] mb-4">
+            {post.title[lang]}
+          </h1>
+          <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed">
+            {post.description[lang]}
+          </p>
         </header>
 
-        {/* CTA — try the tool */}
-        <Link href={toolPath} style={{ textDecoration: "none", display: "block", marginBottom: 40 }}>
-          <div
-            style={{
-              background: "var(--accent)",
-              color: "var(--accent-text)",
-              padding: "14px 24px",
-              borderRadius: "var(--radius-md)",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              fontFamily: "var(--font-ui)",
-              fontSize: "var(--text-sm)",
-              fontWeight: 500,
-              transition: "opacity 120ms ease",
-            }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = "0.87"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
-          >
-            {ctaLabel} →
-          </div>
-        </Link>
+        {/* Asymmetrical Studio Layout */}
+        <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_280px] gap-12 items-start">
+          {/* Main Reading Column */}
+          <main className="min-w-0 max-w-2xl">
+            <BlogContentRenderer blocks={post.content[lang]} />
 
-        {/* Article content */}
-        <article>
-          {post.content[lang].map((block, idx) => renderBlock(block, idx))}
-        </article>
-
-        {/* Bottom CTA */}
-        <div
-          style={{
-            marginTop: 56,
-            paddingTop: 40,
-            borderTop: "1px solid var(--border)",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            gap: 12,
-          }}
-        >
-          <Link href={toolPath} style={{ textDecoration: "none" }}>
-            <div
-              style={{
-                background: "var(--accent)",
-                color: "var(--accent-text)",
-                padding: "14px 24px",
-                borderRadius: "var(--radius-md)",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                fontFamily: "var(--font-ui)",
-                fontSize: "var(--text-sm)",
-                fontWeight: 500,
-                transition: "opacity 120ms ease",
-              }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = "0.87"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
-            >
-              {ctaLabel} →
+            {/* Bottom Conversion Banner Card */}
+            <div className="mt-12">
+              <BlogToolCard
+                toolSlug={post.relatedToolSlug}
+                label={ctaLabel}
+                lang={lang}
+                variant="banner"
+                title={post.title[lang]}
+                description={post.description[lang]}
+              />
             </div>
-          </Link>
+
+            {/* Recommended Articles Grid */}
+            <BlogRelatedPosts currentSlug={slug} lang={lang} />
+          </main>
+
+          {/* Sticky Desktop Sidebar */}
+          <aside className="hidden lg:block sticky top-24 self-start space-y-8">
+            <BlogToc blocks={post.content[lang]} lang={lang} />
+            <BlogToolCard
+              toolSlug={post.relatedToolSlug}
+              label={ctaLabel}
+              lang={lang}
+              variant="sidebar"
+              title={ctaLabel}
+            />
+          </aside>
         </div>
       </div>
     </>

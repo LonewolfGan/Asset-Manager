@@ -81,9 +81,9 @@ export function BlogRelatedPosts({
 
           return (
             <Link key={slug} href={href} className="group block focus:outline-none">
-              <article
+              <div
                 data-testid="blog-related-post-card"
-                className="h-full rounded-xl p-5 border border-zinc-200/80 dark:border-white/10 bg-zinc-50/60 dark:bg-zinc-900/40 hover:border-[var(--accent)] hover:shadow-xs transition-all duration-150 flex flex-col justify-between gap-3"
+                className="h-full rounded-xl p-5 border border-zinc-200/80 dark:border-white/10 bg-zinc-50/60 dark:bg-zinc-900/40 hover:border-[var(--accent)] hover:shadow-xs transition-[border-color,box-shadow] duration-150 flex flex-col justify-between gap-3"
               >
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 font-mono text-[11px] text-[var(--text-tertiary)]">
@@ -100,7 +100,7 @@ export function BlogRelatedPosts({
                   <span>{lang === "fr" ? "Lire" : "Read"}</span>
                   <span className="transition-transform duration-150 group-hover:translate-x-0.5">→</span>
                 </div>
-              </article>
+              </div>
             </Link>
           );
         })}
