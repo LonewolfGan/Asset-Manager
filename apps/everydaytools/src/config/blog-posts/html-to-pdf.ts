@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postHtmlToPdf: BlogPost = {
+  slug: {
+    en: "how-to-convert-html-to-pdf",
+    fr: "comment-convertir-html-en-pdf",
+  },
+  title: {
+    en: "How to Convert HTML Webpages and Code to Formatted PDF",
+    fr: "Comment convertir une page HTML ou du code en document PDF",
+  },
+  description: {
+    en: "Convert HTML code, web receipts, and online articles into print-ready PDF documents with accurate CSS styling, custom margins, and page breaks.",
+    fr: "Convertissez du code HTML, des factures web et des articles en documents PDF prêts à imprimer avec styles CSS et sauts de page soignés.",
+  },
+  keywords: {
+    en: ["html to pdf","convert html to pdf","html webpage to pdf","render html as pdf"],
+    fr: ["html en pdf","convertir html en pdf","page web en pdf","imprimer html en pdf"],
+  },
+  publishedAt: "2026-04-04",
+  category: "documents",
+  readingMinutes: 5,
+  relatedToolSlug: "html-to-pdf",
+  relatedToolLabel: { en: "HTML to PDF", fr: "HTML en PDF" },
+  content: {
+    en: [
+      { type: "p", text: "Web receipts, digital invoices, and online documentation often need to be saved as durable, non-editable PDF files for accounting records or legal archiving. Converting HTML to PDF captures web styling, typography, and images into a paginated document." },
+      { type: "h2", text: "Why convert HTML to PDF instead of browser print" },
+      { type: "p", text: "Standard browser print-to-PDF often clips table margins, drops background colors, and prints unwanted website URLs and page headers. A dedicated HTML-to-PDF engine renders clean, publication-quality documents." },
+      { type: "ul", items: [
+        "Respects CSS print media rules and background color fills accurately",
+        "Applies precise margins and prevents orphaned headings across page breaks",
+        "Packages all web fonts and images directly into a standalone PDF container",
+      ]},
+      { type: "h2", text: "Step-by-step: how to convert HTML to PDF" },
+      { type: "ol", items: [
+        "Open the HTML to PDF tool in your browser with zero registration needed.",
+        "Upload your .html file or paste your HTML and CSS markup into the editor.",
+        "Preview the rendered page to check formatting, tables, and image scaling.",
+        "Click Convert to PDF to generate a print-standard PDF document.",
+        "Download your PDF file immediately.",
+      ]},
+      { type: "callout", text: "Rendering runs inside an isolated ephemeral workspace and is purged automatically upon completion. No files or HTML code are stored on our servers." },
+      { type: "h2", text: "Tips for pixel-perfect PDF rendering" },
+      { type: "ul", items: [
+        "Use standard page break CSS rules (page-break-before: always) between major sections",
+        "Specify font sizes in points (pt) or pixels (px) rather than viewport units for print predictability",
+        "Ensure remote image assets use HTTPS URLs for reliable loading during rendering",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Does the converter support custom CSS stylesheets?" },
+      { type: "p", text: "Yes. Inline styles, embedded style blocks, and standard CSS rules are fully rendered by the engine." },
+      { type: "h3", text: "Are clickable hyperlinks preserved in the PDF?" },
+      { type: "p", text: "Yes. Anchor tags (a href) remain live and clickable in the generated PDF document." },
+      { type: "h3", text: "Can I set custom page margins and orientation?" },
+      { type: "p", text: "Yes. You can configure portrait or landscape mode and customize margin spacing before generating your file." },
+    ],
+    fr: [
+      { type: "p", text: "Les reçus en ligne, factures électroniques et comptes rendus web doivent fréquemment être archivés sous forme de fichiers PDF pérennes pour la comptabilité ou la conformité légale. Convertir du HTML en PDF fige la présentation web dans un document paginé impeccable." },
+      { type: "h2", text: "Pourquoi préférer un convertisseur dédié à l'impression navigateur" },
+      { type: "p", text: "La commande Imprimer en PDF des navigateurs masque souvent les fonds de couleur, coupe les tableaux et ajoute des URL disgracieuses en marge. Un moteur spécialisé assure un rendu fidèle de qualité pré-presse." },
+      { type: "ul", items: [
+        "Restitue fidèlement les styles CSS, les couleurs d'arrière-plan et les bordures",
+        "Applique des marges d'impression précises et évite la coupure de titres en bas de page",
+        "Intègre les polices web et les graphismes dans un conteneur PDF autonome",
+      ]},
+      { type: "h2", text: "Guide pas à pas : convertir du HTML en PDF" },
+      { type: "ol", items: [
+        "Accédez à l'outil HTML en PDF dans votre navigateur sans créer de compte.",
+        "Déposez votre fichier .html ou collez votre code balisé dans l'éditeur.",
+        "Visualisez l'aperçu direct pour contrôler les tableaux et l'échelle des images.",
+        "Cliquez sur Convertir en PDF pour générer votre document imprimable.",
+        "Téléchargez immédiatement votre fichier PDF finalisé.",
+      ]},
+      { type: "callout", text: "Le traitement est exécuté dans un environnement temporaire sécurisé avec suppression automatique immédiate de vos données." },
+      { type: "h2", text: "Conseils pour un rendu graphique soigné" },
+      { type: "ul", items: [
+        "Utiliser la directive CSS page-break-before: always pour aérer les grands chapitres",
+        "Définir les tailles de police en points (pt) pour une meilleure prévisibilité à l'impression",
+        "S'assurer que les images externes utilisent des liens HTTPS fiables",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Le convertisseur prend-il en charge le CSS personnalisé ?" },
+      { type: "p", text: "Oui. Les feuilles de style intégrées et styles inline sont fidèlement interprétés par le moteur de rendu." },
+      { type: "h3", text: "Les liens hypertextes restent-ils cliquables ?" },
+      { type: "p", text: "Oui. Les balises a href sont préservées sous forme de liens cliquables actifs dans le PDF généré." },
+      { type: "h3", text: "Peut-on choisir l'orientation portrait ou paysage ?" },
+      { type: "p", text: "Oui. Vous pouvez sélectionner l'orientation et ajuster les marges périphériques selon vos préférences." },
+    ],
+  },
+};

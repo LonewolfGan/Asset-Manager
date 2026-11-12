@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postExcelToPdf: BlogPost = {
+  slug: {
+    en: "how-to-convert-excel-to-pdf",
+    fr: "comment-convertir-excel-en-pdf",
+  },
+  title: {
+    en: "How to Convert Excel Spreadsheets to Formatted PDF",
+    fr: "Comment convertir un tableur Excel en document PDF",
+  },
+  description: {
+    en: "Convert Microsoft Excel (.xlsx, .xls) sheets into professional PDF reports with fit-to-page scaling and printable margins.",
+    fr: "Convertissez des feuilles Excel (.xlsx, .xls) en rapports PDF professionnels avec ajustement automatique à la page et marges d'impression.",
+  },
+  keywords: {
+    en: ["excel to pdf","convert xlsx to pdf","spreadsheet to pdf","print excel as pdf"],
+    fr: ["excel en pdf","convertir xlsx en pdf","tableur en pdf","imprimer feuille excel en pdf"],
+  },
+  publishedAt: "2026-04-14",
+  category: "documents",
+  readingMinutes: 5,
+  relatedToolSlug: "excel-to-pdf",
+  relatedToolLabel: { en: "Excel to PDF", fr: "Excel en PDF" },
+  content: {
+    en: [
+      { type: "p", text: "Sharing raw Excel workbooks with clients or executives risks accidental formula tampering, broken cell references, and chaotic page breaks when printed. Converting spreadsheets into standardized PDF documents freezes financial figures and table layouts permanently." },
+      { type: "h2", text: "Why convert spreadsheets to PDF before sharing" },
+      { type: "p", text: "PDF formats ensure that wide data tables, accounting ledgers, and inventory balances fit predictably onto standard paper dimensions without horizontal splitting." },
+      { type: "ul", items: [
+        "Locks cell calculations and formulas against accidental modification",
+        "Applies fit-to-page scaling so wide columns do not spill over onto orphaned pages",
+        "Ensures universal readability on iPhones, Androids, and tablets without Excel installed",
+      ]},
+      { type: "h2", text: "Step-by-step: how to convert Excel to PDF" },
+      { type: "ol", items: [
+        "Open the Excel to PDF tool in your browser with zero registration needed.",
+        "Upload your .xlsx or .xls workbook: files up to 50 MB are supported.",
+        "The engine computes table widths, gridlines, and page orientation automatically.",
+        "Click Convert to compile a publication-grade PDF document.",
+        "Download your formatted PDF report immediately.",
+      ]},
+      { type: "callout", text: "Financial conversions execute in an isolated ephemeral workspace with zero permanent storage and automatic deletion upon completion." },
+      { type: "h2", text: "Best practices for spreadsheet printing" },
+      { type: "ul", items: [
+        "Select landscape orientation for wide balance sheets with more than eight columns",
+        "Verify that gridlines are enabled if rows require easy horizontal tracking",
+        "Check that summary totals and signature blocks appear on the final page cleanly",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Are multiple sheets converted into separate pages?" },
+      { type: "p", text: "Yes. Each active worksheet within your Excel workbook is rendered sequentially into matching PDF pages." },
+      { type: "h3", text: "Does it support .xls and .xlsx files?" },
+      { type: "p", text: "Yes. Both legacy .xls workbooks and modern .xlsx files are fully supported." },
+      { type: "h3", text: "Will my hidden formulas and sheet comments remain confidential?" },
+      { type: "p", text: "Yes. PDF only renders visible calculated values. Hidden cell formulas and background macro code are discarded." },
+    ],
+    fr: [
+      { type: "p", text: "Partager un classeur Excel brut avec des clients ou une direction expose vos formules à des modifications involontaires et engendre des impressions chaotiques. Convertir un tableur en document PDF fige les bilans financiers et la mise en page de façon immuable." },
+      { type: "h2", text: "Pourquoi convertir vos feuilles Excel en PDF" },
+      { type: "p", text: "Le format PDF garantit que les tableaux de données larges et les grands livres comptables s'ajustent proprement aux dimensions du papier d'impression sans débordement." },
+      { type: "ul", items: [
+        "Protège les calculs et formules contre toute altération accidentelle",
+        "Ajuste automatiquement la largeur des colonnes pour éviter de couper les tableaux en deux",
+        "Garantit une lecture fluide sur smartphone et tablette sans nécessiter Excel",
+      ]},
+      { type: "h2", text: "Guide pas à pas : convertir un classeur Excel en PDF" },
+      { type: "ol", items: [
+        "Accédez à l'outil Excel en PDF dans votre navigateur sans créer de compte.",
+        "Déposez votre fichier .xlsx ou .xls (fichiers acceptés jusqu'à 50 Mo).",
+        "Le système ajuste les dimensions de grille et l'orientation de page.",
+        "Cliquez sur Convertir pour générer votre document PDF haute fidélité.",
+        "Téléchargez immédiatement votre rapport prêt à être partagé.",
+      ]},
+      { type: "callout", text: "Le traitement est réalisé au sein d'un environnement temporaire sécurisé avec suppression automatique immédiate de vos données comptables." },
+      { type: "h2", text: "Conseils pour une mise en page comptable optimale" },
+      { type: "ul", items: [
+        "Privilégier l'orientation paysage pour les bilans comportant de nombreuses colonnes",
+        "Activer le quadrillage si votre tableau exige un repérage visuel ligne par ligne",
+        "Vérifier que les totaux généraux et blocs de signature s'affichent sur la dernière page",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Les différents onglets du classeur sont-ils convertis ?" },
+      { type: "p", text: "Oui. Chaque feuille de calcul active de votre classeur Excel devient une page dédiée dans le document PDF final." },
+      { type: "h3", text: "Les anciens fichiers .xls sont-ils compatibles ?" },
+      { type: "p", text: "Oui. Le convertisseur prend en charge les anciens classeurs .xls ainsi que le standard moderne .xlsx." },
+      { type: "h3", text: "Mes formules cachées restent-elles confidentielles ?" },
+      { type: "p", text: "Oui. Le PDF n'affiche que les valeurs résultantes. Les formules internes et macros ne sont jamais exportées." },
+    ],
+  },
+};

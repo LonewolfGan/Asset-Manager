@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postPdfRotate: BlogPost = {
+  slug: {
+    en: "how-to-rotate-pdf-pages-permanently",
+    fr: "comment-faire-pivoter-pages-pdf-definitivement",
+  },
+  title: {
+    en: "How to Rotate PDF Pages Permanently (Online & Free)",
+    fr: "Comment faire pivoter les pages d'un PDF définitivement",
+  },
+  description: {
+    en: "Learn how to rotate individual pages or entire PDF documents 90, 180, or 270 degrees. Save orientation permanently without desktop software. Complete guide.",
+    fr: "Découvrez comment faire pivoter des pages ou un document PDF entier à 90, 180 ou 270 degrés. Enregistrez l'orientation sans logiciel lourd. Guide complet.",
+  },
+  keywords: {
+    en: ["rotate pdf", "turn pdf pages", "pdf orientation", "permanent pdf rotate", "fix sideways pdf"],
+    fr: ["pivoter pdf", "tourner page pdf", "orientation pdf", "rotation pdf definitive", "redresser pdf"],
+  },
+  publishedAt: "2026-03-10",
+  category: "pdf",
+  readingMinutes: 5,
+  relatedToolSlug: "pdf-rotate",
+  relatedToolLabel: { en: "Rotate PDF", fr: "Pivoter un PDF" },
+  content: {
+    en: [
+      { type: "p", text: "Scanned paper forms and smartphone captures frequently end up sideways or upside down. While built-in desktop viewers let you rotate your screen preview, closing the window immediately loses your adjustments. To fix this permanently, the internal rotation dictionary of the PDF file must be rewritten." },
+      { type: "h2", text: "Why default viewers do not save page rotation" },
+      { type: "p", text: "Most PDF preview applications treat rotation as a local viewing preference rather than an edit. When you rotate a page inside a browser tab or basic viewer, the software only alters the viewport rendering angle without modifying the underlying PDF binary stream." },
+      { type: "ul", items: [
+        "Recipients opening your document on mobile devices still see inverted pages",
+        "Office printers ignore viewport settings and print pages sideways",
+        "Automated OCR scanners fail to parse text oriented in non-standard directions",
+      ]},
+      { type: "h2", text: "Step-by-step: how to rotate PDF pages permanently" },
+      { type: "ol", items: [
+        "Open the Rotate PDF tool in your web browser with no registration needed.",
+        "Upload your PDF document: files up to 50 MB are supported.",
+        "Use the thumbnail grid to rotate single pages or click Rotate All for global 90, 180, or 270-degree shifts.",
+        "Click Save & Download to write permanent rotation flags into the document.",
+        "Save your corrected PDF file instantly.",
+      ]},
+      { type: "callout", text: "Every rotation job runs in an isolated ephemeral workspace and is automatically purged upon completion. Zero documents are permanently stored." },
+      { type: "h2", text: "Handling mixed portrait and landscape files" },
+      { type: "ul", items: [
+        "Rotate wide horizontal spreadsheets to landscape while keeping text pages in portrait",
+        "Double-check page numbers before reorienting documents with alternating margins",
+        "Ensure high-resolution legal scans retain their original vector sharpness after orientation fixes",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Does rotating PDF pages degrade document visual quality?" },
+      { type: "p", text: "No. Rotating updates mathematical orientation metadata without re-compressing graphics. Text remains crisp and images preserve their original clarity." },
+      { type: "h3", text: "Can I rotate just one page in a hundred-page contract?" },
+      { type: "p", text: "Yes. Our visual grid allows you to select and rotate individual problem pages without affecting the rest of your document." },
+      { type: "h3", text: "Will my rotated PDF print correctly on standard office printers?" },
+      { type: "p", text: "Yes. Because rotation is written permanently into the file structure, all printers and PDF readers render the new orientation automatically." },
+    ],
+    fr: [
+      { type: "p", text: "Les documents numérisés et photos de reçus se retrouvent fréquemment orientés de côté ou inversés. Si les visualiseurs permettent souvent de pivoter l'affichage à l'écran, fermer la fenêtre réinitialise l'orientation d'origine. Pour une correction définitive, il est nécessaire de modifier la structure interne du fichier." },
+      { type: "h2", text: "Pourquoi les visualiseurs simples n'enregistrent pas la rotation" },
+      { type: "p", text: "Les visionneuses séparent l'angle de visionnage de la structure binaire. Faire pivoter une page dans un navigateur ne modifie que le rendu local sans écrire la nouvelle métadonnée d'orientation dans le fichier." },
+      { type: "ul", items: [
+        "Vos correspondants sur smartphone continuent de voir des pages à l'envers",
+        "Les imprimantes ignorent les réglages d'écran et impriment de travers",
+        "Les systèmes de reconnaissance optique (OCR) échouent à extraire le texte orienté à 90 degrés",
+      ]},
+      { type: "h2", text: "Guide pas à pas : faire pivoter vos pages PDF durablement" },
+      { type: "ol", items: [
+        "Accédez à l'outil Pivoter PDF sans aucune création de compte.",
+        "Déposez votre document PDF : les fichiers jusqu'à 50 Mo sont pris en charge.",
+        "Pivotez des pages individuelles via les vignettes ou appliquez une rotation globale à 90, 180 ou 270 degrés.",
+        "Cliquez sur Enregistrer pour inscrire définitivement l'orientation dans le fichier.",
+        "Téléchargez immédiatement votre PDF redressé.",
+      ]},
+      { type: "callout", text: "Les traitements s'effectuent au sein d'environnements éphémères isolés et sont supprimés automatiquement dès la fin de l'opération." },
+      { type: "h2", text: "Gérer les documents combinant portrait et paysage" },
+      { type: "ul", items: [
+        "Conserver les pages de texte en portrait tout en orientant les tableaux larges en paysage",
+        "Vérifier l'ordre des pages avant de redresser des documents recto-verso",
+        "Préserver la netteté vectorielle d'origine sur les plans d'architecte et contrats officiels",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "La rotation dégrade-t-elle la qualité d'image ou du texte ?" },
+      { type: "p", text: "Non. L'outil réécrit l'indicateur d'orientation sans compresser les données. Le texte vectoriel et les photos conservent leur résolution intégrale." },
+      { type: "h3", text: "Puis-je pivoter une seule page dans un gros dossier ?" },
+      { type: "p", text: "Oui. Vous pouvez cibler précisément les pages isolées à corriger sans toucher au reste du document." },
+      { type: "h3", text: "Le document sera-t-il bien orienté à l'impression ?" },
+      { type: "p", text: "Oui. La rotation étant enregistrée au niveau structurel, toute imprimante et tout lecteur PDF appliqueront l'orientation exacte." },
+    ],
+  },
+};

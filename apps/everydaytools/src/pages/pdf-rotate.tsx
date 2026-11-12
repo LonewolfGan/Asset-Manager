@@ -238,6 +238,7 @@ export default function PdfRotate() {
               <div key="processing" className="w-full py-20 flex justify-center">
                 <ProcessingAperture
                   formatIcon={PDF_FORMAT.icon}
+                  formatColor={PDF_FORMAT.color}
                   formatAlt="PDF"
                   stageLabel={isFr ? 'Rotation en cours' : 'Rotating in progress'}
                   title={

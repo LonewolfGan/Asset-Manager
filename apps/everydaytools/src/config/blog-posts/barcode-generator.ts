@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postBarcodeGenerator: BlogPost = {
+  slug: {
+    en: "how-to-use-barcode-generator",
+    fr: "comment-utiliser-barcode-generator",
+  },
+  title: {
+    en: "How to Generate Retail and Industrial Barcodes (EAN, UPC, Code 128)",
+    fr: "Comment Generer des Codes-Barres Retail et Industriels (EAN, Code 128)",
+  },
+  description: {
+    en: "Generate print-ready 1D barcodes for retail packaging, warehousing, and inventory tracking with automatic checksum verification.",
+    fr: "Creez des codes-barres 1D prets a l impression pour emballages, inventaires et logistique avec calcul de somme de controle.",
+  },
+  keywords: {
+    en: ["barcode generator","barcode-generator online","free barcode-generator","developer tool barcode-generator"],
+    fr: ["barcode generator","barcode-generator en ligne","outil barcode-generator gratuit","utilitaire barcode-generator"],
+  },
+  publishedAt: "2026-03-25",
+  category: "security",
+  readingMinutes: 4,
+  relatedToolSlug: "barcode-generator",
+  relatedToolLabel: { en: "Barcode Generator", fr: "Barcode Generator" },
+  content: {
+    en: [
+      { type: "p", text: "Generate print-ready 1D barcodes for retail packaging, warehousing, and inventory tracking with automatic checksum verification." },
+      { type: "h2", text: "Linear 1D Symbologies and Modulo Checksum Digits" },
+      { type: "p", text: "Linear barcodes represent alphanumeric sequences using precise line widths and spacing. Different industries require distinct symbologies: retail uses EAN-13 and UPC-A with strict modulo-10 check digits, while logistics and shipping rely on high-density Code 128." },
+      { type: "ul", items: ["Supports EAN-13, EAN-8, UPC-A, Code 128, Code 39, and ITF symbologies.","Automatic calculation and validation of mandatory modulo checksum digits.","Export as infinite vector SVG or high-DPI PNG for label printing."] },
+      { type: "h2", text: "Step-by-step practical guide" },
+      { type: "ol", items: ["Select your barcode symbology (e.g., Code 128 for inventory or EAN-13 for retail).","Enter your product code or alphanumeric serial number.","Let the tool validate or auto-compute the trailing checksum digit.","Customize bar height, bar width, and display of human-readable text.","Download your barcode as a vector SVG or print-ready PNG."] },
+      { type: "callout", text: "Privacy guarantee: Barcodes are generated in client memory with zero asset tracking or external transmission." },
+      { type: "h2", text: "Pro tips and best practices" },
+      { type: "ul", items: ["Always use vector SVG format when sending packaging artwork to commercial printers to guarantee sharp edges.","Maintain clean white quiet zones on both sides of the barcode to ensure laser scanners read it reliably."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "What is the difference between EAN-13 and UPC-A?" },
+      { type: "p", text: "UPC-A is a 12-digit standard primarily used in the United States, while EAN-13 is a 13-digit standard used worldwide." },
+      { type: "h3", text: "Can Code 128 encode letters and symbols?" },
+      { type: "p", text: "Yes. Code 128 is a high-density alphanumeric barcode capable of encoding the entire 128-character ASCII table." },
+      { type: "h3", text: "Do I need an official GS1 prefix to sell products in stores?" },
+      { type: "p", text: "Yes. Commercial retail stores require officially registered GS1 company prefixes for barcode assignment." },
+    ],
+    fr: [
+      { type: "p", text: "Creez des codes-barres 1D prets a l impression pour emballages, inventaires et logistique avec calcul de somme de controle." },
+      { type: "h2", text: "Symbologies Lineaires 1D et Calcul de Somme de Controle Modulo" },
+      { type: "p", text: "Les codes-barres lineaires traduisent des caracteres par des largeurs de barres et d espaces calibrees. Le commerce utilise les standards EAN-13 et UPC-A avec cle de controle modulo-10, tandis que la logistique s appuie sur le Code 128." },
+      { type: "ul", items: ["Supporte les symbologies EAN-13, EAN-8, UPC-A, Code 128, Code 39 et ITF.","Calcul et validation automatiques de la cle de controle modulo obligatoire.","Export vectoriel SVG ou PNG haute resolution pour imprimantes thermiques d etiquettes."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Choisissez la symbologie (ex: Code 128 pour l inventaire ou EAN-13 pour la vente).","Saisissez votre code produit ou numero de serie alphanumerique.","Laissez l outil valider ou calculer automatiquement le chiffre de controle.","Ajustez la hauteur des barres et l affichage du texte lisible.","Telechargez votre code-barres en SVG vectoriel ou PNG haute definition."] },
+      { type: "callout", text: "Garantie de confidentialite : Vos codes sont generes localement sans transmission externe." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Utilisez toujours le format vectoriel SVG pour l impression de packaging afin de garantir des barres nettes.","Respectez des zones blanches de securite a gauche et a droite des barres pour un scan laser infaillible."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Quelle est la difference entre EAN-13 et UPC-A ?" },
+      { type: "p", text: "L UPC-A comporte 12 chiffres et s utilise surtout aux Etats-Unis, tandis que l EAN-13 a 13 chiffres est la norme mondiale." },
+      { type: "h3", text: "Le Code 128 peut-il encoder des lettres et symboles ?" },
+      { type: "p", text: "Oui. Le Code 128 est un format alphanumerique haute densite encodant l integralite des caracteres ASCII." },
+      { type: "h3", text: "Faut-il un identifiant GS1 officiel pour commercialiser en magasin ?" },
+      { type: "p", text: "Oui. La distribution commerciale impose des codes-barres officiellement enregistres aupres de l organisme GS1." },
+    ],
+  },
+};

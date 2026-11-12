@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postGifToPng: BlogPost = {
+  slug: {
+    en: "how-to-convert-gif-to-png",
+    fr: "comment-convertir-gif-to-png",
+  },
+  title: {
+    en: "How to Convert GIF to PNG for Crisp Static Images",
+    fr: "Comment Convertir GIF en PNG pour une Image Fixe Nette",
+  },
+  description: {
+    en: "Extract high-resolution static PNG frames from GIF files without dithering artifacts or color degradation.",
+    fr: "Extrayez des images PNG fixes haute resolution a partir de fichiers GIF sans artefact de tramage.",
+  },
+  keywords: {
+    en: ["gif to png","convert gif to png","gif-to-png converter online","free gif-to-png"],
+    fr: ["gif to png","convertir gif en png","convertisseur gif-to-png gratuit","outil gif-to-png"],
+  },
+  publishedAt: "2026-03-24",
+  category: "image",
+  readingMinutes: 4,
+  relatedToolSlug: "gif-to-png",
+  relatedToolLabel: { en: "GIF to PNG", fr: "GIF en PNG" },
+  content: {
+    en: [
+      { type: "p", text: "Extract high-resolution static PNG frames from GIF files without dithering artifacts or color degradation." },
+      { type: "h2", text: "Extracting Clean Master Frames from Legacy GIF" },
+      { type: "p", text: "GIF files frequently suffer from grainy dithering patterns due to their restricted 256-color palette. Converting a GIF to PNG recovers clean raster frames, enabling lossless archiving and high-fidelity editing." },
+      { type: "ul", items: ["Extracts individual keyframes or the first master frame with pixel accuracy.","Prevents secondary generation loss when editing GIF graphics in modern tools.","Full 24-bit/32-bit color reproduction for transparent or multi-layered assets."] },
+      { type: "h2", text: "Step-by-step conversion guide" },
+      { type: "ol", items: ["Upload your GIF file to the tool.","Choose to extract the first frame or every animation frame sequentially.","Process decoding to rasterize GIF palette frames into full-color PNG buffers.","Inspect the extracted frames in the viewer.","Download individual PNG files or the full frame archive."] },
+      { type: "callout", text: "Privacy guarantee: Files are processed in ephemeral memory sessions and wiped automatically." },
+      { type: "h2", text: "Pro tips for optimal results" },
+      { type: "ul", items: ["Great for capturing clean still memes or product illustrations from animated web GIFs.","PNG prevents the color degradation that occurs if you try to re-save frames back into GIF."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Can I extract all frames of an animated GIF at once?" },
+      { type: "p", text: "Yes. The batch frame extractor decomposes the entire animation into sequentially numbered PNG files." },
+      { type: "h3", text: "Will the resulting PNG have a transparent background?" },
+      { type: "p", text: "Yes. If the source GIF utilized transparency, it will be preserved cleanly in the exported PNG." },
+      { type: "h3", text: "Can I upscale the extracted frames?" },
+      { type: "p", text: "Yes. After converting to PNG, you can pass the images through our Image Upscale tool for higher resolution." },
+    ],
+    fr: [
+      { type: "p", text: "Extrayez des images PNG fixes haute resolution a partir de fichiers GIF sans artefact de tramage." },
+      { type: "h2", text: "Extraire une Image Maitresse Nette a partir d un Fichier GIF" },
+      { type: "p", text: "Les fichiers GIF souffrent d un tramage granuleux du a leur palette restreinte a 256 nuances. Convertir un GIF en PNG extrait une trame matricielle propre pour un archivage sans perte et une retouche optimale." },
+      { type: "ul", items: ["Extraction de chaque image cle ou de la premiere trame avec une precision chirurgicale.","Empeche toute perte cumulative lors de la retouche de graphismes GIF dans des outils recents.","Rendu des couleurs en 24-bit ou 32-bit pour les elements superposes ou transparents."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Chargez votre fichier GIF dans l application.","Choisissez d extraire la premiere image ou toutes les trames de l animation.","Lancez le decodage pour convertir la palette GIF en pixels PNG complets.","Examinez les trames extraites dans la galerie.","Telechargez vos fichiers PNG a l unite ou en archive complete."] },
+      { type: "callout", text: "Garantie de confidentialite : Vos fichiers sont traites en memoire volatile et purges immediatement." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Ideal pour capturer une photo fixe nette d un meme ou d une animation produit du web.","Le format PNG evite l appauvrissement des couleurs survenant lors d un reenregistrement en GIF."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Puis-je extraire toutes les images d un GIF anime en une seule fois ?" },
+      { type: "p", text: "Oui. L extracteur decompose l integralite de l animation en trames PNG numerotees chronologiquement." },
+      { type: "h3", text: "Le PNG obtenu conservera-t-il la transparence ?" },
+      { type: "p", text: "Oui. Si le GIF d origine comportait un fond transparent, celui-ci sera conserve dans le PNG." },
+      { type: "h3", text: "Puis-je agrandir la resolution des images extraites ?" },
+      { type: "p", text: "Oui. Une fois en PNG, vous pouvez utiliser notre outil Agrandir l Image pour multiplier sa definition." },
+    ],
+  },
+};

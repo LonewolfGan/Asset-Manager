@@ -10,9 +10,15 @@ import {
   Home,
   BlogIndex,
   BlogPost,
+  Changelog,
   Privacy,
   Terms,
   SecurityPage,
+  LegalNotice,
+  Cookies,
+  Contact,
+  ServerError,
+  AccessDenied,
   TOOL_COMPONENTS,
 } from "./tool-components";
 
@@ -59,6 +65,8 @@ export function AppRoutes() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/fr" component={Home} />
+      <Route path="/en" component={Home} />
 
       {/* Blog routes */}
       <Route path="/en/blog" component={BlogIndex} />
@@ -66,22 +74,62 @@ export function AppRoutes() {
       <Route path="/en/blog/:slug" component={BlogPost} />
       <Route path="/fr/blog/:slug" component={BlogPost} />
 
+      {/* Changelog routes */}
+      <Route path="/changelog" component={Changelog} />
+      <Route path="/en/changelog" component={Changelog} />
+      <Route path="/fr/changelog" component={Changelog} />
+
+      {/* Legal, Support & Static Essential Pages */}
+      <Route path="/contact" component={Contact} />
+      <Route path="/en/contact" component={Contact} />
+      <Route path="/fr/contact" component={Contact} />
+
+      <Route path="/privacy" component={Privacy} />
+      <Route path="/en/privacy" component={Privacy} />
+      <Route path="/fr/privacy" component={Privacy} />
+
+      <Route path="/terms" component={Terms} />
+      <Route path="/en/terms" component={Terms} />
+      <Route path="/fr/terms" component={Terms} />
+
+      <Route path="/security" component={SecurityPage} />
+      <Route path="/en/security" component={SecurityPage} />
+      <Route path="/fr/security" component={SecurityPage} />
+
+      <Route path="/legal-notice" component={LegalNotice} />
+      <Route path="/en/legal-notice" component={LegalNotice} />
+      <Route path="/fr/legal-notice" component={LegalNotice} />
+      <Route path="/mentions-legales" component={LegalNotice} />
+      <Route path="/fr/mentions-legales" component={LegalNotice} />
+      <Route path="/en/mentions-legales" component={LegalNotice} />
+
+      <Route path="/cookies" component={Cookies} />
+      <Route path="/en/cookies" component={Cookies} />
+      <Route path="/fr/cookies" component={Cookies} />
+      <Route path="/politique-cookies" component={Cookies} />
+      <Route path="/fr/politique-cookies" component={Cookies} />
+      <Route path="/en/politique-cookies" component={Cookies} />
+
+      <Route path="/403" component={AccessDenied} />
+      <Route path="/en/403" component={AccessDenied} />
+      <Route path="/fr/403" component={AccessDenied} />
+      <Route path="/access-denied" component={AccessDenied} />
+      <Route path="/en/access-denied" component={AccessDenied} />
+      <Route path="/fr/access-denied" component={AccessDenied} />
+
+      <Route path="/500" component={ServerError} />
+      <Route path="/en/500" component={ServerError} />
+      <Route path="/fr/500" component={ServerError} />
+
       {/* Locale-aware SEO routes */}
       <Route path="/en/:slug" component={LocaleToolRoute} />
       <Route path="/fr/:slug" component={LocaleToolRoute} />
       <Route path="/tools/:slug" component={LocaleToolRoute} />
 
-      <Route path="/break-test" component={lazy(() => import("@/pages/break-test"))} />
-
       {/* Dynamic Tools Routes mapped directly from TOOL_COMPONENTS registry */}
       {Object.entries(TOOL_COMPONENTS).map(([slug, Comp]) => (
         <Route key={slug} path={`/${slug}`} component={Comp} />
       ))}
-
-      {/* Legal & Static */}
-      <Route path="/privacy" component={Privacy} />
-      <Route path="/terms" component={Terms} />
-      <Route path="/security" component={SecurityPage} />
 
       <Route component={NotFound} />
     </Switch>

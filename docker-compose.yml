@@ -29,6 +29,7 @@ services:
       - LOG_LEVEL=info
       - LIBREOFFICE_RESTART_AFTER=50
       - LIBREOFFICE_AUTO_RESTART=true
+      - CHROMIUM_DENY_LIST=file:///.*|http://(169\.254\.169\.254|127\.|localhost).*
     ports:
       - "127.0.0.1:3000:3000"
     healthcheck:

@@ -41,7 +41,7 @@ export const tools = [
   {slug: 'pdf-to-image', title: 'PDF to Image', description: 'Exports each page of a PDF as a PNG or JPEG image. Useful for thumbnails, previews, or sharing individual pages without sending the whole file.', category: 'pdf', icon: FileImage, formats: ['PDF','PNG']},
   {slug: 'pdf-to-excel', title: 'PDF to Excel', description: 'Tries to pull tables out of a PDF and put them into an Excel spreadsheet. Works well on structured data; messier on scanned or oddly formatted PDFs.', category: 'pdf', icon: Table2, formats: ['PDF','XLSX']},
   {slug: 'reorder-pdf', title: 'Reorder PDF Pages', description: 'Lets you drag PDF pages into a new order and remove any you do not want. Download the rearranged result when done.', category: 'pdf', icon: GripVertical, formats: ['PDF']},
-  {slug: 'ocr', title: 'OCR — Image to Text', description: 'Reads text out of images and scanned documents using Tesseract.js. The recognition model runs entirely in your browser — no server involved.', category: 'pdf', icon: ScanText, formats: ['IMG','TXT']},
+  {slug: 'ocr', title: 'OCR — Image to Text', description: 'Reads text out of images and scanned documents using Tesseract.js with automatic cleanup and zero data retention.', category: 'pdf', icon: ScanText, formats: ['IMG','TXT']},
 
   // Word & Docs
   {slug: 'word-to-pdf', title: 'Word to PDF', description: 'Converts DOCX files to PDF in your browser. Useful for sharing documents that should look the same regardless of what software the recipient uses.', category: 'word', icon: FileDown, formats: ['DOCX','PDF']},

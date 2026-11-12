@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postJsonDiff: BlogPost = {
+  slug: {
+    en: "how-to-use-json-diff",
+    fr: "comment-utiliser-json-diff",
+  },
+  title: {
+    en: "How to Compare and Diff JSON Objects Semantically",
+    fr: "Comment Comparer et Différencier des Objets JSON",
+  },
+  description: {
+    en: "Inspect structural, value, and type differences between two JSON payloads with semantic tree visualization.",
+    fr: "Analysez les differences de structure, de valeurs et de types entre deux fichiers JSON avec vue comparative.",
+  },
+  keywords: {
+    en: ["json diff","json-diff online","free json-diff","developer tool json-diff"],
+    fr: ["json diff","json-diff en ligne","outil json-diff gratuit","utilitaire json-diff"],
+  },
+  publishedAt: "2026-03-25",
+  category: "security",
+  readingMinutes: 4,
+  relatedToolSlug: "json-diff",
+  relatedToolLabel: { en: "Json Diff", fr: "Json Diff" },
+  content: {
+    en: [
+      { type: "p", text: "Inspect structural, value, and type differences between two JSON payloads with semantic tree visualization." },
+      { type: "h2", text: "Semantic JSON Tree Comparison vs Line Diffs" },
+      { type: "p", text: "Traditional text diff tools fail on JSON because reordered keys or altered indentation trigger false positive change alerts. A semantic JSON diff compares the data models hierarchically, identifying true key additions, deletions, value modifications, and type mutations." },
+      { type: "ul", items: ["Semantic key comparison independent of property order or indentation differences.","Color-coded visual highlights for added (green), modified (yellow), and removed (red) nodes.","Type mismatch detection flagging string vs number mutations instantly."] },
+      { type: "h2", text: "Step-by-step practical guide" },
+      { type: "ol", items: ["Paste original baseline JSON in the left panel.","Paste the modified or incoming JSON in the right panel.","Click Compare to parse and build synchronized Abstract Syntax Trees.","Inspect highlighted nodes, modified values, and array index shifts.","Export or copy the JSON Patch (RFC 6902) delta."] },
+      { type: "callout", text: "Privacy guarantee: Comparison runs entirely in browser memory; API keys or customer payloads are never transmitted." },
+      { type: "h2", text: "Pro tips and best practices" },
+      { type: "ul", items: ["Enable Ignore Key Order to prevent irrelevant warnings when comparing API responses from different microservices.","Use the path copy button to quickly copy the JSONPath of any changed property into your clipboard."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "How does semantic JSON diffing differ from standard git diffs?" },
+      { type: "p", text: "Git compares raw text lines, whereas JSON diff compares data structures regardless of whitespace or property ordering." },
+      { type: "h3", text: "Can it detect type changes, like a string becoming an array?" },
+      { type: "p", text: "Yes. Type mutations are flagged specifically with high-visibility warnings to catch API breaking changes." },
+      { type: "h3", text: "Does it support deep nested arrays and objects?" },
+      { type: "p", text: "Yes. The recursive tree comparison traverses unlimited nesting depths with expandable tree nodes." },
+    ],
+    fr: [
+      { type: "p", text: "Analysez les differences de structure, de valeurs et de types entre deux fichiers JSON avec vue comparative." },
+      { type: "h2", text: "Comparaison Semantique d Arbre JSON contre Diffs Ligne par Ligne" },
+      { type: "p", text: "Les comparateurs de texte traditionnels echouent sur le JSON car un changement d ordre de clefs cree de fausses alertes. Un diff JSON semantique compare la structure des donnees et isole les veritables ajouts et modifications de valeurs." },
+      { type: "ul", items: ["Comparaison semantique des clefs independante de l ordre des proprietes ou de l indentation.","Surlignage colore pour les nœuds ajoutes (vert), modifies (jaune) et supprimes (rouge).","Detection des mutations de type identifiant immediatement le passage d un nombre a une chaine."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Collez le JSON de reference dans le panneau gauche.","Collez le JSON modifie dans le panneau droit.","Cliquez sur Comparer pour synchroniser les arbres syntaxiques.","Inspectez les nœuds colores, valeurs modifiees et deplacements de tableaux.","Copiez ou exportez le rapport des deltas au format JSON Patch (RFC 6902)."] },
+      { type: "callout", text: "Garantie de confidentialite : La comparaison est realisee en memoire locale sans envoi de vos donnees." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Activez Ignorer l ordre des clefs pour eliminer les fausses alertes entre differents microservices.","Utilisez le bouton de copie de chemin pour recuperer le JSONPath d une donnee modifiee."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "En quoi le diff semantique differe-t-il d un git diff standard ?" },
+      { type: "p", text: "Git compare des lignes de texte brut, alors que le diff JSON examine la structure reelle des donnees." },
+      { type: "h3", text: "Detecte-t-il les mutations de types de donnees ?" },
+      { type: "p", text: "Oui. Les variations de type (ex: nombre devenant chaine) sont signalees pour prevenir les ruptures d API." },
+      { type: "h3", text: "Prend-il en charge les objets et tableaux profondement imbriques ?" },
+      { type: "p", text: "Oui. L algorithme recursif explore toutes les profondeurs d imbrication avec des nœuds depliables." },
+    ],
+  },
+};

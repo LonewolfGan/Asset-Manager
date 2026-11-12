@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postDiffChecker: BlogPost = {
+  slug: {
+    en: "how-to-use-diff-checker",
+    fr: "comment-utiliser-diff-checker",
+  },
+  title: {
+    en: "How to Compare Text Differences with Inline and Side-by-Side Diffs",
+    fr: "Comment Comparer deux Textes avec Vue Diff Cote-a-Cote",
+  },
+  description: {
+    en: "Compare text, code, and documents using the Myers diff algorithm with side-by-side and unified character-level highlights.",
+    fr: "Comparez textes, codes et documents avec l algorithme de Myers en affichage cote-a-cote ou unifie.",
+  },
+  keywords: {
+    en: ["diff checker","diff-checker online","free diff-checker","developer tool diff-checker"],
+    fr: ["diff checker","diff-checker en ligne","outil diff-checker gratuit","utilitaire diff-checker"],
+  },
+  publishedAt: "2026-03-25",
+  category: "security",
+  readingMinutes: 4,
+  relatedToolSlug: "diff-checker",
+  relatedToolLabel: { en: "Diff Checker", fr: "Diff Checker" },
+  content: {
+    en: [
+      { type: "p", text: "Compare text, code, and documents using the Myers diff algorithm with side-by-side and unified character-level highlights." },
+      { type: "h2", text: "The Myers Diff Algorithm and Character-Level Precision" },
+      { type: "p", text: "Reviewing revisions between two versions of a document or source file requires pinpointing additions, deletions, and subtle character tweaks. The Myers diff algorithm computes the shortest edit script, rendering crystal-clear visual diffs without missing changes." },
+      { type: "ul", items: ["Side-by-side dual pane view and unified inline change view.","Character-level and word-level granular difference highlighting.","Configurable whitespace, case sensitivity, and line ending options."] },
+      { type: "h2", text: "Step-by-step practical guide" },
+      { type: "ol", items: ["Paste the original baseline text in the left editor.","Paste the revised or incoming text in the right editor.","Select view mode: Split Side-by-Side or Unified Inline.","Toggle Ignore Whitespace if formatting-only changes are cluttering the diff.","Inspect green additions, red deletions, and inline character modifications."] },
+      { type: "callout", text: "Privacy guarantee: Comparisons run in local client memory; confidential contracts or code are never transmitted." },
+      { type: "h2", text: "Pro tips and best practices" },
+      { type: "ul", items: ["Use the character-level highlight to spot single-letter typos or subtle punctuation changes quickly.","Toggle Ignore Case when comparing text transcribed across different software platforms."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "How does the tool handle large text files?" },
+      { type: "p", text: "The diff engine uses optimized Myers matrix traversal capable of comparing thousands of lines in milliseconds." },
+      { type: "h3", text: "Can I export a standard unified .patch file?" },
+      { type: "p", text: "Yes. You can copy the standard unified diff output compatible with patch and git apply commands." },
+      { type: "h3", text: "Can I compare code with syntax highlighting?" },
+      { type: "p", text: "Yes. The editor supports syntax highlighting for JavaScript, Python, HTML, CSS, and other major languages." },
+    ],
+    fr: [
+      { type: "p", text: "Comparez textes, codes et documents avec l algorithme de Myers en affichage cote-a-cote ou unifie." },
+      { type: "h2", text: "L Algorithme de Diff de Myers et la Precision au Caractere" },
+      { type: "p", text: "Comparer les modifications entre deux versions d un document exige d identifier chaque ajout, suppression et retouche de caractere. L algorithme de Myers calcule le chemin de difference minimal pour un surlignage optique irreprochable." },
+      { type: "ul", items: ["Affichage scinde en deux volets et vue unifiee en ligne.","Surlignage granulaire a l echelle du mot et du caractere pres.","Options pour ignorer les espaces, la casse ou les retours a la ligne."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Collez le texte d origine dans le volet de gauche.","Collez le texte modifie dans le volet de droite.","Choisissez le mode de vue : Scinde cote-a-cote ou Unifie.","Activez Ignorer les espaces pour masquer les ecarts de tabulation.","Inspectez les ajouts en vert, retraits en rouge et modifications de caracteres."] },
+      { type: "callout", text: "Garantie de confidentialite : Les comparaisons tournent en memoire locale ; aucun contrat n est envoye." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Utilisez le surlignage par caractere pour repérer immediatement les coquilles ou ponctuation modifiee.","Activez Ignorer la casse lors de la comparaison de textes transcrits entre logiciels differents."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Comment l outil gere-t-il des textes de milliers de lignes ?" },
+      { type: "p", text: "Le moteur applique un parcours matriciel optimise capable de comparer des milliers de lignes en millisecondes." },
+      { type: "h3", text: "Puis-je exporter un fichier de patch unifie ?" },
+      { type: "p", text: "Oui. Vous pouvez copier le diff au format standard compatible avec les commandes git apply et patch." },
+      { type: "h3", text: "La coloration syntaxique est-elle activee sur le code ?" },
+      { type: "p", text: "Oui. L editeur prend en charge la coloration syntaxique pour les principaux langages de programmation." },
+    ],
+  },
+};

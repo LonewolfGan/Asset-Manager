@@ -98,4 +98,26 @@ describe("Rate Limiter Security & IP Handling (TDD)", () => {
     await limiter(reqB, resB.res as Response, next);
     assert.strictEqual(nextCount, 2);
   });
+
+  it("prioritizes cf-connecting-ip header over req.ip when deployed behind Cloudflare", async () => {
+    const limiter = makeRateLimiter(1, 60_000);
+    let nextCount = 0;
+    const next: NextFunction = () => { nextCount++; };
+
+    // Request with Cloudflare real client IP
+    const req = {
+      path: "/cf-test",
+      ip: "172.68.1.1", // Cloudflare proxy IP
+      headers: { "cf-connecting-ip": "203.0.113.195" },
+    } as unknown as Request;
+
+    const res1 = createMockRes();
+    await limiter(req, res1.res as Response, next);
+    assert.strictEqual(nextCount, 1);
+
+    // Second request with same cf-connecting-ip must be rate limited
+    const res2 = createMockRes();
+    await limiter(req, res2.res as Response, next);
+    assert.strictEqual(res2.statusMock, 429);
+  });
 });

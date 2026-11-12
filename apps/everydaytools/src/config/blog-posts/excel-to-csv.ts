@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postExcelToCsv: BlogPost = {
+  slug: {
+    en: "how-to-convert-excel-to-csv",
+    fr: "comment-convertir-excel-en-csv",
+  },
+  title: {
+    en: "How to Convert Excel (XLSX) to Clean CSV Files",
+    fr: "Comment convertir un fichier Excel (XLSX) en CSV propre",
+  },
+  description: {
+    en: "Export Excel worksheets to standard UTF-8 Comma-Separated Values (CSV) files ready for database imports and data analysis pipelines.",
+    fr: "Exportez des feuilles Excel vers des fichiers CSV conformes UTF-8 prêts pour l'import en base de données et l'analyse de données.",
+  },
+  keywords: {
+    en: ["excel to csv","convert xlsx to csv","export excel as csv","utf-8 csv from excel"],
+    fr: ["excel en csv","convertir xlsx en csv","exporter excel csv utf8","tableur vers csv"],
+  },
+  publishedAt: "2026-04-15",
+  category: "documents",
+  readingMinutes: 4,
+  relatedToolSlug: "excel-to-csv",
+  relatedToolLabel: { en: "Excel to CSV", fr: "Excel en CSV" },
+  content: {
+    en: [
+      { type: "p", text: "Databases, Python data scripts, and business intelligence platforms require flat, delimiter-separated records rather than binary Excel containers. Converting XLSX files into clean UTF-8 CSV exports guarantees universal data ingestion without formatting artifacts." },
+      { type: "h2", text: "Why clean CSV format matters for data pipelines" },
+      { type: "p", text: "CSV is the universal standard for exchanging structured tabular data across different programming languages, SQL databases, and cloud warehouses." },
+      { type: "ul", items: [
+        "Enforces standard UTF-8 character encoding to prevent broken accent characters",
+        "Properly quotes strings containing commas, newlines, or quotation marks",
+        "Reduces bloated spreadsheet file size by over 90 percent for fast API uploads",
+      ]},
+      { type: "h2", text: "Step-by-step: how to convert Excel to CSV" },
+      { type: "ol", items: [
+        "Open the Excel to CSV tool in your browser with zero registration needed.",
+        "Upload your .xlsx or .xls file: documents up to 50 MB are supported.",
+        "Select the target worksheet and choose your preferred delimiter (comma, semicolon, or tab).",
+        "Click Convert to CSV to parse rows into clean text records.",
+        "Download your standardized CSV file immediately.",
+      ]},
+      { type: "callout", text: "Data processing runs inside an isolated ephemeral workspace and is purged automatically upon completion. No records are stored on our servers." },
+      { type: "h2", text: "Tips for database ingestion" },
+      { type: "ul", items: [
+        "Use commas for international systems and semicolons for regional European accounting software",
+        "Remove empty decorative header rows from Excel before exporting to database tables",
+        "Verify that leading zeroes in postal codes or phone numbers are preserved cleanly",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Can I choose between comma and semicolon delimiters?" },
+      { type: "p", text: "Yes. You can customize the delimiter character to match your database or regional software requirements." },
+      { type: "h3", text: "Does it preserve accented characters and special symbols?" },
+      { type: "p", text: "Yes. All output CSV files are encoded in standard UTF-8 with optional byte-order-mark (BOM) compatibility." },
+      { type: "h3", text: "How are multi-sheet workbooks handled?" },
+      { type: "p", text: "You can choose which sheet to export, or download individual CSV files for each worksheet in your workbook." },
+    ],
+    fr: [
+      { type: "p", text: "Les bases de données SQL, scripts Python et outils décisionnels exigent des enregistrements délimités légers plutôt que des conteneurs Excel binaires. Convertir vos fichiers XLSX en CSV UTF-8 propre assure une intégration de données sans artefact de format." },
+      { type: "h2", text: "L'importance d'un fichier CSV propre pour vos données" },
+      { type: "p", text: "Le format CSV est le standard universel d'échange de données tabulaires entre tous les langages de programmation et entrepôts de données cloud." },
+      { type: "ul", items: [
+        "Impose l'encodage UTF-8 pour éviter les caractères accentués corrompus",
+        "Échappe proprement les champs contenant des virgules ou des retours à la ligne",
+        "Réduit le poids des classeurs de plus de 90 % pour accélérer les transferts",
+      ]},
+      { type: "h2", text: "Guide pas à pas : convertir Excel en CSV" },
+      { type: "ol", items: [
+        "Accédez à l'outil Excel en CSV dans votre navigateur sans créer de compte.",
+        "Déposez votre fichier .xlsx ou .xls : les classeurs jusqu'à 50 Mo sont acceptés.",
+        "Sélectionnez l'onglet à exporter et choisissez le séparateur (virgule ou point-virgule).",
+        "Cliquez sur Convertir pour générer votre fichier de données.",
+        "Téléchargez votre fichier CSV propre prêt pour vos imports.",
+      ]},
+      { type: "callout", text: "Le traitement est exécuté dans un espace temporaire sécurisé avec suppression automatique immédiate de vos données sensibles." },
+      { type: "h2", text: "Conseils pour l'import en base de données" },
+      { type: "ul", items: [
+        "Utiliser le point-virgule pour les logiciels francophones et la virgule pour les systèmes internationaux",
+        "Purger les lignes de titres décoratives avant l'intégration dans une table SQL",
+        "Vérifier la préservation des zéros initiaux sur les codes postaux et identifiants",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Peut-on choisir entre virgule et point-virgule ?" },
+      { type: "p", text: "Oui. Vous pouvez sélectionner librement le séparateur adapté à vos logiciels comptables ou de bases de données." },
+      { type: "h3", text: "Les accents français sont-ils bien préservés ?" },
+      { type: "p", text: "Oui. Le fichier CSV est encodé au standard UTF-8 garantissant l'intégrité de tous les caractères spéciaux." },
+      { type: "h3", text: "Comment exporter un classeur à plusieurs onglets ?" },
+      { type: "p", text: "Vous pouvez sélectionner précisément l'onglet à convertir ou exporter chaque feuille en un fichier CSV séparé." },
+    ],
+  },
+};

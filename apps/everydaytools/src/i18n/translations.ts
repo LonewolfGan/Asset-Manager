@@ -48,7 +48,10 @@ export type Translations = {
     privacyPolicy: string;
     termsOfService: string;
     cookiePreferences: string;
+    cookiePolicy: string;
     security: string;
+    legalNotice: string;
+    changelog: string;
     columns: { pdf: string; images: string; utilities: string };
   };
   cookie: {
@@ -1593,12 +1596,15 @@ const EN: Translations = {
     privacyPolicy: "Privacy Policy",
     termsOfService: "Terms of Service",
     cookiePreferences: "Cookie Preferences",
+    cookiePolicy: "Cookie Policy",
     security: "Security",
+    legalNotice: "Legal Notice",
+    changelog: "Changelog",
     columns: { pdf: "PDF Tools", images: "Image Tools", utilities: "Utilities" },
   },
   cookie: {
-    message: "We respect your privacy — our analytics are completely anonymous with no cookies and no personal data. With your OK, a few ads help keep every tool free for everyone. Your files are",
-    neverUploaded: "never uploaded",
+    message: "We respect your privacy — our analytics are completely anonymous with zero cookies, zero third-party ads, and zero personal tracking. Your files are",
+    neverUploaded: "never uploaded or permanently stored",
     privacyPolicy: "Privacy policy",
     essentialOnly: "Essential only",
     acceptAll: "Accept all",
@@ -2446,7 +2452,7 @@ const EN: Translations = {
     featureReaderDesc: "Standard EPUB format compatible with Apple Books, Kindle, Kobo, etc.",
     featurePrivate: "100% Client-Side",
     featurePrivateDesc: "Processed directly in your browser without uploading to any server.",
-    honestClientNote: "This tool runs entirely in your browser using client-side libraries. No files are uploaded to any server.",
+    honestClientNote: "This tool processes your document locally in browser memory using client-side libraries with zero server persistence.",
   },
   pdfToImage: {
     format: "Image Format",
@@ -2541,7 +2547,7 @@ const EN: Translations = {
     featureFullControlDesc: "Customize title, author, subject, keywords, and producer tags.",
     featureInstant: "Instant Save",
     featureInstantDesc: "Applies tags in milliseconds preserving original layout and contents.",
-    honestClientNote: "This tool runs entirely in your browser using pdf-lib. No files are uploaded to any server.",
+    honestClientNote: "This tool edits metadata locally in browser memory using pdf-lib with zero server persistence.",
   },
   wordToPdf: {
     convertBtn: "Convert to PDF",
@@ -2757,7 +2763,7 @@ const EN: Translations = {
     featureEreaderDesc: "Compatible with Apple Books, Kindle, Kobo, and standard e-readers.",
     featurePrivate: "100% In-Browser",
     featurePrivateDesc: "Document is converted entirely on your device without server upload.",
-    honestClientNote: "This tool runs entirely in your browser using mammoth and epub-gen. No files are uploaded to any server.",
+    honestClientNote: "This tool processes manuscripts locally in browser memory using mammoth and epub-gen with zero server persistence.",
   },
   markdownToDocx: {
     convertBtn: "Convert to Word (DOCX)",
@@ -2814,7 +2820,7 @@ const EN: Translations = {
     featureDelimitersDesc: "Clean comma-separated values compatible with all databases and tools.",
     featurePrivate: "100% In-Browser",
     featurePrivateDesc: "Your financial and sensitive tabular data never leaves your device.",
-    honestClientNote: "This tool runs entirely in your browser using SheetJS. No files are uploaded to any server.",
+    honestClientNote: "This tool converts sheets locally in browser memory using SheetJS with zero server persistence.",
   },
   csvToExcel: {
     tabUpload: "Upload CSV File",
@@ -2832,7 +2838,7 @@ const EN: Translations = {
     featureOpenXmlDesc: "Fully compatible with Microsoft Excel, Apple Numbers, and Google Sheets.",
     featurePrivate: "100% In-Browser",
     featurePrivateDesc: "All parsing and generation occurs on your computer without uploads.",
-    honestClientNote: "This tool runs entirely in your browser using PapaParse and SheetJS. No data is uploaded to any server.",
+    honestClientNote: "This tool processes tabular files locally in browser memory using PapaParse and SheetJS with zero server persistence.",
   },
   pptxToImages: {
     convertBtn: "Convert Slides to PNG",
@@ -2889,7 +2895,7 @@ const EN: Translations = {
     featureVerificationDesc: "Compare against publisher hashes to ensure download integrity.",
     featurePrivate: "100% In-Browser",
     featurePrivateDesc: "Calculated entirely using the native Web Cryptography API without uploads.",
-    honestClientNote: "This tool runs entirely in your browser using the native Web Cryptography API. No files are uploaded to any server.",
+    honestClientNote: "This tool computes hashes locally in browser memory using the native Web Cryptography API with zero server persistence.",
   },
 };
 
@@ -3185,12 +3191,15 @@ const FR: Translations = {
     privacyPolicy: "Politique de confidentialité",
     termsOfService: "Conditions d'utilisation",
     cookiePreferences: "Préférences de cookies",
+    cookiePolicy: "Politique des cookies",
     security: "Sécurité",
+    legalNotice: "Mentions légales",
+    changelog: "Mises à jour",
     columns: { pdf: "Outils PDF", images: "Outils Image", utilities: "Utilitaires" },
   },
   cookie: {
-    message: "Nous respectons votre vie privée — nos analyses sont totalement anonymes, sans cookies ni données personnelles. Avec votre accord, quelques publicités aident à garder tous les outils gratuits. Vos fichiers ne sont",
-    neverUploaded: "jamais téléchargés",
+    message: "Nous respectons votre vie privée — nos mesures d'audience sont totalement anonymes, sans aucun cookie, sans publicité tierce et sans pistage personnel. Vos fichiers ne sont",
+    neverUploaded: "jamais conservés ni archivés",
     privacyPolicy: "Politique de confidentialité",
     essentialOnly: "Essentiel seulement",
     acceptAll: "Tout accepter",

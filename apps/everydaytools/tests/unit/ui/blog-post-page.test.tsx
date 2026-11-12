@@ -125,16 +125,16 @@ describe('BlogPost Page Integration (TDD Phase RED)', () => {
       });
     });
 
-    it('renders dual tool cards (BlogToolCard) for both sticky sidebar and bottom banner', async () => {
+    it('renders the companion tool card in the sticky sidebar and omits redundant bottom banner', async () => {
       await renderBlogPost(validSlug);
       const toolCards = container.querySelectorAll('[data-testid="blog-tool-card"]');
-      expect(toolCards.length).toBeGreaterThanOrEqual(2);
+      expect(toolCards.length).toBe(1);
 
       const sidebarCard = container.querySelector('[data-testid="blog-tool-card"][data-variant="sidebar"]');
       const bannerCard = container.querySelector('[data-testid="blog-tool-card"][data-variant="banner"]');
 
       expect(sidebarCard).not.toBeNull();
-      expect(bannerCard).not.toBeNull();
+      expect(bannerCard).toBeNull();
     });
 
     it('renders related articles recommendations grid (BlogRelatedPosts)', async () => {

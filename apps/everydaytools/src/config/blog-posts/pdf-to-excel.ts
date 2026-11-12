@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postPdfToExcel: BlogPost = {
+  slug: {
+    en: "how-to-convert-pdf-to-excel",
+    fr: "comment-convertir-pdf-en-excel",
+  },
+  title: {
+    en: "How to Convert PDF Tables to Editable Excel Spreadsheets",
+    fr: "Comment convertir des tableaux PDF en feuilles Excel modifiables",
+  },
+  description: {
+    en: "Extract financial tables, invoices, and accounting data from PDF files into organized Excel XLSX spreadsheets with formulas and columns intact.",
+    fr: "Extrayez des bilans financiers, factures et tableaux chiffrés de vos PDF vers des classeurs Excel XLSX parfaitement structurés.",
+  },
+  keywords: {
+    en: ["pdf to excel","convert pdf to xlsx","extract pdf tables to excel","pdf spreadsheet converter"],
+    fr: ["pdf en excel","convertir pdf en xlsx","extraire tableau pdf excel","convertisseur tableur pdf"],
+  },
+  publishedAt: "2026-03-22",
+  category: "pdf",
+  readingMinutes: 5,
+  relatedToolSlug: "pdf-to-excel",
+  relatedToolLabel: { en: "PDF to Excel", fr: "PDF en Excel" },
+  content: {
+    en: [
+      { type: "p", text: "Copying financial tables, bank statements, or inventory sheets from a PDF into Excel manually takes hours and leads to costly typographic errors. Using a table extraction engine detects column borders and converts numbers into native spreadsheet cells." },
+      { type: "h2", text: "How automated table extraction works" },
+      { type: "p", text: "PDF files do not store tables as grids; they place numbers and text as independent coordinates on a canvas. An intelligent parser calculates cell intersections to rebuild rows, headers, and numeric values." },
+      { type: "ul", items: [
+        "Maintains numeric alignment so Excel treats numbers as calculable digits, not text strings",
+        "Preserves multi-column headers and sub-totals without split lines",
+        "Eliminates manual retyping of invoices, quarterly balance sheets, and audit reports",
+      ]},
+      { type: "h2", text: "Step-by-step: how to convert PDF to Excel" },
+      { type: "ol", items: [
+        "Open the PDF to Excel tool in your browser with zero registration required.",
+        "Upload your PDF document containing tabular data up to 50 MB.",
+        "The engine analyzes vector lines and text spacing to detect table boundaries.",
+        "Click Convert to compile an organized Microsoft Excel (.xlsx) workbook.",
+        "Download your spreadsheet ready for immediate data analysis and formula calculation.",
+      ]},
+      { type: "callout", text: "Spreadsheet parsing runs inside an isolated ephemeral workspace and is purged automatically upon completion. No financial data is ever retained." },
+      { type: "h2", text: "Best practices for accurate table conversion" },
+      { type: "ul", items: [
+        "Documents with visible gridlines convert with the highest geometric precision",
+        "Check currency formatting and decimal points after import for localized accounting rules",
+        "For scanned paper invoices, verify that OCR has cleanly identified numeric digits like 0 and O",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Are numbers converted into editable cells or static images?" },
+      { type: "p", text: "All data is converted into native editable Excel cells. You can apply formulas (SUM, AVERAGE), filters, and sorting immediately." },
+      { type: "h3", text: "Can I convert multi-page bank statements into one sheet?" },
+      { type: "p", text: "Yes. Tables spanning multiple consecutive pages are merged into contiguous rows within the output workbook." },
+      { type: "h3", text: "Does it work with Google Sheets and LibreOffice Calc?" },
+      { type: "p", text: "Yes. The output is a standard OpenXML (.xlsx) file supported by Excel, Google Sheets, and Calc." },
+    ],
+    fr: [
+      { type: "p", text: "Recopier à la main des tableaux financiers, relevés de compte ou inventaires depuis un PDF vers Excel prend des heures et engendre des erreurs de frappe. Un extracteur de tableaux spécialisé reconstitue les lignes et colonnes en cellules numériques exploitables." },
+      { type: "h2", text: "Comment fonctionne l'extraction de tableaux PDF" },
+      { type: "p", text: "Les fichiers PDF n'enregistrent pas les tableaux sous forme de grille, mais comme des blocs de texte positionnés par coordonnées. L'algorithme analyse les alignements pour reconstruire l'arborescence du tableur." },
+      { type: "ul", items: [
+        "Conserve le typage numérique pour permettre le calcul immédiat de formules",
+        "Préserve les en-têtes complexes et les sous-totaux sans décalage de colonnes",
+        "Évite la fastidieuse ressaisie des factures, bilans comptables et données d'audit",
+      ]},
+      { type: "h2", text: "Guide pas à pas : convertir votre PDF en Excel" },
+      { type: "ol", items: [
+        "Accédez à l'outil PDF en Excel dans votre navigateur sans créer de compte.",
+        "Déposez votre document contenant des tableaux (fichiers acceptés jusqu'à 50 Mo).",
+        "Le système détecte les bordures, séparateurs et alignements de chiffres.",
+        "Cliquez sur Convertir pour générer votre classeur Microsoft Excel (.xlsx).",
+        "Téléchargez votre fichier immédiatement prêt pour vos analyses financières.",
+      ]},
+      { type: "callout", text: "Le traitement est réalisé au sein d'un environnement éphémère sécurisé avec suppression automatique immédiate de vos données comptables." },
+      { type: "h2", text: "Conseils pour une conversion comptable réussie" },
+      { type: "ul", items: [
+        "Les tableaux avec quadrillage visible offrent une précision de conversion optimale",
+        "Vérifier les séparateurs de décimales (virgules ou points) selon vos paramètres régionaux",
+        "Sur des relevés numérisés, s'assurer de la distinction entre les zéros et la lettre O",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Les cellules sont-elles modifiables ou figées sous forme d'images ?" },
+      { type: "p", text: "Toutes les données sont converties en cellules Excel natives modifiables. Vous pouvez appliquer des formules (SOMME, MOYENNE) immédiatement." },
+      { type: "h3", text: "Peut-on convertir un relevé bancaire de plusieurs pages ?" },
+      { type: "p", text: "Oui. Les tableaux qui s'étendent sur plusieurs pages consécutives sont regroupés dans une feuille de calcul unifiée." },
+      { type: "h3", text: "Le fichier est-il compatible avec Google Sheets et LibreOffice ?" },
+      { type: "p", text: "Oui. Le format .xlsx produit est universellement reconnu par Microsoft Excel, Google Sheets et LibreOffice Calc." },
+    ],
+  },
+};

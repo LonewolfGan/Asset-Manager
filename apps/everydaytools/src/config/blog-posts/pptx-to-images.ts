@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postPptxToImages: BlogPost = {
+  slug: {
+    en: "how-to-convert-powerpoint-pptx-to-images",
+    fr: "comment-convertir-powerpoint-pptx-en-images",
+  },
+  title: {
+    en: "How to Convert PowerPoint Slides to High-Resolution Images",
+    fr: "Comment convertir des diapositives PowerPoint en images haute définition",
+  },
+  description: {
+    en: "Export PowerPoint (.pptx) slides into sharp PNG, JPEG, or WebP images ready for social media posts, blog embeds, and digital portfolios.",
+    fr: "Exportez chaque diapositive de votre présentation PowerPoint en image nette PNG, JPG ou WebP pour vos réseaux sociaux et sites web.",
+  },
+  keywords: {
+    en: ["pptx to images","convert powerpoint to png","export slides as images","powerpoint to jpg"],
+    fr: ["pptx en images","convertir diaporama en images","diapositives en png","powerpoint vers jpg"],
+  },
+  publishedAt: "2026-04-22",
+  category: "documents",
+  readingMinutes: 4,
+  relatedToolSlug: "pptx-to-images",
+  relatedToolLabel: { en: "PPTX to Images", fr: "PPTX en Images" },
+  content: {
+    en: [
+      { type: "p", text: "Sharing key presentation takeaways on LinkedIn, embedding infographic slides into blog articles, or showcasing pitch decks in portfolios requires raster image files rather than presentation binaries. Converting PowerPoint slides into crisp images makes visual assets instantly shareable anywhere." },
+      { type: "h2", text: "Why export slides as standalone images" },
+      { type: "p", text: "Images display natively across social feeds, messaging apps, and web pages without requiring recipients to download presentation viewers." },
+      { type: "ul", items: [
+        "Creates carousel-ready slides for LinkedIn, Twitter, and Instagram posts",
+        "Extracts infographic charts and diagrams for insertion into blog articles",
+        "Allows sharing single slides in Slack or Microsoft Teams without uploading whole files",
+      ]},
+      { type: "h2", text: "Step-by-step: how to convert PPTX to images" },
+      { type: "ol", items: [
+        "Open the PPTX to Images tool in your browser with zero registration needed.",
+        "Upload your .pptx presentation file: documents up to 50 MB are supported.",
+        "Select your preferred image format (PNG for graphic sharpness or JPEG for smaller file sizes).",
+        "Click Convert to rasterize each presentation slide into an individual high-resolution image.",
+        "Download individual slides or save all images conveniently bundled in a single ZIP archive.",
+      ]},
+      { type: "callout", text: "Slide rasterization runs inside an isolated ephemeral workspace and is purged automatically upon completion. No slides are stored on our servers." },
+      { type: "h2", text: "Best practices for social media carousels" },
+      { type: "ul", items: [
+        "Choose PNG format to keep fine diagram lines and text typography razor sharp",
+        "Use large bold typography on slide titles to ensure readability on small smartphone screens",
+        "Check slide numbering sequence before scheduling automated carousel posts",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "What image format is best for sharing slides online?" },
+      { type: "p", text: "PNG is recommended for slides featuring text, icons, and diagrams. JPEG is suitable for photo-heavy presentations to reduce download size." },
+      { type: "h3", text: "How are multi-slide presentations delivered?" },
+      { type: "p", text: "Presentations with multiple slides are bundled into a convenient ZIP archive with sequential filenames (slide-01.png, slide-02.png)." },
+      { type: "h3", text: "Does it support presentations with custom widescreen ratios?" },
+      { type: "p", text: "Yes. Both standard 4:3 and modern 16:9 widescreen presentations are exported with their exact proportions preserved." },
+    ],
+    fr: [
+      { type: "p", text: "Diffuser les points clés d'un diaporama sur LinkedIn, intégrer une infographie dans un article de blog ou illustrer un portfolio exige des images autonomes plutôt qu'un fichier de présentation. Convertir des diapositives PowerPoint en images haute résolution rend vos visuels partageables en un clic." },
+      { type: "h2", text: "Pourquoi exporter vos diapositives sous forme d'images" },
+      { type: "p", text: "Les images s'affichent nativement sur tous les réseaux sociaux et applications de messagerie sans exiger de visionneuse bureautique de la part du destinataire." },
+      { type: "ul", items: [
+        "Crée des carrousels percutants pour vos publications LinkedIn et Twitter",
+        "Extrait facilement les graphiques et schémas pour enrichir vos articles de blog",
+        "Permet de partager une diapositive isolée sur Slack ou Teams sans transmettre tout le fichier",
+      ]},
+      { type: "h2", text: "Guide pas à pas : convertir des diapositives en images" },
+      { type: "ol", items: [
+        "Accédez à l'outil PPTX en Images dans votre navigateur sans créer de compte.",
+        "Déposez votre présentation .pptx : les fichiers jusqu'à 50 Mo sont pris en charge.",
+        "Choisissez le format de sortie (PNG pour la netteté ou JPG pour la légèreté).",
+        "Cliquez sur Convertir pour rastériser chaque diapositive en image haute définition.",
+        "Téléchargez vos diapositives séparément ou regroupées dans une archive ZIP.",
+      ]},
+      { type: "callout", text: "La conversion est réalisée dans un environnement temporaire sécurisé avec suppression automatique immédiate de vos documents." },
+      { type: "h2", text: "Conseils pour vos carrousels sur les réseaux sociaux" },
+      { type: "ul", items: [
+        "Privilégier le format PNG pour conserver des textes nets et sans flou de compression",
+        "Utiliser des polices grasses et lisibles pour un confort visuel sur smartphone",
+        "Vérifier la numérotation séquentielle des images avant la programmation de vos posts",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Quel format choisir pour partager des diapositives ?" },
+      { type: "p", text: "Le format PNG est idéal pour les diapositives riches en texte et schémas. Le JPG convient mieux aux diaporamas composés principalement de photos." },
+      { type: "h3", text: "Comment sont livrées les présentations de plusieurs diapositives ?" },
+      { type: "p", text: "L'outil regroupe l'ensemble des images dans une archive ZIP avec une numérotation séquentielle claire (slide-01.png, slide-02.png)." },
+      { type: "h3", text: "Le format panoramique 16:9 est-il bien respecté ?" },
+      { type: "p", text: "Oui. Les dimensions d'origine (16:9 moderne ou 4:3 traditionnel) sont rigoureusement respectées lors de la génération des images." },
+    ],
+  },
+};

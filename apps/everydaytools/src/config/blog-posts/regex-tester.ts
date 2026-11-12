@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postRegexTester: BlogPost = {
+  slug: {
+    en: "how-to-use-regex-tester",
+    fr: "comment-utiliser-regex-tester",
+  },
+  title: {
+    en: "How to Build, Test, and Debug Regular Expressions in Real Time",
+    fr: "Comment Tester, Construire et Deboguer des Expressions Regulieres",
+  },
+  description: {
+    en: "Test regex patterns against sample strings with instant match highlighting, capture group inspection, and flag toggles.",
+    fr: "Testez vos expressions regulieres en direct avec surlignage des correspondances, groupes de capture et drapeaux.",
+  },
+  keywords: {
+    en: ["regex tester","regex-tester online","free regex-tester","developer tool regex-tester"],
+    fr: ["regex tester","regex-tester en ligne","outil regex-tester gratuit","utilitaire regex-tester"],
+  },
+  publishedAt: "2026-03-25",
+  category: "security",
+  readingMinutes: 4,
+  relatedToolSlug: "regex-tester",
+  relatedToolLabel: { en: "Regex Tester", fr: "Regex Tester" },
+  content: {
+    en: [
+      { type: "p", text: "Test regex patterns against sample strings with instant match highlighting, capture group inspection, and flag toggles." },
+      { type: "h2", text: "Finite Automata and Regular Expression Pattern Matching" },
+      { type: "p", text: "Writing regular expressions is notoriously error-prone due to subtle nuances in quantifier greediness, lookarounds, and escape characters. A real-time regex tester provides immediate visual feedback, breaks down capture groups, and highlights matching tokens as you type." },
+      { type: "ul", items: ["Instant match highlighting with colored capture group indicators.","Full flag toggles: Global (g), Case-Insensitive (i), Multiline (m), DotAll (s), and Unicode (u).","Token explanation breakdown explaining each piece of the regex pattern."] },
+      { type: "h2", text: "Step-by-step practical guide" },
+      { type: "ol", items: ["Enter your regular expression pattern in the pattern input bar.","Toggle required regex flags (g, i, m, s, u) as needed.","Paste your test string into the text workbench.","Inspect real-time color highlights for full matches and nested capture groups.","Examine match indexes and extracted group values in the results table."] },
+      { type: "callout", text: "Privacy guarantee: Regular expressions are evaluated locally in your browser with zero network transmission." },
+      { type: "h2", text: "Pro tips and best practices" },
+      { type: "ul", items: ["Always include the unicode flag (u) when matching international characters or modern emojis.","Use non-capturing groups (?:...) when you need logical grouping without polluting your extraction results."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Which regex dialect does this tool support?" },
+      { type: "p", text: "It runs on the modern ECMAScript (JavaScript) regex engine including lookbehind and named capture groups." },
+      { type: "h3", text: "Can I test replacement strings with $1 and $2 variables?" },
+      { type: "p", text: "Yes. The Replace panel allows testing dynamic substitutions using standard capture group variables." },
+      { type: "h3", text: "Does the tool warn against ReDoS catastrophic backtracking?" },
+      { type: "p", text: "Yes. An execution timeout protects your browser from freezing if an inefficient nested pattern is entered." },
+    ],
+    fr: [
+      { type: "p", text: "Testez vos expressions regulieres en direct avec surlignage des correspondances, groupes de capture et drapeaux." },
+      { type: "h2", text: "Automates Finis et Correspondance de Motifs Regex" },
+      { type: "p", text: "Ecrire des expressions regulieres s avere complexe en raison des quantificateurs, lookarounds et caracteres d echappement. Un testeur regex en temps reel fournit un retour visuel direct et decompose les groupes de capture." },
+      { type: "ul", items: ["Surlignage instantane des correspondances avec coloration des groupes de capture.","Gestion des drapeaux : Global (g), Insensible a la casse (i), Multiligne (m), DotAll (s) et Unicode (u).","Decomposition pedagogique expliquant le role de chaque symbole de l expression."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Saisissez votre motif d expression reguliere dans la barre de saisie.","Activez les drapeaux requis (g, i, m, s, u) selon vos besoins.","Collez votre chaine de test dans le panneau de travail.","Visualisez en direct les correspondances et groupes captures en couleur.","Consultez les index et valeurs extraites dans le tableau de resultats."] },
+      { type: "callout", text: "Garantie de confidentialite : Les expressions sont evaluees dans votre navigateur sans aucune requete reseau." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Activez systematiquement le drapeau unicode (u) pour tester des textes contenant des emojis ou accents.","Utilisez des groupes non capturants (?:...) pour regrouper sans surcharger vos resultats d extraction."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Quel dialecte d expression reguliere est utilise ?" },
+      { type: "p", text: "L outil utilise le moteur ECMAScript moderne incluant lookbehind et groupes de capture nommes." },
+      { type: "h3", text: "Puis-je tester des substitutions avec les variables $1 et $2 ?" },
+      { type: "p", text: "Oui. Le panneau Remplacer teste vos substitutions dynamiques a l aide des variables de groupe." },
+      { type: "h3", text: "L outil protege-t-il contre le backtracking infini (ReDoS) ?" },
+      { type: "p", text: "Oui. Un disjoncteur temporel interrompt l execution pour empecher tout gel du navigateur." },
+    ],
+  },
+};

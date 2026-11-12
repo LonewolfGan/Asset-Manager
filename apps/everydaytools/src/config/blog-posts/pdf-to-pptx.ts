@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postPdfToPptx: BlogPost = {
+  slug: {
+    en: "how-to-convert-pdf-to-powerpoint-presentation",
+    fr: "comment-convertir-pdf-en-presentation-powerpoint",
+  },
+  title: {
+    en: "How to Convert PDF to PowerPoint (PPTX) Slides",
+    fr: "Comment convertir un PDF en diapositives PowerPoint (PPTX)",
+  },
+  description: {
+    en: "Transform static PDF slide decks, annual reports, and brochures into fully editable Microsoft PowerPoint (.pptx) presentations.",
+    fr: "Transformez vos présentations et rapports PDF en diapositives Microsoft PowerPoint (.pptx) entièrement modifiables.",
+  },
+  keywords: {
+    en: ["pdf to pptx","convert pdf to powerpoint","pdf to slides","edit pdf in powerpoint"],
+    fr: ["pdf en pptx","convertir pdf en powerpoint","pdf vers diaporama","modifier pdf dans powerpoint"],
+  },
+  publishedAt: "2026-03-28",
+  category: "pdf",
+  readingMinutes: 5,
+  relatedToolSlug: "pdf-to-pptx",
+  relatedToolLabel: { en: "PDF to PPTX", fr: "PDF en PPTX" },
+  content: {
+    en: [
+      { type: "p", text: "Colleagues and clients frequently share finalized presentations as static PDF files, making last-minute slide edits, template redesigns, or bullet point updates painful. Converting a PDF slide deck back into editable PowerPoint (.pptx) restores full layout control." },
+      { type: "h2", text: "Why convert PDF slide decks to PowerPoint" },
+      { type: "p", text: "PDF files lock shapes and text into static coordinates. PowerPoint (.pptx) enables full editing of text boxes, background graphics, bullet hierarchy, and slide transitions." },
+      { type: "ul", items: [
+        "Edit slide text, speaker notes, and bullet points without starting from scratch",
+        "Rearrange or duplicate individual presentation slides within Microsoft PowerPoint or Keynote",
+        "Update branding colors, logos, and charts for client pitches easily",
+      ]},
+      { type: "h2", text: "Step-by-step: how to convert PDF to PowerPoint" },
+      { type: "ol", items: [
+        "Open the PDF to PPTX converter in your browser with zero registration needed.",
+        "Upload your PDF presentation file: documents up to 50 MB are supported.",
+        "The engine maps each PDF page into a corresponding presentation slide with text and graphics.",
+        "Click Convert to compile an editable Microsoft PowerPoint (.pptx) presentation.",
+        "Download your presentation and open it in PowerPoint, Google Slides, or Keynote.",
+      ]},
+      { type: "callout", text: "Presentation conversion runs inside an isolated ephemeral workspace and is purged automatically upon completion. No presentation data is stored on our servers." },
+      { type: "h2", text: "Tips for high-fidelity slide conversion" },
+      { type: "ul", items: [
+        "Presentations originally authored in PowerPoint or Keynote convert with exceptional text fidelity",
+        "Verify font substitutions in PowerPoint if the PDF used non-standard proprietary typography",
+        "Group related vector shapes together on complex infographic slides after conversion",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Is every page converted into a separate slide?" },
+      { type: "p", text: "Yes. Every page in your PDF document becomes a distinct presentation slide with preserved aspect ratio (16:9 widescreen or 4:3 standard)." },
+      { type: "h3", text: "Can I open the output file in Google Slides?" },
+      { type: "p", text: "Yes. The resulting .pptx file is 100 percent compatible with Google Slides, Microsoft PowerPoint, and Apple Keynote." },
+      { type: "h3", text: "Are images and diagrams editable after conversion?" },
+      { type: "p", text: "Images remain individual movable objects on the slides, allowing you to resize, reposition, or replace them as needed." },
+    ],
+    fr: [
+      { type: "p", text: "Recevoir un diaporama figé au format PDF empêche toute retouche de dernière minute avant une réunion client. Convertir un PDF de présentation en fichier Microsoft PowerPoint (.pptx) modifiable redonne la maîtrise totale des textes et des illustrations." },
+      { type: "h2", text: "Les atouts de la conversion PDF vers PowerPoint" },
+      { type: "p", text: "Le format PDF fige les formes et les lettres. Le format PowerPoint (.pptx) redonne accès aux zones de texte, aux listes à puces et à la personnalisation du masque de diapositives." },
+      { type: "ul", items: [
+        "Modifier les chiffres, arguments et listes à puces sans recréer le support de zéro",
+        "Réorganiser, dupliquer ou masquer des diapositives dans PowerPoint ou Keynote",
+        "Adapter la charte graphique et remplacer les logos pour un rendez-vous commercial",
+      ]},
+      { type: "h2", text: "Guide pas à pas : convertir un PDF en PowerPoint" },
+      { type: "ol", items: [
+        "Accédez à l'outil PDF en PPTX dans votre navigateur sans créer de compte.",
+        "Déposez votre document PDF : les fichiers jusqu'à 50 Mo sont pris en charge.",
+        "Le système convertit chaque page en une diapositive correspondante avec textes et médias.",
+        "Cliquez sur Convertir pour générer votre présentation modifiable .pptx.",
+        "Téléchargez votre fichier et ouvrez-le dans PowerPoint, Google Slides ou Keynote.",
+      ]},
+      { type: "callout", text: "Le traitement est exécuté dans un environnement temporaire sécurisé avec suppression automatique immédiate de vos présentations stratégiques." },
+      { type: "h2", text: "Conseils pour une retouche optimale de vos diapositives" },
+      { type: "ul", items: [
+        "Les diaporamas conçus initialement sous PowerPoint offrent une fidélité de conversion maximale",
+        "Vérifier les polices installées si le document source utilisait des typographies rares",
+        "Regrouper les formes vectorielles complexes pour faciliter leur déplacement",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Chaque page du PDF devient-elle une diapositive séparée ?" },
+      { type: "p", text: "Oui. Chaque page correspond à une diapositive distincte avec respect du ratio d'affichage (16:9 panoramique ou 4:3 classique)." },
+      { type: "h3", text: "Le fichier fonctionne-t-il dans Google Slides ?" },
+      { type: "p", text: "Oui. Le fichier .pptx généré s'importe parfaitement dans Google Slides, Microsoft PowerPoint et Apple Keynote." },
+      { type: "h3", text: "Les images sont-elles déplaçables sur les diapositives ?" },
+      { type: "p", text: "Oui. Les illustrations sont converties en objets indépendants que vous pouvez redimensionner ou remplacer librement." },
+    ],
+  },
+};

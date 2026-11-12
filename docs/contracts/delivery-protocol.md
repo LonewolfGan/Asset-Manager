@@ -14,23 +14,37 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ 1. AUDIT & DIAGNOSTIC (redesign-existing-projects)          │
+│ 1. RECHERCHE WEB RÉELLE & AUDIT (search_web)                │
+│    - Inspection de références réelles et sites primés       │
+│    - Analyse de la disposition, hiérarchie et ergonomie     │
 └──────────────────────────────┬──────────────────────────────┘
                                ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ 2. CADRAGE VISUEL & RESEARCH (design-system-contract)       │
+│ 2. MODULARITÉ & RÉUTILISATION D'ABORD (DRY UI OBLIGATOIRE)  │
+│    - Audit préalable de src/components/ et src/components/ui│
+│    - Réutilisation des composants existants (Faq05,         │
+│      CopyButton, Button, Input, etc.). ZÉRO doublon inutile. │
+│    - Si une brique manque : shadcn CLI (shadcn add)         │
 └──────────────────────────────┬──────────────────────────────┘
                                ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ 3. FINITIONS & MICRO-INTERACTIONS (emil-design-eng)         │
+│ 3. CADRAGE VISUEL & HARMONIE ARCHITECTURALE                 │
+│    - Application des skills de design (emil, high-end)      │
+│    - ZÉRO ligne de code avant accord sur le cadrage         │
+│    - Rédaction sobre : zéro buzzword, zéro fuite d'infra    │
 └──────────────────────────────┬──────────────────────────────┘
                                ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ 4. IMPLÉMENTATION TDD COMPLÈTE (full-output, shadcn)        │
+│ 4. IMPLÉMENTATION TDD COMPLÈTE (< 300 LOC, Full-Output)     │
+│    - Test unitaire écrit d'abord (RED -> GREEN)             │
+│    - Assemblage modulaire propre des composants             │
 └──────────────────────────────┬──────────────────────────────┘
                                ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ 5. VALIDATION VISUELLE & REVUE SUBAGENT (code-reviewer)     │
+│ 5. PREUVE VISUELLE PAR SCREENSHOT (chrome-devtools-mcp)     │
+│    - Capture d'écran réelle sur le navigateur local         │
+│    - Évaluation par l'utilisateur sur pièce                 │
+│    - Passage du Jury Awwwards & revue subagent              │
 └─────────────────────────────────────────────────────────────┘
 ```
 

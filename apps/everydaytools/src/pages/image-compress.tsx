@@ -24,7 +24,7 @@ const IMAGE_FORMAT: ConversionFormat = {
   name: 'Image',
   extension: 'jpg',
   icon: '/icons/image.svg',
-  color: '#FF6B35',
+  color: '#0066FF',
   subLabel: 'JPEG, PNG, WebP, AVIF',
 };
 
@@ -171,6 +171,7 @@ export default function ImageCompress() {
               <div key="processing-aperture" className="w-full py-20 flex justify-center">
                 <ProcessingAperture
                   formatIcon={IMAGE_FORMAT.icon}
+                  formatColor={IMAGE_FORMAT.color}
                   formatAlt="Image"
                   stageLabel={isFr ? 'Compression en cours' : 'Compressing'}
                   title={

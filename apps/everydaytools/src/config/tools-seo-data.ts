@@ -31,7 +31,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     },
     h1: { en: "PDF to Word Converter", fr: "Convertisseur PDF en Word" },
     description: {
-      en: "Convert PDF files to editable Word (DOCX) documents instantly in your browser. No upload to servers, no account required, free forever.",
+      en: "Convert PDF files to editable Word (DOCX) documents with high precision. Zero permanent storage, no account required, free forever.",
       fr: "Convertissez des fichiers PDF en documents Word (DOCX) modifiables directement dans votre navigateur. Sans téléchargement, sans compte, gratuit.",
     },
     keywords: {
@@ -81,8 +81,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     },
     h1: { en: "PDF to Text Converter", fr: "Convertisseur PDF en Texte" },
     description: {
-      en: "Extract all text from a PDF file instantly in your browser. No server upload, no account needed. Download as plain TXT — free forever.",
-      fr: "Extrayez tout le texte d'un PDF directement dans votre navigateur. Sans téléchargement serveur, sans compte. Téléchargez en TXT — gratuit.",
+      en: "Extract all text from a PDF file with instant processing. Zero permanent storage, no account needed. Download as plain TXT — free forever.",
+      fr: "Extrayez tout le texte d'un PDF directement avec un traitement instantané. Sans stockage permanent, sans compte. Téléchargez en TXT — gratuit.",
     },
     keywords: {
       en: ["pdf to text converter", "extract text from pdf", "pdf to txt online free", "convert pdf to text without software", "pdf text extraction", "pdf to plaintext"],
@@ -165,7 +165,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     { q: "Is PDF to HTML Converter free?", a: "Yes. EverydayTools Hub PDF to HTML Converter is completely free, with no account required and no file watermarks. All processing happens in your browser." },
       ],
       fr: [
-        { q: "Comment convertir un PDF en HTML gratuitement en ligne ?", a: "Téléversez votre PDF dans le convertisseur PDF en HTML d'EverydayTools Hub et cliquez sur Convertir. L'outil analyse le PDF dans votre navigateur, extrait le texte en paragraphes HTML et vous permet de télécharger le fichier HTML — sans compte, sans envoi à un serveur." },
+        { q: "Comment convertir un PDF en HTML gratuitement en ligne ?", a: "Téléversez votre PDF dans le convertisseur PDF en HTML d'EverydayTools Hub et cliquez sur Convertir. L'outil analyse le PDF, extrait le texte en paragraphes HTML et vous permet de télécharger le fichier HTML — sans compte, sans filigrane." },
     { q: "Le HTML de sortie reproduit-il la mise en page du PDF ?", a: "Le convertisseur préserve la structure du texte et les paragraphes de base. Il ne reproduit pas les mises en page visuelles complexes, les colonnes ou le positionnement précis. Le résultat est un HTML propre et stylable avec CSS." },
     { q: "Puis-je modifier le HTML après la conversion ?", a: "Oui. Le fichier .html téléchargé est un fichier texte standard que vous pouvez ouvrir dans n'importe quel éditeur de texte et modifier librement. Vous pouvez ajouter des classes CSS, ajuster le balisage ou coller le contenu dans un éditeur CMS." },
     { q: "Les images du PDF sont-elles incluses dans le HTML ?", a: "Non. Le convertisseur extrait uniquement le contenu textuel. Les images intégrées dans les PDF ne sont pas incluses dans la sortie HTML." },
@@ -234,8 +234,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     },
     h1: { en: "Compress PDF", fr: "Compresser un PDF" },
     description: {
-      en: "Reduce PDF file size online for free, entirely in your browser. No upload to servers, no account required. Smaller PDFs in seconds.",
-      fr: "Réduisez la taille d'un PDF en ligne et gratuitement, dans votre navigateur. Sans envoi à un serveur, sans compte. PDFs plus légers en secondes.",
+      en: "Reduce PDF file size online for free with isolated ephemeral processing. Zero storage, no account required. Smaller PDFs in seconds.",
+      fr: "Réduisez la taille d'un PDF en ligne et gratuitement avec un traitement éphémère sécurisé. Sans stockage, sans compte. PDFs plus légers en secondes.",
     },
     keywords: {
       en: ["compress pdf online free", "reduce pdf file size", "pdf compressor", "shrink pdf online", "make pdf smaller", "pdf size reducer"],
@@ -267,7 +267,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     { q: "Is Compress PDF free?", a: "Yes. EverydayTools Hub Compress PDF is completely free, no account required, no usage limits, and no watermarks on the output." },
       ],
       fr: [
-        { q: "Comment compresser un PDF gratuitement en ligne ?", a: "Téléversez votre PDF dans l'outil Compresser PDF d'EverydayTools Hub et cliquez sur Compresser. L'outil optimise la structure interne du PDF dans votre navigateur — sans envoi à un serveur, sans compte. Le fichier compressé se télécharge en quelques secondes." },
+        { q: "Comment compresser un PDF gratuitement en ligne ?", a: "Téléversez votre PDF dans l'outil Compresser PDF d'EverydayTools Hub et cliquez sur Compresser. L'outil optimise la structure interne du PDF dans un espace éphémère sécurisé — sans compte, sans filigrane. Le fichier compressé se télécharge en quelques secondes." },
     { q: "De combien mon PDF sera-t-il compressé ?", a: "Les résultats varient selon le contenu. Les PDF avec de nombreuses images peuvent être réduits de 50 % ou plus. Les PDF principalement textuels voient des réductions plus modestes (10–30 %). Les PDF déjà compressés à la création offrent moins de marge de compression." },
     { q: "La compression réduit-elle la qualité visuelle de mon PDF ?", a: "EverydayTools Hub utilise une compression structurelle qui supprime les données redondantes sans dégrader la qualité du texte ou des images. Le PDF compressé devrait être visuellement identique à l'original." },
     { q: "Puis-je compresser un PDF sans perte de qualité ?", a: "Oui. L'outil se concentre sur la suppression des redondances internes et le retraitement de la structure du fichier, sans ré-encoder les images à une qualité inférieure. Le contenu visuel est préservé." },
@@ -323,7 +323,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     slugs: { en: "split-pdf", fr: "diviser-pdf" },
     title: { en: "Split PDF Online Free — No Signup | EverydayTools Hub", fr: "Diviser un PDF en Ligne Gratuit — Sans Inscription | EverydayTools Hub" },
     h1: { en: "Split PDF", fr: "Diviser un PDF" },
-    description: { en: "Split a PDF into individual pages or custom page ranges in your browser. Free, no upload to servers, no account needed.", fr: "Divisez un PDF en pages individuelles ou en plages personnalisées dans votre navigateur. Gratuit, sans envoi serveur, sans compte." },
+    description: { en: "Split a PDF into individual pages or custom page ranges. Free, zero permanent storage, no account needed.", fr: "Divisez un PDF en pages individuelles ou en plages personnalisées. Gratuit, zéro stockage permanent, sans compte." },
     keywords: { en: ["split pdf online free", "split pdf into pages", "pdf splitter", "extract pages from pdf", "separate pdf pages", "cut pdf online free"], fr: ["diviser pdf en ligne gratuit", "séparer pages pdf", "diviseur pdf", "extraire pages pdf", "couper pdf en ligne", "fractionner pdf"] },
     relatedTools: ["pdf-merge", "pdf-compress", "pdf-rotate", "reorder-pdf", "pdf-page-numbers"],
     howItWorks: {
@@ -719,8 +719,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ],
     },
     about: {
-      en: "Convert a Markdown file into a polished PDF document — ideal for technical writers, developers, and anyone who writes in plain text and needs a shareable, print-ready output. The conversion runs entirely in your browser, with no upload to any server.\n\nMarkdown formatting — headings, paragraphs, bold, italic, lists, and code blocks — is faithfully rendered in the PDF. The output uses clean, professional typography. For an editable Word document instead, use the Markdown to Word converter.",
-      fr: "Convertissez un fichier Markdown en document PDF soigné — idéal pour les rédacteurs techniques, développeurs et tous ceux qui écrivent en texte brut et ont besoin d'un résultat partageable et prêt à imprimer. La conversion s'effectue entièrement dans votre navigateur, sans envoi à un serveur.\n\nLa mise en forme Markdown — titres, paragraphes, gras, italique, listes et blocs de code — est fidèlement rendue dans le PDF. Le résultat utilise une typographie propre et professionnelle. Pour un document Word modifiable, utilisez le convertisseur Markdown en Word."
+      en: "Convert a Markdown file into a polished PDF document: ideal for technical writers, developers, and anyone who writes in plain text and needs a shareable, print-ready output. The conversion is processed securely in an isolated ephemeral workspace, with zero data retention and automatic file deletion upon completion.\n\nMarkdown formatting: headings, paragraphs, bold, italic, lists, and code blocks is faithfully rendered in the PDF. The output uses clean, professional typography. For an editable Word document instead, use the Markdown to Word converter.",
+      fr: "Convertissez un fichier Markdown en document PDF soigné : idéal pour les rédacteurs techniques, développeurs et tous ceux qui écrivent en texte brut et ont besoin d'un résultat partageable et prêt à imprimer. La conversion est traitée de manière sécurisée dans un espace éphémère isolé, avec suppression automatique dès la fin du traitement et zéro conservation de données.\n\nLa mise en forme Markdown : titres, paragraphes, gras, italique, listes et blocs de code est fidèlement rendue dans le PDF. Le résultat utilise une typographie propre et professionnelle. Pour un document Word modifiable, utilisez le convertisseur Markdown en Word."
     },
     faqs: {
       en: [
@@ -803,8 +803,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ],
     },
     about: {
-      en: "Turn any HTML code into a downloadable PDF — useful for saving invoices built from templates, archiving web content, creating print versions of pages, or sharing formatted content that does not require a browser to view. The conversion runs entirely in your browser.\n\nCSS styles, fonts, and layout are applied before the PDF is generated. Inline styles and embedded CSS work well. External resources like remote images or hosted fonts may not be available during conversion, so self-contained HTML gives the cleanest results.",
-      fr: "Transformez n'importe quel code HTML en PDF téléchargeable — utile pour sauvegarder des factures créées à partir de modèles, archiver du contenu web, créer des versions imprimables de pages, ou partager du contenu formaté sans nécessiter un navigateur. La conversion s'effectue entièrement dans votre navigateur.\n\nLes styles CSS, les polices et la mise en page sont appliqués avant la génération du PDF. Les styles inline et le CSS intégré fonctionnent bien. Les ressources externes comme les images distantes ou les polices hébergées peuvent ne pas être disponibles — un HTML autonome donne les meilleurs résultats."
+      en: "Turn any HTML code into a downloadable PDF — useful for saving invoices built from templates, archiving web content, creating print versions of pages, or sharing formatted content that does not require a browser to view. The conversion runs in an isolated ephemeral workspace with zero permanent storage.\n\nCSS styles, fonts, and layout are applied before the PDF is generated. Inline styles and embedded CSS work well. External resources like remote images or hosted fonts may not be available during conversion, so self-contained HTML gives the cleanest results.",
+      fr: "Transformez n'importe quel code HTML en PDF téléchargeable — utile pour sauvegarder des factures créées à partir de modèles, archiver du contenu web, créer des versions imprimables de pages, ou partager du contenu formaté sans nécessiter un navigateur. La conversion s'exécute dans un espace de travail éphémère isolé avec zéro stockage permanent.\n\nLes styles CSS, les polices et la mise en page sont appliqués avant la génération du PDF. Les styles inline et le CSS intégré fonctionnent bien. Les ressources externes comme les images distantes ou les polices hébergées peuvent ne pas être disponibles — un HTML autonome donne les meilleurs résultats."
     },
     faqs: {
       en: [
@@ -931,8 +931,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ],
     },
     about: {
-      en: "Convert images between any common format — JPEG, PNG, WebP, AVIF, BMP, GIF, TIFF, ICO, SVG — right in your browser. No account needed, no upload to any server, and batch conversions of up to 20 files at once are supported.\n\nDifferent formats suit different purposes: WebP and AVIF offer the smallest file sizes for web use, PNG preserves transparency, JPEG is universal for photos. Choose your output format, adjust quality if needed, and download all converted files in a single ZIP.",
-      fr: "Convertissez des images entre n'importe quel format courant — JPEG, PNG, WebP, AVIF, BMP, GIF, TIFF, ICO, SVG — directement dans votre navigateur. Aucun compte requis, aucun envoi à un serveur, et les conversions par lot de jusqu'à 20 fichiers sont prises en charge.\n\nDifférents formats conviennent à différents usages : WebP et AVIF offrent les tailles de fichiers les plus petites pour le web, PNG préserve la transparence, JPEG est universel pour les photos. Choisissez votre format de sortie, ajustez la qualité si nécessaire, et téléchargez tous les fichiers convertis dans un ZIP."
+      en: "Convert images between any common format — JPEG, PNG, WebP, AVIF, BMP, GIF, TIFF, ICO, SVG — right in your browser. No account needed, zero permanent storage, and batch conversions of up to 20 files at once are supported.\n\nDifferent formats suit different purposes: WebP and AVIF offer the smallest file sizes for web use, PNG preserves transparency, JPEG is universal for photos. Choose your output format, adjust quality if needed, and download all converted files in a single ZIP.",
+      fr: "Convertissez des images entre n'importe quel format courant — JPEG, PNG, WebP, AVIF, BMP, GIF, TIFF, ICO, SVG — directement dans votre navigateur. Aucun compte requis, zéro stockage permanent, et les conversions par lot de jusqu'à 20 fichiers sont prises en charge.\n\nDifférents formats conviennent à différents usages : WebP et AVIF offrent les tailles de fichiers les plus petites pour le web, PNG préserve la transparence, JPEG est universel pour les photos. Choisissez votre format de sortie, ajustez la qualité si nécessaire, et téléchargez tous les fichiers convertis dans un ZIP."
     },
     faqs: {
       en: [
@@ -1027,7 +1027,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     { q: "Is PNG to WebP Converter free?", a: "Yes. EverydayTools Hub PNG to WebP Converter is completely free, with no account required and no watermarks on the output." },
       ],
       fr: [
-        { q: "Comment convertir PNG en WebP gratuitement en ligne ?", a: "Téléversez votre PNG dans le convertisseur PNG en WebP d'EverydayTools Hub et cliquez sur Convertir. Le fichier WebP se télécharge dans votre navigateur — sans compte, sans envoi à un serveur." },
+        { q: "Comment convertir PNG en WebP gratuitement en ligne ?", a: "Téléversez votre PNG dans le convertisseur PNG en WebP d'EverydayTools Hub et cliquez sur Convertir. Le fichier WebP se télécharge instantanément — sans compte, sans filigrane." },
     { q: "Pourquoi convertir PNG en WebP ?", a: "WebP produit généralement des fichiers 25–35 % plus petits que PNG à la même qualité visuelle. Des images plus légères améliorent la vitesse de chargement des sites web." },
     { q: "WebP est-il meilleur que PNG ?", a: "WebP est généralement plus petit en taille de fichier que PNG pour les photos et images complexes. PNG est préférable pour une compatibilité maximale avec les anciens logiciels. Pour le web, WebP est la recommandation moderne." },
     { q: "La conversion PNG en WebP perd-elle en qualité ?", a: "Par défaut, le convertisseur utilise un encodage WebP de haute qualité, donc la perte de qualité est minimale." },
@@ -1069,7 +1069,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     { q: "Is JPG to PNG Converter free?", a: "Yes. EverydayTools Hub JPG to PNG Converter is completely free, with no account required and no watermarks on the output." },
       ],
       fr: [
-        { q: "Comment convertir JPG en PNG gratuitement en ligne ?", a: "Téléversez votre JPEG dans le convertisseur JPG en PNG d'EverydayTools Hub et cliquez sur Convertir. Le fichier PNG se télécharge dans votre navigateur — sans compte, sans envoi à un serveur." },
+        { q: "Comment convertir JPG en PNG gratuitement en ligne ?", a: "Téléversez votre JPEG dans le convertisseur JPG en PNG d'EverydayTools Hub et cliquez sur Convertir. Le fichier PNG se télécharge instantanément — sans compte, sans filigrane." },
     { q: "Pourquoi convertir JPG en PNG ?", a: "PNG est un format sans perte qui supporte la transparence, ce que JPEG ne fait pas. Convertissez en PNG pour préserver chaque pixel exactement ou pour la compatibilité avec des outils nécessitant des fichiers PNG." },
     { q: "Le fichier PNG sera-t-il plus grand que le JPG original ?", a: "Oui. PNG utilise une compression sans perte, donc les fichiers PNG sont généralement plus grands que les fichiers JPEG de la même image. C'est un comportement attendu." },
     { q: "La conversion JPG en PNG améliore-t-elle la qualité de l'image ?", a: "Non. La conversion de JPEG en PNG ne récupère pas la qualité perdue lors de la compression JPEG originale. La sortie PNG est une copie sans perte de la qualité que le JPEG avait déjà." },
@@ -1099,8 +1099,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ],
     },
     about: {
-      en: "Reduce the file size of your images in seconds without compromising visual quality. EverydayTools compresses JPEG, PNG, and WebP files directly in your browser, making them perfect for web use, email, or saving storage space.\n\nAdjust the quality slider to find the perfect balance between file size and clarity. The tool provides an instant preview of the new file size, and everything happens on your device — no images are ever sent to a server.",
-      fr: "Réduisez la taille de vos images en quelques secondes sans compromettre la qualité visuelle. EverydayTools compresse les fichiers JPEG, PNG et WebP directement dans votre navigateur, les rendant parfaits pour le web, les e-mails ou pour gagner de l'espace disque.\n\nAjustez le curseur de qualité pour trouver l'équilibre parfait entre poids et clarté. L'outil offre un aperçu instantané de la nouvelle taille du fichier, et tout se passe sur votre appareil — aucune image n'est envoyée à un serveur."
+      en: "Reduce the file size of your images in seconds without compromising visual quality. EverydayTools compresses JPEG, PNG, and WebP files directly in your browser, making them perfect for web use, email, or saving storage space.\n\nAdjust the quality slider to find the perfect balance between file size and clarity. The tool provides an instant preview of the new file size, with secure ephemeral processing and zero permanent storage.",
+      fr: "Réduisez la taille de vos images en quelques secondes sans compromettre la qualité visuelle. EverydayTools compresse les fichiers JPEG, PNG et WebP directement dans votre navigateur, les rendant parfaits pour le web, les e-mails ou pour gagner de l'espace disque.\n\nAjustez le curseur de qualité pour trouver l'équilibre parfait entre poids et clarté. L'outil offre un aperçu instantané de la nouvelle taille du fichier, avec un traitement éphémère sécurisé et zéro stockage permanent."
     },
     faqs: {
       en: [
@@ -1293,28 +1293,28 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     slugs: { en: "remove-image-background", fr: "supprimer-fond-image" },
     title: { en: "Remove Image Background Free — AI, Online | EverydayTools Hub", fr: "Supprimer Fond Image Gratuit — IA, En Ligne | EverydayTools Hub" },
     h1: { en: "Background Remover", fr: "Supprimer le Fond d'une Image" },
-    description: { en: "Remove image backgrounds using on-device AI — free, no upload, no account. Get a transparent PNG in seconds. Powered by on-device AI.", fr: "Supprimez les fonds d'images avec l'IA sur l'appareil — gratuit, sans envoi, sans compte. PNG transparent en quelques secondes." },
+    description: { en: "Remove image backgrounds using high-precision neural AI. Free, zero storage, no account required. Get a transparent PNG in seconds.", fr: "Supprimez les fonds d'images avec une IA neuronale haute précision. Gratuit, zéro stockage, sans compte. PNG transparent en quelques secondes." },
     keywords: { en: ["remove image background free", "background remover online", "remove background from photo", "transparent background free", "ai background removal", "remove bg free"], fr: ["supprimer fond image gratuit", "supprimer arrière-plan photo", "fond transparent gratuit", "suppression fond ia", "enlever fond image en ligne", "remove background gratuit"] },
     relatedTools: ["image-converter", "image-crop", "metadata-cleaner", "image-compress", "watermark-image"],
     howItWorks: {
       en: [
         { name: "Upload your image", text: "Click the upload area or drag a PNG or JPEG photo. The subject can be a person, product, or object." },
-        { name: "AI removes the background", text: "The on-device AI model runs entirely in your browser — no image is sent to any server." },
+        { name: "AI removes the background", text: "The neural AI model isolates the foreground subject in an isolated ephemeral workspace." },
         { name: "Download the PNG", text: "Click Remove Background. A PNG with a transparent background downloads, ready for compositing or web use." },
       ],
       fr: [
         { name: "Téléversez votre image", text: "Cliquez sur la zone de dépôt ou faites glisser une photo PNG ou JPEG. Le sujet peut être une personne, un produit ou un objet." },
-        { name: "L'IA supprime le fond", text: "Le modèle IA s'exécute entièrement dans votre navigateur — aucune image n'est envoyée à un serveur." },
+        { name: "L'IA supprime le fond", text: "Le modèle IA isole le sujet dans un espace de travail éphémère sécurisé et purgé." },
         { name: "Téléchargez le PNG", text: "Cliquez sur Supprimer le fond. Un PNG avec un fond transparent se télécharge, prêt pour la composition ou l'utilisation web." },
       ],
     },
     about: {
-      en: "Remove backgrounds from your photos instantly using intelligent edge detection that runs entirely in your browser. Get a clean cutout with a transparent background, perfect for product photos, profile pictures, or creative projects.\n\nYour images are processed locally on your device and are never sent to a server, ensuring total privacy. Once the background is removed, download your new PNG file immediately — no account, no subscription, and no hidden fees.",
-      fr: "Supprimez instantanément l'arrière-plan de vos photos grâce à une détection intelligente des contours qui s'exécute entièrement dans votre navigateur. Obtenez un détourage propre avec un fond transparent, parfait pour vos photos de produits ou de profil.\n\nVos images sont traitées localement sur votre appareil et ne sont jamais envoyées à un serveur. Une fois l'arrière-plan supprimé, téléchargez votre nouveau fichier PNG immédiatement — sans compte, sans abonnement et sans frais cachés."
+      en: "Remove backgrounds from your photos instantly using neural network contour detection. Get a clean cutout with a transparent background, perfect for product photos, profile pictures, or creative projects.\n\nYour images are processed securely in an isolated ephemeral workspace with zero permanent storage. Once the background is removed, download your new PNG file immediately — no account, no subscription, and no hidden fees.",
+      fr: "Supprimez instantanément l'arrière-plan de vos photos grâce à une détection neuronale intelligente des contours. Obtenez un détourage propre avec un fond transparent, parfait pour vos photos de produits ou de profil.\n\nVos images sont traitées dans un espace de travail éphémère sécurisé avec zéro stockage permanent. Une fois l'arrière-plan supprimé, téléchargez votre nouveau fichier PNG immédiatement — sans compte, sans abonnement et sans frais cachés."
     },
     faqs: {
       en: [
-    { q: "Is the background removal done by AI?", a: "Yes. The tool uses an on-device AI model that runs entirely in your browser. No image data is transmitted to any server." },
+    { q: "Is the background removal done by AI?", a: "Yes. The tool uses a neural segmentation model (rembg ONNX) running in an isolated ephemeral sandbox. Zero permanent storage, and all temp data is purged immediately." },
     { q: "What types of images work best?", a: "The AI works best with images that have a clear foreground subject (person, product, animal, logo) against a distinct background. High contrast between subject and background improves results. Very busy backgrounds or subjects with fine transparent elements (e.g., glass, thin smoke) may require manual cleanup." },
     { q: "Why does the tool take a few seconds to load?", a: "The AI model (approximately 30–50 MB) is downloaded on the first use. Subsequent uses are faster because the model is cached in the browser. The inference itself typically takes 2–10 seconds depending on image size and device speed." },
     { q: "What format is the output?", a: "The output is always a PNG with a transparent alpha channel. PNG is the only format that supports transparency at full quality. To use the result on a website or app, reference the PNG directly or convert it to WEBP format (which also supports transparency) using the Image Converter." },
@@ -1322,7 +1322,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ],
       fr: [
         { q: "Comment supprimer un fond d'une image gratuitement ?", a: "Téléversez votre image dans l'outil Supprimer le Fond d'EverydayTools Hub et cliquez sur Supprimer le fond. Le modèle IA s'exécute dans votre navigateur et produit un PNG transparent qui se télécharge sur votre appareil." },
-    { q: "La suppression du fond est-elle effectuée par IA ?", a: "Oui. L'outil utilise un modèle IA sur l'appareil qui s'exécute entièrement dans votre navigateur. Aucune donnée d'image n'est transmise à un serveur." },
+    { q: "La suppression du fond est-elle effectuée par IA ?", a: "Oui. L'outil utilise un modèle de segmentation neuronale (rembg ONNX) exécuté dans un bac à sable éphémère sécurisé, sans aucun stockage permanent." },
     { q: "Quels types d'images fonctionnent le mieux ?", a: "L'IA fonctionne mieux avec des images ayant un sujet au premier plan clair (personne, produit, animal, logo) sur un fond distinct. Les fonds très chargés peuvent nécessiter un nettoyage manuel." },
     { q: "Pourquoi l'outil prend-il quelques secondes à charger ?", a: "Le modèle IA (environ 30–50 Mo) est téléchargé lors de la première utilisation. Les utilisations suivantes sont plus rapides car le modèle est mis en cache dans le navigateur." },
     { q: "Quel format est la sortie ?", a: "La sortie est toujours un PNG avec un canal alpha transparent. PNG est le seul format qui supporte la transparence en pleine qualité." },
@@ -1395,8 +1395,8 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
       ],
     },
     about: {
-      en: "Sanitize your text by removing sensitive information like names, emails, and phone numbers before sharing it with AI tools or other services. EverydayTools identifies and redacts personal data directly in your browser.\n\nYour text is never sent to a server, ensuring your data remains completely private. Copy and paste your content, review the suggested redactions, and get a clean version ready for safe use. Ideal for developers and writers who need to protect confidentiality while using public AI models.",
-      fr: "Sécurisez vos textes en supprimant les informations sensibles comme les noms, e-mails et numéros de téléphone avant de les partager avec des outils d'IA. EverydayTools identifie et masque les données personnelles directement dans votre navigateur.\n\nVotre texte n'est jamais envoyé à un serveur, garantissant une confidentialité totale. Copiez votre contenu, vérifiez les masquages suggérés et récupérez une version propre. Idéal pour protéger la confidentialité tout en utilisant des modèles d'IA publics."
+      en: "Sanitize your text by removing sensitive information like names, emails, and phone numbers before sharing it with AI tools or other services. EverydayTools identifies and redacts personal data directly in your browser.\n\nAll text sanitization executes entirely client-side in your browser memory, ensuring your data remains completely private. Copy and paste your content, review the suggested redactions, and get a clean version ready for safe use. Ideal for developers and writers who need to protect confidentiality while using public AI models.",
+      fr: "Sécurisez vos textes en supprimant les informations sensibles comme les noms, e-mails et numéros de téléphone avant de les partager avec des outils d'IA. EverydayTools identifie et masque les données personnelles directement dans votre navigateur.\n\nTout le nettoyage de texte s'exécute en mémoire locale dans votre navigateur, garantissant une confidentialité totale. Copiez votre contenu, vérifiez les masquages suggérés et récupérez une version propre. Idéal pour protéger la confidentialité tout en utilisant des modèles d'IA publics."
     },
     faqs: {
       en: [
@@ -1595,7 +1595,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Convert automatically",
-          text: "EverydayTools converts your AVIF to JPG entirely in your browser — no image is ever sent to a server."
+          text: "EverydayTools converts your AVIF to JPG with instant processing and zero permanent storage."
         },
         {
           name: "Download the JPG file",
@@ -1609,7 +1609,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Conversion automatique",
-          text: "EverydayTools convertit votre AVIF en JPG entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+          text: "EverydayTools convertit votre AVIF en JPG avec un traitement instantané et zéro stockage permanent."
         },
         {
           name: "Téléchargez le fichier JPG",
@@ -1711,7 +1711,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Convert automatically",
-          text: "EverydayTools converts your AVIF to PNG entirely in your browser — no image is ever sent to a server."
+          text: "EverydayTools converts your AVIF to PNG with instant processing and zero permanent storage."
         },
         {
           name: "Download the PNG file",
@@ -1725,7 +1725,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Conversion automatique",
-          text: "EverydayTools convertit votre AVIF en PNG entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+          text: "EverydayTools convertit votre AVIF en PNG avec un traitement instantané et zéro stockage permanent."
         },
         {
           name: "Téléchargez le fichier PNG",
@@ -1827,7 +1827,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Convert automatically",
-          text: "EverydayTools converts your BMP to JPG entirely in your browser — no image is ever sent to a server."
+          text: "EverydayTools converts your BMP to JPG with instant processing and zero permanent storage."
         },
         {
           name: "Download the JPG file",
@@ -1841,7 +1841,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Conversion automatique",
-          text: "EverydayTools convertit votre BMP en JPG entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+          text: "EverydayTools convertit votre BMP en JPG avec un traitement instantané et zéro stockage permanent."
         },
         {
           name: "Téléchargez le fichier JPG",
@@ -1943,7 +1943,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Convert automatically",
-          text: "EverydayTools converts your BMP to WebP entirely in your browser — no image is ever sent to a server."
+          text: "EverydayTools converts your BMP to WebP with instant processing and zero permanent storage."
         },
         {
           name: "Download the WebP file",
@@ -1957,7 +1957,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Conversion automatique",
-          text: "EverydayTools convertit votre BMP en WebP entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+          text: "EverydayTools convertit votre BMP en WebP avec un traitement instantané et zéro stockage permanent."
         },
         {
           name: "Téléchargez le fichier WebP",
@@ -2059,7 +2059,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Convert automatically",
-          text: "EverydayTools converts your GIF to PNG entirely in your browser — no image is ever sent to a server."
+          text: "EverydayTools converts your GIF to PNG with instant processing and zero permanent storage."
         },
         {
           name: "Download the PNG file",
@@ -2073,7 +2073,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Conversion automatique",
-          text: "EverydayTools convertit votre GIF en PNG entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+          text: "EverydayTools convertit votre GIF en PNG avec un traitement instantané et zéro stockage permanent."
         },
         {
           name: "Téléchargez le fichier PNG",
@@ -2175,7 +2175,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Convert automatically",
-          text: "EverydayTools converts your GIF to WebP entirely in your browser — no image is ever sent to a server."
+          text: "EverydayTools converts your GIF to WebP with instant processing and zero permanent storage."
         },
         {
           name: "Download the WebP file",
@@ -2189,7 +2189,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Conversion automatique",
-          text: "EverydayTools convertit votre GIF en WebP entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+          text: "EverydayTools convertit votre GIF en WebP avec un traitement instantané et zéro stockage permanent."
         },
         {
           name: "Téléchargez le fichier WebP",
@@ -2291,7 +2291,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Convert automatically",
-          text: "EverydayTools converts your HEIC to PDF entirely in your browser — no image is ever sent to a server."
+          text: "EverydayTools converts your HEIC to PDF with instant processing and zero permanent storage."
         },
         {
           name: "Download the PDF file",
@@ -2305,7 +2305,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Conversion automatique",
-          text: "EverydayTools convertit votre HEIC en PDF entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+          text: "EverydayTools convertit votre HEIC en PDF avec un traitement instantané et zéro stockage permanent."
         },
         {
           name: "Téléchargez le fichier PDF",
@@ -2407,7 +2407,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Convert automatically",
-          text: "EverydayTools converts your HEIC to PNG entirely in your browser — no image is ever sent to a server."
+          text: "EverydayTools converts your HEIC to PNG with instant processing and zero permanent storage."
         },
         {
           name: "Download the PNG file",
@@ -2421,7 +2421,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Conversion automatique",
-          text: "EverydayTools convertit votre HEIC en PNG entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+          text: "EverydayTools convertit votre HEIC en PNG avec un traitement instantané et zéro stockage permanent."
         },
         {
           name: "Téléchargez le fichier PNG",
@@ -2523,7 +2523,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Convert automatically",
-          text: "EverydayTools converts your HEIC to WebP entirely in your browser — no image is ever sent to a server."
+          text: "EverydayTools converts your HEIC to WebP with instant processing and zero permanent storage."
         },
         {
           name: "Download the WebP file",
@@ -2537,7 +2537,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Conversion automatique",
-          text: "EverydayTools convertit votre HEIC en WebP entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+          text: "EverydayTools convertit votre HEIC en WebP avec un traitement instantané et zéro stockage permanent."
         },
         {
           name: "Téléchargez le fichier WebP",
@@ -2639,7 +2639,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Convert automatically",
-          text: "EverydayTools converts your JPG to AVIF entirely in your browser — no image is ever sent to a server."
+          text: "EverydayTools converts your JPG to AVIF with instant processing and zero permanent storage."
         },
         {
           name: "Download the AVIF file",
@@ -2653,7 +2653,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Conversion automatique",
-          text: "EverydayTools convertit votre JPG en AVIF entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+          text: "EverydayTools convertit votre JPG en AVIF avec un traitement instantané et zéro stockage permanent."
         },
         {
           name: "Téléchargez le fichier AVIF",
@@ -2755,7 +2755,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Convert automatically",
-          text: "EverydayTools converts your JPG to PDF entirely in your browser — no image is ever sent to a server."
+          text: "EverydayTools converts your JPG to PDF with instant processing and zero permanent storage."
         },
         {
           name: "Download the PDF file",
@@ -2769,7 +2769,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Conversion automatique",
-          text: "EverydayTools convertit votre JPG en PDF entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+          text: "EverydayTools convertit votre JPG en PDF avec un traitement instantané et zéro stockage permanent."
         },
         {
           name: "Téléchargez le fichier PDF",
@@ -2871,7 +2871,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Convert automatically",
-          text: "EverydayTools converts your JPG to WebP entirely in your browser — no image is ever sent to a server."
+          text: "EverydayTools converts your JPG to WebP with instant processing and zero permanent storage."
         },
         {
           name: "Download the WebP file",
@@ -2885,7 +2885,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Conversion automatique",
-          text: "EverydayTools convertit votre JPG en WebP entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+          text: "EverydayTools convertit votre JPG en WebP avec un traitement instantané et zéro stockage permanent."
         },
         {
           name: "Téléchargez le fichier WebP",
@@ -2987,7 +2987,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Convert automatically",
-          text: "EverydayTools converts your PNG to AVIF entirely in your browser — no image is ever sent to a server."
+          text: "EverydayTools converts your PNG to AVIF with instant processing and zero permanent storage."
         },
         {
           name: "Download the AVIF file",
@@ -3001,7 +3001,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Conversion automatique",
-          text: "EverydayTools convertit votre PNG en AVIF entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+          text: "EverydayTools convertit votre PNG en AVIF avec un traitement instantané et zéro stockage permanent."
         },
         {
           name: "Téléchargez le fichier AVIF",
@@ -3103,7 +3103,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Convert automatically",
-          text: "EverydayTools converts your PNG to JPG entirely in your browser — no image is ever sent to a server."
+          text: "EverydayTools converts your PNG to JPG with instant processing and zero permanent storage."
         },
         {
           name: "Download the JPG file",
@@ -3117,7 +3117,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Conversion automatique",
-          text: "EverydayTools convertit votre PNG en JPG entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+          text: "EverydayTools convertit votre PNG en JPG avec un traitement instantané et zéro stockage permanent."
         },
         {
           name: "Téléchargez le fichier JPG",
@@ -3219,7 +3219,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Convert automatically",
-          text: "EverydayTools converts your PNG to PDF entirely in your browser — no image is ever sent to a server."
+          text: "EverydayTools converts your PNG to PDF with instant processing and zero permanent storage."
         },
         {
           name: "Download the PDF file",
@@ -3233,7 +3233,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Conversion automatique",
-          text: "EverydayTools convertit votre PNG en PDF entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+          text: "EverydayTools convertit votre PNG en PDF avec un traitement instantané et zéro stockage permanent."
         },
         {
           name: "Téléchargez le fichier PDF",
@@ -3335,7 +3335,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Convert automatically",
-          text: "EverydayTools converts your PNG to SVG entirely in your browser — no image is ever sent to a server."
+          text: "EverydayTools converts your PNG to SVG with instant processing and zero permanent storage."
         },
         {
           name: "Download the SVG file",
@@ -3349,7 +3349,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Conversion automatique",
-          text: "EverydayTools convertit votre PNG en SVG entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+          text: "EverydayTools convertit votre PNG en SVG avec un traitement instantané et zéro stockage permanent."
         },
         {
           name: "Téléchargez le fichier SVG",
@@ -3451,7 +3451,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Convert automatically",
-          text: "EverydayTools converts your SVG to PNG entirely in your browser — no image is ever sent to a server."
+          text: "EverydayTools converts your SVG to PNG with instant processing and zero permanent storage."
         },
         {
           name: "Download the PNG file",
@@ -3465,7 +3465,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Conversion automatique",
-          text: "EverydayTools convertit votre SVG en PNG entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+          text: "EverydayTools convertit votre SVG en PNG avec un traitement instantané et zéro stockage permanent."
         },
         {
           name: "Téléchargez le fichier PNG",
@@ -3567,7 +3567,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Convert automatically",
-          text: "EverydayTools converts your TIFF to JPG entirely in your browser — no image is ever sent to a server."
+          text: "EverydayTools converts your TIFF to JPG with instant processing and zero permanent storage."
         },
         {
           name: "Download the JPG file",
@@ -3581,7 +3581,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Conversion automatique",
-          text: "EverydayTools convertit votre TIFF en JPG entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+          text: "EverydayTools convertit votre TIFF en JPG avec un traitement instantané et zéro stockage permanent."
         },
         {
           name: "Téléchargez le fichier JPG",
@@ -3683,7 +3683,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Convert automatically",
-          text: "EverydayTools converts your TIFF to PNG entirely in your browser — no image is ever sent to a server."
+          text: "EverydayTools converts your TIFF to PNG with instant processing and zero permanent storage."
         },
         {
           name: "Download the PNG file",
@@ -3697,7 +3697,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Conversion automatique",
-          text: "EverydayTools convertit votre TIFF en PNG entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+          text: "EverydayTools convertit votre TIFF en PNG avec un traitement instantané et zéro stockage permanent."
         },
         {
           name: "Téléchargez le fichier PNG",
@@ -3799,7 +3799,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Convert automatically",
-          text: "EverydayTools converts your TIFF to WebP entirely in your browser — no image is ever sent to a server."
+          text: "EverydayTools converts your TIFF to WebP with instant processing and zero permanent storage."
         },
         {
           name: "Download the WebP file",
@@ -3813,7 +3813,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Conversion automatique",
-          text: "EverydayTools convertit votre TIFF en WebP entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+          text: "EverydayTools convertit votre TIFF en WebP avec un traitement instantané et zéro stockage permanent."
         },
         {
           name: "Téléchargez le fichier WebP",
@@ -3915,7 +3915,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Convert automatically",
-          text: "EverydayTools converts your WebP to AVIF entirely in your browser — no image is ever sent to a server."
+          text: "EverydayTools converts your WebP to AVIF with instant processing and zero permanent storage."
         },
         {
           name: "Download the AVIF file",
@@ -3929,7 +3929,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Conversion automatique",
-          text: "EverydayTools convertit votre WebP en AVIF entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+          text: "EverydayTools convertit votre WebP en AVIF avec un traitement instantané et zéro stockage permanent."
         },
         {
           name: "Téléchargez le fichier AVIF",
@@ -4031,7 +4031,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Convert automatically",
-          text: "EverydayTools converts your WebP to JPG entirely in your browser — no image is ever sent to a server."
+          text: "EverydayTools converts your WebP to JPG with instant processing and zero permanent storage."
         },
         {
           name: "Download the JPG file",
@@ -4045,7 +4045,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Conversion automatique",
-          text: "EverydayTools convertit votre WebP en JPG entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+          text: "EverydayTools convertit votre WebP en JPG avec un traitement instantané et zéro stockage permanent."
         },
         {
           name: "Téléchargez le fichier JPG",
@@ -4147,7 +4147,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Convert automatically",
-          text: "EverydayTools converts your WebP to PDF entirely in your browser — no image is ever sent to a server."
+          text: "EverydayTools converts your WebP to PDF with instant processing and zero permanent storage."
         },
         {
           name: "Download the PDF file",
@@ -4161,7 +4161,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Conversion automatique",
-          text: "EverydayTools convertit votre WebP en PDF entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+          text: "EverydayTools convertit votre WebP en PDF avec un traitement instantané et zéro stockage permanent."
         },
         {
           name: "Téléchargez le fichier PDF",
@@ -4263,7 +4263,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Convert automatically",
-          text: "EverydayTools converts your WebP to PNG entirely in your browser — no image is ever sent to a server."
+          text: "EverydayTools converts your WebP to PNG with instant processing and zero permanent storage."
         },
         {
           name: "Download the PNG file",
@@ -4277,7 +4277,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
         },
         {
           name: "Conversion automatique",
-          text: "EverydayTools convertit votre WebP en PNG entièrement dans votre navigateur — aucune image n'est envoyée à un serveur."
+          text: "EverydayTools convertit votre WebP en PNG avec un traitement instantané et zéro stockage permanent."
         },
         {
           name: "Téléchargez le fichier PNG",
@@ -5336,7 +5336,7 @@ export const SEO_TOOLS: ToolSeoEntry[] = [
     slugs: { en: "convert-word-to-pdf", fr: "convertir-word-en-pdf" },
     title: { en: "Word to PDF Converter — Free DOCX to PDF Online | EverydayTools Hub", fr: "Convertir Word en PDF — DOCX vers PDF Gratuit En Ligne | EverydayTools Hub" },
     h1: { en: "Word to PDF Converter", fr: "Convertisseur Word en PDF" },
-    description: { en: "Convert Word documents (.docx, .doc) to PDF. Preserves text, headings, lists, and basic formatting. No signup, no upload to servers.", fr: "Convertissez des documents Word (.docx, .doc) en PDF. Préserve texte, titres, listes et mise en forme de base. Sans inscription." },
+    description: { en: "Convert Word documents (.docx, .doc) to PDF. Preserves text, headings, lists, and basic formatting. No signup, zero permanent storage.", fr: "Convertissez des documents Word (.docx, .doc) en PDF. Préserve texte, titres, listes et mise en forme de base. Sans inscription, zéro stockage permanent." },
     keywords: {
       en: ["word to pdf converter", "convert docx to pdf online", "doc to pdf free", "word document to pdf", "docx pdf online"],
       fr: ["convertir word en pdf", "docx en pdf en ligne gratuit", "doc en pdf", "document word en pdf", "convertisseur word pdf"],

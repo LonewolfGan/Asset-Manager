@@ -241,6 +241,7 @@ export default function PdfWatermark() {
             {isProcessing && (
               <ProcessingAperture
                 formatIcon={sourceFormat.icon}
+                formatColor={sourceFormat.color}
                 formatAlt="PDF"
                 stageLabel={
                   isFr

@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postQrCodeGenerator: BlogPost = {
+  slug: {
+    en: "how-to-use-qr-code-generator",
+    fr: "comment-utiliser-qr-code-generator",
+  },
+  title: {
+    en: "How to Generate Custom QR Codes with High Error Correction",
+    fr: "Comment Generer des QR Codes Personnalises Haute Resistance",
+  },
+  description: {
+    en: "Create scannable QR codes for URLs, WiFi passwords, and contact cards with custom colors and Reed-Solomon error correction.",
+    fr: "Creez des QR codes lisibles pour URLs, acces WiFi et cartes de contact avec correction d erreur Reed-Solomon.",
+  },
+  keywords: {
+    en: ["qr code generator","qr-code-generator online","free qr-code-generator","developer tool qr-code-generator"],
+    fr: ["qr code generator","qr-code-generator en ligne","outil qr-code-generator gratuit","utilitaire qr-code-generator"],
+  },
+  publishedAt: "2026-03-25",
+  category: "security",
+  readingMinutes: 4,
+  relatedToolSlug: "qr-code-generator",
+  relatedToolLabel: { en: "Qr Code Generator", fr: "Qr Code Generator" },
+  content: {
+    en: [
+      { type: "p", text: "Create scannable QR codes for URLs, WiFi passwords, and contact cards with custom colors and Reed-Solomon error correction." },
+      { type: "h2", text: "ISO/IEC 18004 2D Matrix Codes and Reed-Solomon Recovery" },
+      { type: "p", text: "Quick Response (QR) codes encode binary information in a two-dimensional grid of black and white modules. Using Reed-Solomon algebraic error correction, QR codes remain 100% readable even if up to 30% of the symbol is scratched, stained, or covered by a logo." },
+      { type: "ul", items: ["Configurable Reed-Solomon error correction levels: L (7%), M (15%), Q (25%), and H (30%).","Specialized payloads for URLs, WiFi credentials, vCard contacts, and plain text.","Export in high-resolution vector SVG or crisp PNG for print and digital posters."] },
+      { type: "h2", text: "Step-by-step practical guide" },
+      { type: "ol", items: ["Choose QR payload type (Website URL, WiFi login, Text, or Contact).","Enter your destination link or configuration data.","Select error correction level (Level H is best if adding a custom logo).","Customize module foreground and background colors.","Download the QR code as an infinite vector SVG or high-DPI PNG."] },
+      { type: "callout", text: "Privacy guarantee: QR codes are rendered locally using client-side canvas engines; your data is never tracked." },
+      { type: "h2", text: "Pro tips and best practices" },
+      { type: "ul", items: ["Always select Level H (30% recovery) if you plan to print the QR code on outdoor flyers or packaging.","Maintain high contrast between modules and background; dark modules on light canvas scan most reliably."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Do these generated QR codes expire?" },
+      { type: "p", text: "No. These are static QR codes containing direct encoded text or links; they work forever without subscription fees." },
+      { type: "h3", text: "Can I connect to WiFi by scanning a QR code?" },
+      { type: "p", text: "Yes. Selecting the WiFi payload generates an authentic WIFI:T:WPA;S:... code that prompts smartphones to connect instantly." },
+      { type: "h3", text: "Which export format is best for commercial printing?" },
+      { type: "p", text: "Download the vector SVG format; it can be scaled to billboard dimensions with zero pixelation." },
+    ],
+    fr: [
+      { type: "p", text: "Creez des QR codes lisibles pour URLs, acces WiFi et cartes de contact avec correction d erreur Reed-Solomon." },
+      { type: "h2", text: "Codes Matriciels 2D ISO/IEC 18004 et Correction Reed-Solomon" },
+      { type: "p", text: "Les QR codes encodent des informations binaires dans une matrice bidimensionnelle de modules. Grace aux algorithmes de correction d erreur Reed-Solomon, ils demeurent lisibles meme si jusqu a 30% du symbole est abime ou recouvert." },
+      { type: "ul", items: ["Niveaux de correction Reed-Solomon ajustables : L (7%), M (15%), Q (25%) et H (30%).","Formats adaptes pour URLs, cles WiFi directes, cartes de visite vCard et textes.","Export vectoriel SVG haute resolution ou PNG net pour l impression et les affiches."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Choisissez le type de contenu (Lien Web, Reseau WiFi, vCard, Texte).","Saisissez l URL ou les parametres de connexion.","Selectionnez le niveau de correction d erreur (Niveau H recommande si vous inserez un logo).","Personnalisez la couleur des modules et du fond.","Telechargez le QR code en SVG vectoriel ou en PNG haute definition."] },
+      { type: "callout", text: "Garantie de confidentialite : Les QR codes sont generes localement via canvas sans enregistrement." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Choisissez le niveau H (30% de tolerance) pour vos impressions sur affiches exterieures ou emballages.","Assurez un contraste fort entre modules et fond ; les modules sombres sur fond clair se scannent le mieux."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Ces QR codes ont-ils une date d expiration ?" },
+      { type: "p", text: "Non. Ce sont des QR codes statiques encodant directement le lien ; ils fonctionnent indefiniment sans abonnement." },
+      { type: "h3", text: "Peut-on se connecter a un reseau WiFi en scannant le QR code ?" },
+      { type: "p", text: "Oui. Le mode WiFi genere une chaine WIFI:T:WPA;S:... qui declenche la connexion automatique sur mobile." },
+      { type: "h3", text: "Quel format d export privilegier pour une impression professionnelle ?" },
+      { type: "p", text: "Telechargez le format vectoriel SVG ; il s agrandit a l echelle d un panneau sans aucune perte de nettete." },
+    ],
+  },
+};

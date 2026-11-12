@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postPdfRepair: BlogPost = {
+  slug: {
+    en: "how-to-repair-corrupt-pdf-files",
+    fr: "comment-reparer-fichier-pdf-endommage",
+  },
+  title: {
+    en: "How to Repair and Recover Corrupt PDF Files Online",
+    fr: "Comment réparer et récupérer un fichier PDF corrompu ou illisible",
+  },
+  description: {
+    en: "Fix damaged cross-reference tables, repair corrupt PDF headers, and salvage readable pages from broken documents without software.",
+    fr: "Réparez les tables de références croisées endommagées, restaurez les en-têtes corrompus et récupérez vos pages PDF sans logiciel.",
+  },
+  keywords: {
+    en: ["repair pdf","fix corrupt pdf","damaged pdf recovery","restore broken pdf file","pdf repair online"],
+    fr: ["reparer pdf","pdf corrompu","recuperer pdf illisible","reparer document pdf endommage","sauver pdf"],
+  },
+  publishedAt: "2026-03-25",
+  category: "pdf",
+  readingMinutes: 5,
+  relatedToolSlug: "pdf-repair",
+  relatedToolLabel: { en: "Repair PDF", fr: "Réparer PDF" },
+  content: {
+    en: [
+      { type: "p", text: "Incomplete file transfers, sudden power interruptions, or faulty storage media can corrupt PDF headers and cross-reference tables, making viewers display unreadable error messages. Using an automated repair engine reconstructs damaged data structures to salvage valuable content." },
+      { type: "h2", text: "How PDF corruption happens and how repair engines fix it" },
+      { type: "p", text: "PDF files rely on an end-of-file trailer and cross-reference (xref) table to locate page objects. When this index is truncated, readers cannot locate pages even though raw text and images remain intact inside the binary stream." },
+      { type: "ul", items: [
+        "Rebuilds damaged xref tables by scanning internal byte streams for valid page objects",
+        "Repairs missing or truncated EOF markers caused by aborted network downloads",
+        "Recovers accessible text streams and embedded vector figures into a clean container",
+      ]},
+      { type: "h2", text: "Step-by-step: how to repair a broken PDF" },
+      { type: "ol", items: [
+        "Open the Repair PDF tool in your web browser with zero registration needed.",
+        "Upload your damaged or unreadable PDF document up to 50 MB.",
+        "The recovery engine audits the binary stream, rebuilds xref pointers, and isolates readable objects.",
+        "Click Repair PDF to assemble a restored, standards-compliant document.",
+        "Download your salvaged PDF file immediately.",
+      ]},
+      { type: "callout", text: "Document recovery runs inside an isolated ephemeral workspace and is purged automatically upon completion. No files are retained on our servers." },
+      { type: "h2", text: "Troubleshooting recovery outcomes" },
+      { type: "ul", items: [
+        "Lightly corrupted indexes and truncated trailers usually restore with 100 percent fidelity",
+        "Completely zero-byte files or fully encrypted files with missing keys cannot be reconstructed",
+        "Always save the repaired file under a new name to preserve the damaged original for technical audits",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Can all damaged PDF files be restored?" },
+      { type: "p", text: "If the raw text and image streams exist within the file bytes, the recovery engine can rebuild the index. Files that were overwritten with zeroes cannot be salvaged." },
+      { type: "h3", text: "Does repairing a PDF alter undamaged pages?" },
+      { type: "p", text: "No. The engine preserves all valid vector objects, fonts, and photos exactly as originally authored." },
+      { type: "h3", text: "Can I repair a password-protected PDF that got corrupted?" },
+      { type: "p", text: "Encrypted files require the legitimate password to decrypt salvaged content streams during reconstruction." },
+    ],
+    fr: [
+      { type: "p", text: "Un transfert interrompu, une coupure de courant ou un disque dur défaillant peuvent corrompre l'en-tête ou la table d'index d'un PDF, rendant le fichier impossible à ouvrir dans votre visionneuse. Un outil de réparation spécialisé reconstruit les pointeurs internes pour sauver vos données." },
+      { type: "h2", text: "Comprendre la corruption de fichier PDF" },
+      { type: "p", text: "Un PDF utilise une table de références croisées (xref) pour localiser chaque page. Lorsque cet index est tronqué, le lecteur affiche une erreur alors que le texte et les images sont souvent encore intacts dans le corps du fichier." },
+      { type: "ul", items: [
+        "Reconstitue la table xref en analysant le flux d'octets à la recherche d'objets valides",
+        "Répare les marqueurs de fin de fichier (EOF) tronqués lors d'un téléchargement inachevé",
+        "Récupère les paragraphes de texte et images intégrées dans un document PDF tout neuf",
+      ]},
+      { type: "h2", text: "Guide pas à pas : réparer un fichier PDF endommagé" },
+      { type: "ol", items: [
+        "Ouvrez l'outil Réparer PDF dans votre navigateur, sans inscription obligatoire.",
+        "Déposez votre document PDF illisible ou corrompu (fichiers acceptés jusqu'à 50 Mo).",
+        "L'outil analyse la structure binaire et reconstruit les index de pages défaillants.",
+        "Cliquez sur Réparer pour générer une version saine et conforme.",
+        "Téléchargez immédiatement votre PDF restauré.",
+      ]},
+      { type: "callout", text: "La réparation s'exécute dans un espace temporaire sécurisé avec suppression automatique immédiate de vos documents." },
+      { type: "h2", text: "Conseils en cas de fichier lourdement endommagé" },
+      { type: "ul", items: [
+        "Les erreurs d'index et de téléchargement partiel se réparent généralement avec une fidélité totale",
+        "Les fichiers vidés (taille de 0 octet) ne contiennent aucune donnée et ne peuvent être restaurés",
+        "Toujours enregistrer le document réparé sous un nouveau nom pour préserver le fichier source",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Tous les fichiers PDF corrompus peuvent-ils être réparés ?" },
+      { type: "p", text: "Tant que les flux d'octets contenant le texte et les images sont présents, le moteur peut reconstruire l'index. Les fichiers écrasés par des zéros sont irrécupérables." },
+      { type: "h3", text: "La réparation risque-t-elle d'altérer les pages intactes ?" },
+      { type: "p", text: "Non. L'outil conserve l'ensemble des objets vectoriels et polices valides tels qu'ils ont été conçus d'origine." },
+      { type: "h3", text: "Peut-on réparer un PDF protégé par mot de passe ?" },
+      { type: "p", text: "Les documents chiffrés nécessitent le mot de passe légitime pour déchiffrer les objets récupérés lors de la reconstruction." },
+    ],
+  },
+};

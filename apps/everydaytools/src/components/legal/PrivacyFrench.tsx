@@ -1,81 +1,111 @@
-import type React from 'react';
-import { S } from './legal-styles';
+import React from 'react';
+import type { LegalSection } from './LegalPageLayout';
+import { SITE_CONFIG } from '@/config/site.config';
 
-const linkStyle = { color: 'var(--text-primary)', textDecoration: 'underline' } as React.CSSProperties;
+export const getPrivacyFrenchSections = (): LegalSection[] => [
+  {
+    id: 'principles',
+    title: '1. Principes fondamentaux',
+    content: (
+      <>
+        <p>
+          EverydayTools Hub repose sur un engagement technique strict : la protection intégrale de votre vie privée et de la souveraineté de vos fichiers.
+        </p>
+        <p>
+          Notre modèle repose sur une ingénierie locale prioritaire. Les outils du quotidien (calculs, formateurs, encodeurs, manipulation de texte)
+          s&apos;exécutent intégralement au sein de la mémoire vive de votre navigateur via WebAssembly et les standards HTML5. Vos fichiers ne transitent
+          jamais par un quelconque serveur.
+        </p>
+        <p>
+          Pour les conversions documentaires complexes nécessitant des calculs haute fidélité, les fichiers sont traités dans des environnements
+          strictement isolés et éphémères, puis supprimés immédiatement dès la génération du résultat (ou sous 15 minutes maximum par purge automatisée).
+        </p>
+      </>
+    ),
+  },
+  {
+    id: 'local-storage',
+    title: '2. Données stockées localement dans votre navigateur',
+    content: (
+      <>
+        <p>
+          Nous ne créons aucun profil utilisateur et n&apos;exigeons aucun compte. Les seules données persistées le sont localement dans votre propre navigateur
+          (localStorage) afin d&apos;améliorer votre confort d&apos;utilisation :
+        </p>
+        <ul>
+          <li>Votre préférence linguistique (Français ou Anglais).</li>
+          <li>Votre thème d&apos;interface (mode Sombre ou Clair).</li>
+          <li>Le cache horaire des taux de conversion de devises (afin de limiter les appels réseau externes).</li>
+        </ul>
+        <p>
+          Ces préférences restent cantonnées à votre navigateur et ne sont jamais téléversées ni exploitées à des fins d&apos;identification.
+          Vous pouvez les purger à tout instant via les paramètres de confidentialité de votre navigateur.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: 'analytics',
+    title: '3. Mesure d&apos;audience respectueuse & Zéro publicité',
+    content: (
+      <>
+        <p>
+          EverydayTools Hub n&apos;intègre aucune régie publicitaire, aucun cookie de pistage tiers et aucun tracker invasif.
+        </p>
+        <p>
+          Pour mesurer la fréquentation globale de la plateforme de manière éthique, nous utilisons une télémétrie anonyme et agrégée respectueuse des
+          recommandations de la CNIL et du RGPD. Aucune adresse IP n&apos;est persistée, aucun profil individuel n&apos;est constitué et aucun cookie n&apos;est déposé.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: 'rights',
+    title: '4. Vos droits (RGPD, CCPA & Souveraineté)',
+    content: (
+      <>
+        <p>
+          Puisque nous n&apos;archivons aucun document et ne collectons aucune donnée personnelle identifiable, vos fichiers demeurent sous votre maîtrise exclusive :
+        </p>
+        <ul>
+          <li><strong>Zéro revente :</strong> Vos fichiers ne sont ni vendus, ni partagés, ni cédés à des courtiers de données.</li>
+          <li><strong>Zéro entraînement d&apos;IA non consenti :</strong> Aucun document traité sur notre plateforme n&apos;est utilisé pour alimenter ou entraîner des modèles d&apos;apprentissage machine tiers.</li>
+          <li><strong>Droit à l&apos;oubli automatique :</strong> Les espaces temporaires de conversion sont détruits de manière irréversible dès achèvement de la tâche.</li>
+        </ul>
+      </>
+    ),
+  },
+  {
+    id: 'contact',
+    title: '5. Contact DPO & Confidentialité',
+    content: (
+      <>
+        <p>
+          Pour toute question relative à notre architecture de confidentialité ou pour exercer vos droits conformément au RGPD, contactez directement notre référent :
+        </p>
+        <p>
+          <a
+            href={`mailto:${SITE_CONFIG.emails.privacy}`}
+            className="text-foreground underline underline-offset-4 decoration-border/80 hover:decoration-foreground transition-colors font-medium font-mono"
+          >
+            {SITE_CONFIG.emails.privacy}
+          </a>
+        </p>
+      </>
+    ),
+  },
+];
 
 export const PrivacyFrench: React.FC = () => {
+  const sections = getPrivacyFrenchSections();
   return (
-    <>
-      <section style={S.section}>
-        <h2 style={S.h2}>En résumé</h2>
-        <p style={S.p}>
-          EverydayTools Hub repose sur une architecture hybride conçue pour la confidentialité.
-          Les outils légers (calculateurs, formateurs de code, aperçus) s'exécutent directement dans la mémoire de votre navigateur.
-          Pour les conversions avancées nécessitant des calculs haute fidélité (documents bureautiques, PDF complexes, IA),
-          le traitement est réalisé de façon strictement éphémère et sécurisée sur nos serveurs dédiés : vos fichiers sont placés dans des espaces isolés,
-          traités, puis automatiquement et définitivement supprimés sous 15 minutes. Aucun fichier n'est conservé, revendu ou analysé.
-        </p>
-      </section>
-
-      <hr style={S.hr} />
-
-      <section style={S.section}>
-        <h2 style={S.h2}>Ce que nous stockons dans votre navigateur</h2>
-        <p style={S.p}>
-          Les informations suivantes sont conservées uniquement dans le stockage local (localStorage) de votre navigateur et ne nous sont jamais transmises :
-        </p>
-        <ul style={S.ul}>
-          <li>Votre préférence linguistique (français ou anglais)</li>
-          <li>Votre préférence d'affichage (thème sombre ou clair)</li>
-          <li>Les taux de change de devises — mis en cache pendant une heure pour réduire les appels API externes</li>
-          <li>Votre choix de consentement aux cookies — conservé pendant un an</li>
-        </ul>
-        <p style={S.p}>
-          Vous pouvez supprimer ces données à tout moment en effaçant les données de site ou le stockage local de votre navigateur.
-        </p>
-      </section>
-
-      <hr style={S.hr} />
-
-      <section style={S.section}>
-        <h2 style={S.h2}>Statistiques et mesure d'audience</h2>
-        <p style={S.p}>
-          Nous utilisons <a style={linkStyle} href="https://plausible.io" target="_blank" rel="noopener noreferrer">Plausible Analytics</a>,
-          une plateforme de statistiques open-source respectueuse de la vie privée et hébergée dans l'Union européenne. Plausible n'utilise pas de cookies,
-          ne recueille aucune donnée personnelle et est exempté des exigences de consentement RGPD. Il comptabilise les pages vues à partir de données strictement agrégées.
-        </p>
-      </section>
-
-      <hr style={S.hr} />
-
-      <section style={S.section}>
-        <h2 style={S.h2}>Publicité</h2>
-        <p style={S.p}>
-          Les publicités permettent de maintenir tous nos outils gratuits. Avec votre accord, nous affichons des annonces diffusées par{' '}
-          <a style={linkStyle} href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer">Google AdSense</a>.
-          Si vous sélectionnez « Essentiels uniquement », aucun cookie publicitaire n'est déposé et seules des annonces non personnalisées sont affichées.
-        </p>
-      </section>
-
-      <hr style={S.hr} />
-
-      <section style={S.section}>
-        <h2 style={S.h2}>Vos droits (RGPD / CCPA)</h2>
-        <p style={S.p}>
-          Comme nous ne conservons aucun fichier ni donnée personnelle sur nos serveurs, vos documents restent sous votre contrôle exclusif.
-          Pour les traitements éphémères assistés par serveur, les fichiers sont automatiquement détruits immédiatement après conversion.
-        </p>
-      </section>
-
-      <hr style={S.hr} />
-
-      <section style={S.section}>
-        <h2 style={S.h2}>Contact</h2>
-        <p style={S.p}>
-          Une question relative à la confidentialité ? Écrivez-nous à{' '}
-          <a style={linkStyle} href="mailto:privacy@everydaytoolshub.com">privacy@everydaytoolshub.com</a>.
-        </p>
-      </section>
-    </>
+    <div>
+      {sections.map((sec) => (
+        <section key={sec.id} id={sec.id} style={{ marginBottom: 32 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 600, margin: '0 0 12px' }}>{sec.title}</h2>
+          <div>{sec.content}</div>
+        </section>
+      ))}
+    </div>
   );
 };

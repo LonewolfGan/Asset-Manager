@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postMarkdownPreview: BlogPost = {
+  slug: {
+    en: "how-to-use-markdown-preview",
+    fr: "comment-utiliser-markdown-preview",
+  },
+  title: {
+    en: "How to Preview, Edit, and Render GitHub Flavored Markdown",
+    fr: "Comment Visualiser, Editer et Rendre du Markdown GitHub",
+  },
+  description: {
+    en: "Live real-time editor and previewer for CommonMark and GFM Markdown with tables, task lists, and syntax-highlighted code blocks.",
+    fr: "Editeur et visualiseur en temps reel pour Markdown CommonMark et GFM avec tableaux, listes de taches et coloration de code.",
+  },
+  keywords: {
+    en: ["markdown preview","markdown-preview online","free markdown-preview","developer tool markdown-preview"],
+    fr: ["markdown preview","markdown-preview en ligne","outil markdown-preview gratuit","utilitaire markdown-preview"],
+  },
+  publishedAt: "2026-03-25",
+  category: "security",
+  readingMinutes: 4,
+  relatedToolSlug: "markdown-preview",
+  relatedToolLabel: { en: "Markdown Preview", fr: "Markdown Preview" },
+  content: {
+    en: [
+      { type: "p", text: "Live real-time editor and previewer for CommonMark and GFM Markdown with tables, task lists, and syntax-highlighted code blocks." },
+      { type: "h2", text: "CommonMark and GitHub Flavored Markdown (GFM) Parsing" },
+      { type: "p", text: "Markdown provides a distraction-free way to write structured content, but verifying table alignment, image links, and task lists requires real-time visual feedback. A live Markdown previewer renders GFM syntax instantly beside your editor." },
+      { type: "ul", items: ["Full support for GitHub Flavored Markdown (tables, checklists, strikethrough).","Synchronized dual-pane scrolling between raw source and rendered preview.","Syntax-highlighted fenced code blocks for over 50 programming languages."] },
+      { type: "h2", text: "Step-by-step practical guide" },
+      { type: "ol", items: ["Type or paste your Markdown content in the editor panel.","Review the live rendered HTML preview updating in real time.","Use the toolbar shortcuts for tables, headings, and code blocks.","Toggle synchronized scrolling to keep your editing position aligned.","Export your document as raw Markdown, HTML markup, or formatted PDF."] },
+      { type: "callout", text: "Privacy guarantee: Markdown notes are processed in client-side memory with zero remote telemetry." },
+      { type: "h2", text: "Pro tips and best practices" },
+      { type: "ul", items: ["Use three backticks followed by the language name (e.g., ```typescript) to enable syntax coloring.","Create interactive checklists using - [ ] and - [x] for clear task tracking."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Does the previewer support tables?" },
+      { type: "p", text: "Yes. Standard GFM pipe-delimited tables are parsed and styled with responsive borders and zebra striping." },
+      { type: "h3", text: "Can I export the rendered Markdown directly to HTML?" },
+      { type: "p", text: "Yes. Click the Export HTML button to copy the clean HTML markup to your clipboard." },
+      { type: "h3", text: "Are math equations and formulas supported?" },
+      { type: "p", text: "Yes. KaTeX LaTeX syntax inside $...$ or $$...$$ renders into beautiful mathematical notation." },
+    ],
+    fr: [
+      { type: "p", text: "Editeur et visualiseur en temps reel pour Markdown CommonMark et GFM avec tableaux, listes de taches et coloration de code." },
+      { type: "h2", text: "Parsing CommonMark et GitHub Flavored Markdown (GFM)" },
+      { type: "p", text: "Le Markdown permet de rediger du contenu structure sans distraction, mais verifier l alignement des tableaux et des liens requiert un apercu direct. Un visualiseur Markdown en direct affiche le rendu GFM aux cotes de votre editeur." },
+      { type: "ul", items: ["Prise en charge complete du GFM (tableaux, listes de taches, texte barre).","Defilement synchronise entre la source brute et la previsualisation rendue.","Coloration syntaxique des blocs de code pour plus de 50 langages de programmation."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Saisissez ou collez votre texte Markdown dans le panneau d edition.","Observez le rendu HTML en direct mis a jour a chaque frappe.","Utilisez les raccourcis pour inserer titres, tableaux et blocs de code.","Activez le defilement synchronise pour garder le curseur aligne.","Exportez votre document en Markdown brut, HTML ou fichier PDF."] },
+      { type: "callout", text: "Garantie de confidentialite : Vos ecrits Markdown sont traites localement sans telemetrie distante." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Utilisez trois accents graves suivis du nom de langage (ex: ```typescript) pour colorer votre code.","Creez des listes interactives avec - [ ] et - [x] pour un suivi clair de vos taches."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Le visualiseur supporte-t-il les tableaux ?" },
+      { type: "p", text: "Oui. Les tableaux avec barres verticales sont formates avec bordures et alignements nets." },
+      { type: "h3", text: "Puis-je exporter le rendu directement en HTML ?" },
+      { type: "p", text: "Oui. Le bouton Exporter en HTML copie le balisage HTML propre dans votre presse-papiers." },
+      { type: "h3", text: "Les formules mathematiques sont-elles prises en charge ?" },
+      { type: "p", text: "Oui. La syntaxe KaTeX LaTeX entre symboles $...$ est convertie en notation mathematique nette." },
+    ],
+  },
+};

@@ -1,0 +1,93 @@
+import type { BlogPost } from "../blog-types";
+
+export const postPdfMetadata: BlogPost = {
+  slug: {
+    en: "how-to-inspect-and-edit-pdf-metadata",
+    fr: "comment-modifier-metadonnees-pdf",
+  },
+  title: {
+    en: "How to Inspect, Edit, and Clean PDF Metadata",
+    fr: "Comment inspecter, modifier et nettoyer les métadonnées PDF",
+  },
+  description: {
+    en: "View hidden metadata in your PDF files, update author, title, and keywords, or wipe sensitive property fields for confidentiality. Complete guide.",
+    fr: "Consultez les métadonnées masquées de vos PDF, mettez à jour titre et auteur, ou effacez les champs sensibles pour garantir votre anonymat. Guide complet.",
+  },
+  keywords: {
+    en: ["pdf metadata", "edit pdf properties", "clean pdf author", "remove pdf metadata", "pdf privacy sanitizer"],
+    fr: ["metadonnees pdf", "modifier proprietes pdf", "nettoyer auteur pdf", "supprimer metadonnees pdf", "anonymiser pdf"],
+  },
+  publishedAt: "2026-03-16",
+  category: "pdf",
+  readingMinutes: 5,
+  relatedToolSlug: "pdf-metadata",
+  relatedToolLabel: { en: "PDF Metadata", fr: "Métadonnées PDF" },
+  content: {
+    en: [
+      { type: "p", text: "Every PDF file contains invisible document properties including creator names, operating systems, editing software, and precise timestamps. When sending contracts, legal bids, or research papers, cleaning these hidden fields prevents confidential leaks." },
+      { type: "h2", text: "What PDF metadata stores behind the scenes" },
+      { type: "p", text: "PDF files store document properties in internal Info dictionaries and XMP XML packets. Without opening a dedicated inspector, these fields remain hidden from view while exposing critical workflow details." },
+      { type: "ul", items: [
+        "Author names and local user account names from Microsoft Office or macOS",
+        "Internal company server paths and printer network addresses",
+        "Original creation and modification dates that expose draft timelines",
+        "Specific PDF generator software and build versions",
+      ]},
+      { type: "h2", text: "Step-by-step: how to inspect and sanitize PDF properties" },
+      { type: "ol", items: [
+        "Open the PDF Metadata tool in your browser with no registration needed.",
+        "Upload your PDF file to inspect its Title, Author, Subject, Keywords, and Producer fields.",
+        "Type corrected public titles or click Clear All to sanitize every property field.",
+        "Click Save Metadata to generate a sanitized PDF binary.",
+        "Download your clean document immediately.",
+      ]},
+      { type: "callout", text: "Your document is processed in an isolated ephemeral workspace and purged automatically upon completion. No files or property logs are ever retained." },
+      { type: "h2", text: "Best practices for document privacy and compliance" },
+      { type: "ul", items: [
+        "Always wipe metadata before submitting blind bids or academic peer reviews",
+        "Set clean descriptive titles to improve internal searchability in document archives",
+        "Verify that title tags match document headers when preparing reports for public distribution",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Does cleaning metadata alter my visible page text or images?" },
+      { type: "p", text: "No. Sanitizing metadata only touches the internal header attributes. Your text layout, fonts, graphics, vector artwork, and page counts remain identical." },
+      { type: "h3", text: "Can cleared metadata be recovered later?" },
+      { type: "p", text: "No. Once property dictionaries are overwritten or stripped from the binary stream, the old values are permanently removed from the downloadable file." },
+      { type: "h3", text: "Is there a file size limit for inspecting metadata?" },
+      { type: "p", text: "You can inspect and edit documents up to 50 MB for free without creating an account or installing extensions." },
+    ],
+    fr: [
+      { type: "p", text: "Chaque document PDF transporte des informations invisibles à l'écran : nom de l'auteur, identifiant de session, logiciel d'édition et dates de révision. Avant d'envoyer un contrat, une réponse à appel d'offres ou un rapport financier, assainir ces métadonnées protège vos secrets d'affaires." },
+      { type: "h2", text: "Ce que révèlent les métadonnées cachées d'un PDF" },
+      { type: "p", text: "Les métadonnées PDF sont encapsulées dans des dictionnaires Info et flux XML XMP. Bien qu'invisibles dans une visionneuse ordinaire, elles dévoilent l'historique de conception et votre environnement technique." },
+      { type: "ul", items: [
+        "Identifiant Windows ou macOS de la personne ayant rédigé le document initial",
+        "Chemins de dossiers réseau internes et serveurs de fichiers d'entreprise",
+        "Chronologie des révisions exposant le temps consacré à la rédaction",
+        "Versions exactes de Microsoft Word, InDesign ou LibreOffice utilisées",
+      ]},
+      { type: "h2", text: "Guide pas à pas : inspecter et nettoyer vos métadonnées" },
+      { type: "ol", items: [
+        "Ouvrez l'outil Métadonnées PDF sans aucune inscription obligatoire.",
+        "Déposez votre fichier pour afficher instantanément Titre, Auteur, Sujet, Mots-clés et Outil de création.",
+        "Saisissez des valeurs publiques propres ou cliquez sur Tout effacer pour une anonymisation totale.",
+        "Validez pour réécrire le flux binaire du document en toute sécurité.",
+        "Téléchargez votre PDF assaini sans aucune conservation de vos données.",
+      ]},
+      { type: "callout", text: "Le traitement s'exécute dans un espace de travail temporaire et isolé. Vos fichiers sont détruits immédiatement après le téléchargement." },
+      { type: "h2", text: "Bonnes pratiques pour la conformité et l'anonymat" },
+      { type: "ul", items: [
+        "Purger systématiquement les métadonnées lors d'évaluations universitaires en double aveugle",
+        "Harmoniser le champ Titre pour un indexage optimal dans vos bases documentaires",
+        "Vérifier l'absence de mentions confidentielles avant toute publication sur un site web public",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Le nettoyage des métadonnées modifie-t-il le texte ou les images ?" },
+      { type: "p", text: "Non. L'assainissement modifie exclusivement les en-têtes internes du fichier. La mise en page visuelle, les polices de caractères et les images restent intactes." },
+      { type: "h3", text: "Les anciennes métadonnées peuvent-elles être restaurées ?" },
+      { type: "p", text: "Non. Une fois les balises supprimées du flux binaire, les anciennes valeurs sont définitivement radiées du document généré." },
+      { type: "h3", text: "Y a-t-il une limite de taille pour éditer les propriétés ?" },
+      { type: "p", text: "L'outil prend en charge les documents jusqu'à 50 Mo sans aucun coût ni abonnement requis." },
+    ],
+  },
+};

@@ -1,81 +1,110 @@
-import type React from 'react';
-import { S } from './legal-styles';
+import React from 'react';
+import type { LegalSection } from './LegalPageLayout';
+import { SITE_CONFIG } from '@/config/site.config';
 
-const linkStyle = { color: 'var(--text-primary)', textDecoration: 'underline' } as React.CSSProperties;
+export const getPrivacyEnglishSections = (): LegalSection[] => [
+  {
+    id: 'principles',
+    title: '1. Foundational Principles',
+    content: (
+      <>
+        <p>
+          EverydayTools Hub operates under a strict engineering ethos: absolute user privacy and sovereign file control.
+        </p>
+        <p>
+          We employ a client-first computing architecture whenever technologically viable. Daily productivity tools
+          (calculators, code formatters, encoders, text tools) run entirely inside your browser&apos;s volatile RAM using
+          WebAssembly and modern HTML5 APIs. In these modes, your files never cross the network or touch external servers.
+        </p>
+        <p>
+          When complex transformations require server-assisted conversion engines, files are processed inside isolated,
+          ephemeral workspaces and purged immediately upon task delivery (with a strict automated 15-minute garbage collection sweep).
+        </p>
+      </>
+    ),
+  },
+  {
+    id: 'local-storage',
+    title: '2. Data Stored Locally in Your Browser',
+    content: (
+      <>
+        <p>
+          We do not require user accounts, passwords, or persistent profiles. The only information retained is saved exclusively
+          in your browser&apos;s local storage (localStorage) to maintain your preferences:
+        </p>
+        <ul>
+          <li>Language selection (English or French).</li>
+          <li>Visual theme preference (Dark or Light mode).</li>
+          <li>Hourly cache of currency exchange rates (to reduce redundant network requests).</li>
+        </ul>
+        <p>
+          This data remains on your machine, is never synchronized with our systems, and can be cleared at any time via your browser settings.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: 'analytics',
+    title: '3. Respectful Aggregated Telemetry & Zero Advertising',
+    content: (
+      <>
+        <p>
+          EverydayTools Hub does not include third-party advertising networks, invasive tracking pixels, or cross-site tracking scripts.
+        </p>
+        <p>
+          To monitor platform stability and traffic volume responsibly, we utilize aggregated, privacy-first telemetry compliant with
+          GDPR and international standards. No IP addresses are stored, no individual fingerprints are constructed, and no tracking cookies are set.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: 'rights',
+    title: '4. Your Rights (GDPR, CCPA & Data Sovereignty)',
+    content: (
+      <>
+        <p>
+          Because we never archive files or compile personal databases, your work remains strictly your own:
+        </p>
+        <ul>
+          <li><strong>Zero Data Brokerage:</strong> Your documents are never sold, rented, or shared with third parties.</li>
+          <li><strong>Zero Non-Consensual AI Training:</strong> No files processed through our platform are harvested to train external machine learning models.</li>
+          <li><strong>Irreversible Eviction:</strong> Transient processing sandboxes are permanently destroyed once the conversion concludes.</li>
+        </ul>
+      </>
+    ),
+  },
+  {
+    id: 'contact',
+    title: '5. Privacy Officer & Inquiries',
+    content: (
+      <>
+        <p>
+          If you have questions regarding our privacy architecture, data isolation practices, or compliance inquiries, contact our privacy officer directly:
+        </p>
+        <p>
+          <a
+            href={`mailto:${SITE_CONFIG.emails.privacy}`}
+            className="text-foreground underline underline-offset-4 decoration-border/80 hover:decoration-foreground transition-colors font-medium font-mono"
+          >
+            {SITE_CONFIG.emails.privacy}
+          </a>
+        </p>
+      </>
+    ),
+  },
+];
 
 export const PrivacyEnglish: React.FC = () => {
+  const sections = getPrivacyEnglishSections();
   return (
-    <>
-      <section style={S.section}>
-        <h2 style={S.h2}>The short version</h2>
-        <p style={S.p}>
-          EverydayTools Hub is built on a privacy-first hybrid architecture. Lightweight tools
-          (calculators, formatters, interactive previews) execute directly in your browser memory.
-          For advanced high-fidelity document conversions (office files, complex PDFs, AI models), processing
-          is performed securely and ephemerally on dedicated cloud servers: files reside in isolated workspaces
-          and are automatically and permanently purged within 15 minutes. We never store, sell, or analyze your files.
-        </p>
-      </section>
-
-      <hr style={S.hr} />
-
-      <section style={S.section}>
-        <h2 style={S.h2}>What we store in your browser</h2>
-        <p style={S.p}>
-          The following is saved only to your browser's localStorage and is never transmitted to us:
-        </p>
-        <ul style={S.ul}>
-          <li>Your language preference (English or French)</li>
-          <li>Your theme preference (dark or light)</li>
-          <li>Currency exchange rates — cached for one hour to reduce external API calls</li>
-          <li>Your cookie consent choice — stored for one year</li>
-        </ul>
-        <p style={S.p}>
-          You can clear this data at any time by clearing your browser's site data or local storage.
-        </p>
-      </section>
-
-      <hr style={S.hr} />
-
-      <section style={S.section}>
-        <h2 style={S.h2}>Analytics</h2>
-        <p style={S.p}>
-          We use <a style={linkStyle} href="https://plausible.io" target="_blank" rel="noopener noreferrer">Plausible Analytics</a>,
-          a privacy-first, open-source analytics platform hosted in the EU. Plausible does not use cookies,
-          does not collect personal data, and is exempt from GDPR consent requirements. It uses aggregated, non-identifiable data only.
-        </p>
-      </section>
-
-      <hr style={S.hr} />
-
-      <section style={S.section}>
-        <h2 style={S.h2}>Advertising</h2>
-        <p style={S.p}>
-          Ads keep our tools free. With your consent, we display ads served by{' '}
-          <a style={linkStyle} href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer">Google AdSense</a>.
-          If you select "Essential only", no advertising cookies are set and only non-personalized ads are shown.
-        </p>
-      </section>
-
-      <hr style={S.hr} />
-
-      <section style={S.section}>
-        <h2 style={S.h2}>Your rights (GDPR / CCPA)</h2>
-        <p style={S.p}>
-          Because we never permanently store personal data or documents on our servers, your data remains under your full control.
-          For ephemeral server conversions, workspaces are automatically purged upon task completion.
-        </p>
-      </section>
-
-      <hr style={S.hr} />
-
-      <section style={S.section}>
-        <h2 style={S.h2}>Contact</h2>
-        <p style={S.p}>
-          Questions about privacy? Email us at{' '}
-          <a style={linkStyle} href="mailto:privacy@everydaytoolshub.com">privacy@everydaytoolshub.com</a>.
-        </p>
-      </section>
-    </>
+    <div>
+      {sections.map((sec) => (
+        <section key={sec.id} id={sec.id} style={{ marginBottom: 32 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 600, margin: '0 0 12px' }}>{sec.title}</h2>
+          <div>{sec.content}</div>
+        </section>
+      ))}
+    </div>
   );
 };

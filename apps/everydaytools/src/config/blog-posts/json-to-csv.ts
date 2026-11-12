@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postJsonToCsv: BlogPost = {
+  slug: {
+    en: "how-to-convert-json-to-csv",
+    fr: "comment-convertir-json-en-csv",
+  },
+  title: {
+    en: "How to Convert JSON Data to CSV Format",
+    fr: "Comment convertir des données JSON en fichier CSV",
+  },
+  description: {
+    en: "Flatten complex JSON API responses, database dumps, and object arrays into organized CSV spreadsheets for Excel and data analysis.",
+    fr: "Aplatissez des réponses d'API JSON, exports de bases de données et tableaux d'objets en feuilles CSV pour Excel et l'analyse de données.",
+  },
+  keywords: {
+    en: ["json to csv","convert json to csv","flatten json to csv","json to spreadsheet"],
+    fr: ["json en csv","convertir json en csv","aplatir json csv","json vers excel"],
+  },
+  publishedAt: "2026-04-18",
+  category: "documents",
+  readingMinutes: 4,
+  relatedToolSlug: "json-to-csv",
+  relatedToolLabel: { en: "JSON to CSV", fr: "JSON en CSV" },
+  content: {
+    en: [
+      { type: "p", text: "REST API responses and NoSQL database dumps arrive packaged as nested JSON objects that cannot be opened directly in spreadsheet applications. Converting JSON into standard CSV flattens object arrays into readable rows and columns suitable for Excel or BI tools." },
+      { type: "h2", text: "Why convert JSON data into tabular CSV" },
+      { type: "p", text: "Business analysts, marketers, and accounting teams rely on tabular tools like Excel to calculate sums, filter rows, and build charts from technical API data." },
+      { type: "ul", items: [
+        "Flattens nested JSON object properties into clean spreadsheet column headers",
+        "Properly quotes string values to prevent comma-delimited syntax breakage",
+        "Produces standard UTF-8 CSV files ready for instant opening in Microsoft Excel or Sheets",
+      ]},
+      { type: "h2", text: "Step-by-step: how to convert JSON to CSV" },
+      { type: "ol", items: [
+        "Open the JSON to CSV tool in your browser with zero registration needed.",
+        "Upload your .json file or paste your raw JSON array into the editor.",
+        "The parser inspects keys, flattens nested fields, and aligns tabular headers.",
+        "Click Convert to CSV to compile standardized delimiter-separated records.",
+        "Download your CSV file ready for immediate spreadsheet import.",
+      ]},
+      { type: "callout", text: "Data transformation executes inside an isolated ephemeral workspace and is purged automatically upon completion. No records are stored on our servers." },
+      { type: "h2", text: "Tips for handling complex JSON structures" },
+      { type: "ul", items: [
+        "Ensure the root element is an array of objects for optimal column generation",
+        "Nested child objects are flattened using dot notation (user.address.city) for clarity",
+        "Verify array elements are formatted into comma-separated text strings inside cells",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "How does it handle nested JSON objects?" },
+      { type: "p", text: "Nested properties are automatically flattened into dedicated columns using dot notation, keeping all data accessible." },
+      { type: "h3", text: "Can I open the resulting CSV in Microsoft Excel?" },
+      { type: "p", text: "Yes. The output uses standard CSV formatting compatible with Excel, Google Sheets, and data warehouses." },
+      { type: "h3", text: "What if some objects in the array have missing keys?" },
+      { type: "p", text: "The engine gathers all unique keys across all objects and leaves empty cells for objects missing specific fields." },
+    ],
+    fr: [
+      { type: "p", text: "Les retours d'API REST et sauvegardes de bases NoSQL sont structurés sous forme d'objets JSON imbriqués impossibles à ouvrir directement dans un tableur. Convertir du JSON en CSV aplatit les tableaux d'objets en lignes et colonnes exploitables sous Excel ou Google Sheets." },
+      { type: "h2", text: "Pourquoi transformer du JSON en tableau CSV" },
+      { type: "p", text: "Les analystes de données et contrôleurs de gestion ont besoin de grilles tabulaires sous Excel pour appliquer des filtres, calculer des moyennes et tracer des graphiques." },
+      { type: "ul", items: [
+        "Aplatit les propriétés d'objets imbriqués en en-têtes de colonnes clairs",
+        "Échappe proprement les guillemets et virgules pour préserver l'intégrité des données",
+        "Génère un fichier CSV UTF-8 prêt pour une ouverture immédiate sous Excel",
+      ]},
+      { type: "h2", text: "Guide pas à pas : convertir du JSON en CSV" },
+      { type: "ol", items: [
+        "Accédez à l'outil JSON en CSV dans votre navigateur sans créer de compte.",
+        "Déposez votre fichier .json ou collez votre tableau d'objets dans l'éditeur.",
+        "Le système extrait toutes les clés uniques et aligne les lignes de données.",
+        "Cliquez sur Convertir pour générer votre fichier CSV conforme.",
+        "Téléchargez votre fichier pour analyse immédiate dans votre tableur.",
+      ]},
+      { type: "callout", text: "Le traitement est réalisé dans un espace temporaire sécurisé avec suppression automatique immédiate de vos données confidentielles." },
+      { type: "h2", text: "Conseils pour les structures de données complexes" },
+      { type: "ul", items: [
+        "S'assurer que la racine du document est un tableau d'objets JSON régulier",
+        "Les sous-objets sont aplatis avec la notation pointée (client.adresse.ville) pour un repérage net",
+        "Les sous-tableaux sont rassemblés sous forme de chaînes délimitées dans la cellule",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Comment sont traités les objets JSON imbriqués ?" },
+      { type: "p", text: "Le convertisseur aplatit automatiquement les niveaux d'arborescence en colonnes distinctes avec la notation pointée." },
+      { type: "h3", text: "Le fichier CSV s'ouvre-t-il correctement dans Excel ?" },
+      { type: "p", text: "Oui. Le format produit respecte la norme CSV standard reconnue universellement par Excel et Google Sheets." },
+      { type: "h3", text: "Que se passe-t-il si certains objets n'ont pas les mêmes clés ?" },
+      { type: "p", text: "Le moteur inventorie l'ensemble des clés existantes dans le jeu de données et laisse une cellule vide pour les objets où le champ est absent." },
+    ],
+  },
+};

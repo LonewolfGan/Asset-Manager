@@ -1,23 +1,37 @@
+import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "wouter";
 import { BLOG_POSTS } from "@/config/blog-data";
+import { getResponsivePostsPerPage, formatBlogDate } from "@/config/blog-helpers";
 import { useLocale } from "@/hooks/use-locale";
 import { PageTitle, PageSubtitle } from "@/components/Typography";
 
 const BASE_URL = "https://everydaytools.qzz.io";
 
-function formatDate(dateStr: string, locale: "en" | "fr"): string {
-  const date = new Date(dateStr + "T00:00:00");
-  return date.toLocaleDateString(locale === "fr" ? "fr-FR" : "en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
+function useResponsivePostsPerPage(): number {
+  const [postsPerPage, setPostsPerPage] = useState(() => {
+    if (typeof window === "undefined") return 15;
+    return getResponsivePostsPerPage(window.innerWidth);
   });
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const updateSize = () => {
+      setPostsPerPage(getResponsivePostsPerPage(window.innerWidth));
+    };
+    updateSize();
+    window.addEventListener("resize", updateSize);
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+
+  return postsPerPage;
 }
 
 export default function BlogIndex() {
   const { locale } = useLocale();
   const lang: "en" | "fr" = locale?.toLowerCase().startsWith("fr") ? "fr" : "en";
+  const [currentPage, setCurrentPage] = useState(1);
+  const postsPerPage = useResponsivePostsPerPage();
 
   const title = lang === "fr"
     ? "Blog — Guides pratiques | EverydayTools Hub"
@@ -30,12 +44,25 @@ export default function BlogIndex() {
   const altCanonical = `${BASE_URL}/${altLang}/blog`;
 
   const readLabel = lang === "fr" ? "min de lecture" : "min read";
-  const blogLabel = lang === "fr" ? "Blog" : "Blog";
+  const blogLabel = "Blog";
   const heroTitle = lang === "fr" ? "Guides pratiques" : "How-to Guides";
   const heroSubtitle = lang === "fr"
     ? "Conseils simples pour les tâches numériques de tous les jours."
     : "Simple tips for everyday digital tasks.";
   const readMoreLabel = lang === "fr" ? "Lire le guide" : "Read guide";
+
+  const totalPages = Math.ceil(BLOG_POSTS.length / postsPerPage);
+  const validCurrentPage = Math.min(currentPage, Math.max(1, totalPages));
+  const startIndex = (validCurrentPage - 1) * postsPerPage;
+  const paginatedPosts = BLOG_POSTS.slice(startIndex, startIndex + postsPerPage);
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage < 1 || newPage > totalPages) return;
+    setCurrentPage(newPage);
+    if (typeof window !== "undefined" && typeof window.scrollTo === "function") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
 
   const BLOG_LIST_SCHEMA = {
     "@context": "https://schema.org",
@@ -91,7 +118,7 @@ export default function BlogIndex() {
 
         {/* Post grid */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 20 }}>
-          {BLOG_POSTS.map((post) => (
+          {paginatedPosts.map((post) => (
             <Link
               key={post.slug.en}
               href={`/${lang}/blog/${post.slug[lang]}`}
@@ -120,7 +147,7 @@ export default function BlogIndex() {
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "var(--text-tertiary)", fontFamily: "var(--font-mono)" }}>
-                  <time dateTime={post.publishedAt}>{formatDate(post.publishedAt, lang)}</time>
+                  <time dateTime={post.publishedAt}>{formatBlogDate(post.publishedAt, lang)}</time>
                   <span>·</span>
                   <span>{post.readingMinutes} {readLabel}</span>
                 </div>
@@ -137,6 +164,126 @@ export default function BlogIndex() {
             </Link>
           ))}
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <nav
+            aria-label="Pagination"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: 8,
+              marginTop: 48,
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              aria-label={lang === "fr" ? "Page précédente" : "Previous page"}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                padding: "6px 12px",
+                fontSize: 13,
+                fontWeight: 500,
+                color: currentPage === 1 ? "var(--text-tertiary)" : "var(--text-secondary)",
+                background: "transparent",
+                border: "none",
+                cursor: currentPage === 1 ? "not-allowed" : "pointer",
+                opacity: currentPage === 1 ? 0.35 : 1,
+                transition: "color 140ms ease, opacity 140ms ease",
+              }}
+              onMouseEnter={(e) => {
+                if (currentPage !== 1) {
+                  (e.currentTarget as HTMLElement).style.color = "var(--text-primary)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (currentPage !== 1) {
+                  (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)";
+                }
+              }}
+            >
+              ← {lang === "fr" ? "Précédent" : "Previous"}
+            </button>
+
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+              <button
+                key={pageNum}
+                type="button"
+                onClick={() => handlePageChange(pageNum)}
+                aria-current={currentPage === pageNum ? "page" : undefined}
+                aria-label={`Page ${pageNum}`}
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: "50%",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: 0,
+                  fontSize: 13,
+                  fontWeight: currentPage === pageNum ? 600 : 500,
+                  color: currentPage === pageNum ? "#ffffff" : "var(--text-secondary)",
+                  background: currentPage === pageNum ? "var(--accent)" : "transparent",
+                  border: `1px solid ${currentPage === pageNum ? "var(--accent)" : "var(--border)"}`,
+                  cursor: "pointer",
+                  transition: "border-color 140ms ease, background 140ms ease, color 140ms ease",
+                }}
+                onMouseEnter={(e) => {
+                  if (currentPage !== pageNum) {
+                    (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
+                    (e.currentTarget as HTMLElement).style.color = "var(--text-primary)";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (currentPage !== pageNum) {
+                    (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
+                    (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)";
+                  }
+                }}
+              >
+                {pageNum}
+              </button>
+            ))}
+
+            <button
+              type="button"
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              aria-label={lang === "fr" ? "Page suivante" : "Next page"}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                padding: "6px 12px",
+                fontSize: 13,
+                fontWeight: 500,
+                color: currentPage === totalPages ? "var(--text-tertiary)" : "var(--text-secondary)",
+                background: "transparent",
+                border: "none",
+                cursor: currentPage === totalPages ? "not-allowed" : "pointer",
+                opacity: currentPage === totalPages ? 0.35 : 1,
+                transition: "color 140ms ease, opacity 140ms ease",
+              }}
+              onMouseEnter={(e) => {
+                if (currentPage !== totalPages) {
+                  (e.currentTarget as HTMLElement).style.color = "var(--text-primary)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (currentPage !== totalPages) {
+                  (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)";
+                }
+              }}
+            >
+              {lang === "fr" ? "Suivant" : "Next"} →
+            </button>
+          </nav>
+        )}
       </div>
     </>
   );

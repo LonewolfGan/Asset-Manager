@@ -15,7 +15,7 @@ export const HUMAN_DESC: Record<string, string> = {
   "pdf-to-image": "Export every PDF page as a PNG or JPEG. Useful for sharing a page visually or embedding it as a graphic anywhere. Choose the format and resolution that work best for your needs.",
   "pdf-to-excel": "Pull tabular data from a PDF into an editable spreadsheet. Rows and columns map to Excel cells — saves hours of manual re-entry. Works well on structured data; scanned PDFs produce messier results.",
   "reorder-pdf": "Drag PDF pages into any order, remove what you don't need, and download a clean reorganized version in seconds. Reorganize entire documents without installing any software. Perfect for fixing the page order of scanned files or rearranging slides.",
-  "ocr": "Extract text from scanned documents, photos, and screenshots. Supports multiple languages and handles skewed or low-contrast images well. Runs entirely in your browser — no server involved.",
+  "ocr": "Extract text from scanned documents, photos, and screenshots. Supports multiple languages and handles skewed or low-contrast images well with zero data retention.",
 
   // Word & Docs
   "word-to-pdf": "Convert Word documents to PDF with fonts, tables, and spacing fully preserved. Share files that look identical on any device or printer. Fonts, tables, and page breaks all carry over so what you see is what they get.",

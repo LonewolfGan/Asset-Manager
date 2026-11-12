@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postMetadataCleaner: BlogPost = {
+  slug: {
+    en: "how-to-use-metadata-cleaner",
+    fr: "comment-utiliser-metadata-cleaner",
+  },
+  title: {
+    en: "How to Strip Sensitive Metadata from Photos and Documents",
+    fr: "Comment Supprimer les Metadonnees Sensibles de vos Fichiers",
+  },
+  description: {
+    en: "Remove hidden EXIF, GPS coordinates, device serials, and author details from photos and documents before public sharing.",
+    fr: "Supprimez les metadonnees EXIF, coordonnees GPS, numeros de serie et auteurs caches de vos photos et documents.",
+  },
+  keywords: {
+    en: ["metadata cleaner","metadata-cleaner online","free metadata-cleaner","developer tool metadata-cleaner"],
+    fr: ["metadata cleaner","metadata-cleaner en ligne","outil metadata-cleaner gratuit","utilitaire metadata-cleaner"],
+  },
+  publishedAt: "2026-03-25",
+  category: "security",
+  readingMinutes: 4,
+  relatedToolSlug: "metadata-cleaner",
+  relatedToolLabel: { en: "Metadata Cleaner", fr: "Metadata Cleaner" },
+  content: {
+    en: [
+      { type: "p", text: "Remove hidden EXIF, GPS coordinates, device serials, and author details from photos and documents before public sharing." },
+      { type: "h2", text: "Sanitizing Hidden Metadata Headers" },
+      { type: "p", text: "Digital images and PDF documents silently record geographic GPS coordinates, camera serial numbers, software versions, and author usernames. Sanitizing these headers permanently prevents unintentional data leaks and protects personal privacy." },
+      { type: "ul", items: ["Strips EXIF, IPTC, XMP, and Photoshop headers without degrading pixel quality.","Removes precise geographic latitude and longitude coordinates and timestamps.","Sanitizes creator usernames and editing software signatures in documents."] },
+      { type: "h2", text: "Step-by-step practical guide" },
+      { type: "ol", items: ["Upload your photos, PDF documents, or graphics.","Inspect detected metadata fields including GPS location and camera models.","Select full sanitization or targeted attribute removal.","Execute metadata stripping engine.","Download your privacy-safe sanitized files."] },
+      { type: "callout", text: "Privacy guarantee: Metadata stripping runs in isolated ephemeral sandboxes and files are immediately purged." },
+      { type: "h2", text: "Pro tips and best practices" },
+      { type: "ul", items: ["Always sanitize photos before publishing them on public forums or classified ad marketplaces.","Verify that location markers are completely stripped using the built-in metadata viewer."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Does removing metadata reduce the image quality or sharpness?" },
+      { type: "p", text: "No. Only the peripheral header metadata packets are stripped; raw image pixel streams remain completely untouched." },
+      { type: "h3", text: "Can I clean multiple photos at once?" },
+      { type: "p", text: "Yes. Batch cleaning strips metadata from dozens of images simultaneously and bundles them into a clean ZIP." },
+      { type: "h3", text: "Which file formats are supported?" },
+      { type: "p", text: "The cleaner supports JPEG, PNG, WebP, TIFF, HEIC, and PDF document formats." },
+    ],
+    fr: [
+      { type: "p", text: "Supprimez les metadonnees EXIF, coordonnees GPS, numeros de serie et auteurs caches de vos photos et documents." },
+      { type: "h2", text: "Assainir les En-tetes de Metadonnees Cachees" },
+      { type: "p", text: "Les cliches numeriques et documents PDF enregistrent a votre insu les coordonnees GPS, numeros de serie, versions logicielles et identifiants d auteur. Supprimer ces en-tetes previent toute fuite de confidentialite." },
+      { type: "ul", items: ["Supprime les marqueurs EXIF, IPTC, XMP et Photoshop sans alteration de l image.","Elimine les coordonnees de geolocalisation GPS precises et l heure exacte de prise de vue.","Efface le nom d utilisateur du createur et les signatures logicielles."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Chargez vos photos, documents PDF ou visuels.","Consultez les metadonnees detectees incluant localisation GPS et materiel.","Choisissez un assainissement complet ou le retrait d attributs cibles.","Lancez le moteur de nettoyage de metadonnees.","Telechargez vos fichiers securises et nettoyes."] },
+      { type: "callout", text: "Garantie de confidentialite : Le nettoyage s execute en sandbox ephemere avec purge immediate." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Nettoyez systematiquement vos cliches avant de les diffuser sur des petites annonces ou forums.","Verifiez l absence totale de coordonnees GPS grace a la visionneuse de metadonnees integree."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "La suppression des metadonnees degrade-t-elle la qualite de l image ?" },
+      { type: "p", text: "Non. Seuls les paquets d en-tete peripheriques sont purges ; les flux de pixels ne sont nullement modifies." },
+      { type: "h3", text: "Puis-je nettoyer un lot de photos simultanement ?" },
+      { type: "p", text: "Oui. Le nettoyage par lots traite des dizaines de photos a la fois et les regroupe dans un ZIP." },
+      { type: "h3", text: "Quels formats de fichiers sont pris en charge ?" },
+      { type: "p", text: "L outil prend en charge JPEG, PNG, WebP, TIFF, HEIC ainsi que les documents PDF." },
+    ],
+  },
+};

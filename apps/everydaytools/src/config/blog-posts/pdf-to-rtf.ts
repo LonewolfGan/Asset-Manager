@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postPdfToRtf: BlogPost = {
+  slug: {
+    en: "how-to-convert-pdf-to-rtf",
+    fr: "comment-convertir-pdf-en-rtf",
+  },
+  title: {
+    en: "How to Convert PDF to Rich Text Format (RTF)",
+    fr: "Comment convertir un PDF en Rich Text Format (RTF)",
+  },
+  description: {
+    en: "Convert PDF documents into editable Rich Text Format (.rtf) files compatible with legacy word processors, WordPad, and text editors.",
+    fr: "Convertissez vos documents PDF en fichiers Rich Text Format (.rtf) modifiables et compatibles avec WordPad et tous les éditeurs de texte.",
+  },
+  keywords: {
+    en: ["pdf to rtf","convert pdf to rtf","pdf to rich text format","extract rtf from pdf"],
+    fr: ["pdf en rtf","convertir pdf en rtf","pdf vers rich text format","modifier pdf dans wordpad"],
+  },
+  publishedAt: "2026-04-13",
+  category: "documents",
+  readingMinutes: 4,
+  relatedToolSlug: "pdf-to-rtf",
+  relatedToolLabel: { en: "PDF to RTF", fr: "PDF en RTF" },
+  content: {
+    en: [
+      { type: "p", text: "Legacy accounting systems, legal word processors, and minimal desktop environments like WordPad often reject heavy DOCX or PDF files. Converting a PDF to Rich Text Format (.rtf) provides an ultra-compatible, editable text format that opens anywhere without special software." },
+      { type: "h2", text: "Why convert PDF into Rich Text Format (RTF)" },
+      { type: "p", text: "RTF bridges modern and legacy computer systems. It preserves formatting like bold, italic, font sizes, and paragraph margins in a lightweight, cross-platform standard." },
+      { type: "ul", items: [
+        "Opens natively in lightweight text editors like Windows WordPad and macOS TextEdit",
+        "Enables editing of contract clauses without requiring full office suite installations",
+        "Preserves basic table borders, text colors, and font styling reliably",
+      ]},
+      { type: "h2", text: "Step-by-step: how to convert PDF to RTF" },
+      { type: "ol", items: [
+        "Open the PDF to RTF converter in your browser with zero registration needed.",
+        "Upload your PDF document: files up to 50 MB are supported without account limits.",
+        "The engine maps PDF text streams and formatting into standard RTF control words.",
+        "Click Convert to RTF to generate an editable document.",
+        "Download your .rtf file and open it in your preferred word processor.",
+      ]},
+      { type: "callout", text: "Conversion runs inside an isolated ephemeral workspace and is purged automatically upon completion. No documents are stored on our servers." },
+      { type: "h2", text: "Tips for cross-platform document sharing" },
+      { type: "ul", items: [
+        "Standard system fonts (Arial, Times New Roman) convert with highest cross-platform accuracy",
+        "Check table cell alignment when opening RTF files in legacy word processing programs",
+        "Use RTF for sharing documents with users running minimal operating system installations",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Can I open the RTF file in WordPad?" },
+      { type: "p", text: "Yes. Windows WordPad, macOS TextEdit, and all major office suites natively support RTF files without plugins." },
+      { type: "h3", text: "Are images in the PDF preserved in the RTF file?" },
+      { type: "p", text: "Yes. Embedded pictures are translated into hex-encoded image structures inside the RTF document." },
+      { type: "h3", text: "Is the text in the RTF file fully editable?" },
+      { type: "p", text: "Yes. You can edit text, change formatting, and re-save the document in any word processor." },
+    ],
+    fr: [
+      { type: "p", text: "Certains logiciels juridiques anciens, outils de gestion et éditeurs légers comme WordPad n'acceptent pas les fichiers PDF ou DOCX lourds. Convertir un PDF en Rich Text Format (.rtf) fournit un document léger, modifiable et universellement compatible sans licence coûteuse." },
+      { type: "h2", text: "Pourquoi convertir un PDF en Rich Text Format (RTF)" },
+      { type: "p", text: "Le RTF fait le pont entre logiciels modernes et systèmes légers. Il préserve le gras, l'italique, les polices et les marges dans un format simple et robuste." },
+      { type: "ul", items: [
+        "S'ouvre nativement dans WordPad sous Windows et TextEdit sous macOS sans logiciel lourd",
+        "Permet de modifier des clauses contractuelles sur des postes de travail d'appoint",
+        "Conserve la couleur des polices, les puces et les bordures de tableaux",
+      ]},
+      { type: "h2", text: "Guide pas à pas : convertir un PDF en RTF" },
+      { type: "ol", items: [
+        "Accédez à l'outil PDF en RTF dans votre navigateur sans créer de compte.",
+        "Déposez votre document PDF : les fichiers jusqu'à 50 Mo sont pris en charge.",
+        "Le système traduit les flux textuels et styles du PDF en balises RTF standards.",
+        "Cliquez sur Convertir pour générer votre document modifiable.",
+        "Téléchargez votre fichier .rtf et ouvrez-le dans votre traitement de texte.",
+      ]},
+      { type: "callout", text: "Le traitement est exécuté dans un environnement temporaire sécurisé avec suppression automatique immédiate de vos données." },
+      { type: "h2", text: "Conseils pour l'échange de documents universels" },
+      { type: "ul", items: [
+        "Privilégier les polices courantes (Arial, Times New Roman) pour un rendu constant",
+        "Vérifier les tableaux lors de l'ouverture dans des traitements de texte anciens",
+        "Utiliser le RTF pour partager des documents avec des correspondants sans suite Office",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Le fichier s'ouvre-t-il dans WordPad ?" },
+      { type: "p", text: "Oui. WordPad sous Windows et TextEdit sous Mac gèrent nativement les fichiers RTF sans nécessiter d'application payante." },
+      { type: "h3", text: "Les images sont-elles conservées dans le fichier RTF ?" },
+      { type: "p", text: "Oui. Les photos et graphismes du PDF sont encapsulés dans le flux de données du fichier RTF." },
+      { type: "h3", text: "Le texte est-il complètement modifiable ?" },
+      { type: "p", text: "Oui. Le document généré est un fichier de traitement de texte standard où vous pouvez librement modifier les paragraphes." },
+    ],
+  },
+};

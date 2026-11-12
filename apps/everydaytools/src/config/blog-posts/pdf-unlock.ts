@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postPdfUnlock: BlogPost = {
+  slug: {
+    en: "how-to-remove-password-protection-from-pdf",
+    fr: "comment-deverrouiller-pdf-protege",
+  },
+  title: {
+    en: "How to Unlock and Remove Password from a PDF",
+    fr: "Comment déverrouiller et supprimer le mot de passe d'un PDF",
+  },
+  description: {
+    en: "Step-by-step guide to removing owner restrictions and open passwords from PDF files securely with zero permanent storage. Complete guide.",
+    fr: "Guide étape par étape pour déverrouiller un PDF protégé et supprimer les restrictions en toute sécurité avec zéro stockage permanent. Guide complet.",
+  },
+  keywords: {
+    en: ["unlock pdf", "remove pdf password", "pdf decrypt", "pdf restrictions", "clear pdf print lock"],
+    fr: ["deverrouiller pdf", "supprimer mot de passe pdf", "enlever protection pdf", "debloquer pdf", "retirer mot de passe"],
+  },
+  publishedAt: "2026-03-11",
+  category: "pdf",
+  readingMinutes: 5,
+  relatedToolSlug: "pdf-unlock",
+  relatedToolLabel: { en: "Unlock PDF", fr: "Déverrouiller PDF" },
+  content: {
+    en: [
+      { type: "p", text: "Financial statements, utility bills, and legal contracts often arrive encrypted with passwords that require manual entry every single time you view them. If you know the password and want to save an unencumbered copy for personal archives, removing the protection layer simplifies daily management." },
+      { type: "h2", text: "User passwords versus owner permissions" },
+      { type: "p", text: "The PDF specification defines two complementary encryption mechanisms. Distinguishing between them helps you understand which operations your document permits." },
+      { type: "ul", items: [
+        "Open or User password: Blocks unauthorized viewing and requires authentication to render any page content",
+        "Owner or Permissions password: Allows viewing but disables printing, copying text, or extracting form fields",
+        "Decryption engines strip both locks simultaneously once authentic authorization credentials are submitted",
+      ]},
+      { type: "h2", text: "Step-by-step: how to unlock your PDF safely" },
+      { type: "ol", items: [
+        "Navigate to the Unlock PDF tool in your browser without requiring any software installation.",
+        "Upload your password-protected PDF document up to 50 MB.",
+        "Enter your legitimate password into the secure prompt to decrypt the binary stream.",
+        "Click Unlock to process the file and clear all permission flags.",
+        "Download your unrestricted PDF file immediately.",
+      ]},
+      { type: "callout", text: "Decryption happens in an isolated container with zero logging of submitted passwords and immediate file deletion upon job completion." },
+      { type: "h2", text: "Legal considerations and archival best practices" },
+      { type: "ul", items: [
+        "Only decrypt documents you own or have explicit authorization from the copyright holder to modify",
+        "Store decrypted archival versions in encrypted local folders or password managers for safety",
+        "Verify that page contents and vector graphics remained completely intact after removing security",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Can I unlock a PDF if I completely forgot the password?" },
+      { type: "p", text: "No. Strong 128-bit and 256-bit AES encryption cannot be bypassed without the legitimate passphrase. Our tool does not perform brute-force attacks." },
+      { type: "h3", text: "Will unlocking the document reduce visual quality or alter formatting?" },
+      { type: "p", text: "No. Decryption strictly strips encryption wrappers and resets permission bits. Text, vector drawings, fonts, and embedded images remain pixel-perfect." },
+      { type: "h3", text: "Do you store my password or decrypted document on your servers?" },
+      { type: "p", text: "Never. Passwords exist only in volatile server memory for the duration of the cryptographic operation and are never written to disk or logged." },
+    ],
+    fr: [
+      { type: "p", text: "Les relevés bancaires, factures et contrats officiels sont fréquemment protégés par un mot de passe exigeant une saisie répétitive à chaque consultation. Si vous possédez le mot de passe et souhaitez archiver une version libre d'accès pour votre comptabilité, supprimer ce verrou simplifie votre quotidien." },
+      { type: "h2", text: "Mot de passe utilisateur et restrictions d'autorisation" },
+      { type: "p", text: "La norme PDF intègre deux niveaux de sécurité complémentaires. Comprendre leur différence permet de lever les blocages appropriés." },
+      { type: "ul", items: [
+        "Mot de passe d'ouverture (User) : verrouille la lecture intégrale et exige une authentification pour afficher le texte",
+        "Mot de passe propriétaire (Owner) : autorise l'affichage mais interdit l'impression, l'annotation ou le copier-coller",
+        "Le moteur de déchiffrement réinitialise ces deux types de barrières après validation de la clé légitime",
+      ]},
+      { type: "h2", text: "Guide pratique : déverrouiller un document PDF" },
+      { type: "ol", items: [
+        "Ouvrez l'outil Déverrouiller PDF dans votre navigateur, sans installer de logiciel.",
+        "Déposez votre document PDF chiffré (fichiers acceptés jusqu'à 50 Mo).",
+        "Renseignez le mot de passe d'origine dans le champ sécurisé pour décrypter le flux.",
+        "Cliquez sur Déverrouiller pour purger les restrictions de copie et d'impression.",
+        "Téléchargez votre document déverrouillé prêt à l'emploi.",
+      ]},
+      { type: "callout", text: "L'opération s'exécute dans un conteneur éphémère isolé. Aucun mot de passe n'est enregistré et les fichiers sont supprimés dès la fin du processus." },
+      { type: "h2", text: "Recommandations pour un archivage sécurisé" },
+      { type: "ul", items: [
+        "Ne déchiffrez que des documents personnels ou pour lesquels vous détenez les droits légitimes",
+        "Conservez vos fichiers déverrouillés dans un dossier chiffré sur votre machine",
+        "Vérifiez l'intégrité des tableaux et des signatures après levée des verrous d'impression",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Peut-on déverrouiller un PDF si l'on a perdu le mot de passe ?" },
+      { type: "p", text: "Non. Le chiffrement standard AES 128 et 256 bits est inviolable sans la clé légitime. L'outil ne pratique aucune attaque par force brute." },
+      { type: "h3", text: "La suppression du mot de passe altère-t-elle la mise en page ?" },
+      { type: "p", text: "Non. Le déchiffrement supprime la couche cryptographique sans toucher aux objets vectoriels, aux polices ni aux images." },
+      { type: "h3", text: "Conservez-vous les mots de passe saisis sur vos serveurs ?" },
+      { type: "p", text: "Jamais. Le mot de passe ne réside que dans la mémoire vive éphémère le temps du calcul cryptographique et n'est jamais consigné dans un journal." },
+    ],
+  },
+};

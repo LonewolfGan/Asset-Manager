@@ -219,6 +219,7 @@ export default function PdfUnlock() {
             {isProcessing && (
               <ProcessingAperture
                 formatIcon={sourceFormat.icon}
+                formatColor={sourceFormat.color}
                 formatAlt="PDF"
                 stageLabel={
                   isFr

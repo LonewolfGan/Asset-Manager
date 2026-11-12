@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postPngToGif: BlogPost = {
+  slug: {
+    en: "how-to-convert-png-to-gif",
+    fr: "comment-convertir-png-to-gif",
+  },
+  title: {
+    en: "How to Convert PNG Images into Animated or Static GIF",
+    fr: "Comment Convertir des Images PNG en GIF Anime ou Fixe",
+  },
+  description: {
+    en: "Assemble multiple PNG frames into an animated GIF or convert static PNGs for legacy web platforms and email banners.",
+    fr: "Assemblez des images PNG en un GIF anime fluide ou convertissez des PNG fixes pour des signatures et bannières email.",
+  },
+  keywords: {
+    en: ["png to gif","convert png to gif","png-to-gif converter online","free png-to-gif"],
+    fr: ["png to gif","convertir png en gif","convertisseur png-to-gif gratuit","outil png-to-gif"],
+  },
+  publishedAt: "2026-03-24",
+  category: "image",
+  readingMinutes: 4,
+  relatedToolSlug: "png-to-gif",
+  relatedToolLabel: { en: "PNG to GIF", fr: "PNG en GIF" },
+  content: {
+    en: [
+      { type: "p", text: "Assemble multiple PNG frames into an animated GIF or convert static PNGs for legacy web platforms and email banners." },
+      { type: "h2", text: "Assembling Raster Frames into Animated GIF Streams" },
+      { type: "p", text: "Creating lightweight looping animations for email marketing or social media often requires combining sequential PNG frames. Converting PNG to GIF handles color palette quantization and frame timing to produce smooth animations across all email clients." },
+      { type: "ul", items: ["High-precision color quantization with Floyd-Steinberg error diffusion dithering.","Custom frame delay timing and infinite loop flag configuration.","100% compatibility with email clients (Outlook, Gmail, Apple Mail)."] },
+      { type: "h2", text: "Step-by-step conversion guide" },
+      { type: "ol", items: ["Upload your sequential PNG frames or single image.","Set the frame delay duration (e.g., 100ms) and loop preferences.","Adjust dithering and palette size to balance quality and file weight.","Preview the fluid animation in the live viewer.","Download your optimized GIF animation."] },
+      { type: "callout", text: "Privacy guarantee: Processing occurs in isolated temporary sandboxes with zero permanent asset storage." },
+      { type: "h2", text: "Pro tips for optimal results" },
+      { type: "ul", items: ["Keep the frame count under 50 frames to ensure your GIF file size stays email-friendly under 3MB.","Use transparent backgrounds carefully, as GIF only supports 1-bit binary transparency."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Can I set custom playback speeds for my animated GIF?" },
+      { type: "p", text: "Yes. You can set the exact delay in milliseconds between each frame to achieve the desired frame rate." },
+      { type: "h3", text: "Why does my GIF have slight grain compared to the PNG?" },
+      { type: "p", text: "GIF is limited to 256 colors; dithering blends adjacent pixels to simulate missing shades smoothly." },
+      { type: "h3", text: "Will the GIF loop continuously by default?" },
+      { type: "p", text: "Yes. The standard Netscape 2.0 loop extension is enabled by default for infinite repeating playback." },
+    ],
+    fr: [
+      { type: "p", text: "Assemblez des images PNG en un GIF anime fluide ou convertissez des PNG fixes pour des signatures et bannières email." },
+      { type: "h2", text: "Assembler des Trames Matricielles en un Flux GIF Anime" },
+      { type: "p", text: "Concevoir des animations en boucle pour des emails ou les reseaux necessite d assembler des trames PNG. Convertir PNG en GIF orchestre la quantification de palette et la cadence pour un rendu fluide dans toutes les boites mail." },
+      { type: "ul", items: ["Quantification de palette precise avec diffusion d erreur de tramage Floyd-Steinberg.","Reglage du delai entre chaque image et parametrage de la boucle infinie.","Compatibilite totale avec les logiciels de messagerie (Outlook, Gmail, Apple Mail)."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Chargez votre suite d images PNG ou une image unique.","Ajustez l intervalle entre les images (ex: 100ms) et l option de boucle.","Reglez le tramage et la palette pour optimiser le poids du fichier.","Verifiez la cadence de l animation dans le lecteur integre.","Telechargez votre fichier GIF optimise."] },
+      { type: "callout", text: "Garantie de confidentialite : Vos visuels sont assembles en memoire tampon sans archivage persistant." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Limitez votre animation a moins de 50 trames pour conserver un poids inferieur a 3 Mo pour vos emails.","Prenez garde a la transparence car le GIF ne prend en charge qu un detourage binaire 1-bit."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Puis-je regler la vitesse de defilement de l animation ?" },
+      { type: "p", text: "Oui. Vous pouvez definir l intervalle exact en millisecondes entre chaque trame." },
+      { type: "h3", text: "Pourquoi mon GIF presente-t-il un leger grain par rapport au PNG ?" },
+      { type: "p", text: "Le GIF etant restreint a 256 couleurs, le tramage diffuse les teintes pour simuler les degradés continus." },
+      { type: "h3", text: "Le GIF tourne-t-il en boucle continue par defaut ?" },
+      { type: "p", text: "Oui. Le marqueur de boucle infinie standard est active par defaut pour une lecture ininterrompue." },
+    ],
+  },
+};

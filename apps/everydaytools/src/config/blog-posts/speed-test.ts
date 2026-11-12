@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postSpeedTest: BlogPost = {
+  slug: {
+    en: "how-to-use-speed-test",
+    fr: "comment-utiliser-speed-test",
+  },
+  title: {
+    en: "How to Measure Network Latency, Jitter, and Download Speed",
+    fr: "Comment Mesurer la Latence, le Jitter et le Debit Reseau",
+  },
+  description: {
+    en: "Measure connection ping, network latency jitter, and streaming bandwidth directly from your browser without third-party plugins.",
+    fr: "Mesurez votre temps de reponse ping, la gigue reseau et la bande passante sans plugin externe.",
+  },
+  keywords: {
+    en: ["speed test","speed-test online","free speed-test","developer tool speed-test"],
+    fr: ["speed test","speed-test en ligne","outil speed-test gratuit","utilitaire speed-test"],
+  },
+  publishedAt: "2026-03-25",
+  category: "security",
+  readingMinutes: 4,
+  relatedToolSlug: "speed-test",
+  relatedToolLabel: { en: "Speed Test", fr: "Speed Test" },
+  content: {
+    en: [
+      { type: "p", text: "Measure connection ping, network latency jitter, and streaming bandwidth directly from your browser without third-party plugins." },
+      { type: "h2", text: "Network Latency, Jitter Variance, and Throughput Metrics" },
+      { type: "p", text: "Evaluating Internet quality requires more than just testing raw download megabits. For real-time applications like video conferencing and cloud gaming, low ping latency and stable jitter variance are far more critical than raw bandwidth capacity." },
+      { type: "ul", items: ["Accurate round-trip time (RTT) ping measurement in milliseconds.","Jitter calculation tracking packet arrival delay variance.","Lightweight download throughput test using chunked streaming buffers."] },
+      { type: "h2", text: "Step-by-step practical guide" },
+      { type: "ol", items: ["Click the Start Test button to initiate the diagnostic probe.","Watch real-time latency ping measurements across sequential packet rounds.","Analyze the jitter variance indicator to detect connection packet stability.","Monitor the streaming download meter as payload buffers are calculated.","Review the final comprehensive connection quality scorecard."] },
+      { type: "callout", text: "Privacy guarantee: Speed tests run via public edge nodes with zero IP address logging or personal data storage." },
+      { type: "h2", text: "Pro tips and best practices" },
+      { type: "ul", items: ["A ping under 20ms is ideal for gaming, while under 50ms is excellent for professional video calls.","If your jitter exceeds 15ms, connect via Ethernet rather than Wi-Fi to eliminate interference."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "What is network jitter?" },
+      { type: "p", text: "Jitter is the variation in packet arrival times; high jitter causes robotic audio and video stutter in calls." },
+      { type: "h3", text: "Why does my browser speed test differ from my ISP promised speed?" },
+      { type: "p", text: "ISPs advertise theoretical maximums; local Wi-Fi interference, router hardware, and background apps all affect real throughput." },
+      { type: "h3", text: "Does running the test consume a lot of mobile data?" },
+      { type: "p", text: "No. Our lightweight progressive streaming chunks keep overall data consumption under 15 megabytes per test." },
+    ],
+    fr: [
+      { type: "p", text: "Mesurez votre temps de reponse ping, la gigue reseau et la bande passante sans plugin externe." },
+      { type: "h2", text: "Latence Reseau, Variance du Jitter et Debit Utile" },
+      { type: "p", text: "Evaluer la qualite d une connexion Internet depasse la simple mesure du debit de telechargement. Pour la visioconference et le cloud gaming, un ping faible et une gigue stable priment sur la capacite brute de bande passante." },
+      { type: "ul", items: ["Mesure precise du temps d aller-retour (RTT) en millisecondes.","Calcul de la gigue (jitter) mesurant la regularite de reception des paquets.","Test de debit utile par flux fractionnes sans saturer votre bande passante."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Cliquez sur Lancer le Test pour initier le diagnostic de connexion.","Observez les mesures de latence ping en direct sur plusieurs echantillons.","Analysez l indicateur de gigue (jitter) pour evaluer la stabilite de la ligne.","Suivez la jauge de debit pendant le calcul des flux d epreuve.","Consultez le bilan complet de performance de votre connexion."] },
+      { type: "callout", text: "Garantie de confidentialite : Les tests s executent via des serveurs relais sans conservation d adresse IP." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Un ping inferieur a 20ms est parfait pour le jeu, et moins de 50ms est ideal pour la visio.","Si votre gigue depasse 15ms, privilegiez un cable Ethernet pour eliminer les interferences Wi-Fi."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Qu est-ce que le jitter (gigue de reseau) ?" },
+      { type: "p", text: "Le jitter mesure la fluctuation du temps d acheminement des paquets ; un jitter eleve provoque des saccades audio et video." },
+      { type: "h3", text: "Pourquoi le debit reel differe-t-il de l offre de mon fournisseur ?" },
+      { type: "p", text: "Les operateurs annoncent des debits theoriques ; les ondes Wi-Fi et programmes en arriere-plan reduisent le debit reel." },
+      { type: "h3", text: "Le test consomme-t-il beaucoup de donnees mobiles ?" },
+      { type: "p", text: "Non. Nos trames progressives optimisees limitent la consommation a moins de 15 Mo par test." },
+    ],
+  },
+};

@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postTiffToPng: BlogPost = {
+  slug: {
+    en: "how-to-convert-tiff-to-png",
+    fr: "comment-convertir-tiff-to-png",
+  },
+  title: {
+    en: "How to Convert TIFF to PNG for Lossless Quality Preservation",
+    fr: "Comment Convertir TIFF en PNG pour Preserver la Qualite sans Perte",
+  },
+  description: {
+    en: "Convert scanned documents and architectural blueprints from TIFF to PNG without sacrificing a single pixel of detail.",
+    fr: "Convertissez vos scans et plans techniques TIFF en PNG sans sacrifier un seul pixel de clarte ni ajouter d artefacts.",
+  },
+  keywords: {
+    en: ["tiff to png","convert tiff to png","tiff-to-png converter online","free tiff-to-png"],
+    fr: ["tiff to png","convertir tiff en png","convertisseur tiff-to-png gratuit","outil tiff-to-png"],
+  },
+  publishedAt: "2026-03-24",
+  category: "image",
+  readingMinutes: 4,
+  relatedToolSlug: "tiff-to-png",
+  relatedToolLabel: { en: "TIFF to PNG", fr: "TIFF en PNG" },
+  content: {
+    en: [
+      { type: "p", text: "Convert scanned documents and architectural blueprints from TIFF to PNG without sacrificing a single pixel of detail." },
+      { type: "h2", text: "Preserving Technical Line Art: TIFF to Lossless PNG" },
+      { type: "p", text: "For blueprints, technical schematics, and medical imagery, lossy compression is unacceptable. Converting TIFF to PNG provides modern lossless compression that dramatically shrinks file sizes compared to uncompressed TIFF without discarding single pixel data points." },
+      { type: "ul", items: ["Zero generation loss or blurring on critical line art, schematics, and blueprints.","Native web browser display support for intranet portals and document management systems.","Full support for transparent layers and monochrome scanner bit-depths."] },
+      { type: "h2", text: "Step-by-step conversion guide" },
+      { type: "ol", items: ["Upload your technical TIFF files.","Select PNG color depth and lossless compression level.","Execute conversion to translate TIFF strips into optimized PNG pixel rows.","Inspect line sharpness and measurement indicators in the viewer.","Download your high-fidelity PNG files."] },
+      { type: "callout", text: "Privacy guarantee: Processing occurs in ephemeral sandboxes with zero permanent asset storage." },
+      { type: "h2", text: "Pro tips for optimal results" },
+      { type: "ul", items: ["Always choose PNG over JPG for technical diagrams and CAD blueprints to prevent noisy edge ringing.","Check 16-bit to 8-bit channel options depending on whether you are working with photographic or document scans."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Is any detail lost when converting TIFF to PNG?" },
+      { type: "p", text: "No. PNG is a 100% lossless format, so every pixel from the TIFF file is accurately duplicated." },
+      { type: "h3", text: "Can I view converted PNG blueprints directly in Chrome or Firefox?" },
+      { type: "p", text: "Yes. Unlike TIFF, PNG is supported natively in 100% of modern web browsers without plugins." },
+      { type: "h3", text: "Does the converter handle black-and-white 1-bit scanner TIFFs?" },
+      { type: "p", text: "Yes. 1-bit bitonal TIFF files are converted into compact, razor-sharp monochrome PNG images." },
+    ],
+    fr: [
+      { type: "p", text: "Convertissez vos scans et plans techniques TIFF en PNG sans sacrifier un seul pixel de clarte ni ajouter d artefacts." },
+      { type: "h2", text: "Preserver les Traces Techniques : De TIFF vers PNG sans Perte" },
+      { type: "p", text: "Pour les plans architecturaux, schemas techniques et imageries medicales, toute perte de donnees est inacceptable. Convertir TIFF en PNG applique une compression sans perte reduisant le poids sans alterer le moindre pixel." },
+      { type: "ul", items: ["Zero perte de generation ni flou sur les schemas, plans cadastraux et graphiques techniques.","Affichage natif sur navigateurs web pour vos intranets et systemes de GED.","Prise en charge complete des calques transparents et des niveaux de gris de scanner."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Chargez vos fichiers techniques TIFF.","Definissez la profondeur PNG et le niveau de compression sans perte.","Lancez la conversion pour transformer les bandes TIFF en lignes PNG.","Verifiez la proprete des cotes et traits techniques a l ecran.","Telechargez vos fichiers PNG haute fidelite."] },
+      { type: "callout", text: "Garantie de confidentialite : Vos plans sont traites dans des sandboxes ephemeres sans archivage." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Choisissez toujours PNG plutot que JPG pour vos plans CAO afin d eviter le bruit autour des traits.","Ajustez le passage de 16 a 8 bits selon que vous traitez de la photo d art ou du plan administratif."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Y a-t-il une perte de detail lors du passage de TIFF a PNG ?" },
+      { type: "p", text: "Non. Le format PNG etant strictement sans perte, chaque pixel du TIFF d origine est preserve a l identique." },
+      { type: "h3", text: "Puis-je afficher les plans PNG directement dans mon navigateur ?" },
+      { type: "p", text: "Oui. Contrairement au TIFF, le PNG s affiche nativement sur tous les navigateurs sans extension." },
+      { type: "h3", text: "L outil gere-t-il les scans TIFF monochromes 1-bit ?" },
+      { type: "p", text: "Oui. Les fichiers bitonaux 1-bit sont transposes en images PNG monochromes ultra-nettes et legeres." },
+    ],
+  },
+};

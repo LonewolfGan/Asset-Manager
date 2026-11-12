@@ -30,7 +30,7 @@ const colors = {
 };
 
 // Files excluded from certain strict checks
-const EXCLUDED_FROM_I18N = new Set(['break-test.tsx']);
+const EXCLUDED_FROM_I18N = new Set();
 
 // 1-liner wrapper pages that simply delegate to ImageConvertPage
 const isWrapperPage = (content) => content.includes('ImageConvertPage') && content.split('\n').length <= 15;
@@ -49,11 +49,46 @@ const FORBIDDEN_TRANSITIONS = /\btransition-all\b|\btransition:\s*['"]?all\b/i;
 
 // Banned misleading client-only copy
 export const MISLEADING_COPY = [
-  /runs entirely in the browser/i,
+  /runs entirely in (the|your) browser/i,
   /files never leave your device/i,
+  /never sent to a server/i,
+  /sans envoi à un serveur/i,
+  /no image is sent to any server/i,
+  /no image is ever sent to a server/i,
+  /aucune image n'est envoyée à un serveur/i,
   /aucun fichier n'est téléversé sur nos serveurs/i,
   /no files are uploaded to our servers/i,
+  /no upload to (any )?server/i,
 ];
+
+export const LOC_EXEMPTIONS = new Set([
+  'config/tools-seo-data.ts',
+  'i18n/translations.ts',
+  'components/NetworkStatusIllustration.tsx',
+  'components/conversion/WorkflowGraphics.tsx',
+  'components/conversion/DocumentNextActionModal.tsx',
+  'components/ToolContent.tsx',
+  'components/conversion/ImageWorkflowGraphics.tsx',
+  'lib/seo-ssr.ts',
+  'components/ui/compare-reveal.tsx',
+  'components/FileUpload.tsx',
+  'components/ui/code-workspace.tsx',
+  'components/ui/slider.tsx',
+]);
+
+export function checkLocLimit(relPath, lineCount, maxLoc = 400) {
+  const norm = relPath.replace(/^apps\/everydaytools\/src\//, '').replace(/^lib\/ui\/src\//, '');
+  if (LOC_EXEMPTIONS.has(norm) || norm.endsWith('.d.ts')) {
+    return { ok: true };
+  }
+  if (lineCount > maxLoc) {
+    return {
+      ok: false,
+      message: `Anti-Monolith violation: ${lineCount} LOC exceeds the ${maxLoc} LOC guardrail for executable components/logic (AGENTS.md Hard Gate 5).`,
+    };
+  }
+  return { ok: true };
+}
 
 export function checkForbiddenTransitions(lineText) {
   return FORBIDDEN_TRANSITIONS.test(lineText);
@@ -68,6 +103,40 @@ export const FORBIDDEN_DOUBLE_RINGS = /\bring-offset-2\b|\bring-2[^\n]*\bring-of
 
 export function checkForbiddenDoubleRings(lineText) {
   return FORBIDDEN_DOUBLE_RINGS.test(lineText);
+}
+
+// Banned server filesystem paths in UI code
+export const FORBIDDEN_SERVER_PATHS = [
+  /\/tmp\/everydaytools/i,
+  /\/tmp\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_<>-]+/i,
+  /\/var\/www/i,
+  /\/home\/[a-zA-Z0-9_-]+\/WebstormProjects/i,
+];
+
+export function checkForbiddenServerPaths(lineText) {
+  return FORBIDDEN_SERVER_PATHS.some((re) => re.test(lineText));
+}
+
+// Banned tiny AI pill badges and micro tags (excluding accessible <kbd> elements)
+export const FORBIDDEN_PILL_BADGES = [
+  /px-1\.5\s+py-0\.5\s+text-\[10px\]/i,
+  /px-2\s+py-0\.5\s+text-\[10px\]/i,
+  /rounded-full[^\n]*text-\[10px\]/i,
+];
+
+export function checkForbiddenPillBadges(lineText) {
+  if (lineText.includes('<kbd') || lineText.includes('</kbd>')) return false;
+  return FORBIDDEN_PILL_BADGES.some((re) => re.test(lineText));
+}
+
+// Banned gratuitous macro section divider lines (<hr> or <section border-t/y>)
+export const FORBIDDEN_SECTION_DIVIDERS = [
+  /<hr\b/i,
+  /<section[^>]*\b(border-t|border-y)\b/i,
+];
+
+export function checkForbiddenSectionDividers(lineText) {
+  return FORBIDDEN_SECTION_DIVIDERS.some((re) => re.test(lineText));
 }
 
 export function checkPageLocaleUsage(content, customSrcDir = srcDir) {
@@ -154,6 +223,12 @@ for (const file of allFiles) {
   const content = fs.readFileSync(file, 'utf8');
   const lines = content.split('\n');
 
+  // I. Anti-Monolith & SRP Check (< 400 LOC on executable logic/components)
+  const locCheck = checkLocLimit(relPath, lines.length, 400);
+  if (!locCheck.ok) {
+    addIssue(file, lines.length, locCheck.message, 'error');
+  }
+
   lines.forEach((lineText, index) => {
     const lineNum = index + 1;
 
@@ -209,8 +284,8 @@ for (const file of allFiles) {
       addIssue(file, lineNum, 'Prohibited transition-all or transition: all detected (Design System Contract). Use explicit targeted transitions.', 'warning');
     }
 
-    // G. Check for misleading client-only copy (pages & components)
-    if (file.includes('/pages/') || file.includes('/components/')) {
+    // G. Check for misleading client-only copy (pages, components, config, lib, i18n)
+    if (file.includes('/pages/') || file.includes('/components/') || file.includes('/config/') || file.includes('/lib/') || file.includes('/i18n/')) {
       for (const pattern of MISLEADING_COPY) {
         if (pattern.test(lineText)) {
           addIssue(file, lineNum, `Misleading client-only copy detected: '${pattern.source}'. Accurately describe hybrid Oracle VM architecture.`, 'error');
@@ -221,6 +296,27 @@ for (const file of allFiles) {
     // H. Check for banned double-ring anti-pattern (ring-offset-2 or ring-2 with ring-offset)
     if (checkForbiddenDoubleRings(lineText)) {
       addIssue(file, lineNum, 'Prohibited double-ring anti-pattern detected (Design System Contract). Active controls must use single clean borders.', 'error');
+    }
+
+    // I. Check for leaked server filesystem paths in UI code
+    if (file.includes('/pages/') || file.includes('/components/')) {
+      if (checkForbiddenServerPaths(lineText)) {
+        addIssue(file, lineNum, 'Prohibited internal server path leaked in UI code (Security Hard Gate). Zero Information Disclosure.', 'error');
+      }
+    }
+
+    // J. Check for tiny AI pill badges and micro tags in UI code
+    if (file.includes('/pages/') || file.includes('/components/')) {
+      if (checkForbiddenPillBadges(lineText)) {
+        addIssue(file, lineNum, 'Prohibited AI pill badge / micro-tag detected (Design System Contract). Avoid floating pill cliches.', 'error');
+      }
+    }
+
+    // K. Check for gratuitous section divider lines (Rule 11)
+    if (file.includes('/pages/')) {
+      if (checkForbiddenSectionDividers(lineText)) {
+        addIssue(file, lineNum, 'Prohibited gratuitous section divider line detected (Design System Contract Rule 11). Structure via whitespace and typography.', 'error');
+      }
     }
   });
 }

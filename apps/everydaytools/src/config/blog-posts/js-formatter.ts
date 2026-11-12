@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postJsFormatter: BlogPost = {
+  slug: {
+    en: "how-to-use-js-formatter",
+    fr: "comment-utiliser-js-formatter",
+  },
+  title: {
+    en: "How to Beautify and Format JavaScript and TypeScript Code",
+    fr: "Comment Formater et Embellir du Code JavaScript et TypeScript",
+  },
+  description: {
+    en: "Clean, indent, and format messy or minified JavaScript and TypeScript code with customizable quotation and semicolon rules.",
+    fr: "Formatez et indentez votre code JavaScript et TypeScript avec reglage des guillemets, points-virgules et retours a la ligne.",
+  },
+  keywords: {
+    en: ["js formatter","js-formatter online","free js-formatter","developer tool js-formatter"],
+    fr: ["js formatter","js-formatter en ligne","outil js-formatter gratuit","utilitaire js-formatter"],
+  },
+  publishedAt: "2026-03-25",
+  category: "security",
+  readingMinutes: 4,
+  relatedToolSlug: "js-formatter",
+  relatedToolLabel: { en: "Js Formatter", fr: "Js Formatter" },
+  content: {
+    en: [
+      { type: "p", text: "Clean, indent, and format messy or minified JavaScript and TypeScript code with customizable quotation and semicolon rules." },
+      { type: "h2", text: "AST-Driven Code Formatting and Syntactic Hygiene" },
+      { type: "p", text: "Reading decompiled, minified, or legacy JavaScript code is painful without proper formatting. An AST-driven JavaScript formatter restructures control flow, standardizes quotation marks, aligns object literals, and inserts proper indentation without altering code execution." },
+      { type: "ul", items: ["Comprehensive support for modern ES2024, TypeScript, and JSX/TSX syntax.","Customizable formatting preferences: quotes (single/double) and semicolons.","Instant syntax error detection highlighting invalid tokens."] },
+      { type: "h2", text: "Step-by-step practical guide" },
+      { type: "ol", items: ["Paste messy or minified JS/TS code into the editor.","Configure indentation spacing (2 spaces, 4 spaces, or tabs).","Select quotation style (single or double) and semicolon preferences.","Click Format to reconstruct the code using AST formatting rules.","Copy clean code or export directly to a .js or .ts file."] },
+      { type: "callout", text: "Privacy guarantee: Code is formatted strictly in browser memory without external execution or transmission." },
+      { type: "h2", text: "Pro tips and best practices" },
+      { type: "ul", items: ["Format minified third-party scripts before debugging to make setting breakpoints easy.","Toggle TypeScript support when formatting modern Angular, Vue, or React components."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Does formatting JavaScript change how the code runs?" },
+      { type: "p", text: "No. The formatter only reorganizes whitespace, line breaks, and indentation; underlying logic remains untouched." },
+      { type: "h3", text: "Can this tool un-minify obfuscated variable names?" },
+      { type: "p", text: "It restores clean indentation and structure, but cannot guess original variable names renamed during build minification." },
+      { type: "h3", text: "Is JSX and React code supported?" },
+      { type: "p", text: "Yes. JSX tags and embedded expressions are formatted with clean indentation just like standard JavaScript." },
+    ],
+    fr: [
+      { type: "p", text: "Formatez et indentez votre code JavaScript et TypeScript avec reglage des guillemets, points-virgules et retours a la ligne." },
+      { type: "h2", text: "Formatage Guide par Arbre Syntaxique AST et Hygiene de Code" },
+      { type: "p", text: "Déchiffrer du code JavaScript minifie ou issu de scripts anciens est laborieux sans formatage. Un formateur AST restructure les flux de controle, uniformise les guillemets et aligne les objets sans alterer le comportement d execution." },
+      { type: "ul", items: ["Support complet des normes ES2024 modernes, de TypeScript et de la syntaxe JSX/TSX.","Preferences configurables : guillemets simples ou doubles, avec ou sans points-virgules.","Detection d erreurs syntaxiques avec localisation des jetons invalides."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Collez votre code JS ou TS dans l editeur.","Configurez l indentation (2 espaces, 4 espaces ou tabulations).","Choisissez le style de guillemets et la gestion des points-virgules.","Cliquez sur Formater pour reconstruire le code selon les regles de l AST.","Copiez le code formate ou exportez-le en fichier .js ou .ts."] },
+      { type: "callout", text: "Garantie de confidentialite : Votre code est formate en memoire locale sans execution ni transfert." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Formatez vos scripts tiers minifies pour poser facilement des points d arret de debogage.","Activez le mode TypeScript pour formater vos composants React, Vue ou Angular modernes."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Le formatage modifie-t-il le comportement du code ?" },
+      { type: "p", text: "Non. Le formateur n agit que sur les espaces et l indentation ; la logique fonctionnelle reste strictement identique." },
+      { type: "h3", text: "L outil peut-il renommer des variables obfusquees ?" },
+      { type: "p", text: "Il retablit la structure et l indentation mais ne peut deviner les identifiants originaux raccourcis." },
+      { type: "h3", text: "La syntaxe React JSX est-elle prise en charge ?" },
+      { type: "p", text: "Oui. Les balises JSX et expressions integrees sont formatees avec une indentation soignee." },
+    ],
+  },
+};

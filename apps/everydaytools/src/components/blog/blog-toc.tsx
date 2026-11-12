@@ -22,28 +22,36 @@ export function slugifyHeading(text: string): string {
     .replace(/^-+|-+$/g, ""); // Nettoyer les tirets de début et fin
 }
 
+export function createHeadingIdGenerator(): (text: string) => string {
+  const seenIds = new Set<string>();
+  let totalCount = 0;
+
+  return (text: string): string => {
+    totalCount++;
+    let id = slugifyHeading(text);
+    if (!id) id = `section-${totalCount}`;
+
+    let finalId = id;
+    let counter = 1;
+    while (seenIds.has(finalId)) {
+      finalId = `${id}-${counter}`;
+      counter++;
+    }
+    seenIds.add(finalId);
+    return finalId;
+  };
+}
+
 export function extractTocItems(blocks?: ContentBlock[]): TocItem[] {
   if (!blocks || !Array.isArray(blocks)) return [];
 
   const items: TocItem[] = [];
-  const seenIds = new Set<string>();
+  const getId = createHeadingIdGenerator();
 
   for (const block of blocks) {
     if (block.type === "h2" || block.type === "h3") {
-      let id = slugifyHeading(block.text);
-      if (!id) id = `section-${items.length + 1}`;
-
-      // Gérer d'éventuels doublons
-      let finalId = id;
-      let counter = 1;
-      while (seenIds.has(finalId)) {
-        finalId = `${id}-${counter}`;
-        counter++;
-      }
-      seenIds.add(finalId);
-
       items.push({
-        id: finalId,
+        id: getId(block.text),
         text: block.text,
         level: block.type === "h2" ? 2 : 3,
       });
@@ -112,16 +120,16 @@ export function BlogToc({ blocks, activeId: propActiveId, lang = "en" }: BlogToc
     <nav
       aria-label={lang === "fr" ? "Table des matières" : "Table of contents"}
       data-testid="blog-toc"
-      className="space-y-3"
+      className="space-y-4"
     >
       <div
         data-testid="blog-toc-title"
-        className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--text-tertiary)]"
+        className="font-mono text-xs font-semibold uppercase tracking-[0.16em] text-[var(--text-tertiary)]"
       >
         {title}
       </div>
 
-      <ul className="space-y-1 text-sm border-l border-zinc-200 dark:border-white/10">
+      <ul className="space-y-1.5 text-sm border-l border-zinc-200 dark:border-white/10">
         {items.map((item) => {
           const isActive = activeId === item.id;
           return (
@@ -132,15 +140,15 @@ export function BlogToc({ blocks, activeId: propActiveId, lang = "en" }: BlogToc
                 aria-current={isActive ? "true" : undefined}
                 data-active={isActive ? "true" : "false"}
                 data-level={item.level}
-                className={`group flex items-center py-1 transition-colors duration-150 relative -ml-px border-l-2 ${
-                  item.level === 3 ? "pl-5 text-xs" : "pl-3 text-[13px]"
+                className={`group flex items-start py-2 transition-colors duration-150 relative -ml-px border-l-2 leading-snug ${
+                  item.level === 3 ? "pl-5 text-xs" : "pl-3 text-sm"
                 } ${
                   isActive
                     ? "border-[var(--accent)] text-[var(--text-primary)] font-medium"
                     : "border-transparent text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-zinc-400 dark:hover:border-zinc-600"
                 }`}
               >
-                <span className="truncate">{item.text}</span>
+                <span>{item.text}</span>
               </a>
             </li>
           );

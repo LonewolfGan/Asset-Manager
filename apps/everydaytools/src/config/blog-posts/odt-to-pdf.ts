@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postOdtToPdf: BlogPost = {
+  slug: {
+    en: "how-to-convert-odt-to-pdf",
+    fr: "comment-convertir-odt-en-pdf",
+  },
+  title: {
+    en: "How to Convert OpenDocument (ODT) Files to PDF",
+    fr: "Comment convertir un fichier OpenDocument (ODT) en PDF",
+  },
+  description: {
+    en: "Convert LibreOffice and OpenOffice ODT documents into standardized, print-ready PDF files with fonts and formatting preserved.",
+    fr: "Convertissez vos documents LibreOffice et OpenOffice ODT en fichiers PDF standardisés et imprimables avec polices et mise en page préservées.",
+  },
+  keywords: {
+    en: ["odt to pdf","convert odt to pdf","libreoffice to pdf","openoffice odt to pdf converter"],
+    fr: ["odt en pdf","convertir odt en pdf","libreoffice en pdf","openoffice vers pdf"],
+  },
+  publishedAt: "2026-04-07",
+  category: "documents",
+  readingMinutes: 5,
+  relatedToolSlug: "odt-to-pdf",
+  relatedToolLabel: { en: "ODT to PDF", fr: "ODT en PDF" },
+  content: {
+    en: [
+      { type: "p", text: "OpenDocument Text (.odt) is the open-source standard used by LibreOffice and Apache OpenOffice. However, sending ODT files to clients using proprietary software can lead to font shifts and broken table layouts. Converting ODT to PDF ensures universal viewing fidelity on every device." },
+      { type: "h2", text: "Why convert LibreOffice ODT files to PDF" },
+      { type: "p", text: "PDF locks formatting, font metrics, and page numbers into a rigid vector container, guaranteeing that recipients see the exact layout you designed regardless of their installed office suite." },
+      { type: "ul", items: [
+        "Guarantees layout fidelity across Windows, macOS, Android, and iOS devices",
+        "Prevents accidental edits when sending formal commercial proposals or contracts",
+        "Ensures office printers render margins and headers without unexpected overflow",
+      ]},
+      { type: "h2", text: "Step-by-step: how to convert ODT to PDF" },
+      { type: "ol", items: [
+        "Open the ODT to PDF tool in your web browser with zero registration needed.",
+        "Upload your .odt document: files up to 50 MB are supported without account limits.",
+        "The engine parses OpenDocument XML structures, embeds fonts, and maps layout geometry.",
+        "Click Convert to PDF to generate a publication-standard document.",
+        "Download your PDF file immediately.",
+      ]},
+      { type: "callout", text: "Document rendering runs inside an isolated ephemeral workspace and is purged automatically upon completion. No files are stored on our servers." },
+      { type: "h2", text: "Best practices for LibreOffice users" },
+      { type: "ul", items: [
+        "Ensure open-source fonts like Liberation Sans or DejaVu are properly mapped before export",
+        "Check table cell borders to verify crisp line rendering across all page breaks",
+        "Exporting to PDF locks official contracts against accidental text deletion by recipients",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Does it preserve tables, bullet lists, and footnotes?" },
+      { type: "p", text: "Yes. All complex OpenDocument elements including footnotes, headers, tables, and lists are faithfully preserved." },
+      { type: "h3", text: "Do I need LibreOffice installed on my computer?" },
+      { type: "p", text: "No. The conversion is performed entirely online in our cloud engine without requiring any local office installation." },
+      { type: "h3", text: "Can I convert ODT files created in Apache OpenOffice?" },
+      { type: "p", text: "Yes. All versions of ODT files compliant with OASIS OpenDocument standards are fully supported." },
+    ],
+    fr: [
+      { type: "p", text: "Le format OpenDocument Text (.odt) est le standard ouvert utilisé par LibreOffice et OpenOffice. Cependant, envoyer un fichier ODT à un correspondant utilisant Microsoft Office peut provoquer des décalages de texte et de polices. Convertir votre ODT en PDF assure un affichage parfait sur tous les postes." },
+      { type: "h2", text: "Pourquoi convertir vos fichiers LibreOffice ODT en PDF" },
+      { type: "p", text: "Le format PDF fige la mise en page, les polices de caractères et la pagination dans un conteneur rigide, assurant que votre destinataire voit le document tel que vous l'avez composé." },
+      { type: "ul", items: [
+        "Garantit une fidélité d'affichage parfaite sur Windows, macOS, Android et iOS",
+        "Empêche les modifications involontaires lors de l'envoi de devis ou de contrats",
+        "Assure une impression papier sans débordement de marge imprévu",
+      ]},
+      { type: "h2", text: "Guide pas à pas : convertir un fichier ODT en PDF" },
+      { type: "ol", items: [
+        "Accédez à l'outil ODT en PDF dans votre navigateur sans créer de compte.",
+        "Déposez votre document .odt : les fichiers jusqu'à 50 Mo sont pris en charge.",
+        "Le moteur interprète les structures XML OpenDocument et intègre les polices.",
+        "Cliquez sur Convertir pour générer votre document PDF conforme.",
+        "Téléchargez immédiatement votre fichier PDF prêt à être partagé.",
+      ]},
+      { type: "callout", text: "La conversion est exécutée dans un environnement temporaire sécurisé avec suppression automatique immédiate de vos documents." },
+      { type: "h2", text: "Conseils pour les utilisateurs de LibreOffice" },
+      { type: "ul", items: [
+        "Vérifier la bonne intégration des polices libres (Liberation Sans, DejaVu) avant export",
+        "Contrôler les bordures de tableaux pour un tracé net sur les sauts de page",
+        "Le passage en PDF fige vos devis officiels contre toute modification de prix",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Les tableaux et notes de bas de page sont-ils préservés ?" },
+      { type: "p", text: "Oui. Tous les éléments complexes du format OpenDocument (tableaux, notes, en-têtes) sont fidèlement restitués." },
+      { type: "h3", text: "Faut-il avoir LibreOffice installé sur son ordinateur ?" },
+      { type: "p", text: "Non. La conversion s'effectue en ligne dans notre moteur sans nécessiter l'installation d'une suite bureautique locale." },
+      { type: "h3", text: "Les fichiers créés avec Apache OpenOffice sont-ils acceptés ?" },
+      { type: "p", text: "Oui. Toutes les versions de fichiers ODT conformes aux spécifications OASIS sont prises en charge." },
+    ],
+  },
+};

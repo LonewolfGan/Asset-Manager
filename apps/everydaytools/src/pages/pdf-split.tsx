@@ -165,6 +165,7 @@ export default function PdfSplit() {
               <div key="processing" className="w-full py-20 flex justify-center">
                 <ProcessingAperture
                   formatIcon={PDF_FORMAT.icon}
+                  formatColor={PDF_FORMAT.color}
                   formatAlt="PDF"
                   stageLabel={isFr ? 'Découpe du document' : 'Splitting document'}
                   title={isFr ? 'Extraction des pages en cours...' : 'Extracting pages...'}

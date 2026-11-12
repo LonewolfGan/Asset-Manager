@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postHeicToPng: BlogPost = {
+  slug: {
+    en: "how-to-convert-heic-to-png",
+    fr: "comment-convertir-heic-to-png",
+  },
+  title: {
+    en: "How to Convert HEIC to PNG with High Quality and Alpha Support",
+    fr: "Comment Convertir HEIC en PNG avec Haute Qualite et Canal Alpha",
+  },
+  description: {
+    en: "Step-by-step technical guide to converting Apple HEIC photos to lossless PNG format with transparent background preservation.",
+    fr: "Guide technique etape par etape pour convertir des photos Apple HEIC en format PNG sans perte avec preservation du canal alpha.",
+  },
+  keywords: {
+    en: ["heic to png","convert heic to png","heic-to-png converter online","free heic-to-png"],
+    fr: ["heic to png","convertir heic en png","convertisseur heic-to-png gratuit","outil heic-to-png"],
+  },
+  publishedAt: "2026-03-24",
+  category: "image",
+  readingMinutes: 4,
+  relatedToolSlug: "heic-to-png",
+  relatedToolLabel: { en: "HEIC to PNG", fr: "HEIC en PNG" },
+  content: {
+    en: [
+      { type: "p", text: "Step-by-step technical guide to converting Apple HEIC photos to lossless PNG format with transparent background preservation." },
+      { type: "h2", text: "Understanding HEIC to Lossless PNG Rasterization" },
+      { type: "p", text: "Apple High Efficiency Image Coding (HEIC) uses modern HEVC intra-frame compression, making it incompatible with legacy web systems. Transcoding HEIC to PNG yields uncompressed raster pixels preserving full color fidelity and alpha channel masks." },
+      { type: "ul", items: ["Preserves transparent cutouts and depth matte channels without edge artifacts.","Bit-depth conversion mapping 10-bit HDR samples to clean 8-bit or 16-bit PNG channels.","Instant compatibility with graphics suites, design engines, and web browsers."] },
+      { type: "h2", text: "Step-by-step conversion guide" },
+      { type: "ol", items: ["Upload your HEIC or HEIF files via the secure file picker.","Select PNG color bit-depth and transparency channel settings.","Run the conversion engine to decode HEVC frames into raw raster pixels.","Inspect high-resolution visual previews for sharpness and alpha fidelity.","Download standalone PNG files or an archive bundle."] },
+      { type: "callout", text: "Privacy guarantee: HEIC files are transcoded in ephemeral sandboxes and automatically deleted after processing with zero permanent retention." },
+      { type: "h2", text: "Pro tips for optimal results" },
+      { type: "ul", items: ["Use PNG when you plan to edit photo elements in Figma, Photoshop, or canvas apps.","If transparency is not needed and file weight is critical, compare with WebP output."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Does converting HEIC to PNG degrade visual quality?" },
+      { type: "p", text: "No. PNG is a lossless format, so every decoded pixel from the HEIC source file is accurately preserved without compression artifacts." },
+      { type: "h3", text: "Are Apple Live Photos supported during conversion?" },
+      { type: "p", text: "The tool extracts and converts the primary high-resolution still frame embedded inside the HEIC container." },
+      { type: "h3", text: "Why is the resulting PNG larger in file size than HEIC?" },
+      { type: "p", text: "HEIC uses lossy HEVC video compression algorithms achieving 50% smaller sizes than JPEG, whereas PNG stores lossless pixel data." },
+    ],
+    fr: [
+      { type: "p", text: "Guide technique etape par etape pour convertir des photos Apple HEIC en format PNG sans perte avec preservation du canal alpha." },
+      { type: "h2", text: "Comprendre la Rasterisation HEIC vers PNG sans Perte" },
+      { type: "p", text: "Le format High Efficiency Image Coding (HEIC) utilise la compression intra-trame HEVC, le rendant incompatible avec les systemes web traditionnels. Le transcodage HEIC vers PNG produit des pixels matriciels sans perte preservant la fidelite colorimetrique et l alpha." },
+      { type: "ul", items: ["Preserve les decoupes transparentes et les masques de profondeur sans artefacts de bord.","Conversion de profondeur echantillonnant les flux 10-bit HDR vers des canaux PNG 8-bit ou 16-bit.","Compatibilite immediate avec les suites graphiques, moteurs de design et navigateurs web."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Deposez vos fichiers HEIC ou HEIF via le selecteur securise.","Definissez la profondeur de couleur PNG et les reglages de transparence.","Lancez le moteur de conversion pour decoder les trames HEVC en pixels bruts.","Verifiez l apercu visuel haute definition pour confirmer la nettete et l alpha.","Telechargez vos fichiers PNG individuels ou en archive groupee."] },
+      { type: "callout", text: "Garantie de confidentialite : Vos fichiers HEIC sont traites dans des bacs a sable ephemeres et purges sans retention apres conversion." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Privilegiez PNG lorsque vous prevoyez de retoucher vos elements sous Figma ou Photoshop.","Si la transparence n est pas requise et le poids critique, comparez avec le format WebP."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "La conversion HEIC vers PNG degrade-t-elle la qualite ?" },
+      { type: "p", text: "Non. Le format PNG etant sans perte, chaque pixel decode de la photo HEIC source est rigoureusement preserve sans artefact de compression." },
+      { type: "h3", text: "Les Live Photos Apple sont-elles prises en charge ?" },
+      { type: "p", text: "L outil extrait et convertit l image fixe principale en pleine resolution stockee dans le conteneur HEIC." },
+      { type: "h3", text: "Pourquoi le fichier PNG obtenu est-il plus lourd que le HEIC ?" },
+      { type: "p", text: "HEIC utilise une compression video HEVC tres agressive reduisant le poids de 50% par rapport au JPEG, tandis que PNG est sans perte." },
+    ],
+  },
+};

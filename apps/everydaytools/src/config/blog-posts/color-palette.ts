@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postColorPalette: BlogPost = {
+  slug: {
+    en: "how-to-extract-color-palettes-from-images",
+    fr: "comment-extraire-palette-couleurs-image",
+  },
+  title: {
+    en: "How to Extract Dominant Color Palettes from Images",
+    fr: "Comment extraire une palette de couleurs dominantes d'une image",
+  },
+  description: {
+    en: "Extract dominant color palettes and HEX, RGB, and HSL codes from any photo or design automatically with contrast preview.",
+    fr: "Extrayez les palettes de couleurs dominantes et codes HEX, RGB et HSL depuis n'importe quelle photo avec test de contraste.",
+  },
+  keywords: {
+    en: ["color palette generator","extract colors from image","image color picker","hex palette from photo"],
+    fr: ["generateur palette couleur","extraire couleurs image","pipette photo en ligne","palette hex depuis photo"],
+  },
+  publishedAt: "2026-05-02",
+  category: "image",
+  readingMinutes: 4,
+  relatedToolSlug: "color-palette",
+  relatedToolLabel: { en: "Color Palette", fr: "Palette de Couleurs" },
+  content: {
+    en: [
+      { type: "p", text: "Web designers, brand strategists, and illustrators frequently find inspiration in photography, architecture, or nature. Extracting dominant color swatches directly from an image provides a cohesive, harmonious palette with exact HEX, RGB, and HSL color values ready for design systems." },
+      { type: "h2", text: "How algorithmic color clustering extracts harmonious swatches" },
+      { type: "p", text: "Using k-means color quantization, the extractor groups millions of image pixels into dominant clusters, isolating core brand hues, accent accents, and neutral background tones." },
+      { type: "ul", items: [
+        "Generates 5 to 8 dominant color swatches ranked by visual prominence",
+        "Provides instant one-click copying of HEX (#1A202C), RGB, and HSL values",
+        "Tests color combinations against WCAG accessibility contrast ratios automatically",
+      ]},
+      { type: "h2", text: "Step-by-step: how to extract color palettes" },
+      { type: "ol", items: [
+        "Open the Color Palette tool in your browser with zero registration needed.",
+        "Upload your photograph, moodboard, or graphic design file up to 50 MB.",
+        "The clustering algorithm detects dominant tonal clusters and generates swatches.",
+        "Click on any swatch to copy its HEX code, or use the interactive eyedropper for specific pixels.",
+        "Export your palette as CSS variables, Tailwind tokens, or an image swatch card.",
+      ]},
+      { type: "callout", text: "Palette extraction runs inside an isolated ephemeral workspace and is purged automatically upon completion. No images are stored on our servers." },
+      { type: "h2", text: "Tips for building brand design systems" },
+      { type: "ul", items: [
+        "Designate one dominant hue as your primary brand color and use a vibrant accent for CTA buttons",
+        "Ensure text colors paired with background swatches meet WCAG AA contrast (4.5:1 ratio minimum)",
+        "Export swatches directly as CSS custom properties (--color-primary) for quick frontend integration",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Can I pick a specific pixel color with an eyedropper?" },
+      { type: "p", text: "Yes. An interactive loupe eyedropper allows you to sample exact pixel coordinates anywhere on your uploaded image." },
+      { type: "h3", text: "Can I export the palette to Figma or CSS?" },
+      { type: "p", text: "Yes. The tool offers one-click copy options for CSS variables, JSON tokens, and Tailwind color configurations." },
+      { type: "h3", text: "Does it work with illustrations and logos?" },
+      { type: "p", text: "Yes. The algorithm works flawlessly across photography, digital paintings, vector exports, and branding logos." },
+    ],
+    fr: [
+      { type: "p", text: "Les designers web, graphistes et directeurs artistiques s'inspirent régulièrement de photographies ou d'œuvres d'art. Extraire directement les nuances dominantes d'une image permet de composer une palette harmonieuse dotée des codes HEX, RGB et HSL prêts pour votre charte graphique." },
+      { type: "h2", text: "Comment fonctionne l'extraction de palette par quantification" },
+      { type: "p", text: "Grâce à des algorithmes de partitionnement (k-means), le moteur regroupe les millions de pixels de l'image en grandes familles colorimétriques pour isoler les teintes fortes et les nuances neutres." },
+      { type: "ul", items: [
+        "Isole 5 à 8 couleurs dominantes classées par importance visuelle",
+        "Copie en un clic des codes HEX (#1A202C), RGB et HSL pour votre code",
+        "Contrôle automatiquement les ratios de contraste selon les normes d'accessibilité WCAG",
+      ]},
+      { type: "h2", text: "Guide pas à pas : extraire une palette de couleurs" },
+      { type: "ol", items: [
+        "Accédez à l'outil Palette de Couleurs dans votre navigateur sans créer de compte.",
+        "Déposez votre photo, moodboard ou création graphique (jusqu'à 50 Mo).",
+        "L'algorithme identifie instantanément les teintes dominantes et affiche les pastilles.",
+        "Cliquez sur une couleur pour copier son code HEX ou utilisez la pipette de précision.",
+        "Exportez la palette sous forme de variables CSS ou de jetons Tailwind.",
+      ]},
+      { type: "callout", text: "Le traitement s'exécute dans un espace temporaire sécurisé avec suppression automatique immédiate de vos visuels." },
+      { type: "h2", text: "Conseils pour créer une charte graphique cohérente" },
+      { type: "ul", items: [
+        "Choisir une teinte dominante pour la marque et une couleur vive pour les boutons d'action (CTA)",
+        "Vérifier que les textes sur fond coloré atteignent le ratio de contraste WCAG AA (4.5:1 minimum)",
+        "Exporter directement les valeurs sous forme de variables CSS (--color-primary) pour le développement",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Peut-on prélever une couleur précise avec une loupe ?" },
+      { type: "p", text: "Oui. Une pipette interactive avec zoom permet de sélectionner n'importe quel pixel précis sur votre image." },
+      { type: "h3", text: "L'export est-il compatible avec Tailwind et CSS ?" },
+      { type: "p", text: "Oui. L'outil permet d'exporter votre palette en variables CSS prêtes à coller, en objet JSON ou en configuration Tailwind." },
+      { type: "h3", text: "L'outil fonctionne-t-il sur des logos et illustrations ?" },
+      { type: "p", text: "Oui. L'algorithme analyse avec la même précision les photographies de paysage, les dessins numériques et les logos de marques." },
+    ],
+  },
+};

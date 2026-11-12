@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postCsvToJson: BlogPost = {
+  slug: {
+    en: "how-to-convert-csv-to-json",
+    fr: "comment-convertir-csv-en-json",
+  },
+  title: {
+    en: "How to Convert CSV Data to JSON Format",
+    fr: "Comment convertir un fichier CSV en format JSON",
+  },
+  description: {
+    en: "Transform tabular CSV data into structured JSON objects or arrays ready for web APIs, JavaScript applications, and NoSQL databases.",
+    fr: "Transformez vos données tabulaires CSV en objets ou tableaux JSON prêts pour vos API web, applications JavaScript et bases NoSQL.",
+  },
+  keywords: {
+    en: ["csv to json","convert csv to json","csv json converter","parse csv as json array"],
+    fr: ["csv en json","convertir csv en json","tableau csv vers json","parser csv json"],
+  },
+  publishedAt: "2026-04-17",
+  category: "documents",
+  readingMinutes: 4,
+  relatedToolSlug: "csv-to-json",
+  relatedToolLabel: { en: "CSV to JSON", fr: "CSV en JSON" },
+  content: {
+    en: [
+      { type: "p", text: "Developers building web applications, REST APIs, or frontend dashboards constantly need to transform flat spreadsheet exports into structured JSON format. Converting CSV to JSON maps column headers to object keys with automated datatype inference for numbers and booleans." },
+      { type: "h2", text: "Why convert CSV data to JSON objects" },
+      { type: "p", text: "JSON is the native data interchange language of modern web development, MongoDB databases, and cloud microservices." },
+      { type: "ul", items: [
+        "Maps CSV header columns to standardized object key names automatically",
+        "Infers numerical values and booleans so digits are parsed as integers, not strings",
+        "Produces clean, formatted JSON arrays ready for direct copy-pasting into codebases",
+      ]},
+      { type: "h2", text: "Step-by-step: how to convert CSV to JSON" },
+      { type: "ol", items: [
+        "Open the CSV to JSON converter in your browser with zero registration needed.",
+        "Upload your .csv file or paste raw delimited text into the editor pane.",
+        "Choose your output structure (array of objects or array of arrays).",
+        "Click Convert to generate formatted, indented JSON data.",
+        "Copy the JSON snippet or download your .json file immediately.",
+      ]},
+      { type: "callout", text: "Data conversion runs inside an isolated ephemeral workspace and is purged automatically upon completion. No datasets are stored on our servers." },
+      { type: "h2", text: "Tips for developer workflows" },
+      { type: "ul", items: [
+        "Ensure header row column names avoid illegal spaces or punctuation before converting",
+        "Check null values and empty cells to ensure your database handles default values cleanly",
+        "Use the minified output option when preparing payloads for production API benchmarks",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Are numbers converted to real integers or string literals?" },
+      { type: "p", text: "The engine automatically detects numeric digits and booleans, outputting true numbers and booleans rather than quoted strings." },
+      { type: "h3", text: "Can I export as an array of objects?" },
+      { type: "p", text: "Yes. Each row becomes an object with properties mapped directly from the CSV header row." },
+      { type: "h3", text: "Does it support large datasets?" },
+      { type: "p", text: "Yes. The converter handles large files with tens of thousands of rows smoothly in seconds." },
+    ],
+    fr: [
+      { type: "p", text: "Les développeurs concevant des applications web, API REST ou tableaux de bord doivent constamment transformer des exports de tableurs en structures JSON. Convertir un CSV en JSON associe les en-têtes de colonnes aux clés d'objets avec typage automatique des nombres et booléens." },
+      { type: "h2", text: "Pourquoi convertir vos données CSV en JSON" },
+      { type: "p", text: "Le JSON est le standard universel d'échange de données sur le web, dans les bases NoSQL (MongoDB) et les architectures microservices." },
+      { type: "ul", items: [
+        "Associe automatiquement la ligne d'en-tête aux clés d'objets JSON",
+        "Détecte les types de données pour convertir les chiffres en nombres réels et non en chaînes",
+        "Génère un tableau d'objets prêt à être consommé par vos fonctions JavaScript",
+      ]},
+      { type: "h2", text: "Guide pas à pas : convertir un CSV en JSON" },
+      { type: "ol", items: [
+        "Accédez à l'outil CSV en JSON dans votre navigateur sans créer de compte.",
+        "Déposez votre fichier .csv ou collez votre texte délimité dans l'éditeur.",
+        "Choisissez la structure de sortie (tableau d'objets ou tableau de valeurs).",
+        "Cliquez sur Convertir pour générer votre structure JSON indentée.",
+        "Copiez le résultat ou téléchargez votre fichier .json finalisé.",
+      ]},
+      { type: "callout", text: "Le traitement est réalisé au sein d'un environnement temporaire sécurisé avec suppression automatique immédiate de vos jeux de données." },
+      { type: "h2", text: "Conseils pour les développeurs" },
+      { type: "ul", items: [
+        "Vérifier que les noms de colonnes ne contiennent pas d'espaces pour des clés d'objets propres",
+        "Contrôler le traitement des cellules vides pour éviter les valeurs null inattendues",
+        "Utiliser l'option de minification pour réduire la taille des payloads d'API en production",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Les nombres sont-ils typés comme entiers ou chaînes ?" },
+      { type: "p", text: "Le convertisseur détecte les nombres et booléens pour les formater en types numériques natifs sans guillemets." },
+      { type: "h3", text: "Chaque ligne devient-elle un objet distinct ?" },
+      { type: "p", text: "Oui. Chaque ligne du CSV est transformée en un objet dont les propriétés correspondent aux en-têtes de colonnes." },
+      { type: "h3", text: "L'outil prend-il en charge les fichiers volumineux ?" },
+      { type: "p", text: "Oui. Le moteur convertit confortablement des fichiers contenant des dizaines de milliers de lignes en quelques secondes." },
+    ],
+  },
+};

@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postWordCounter: BlogPost = {
+  slug: {
+    en: "how-to-use-word-counter",
+    fr: "comment-utiliser-word-counter",
+  },
+  title: {
+    en: "How to Count Words, Characters, Sentences, and Reading Pace",
+    fr: "Comment Compter les Mots, Caracteres, Phrases et Temps de Lecture",
+  },
+  description: {
+    en: "Analyze text length with precision word and character metrics, sentence analysis, and reading and speaking time estimations.",
+    fr: "Analysez la longueur de vos textes avec decompte exact des mots, caracteres, phrases et estimation du temps de lecture.",
+  },
+  keywords: {
+    en: ["word counter","word-counter online","free word-counter","developer tool word-counter"],
+    fr: ["word counter","word-counter en ligne","outil word-counter gratuit","utilitaire word-counter"],
+  },
+  publishedAt: "2026-03-25",
+  category: "security",
+  readingMinutes: 4,
+  relatedToolSlug: "word-counter",
+  relatedToolLabel: { en: "Word Counter", fr: "Word Counter" },
+  content: {
+    en: [
+      { type: "p", text: "Analyze text length with precision word and character metrics, sentence analysis, and reading and speaking time estimations." },
+      { type: "h2", text: "Accurate Text Metrics and Speech Velocity Modeling" },
+      { type: "p", text: "Writing for publications, academic journals, and social media requires strict adherence to length constraints. A real-time word counter uses unicode word boundary detection to calculate words, characters with and without spaces, and realistic reading and speaking times." },
+      { type: "ul", items: ["Accurate word and character counting (with and without whitespace).","Calculates average reading time (200-250 wpm) and speaking pace (130-150 wpm).","Sentence and paragraph density statistics for editorial readability."] },
+      { type: "h2", text: "Step-by-step practical guide" },
+      { type: "ol", items: ["Paste or type your draft text into the analysis field.","View real-time updating counters for words, characters, and sentences.","Check reading time for blog posts or speaking time for presentations.","Review top keyword frequency distribution to spot repetitive phrases.","Copy verified text metrics directly for your submission."] },
+      { type: "callout", text: "Privacy guarantee: Text is analyzed exclusively in your browser session with zero telemetry or transmission." },
+      { type: "h2", text: "Pro tips and best practices" },
+      { type: "ul", items: ["For Twitter/X and social posts, track the Character Without Spaces counter to stay within platform limits.","Aim for an average sentence length of 15 to 20 words for maximum web readability."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "How is reading time calculated?" },
+      { type: "p", text: "It is calculated based on the global adult average silent reading speed of 225 words per minute." },
+      { type: "h3", text: "Does the word counter count hyphenated words as one or two words?" },
+      { type: "p", text: "By default, hyphenated compound terms are counted as single words following standard editorial conventions." },
+      { type: "h3", text: "Can I analyze keyword frequency?" },
+      { type: "p", text: "Yes. The keyword density panel shows your most frequently repeated words and phrases." },
+    ],
+    fr: [
+      { type: "p", text: "Analysez la longueur de vos textes avec decompte exact des mots, caracteres, phrases et estimation du temps de lecture." },
+      { type: "h2", text: "Metriques Textuelles et Estimation de Vitesse de Lecture" },
+      { type: "p", text: "La redaction pour la presse, l universite ou les reseaux sociaux impose des limites strictes. Un compteur de mots analyse les limites de mots unicode pour denombrer caracteres, phrases et estimer les temps de lecture et d elocution." },
+      { type: "ul", items: ["Comptage rigoureux des mots et des caracteres (avec et sans espaces).","Estimation du temps de lecture (200-250 mpm) et de parole (130-150 mpm).","Statistiques de densite de phrases et paragraphes pour evaluer la lisibilite."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Collez ou tapez votre texte dans la zone d analyse.","Observez la mise a jour en direct des compteurs de mots, caracteres et phrases.","Consultez le temps de lecture ou la duree de presentation a l oral.","Verifiez la frequence des mots-cles pour eviter les repetitions.","Copiez les metriques pour valider vos contraintes editoriales."] },
+      { type: "callout", text: "Garantie de confidentialite : Votre texte est analyse localement sans enregistrement ni telemetrie." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Pour les reseaux sociaux, suivez le compteur de caracteres sans espaces pour respecter les limites.","Visez une moyenne de 15 a 20 mots par phrase pour une lisibilite optimale sur le web."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Comment est calcule le temps de lecture ?" },
+      { type: "p", text: "Il s appuie sur la vitesse moyenne de lecture silencieuse d un adulte de 225 mots par minute." },
+      { type: "h3", text: "Les mots composes avec trait d union comptent-ils pour un ou deux mots ?" },
+      { type: "p", text: "Par defaut, les termes relies par un trait d union comptent pour un seul mot selon l usage editorial." },
+      { type: "h3", text: "Puis-je analyser la densite de mes mots-cles ?" },
+      { type: "p", text: "Oui. Le tableau de frequence met en avant les termes et expressions les plus frequemment employes." },
+    ],
+  },
+};

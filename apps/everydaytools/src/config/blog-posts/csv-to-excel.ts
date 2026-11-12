@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postCsvToExcel: BlogPost = {
+  slug: {
+    en: "how-to-convert-csv-to-excel-xlsx",
+    fr: "comment-convertir-csv-en-excel-xlsx",
+  },
+  title: {
+    en: "How to Convert CSV Files to Microsoft Excel (XLSX)",
+    fr: "Comment convertir un fichier CSV en classeur Excel (XLSX)",
+  },
+  description: {
+    en: "Convert comma or semicolon delimited CSV files into structured Microsoft Excel (.xlsx) workbooks with proper column widths and auto-filters.",
+    fr: "Convertissez des fichiers CSV délimités en classeurs Microsoft Excel (.xlsx) structurés avec filtres automatiques et colonnes calibrées.",
+  },
+  keywords: {
+    en: ["csv to excel","convert csv to xlsx","import csv to excel","csv to spreadsheet converter"],
+    fr: ["csv en excel","convertir csv en xlsx","importer csv dans excel","tableau csv excel"],
+  },
+  publishedAt: "2026-04-16",
+  category: "documents",
+  readingMinutes: 4,
+  relatedToolSlug: "csv-to-excel",
+  relatedToolLabel: { en: "CSV to Excel", fr: "CSV en Excel" },
+  content: {
+    en: [
+      { type: "p", text: "Opening raw CSV exports directly in Microsoft Excel frequently causes catastrophic formatting errors: dates flip between US and European formats, leading zeroes disappear from phone numbers, and accented letters become corrupt symbols. Converting CSV to XLSX through a dedicated parser prevents data corruption." },
+      { type: "h2", text: "Why direct CSV opening in Excel fails" },
+      { type: "p", text: "Desktop Excel uses operating system locale defaults to guess delimiters and date formats, often misinterpreting comma decimals and encoding tags." },
+      { type: "ul", items: [
+        "Prevents Excel from converting text numbers into scientific notation (like 1.23E+11)",
+        "Detects delimiters (comma, semicolon, tab) automatically without manual wizard setup",
+        "Preserves international UTF-8 accents and currency formatting cleanly",
+      ]},
+      { type: "h2", text: "Step-by-step: how to convert CSV to Excel" },
+      { type: "ol", items: [
+        "Open the CSV to Excel converter in your browser with zero registration needed.",
+        "Upload your .csv or .tsv file: files up to 50 MB are supported.",
+        "The parser detects delimiters, normalizes line breaks, and maps cell datatypes.",
+        "Click Convert to Excel to compile a native Microsoft Excel (.xlsx) workbook.",
+        "Download your spreadsheet ready for sorting, formulas, and chart generation.",
+      ]},
+      { type: "callout", text: "Conversion runs inside an isolated ephemeral workspace and is purged automatically upon completion. No records are stored on our servers." },
+      { type: "h2", text: "Best practices for spreadsheet analysis" },
+      { type: "ul", items: [
+        "Enable auto-filters across table header rows to make searching large datasets instant",
+        "Check date columns to verify uniform ISO 8601 (YYYY-MM-DD) format across all rows",
+        "Use native Excel formatting tools to add currency symbols and thousand separators",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Will leading zeroes in postal codes be preserved?" },
+      { type: "p", text: "Yes. Fields with leading zeroes are preserved as text strings rather than stripped into raw numbers." },
+      { type: "h3", text: "Does it automatically detect semicolon delimiters?" },
+      { type: "p", text: "Yes. The converter automatically recognizes whether your file uses commas, semicolons, tabs, or pipes as separators." },
+      { type: "h3", text: "Can I open the resulting XLSX in Google Sheets?" },
+      { type: "p", text: "Yes. The generated workbook is 100 percent compliant with Microsoft Excel, Google Sheets, and LibreOffice Calc." },
+    ],
+    fr: [
+      { type: "p", text: "Ouvrir directement un fichier CSV dans Microsoft Excel provoque fréquemment des corruptions pénibles : les dates s'inversent, les zéros initiaux des codes postaux disparaissent et les accents se transforment en symboles incompréhensibles. Passer par un convertisseur CSV vers XLSX évite ces erreurs." },
+      { type: "h2", text: "Pourquoi l'ouverture directe d'un CSV échoue souvent dans Excel" },
+      { type: "p", text: "Excel tente de deviner les séparateurs selon les paramètres régionaux de Windows, ce qui mélange les virgules de décimales et les séparateurs de colonnes." },
+      { type: "ul", items: [
+        "Empêche la conversion intempestive des grands numéros en notation scientifique (1,23E+11)",
+        "Détecte automatiquement les séparateurs (virgule, point-virgule, tabulation)",
+        "Préserve l'intégrité des caractères accentués UTF-8 et des symboles monétaires",
+      ]},
+      { type: "h2", text: "Guide pas à pas : convertir un CSV en classeur Excel" },
+      { type: "ol", items: [
+        "Accédez à l'outil CSV en Excel dans votre navigateur sans créer de compte.",
+        "Déposez votre fichier .csv ou .tsv (fichiers acceptés jusqu'à 50 Mo).",
+        "Le système identifie le délimiteur et formate chaque colonne selon son type réel.",
+        "Cliquez sur Convertir pour générer votre classeur Microsoft Excel (.xlsx).",
+        "Téléchargez votre fichier prêt pour vos analyses, filtres et graphiques.",
+      ]},
+      { type: "callout", text: "Le traitement est réalisé dans un espace temporaire sécurisé avec suppression automatique immédiate de vos données." },
+      { type: "h2", text: "Conseils pour l'analyse de données" },
+      { type: "ul", items: [
+        "Activer les filtres automatiques sur la première ligne pour trier facilement les données",
+        "Harmoniser les dates au standard ISO (AAAA-MM-JJ) pour des tris chronologiques fiables",
+        "Appliquer les formats monétaires d'Excel pour rendre les tableaux de ventes lisibles",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Les zéros au début des numéros sont-ils conservés ?" },
+      { type: "p", text: "Oui. Les colonnes comportant des zéros initiaux (codes postaux, téléphones) sont protégées en format texte pour éviter toute troncature." },
+      { type: "h3", text: "L'outil gère-t-il les séparateurs point-virgule européens ?" },
+      { type: "p", text: "Oui. Le moteur détecte automatiquement si votre fichier utilise des virgules, des points-virgules ou des tabulations." },
+      { type: "h3", text: "Le fichier fonctionne-t-il dans Google Sheets ?" },
+      { type: "p", text: "Oui. Le classeur .xlsx généré s'importe immédiatement dans Google Sheets, LibreOffice Calc et Microsoft Excel." },
+    ],
+  },
+};

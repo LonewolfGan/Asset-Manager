@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postPdfToText: BlogPost = {
+  slug: {
+    en: "how-to-extract-text-from-pdf",
+    fr: "comment-extraire-texte-fichier-pdf",
+  },
+  title: {
+    en: "How to Extract Clean Text from Any PDF File",
+    fr: "Comment extraire le texte brut d'un fichier PDF",
+  },
+  description: {
+    en: "Extract plain text from PDF documents without layout clutter or broken formatting. Free, fast, and completely private.",
+    fr: "Extrayez le texte brut de vos documents PDF sans fioritures de mise en page ni coupures de ligne. Gratuit, rapide et privé.",
+  },
+  keywords: {
+    en: ["extract text from pdf","pdf to text","pdf to txt converter","copy unselectable pdf text"],
+    fr: ["extraire texte pdf","pdf en texte brut","convertir pdf en txt","recuperer texte pdf"],
+  },
+  publishedAt: "2026-03-20",
+  category: "pdf",
+  readingMinutes: 4,
+  relatedToolSlug: "pdf-to-text",
+  relatedToolLabel: { en: "PDF to Text", fr: "PDF en Texte" },
+  content: {
+    en: [
+      { type: "p", text: "PDF documents lock paragraphs into fixed spatial containers, making simple copy-paste operations produce broken line wraps, missing spaces, and unwanted hyphenations. Converting a PDF to clean plain text strips structural overhead, leaving pure readable words." },
+      { type: "h2", text: "Why extract plain text instead of copying manually" },
+      { type: "p", text: "Manual selection in desktop viewers often captures invisible page numbers, running headers, and table formatting as garbled characters. A dedicated text extractor parses the underlying content stream sequentially." },
+      { type: "ul", items: [
+        "Removes page breaks, footers, and margin artifacts automatically",
+        "Normalizes Unicode quotes, dashes, and ligature characters into standard UTF-8",
+        "Ideal for ingesting legal briefs, research transcripts, or code documentation into AI models",
+      ]},
+      { type: "h2", text: "Step-by-step: how to extract text from your PDF" },
+      { type: "ol", items: [
+        "Open the PDF to Text tool in your browser with zero registration required.",
+        "Upload your PDF file: documents up to 50 MB are supported without account limits.",
+        "The parser extracts linear text streams while filtering out background vectors.",
+        "Preview the parsed text in the editor pane or click Download TXT.",
+        "Save your clean plain text document immediately.",
+      ]},
+      { type: "callout", text: "Text extraction runs inside an isolated ephemeral workspace and is purged automatically upon completion. No documents are retained on our servers." },
+      { type: "h2", text: "Best practices for clean text extraction" },
+      { type: "ul", items: [
+        "Digital PDFs created in Word or Google Docs extract with near 100 percent character accuracy",
+        "For scanned paper documents or flat image pages, run OCR before plain text extraction",
+        "Check paragraph margins when converting documents with complex multi-column newsletter layouts",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Does extracting text preserve images and formatting?" },
+      { type: "p", text: "No. The PDF to Text converter is designed specifically to discard styling, images, and fonts, leaving only pure, unformatted text." },
+      { type: "h3", text: "Can I copy extracted text directly to my clipboard?" },
+      { type: "p", text: "Yes. The tool includes a one-click copy button as well as a direct .txt file download option." },
+      { type: "h3", text: "Are multi-page documents supported?" },
+      { type: "p", text: "Yes. The tool processes documents with hundreds of pages and appends sequential page separators." },
+    ],
+    fr: [
+      { type: "p", text: "Les documents PDF figent les lignes dans des boîtes géométriques rigides, ce qui transforme un simple copier-coller en un texte haché rempli de sauts de ligne intempestifs. Convertir un PDF en texte brut permet d'extraire les mots purs sans le parasitage de la mise en page." },
+      { type: "h2", text: "Pourquoi extraire le texte brut plutôt que de copier à la main" },
+      { type: "p", text: "La sélection manuelle dans un visualiseur capture souvent les en-têtes répétés, les numéros de page et les traits de tableau. Un extracteur spécialisé analyse le flux de contenu sous-jacent de manière linéaire." },
+      { type: "ul", items: [
+        "Supprime automatiquement les artefacts de marge et les pieds de page",
+        "Normalise les guillemets et tirets au standard UTF-8 universel",
+        "Idéal pour nourrir des modèles de traitement de langage naturel ou des bases de données",
+      ]},
+      { type: "h2", text: "Guide pas à pas : extraire le texte de votre PDF" },
+      { type: "ol", items: [
+        "Ouvrez l'outil PDF en Texte dans votre navigateur, sans inscription obligatoire.",
+        "Déposez votre document PDF : les fichiers jusqu'à 50 Mo sont pris en charge.",
+        "Le système extrait le texte linéaire tout en ignorant les images et graphismes.",
+        "Consultez le texte dans l'éditeur ou cliquez sur Télécharger TXT.",
+        "Enregistrez votre fichier texte propre sans attendre.",
+      ]},
+      { type: "callout", text: "Le traitement est réalisé dans un espace de travail temporaire isolé avec suppression automatique immédiate de vos fichiers." },
+      { type: "h2", text: "Conseils pour une extraction optimale" },
+      { type: "ul", items: [
+        "Les PDF numériques créés depuis Word offrent une fidélité d'extraction de quasi 100 %",
+        "Pour les documents papier numérisés, utilisez notre outil ROC pour extraire les caractères",
+        "Vérifiez la ponctuation sur les documents à multiples colonnes de type journal",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "L'extraction conserve-t-elle les images et tableaux ?" },
+      { type: "p", text: "Non. L'outil est conçu pour éliminer toute mise en forme superflue et ne conserver que le texte brut exploitable." },
+      { type: "h3", text: "Puis-je copier le texte directement dans mon presse-papier ?" },
+      { type: "p", text: "Oui. Un bouton de copie en un clic est disponible en plus du téléchargement au format .txt." },
+      { type: "h3", text: "Les PDF multipages volumineux sont-ils pris en charge ?" },
+      { type: "p", text: "Oui. L'outil gère les documents de plusieurs centaines de pages en insérant des séparateurs clairs." },
+    ],
+  },
+};

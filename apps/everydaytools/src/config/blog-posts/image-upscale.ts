@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postImageUpscale: BlogPost = {
+  slug: {
+    en: "how-to-upscale-images-with-ai",
+    fr: "comment-agrandir-une-image-avec-ia",
+  },
+  title: {
+    en: "How to Upscale Low-Resolution Images with AI",
+    fr: "Comment agrandir une image basse résolution avec l'IA",
+  },
+  description: {
+    en: "Enlarge small photos and digital artwork 2x or 4x without pixelation using neural super-resolution models directly in your browser.",
+    fr: "Agrandissez vos petites photos et illustrations en 2x ou 4x sans pixellisation grâce aux réseaux de super-résolution neuronale.",
+  },
+  keywords: {
+    en: ["ai image upscale","enlarge photo without quality loss","super resolution ai","upscale image 4x"],
+    fr: ["agrandir image ia","ameliorer resolution photo","super resolution ia","augmenter taille image net"],
+  },
+  publishedAt: "2026-04-30",
+  category: "image",
+  readingMinutes: 4,
+  relatedToolSlug: "image-upscale",
+  relatedToolLabel: { en: "AI Image Upscale", fr: "Agrandissement Image IA" },
+  content: {
+    en: [
+      { type: "p", text: "Blowing up small vintage photos, low-res web thumbnails, or cropped images using traditional bicubic interpolation results in blurry, pixelated edges. Neural super-resolution AI models analyze textures and reconstruct missing high-frequency details to double or quadruple image clarity." },
+      { type: "h2", text: "How AI super-resolution outperforms standard enlargement" },
+      { type: "p", text: "Traditional interpolation simply stretches existing pixels and averages colors. Deep neural networks predict fine textures, hair strands, and sharp vector edges based on millions of trained image patterns." },
+      { type: "ul", items: [
+        "Upscales 2x and 4x without jagged pixel artifacts or watercolor blurring",
+        "Enhances eye clarity, skin textures, and fabric details on vintage portrait photos",
+        "Refines compressed digital art and graphic logos for large-format print posters",
+      ]},
+      { type: "h2", text: "Step-by-step: how to upscale images with AI" },
+      { type: "ol", items: [
+        "Open the AI Image Upscale tool in your browser with zero registration needed.",
+        "Upload your low-resolution JPG, PNG, or WebP photo up to 25 MB.",
+        "Select your magnification factor (2x for standard enhancement or 4x for poster prints).",
+        "Click Upscale with AI to run neural super-resolution processing.",
+        "Compare before-and-after results with the interactive split slider and download your HD image.",
+      ]},
+      { type: "callout", text: "Neural processing executes inside an isolated ephemeral workspace and is purged automatically upon completion. No images are stored on our servers." },
+      { type: "h2", text: "Tips for optimal upscaling results" },
+      { type: "ul", items: [
+        "Remove heavy compression noise and compression artifacts first for cleanest neural enhancement",
+        "Use 2x upscaling for web asset optimization and 4x for physical canvas and poster prints",
+        "Check fine typography on logos to verify line straightness after neural reconstruction",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Does it work well on old scanned vintage photos?" },
+      { type: "p", text: "Yes. The neural model specializes in restoring subtle facial features, eyes, and clothing textures on vintage family photographs." },
+      { type: "h3", text: "Is there a limit on input image resolution?" },
+      { type: "p", text: "We recommend input images under 2000x2000 pixels for optimal super-resolution processing speed." },
+      { type: "h3", text: "Can I upscale digital illustrations and anime art?" },
+      { type: "p", text: "Yes. The model enhances line art and vector-style graphics, eliminating compression artifacts along outlines." },
+    ],
+    fr: [
+      { type: "p", text: "Agrandir de vieilles photos argentiques, des miniatures web ou des images recadrées avec un logiciel traditionnel produit des contours flous et des pixels grossiers. Les réseaux de neurones de super-résolution analysent les textures et reconstituent les détails manquants pour doubler ou quadrupler la définition." },
+      { type: "h2", text: "Pourquoi la super-résolution IA surpasse l'agrandissement classique" },
+      { type: "p", text: "Là où l'interpolation classique se contente d'étirer les pixels existants en lissant les teintes, l'IA anticipe les détails fins (brins de cheveux, textures textiles, arêtes nettes) grâce à son apprentissage profond." },
+      { type: "ul", items: [
+        "Agrandit en 2x et 4x sans effet d'escalier ni flou d'aquarelle artificiel",
+        "Restaure le piqué des yeux et les textures de peau sur les anciens portraits",
+        "Nettoie les artefacts de compression sur les logos et dessins vectoriels",
+      ]},
+      { type: "h2", text: "Guide pas à pas : agrandir une image avec l'IA" },
+      { type: "ol", items: [
+        "Accédez à l'outil Agrandissement Image IA dans votre navigateur sans créer de compte.",
+        "Déposez votre photo basse résolution (JPG, PNG ou WebP jusqu'à 25 Mo).",
+        "Sélectionnez le facteur d'agrandissement (2x pour le web ou 4x pour l'impression).",
+        "Cliquez sur Agrandir avec l'IA pour lancer le calcul neuronal.",
+        "Comparez le résultat avec le volet interactif avant/après et téléchargez votre image HD.",
+      ]},
+      { type: "callout", text: "Le traitement neuronal s'exécute dans un espace temporaire sécurisé avec suppression automatique immédiate de vos photos." },
+      { type: "h2", text: "Conseils pour des résultats spectaculaires" },
+      { type: "ul", items: [
+        "Dépoussiérer les scans d'anciennes photos pour éviter que l'IA ne confonde un grain avec un détail",
+        "Utiliser le mode 2x pour les visuels d'écrans et le mode 4x pour l'impression d'affiches",
+        "Vérifier la régularité des lignes droites sur les visuels d'architecture",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "L'outil fonctionne-t-il bien sur de vieilles photos de famille ?" },
+      { type: "p", text: "Oui. Le modèle excelle dans la restauration des visages, des iris et des textures de vêtements sur les clichés anciens." },
+      { type: "h3", text: "Y a-t-il une taille maximale pour l'image de départ ?" },
+      { type: "p", text: "Pour des performances optimales, nous conseillons des images sources ne dépassant pas 2000x2000 pixels." },
+      { type: "h3", text: "Peut-on agrandir des illustrations numériques ou logos ?" },
+      { type: "p", text: "Oui. Le modèle traite remarquablement les dessins et logos en éliminant les artefacts de compression le long des tracés." },
+    ],
+  },
+};

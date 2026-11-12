@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postPdfToImage: BlogPost = {
+  slug: {
+    en: "how-to-extract-high-resolution-images-from-pdf",
+    fr: "comment-extraire-images-haute-resolution-pdf",
+  },
+  title: {
+    en: "How to Convert PDF Pages into High-Resolution Images",
+    fr: "Comment convertir des pages PDF en images haute résolution",
+  },
+  description: {
+    en: "Render every PDF page into sharp JPG, PNG, or WebP images with adjustable DPI resolution for web publishing or presentations. Complete guide.",
+    fr: "Convertissez chaque page d'un PDF en image nette JPG, PNG ou WebP avec résolution DPI ajustable pour le web ou vos présentations. Guide complet.",
+  },
+  keywords: {
+    en: ["pdf to image", "pdf to png high res", "pdf to jpg converter", "extract pdf pages to image", "pdf 300 dpi render"],
+    fr: ["pdf en image", "convertir pdf en png haute definition", "pdf en jpg", "extraire pages pdf image", "pdf 300 dpi"],
+  },
+  publishedAt: "2026-03-15",
+  category: "pdf",
+  readingMinutes: 5,
+  relatedToolSlug: "pdf-to-image",
+  relatedToolLabel: { en: "PDF to Image", fr: "PDF en Image" },
+  content: {
+    en: [
+      { type: "p", text: "Extracting infographics, poster slides, or signed document pages from a PDF often leads to blurry results when using basic desktop clipping tools. Rendering pages through a dedicated PDF rasterization engine guarantees pixel-sharp clarity across high-density Retina and 4K displays." },
+      { type: "h2", text: "Understanding DPI: 72 versus 150 versus 300" },
+      { type: "p", text: "Dots Per Inch (DPI) dictates visual sharpness and output file size. Selecting the right density prevents oversized downloads while preserving fine lines and typography." },
+      { type: "ul", items: [
+        "72 to 96 DPI: Ideal for email attachments, thumbnail previews, and fast-loading web blog embeds",
+        "150 DPI: Recommended for PowerPoint presentations, Keynote decks, and digital portfolio showcases",
+        "300 DPI: Professional standard for archival printing, publication proofs, and marketing collateral",
+      ]},
+      { type: "h2", text: "Step-by-step: how to convert PDF pages to images" },
+      { type: "ol", items: [
+        "Open the PDF to Image tool in your browser with zero registration needed.",
+        "Upload your PDF document: files up to 50 MB are supported without account restrictions.",
+        "Select your target format: PNG for lossless line art, JPEG for photos, or WebP for optimized web speed.",
+        "Choose your desired DPI resolution (72, 150, or 300) and click Convert to Images.",
+        "Download individual page files or save all pages simultaneously in a convenient ZIP archive.",
+      ]},
+      { type: "callout", text: "Every rendering job runs in an isolated ephemeral workspace and is automatically purged upon completion. Zero documents or image caches are retained." },
+      { type: "h2", text: "Format comparison: PNG versus JPEG versus WebP" },
+      { type: "ul", items: [
+        "PNG preserves transparent margins and keeps fine technical line art razor sharp without compression noise",
+        "JPEG delivers compact file sizes for scanned photographs and colorful marketing brochures",
+        "WebP provides up to 30 percent smaller file footprints for identical visual quality on modern websites",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "What DPI resolution should I choose for web publishing?" },
+      { type: "p", text: "For standard websites and blogs, 150 DPI offers an ideal balance of visual sharpness on high-density Retina screens without creating excessive page weight." },
+      { type: "h3", text: "How are multi-page documents delivered upon conversion?" },
+      { type: "p", text: "Documents with multiple pages are neatly bundled into a single ZIP archive, with sequential page filenames (page-01.png, page-02.png) for easy organization." },
+      { type: "h3", text: "Does converting PDF pages to images affect my original file?" },
+      { type: "p", text: "No. Your original PDF remains untouched. The engine reads the vector description and generates brand new raster image files independently." },
+    ],
+    fr: [
+      { type: "p", text: "Extraire des graphiques, affiches ou diapositives depuis un PDF donne souvent des résultats flous lorsqu'on utilise un outil de capture d'écran classique. Générer directement des images matricielles via le moteur PDF assure une netteté optique parfaite sur tous les écrans Retina et 4K." },
+      { type: "h2", text: "Comprendre les résolutions : 72, 150 ou 300 DPI" },
+      { type: "p", text: "Le nombre de points par pouce (DPI) détermine la finesse d'affichage et le poids du fichier image. Choisir la bonne valeur évite les fichiers inutilement lourds tout en préservant la netteté des polices." },
+      { type: "ul", items: [
+        "72 à 96 DPI : parfait pour l'envoi rapide par courriel, les aperçus et l'intégration dans des articles de blog",
+        "150 DPI : recommandé pour les présentations PowerPoint, les portfolios et l'affichage sur tablettes",
+        "300 DPI : standard professionnel requis pour l'impression papier et les épreuves de presse",
+      ]},
+      { type: "h2", text: "Guide pas à pas : convertir des pages PDF en images" },
+      { type: "ol", items: [
+        "Accédez à l'outil PDF en Image dans votre navigateur sans créer de compte.",
+        "Déposez votre document PDF : les fichiers jusqu'à 50 Mo sont pris en charge sans abonnement.",
+        "Choisissez votre format de sortie : PNG pour les schémas, JPG pour les photos ou WebP pour le web.",
+        "Réglez la résolution DPI (72, 150 ou 300) puis cliquez sur Extraire les images.",
+        "Téléchargez chaque page individuellement ou récupérez l'ensemble des pages dans une archive ZIP.",
+      ]},
+      { type: "callout", text: "La conversion s'exécute dans un environnement temporaire isolé. Vos fichiers d'origine et images générées sont purgés immédiatement après traitement." },
+      { type: "h2", text: "Comparatif des formats : PNG, JPG ou WebP" },
+      { type: "ul", items: [
+        "Le PNG restitue les schémas techniques sans artefact de compression et gère la transparence",
+        "Le JPG produit des fichiers très légers pour les catalogues riches en photos",
+        "Le WebP offre jusqu'à 30 % de gain de compression à qualité égale pour le web moderne",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Quelle résolution DPI choisir pour un site internet ?" },
+      { type: "p", text: "Pour un affichage web sur écrans modernes, 150 DPI offre le meilleur compromis entre netteté visuelle et temps de chargement rapide." },
+      { type: "h3", text: "Comment sont livrés les documents multipages ?" },
+      { type: "p", text: "Les PDF comptant plusieurs pages sont automatiquement regroupés dans une archive ZIP avec une numérotation séquentielle des fichiers." },
+      { type: "h3", text: "La conversion modifie-t-elle mon document PDF initial ?" },
+      { type: "p", text: "Non. Votre document original reste inchangé. Le convertisseur lit le fichier source pour générer de nouveaux fichiers images autonomes." },
+    ],
+  },
+};

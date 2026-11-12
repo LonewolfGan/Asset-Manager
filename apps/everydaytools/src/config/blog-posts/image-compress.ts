@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postImageCompress: BlogPost = {
+  slug: {
+    en: "how-to-compress-images-without-losing-quality",
+    fr: "comment-compresser-images-sans-perte-de-qualite",
+  },
+  title: {
+    en: "How to Compress Images Online Without Visible Quality Loss",
+    fr: "Comment compresser des images en ligne sans perte visible de qualité",
+  },
+  description: {
+    en: "Reduce JPG, PNG, and WebP image file sizes by up to 80% with visual transparency, smart quantization, and zero server storage.",
+    fr: "Réduisez le poids de vos images JPG, PNG et WebP jusqu'à 80 % grâce à la quantification intelligente sans stockage sur serveur.",
+  },
+  keywords: {
+    en: ["compress images","reduce image file size","image compressor online","lossless image compression"],
+    fr: ["compresser image","reduire taille image","compresseur image en ligne","optimiser image web"],
+  },
+  publishedAt: "2026-04-23",
+  category: "image",
+  readingMinutes: 4,
+  relatedToolSlug: "image-compress",
+  relatedToolLabel: { en: "Compress Image", fr: "Compresser une image" },
+  content: {
+    en: [
+      { type: "p", text: "High-resolution smartphone photos and camera RAW exports often produce massive 10 to 20 megabyte files that clog website loading speeds, exhaust cloud storage quotas, and fail email attachment limits. Intelligent image compression slashes file weight without noticeable visual degradation." },
+      { type: "h2", text: "Lossless versus intelligent lossy compression" },
+      { type: "p", text: "Modern compression engines use perceptual quantization to discard imperceptible color gradations while preserving sharp contrast lines, faces, and text." },
+      { type: "ul", items: [
+        "Reduces file footprint by 60 to 80 percent without visual pixelation",
+        "Strips bloated camera EXIF metadata and hidden color profile tags",
+        "Improves Core Web Vitals (LCP) and page load performance dramatically",
+      ]},
+      { type: "h2", text: "Step-by-step: how to compress images online" },
+      { type: "ol", items: [
+        "Open the Image Compress tool in your browser with zero registration needed.",
+        "Upload your JPG, PNG, or WebP images: files up to 50 MB are supported.",
+        "Adjust the compression slider to balance file weight and visual fidelity.",
+        "Compare before-and-after image previews to inspect fine detail.",
+        "Download your compressed images individually or bundled in a ZIP archive.",
+      ]},
+      { type: "callout", text: "Compression runs inside an isolated ephemeral workspace with zero permanent storage and automatic deletion upon completion." },
+      { type: "h2", text: "Optimization tips for web designers" },
+      { type: "ul", items: [
+        "Aim for image payloads under 200 KB for hero banners and under 50 KB for thumbnails",
+        "Use WebP format alongside compression for modern modern website delivery",
+        "Always inspect facial details and solid color gradients after heavy compression",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Does compressing a PNG maintain transparent backgrounds?" },
+      { type: "p", text: "Yes. The engine applies 8-bit alpha quantization to reduce PNG file sizes while keeping cutouts perfectly transparent." },
+      { type: "h3", text: "Can I compress multiple images simultaneously?" },
+      { type: "p", text: "Yes. You can upload batches of up to 20 images simultaneously and download them in a single ZIP file." },
+      { type: "h3", text: "Will my original high-res photos be overwritten?" },
+      { type: "p", text: "No. The tool generates newly compressed copies. Your original source files on your device remain untouched." },
+    ],
+    fr: [
+      { type: "p", text: "Les photographies de smartphones modernes pèsent fréquemment entre 10 et 20 mégaoctets, ce qui ralentit considérablement l'affichage des sites internet et sature les boîtes courriel. Une compression intelligente réduit le poids des images sans dégrader la netteté perçue." },
+      { type: "h2", text: "Compression sans perte versus compression perceptive" },
+      { type: "p", text: "Les algorithmes de compression modernes éliminent les nuances colorimétriques invisibles à l'œil nu tout en préservant le piqué des contours et la netteté des visages." },
+      { type: "ul", items: [
+        "Diminue le poids des fichiers de 60 à 80 % sans flou ni pixellisation apparente",
+        "Supprime les métadonnées EXIF volumineuses et profils colorimétriques superflus",
+        "Améliore significativement la vitesse de chargement et le score Google PageSpeed",
+      ]},
+      { type: "h2", text: "Guide pas à pas : compresser vos images en ligne" },
+      { type: "ol", items: [
+        "Accédez à l'outil Compresser Image dans votre navigateur sans créer de compte.",
+        "Déposez vos images JPG, PNG ou WebP (jusqu'à 50 Mo par fichier).",
+        "Ajustez le curseur de qualité pour équilibrer taille de fichier et netteté.",
+        "Visualisez l'aperçu comparatif avant/après pour vérifier les détails.",
+        "Téléchargez vos images optimisées séparément ou dans une archive ZIP.",
+      ]},
+      { type: "callout", text: "Le traitement est réalisé dans un espace temporaire sécurisé avec suppression automatique immédiate de vos photos." },
+      { type: "h2", text: "Conseils pour les créateurs de sites web" },
+      { type: "ul", items: [
+        "Viser un poids inférieur à 200 Ko pour les bannières et 50 Ko pour les miniatures",
+        "Associer compression et format WebP pour maximiser la vitesse sur mobile",
+        "Contrôler la régularité des dégradés de ciel après une compression poussée",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "La transparence des images PNG est-elle préservée ?" },
+      { type: "p", text: "Oui. Le compresseur préserve intégralement le canal alpha transparent des logos et détourages PNG." },
+      { type: "h3", text: "Peut-on traiter plusieurs photos en une seule fois ?" },
+      { type: "p", text: "Oui. Vous pouvez glisser jusqu'à 20 images simultanément et récupérer l'ensemble optimisé dans un fichier ZIP." },
+      { type: "h3", text: "Mes images originales sont-elles modifiées sur mon disque ?" },
+      { type: "p", text: "Non. Le compresseur génère de nouvelles versions allégées sans toucher à vos fichiers sources sur votre appareil." },
+    ],
+  },
+};

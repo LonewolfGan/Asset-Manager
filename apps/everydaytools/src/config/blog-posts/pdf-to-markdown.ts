@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postPdfToMarkdown: BlogPost = {
+  slug: {
+    en: "how-to-convert-pdf-to-markdown",
+    fr: "comment-convertir-pdf-en-markdown",
+  },
+  title: {
+    en: "How to Convert PDF to Clean Markdown for Notes and LLMs",
+    fr: "Comment convertir un PDF en Markdown propre pour vos notes et LLM",
+  },
+  description: {
+    en: "Convert complex PDF documentation, papers, and books into clean GitHub-flavored Markdown text formatted for Obsidian, Notion, and AI models.",
+    fr: "Convertissez des PDF techniques, thèses et livres en texte Markdown propre adapté pour Obsidian, Notion et les modèles d'intelligence artificielle.",
+  },
+  keywords: {
+    en: ["pdf to markdown","convert pdf to md","pdf markdown extractor","pdf to obsidian","pdf to notion"],
+    fr: ["pdf en markdown","convertir pdf en md","extraire markdown pdf","pdf vers obsidian","pdf pour llm"],
+  },
+  publishedAt: "2026-03-27",
+  category: "pdf",
+  readingMinutes: 5,
+  relatedToolSlug: "pdf-to-markdown",
+  relatedToolLabel: { en: "PDF to Markdown", fr: "PDF en Markdown" },
+  content: {
+    en: [
+      { type: "p", text: "Developers and researchers frequently need to import documentation, research whitepapers, or book chapters into personal knowledge bases like Obsidian or feeding context into Large Language Models (LLMs). Converting PDF into clean Markdown preserves headings, code blocks, and tables without layout clutter." },
+      { type: "h2", text: "Why Markdown is the ideal format for AI and note-taking" },
+      { type: "p", text: "PDF binary coordinates waste context tokens and confuse LLM parsers. Markdown uses lightweight syntax characters (#, *, |, `) that preserve semantic structure with minimal token overhead." },
+      { type: "ul", items: [
+        "Preserves section hierarchy from H1 to H4 for structured documentation",
+        "Converts tabular data into clean GitHub Flavored Markdown (GFM) pipe tables",
+        "Isolates code snippets into formatted code blocks with syntax clarity",
+      ]},
+      { type: "h2", text: "Step-by-step: how to convert PDF to Markdown" },
+      { type: "ol", items: [
+        "Open the PDF to Markdown tool in your browser with zero registration needed.",
+        "Upload your PDF document: files up to 50 MB are supported without account limits.",
+        "The engine analyzes typographic hierarchy, detects lists, and extracts tables.",
+        "Click Convert to generate clean CommonMark and GFM text.",
+        "Download your .md file or copy Markdown directly into Obsidian, Logseq, or Notion.",
+      ]},
+      { type: "callout", text: "Document parsing runs in an isolated ephemeral workspace and is purged automatically upon completion. No documents are retained on our servers." },
+      { type: "h2", text: "Tips for optimal LLM context preparation" },
+      { type: "ul", items: [
+        "Strip running headers and footers to avoid repetitive noise in AI prompt context",
+        "Verify table column formatting before embedding large dataset summaries",
+        "Use the Markdown preview pane to audit heading depth and code snippet indentation",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Does the converter support GFM table syntax?" },
+      { type: "p", text: "Yes. Tables in the PDF are converted into clean pipe-delimited Markdown tables compatible with GitHub, Obsidian, and Notion." },
+      { type: "h3", text: "How are mathematical formulas handled?" },
+      { type: "p", text: "Recognizable equations are formatted using standard LaTeX or clean inline monospace notation where possible." },
+      { type: "h3", text: "Can I paste the output directly into ChatGPT or Claude?" },
+      { type: "p", text: "Yes. Markdown provides the highest token efficiency and cleanest semantic structure for AI prompts." },
+    ],
+    fr: [
+      { type: "p", text: "Les développeurs et chercheurs ont souvent besoin d'intégrer des thèses, livres blancs ou documentations techniques dans des bases de connaissances comme Obsidian ou pour alimenter des modèles d'IA (LLM). Convertir un PDF en Markdown propre préserve la hiérarchie des titres sans fioritures." },
+      { type: "h2", text: "Pourquoi le Markdown est idéal pour l'IA et la prise de notes" },
+      { type: "p", text: "Les coordonnées spatiales d'un PDF gaspillent des tokens de contexte et perturbent les analyseurs d'IA. Le Markdown utilise des balises légères (#, *, |) qui restituent la sémantique avec une sobriété maximale." },
+      { type: "ul", items: [
+        "Préserve la hiérarchie des titres (H1 à H4) pour une navigation structurée",
+        "Convertit les tableaux en grilles tuyaux conformes au standard GitHub Flavored Markdown",
+        "Isole les extraits de code dans des blocs bien indentés",
+      ]},
+      { type: "h2", text: "Guide pas à pas : convertir un PDF en Markdown" },
+      { type: "ol", items: [
+        "Accédez à l'outil PDF en Markdown dans votre navigateur sans créer de compte.",
+        "Déposez votre document PDF : les fichiers jusqu'à 50 Mo sont pris en charge.",
+        "Le système extrait les titres, listes et tableaux en balises Markdown.",
+        "Cliquez sur Convertir pour générer votre texte au standard CommonMark.",
+        "Téléchargez votre fichier .md ou copiez le texte directement dans Obsidian ou Notion.",
+      ]},
+      { type: "callout", text: "La conversion est réalisée dans un environnement temporaire sécurisé avec suppression automatique immédiate de vos données." },
+      { type: "h2", text: "Conseils pour l'utilisation avec des modèles d'IA" },
+      { type: "ul", items: [
+        "Supprimer les en-têtes répétés pour éviter de polluer la mémoire de contexte des LLM",
+        "Vérifier l'alignement des colonnes sur les tableaux de données volumineux",
+        "Consulter l'aperçu direct pour contrôler la bonne hiérarchie des sections",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Le convertisseur prend-il en charge les tableaux GitHub (GFM) ?" },
+      { type: "p", text: "Oui. Les tableaux du PDF sont transposés en tableaux Markdown avec séparateurs tuyaux directement lisibles par GitHub, Obsidian et Notion." },
+      { type: "h3", text: "Comment sont traités les extraits de code source ?" },
+      { type: "p", text: "Les blocs de code sont encapsulés dans des balises à triple apostrophe inversée préservant l'indentation d'origine." },
+      { type: "h3", text: "Puis-je coller le résultat directement dans ChatGPT ou Claude ?" },
+      { type: "p", text: "Oui. Le Markdown est le format recommandé pour transmettre des contextes denses à une IA avec une consommation minimale de tokens." },
+    ],
+  },
+};

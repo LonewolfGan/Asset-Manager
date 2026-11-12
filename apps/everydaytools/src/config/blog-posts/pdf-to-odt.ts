@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postPdfToOdt: BlogPost = {
+  slug: {
+    en: "how-to-convert-pdf-to-odt",
+    fr: "comment-convertir-pdf-en-odt",
+  },
+  title: {
+    en: "How to Convert PDF to LibreOffice OpenDocument (ODT)",
+    fr: "Comment convertir un PDF en document LibreOffice OpenDocument (ODT)",
+  },
+  description: {
+    en: "Convert static PDF files into editable LibreOffice and OpenOffice OpenDocument Text (.odt) documents with layout and paragraphs intact.",
+    fr: "Convertissez vos fichiers PDF figés en documents LibreOffice OpenDocument (.odt) modifiables avec paragraphes et mise en page préservés.",
+  },
+  keywords: {
+    en: ["pdf to odt","convert pdf to odt","pdf to libreoffice","pdf to opendocument converter"],
+    fr: ["pdf en odt","convertir pdf en odt","pdf vers libreoffice","editer pdf dans libreoffice"],
+  },
+  publishedAt: "2026-04-12",
+  category: "documents",
+  readingMinutes: 5,
+  relatedToolSlug: "pdf-to-odt",
+  relatedToolLabel: { en: "PDF to ODT", fr: "PDF en ODT" },
+  content: {
+    en: [
+      { type: "p", text: "Organizations committed to open standards and open-source software often need to modify PDF documents received from third parties inside LibreOffice Writer. Converting PDF to ODT reconstructs editable paragraphs, headings, and tables in native OpenDocument format." },
+      { type: "h2", text: "Why convert PDF into OpenDocument Text (ODT)" },
+      { type: "p", text: "ODT is an ISO-certified open standard (ISO 26300) free from vendor lock-in. Converting PDFs to ODT allows seamless editing in LibreOffice Writer without formatting glitches." },
+      { type: "ul", items: [
+        "Restores text editing freedom in LibreOffice Writer and Apache OpenOffice",
+        "Extracts tables and bullet lists into native OpenDocument structural elements",
+        "Free from proprietary software licenses and subscription fees",
+      ]},
+      { type: "h2", text: "Step-by-step: how to convert PDF to ODT" },
+      { type: "ol", items: [
+        "Open the PDF to ODT converter in your browser with zero registration needed.",
+        "Upload your PDF document: files up to 50 MB are supported without account limits.",
+        "The engine maps PDF text coordinates into sequential OpenDocument paragraphs.",
+        "Click Convert to compile a standards-compliant .odt document.",
+        "Download your ODT file and open it directly in LibreOffice Writer.",
+      ]},
+      { type: "callout", text: "Document processing runs inside an isolated ephemeral workspace and is purged automatically upon completion. No files are stored on our servers." },
+      { type: "h2", text: "Tips for optimal OpenOffice editing" },
+      { type: "ul", items: [
+        "Digital PDFs convert with near-perfect typographic fidelity and layout alignment",
+        "For scanned documents, run our OCR tool first to recognize character glyphs accurately",
+        "Check table cell borders in Writer to adjust column widths for customized printing",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Is the converted ODT file fully editable in LibreOffice?" },
+      { type: "p", text: "Yes. You can edit text, modify fonts, insert new rows in tables, and save changes just like any native LibreOffice document." },
+      { type: "h3", text: "Can I open the ODT file in Microsoft Word?" },
+      { type: "p", text: "Yes. Modern versions of Microsoft Word natively open and edit ODT files." },
+      { type: "h3", text: "Are images in the PDF transferred to the ODT file?" },
+      { type: "p", text: "Yes. Embedded illustrations and photos are extracted and positioned accurately within the document." },
+    ],
+    fr: [
+      { type: "p", text: "Les organisations privilégiant les logiciels libres et formats ouverts ont fréquemment besoin de modifier des documents PDF sous LibreOffice Writer. Convertir un PDF en ODT permet de retrouver des paragraphes modifiables, des titres et des tableaux dans le format ouvert de référence." },
+      { type: "h2", text: "Pourquoi convertir un PDF en OpenDocument Text (ODT)" },
+      { type: "p", text: "Le format ODT est une norme internationale ouverte (ISO 26300). Convertir un PDF en ODT garantit une édition fluide dans LibreOffice sans dépendre d'un éditeur propriétaire." },
+      { type: "ul", items: [
+        "Restaure la liberté d'édition complète sous LibreOffice Writer et Apache OpenOffice",
+        "Reconstitue les tableaux et listes en éléments sémantiques natifs OpenDocument",
+        "Permet de travailler sans licence payante ni abonnement contraignant",
+      ]},
+      { type: "h2", text: "Guide pas à pas : convertir un PDF en ODT" },
+      { type: "ol", items: [
+        "Accédez à l'outil PDF en ODT dans votre navigateur sans créer de compte.",
+        "Déposez votre document PDF : les fichiers jusqu'à 50 Mo sont pris en charge.",
+        "Le système convertit les flux de texte et images en arborescence OpenDocument.",
+        "Cliquez sur Convertir pour générer votre fichier .odt modifiable.",
+        "Téléchargez votre document et ouvrez-le directement dans LibreOffice.",
+      ]},
+      { type: "callout", text: "Le traitement est exécuté dans un environnement temporaire sécurisé avec suppression automatique immédiate de vos documents." },
+      { type: "h2", text: "Conseils pour une retouche optimale" },
+      { type: "ul", items: [
+        "Les PDF numériques se convertissent avec une fidélité typographique maximale",
+        "Pour les documents scannés, passer d'abord par l'outil ROC pour extraire le texte",
+        "Contrôler la largeur des colonnes de tableaux dans Writer avant d'imprimer",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Le fichier ODT est-il totalement modifiable dans LibreOffice ?" },
+      { type: "p", text: "Oui. Vous pouvez modifier le texte, ajouter des paragraphes, insérer des images et enregistrer vos modifications librement." },
+      { type: "h3", text: "Peut-on ouvrir le fichier ODT dans Microsoft Word ?" },
+      { type: "p", text: "Oui. Les versions récentes de Microsoft Word ouvrent et enregistrent nativement les fichiers OpenDocument." },
+      { type: "h3", text: "Les images du PDF d'origine sont-elles conservées ?" },
+      { type: "p", text: "Oui. Les figures, schémas et photos sont extraits et positionnés à leur place dans le document." },
+    ],
+  },
+};

@@ -7,6 +7,7 @@ import {
   ConversionStaging,
   ConversionConduit,
   ConversionResult,
+  ReciprocalTitle,
   NextActionModal,
 } from '@/components/conversion';
 import { useImageToPdfWorkflow } from '@/hooks/use-image-to-pdf-workflow';
@@ -46,7 +47,14 @@ export default function ImageToPdf() {
   return (
     <ToolPageLayout
       breadcrumb={[t.nav.breadcrumb.home, t.nav.breadcrumb.image, title]}
-      title={title}
+      title={
+        <ReciprocalTitle
+          currentSlug="image-to-pdf"
+          isFr={isFr}
+          getCurrentFile={() => (files.length === 1 ? files[0] : stagedFile)}
+          fallbackTitle={title}
+        />
+      }
       description={desc}
       seoSlug="image-to-pdf"
     >

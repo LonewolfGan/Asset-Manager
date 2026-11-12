@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postPngToAvif: BlogPost = {
+  slug: {
+    en: "how-to-convert-png-to-avif",
+    fr: "comment-convertir-png-to-avif",
+  },
+  title: {
+    en: "How to Convert PNG to AVIF for Supreme Web Compression",
+    fr: "Comment Convertir PNG en AVIF pour une Compression Web Ultime",
+  },
+  description: {
+    en: "Convert heavy PNG graphics and UI mockups into ultra-efficient AVIF files while keeping alpha channel transparency intact.",
+    fr: "Convertissez vos fichiers PNG volumineux et maquettes en fichiers AVIF compacts en conservant la transparence alpha.",
+  },
+  keywords: {
+    en: ["png to avif","convert png to avif","png-to-avif converter online","free png-to-avif"],
+    fr: ["png to avif","convertir png en avif","convertisseur png-to-avif gratuit","outil png-to-avif"],
+  },
+  publishedAt: "2026-03-24",
+  category: "image",
+  readingMinutes: 4,
+  relatedToolSlug: "png-to-avif",
+  relatedToolLabel: { en: "PNG to AVIF", fr: "PNG en AVIF" },
+  content: {
+    en: [
+      { type: "p", text: "Convert heavy PNG graphics and UI mockups into ultra-efficient AVIF files while keeping alpha channel transparency intact." },
+      { type: "h2", text: "Modernizing Transparent Graphics with AVIF" },
+      { type: "p", text: "PNG has long been the default for transparent web graphics, but its file sizes are notoriously heavy. Converting PNG to AVIF brings modern lossy or lossless compression to transparent images, reducing asset weights by up to 80%." },
+      { type: "ul", items: ["High-precision alpha transparency without color bleed or jagged silhouettes.","Exceptional compression on complex UI screenshots, banners, and digital artwork.","Substantial performance gains on mobile devices with limited network connections."] },
+      { type: "h2", text: "Step-by-step conversion guide" },
+      { type: "ol", items: ["Upload transparent PNG assets into the workspace.","Select between Lossy AVIF with high quality or bit-for-bit Lossless AVIF.","Verify alpha channel preservation settings.","Execute AV1 encoding to produce compact AVIF files.","Download individual images or the complete ZIP archive."] },
+      { type: "callout", text: "Privacy guarantee: Conversions occur in RAM-only workspaces with immediate automatic eviction." },
+      { type: "h2", text: "Pro tips for optimal results" },
+      { type: "ul", items: ["For user interface designs with sharp lines, choose lossless AVIF mode.","For illustrations or 3D renders with transparency, quality 80 yields dramatic file size savings."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Does AVIF support transparent PNG backgrounds?" },
+      { type: "p", text: "Yes. AVIF fully supports transparent alpha channels with smooth anti-aliased edges." },
+      { type: "h3", text: "How does AVIF compare to WebP for transparent graphics?" },
+      { type: "p", text: "AVIF typically achieves 15% to 25% smaller sizes than WebP on transparent graphics at identical visual quality." },
+      { type: "h3", text: "Is AVIF compatible with CSS background-image rules?" },
+      { type: "p", text: "Yes. All modern browsers display AVIF directly in CSS backgrounds and img tags without extra libraries." },
+    ],
+    fr: [
+      { type: "p", text: "Convertissez vos fichiers PNG volumineux et maquettes en fichiers AVIF compacts en conservant la transparence alpha." },
+      { type: "h2", text: "Moderniser vos Graphismes Transparents avec AVIF" },
+      { type: "p", text: "Le format PNG a longtemps ete le standard pour les visuels transparents malgre sa lourdeur. Convertir PNG en AVIF apporte une compression moderne avec ou sans perte aux images transparentes, reduisant leur taille jusqu a 80%." },
+      { type: "ul", items: ["Transparence alpha de haute precision sans bavure de couleur ni contours rugueux.","Taux de compression exceptionnel sur maquettes d interface, bannieres et illustrations.","Gains de vitesse significatifs sur appareils mobiles aux connexions reseau restreintes."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Chargez vos visuels PNG transparents dans l atelier.","Choisissez entre l encodage AVIF avec perte haute qualite ou sans perte.","Verifiez l activation de la preservation du canal alpha.","Lancez l encodage AV1 pour generer vos fichiers AVIF legers.","Telechargez vos fichiers individuellement ou en archive ZIP."] },
+      { type: "callout", text: "Garantie de confidentialite : Vos visuels sont convertis en memoire vive et purges immediatement." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Pour des interfaces aux contours nets, activez le mode AVIF Sans Perte.","Pour des rendus 3D ou illustrations, une qualite a 80 offre une reduction de poids spectaculaire."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "L AVIF prend-il en charge les fonds transparents du PNG ?" },
+      { type: "p", text: "Oui. AVIF gere parfaitement le canal alpha avec un anticrenelage soigné des contours." },
+      { type: "h3", text: "Comment AVIF se positionne-t-il face a WebP pour la transparence ?" },
+      { type: "p", text: "AVIF genere generalement des fichiers 15% a 25% plus legers que le WebP a fidelite optique egale." },
+      { type: "h3", text: "L AVIF fonctionne-t-il dans les regles CSS background-image ?" },
+      { type: "p", text: "Oui. Les navigateurs actuels chargent directement l AVIF dans les styles CSS et balises img." },
+    ],
+  },
+};

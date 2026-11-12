@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postWordToEpub: BlogPost = {
+  slug: {
+    en: "how-to-convert-word-docx-to-epub-ebook",
+    fr: "comment-convertir-word-docx-en-ebook-epub",
+  },
+  title: {
+    en: "How to Convert Word Documents to EPUB E-Books",
+    fr: "Comment convertir un document Word en livre numérique EPUB",
+  },
+  description: {
+    en: "Turn your manuscripts, novels, and guides written in Microsoft Word into validated EPUB e-books for Kindle, Kobo, and Apple Books.",
+    fr: "Transformez vos manuscrits et guides rédigés sous Word en e-books EPUB fluides pour Kindle, Kobo et Apple Livres.",
+  },
+  keywords: {
+    en: ["word to epub","docx to epub converter","publish ebook from word","create epub from docx"],
+    fr: ["word en epub","convertir docx en epub","creer ebook avec word","manuscrit word epub"],
+  },
+  publishedAt: "2026-03-31",
+  category: "documents",
+  readingMinutes: 5,
+  relatedToolSlug: "word-to-epub",
+  relatedToolLabel: { en: "Word to EPUB", fr: "Word en EPUB" },
+  content: {
+    en: [
+      { type: "p", text: "Authors and self-publishers predominantly write manuscripts in Microsoft Word, but digital bookstores require standard EPUB files for distribution. Converting DOCX to EPUB builds reflowable e-books with automatic chapter navigation for all major reading devices." },
+      { type: "h2", text: "Why EPUB is the essential standard for digital publishing" },
+      { type: "p", text: "EPUB files adapt cleanly to varying screen dimensions and e-ink displays, allowing readers to adjust typography, margins, and lighting without breaking page flow." },
+      { type: "ul", items: [
+        "Generates an interactive table of contents based on Word Heading 1 and Heading 2 styles",
+        "Complies with EPUB 3 industry standards accepted by Amazon KDP, Kobo, and Apple Books",
+        "Preserves italics, footnotes, drop caps, and chapter dividers cleanly",
+      ]},
+      { type: "h2", text: "Step-by-step: how to convert DOCX to EPUB" },
+      { type: "ol", items: [
+        "Open the Word to EPUB converter in your browser with zero registration needed.",
+        "Upload your manuscript .docx file: files up to 50 MB are supported.",
+        "The compiler detects chapter divisions, formats body text, and embeds cover images.",
+        "Click Convert to assemble a validated EPUB 3 digital publication.",
+        "Download your .epub file ready for e-reader transfer or direct store publishing.",
+      ]},
+      { type: "callout", text: "Manuscript processing executes in an isolated ephemeral workspace with zero permanent storage and automatic deletion upon completion." },
+      { type: "h2", text: "Formatting guidelines for indie authors" },
+      { type: "ul", items: [
+        "Apply Heading 1 styles to chapter titles so the e-book navigation menu generates automatically",
+        "Use page breaks instead of multiple empty Enter keystrokes between chapters",
+        "Ensure cover images are at least 1600x2400 pixels for crisp presentation on high-res e-readers",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Will this EPUB file work on Amazon Kindle?" },
+      { type: "p", text: "Yes. Amazon Send-to-Kindle natively accepts EPUB files and delivers them directly to Kindle paperwhites and apps." },
+      { type: "h3", text: "Does it preserve footnotes and chapter links?" },
+      { type: "p", text: "Yes. Word footnotes are converted into interactive bidirectional pop-up notes on supported e-readers." },
+      { type: "h3", text: "Can I include a custom cover image?" },
+      { type: "p", text: "Yes. Images placed on the first page of your Word document are automatically designated as the official e-book cover." },
+    ],
+    fr: [
+      { type: "p", text: "Les auteurs rédigent généralement leurs manuscrits dans Microsoft Word, mais les plateformes de vente exigent le format EPUB pour la diffusion. Convertir un fichier DOCX en EPUB génère un livre numérique fluide doté d'une table des matières interactive pour toutes les liseuses." },
+      { type: "h2", text: "Pourquoi l'EPUB est le standard de l'édition numérique" },
+      { type: "p", text: "Le format EPUB s'adapte aux écrans à encre électronique et permet au lecteur d'ajuster la taille des caractères, l'interligne et le mode sombre selon son confort." },
+      { type: "ul", items: [
+        "Génère automatiquement une table des matières cliquable à partir des Titres 1 et 2 de Word",
+        "Respecte la norme EPUB 3 acceptée par Amazon KDP, Fnac Kobo et Apple Livres",
+        "Préserve fidèlement les notes de bas de page, dialogues et séparateurs de scènes",
+      ]},
+      { type: "h2", text: "Guide pas à pas : convertir un fichier Word en EPUB" },
+      { type: "ol", items: [
+        "Accédez à l'outil Word en EPUB dans votre navigateur sans créer de compte.",
+        "Déposez votre manuscrit .docx : les fichiers jusqu'à 50 Mo sont acceptés.",
+        "Le compilateur structure les chapitres et optimise les images pour la liseuse.",
+        "Cliquez sur Convertir pour générer votre publication numérique conforme.",
+        "Téléchargez votre fichier .epub prêt à être transféré sur votre liseuse.",
+      ]},
+      { type: "callout", text: "La conversion est réalisée au sein d'un environnement temporaire sécurisé avec suppression automatique immédiate de votre manuscrit." },
+      { type: "h2", text: "Conseils pour l'auto-édition" },
+      { type: "ul", items: [
+        "Appliquer le style Titre 1 sur chaque nom de chapitre pour créer le sommaire dynamique",
+        "Insérer des sauts de page réels plutôt que d'appuyer plusieurs fois sur Entrée",
+        "Utiliser une image de couverture de 1600x2400 pixels minimum pour une netteté optimale",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Le fichier EPUB est-il compatible avec les Kindle d'Amazon ?" },
+      { type: "p", text: "Oui. Le service officiel Envoyer vers Kindle prend nativement en charge les fichiers EPUB et les synchronise sur tous vos appareils." },
+      { type: "h3", text: "Les notes de bas de page restent-elles cliquables ?" },
+      { type: "p", text: "Oui. Les notes de Word sont transformées en renvois bidirectionnels interactifs consultables au doigt sans quitter la page." },
+      { type: "h3", text: "Comment définir l'image de couverture ?" },
+      { type: "p", text: "La première image insérée sur la page de garde de votre document Word est automatiquement reconnue comme couverture officielle de l'e-book." },
+    ],
+  },
+};

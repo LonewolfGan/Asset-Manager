@@ -29,7 +29,8 @@ setInterval(() => {
 
 export function makeRateLimiter(maxRequests: number, windowMs: number) {
   return async function rateLimiter(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const ip = req.ip || req.socket.remoteAddress || "unknown";
+    const cfIp = req.headers?.["cf-connecting-ip"];
+    const ip = (typeof cfIp === "string" && cfIp.trim()) || req.ip || req.socket?.remoteAddress || "unknown";
     const route = req.baseUrl ? `${req.baseUrl}${req.path}` : req.path;
     const key = `${route}::${ip}`;
     const now = Date.now();

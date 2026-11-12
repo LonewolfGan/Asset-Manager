@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postMarkdownToDocx: BlogPost = {
+  slug: {
+    en: "how-to-convert-markdown-to-word-docx",
+    fr: "comment-convertir-markdown-en-word-docx",
+  },
+  title: {
+    en: "How to Convert Markdown to Microsoft Word (DOCX)",
+    fr: "Comment convertir un fichier Markdown en document Word (DOCX)",
+  },
+  description: {
+    en: "Turn technical Markdown notes and README files into professionally formatted Microsoft Word (.docx) documents with tables and headings styled.",
+    fr: "Transformez des notes Markdown et fichiers README en documents Microsoft Word (.docx) professionnels avec styles et tableaux intégrés.",
+  },
+  keywords: {
+    en: ["markdown to docx","convert md to word","markdown word converter","export markdown to docx"],
+    fr: ["markdown en docx","convertir md en word","exporter markdown en docx","markdown vers word"],
+  },
+  publishedAt: "2026-04-03",
+  category: "documents",
+  readingMinutes: 5,
+  relatedToolSlug: "markdown-to-docx",
+  relatedToolLabel: { en: "Markdown to Word", fr: "Markdown en Word" },
+  content: {
+    en: [
+      { type: "p", text: "Developers and researchers often write proposals and documentation in Markdown, but corporate clients and administrative departments require Microsoft Word (.docx) files for track-changes reviews. Converting Markdown into styled DOCX documents bridges the workflow gap effortlessly." },
+      { type: "h2", text: "Why convert Markdown to Microsoft Word" },
+      { type: "p", text: "Word documents allow business teams to utilize collaborative review tools like tracked changes, margin comments, and formal corporate header templates." },
+      { type: "ul", items: [
+        "Maps Markdown headings to native Word Heading 1 through Heading 4 styles",
+        "Converts pipe tables into native editable Microsoft Word table grids",
+        "Applies clean monospace formatting and shaded background boxes to code blocks",
+      ]},
+      { type: "h2", text: "Step-by-step: how to convert Markdown to DOCX" },
+      { type: "ol", items: [
+        "Open the Markdown to Word tool in your browser with zero registration needed.",
+        "Upload your .md file or paste your raw Markdown text into the input panel.",
+        "The engine renders headings, bold text, blockquotes, and tables into Word styles.",
+        "Click Convert to compile an authentic Microsoft Word (.docx) file.",
+        "Download your formatted document ready for review in Microsoft Office or Google Docs.",
+      ]},
+      { type: "callout", text: "Conversion executes inside an isolated ephemeral workspace and is purged automatically upon completion. No documents are stored on our servers." },
+      { type: "h2", text: "Best practices for professional document generation" },
+      { type: "ul", items: [
+        "Use standard GFM table syntax with pipe delimiters for predictable column formatting",
+        "Verify that triple-backtick code snippets include language labels for styling",
+        "Apply corporate letterhead or cover pages in Word after conversion if required",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Will Word recognize headings as navigation outline levels?" },
+      { type: "p", text: "Yes. Markdown headings are converted into native Word paragraph styles, enabling the Word Navigation pane automatically." },
+      { type: "h3", text: "Can I open the generated document in Google Docs?" },
+      { type: "p", text: "Yes. The output is a standard OpenXML (.docx) file compatible with Microsoft Word, Google Docs, and LibreOffice." },
+      { type: "h3", text: "Are tables fully editable in Word?" },
+      { type: "p", text: "Yes. Tables become native Word table elements where you can adjust borders, row heights, and cell colors." },
+    ],
+    fr: [
+      { type: "p", text: "Les équipes techniques rédigent volontiers leurs rapports en Markdown, mais les clients et directions exigent souvent un fichier Word (.docx) pour activer le suivi des modifications. Convertir du Markdown en document DOCX soigné réconcilie ces deux univers de travail." },
+      { type: "h2", text: "Pourquoi convertir du Markdown en Word" },
+      { type: "p", text: "Le format Word permet aux services juridiques et financiers d'utiliser les commentaires de marge, le suivi des corrections et les chartes graphiques d'entreprise." },
+      { type: "ul", items: [
+        "Traduit les balises de titre Markdown en styles de Titre 1 à 4 natifs de Word",
+        "Convertit les tableaux tuyaux en grilles de cellules Word parfaitement éditables",
+        "Applique un style monospace élégant sur fond grisé pour les extraits de code",
+      ]},
+      { type: "h2", text: "Guide pas à pas : convertir du Markdown en Word" },
+      { type: "ol", items: [
+        "Accédez à l'outil Markdown en Word dans votre navigateur sans créer de compte.",
+        "Déposez votre fichier .md ou collez directement votre texte dans l'éditeur.",
+        "Le système compile la syntaxe Markdown en éléments typographiques Word natifs.",
+        "Cliquez sur Convertir pour générer votre fichier .docx.",
+        "Téléchargez votre document prêt pour relecture dans Word ou Google Docs.",
+      ]},
+      { type: "callout", text: "La conversion est réalisée au sein d'un environnement temporaire sécurisé avec destruction automatique immédiate de vos fichiers." },
+      { type: "h2", text: "Conseils pour un rendu professionnel" },
+      { type: "ul", items: [
+        "Respecter la syntaxe de tableau standard GFM pour un alignement impeccable des colonnes",
+        "Spécifier le langage sur les blocs de code pour une présentation technique claire",
+        "Ajouter une page de garde personnalisée dans Word après téléchargement si nécessaire",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Les titres apparaissent-ils dans le volet de navigation de Word ?" },
+      { type: "p", text: "Oui. Les titres Markdown sont mappés sur les styles officiels de Word, activant le sommaire et le volet de navigation automatiquement." },
+      { type: "h3", text: "Le fichier est-il compatible avec Google Docs ?" },
+      { type: "p", text: "Oui. Le document .docx généré s'ouvre parfaitement dans Google Docs, LibreOffice Writer et Microsoft Word." },
+      { type: "h3", text: "Les tableaux sont-ils modifiables dans Word ?" },
+      { type: "p", text: "Oui. Les tableaux deviennent de vrais tableaux Word où vous pouvez ajouter des lignes, changer les bordures et saisir des formules." },
+    ],
+  },
+};

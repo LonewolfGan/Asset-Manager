@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postHashGenerator: BlogPost = {
+  slug: {
+    en: "how-to-use-hash-generator",
+    fr: "comment-utiliser-hash-generator",
+  },
+  title: {
+    en: "How to Generate Cryptographic Hashes (MD5, SHA-256, SHA-512)",
+    fr: "Comment Generer des Condensats Cryptographiques (MD5, SHA-256)",
+  },
+  description: {
+    en: "Generate one-way cryptographic hash digests from text and credentials using MD5, SHA-1, SHA-256, and SHA-512 algorithms.",
+    fr: "Generez des condensats cryptographiques irreversibles a partir de textes via MD5, SHA-1, SHA-256 et SHA-512.",
+  },
+  keywords: {
+    en: ["hash generator","hash-generator online","free hash-generator","developer tool hash-generator"],
+    fr: ["hash generator","hash-generator en ligne","outil hash-generator gratuit","utilitaire hash-generator"],
+  },
+  publishedAt: "2026-03-25",
+  category: "security",
+  readingMinutes: 4,
+  relatedToolSlug: "hash-generator",
+  relatedToolLabel: { en: "Hash Generator", fr: "Hash Generator" },
+  content: {
+    en: [
+      { type: "p", text: "Generate one-way cryptographic hash digests from text and credentials using MD5, SHA-1, SHA-256, and SHA-512 algorithms." },
+      { type: "h2", text: "One-Way Cryptographic Hash Functions and Collision Resistance" },
+      { type: "p", text: "A cryptographic hash function transforms an arbitrary-length input string into a fixed-length hexadecimal digest. The transformation is strictly one-way and exhibits an avalanche effect: altering a single character in the input radically scrambles the resulting output digest." },
+      { type: "ul", items: ["Instant generation of MD5, SHA-1, SHA-224, SHA-256, SHA-384, and SHA-512 digests.","Full support for uppercase and lowercase hexadecimal output formats.","Real-time avalanche effect visualization as you modify text."] },
+      { type: "h2", text: "Step-by-step practical guide" },
+      { type: "ol", items: ["Type or paste your input text into the hashing workbench.","Observe the real-time calculation of hashes across all major algorithms.","Compare digest lengths (32 chars for MD5 vs 64 chars for SHA-256).","Toggle uppercase or lowercase output format preferences.","Click copy next to your desired hash digest."] },
+      { type: "callout", text: "Privacy guarantee: Hashes are calculated client-side via the browser Web Crypto API; credentials are never transmitted." },
+      { type: "h2", text: "Pro tips and best practices" },
+      { type: "ul", items: ["Never use MD5 or SHA-1 for passwords or security certificates; use SHA-256 or bcrypt/argon2 instead.","SHA-256 produces a 64-character hex string that is the gold standard for API integrity checks."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Can a cryptographic hash be decrypted back to the original text?" },
+      { type: "p", text: "No. Cryptographic hashes are mathematical one-way functions, meaning they cannot be reversed or decrypted." },
+      { type: "h3", text: "What is the avalanche effect in hashing?" },
+      { type: "p", text: "It is the property where modifying a single bit in the input causes more than half of the output hash bits to change randomly." },
+      { type: "h3", text: "Are SHA-256 hashes unique?" },
+      { type: "p", text: "Practically yes. The chance of two different inputs yielding the same SHA-256 digest is smaller than one in ten to the 77th power." },
+    ],
+    fr: [
+      { type: "p", text: "Generez des condensats cryptographiques irreversibles a partir de textes via MD5, SHA-1, SHA-256 et SHA-512." },
+      { type: "h2", text: "Fonctions de Hachage Unidirectionnelles et Resistance aux Collisions" },
+      { type: "p", text: "Une fonction de hachage cryptographique convertit un texte de longueur quelconque en une empreinte de taille fixe. Le calcul est strictement irreversible et produit un effet d avalanche : changer une seule lettre bouleverse l integralite du resultat." },
+      { type: "ul", items: ["Generation immediate de condensats MD5, SHA-1, SHA-224, SHA-256, SHA-384 et SHA-512.","Choix du format de sortie hexadecimal en majuscules ou minuscules.","Visualisation en direct de l effet d avalanche des que vous modifiez un caractere."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Tapez ou collez votre texte d entree dans l espace de travail.","Observez le calcul instantane des empreintes sur tous les algorithmes.","Comparez les longueurs de condensat (32 caracteres pour MD5 contre 64 pour SHA-256).","Choisissez entre format hexadecimal majuscule ou minuscule.","Cliquez sur copier a cote de l empreinte recherchee."] },
+      { type: "callout", text: "Garantie de confidentialite : Vos empreintes sont calculees localement via Web Crypto API sans envoi de vos identifiants." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["N utilisez plus MD5 ou SHA-1 pour securiser des mots de passe ; privilegiez SHA-256 ou bcrypt/argon2.","Le SHA-256 produit une chaine de 64 caracteres hexadecimaux devenue la reference pour les signatures d API."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Peut-on dechiffrer une empreinte pour retrouver le texte d origine ?" },
+      { type: "p", text: "Non. Une fonction de hachage est strictement unidirectionnelle et ne peut pas etre dechiffree." },
+      { type: "h3", text: "Qu est-ce que l effet d avalanche en cryptographie ?" },
+      { type: "p", text: "C est la propriete selon laquelle modifier un seul caractere en entree bouleverse aleatoirement plus de la moitie de l empreinte finale." },
+      { type: "h3", text: "Les empreintes SHA-256 sont-elles reellement uniques ?" },
+      { type: "p", text: "Oui en pratique. La probabilite d une collision est inferieure a une chance sur 10 puissance 77." },
+    ],
+  },
+};

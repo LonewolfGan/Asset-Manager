@@ -20,11 +20,14 @@ describe('Reciprocal Tools Integration Suite', () => {
     consumeHandoffText();
   });
 
-  it('guarantees bidirectional reciprocity for all registered pairs', () => {
+  it('guarantees bidirectional reciprocity for all registered canonical pairs', () => {
     for (const [slug, info] of Object.entries(RECIPROCAL_TOOLS)) {
-      const mirror = getReciprocalTool(info.mirrorSlug);
+      if (info.unidirectional) continue;
+      const mirror = getReciprocalTool(info.mirrorSlug!);
       expect(mirror, `Expected mirror for ${info.mirrorSlug} to exist`).toBeDefined();
-      expect(mirror?.mirrorSlug, `Expected reciprocal cycle for ${slug}`).toBe(slug);
+      if (!info.isVariant) {
+        expect(mirror?.mirrorSlug, `Expected reciprocal cycle for ${slug}`).toBe(slug);
+      }
     }
   });
 

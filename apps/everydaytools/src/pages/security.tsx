@@ -1,34 +1,52 @@
 import { Helmet } from 'react-helmet-async';
 import { useLocale } from '@/hooks/use-locale';
-import { S } from '@/components/legal/security-styles';
-import { SecurityFrench } from '@/components/legal/SecurityFrench';
-import { SecurityEnglish } from '@/components/legal/SecurityEnglish';
+import { LegalPageLayout } from '@/components/legal/LegalPageLayout';
+import { getSecurityFrenchSections } from '@/components/legal/SecurityFrench';
+import { getSecurityEnglishSections } from '@/components/legal/SecurityEnglish';
+import { SITE_CONFIG } from '@/config/site.config';
 
 export default function Security() {
   const { isFr } = useLocale();
+  const sections = isFr ? getSecurityFrenchSections() : getSecurityEnglishSections();
+  const summaryPoints = isFr
+    ? [
+        'Exécution locale privilégiée dans la mémoire vive de votre navigateur.',
+        'Cloisonnement strict sur instances éphémères dédiées Oracle Cloud.',
+        'Zéro rétention permanente : purge irréversible sous 15 minutes max.',
+        'Défense en profondeur : HTTPS forcé, CSP strict, et DOMPurify.',
+        'Canal direct pour les chercheurs en sécurité (RFC 9116).',
+      ]
+    : [
+        'Client-side execution prioritized inside your browser memory.',
+        'Sandboxed isolation on dedicated ephemeral Oracle Cloud instances.',
+        'Zero permanent file storage: 15-minute garbage collection sweep.',
+        'Hardened defenses: mandatory HTTPS, strict CSP, and DOMPurify.',
+        'Coordinated vulnerability reporting channel (RFC 9116).',
+      ];
 
   return (
     <>
       <Helmet>
-        <title>{isFr ? 'Sécurité — EverydayTools Hub' : 'Security — EverydayTools Hub'}</title>
-        <meta
-          name="description"
-          content={
-            isFr
-              ? 'Pratiques de sécurité et signalement des vulnérabilités chez EverydayTools Hub. Architecture hybride et isolation par conteneurs.'
-              : 'Security practices and vulnerability reporting for EverydayTools Hub. Secure hybrid architecture and container sandboxing.'
-          }
-        />
+        <title>{isFr ? 'Sécurité & Signalement — EverydayTools Hub' : 'Security & Disclosure — EverydayTools Hub'}</title>
+        <meta name="description" content={isFr ? 'Pratiques de sécurité et signalement responsable EverydayTools.' : 'Security practices and responsible disclosure.'} />
         <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://everydaytools.qzz.io/security" />
+        <link rel="canonical" href={`https://everydaytools.qzz.io${isFr ? '/fr/security' : '/security'}`} />
+        <link rel="alternate" hrefLang="en" href="https://everydaytools.qzz.io/security" />
+        <link rel="alternate" hrefLang="fr" href="https://everydaytools.qzz.io/fr/security" />
         <link rel="alternate" hrefLang="x-default" href="https://everydaytools.qzz.io/security" />
       </Helmet>
-      <div className="container-wide" style={S.page}>
-        <h1 style={S.h1}>{isFr ? 'Sécurité' : 'Security'}</h1>
-        <p style={S.date}>{isFr ? 'Dernière mise à jour : 26 mai 2025' : 'Last updated: May 26, 2025'}</p>
-
-        {isFr ? <SecurityFrench /> : <SecurityEnglish />}
-      </div>
+      <LegalPageLayout
+        title={isFr ? 'Sécurité' : 'Security'}
+        effectiveDate={isFr ? '7 novembre 2026' : 'November 7, 2026'}
+        summaryTitle={isFr ? 'En résumé (TL;DR)' : 'Executive Summary (TL;DR)'}
+        summaryPoints={summaryPoints}
+        tocTitle={isFr ? 'Sommaire' : 'On this page'}
+        sections={sections}
+        contactTitle={isFr ? 'Signalement de vulnérabilité éthique' : 'Ethical Vulnerability Reporting'}
+        contactText={isFr ? 'Pour signaler une anomalie de sécurité :' : 'To report a vulnerability or security bug:'}
+        contactEmail={SITE_CONFIG.emails.security}
+        lang={isFr ? 'fr' : 'en'}
+      />
     </>
   );
 }

@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postColorConverter: BlogPost = {
+  slug: {
+    en: "how-to-use-color-converter",
+    fr: "comment-utiliser-color-converter",
+  },
+  title: {
+    en: "How to Convert Colors between HEX, RGB, HSL, and OKLCH",
+    fr: "Comment Convertir les Couleurs entre HEX, RGB, HSL et OKLCH",
+  },
+  description: {
+    en: "Convert and inspect color values across HEX, RGB, HSL, HSV, CMYK, and modern OKLCH color spaces with WCAG contrast metrics.",
+    fr: "Convertissez vos couleurs entre HEX, RGB, HSL, CMYK et l espace moderne OKLCH avec controle de contraste WCAG.",
+  },
+  keywords: {
+    en: ["color converter","color-converter online","free color-converter","developer tool color-converter"],
+    fr: ["color converter","color-converter en ligne","outil color-converter gratuit","utilitaire color-converter"],
+  },
+  publishedAt: "2026-03-25",
+  category: "security",
+  readingMinutes: 4,
+  relatedToolSlug: "color-converter",
+  relatedToolLabel: { en: "Color Converter", fr: "Color Converter" },
+  content: {
+    en: [
+      { type: "p", text: "Convert and inspect color values across HEX, RGB, HSL, HSV, CMYK, and modern OKLCH color spaces with WCAG contrast metrics." },
+      { type: "h2", text: "Color Spaces, Perceptual Uniformity, and OKLCH" },
+      { type: "p", text: "Web design is evolving beyond the sRGB confines of traditional HEX and RGB. Converting between legacy formats and modern perceptually uniform spaces like OKLCH and CSS Color Level 4 allows designers to create vibrant, accessible palettes with predictable perceptual lightness across all hues." },
+      { type: "ul", items: ["Bidirectional conversion across HEX, RGB, HSL, HSV, CMYK, and CSS OKLCH.","Calculates WCAG 2.1 contrast ratios against white and black backgrounds.","Instant one-click copy of CSS code snippets for each color space."] },
+      { type: "h2", text: "Step-by-step practical guide" },
+      { type: "ol", items: ["Enter your color value in any supported format (HEX #4f46e5, rgb(), or hsl()).","Inspect real-time conversions into all adjacent color formats simultaneously.","Check the WCAG contrast scorecard to verify accessibility compliance.","Fine-tune lightness, chroma, or hue using the interactive sliders.","Copy the desired CSS color string directly into your design system."] },
+      { type: "callout", text: "Privacy guarantee: Color calculations run entirely in your local browser session." },
+      { type: "h2", text: "Pro tips and best practices" },
+      { type: "ul", items: ["Use OKLCH for design systems to ensure consistent perceived lightness across different brand colors.","Aim for a WCAG contrast ratio of at least 4.5:1 for normal body text and 3:1 for large headers."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Why is OKLCH considered superior to HSL?" },
+      { type: "p", text: "HSL suffers from non-uniform perceived lightness (yellow appears much brighter than blue at identical lightness values), whereas OKLCH is perceptually uniform." },
+      { type: "h3", text: "Can I convert RGB colors to CMYK for print?" },
+      { type: "p", text: "Yes. The CMYK conversion estimates standard four-color printing ink percentages (Cyan, Magenta, Yellow, Key Black)." },
+      { type: "h3", text: "Is OKLCH supported across all modern browsers?" },
+      { type: "p", text: "Yes. OKLCH is supported natively in all modern releases of Chrome, Safari, Firefox, and Edge." },
+    ],
+    fr: [
+      { type: "p", text: "Convertissez vos couleurs entre HEX, RGB, HSL, CMYK et l espace moderne OKLCH avec controle de contraste WCAG." },
+      { type: "h2", text: "Espaces Colorimetriques, Uniformite Perceptive et OKLCH" },
+      { type: "p", text: "Le design web depasse desormais les limites sRGB du HEX classique. Convertir vos teintes vers des espaces perceptuellement uniformes comme OKLCH permet de creer des palettes accessibles et fideles sur ecrans a large gamut." },
+      { type: "ul", items: ["Conversion bidirectionnelle entre HEX, RGB, HSL, HSV, CMJN et le format moderne OKLCH.","Calcul des ratios de contraste WCAG 2.1 par rapport aux fonds blanc et noir.","Copie en 1 clic des declarations CSS pour chaque espace colorimetrique."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Saisissez votre couleur dans n importe quel format (HEX #4f46e5, rgb(), hsl()).","Observez les conversions simultanees dans l ensemble des formats de couleur.","Verifiez le score de contraste WCAG pour valider l accessibilite.","Ajustez la luminosite, la saturation ou la teinte avec les curseurs.","Copiez la declaration CSS directement dans votre code."] },
+      { type: "callout", text: "Garantie de confidentialite : Tous les calculs s executent en local dans votre navigateur." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Privilegiez OKLCH pour vos design systems afin de conserver une luminosite percue uniforme sur toutes les teintes.","Visez un ratio de contraste d au moins 4,5:1 pour le texte courant et 3:1 pour les grands titres."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Pourquoi OKLCH est-il considere comme superieur a HSL ?" },
+      { type: "p", text: "L espace HSL presente des ecarts de luminosite percue (le jaune semble plus clair que le bleu a luminosite egale), defaut corrige par l uniformite d OKLCH." },
+      { type: "h3", text: "Puis-je convertir du RGB en CMJN pour l impression ?" },
+      { type: "p", text: "Oui. La conversion CMJN estime les pourcentages d encrage pour l impression quadrichromique." },
+      { type: "h3", text: "L espace OKLCH est-il pris en charge sur tous les navigateurs ?" },
+      { type: "p", text: "Oui. OKLCH est supporte nativement sur Chrome, Safari, Firefox et Edge recents." },
+    ],
+  },
+};

@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postJwtDecoder: BlogPost = {
+  slug: {
+    en: "how-to-use-jwt-decoder",
+    fr: "comment-utiliser-jwt-decoder",
+  },
+  title: {
+    en: "How to Decode and Inspect JSON Web Tokens (JWT) Safely",
+    fr: "Comment Decoder et Inspecter un JSON Web Token (JWT) en Toute Securite",
+  },
+  description: {
+    en: "Decode and inspect JWT headers, claims payloads, and signature algorithms client-side without sharing secret keys.",
+    fr: "Decodez et inspectez les en-tetes, claims et algorithmes de vos jetons JWT localement sans exposer vos cles.",
+  },
+  keywords: {
+    en: ["jwt decoder","jwt-decoder online","free jwt-decoder","developer tool jwt-decoder"],
+    fr: ["jwt decoder","jwt-decoder en ligne","outil jwt-decoder gratuit","utilitaire jwt-decoder"],
+  },
+  publishedAt: "2026-03-25",
+  category: "security",
+  readingMinutes: 4,
+  relatedToolSlug: "jwt-decoder",
+  relatedToolLabel: { en: "Jwt Decoder", fr: "Jwt Decoder" },
+  content: {
+    en: [
+      { type: "p", text: "Decode and inspect JWT headers, claims payloads, and signature algorithms client-side without sharing secret keys." },
+      { type: "h2", text: "RFC 7519 JSON Web Token Architecture and Claims Inspection" },
+      { type: "p", text: "JSON Web Tokens (JWT) are the standard for modern OAuth2 and stateless API authentication. Inspecting tokens is essential for debugging user roles, token expiry, and issuer mismatches, but pasting sensitive tokens into untrusted online servers creates severe security risks." },
+      { type: "ul", items: ["Decodes Header (algorithm & key id), Payload (claims & roles), and Signature.","Human-readable Unix timestamp conversion for exp, nbf, and iat claims.","High-visibility warning banner when inspecting expired tokens."] },
+      { type: "h2", text: "Step-by-step practical guide" },
+      { type: "ol", items: ["Paste your raw Base64URL-encoded JWT token into the input area.","Inspect the color-coded three-part structure (Red Header, Purple Payload, Blue Signature).","Review formatted JSON claims including sub, iss, and aud values.","Check the human-readable expiration countdown to verify token validity.","Verify the signature algorithm (RS256, HS256, etc.) without exposing secret keys."] },
+      { type: "callout", text: "Privacy guarantee: Tokens are decoded in isolated ephemeral sessions and purged immediately with zero permanent retention." },
+      { type: "h2", text: "Pro tips and best practices" },
+      { type: "ul", items: ["Never paste production user JWTs into servers that log requests; always decode strictly client-side.","Check the 'exp' claim first when diagnosing unexplained 401 Unauthorized errors in API development."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Can I decode a JWT without knowing the secret key?" },
+      { type: "p", text: "Yes. JWT payload and header data are only Base64URL-encoded, not encrypted. The secret key is only needed to verify signature authenticity." },
+      { type: "h3", text: "Is it safe to paste enterprise tokens here?" },
+      { type: "p", text: "Yes. All decoding occurs strictly client-side via JavaScript without any API calls or server-side logging." },
+      { type: "h3", text: "What does the 'exp' claim represent?" },
+      { type: "p", text: "The 'exp' (expiration) claim holds a Unix epoch timestamp indicating the exact second the token ceases to be valid." },
+    ],
+    fr: [
+      { type: "p", text: "Decodez et inspectez les en-tetes, claims et algorithmes de vos jetons JWT localement sans exposer vos cles." },
+      { type: "h2", text: "Architecture RFC 7519 des Jetons JWT et Inspection des Droits" },
+      { type: "p", text: "Les jetons JSON Web Token (JWT) constituent la reference de l authentification OAuth2 et des APIs sans etat. Inspecter un jeton est essentiel pour verifier roles et expirations, mais coller un jeton sur des serveurs distants cree une faille de securite." },
+      { type: "ul", items: ["Decode En-tete (algorithme et identifiant), Charge utile (claims et roles) et Signature.","Conversion en clair des horodatages Unix pour les dates exp, nbf et iat.","Banniere d alerte explicite signalant si le jeton est expire ou valide."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Collez votre jeton JWT encode en Base64URL dans le champ de saisie.","Observez la structure scindee en 3 couleurs (En-tete rouge, Donnees violettes, Signature bleue).","Consultez les claims JSON formates dont les identifiants sub, iss et aud.","Verifiez le compte a rebours d expiration pour confirmer la validite du jeton.","Analysez l algorithme de signature (RS256, HS256) en toute securite."] },
+      { type: "callout", text: "Garantie de confidentialite : Les jetons sont decodes 100% localement dans votre navigateur sans quitter votre machine." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Ne collez jamais de jetons d utilisateurs reels sur des serveurs distants ; decodez toujours localement.","Verifiez la claim 'exp' en priorite lors du diagnostic d erreurs 401 Unauthorized inattendues."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Peut-on decoder un JWT sans connaitre la cle secrete ?" },
+      { type: "p", text: "Oui. L en-tete et la charge utile sont simplement encodes en Base64URL et non chiffres. La cle secrete ne sert qu a valider la signature." },
+      { type: "h3", text: "Est-il securise de coller des jetons d entreprise ici ?" },
+      { type: "p", text: "Oui. Le decodage s effectue strictement dans votre navigateur sans aucune transmission reseau." },
+      { type: "h3", text: "Que represente la claim 'exp' ?" },
+      { type: "p", text: "La mention 'exp' contient un horodatage Unix indiquant la seconde exacte a laquelle le jeton cesse d etre valide." },
+    ],
+  },
+};

@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postCssFormatter: BlogPost = {
+  slug: {
+    en: "how-to-use-css-formatter",
+    fr: "comment-utiliser-css-formatter",
+  },
+  title: {
+    en: "How to Beautify, Indent, and Clean CSS Stylesheets",
+    fr: "Comment Formater, Indenter et Nettoyer vos Feuilles CSS",
+  },
+  description: {
+    en: "Format minified or unorganized CSS code with clean indentation, consistent property ordering, and selector formatting.",
+    fr: "Formatez votre code CSS minifie avec une indentation soignee, un ordre de proprietes coherent et des regles lisibles.",
+  },
+  keywords: {
+    en: ["css formatter","css-formatter online","free css-formatter","developer tool css-formatter"],
+    fr: ["css formatter","css-formatter en ligne","outil css-formatter gratuit","utilitaire css-formatter"],
+  },
+  publishedAt: "2026-03-25",
+  category: "security",
+  readingMinutes: 4,
+  relatedToolSlug: "css-formatter",
+  relatedToolLabel: { en: "Css Formatter", fr: "Css Formatter" },
+  content: {
+    en: [
+      { type: "p", text: "Format minified or unorganized CSS code with clean indentation, consistent property ordering, and selector formatting." },
+      { type: "h2", text: "CSS Tokenization and Architectural Formatting" },
+      { type: "p", text: "CSS files often suffer from inconsistent indentation, disorganized property sequences, and messy media query nesting. A dedicated CSS formatter parses rule blocks into structured tokens, standardizes property colons, and applies uniform indentation." },
+      { type: "ul", items: ["Standardizes declaration block indentation and closing brace placement.","Supports modern CSS features including nesting, container queries, and custom properties.","One-click minification toggle to compress stylesheets for production hosting."] },
+      { type: "h2", text: "Step-by-step practical guide" },
+      { type: "ol", items: ["Paste messy or minified CSS into the code editor.","Configure formatting options: 2 or 4 spaces, single-line or multi-line rules.","Enable property sorting if you want alphabetical or concentric order.","Execute formatting to beautify selectors and declarations.","Copy clean CSS or download your polished stylesheet."] },
+      { type: "callout", text: "Privacy guarantee: Processing occurs within your browser memory; styles are never logged or stored." },
+      { type: "h2", text: "Pro tips and best practices" },
+      { type: "ul", items: ["Group vendor prefixes together to make browser compatibility declarations easy to review.","Use the Minify toggle before deploying critical CSS to improve First Contentful Paint times."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Does the formatter support SCSS or SASS syntax?" },
+      { type: "p", text: "It formats standard CSS as well as SCSS nested blocks, variables, and mixin declarations cleanly." },
+      { type: "h3", text: "Can it sort CSS properties alphabetically?" },
+      { type: "p", text: "Yes. You can toggle alphabetical or logical property ordering to maintain codebase consistency." },
+      { type: "h3", text: "Will formatting alter modern CSS nesting syntax?" },
+      { type: "p", text: "No. Modern native CSS nesting (& > .child) is fully recognized and formatted with proper hierarchy." },
+    ],
+    fr: [
+      { type: "p", text: "Formatez votre code CSS minifie avec une indentation soignee, un ordre de proprietes coherent et des regles lisibles." },
+      { type: "h2", text: "Tokenisation CSS et Formatage d Architecture de Styles" },
+      { type: "p", text: "Les feuilles de style souffrent souvent d indentations desordonnees et de regles media queries imbriquees sans rigueur. Un formateur CSS dedie decoupe les regles en tokens structures et aligne les declarations." },
+      { type: "ul", items: ["Normalise l indentation des blocs de declarations et le placement des accolades.","Supporte les nouveautes CSS modernes : imbrication native, container queries et variables.","Option de minification en 1 clic pour compresser vos feuilles de style en production."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Collez votre code CSS dans l editeur de texte.","Ajustez les options : indentation a 2 ou 4 espaces, regles compactes ou multi-lignes.","Activez le tri des proprietes (alphabetique ou concentrique) si souhaite.","Lancez le formatage pour restructurer selecteurs et proprietes.","Copiez le CSS propre ou telechargez la feuille de style."] },
+      { type: "callout", text: "Garantie de confidentialite : Le formatage s execute en memoire locale sans archivage serveur." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Regroupez les prefixes vendeurs pour faciliter la lecture de la compatibilite navigateurs.","Activez l option Minifier avant le deploiement pour accelerer le First Contentful Paint de vos pages."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Le formateur prend-il en charge la syntaxe SCSS ou SASS ?" },
+      { type: "p", text: "Il formate le CSS standard ainsi que les blocs imbriques, variables et mixins SCSS." },
+      { type: "h3", text: "Peut-on trier les proprietes CSS par ordre alphabetique ?" },
+      { type: "p", text: "Oui. Vous pouvez activer le tri alphabetique ou par regroupement logique des proprietes." },
+      { type: "h3", text: "Le formatage respecte-t-il l imbrication CSS native ?" },
+      { type: "p", text: "Oui. L imbrication CSS moderne avec le symbole & est preservee avec une indentation hierarchique propre." },
+    ],
+  },
+};

@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postCsvViewer: BlogPost = {
+  slug: {
+    en: "how-to-view-and-inspect-csv-files-online",
+    fr: "comment-visualiser-et-inspecter-fichier-csv-en-ligne",
+  },
+  title: {
+    en: "How to View and Inspect Large CSV Files in Your Browser",
+    fr: "Comment visualiser et inspecter de gros fichiers CSV dans le navigateur",
+  },
+  description: {
+    en: "Open, inspect, filter, and search large CSV files directly in your web browser with zero crashes, fast pagination, and zero software needed.",
+    fr: "Ouvrez, examinez, filtrez et cherchez dans des fichiers CSV volumineux directement dans votre navigateur sans plantage ni logiciel lourd.",
+  },
+  keywords: {
+    en: ["csv viewer","view csv online","inspect large csv file","fast csv reader in browser"],
+    fr: ["visualiseur csv","ouvrir csv en ligne","lire gros fichier csv","afficher tableau csv en ligne"],
+  },
+  publishedAt: "2026-04-19",
+  category: "documents",
+  readingMinutes: 4,
+  relatedToolSlug: "csv-viewer",
+  relatedToolLabel: { en: "CSV Viewer", fr: "Visualiseur CSV" },
+  content: {
+    en: [
+      { type: "p", text: "Opening huge CSV datasets containing hundreds of thousands of rows inside desktop spreadsheet software frequently leads to unresponsive computers, memory freezes, and clipped record warnings. Using an in-browser CSV viewer provides instant interactive inspection without system lag." },
+      { type: "h2", text: "Why use a dedicated web CSV viewer" },
+      { type: "p", text: "A dedicated viewer utilizes virtualized row rendering to display massive tabular datasets smoothly while consuming minimal memory." },
+      { type: "ul", items: [
+        "Opens multi-megabyte CSV files instantly without computer freezes",
+        "Enables live keyword search and column filtering across thousands of records",
+        "Autodetects delimiter characters (comma, semicolon, tab) without configuration",
+      ]},
+      { type: "h2", text: "Step-by-step: how to view CSV files online" },
+      { type: "ol", items: [
+        "Open the CSV Viewer in your browser with zero registration needed.",
+        "Upload your .csv or .tsv file or drag it directly onto the workbench.",
+        "The virtualized grid renders column headers and rows with paginated navigation.",
+        "Use the search bar to filter records and click column headers to sort ascending or descending.",
+        "Inspect cell contents safely with zero data uploaded to permanent storage.",
+      ]},
+      { type: "callout", text: "CSV inspection executes inside an isolated ephemeral workspace and is purged automatically upon completion. No records are stored on our servers." },
+      { type: "h2", text: "Tips for inspecting large datasets" },
+      { type: "ul", items: [
+        "Sort numeric columns to quickly spot data outliers, negative numbers, or anomalies",
+        "Use quick filtering to isolate specific customer IDs or transaction dates in seconds",
+        "Verify encoding tags to confirm that international names display without mojibake symbols",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Can it open CSV files that crash Excel?" },
+      { type: "p", text: "Yes. Our virtualized grid only renders visible screen rows, allowing it to handle massive files that exceed Excel memory limits." },
+      { type: "h3", text: "Can I sort columns alphabetically and numerically?" },
+      { type: "p", text: "Yes. Clicking any column header toggles ascending and descending sort order instantly." },
+      { type: "h3", text: "Is my data secure while viewing?" },
+      { type: "p", text: "Yes. Files are processed in an isolated ephemeral environment and purged permanently upon session conclusion." },
+    ],
+    fr: [
+      { type: "p", text: "Ouvrir des fichiers CSV volumineux contenant des centaines de milliers de lignes dans un tableur classique provoque régulièrement des blocages complets de l'ordinateur et des saturations de mémoire. Un visualiseur CSV optimisé pour le web permet d'inspecter instantanément vos données sans ralentissement." },
+      { type: "h2", text: "Les atouts d'un visualiseur CSV web optimisé" },
+      { type: "p", text: "Un visualiseur dédié s'appuie sur le rendu virtuel pour n'afficher que les lignes visibles à l'écran, réduisant la consommation de mémoire vive au minimum." },
+      { type: "ul", items: [
+        "Ouvre des fichiers CSV de plusieurs dizaines de mégaoctets sans figer le système",
+        "Permet la recherche par mot-clé et le filtrage dynamique sur des milliers d'enregistrements",
+        "Détecte automatiquement les séparateurs (virgule, point-virgule) sans réglage manuel",
+      ]},
+      { type: "h2", text: "Guide pas à pas : inspecter un fichier CSV en ligne" },
+      { type: "ol", items: [
+        "Accédez au Visualiseur CSV dans votre navigateur sans créer de compte.",
+        "Déposez votre fichier .csv ou .tsv : les fichiers jusqu'à 50 Mo sont pris en charge.",
+        "La grille virtuelle affiche instantanément les colonnes avec pagination fluide.",
+        "Utilisez la barre de recherche pour filtrer les lignes et cliquez sur les colonnes pour trier.",
+        "Consultez vos données en toute confidentialité sans archivage permanent.",
+      ]},
+      { type: "callout", text: "L'inspection des données est réalisée dans un environnement temporaire sécurisé avec suppression automatique immédiate de vos fichiers." },
+      { type: "h2", text: "Conseils pour l'audit de grands jeux de données" },
+      { type: "ul", items: [
+        "Trier les colonnes chiffrées pour identifier rapidement les valeurs aberrantes ou négatives",
+        "Filtrer par date ou par référence client pour isoler un historique précis en un instant",
+        "Contrôler l'absence de caractères dégradés sur les noms propres et adresses postales",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Peut-il ouvrir des fichiers qui font planter Excel ?" },
+      { type: "p", text: "Oui. Grâce au rendu virtuel, l'outil ne charge en mémoire d'affichage que les lignes visibles, ce qui évite les saturations logicielles." },
+      { type: "h3", text: "Peut-on trier les colonnes par ordre croissant et décroissant ?" },
+      { type: "p", text: "Oui. Un clic sur l'en-tête de n'importe quelle colonne trie instantanément les lignes par ordre alphabétique ou numérique." },
+      { type: "h3", text: "Mes données d'entreprise sont-elles protégées ?" },
+      { type: "p", text: "Absolument. Le traitement s'exécute dans un espace éphémère sécurisé sans stockage permanent de vos informations." },
+    ],
+  },
+};

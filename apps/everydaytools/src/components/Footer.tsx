@@ -39,8 +39,18 @@ const TOOL_COLUMNS_KEYS = [
 ];
 
 export default function Footer() {
-  const { t } = useLocale();
+  const { t, isFr } = useLocale();
   const isMobile = useIsMobile();
+
+  const footerLinks = [
+    { label: isFr ? 'Contact' : 'Contact', href: isFr ? '/fr/contact' : '/contact' },
+    { label: t.footer.changelog, href: isFr ? '/fr/changelog' : '/changelog' },
+    { label: t.footer.legalNotice, href: isFr ? '/fr/mentions-legales' : '/legal-notice' },
+    { label: t.footer.privacyPolicy, href: isFr ? '/fr/privacy' : '/privacy' },
+    { label: t.footer.termsOfService, href: isFr ? '/fr/terms' : '/terms' },
+    { label: t.footer.cookiePolicy, href: isFr ? '/fr/cookies' : '/cookies' },
+    { label: t.footer.security, href: isFr ? '/fr/security' : '/security' },
+  ];
 
   const manageConsent = () => {
     window.dispatchEvent(new Event('et:show-consent'));
@@ -150,11 +160,7 @@ export default function Footer() {
           &copy; {new Date().getFullYear()} EverydayTools Hub. {t.footer.rights}
         </span>
         <nav style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: isMobile ? '8px 20px' : 24 }}>
-          {[
-            { label: t.footer.privacyPolicy, href: '/privacy' },
-            { label: t.footer.termsOfService, href: '/terms' },
-            { label: t.footer.security, href: '/security' },
-          ].map((l) => (
+          {footerLinks.map((l) => (
             <Link
               key={l.href}
               href={l.href}

@@ -75,32 +75,6 @@ function seoSsrPlugin() {
             res.end(mod.generateHreflangManifest());
             return;
           }
-
-          const enToolMatch = /^\/en\/([^/]+)\/?$/.exec(pathname);
-          const frToolMatch = /^\/fr\/([^/]+)\/?$/.exec(pathname);
-          const isEnHome = pathname === "/en" || pathname === "/en/";
-          const isFrHome = pathname === "/fr" || pathname === "/fr/";
-
-          if (enToolMatch || frToolMatch || isEnHome || isFrHome) {
-            const mod = await server.ssrLoadModule("/src/lib/seo-ssr.ts");
-            let html: string | null = null;
-
-            if (isEnHome) {
-              html = mod.generateHomepageHtml("en");
-            } else if (isFrHome) {
-              html = mod.generateHomepageHtml("fr");
-            } else if (enToolMatch) {
-              html = mod.generateToolPageHtml(enToolMatch[1], "en");
-            } else if (frToolMatch) {
-              html = mod.generateToolPageHtml(frToolMatch[1], "fr");
-            }
-
-            if (html) {
-              res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=300" });
-              res.end(html);
-              return;
-            }
-          }
         } catch (e) {
           server.config.logger.error(`[seo-ssr] ${e}`);
         }

@@ -187,6 +187,7 @@ export default function PdfCompress() {
             {isProcessing && (
               <ProcessingAperture
                 formatIcon={pdfFormat.icon}
+                formatColor={pdfFormat.color}
                 formatAlt="PDF"
                 stageLabel={isFr ? 'Compression en cours' : 'Compression in progress'}
                 title={formatBytes(inputFile?.size ?? 0)}

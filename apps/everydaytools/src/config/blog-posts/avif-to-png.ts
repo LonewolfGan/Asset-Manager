@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postAvifToPng: BlogPost = {
+  slug: {
+    en: "how-to-convert-avif-to-png",
+    fr: "comment-convertir-avif-to-png",
+  },
+  title: {
+    en: "How to Convert AVIF to PNG with Perfect Transparency",
+    fr: "Comment Convertir AVIF en PNG avec Transparence Parfaite",
+  },
+  description: {
+    en: "Convert AVIF images into uncompressed, lossless PNG files. Preserve transparency and restore compatibility with graphic design software.",
+    fr: "Convertissez vos images AVIF en fichiers PNG sans perte. Conservez la transparence et assurez la compatibilite avec vos logiciels graphiques.",
+  },
+  keywords: {
+    en: ["avif to png","convert avif to png","avif-to-png converter online","free avif-to-png"],
+    fr: ["avif to png","convertir avif en png","convertisseur avif-to-png gratuit","outil avif-to-png"],
+  },
+  publishedAt: "2026-03-24",
+  category: "image",
+  readingMinutes: 4,
+  relatedToolSlug: "avif-to-png",
+  relatedToolLabel: { en: "AVIF to PNG", fr: "AVIF en PNG" },
+  content: {
+    en: [
+      { type: "p", text: "Convert AVIF images into uncompressed, lossless PNG files. Preserve transparency and restore compatibility with graphic design software." },
+      { type: "h2", text: "Lossless Pixel Reconstruction from AVIF into PNG" },
+      { type: "p", text: "Graphic designers frequently need to import modern web assets into older CAD, Photoshop, or desktop applications that lack AVIF support. Converting AVIF to PNG uncompresses image data into standard RGBA bitstreams with complete transparency fidelity." },
+      { type: "ul", items: ["Lossless rasterization preserving 100% of decoded pixel details.","Flawless alpha channel retention for transparent cutouts, logos, and UI elements.","Instant drag-and-drop compatibility with Photoshop, Illustrator, and office suites."] },
+      { type: "h2", text: "Step-by-step conversion guide" },
+      { type: "ol", items: ["Upload your AVIF graphics to the converter.","Configure PNG bit depth (24-bit RGB or 32-bit RGBA with alpha).","Execute decoding of AV1 bitstreams into uncompressed PNG pixels.","Verify sharpness and edge transparency in the preview.","Download your clean PNG assets."] },
+      { type: "callout", text: "Privacy guarantee: Processing is executed in isolated RAM sandboxes with zero disk persistence." },
+      { type: "h2", text: "Pro tips for optimal results" },
+      { type: "ul", items: ["Choose PNG whenever you need to edit an AVIF asset inside professional editing software.","Verify that transparency is preserved before importing into vector layout applications."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Is any image quality lost when converting AVIF to PNG?" },
+      { type: "p", text: "No. The decoding process extracts exact pixel values without applying secondary lossy compression." },
+      { type: "h3", text: "Will transparent areas remain transparent?" },
+      { type: "p", text: "Yes. Full 8-bit alpha transparency is carried over cleanly into the resulting PNG file." },
+      { type: "h3", text: "Can I convert multiple AVIF files at once?" },
+      { type: "p", text: "Yes. Batch upload handles dozens of images in parallel and bundles them in a single ZIP." },
+    ],
+    fr: [
+      { type: "p", text: "Convertissez vos images AVIF en fichiers PNG sans perte. Conservez la transparence et assurez la compatibilite avec vos logiciels graphiques." },
+      { type: "h2", text: "Reconstruction Matricielle sans Perte d AVIF vers PNG" },
+      { type: "p", text: "Les createurs ont souvent besoin d importer des actifs web recents dans des outils de CAO ou anciennes suites de retouche ne supportant pas l AVIF. Convertir AVIF en PNG deploie les trames dans un format RGBA standard avec transparence parfaite." },
+      { type: "ul", items: ["Rasterisation sans perte conservant 100% des details des pixels decodes.","Preservation fidele du canal alpha pour logos, detoures et elements d interface.","Compatibilite immediate par glisser-deposer avec Photoshop, Illustrator et suites bureautiques."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Chargez vos visuels AVIF sur le convertisseur.","Choisissez la profondeur PNG (24-bit RGB ou 32-bit RGBA avec alpha).","Lancez le decodage des flux AV1 vers des pixels PNG bruts.","Verifiez le decoupage de la transparence dans la visionneuse.","Telechargez vos nouveaux actifs PNG."] },
+      { type: "callout", text: "Garantie de confidentialite : Le traitement est opere en memoire tampon sans ecriture sur disque persistant." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Optez pour le format PNG des que vous devez retoucher un element AVIF dans un logiciel professionnel.","Verifiez la preservation du canal alpha avant l import dans vos outils de mise en page."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Y a-t-il une perte de qualite lors de la conversion AVIF vers PNG ?" },
+      { type: "p", text: "Non. Le moteur extrait les valeurs exactes des pixels decodes sans leur appliquer de compression degradante." },
+      { type: "h3", text: "Les zones transparentes restent-elles intactes ?" },
+      { type: "p", text: "Oui. Le canal alpha 8-bit est fidelement transpose dans le fichier PNG produit." },
+      { type: "h3", text: "Puis-je convertir plusieurs images AVIF a la fois ?" },
+      { type: "p", text: "Oui. Le selecteur accepte des dizaines d images traitees en parallele et regroupees dans un ZIP." },
+    ],
+  },
+};

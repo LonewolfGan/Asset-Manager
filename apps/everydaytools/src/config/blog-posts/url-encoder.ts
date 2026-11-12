@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postUrlEncoder: BlogPost = {
+  slug: {
+    en: "how-to-use-url-encoder",
+    fr: "comment-utiliser-url-encoder",
+  },
+  title: {
+    en: "How to URL Encode and Decode URI Components Safely",
+    fr: "Comment Encoder et Decoder des URLs et Parametres URI",
+  },
+  description: {
+    en: "Encode query parameters, special characters, and foreign alphabets into RFC 3986 compliant percent-encoded strings.",
+    fr: "Encodez des parametres d URL, caracteres speciaux et accents en chaines conformes a la norme RFC 3986.",
+  },
+  keywords: {
+    en: ["url encoder","url-encoder online","free url-encoder","developer tool url-encoder"],
+    fr: ["url encoder","url-encoder en ligne","outil url-encoder gratuit","utilitaire url-encoder"],
+  },
+  publishedAt: "2026-03-25",
+  category: "security",
+  readingMinutes: 4,
+  relatedToolSlug: "url-encoder",
+  relatedToolLabel: { en: "Url Encoder", fr: "Url Encoder" },
+  content: {
+    en: [
+      { type: "p", text: "Encode query parameters, special characters, and foreign alphabets into RFC 3986 compliant percent-encoded strings." },
+      { type: "h2", text: "Percent-Encoding and URI Reserved Characters" },
+      { type: "p", text: "Uniform Resource Identifiers (URIs) reserve characters like question marks, slashes, ampersands, and spaces for structural routing. Transmitting arbitrary text in query strings requires percent-encoding non-ASCII bytes into hex triplets to avoid routing errors." },
+      { type: "ul", items: ["RFC 3986 strict percent-encoding for query values and URI paths.","Support for full URLs (encodeURI) and single parameters (encodeURIComponent).","UTF-8 multi-byte encoding for accents, symbols, and non-Latin alphabets."] },
+      { type: "h2", text: "Step-by-step practical guide" },
+      { type: "ol", items: ["Paste your raw text, query parameter, or full URL into the tool.","Choose Encode or Decode operation.","Select encoding scope (Full URL vs Component/Parameter).","Execute conversion to generate standard percent-encoded triplets.","Copy the safe URL string directly for use in your API or frontend."] },
+      { type: "callout", text: "Privacy guarantee: Processing occurs in browser memory without sending URLs to external tracking servers." },
+      { type: "h2", text: "Pro tips and best practices" },
+      { type: "ul", items: ["Always use Component encoding when passing query parameter values containing ampersands (&) or equals (=).","Spaces are encoded as %20 in RFC 3986, while older form submissions may use the plus (+) symbol."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "What is the difference between encodeURI and encodeURIComponent?" },
+      { type: "p", text: "encodeURI preserves structural characters like :// and ?, while encodeURIComponent encodes every reserved character." },
+      { type: "h3", text: "Why do accented characters turn into multiple percent signs?" },
+      { type: "p", text: "Accented characters are represented by two or more UTF-8 bytes, each represented as a distinct %XX hexadecimal pair." },
+      { type: "h3", text: "Can I decode a URL that has been encoded multiple times?" },
+      { type: "p", text: "Yes. You can run repeated decode passes to unwrap doubly encoded URLs." },
+    ],
+    fr: [
+      { type: "p", text: "Encodez des parametres d URL, caracteres speciaux et accents en chaines conformes a la norme RFC 3986." },
+      { type: "h2", text: "Encodage par Pourcentage et Caracteres Reserves URI" },
+      { type: "p", text: "Les URLs reservent des caracteres structurants comme les points d interrogation, barres obliques et esperluettes. Transmettre des textes ou accents impose de convertir ces octets en triplets hexadecimaux pour eviter les erreurs." },
+      { type: "ul", items: ["Encodage strict RFC 3986 pour chaines de requete et chemins d URL.","Distinction claire entre URLs completes (encodeURI) et composants isoles (encodeURIComponent).","Traitement UTF-8 multi-octets pour les caracteres accentues et alphabets non-latins."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Collez votre texte, parametre ou URL complete dans l outil.","Choisissez l operation : Encoder ou Decoder.","Selectionnez la portee : URL entiere ou Parametre unique.","Lancez la conversion pour obtenir les triplets pourcent standard.","Copiez la chaine securisee pour vos APIs ou applications web."] },
+      { type: "callout", text: "Garantie de confidentialite : Le traitement est opere localement sans requete vers des serveurs tiers." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Utilisez le mode Composant des que vos parametres contiennent des esperluettes (&) ou des egaux (=).","Les espaces s encodent en %20 selon la norme RFC 3986, ou en signe plus (+) pour les anciens formulaires."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Quelle difference entre encodeURI et encodeURIComponent ?" },
+      { type: "p", text: "encodeURI preserve les separateurs structurants comme :// et ?, tandis que encodeURIComponent encode tous les caracteres reserves." },
+      { type: "h3", text: "Pourquoi les accents generent-ils plusieurs symboles pourcent ?" },
+      { type: "p", text: "Les accents requierent plusieurs octets en UTF-8, chacun etant code sous la forme d un triplet %XX distinct." },
+      { type: "h3", text: "Puis-je decoder une URL qui a ete encodee deux fois ?" },
+      { type: "p", text: "Oui. Vous pouvez effectuer des passes de decodage successives pour retablir la chaine d origine." },
+    ],
+  },
+};

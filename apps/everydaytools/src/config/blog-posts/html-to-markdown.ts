@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postHtmlToMarkdown: BlogPost = {
+  slug: {
+    en: "how-to-convert-html-to-markdown",
+    fr: "comment-convertir-html-en-markdown",
+  },
+  title: {
+    en: "How to Convert HTML Webpages to Clean Markdown",
+    fr: "Comment convertir une page HTML en texte Markdown propre",
+  },
+  description: {
+    en: "Convert HTML source code, web articles, and blog snippets into clean Markdown formatted for documentation and personal knowledge bases.",
+    fr: "Convertissez du code HTML ou des articles web en Markdown propre pour vos documentations techniques et bases de connaissances.",
+  },
+  keywords: {
+    en: ["html to markdown","convert html to md","html to gfm","extract markdown from webpage"],
+    fr: ["html en markdown","convertir html en md","page web vers markdown","balises html en markdown"],
+  },
+  publishedAt: "2026-04-02",
+  category: "documents",
+  readingMinutes: 4,
+  relatedToolSlug: "html-to-markdown",
+  relatedToolLabel: { en: "HTML to Markdown", fr: "HTML en Markdown" },
+  content: {
+    en: [
+      { type: "p", text: "Archiving online articles or scraping blog content into knowledge bases often leaves you with messy HTML tags, broken script elements, and inline styling attributes. Converting HTML into clean Markdown extracts readable content while discarding web clutter." },
+      { type: "h2", text: "Why convert HTML to Markdown for documentation" },
+      { type: "p", text: "Markdown strips navigation sidebars, advertisement tracking tags, and script wrappers, distilling web pages into pure structured content." },
+      { type: "ul", items: [
+        "Converts heading tags (h1 to h6) into standard Markdown heading syntax",
+        "Transforms HTML table tags into clean GitHub-flavored pipe tables",
+        "Preserves hyperlinks and image references while stripping inline styling attributes",
+      ]},
+      { type: "h2", text: "Step-by-step: how to convert HTML to Markdown" },
+      { type: "ol", items: [
+        "Open the HTML to Markdown tool in your browser with zero registration needed.",
+        "Upload an .html file or paste your raw HTML snippet into the input editor.",
+        "The converter parses DOM nodes and translates elements into CommonMark syntax.",
+        "Preview the parsed text in real-time or copy it directly to your clipboard.",
+        "Click Download MD to save your clean Markdown document.",
+      ]},
+      { type: "callout", text: "HTML conversion runs inside an isolated ephemeral workspace with zero persistent storage and automatic deletion upon completion." },
+      { type: "h2", text: "Best practices for web content archiving" },
+      { type: "ul", items: [
+        "Strip footer copyright blocks and header navigation menus before archiving articles",
+        "Verify relative URL links and convert them to absolute URLs if saving offline documentation",
+        "Review code block fences to ensure programming syntax highlighting renders cleanly",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Does it remove javascript and advertising banners?" },
+      { type: "p", text: "Yes. The converter automatically filters out script tags, style sheets, and tracking elements, preserving only readable content." },
+      { type: "h3", text: "Can I paste raw HTML directly without saving a file first?" },
+      { type: "p", text: "Yes. You can paste HTML code snippets directly into the editor pane for immediate conversion." },
+      { type: "h3", text: "Are tables and lists supported?" },
+      { type: "p", text: "Yes. Ordered lists, bullet lists, and standard HTML tables are translated into clean Markdown structures." },
+    ],
+    fr: [
+      { type: "p", text: "Archiver des articles en ligne ou copier le contenu d'une page web vers une base de connaissances s'accompagne souvent de balises HTML encombrantes et de scripts parasites. Convertir le code HTML en Markdown permet d'extraire le contenu pur sous une forme sobre et lisible." },
+      { type: "h2", text: "Pourquoi transformer du HTML en Markdown" },
+      { type: "p", text: "Le Markdown élimine les menus de navigation, les bannières et les styles superflus pour ne garder que la structure intellectuelle du document." },
+      { type: "ul", items: [
+        "Traduit les balises de titres (h1 à h6) en dièses Markdown hiérarchiques",
+        "Transforme les tableaux HTML en grilles épurées avec séparateurs tuyaux",
+        "Conserve les liens hypertextes et images en purgeant les attributs de mise en forme",
+      ]},
+      { type: "h2", text: "Guide pas à pas : convertir du HTML en Markdown" },
+      { type: "ol", items: [
+        "Accédez à l'outil HTML en Markdown dans votre navigateur sans créer de compte.",
+        "Déposez un fichier .html ou collez directement votre code source dans l'éditeur.",
+        "Le système convertit les nœuds DOM en balises CommonMark standards.",
+        "Consultez le texte dans l'aperçu ou copiez-le dans votre presse-papier.",
+        "Cliquez sur Télécharger MD pour enregistrer votre document propre.",
+      ]},
+      { type: "callout", text: "Le traitement est réalisé dans un espace de travail temporaire isolé avec suppression automatique immédiate de vos données." },
+      { type: "h2", text: "Conseils pour l'archivage d'articles web" },
+      { type: "ul", items: [
+        "Supprimer les blocs de commentaires et barres latérales avant d'archiver",
+        "Vérifier que les liens relatifs sont transformés en adresses absolues pour une lecture hors ligne",
+        "Contrôler la bonne fermeture des blocs de code source",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Les scripts et bannières publicitaires sont-ils éliminés ?" },
+      { type: "p", text: "Oui. Le convertisseur filtre automatiquement les balises de script et feuilles de style pour ne garder que le contenu textuel utile." },
+      { type: "h3", text: "Peut-on coller directement du code HTML sans créer de fichier ?" },
+      { type: "p", text: "Oui. Vous pouvez copier-coller un extrait HTML directement dans la zone de texte pour une conversion instantanée." },
+      { type: "h3", text: "Les tableaux et listes sont-ils bien gérés ?" },
+      { type: "p", text: "Oui. Les listes numérotées, listes à puces et tableaux sont fidèlement transposés en syntaxe Markdown." },
+    ],
+  },
+};

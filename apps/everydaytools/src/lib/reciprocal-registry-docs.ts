@@ -250,4 +250,30 @@ export const RECIPROCAL_DOCS_TOOLS: Record<string, ReciprocalToolInfo> = {
     badgeLabel: { fr: 'RTF en PDF', en: 'RTF to PDF' },
     isPrimary: false,
   },
+
+  // Document/Presentation converters with standardized directional title format
+  'html-to-markdown': {
+    unidirectional: true,
+    sourceFormat: 'html',
+    sourceLabel: { fr: 'HTML', en: 'HTML' },
+    targetLabel: { fr: 'Markdown', en: 'Markdown' },
+    badgeLabel: { fr: 'HTML en Markdown', en: 'HTML to Markdown' },
+    isPrimary: true,
+  },
+  'pptx-to-images': {
+    unidirectional: true,
+    sourceFormat: 'pptx',
+    sourceLabel: { fr: 'PowerPoint', en: 'PowerPoint' },
+    targetLabel: { fr: 'Images', en: 'Images' },
+    badgeLabel: { fr: 'PowerPoint en Images', en: 'PowerPoint to Images' },
+    isPrimary: true,
+  },
+  'pdf-to-pdfa': {
+    unidirectional: true,
+    sourceFormat: 'pdf',
+    sourceLabel: { fr: 'PDF', en: 'PDF' },
+    targetLabel: { fr: 'PDF/A', en: 'PDF/A' },
+    badgeLabel: { fr: 'PDF en PDF/A', en: 'PDF to PDF/A' },
+    isPrimary: true,
+  },
 };

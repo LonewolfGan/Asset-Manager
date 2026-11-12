@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { Link } from "wouter";
+import { ArrowUpRight } from "lucide-react";
 import { BLOG_POSTS, type BlogPost } from "@/config/blog-data";
 
 export interface BlogRelatedPostsProps {
@@ -53,55 +54,124 @@ export function BlogRelatedPosts({
 
   const sectionTitle = lang === "fr" ? "À lire également" : "Related guides";
   const readingLabel = lang === "fr" ? "min de lecture" : "min read";
+  const readMoreLabel = lang === "fr" ? "Lire le guide" : "Read guide";
+  const allGuidesLabel = lang === "fr" ? "Tous les guides" : "All guides";
 
   return (
     <section
       aria-label={sectionTitle}
       data-testid="blog-related-posts"
-      className="mt-16 pt-10 border-t border-zinc-200/80 dark:border-white/10"
+      className="mt-24"
     >
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-8">
         <h2 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
           {sectionTitle}
         </h2>
         <Link
           href={`/${lang}/blog`}
-          className="text-xs font-mono text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors"
+          className="inline-flex items-center gap-1 text-xs font-mono text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors group"
         >
-          {lang === "fr" ? "Tous les guides →" : "All guides →"}
+          <span>{allGuidesLabel}</span>
+          <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </Link>
       </div>
 
       <div
         data-testid="blog-related-posts-grid"
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+        className="grid"
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+          gap: 20,
+        }}
       >
         {selectedPosts.map((post) => {
           const title = post.title[lang] || post.title.en;
+          const description = post.description[lang] || post.description.en;
           const slug = post.slug[lang] || post.slug.en;
           const href = `/${lang}/blog/${slug}`;
 
           return (
-            <Link key={slug} href={href} className="group block focus:outline-none">
+            <Link
+              key={slug}
+              href={href}
+              style={{ textDecoration: "none", display: "flex", flexDirection: "column" }}
+            >
               <div
                 data-testid="blog-related-post-card"
-                className="h-full rounded-xl p-5 border border-zinc-200/80 dark:border-white/10 bg-zinc-50/60 dark:bg-zinc-900/40 hover:border-[var(--accent)] hover:shadow-xs transition-[border-color,box-shadow] duration-150 flex flex-col justify-between gap-3"
+                style={{
+                  background: "var(--bg-surface)",
+                  border: "1px solid var(--border)",
+                  borderRadius: "var(--radius-lg, 12px)",
+                  padding: "24px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 12,
+                  height: "100%",
+                  boxSizing: "border-box",
+                  transition: "border-color 140ms ease, box-shadow 140ms ease",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
+                  (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-hover)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
+                  (e.currentTarget as HTMLElement).style.boxShadow = "none";
+                }}
               >
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 font-mono text-[11px] text-[var(--text-tertiary)]">
-                    <time dateTime={post.publishedAt}>{formatDate(post.publishedAt, lang)}</time>
-                    <span>·</span>
-                    <span>{post.readingMinutes} {readingLabel}</span>
-                  </div>
-                  <h3 className="font-sans text-sm font-semibold text-[var(--text-primary)] leading-snug group-hover:text-[var(--accent)] transition-colors line-clamp-2">
-                    {title}
-                  </h3>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    fontSize: 12,
+                    color: "var(--text-tertiary)",
+                    fontFamily: "var(--font-mono)",
+                  }}
+                >
+                  <time dateTime={post.publishedAt}>{formatDate(post.publishedAt, lang)}</time>
+                  <span>·</span>
+                  <span>
+                    {post.readingMinutes} {readingLabel}
+                  </span>
                 </div>
-
-                <div className="text-[12px] font-medium text-[var(--accent)] inline-flex items-center gap-1">
-                  <span>{lang === "fr" ? "Lire" : "Read"}</span>
-                  <span className="transition-transform duration-150 group-hover:translate-x-0.5">→</span>
-                </div>
+                <h3
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: "var(--card-title-size)",
+                    fontWeight: "var(--card-title-weight)" as React.CSSProperties["fontWeight"],
+                    color: "var(--text-primary)",
+                    lineHeight: 1.3,
+                    letterSpacing: "-0.01em",
+                    margin: 0,
+                  }}
+                >
+                  {title}
+                </h3>
+                <p
+                  style={{
+                    fontSize: "var(--text-xs)",
+                    color: "var(--text-secondary)",
+                    lineHeight: 1.6,
+                    margin: 0,
+                    flex: 1,
+                  }}
+                >
+                  {description}
+                </p>
+                <span
+                  style={{
+                    fontSize: 13,
+                    color: "var(--accent)",
+                    fontWeight: 500,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 4,
+                  }}
+                >
+                  {readMoreLabel} →
+                </span>
               </div>
             </Link>
           );

@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postEpubToWord: BlogPost = {
+  slug: {
+    en: "how-to-convert-epub-to-word-docx",
+    fr: "comment-convertir-epub-en-word-docx",
+  },
+  title: {
+    en: "How to Convert EPUB E-Books to Editable Word (DOCX)",
+    fr: "Comment convertir un livre numérique EPUB en document Word (DOCX)",
+  },
+  description: {
+    en: "Convert EPUB e-books and digital publications into fully editable Microsoft Word (.docx) documents to update manuscripts and edit text.",
+    fr: "Convertissez vos livres numériques EPUB en documents Microsoft Word (.docx) éditables pour réviser un manuscrit ou actualiser des textes.",
+  },
+  keywords: {
+    en: ["epub to word","convert epub to docx","epub to docx converter","edit epub in word"],
+    fr: ["epub en word","convertir epub en docx","modifier epub dans word","extraire texte epub word"],
+  },
+  publishedAt: "2026-04-10",
+  category: "documents",
+  readingMinutes: 5,
+  relatedToolSlug: "epub-to-word",
+  relatedToolLabel: { en: "EPUB to Word", fr: "EPUB en Word" },
+  content: {
+    en: [
+      { type: "p", text: "Authors and editors who lose their original manuscript source files often find themselves with only the published EPUB e-book file on hand. Converting an EPUB back into an editable Microsoft Word (.docx) document reconstructs chapters, paragraphs, and formatting for effortless revision." },
+      { type: "h2", text: "Why convert EPUB e-books to Word documents" },
+      { type: "p", text: "EPUB files are packaged archives designed for reading rather than editing. Converting to DOCX unlocks familiar word processing tools to revise prose, update editions, or prepare printed book proofs." },
+      { type: "ul", items: [
+        "Restores full editing capabilities without re-typing entire book chapters",
+        "Converts EPUB chapter files into a continuous, paginated Word document",
+        "Preserves embedded illustrations, cover art, and typographic styling",
+      ]},
+      { type: "h2", text: "Step-by-step: how to convert EPUB to DOCX" },
+      { type: "ol", items: [
+        "Open the EPUB to Word converter in your browser with zero registration needed.",
+        "Upload your .epub file: files up to 50 MB are supported without account limits.",
+        "The engine unpacks XHTML chapters, extracts CSS styles, and normalizes headings.",
+        "Click Convert to compile an editable Microsoft Word (.docx) file.",
+        "Download your manuscript and open it in Word, Google Docs, or Pages.",
+      ]},
+      { type: "callout", text: "E-book extraction runs inside an isolated ephemeral workspace and is purged automatically upon completion. No manuscript data is stored on our servers." },
+      { type: "h2", text: "Tips for manuscript revision" },
+      { type: "ul", items: [
+        "Review chapter break headings to ensure consistent Heading 1 styles across the book",
+        "Verify footnote references in Word to confirm they link to the appropriate chapter ends",
+        "Check image resolutions if preparing a high-DPI printed paperback proof from the e-book",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Does it preserve all book chapters in sequence?" },
+      { type: "p", text: "Yes. The converter reads the internal EPUB spine to stitch all chapters together in their exact intended reading order." },
+      { type: "h3", text: "Can I edit the text and add new sections in Word?" },
+      { type: "p", text: "Yes. The resulting file is a regular DOCX document with full editing, spellchecking, and formatting freedom." },
+      { type: "h3", text: "Are images and covers retained in the Word document?" },
+      { type: "p", text: "Yes. All embedded images and chapter illustrations are transferred into the output document at original quality." },
+    ],
+    fr: [
+      { type: "p", text: "Les auteurs qui perdent leur fichier manuscrit source ne disposent parfois que du livre numérique EPUB finalisé. Convertir un EPUB en document Microsoft Word (.docx) modifiable reconstitue l'enchaînement des chapitres et les styles pour permettre une révision aisée." },
+      { type: "h2", text: "Pourquoi convertir un livre numérique en document Word" },
+      { type: "p", text: "Les fichiers EPUB sont des archives optimisées pour la lecture et verrouillées pour l'édition. Convertir en DOCX redonne accès aux outils de traitement de texte pour enrichir un manuscrit ou préparer une réédition." },
+      { type: "ul", items: [
+        "Restaure la liberté d'édition sans avoir à ressaisir manuellement des centaines de pages",
+        "Assemble les multiples chapitres de l'e-book en un unique document Word paginé",
+        "Conserve les illustrations intégrées, l'image de couverture et la hiérarchie des titres",
+      ]},
+      { type: "h2", text: "Guide pas à pas : convertir un EPUB en Word" },
+      { type: "ol", items: [
+        "Accédez à l'outil EPUB en Word dans votre navigateur sans créer de compte.",
+        "Déposez votre fichier .epub : les e-books jusqu'à 50 Mo sont pris en charge.",
+        "Le système extrait les fichiers XHTML, harmonise les styles et compile les chapitres.",
+        "Cliquez sur Convertir pour générer votre fichier .docx.",
+        "Téléchargez votre manuscrit et ouvrez-le dans Word, Google Docs ou Pages.",
+      ]},
+      { type: "callout", text: "Le traitement est réalisé dans un espace temporaire sécurisé avec suppression automatique immédiate de votre manuscrit." },
+      { type: "h2", text: "Conseils pour la révision de votre texte" },
+      { type: "ul", items: [
+        "Vérifier la bonne attribution des styles Titre 1 sur chaque ouverture de chapitre",
+        "Contrôler l'enchaînement des notes de bas de page à la fin de chaque section",
+        "Vérifier la résolution des illustrations si vous préparez une version papier imprimée",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "L'ordre chronologique des chapitres est-il respecté ?" },
+      { type: "p", text: "Oui. L'outil lit la table des matières structurelle de l'EPUB pour assembler les chapitres dans l'ordre exact de lecture." },
+      { type: "h3", text: "Le document Word obtenu est-il totalement éditable ?" },
+      { type: "p", text: "Oui. Vous disposez d'un fichier .docx classique permettant l'ajout de texte, la modification des styles et la correction grammaticale." },
+      { type: "h3", text: "Les illustrations de l'e-book sont-elles conservées ?" },
+      { type: "p", text: "Oui. Toutes les images et dessins insérés dans l'e-book sont fidèlement intégrés dans le document Word généré." },
+    ],
+  },
+};

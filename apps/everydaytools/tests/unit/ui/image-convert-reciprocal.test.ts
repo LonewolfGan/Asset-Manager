@@ -34,6 +34,14 @@ vi.mock('@/hooks/use-locale', () => ({
           title: 'SVG to PNG',
           description: 'Convert SVG to raster PNG.',
         },
+        'png-to-pdf': {
+          title: 'PNG to PDF',
+          description: 'Convert PNG to PDF document.',
+        },
+        'heic-to-png': {
+          title: 'HEIC to PNG',
+          description: 'Convert HEIC photos to PNG.',
+        },
       },
     },
     isFr: false,
@@ -168,5 +176,41 @@ describe('ImageConvertPage Reciprocal Title in Header (TDD)', () => {
     const title = container.querySelector('[data-testid="reciprocal-title"]');
     expect(title).not.toBeNull();
     expect(lastTitleProps?.currentSlug).toBe('png-to-avif');
+  });
+
+  it('renders ReciprocalTitle in header for png-to-pdf reciprocal pair', async () => {
+    await act(async () => {
+      root.render(
+        React.createElement(ImageConvertPage, {
+          fromLabel: 'PNG',
+          fromExts: ['.png'],
+          fromMimes: ['image/png'],
+          toMime: 'application/pdf',
+          slug: 'png-to-pdf',
+        })
+      );
+    });
+
+    const title = container.querySelector('[data-testid="reciprocal-title"]');
+    expect(title).not.toBeNull();
+    expect(lastTitleProps?.currentSlug).toBe('png-to-pdf');
+  });
+
+  it('renders ReciprocalTitle in header for heic-to-png reciprocal pair', async () => {
+    await act(async () => {
+      root.render(
+        React.createElement(ImageConvertPage, {
+          fromLabel: 'HEIC/HEIF',
+          fromExts: ['.heic', '.heif'],
+          fromMimes: ['image/heic', 'image/heif'],
+          toMime: 'image/png',
+          slug: 'heic-to-png',
+        })
+      );
+    });
+
+    const title = container.querySelector('[data-testid="reciprocal-title"]');
+    expect(title).not.toBeNull();
+    expect(lastTitleProps?.currentSlug).toBe('heic-to-png');
   });
 });

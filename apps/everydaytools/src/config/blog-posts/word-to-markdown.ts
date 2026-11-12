@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postWordToMarkdown: BlogPost = {
+  slug: {
+    en: "how-to-convert-word-docx-to-markdown",
+    fr: "comment-convertir-word-docx-en-markdown",
+  },
+  title: {
+    en: "How to Convert Word Documents to Markdown (MD)",
+    fr: "Comment convertir un document Word en Markdown (MD)",
+  },
+  description: {
+    en: "Transform Microsoft Word documents into clean GitHub-flavored Markdown text formatted for Obsidian, Hugo, Jekyll, and technical documentation.",
+    fr: "Convertissez des documents Word en texte Markdown propre pour Obsidian, les générateurs de sites statiques et la documentation technique.",
+  },
+  keywords: {
+    en: ["word to markdown","docx to md converter","convert word to markdown","docx to gfm"],
+    fr: ["word en markdown","convertir docx en md","word vers obsidian","document word en markdown"],
+  },
+  publishedAt: "2026-04-01",
+  category: "documents",
+  readingMinutes: 4,
+  relatedToolSlug: "word-to-markdown",
+  relatedToolLabel: { en: "Word to Markdown", fr: "Word en Markdown" },
+  content: {
+    en: [
+      { type: "p", text: "Technical writers and developers often receive content drafts written in Word that must be migrated into Markdown-based static site generators or documentation repositories. Converting DOCX to Markdown translates formatted headings, bullet lists, and tables into lightweight plain text markup." },
+      { type: "h2", text: "Advantages of converting Word to Markdown" },
+      { type: "p", text: "Markdown files can be version-controlled with Git, edited in any text editor, and integrated cleanly into modern developer documentation platforms like Docusaurus, VitePress, or Hugo." },
+      { type: "ul", items: [
+        "Translates Word Heading styles into standard hash (#) prefixes cleanly",
+        "Converts complex Word tables into readable pipe-delimited Markdown tables",
+        "Extracts embedded images and links them with clean relative image tags",
+      ]},
+      { type: "h2", text: "Step-by-step: how to convert DOCX to Markdown" },
+      { type: "ol", items: [
+        "Open the Word to Markdown tool in your browser with zero registration needed.",
+        "Upload your .docx file: documents up to 50 MB are supported without account limits.",
+        "The parser extracts document hierarchy and maps styles to CommonMark syntax.",
+        "Preview the live rendered Markdown or inspect the raw source text.",
+        "Download your .md file or copy Markdown directly to your clipboard.",
+      ]},
+      { type: "callout", text: "Document parsing runs inside an isolated ephemeral workspace and is purged automatically upon completion. No documents are stored on our servers." },
+      { type: "h2", text: "Tips for developers and technical writers" },
+      { type: "ul", items: [
+        "Check code snippets in the output to add appropriate language tags (js, python, bash)",
+        "Verify table cell formatting for clean alignment across static site themes",
+        "Import generated .md files directly into Obsidian vaults or GitHub repositories",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Does it support GitHub Flavored Markdown (GFM) tables?" },
+      { type: "p", text: "Yes. Word tables are converted into standard GFM pipe-delimited tables with clean column alignment." },
+      { type: "h3", text: "Are images in the Word file preserved?" },
+      { type: "p", text: "Yes. Embedded images are extracted and packaged alongside the markdown file with proper referencing." },
+      { type: "h3", text: "Can I paste the output directly into Obsidian or Notion?" },
+      { type: "p", text: "Yes. The output uses standard CommonMark syntax supported universally across all modern note-taking apps." },
+    ],
+    fr: [
+      { type: "p", text: "Les rédacteurs techniques et développeurs reçoivent souvent des projets rédigés sous Word qui doivent être intégrés dans des dépôts de documentation en Markdown. Convertir un fichier DOCX en Markdown traduit les titres, listes et tableaux en balisage texte léger." },
+      { type: "h2", text: "Les atouts du Markdown face au format Word" },
+      { type: "p", text: "Les fichiers Markdown peuvent être suivis avec Git, édités dans n'importe quel éditeur de code et intégrés directement dans des outils de documentation comme Docusaurus ou VitePress." },
+      { type: "ul", items: [
+        "Traduit les styles de titre Word en dièses (#) hiérarchiques propres",
+        "Convertit les tableaux Word en grilles avec séparateurs tuyaux faciles à relire",
+        "Extrait les illustrations et les référence avec une syntaxe d'image standard",
+      ]},
+      { type: "h2", text: "Guide pas à pas : convertir Word en Markdown" },
+      { type: "ol", items: [
+        "Accédez à l'outil Word en Markdown dans votre navigateur sans créer de compte.",
+        "Déposez votre document .docx : les fichiers jusqu'à 50 Mo sont pris en charge.",
+        "Le système traduit la structure Word en syntaxe CommonMark épurée.",
+        "Vérifiez le texte dans l'aperçu ou copiez-le dans le presse-papier.",
+        "Téléchargez votre fichier .md prêt pour vos projets de documentation.",
+      ]},
+      { type: "callout", text: "Le traitement est exécuté dans un environnement temporaire sécurisé avec suppression automatique immédiate de vos documents." },
+      { type: "h2", text: "Conseils pour les rédacteurs techniques" },
+      { type: "ul", items: [
+        "Ajouter les identifiants de langage (js, python) sur les blocs de code extraits",
+        "Vérifier la lisibilité des tableaux complexes sur les thèmes de sites statiques",
+        "Importer le fichier directement dans votre coffre Obsidian ou projet GitHub",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Les tableaux Word sont-ils bien convertis en Markdown ?" },
+      { type: "p", text: "Oui. Les grilles Word sont transposées en tableaux tuyaux standard conformes à la spécification GitHub Flavored Markdown." },
+      { type: "h3", text: "Les illustrations du document sont-elles récupérées ?" },
+      { type: "p", text: "Oui. Les images intégrées sont extraites et référencées proprement dans le document Markdown." },
+      { type: "h3", text: "Le résultat est-il compatible avec Obsidian et Notion ?" },
+      { type: "p", text: "Oui. Le texte utilise la syntaxe standard CommonMark reconnue immédiatement par Notion, Obsidian et Logseq." },
+    ],
+  },
+};

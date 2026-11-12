@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postPngToWebp: BlogPost = {
+  slug: {
+    en: "how-to-convert-png-to-webp",
+    fr: "comment-convertir-png-to-webp",
+  },
+  title: {
+    en: "How to Convert PNG to WebP to Slash Web Asset Payload",
+    fr: "Comment Convertir PNG en WebP pour Reduire le Poids de vos Actifs Web",
+  },
+  description: {
+    en: "Learn how to transcode PNG graphics and screenshots to modern WebP images while maintaining transparency and sharp text.",
+    fr: "Apprenez a transcoder vos images et captures PNG en format WebP moderne tout en preservant la transparence et les contours nets.",
+  },
+  keywords: {
+    en: ["png to webp","convert png to webp","png-to-webp converter online","free png-to-webp"],
+    fr: ["png to webp","convertir png en webp","convertisseur png-to-webp gratuit","outil png-to-webp"],
+  },
+  publishedAt: "2026-03-24",
+  category: "image",
+  readingMinutes: 4,
+  relatedToolSlug: "png-to-webp",
+  relatedToolLabel: { en: "PNG to WEBP", fr: "PNG en WEBP" },
+  content: {
+    en: [
+      { type: "p", text: "Learn how to transcode PNG graphics and screenshots to modern WebP images while maintaining transparency and sharp text." },
+      { type: "h2", text: "Lossless vs Lossy Optimization for PNG Assets" },
+      { type: "p", text: "PNG images often carry large file footprints due to uncompressed pixel rows. Converting PNG to WebP provides up to 70% size reduction while retaining 8-bit alpha channel transparency and pixel-perfect UI vectors." },
+      { type: "ul", items: ["Native alpha transparency preservation without halo or color fringing.","Support for lossless compression mode for charts, icons, and UI screenshots.","Dramatic reduction of LCP (Largest Contentful Paint) scores on web audits."] },
+      { type: "h2", text: "Step-by-step conversion guide" },
+      { type: "ol", items: ["Upload one or more PNG files to the converter.","Select lossless mode for vector/charts or lossy (85%+) for photo assets.","Enable alpha channel transparency retention.","Execute conversion to generate compact WebP binaries.","Download the lightweight WebP files."] },
+      { type: "callout", text: "Privacy guarantee: All image transformations are executed in RAM sandboxes and purged immediately upon download." },
+      { type: "h2", text: "Pro tips for optimal results" },
+      { type: "ul", items: ["For screenshots with crisp typography, always enable WebP Lossless mode.","Use the side-by-side difference view to confirm zero perceptible degradation."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Does converting PNG to WebP affect transparent backgrounds?" },
+      { type: "p", text: "No. WebP natively supports 8-bit alpha channel transparency just like PNG, preserving full transparency." },
+      { type: "h3", text: "How much file size do I typically save?" },
+      { type: "p", text: "You can expect between 25% to 75% file size reduction depending on whether you use lossless or lossy mode." },
+      { type: "h3", text: "Can I use WebP images directly in HTML img tags?" },
+      { type: "p", text: "Yes. All modern browsers natively support WebP inside standard img elements and CSS background rules." },
+    ],
+    fr: [
+      { type: "p", text: "Apprenez a transcoder vos images et captures PNG en format WebP moderne tout en preservant la transparence et les contours nets." },
+      { type: "h2", text: "Optimisation avec ou sans Perte pour vos Actifs PNG" },
+      { type: "p", text: "Les images PNG generent souvent des fichiers lourds. La conversion de PNG vers WebP permet une reduction de taille allant jusqu a 70% tout en conservant le canal alpha et la nettete chirurgicale des textes." },
+      { type: "ul", items: ["Preservation native de la transparence alpha sans halo ni artefacts de contour.","Support du mode de compression sans perte pour diagrammes, icones et captures d ecran.","Amelioration spectaculaire des scores Core Web Vitals et du temps de chargement LCP."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Deposez un ou plusieurs fichiers PNG sur le convertisseur.","Choisissez le mode sans perte pour schemas/icones ou avec perte (85%+) pour photos.","Verifiez l activation du canal de transparence alpha.","Lancez la conversion pour obtenir des binaires WebP compacts.","Telechargez vos fichiers WebP alleges."] },
+      { type: "callout", text: "Garantie de confidentialite : Toutes les transformations sont operees en memoire tampon et effacees immediatement." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Pour les captures d ecran avec du texte, activez toujours le mode WebP Sans Perte.","Utilisez la vue comparative pour verifier l absence de degradation perceptible."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "La conversion PNG vers WebP altere-t-elle le fond transparent ?" },
+      { type: "p", text: "Non. WebP supporte nativement le canal alpha 8-bit exactement comme le format PNG." },
+      { type: "h3", text: "Quelle economie de poids peut-on esperer en moyenne ?" },
+      { type: "p", text: "On observe generalement une reduction de 25% a 75% du poids selon le mode avec ou sans perte choisi." },
+      { type: "h3", text: "Puis-je utiliser les images WebP directement dans mes balises HTML ?" },
+      { type: "p", text: "Oui. Tous les navigateurs actuels affichent nativement WebP dans les balises img et styles CSS." },
+    ],
+  },
+};

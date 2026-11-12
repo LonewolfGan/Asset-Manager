@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postBase64: BlogPost = {
+  slug: {
+    en: "how-to-use-base64",
+    fr: "comment-utiliser-base64",
+  },
+  title: {
+    en: "How to Encode and Decode Base64 Strings and Files",
+    fr: "Comment Encoder et Decoder du Texte et des Fichiers en Base64",
+  },
+  description: {
+    en: "Convert binary files, images, and text strings into RFC 4648 Base64 representations and decode Data URIs back to files.",
+    fr: "Convertissez des fichiers binaires, images et textes en Base64 RFC 4648 et decodez les Data URIs en fichiers originaux.",
+  },
+  keywords: {
+    en: ["base64","base64 online","free base64","developer tool base64"],
+    fr: ["base64","base64 en ligne","outil base64 gratuit","utilitaire base64"],
+  },
+  publishedAt: "2026-03-25",
+  category: "security",
+  readingMinutes: 4,
+  relatedToolSlug: "base64",
+  relatedToolLabel: { en: "Base64", fr: "Base64" },
+  content: {
+    en: [
+      { type: "p", text: "Convert binary files, images, and text strings into RFC 4648 Base64 representations and decode Data URIs back to files." },
+      { type: "h2", text: "Binary-to-Text Encoding with the RFC 4648 Alphabet" },
+      { type: "p", text: "Protocols like HTTP and JSON are designed to carry ASCII text, making raw binary transfers hazardous. Base64 represents 8-bit binary data using 6-bit units mapped to a safe 64-character ASCII alphabet, enabling safe embedding of images, keys, and tokens." },
+      { type: "ul", items: ["RFC 4648 standard encoding with proper padding character handling (=).","Direct generation of inline Data URI strings for web CSS and HTML img tags.","Full support for UTF-8 multi-byte characters and international emoji."] },
+      { type: "h2", text: "Step-by-step practical guide" },
+      { type: "ol", items: ["Choose whether you want to encode text/files or decode a Base64 string.","Input your raw text string or drag and drop a binary image/file.","Select output format: standard Base64 string or full Data URI scheme.","Execute encoding or decoding instantly.","Copy the encoded ASCII string or download the decoded binary file."] },
+      { type: "callout", text: "Privacy guarantee: Encoding and decoding run locally in browser memory via native Uint8Array buffers." },
+      { type: "h2", text: "Pro tips and best practices" },
+      { type: "ul", items: ["Base64 increases data size by roughly 33%; use it for small icons and tokens rather than large video files.","When generating CSS data URIs, always include the correct MIME type prefix (e.g. data:image/png;base64,...)."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Why does Base64 data end with '=' signs?" },
+      { type: "p", text: "The '=' character is padding used when the binary byte length is not evenly divisible by three." },
+      { type: "h3", text: "Does Base64 encrypt or protect sensitive information?" },
+      { type: "p", text: "No. Base64 is an encoding format, not encryption. Anyone can decode a Base64 string back to its original form instantly." },
+      { type: "h3", text: "Can I decode Base64 back into an image file?" },
+      { type: "p", text: "Yes. Paste any Base64 image string and download the reconstructed PNG, JPG, or SVG file directly." },
+    ],
+    fr: [
+      { type: "p", text: "Convertissez des fichiers binaires, images et textes en Base64 RFC 4648 et decodez les Data URIs en fichiers originaux." },
+      { type: "h2", text: "Encodage Binaire-Texte et Alphabet RFC 4648" },
+      { type: "p", text: "Les protocoles comme HTTP et JSON sont concus pour du texte ASCII. L encodage Base64 convertit des flux binaires 8-bit en tranches 6-bit traduites dans un alphabet de 64 caracteres ASCII, autorisant l inclusion d images et de cles." },
+      { type: "ul", items: ["Encodage standard RFC 4648 avec gestion exacte des caracteres de remplissage (=).","Generation directe d URI Data prêtes a l emploi pour vos balises HTML et styles CSS.","Prise en charge complete de l encodage UTF-8 multi-octets et des emojis."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Choisissez entre encoder du texte/fichier ou decoder une chaine Base64.","Saisissez votre texte ou deposez une image ou un fichier binaire.","Selectionnez le format de sortie : chaine standard ou schema Data URI complet.","Lancez l encodage ou le decodage immediat.","Copiez la chaine ASCII ou telechargez le fichier binaire decode."] },
+      { type: "callout", text: "Garantie de confidentialite : L encodage s execute en memoire locale du navigateur sans transfert." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Le Base64 accroit la taille de donnees d environ 33% ; reservez-le aux icones et tokens legers.","Pour les Data URIs, verifiez la presence du bon type MIME (ex: data:image/png;base64,...)."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Pourquoi les chaines Base64 se terminent-elles parfois par des '=' ?" },
+      { type: "p", text: "Le caractere '=' sert de remplissage lorsque le nombre d octets binaires n est pas un multiple de trois." },
+      { type: "h3", text: "Le Base64 chiffre-t-il les donnees sensibles ?" },
+      { type: "p", text: "Non. Le Base64 est un encodage et non un chiffrement. N importe qui peut le decoder instantanement." },
+      { type: "h3", text: "Puis-je decoder une chaine Base64 en fichier image ?" },
+      { type: "p", text: "Oui. Collez la chaine Base64 pour reconstituer et telecharger directement le fichier PNG ou JPG d origine." },
+    ],
+  },
+};

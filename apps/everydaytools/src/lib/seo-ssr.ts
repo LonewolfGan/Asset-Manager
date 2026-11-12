@@ -98,10 +98,16 @@ function sharedCss(): string {
   return `
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
-      --bg:#F7F6F3;--surface:#FFFFFF;--elevated:#EFEDE6;--border:#E2DFD5;
-      --text:#1A1916;--muted:#6B6860;--accent:#1A6BFF;--accent-text:#FFFFFF;
+      --bg:#F7F7F5;--surface:#FFFFFF;--elevated:#F0F0EE;--border:rgba(0,0,0,0.08);
+      --text:#09090b;--muted:#71717a;--accent:#FF6B35;--accent-text:#FFFFFF;
       --font-display:'DM Serif Display',Georgia,serif;
       --font-ui:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+    }
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg:#09090b;--surface:#18181b;--elevated:#27272a;--border:rgba(255,255,255,0.08);
+        --text:#f4f4f5;--muted:#a1a1aa;--accent:#FF6B35;--accent-text:#FFFFFF;
+      }
     }
     html{font-size:16px;-webkit-text-size-adjust:100%}
     body{background:var(--bg);color:var(--text);font-family:var(--font-ui);line-height:1.625;-webkit-font-smoothing:antialiased;min-height:100vh}

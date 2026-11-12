@@ -11,6 +11,7 @@ import { useLocale } from "@/hooks/use-locale";
 import { HelmetProvider } from "react-helmet-async";
 import { tools as allTools } from "@/config/tools.config";
 import { AppRoutes, PageLoader } from "./routes/AppRoutes";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 const TOOL_SLUGS = new Set(allTools.map((t) => t.slug));
 const queryClient = new QueryClient();
@@ -50,9 +51,11 @@ function Router() {
       <div id="status-announcer" aria-live="polite" aria-atomic="true" className="sr-only" />
       <TopNav />
       <main id="main-content" style={{ flex: 1 }}>
-        <Suspense fallback={<PageLoader />}>
-          <AppRoutes />
-        </Suspense>
+        <ErrorBoundary>
+          <Suspense fallback={<PageLoader />}>
+            <AppRoutes />
+          </Suspense>
+        </ErrorBoundary>
       </main>
       <Footer />
       <CookieBanner />

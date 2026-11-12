@@ -35,7 +35,7 @@ export function getReciprocalTabs(
   isFr: boolean
 ): [ReciprocalTab, ReciprocalTab] | null {
   const currentInfo = RECIPROCAL_TOOLS[currentSlug];
-  if (!currentInfo) return null;
+  if (!currentInfo || !currentInfo.mirrorSlug || currentInfo.unidirectional) return null;
 
   const mirrorInfo = RECIPROCAL_TOOLS[currentInfo.mirrorSlug];
   if (!mirrorInfo) return null;

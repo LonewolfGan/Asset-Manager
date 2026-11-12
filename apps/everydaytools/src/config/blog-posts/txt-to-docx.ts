@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postTxtToDocx: BlogPost = {
+  slug: {
+    en: "how-to-convert-plain-text-to-word-docx",
+    fr: "comment-convertir-texte-brut-en-word-docx",
+  },
+  title: {
+    en: "How to Convert Plain Text (TXT) to Microsoft Word (DOCX)",
+    fr: "Comment convertir un fichier texte brut (TXT) en document Word (DOCX)",
+  },
+  description: {
+    en: "Turn raw text notes, transcriptions, and scripts into editable Microsoft Word (.docx) documents ready for formatting and spellchecking.",
+    fr: "Transformez vos notes en texte brut, transcriptions et mémos en documents Microsoft Word (.docx) prêts pour l'édition et la mise en forme.",
+  },
+  keywords: {
+    en: ["txt to docx","convert text to word","txt to word converter","plain text to docx"],
+    fr: ["txt en docx","convertir texte en word","texte brut en word","convertisseur txt docx"],
+  },
+  publishedAt: "2026-04-06",
+  category: "documents",
+  readingMinutes: 4,
+  relatedToolSlug: "txt-to-docx",
+  relatedToolLabel: { en: "Text to Word", fr: "Texte en Word" },
+  content: {
+    en: [
+      { type: "p", text: "Audio transcriptions, voice memos, and system outputs often save as plain text (.txt) files. When preparing to edit, format, or proofread these documents, converting them into standard Microsoft Word (.docx) format enables rich styling tools and spellcheckers." },
+      { type: "h2", text: "Why convert plain text to Microsoft Word" },
+      { type: "p", text: "Word (.docx) provides powerful tools that raw text editors lack, including grammar correction, font formatting, margin control, and collaborative tracked changes." },
+      { type: "ul", items: [
+        "Enables Word spelling and grammar proofreading tools across transcribed content",
+        "Allows applying professional heading hierarchy, margins, and page layouts",
+        "Facilitates collaborative sharing with colleagues who work exclusively in Word",
+      ]},
+      { type: "h2", text: "Step-by-step: how to convert TXT to DOCX" },
+      { type: "ol", items: [
+        "Open the Text to Word converter in your browser with zero registration needed.",
+        "Upload your .txt file or paste your raw text into the input panel.",
+        "The engine maps paragraphs and line wraps into clean Word document structures.",
+        "Click Convert to DOCX to assemble an editable Word document.",
+        "Download your .docx file and open it in Microsoft Office, Google Docs, or LibreOffice.",
+      ]},
+      { type: "callout", text: "Document conversion executes inside an isolated ephemeral workspace and is purged automatically upon completion. No text is stored on our servers." },
+      { type: "h2", text: "Tips for editing transcribed text" },
+      { type: "ul", items: [
+        "Use search and replace in Word to standardize speaker timestamps after conversion",
+        "Apply Heading 1 to interview sections to enable easy navigation in the Word outline pane",
+        "Activate spellchecking to catch speech-to-text homophone misrecognitions",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Can I open the converted file in Google Docs?" },
+      { type: "p", text: "Yes. The output is a standard OpenXML (.docx) file that opens flawlessly in Google Docs, Word, and Pages." },
+      { type: "h3", text: "Are empty lines preserved as paragraph breaks?" },
+      { type: "p", text: "Yes. Line breaks and double spacing are converted into clean, natural Word paragraph structures." },
+      { type: "h3", text: "Is there a limit on how much text I can convert?" },
+      { type: "p", text: "The tool easily processes large transcripts containing tens of thousands of words in seconds." },
+    ],
+    fr: [
+      { type: "p", text: "Les retranscriptions d'enregistrements audio, mémos vocaux et exports de données sont fréquemment sauvegardés au format texte (.txt). Pour les relire, corriger l'orthographe et les mettre en page, les convertir en document Microsoft Word (.docx) débloque tous les outils bureautiques avancés." },
+      { type: "h2", text: "Pourquoi convertir du texte brut en Word" },
+      { type: "p", text: "Le format Word (.docx) apporte les fonctionnalités d'édition indispensables qui font défaut aux éditeurs de texte simples : vérification grammaticale, styles et commentaires." },
+      { type: "ul", items: [
+        "Active le correcteur orthographique et grammatical de Word sur vos retranscriptions",
+        "Permet d'appliquer des styles de titres, des marges et des interlignes soignés",
+        "Facilite le travail collaboratif avec des collègues utilisant la suite Microsoft Office",
+      ]},
+      { type: "h2", text: "Guide pas à pas : convertir du texte brut en Word" },
+      { type: "ol", items: [
+        "Accédez à l'outil Texte en Word dans votre navigateur sans créer de compte.",
+        "Déposez votre fichier .txt ou collez votre texte brut dans l'espace dédié.",
+        "Le convertisseur structure les paragraphes et retours à la ligne en document Word.",
+        "Cliquez sur Convertir pour générer votre fichier .docx.",
+        "Téléchargez votre document et ouvrez-le dans Word, Google Docs ou Pages.",
+      ]},
+      { type: "callout", text: "Le traitement est réalisé dans un espace temporaire sécurisé avec suppression automatique immédiate de vos écrits." },
+      { type: "h2", text: "Conseils pour la relecture de transcriptions" },
+      { type: "ul", items: [
+        "Utiliser la fonction Rechercher/Remplacer de Word pour uniformiser les noms des intervenants",
+        "Appliquer le style Titre 1 sur les grandes parties pour structurer le volet de navigation",
+        "Lancer le correcteur orthographique pour repérer les erreurs de reconnaissance vocale",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Le fichier s'ouvre-t-il dans Google Docs ?" },
+      { type: "p", text: "Oui. Le format produit est un fichier standard OpenXML (.docx) reconnu par Microsoft Word, Google Docs et LibreOffice." },
+      { type: "h3", text: "Les sauts de ligne sont-ils préservés ?" },
+      { type: "p", text: "Oui. Les retours chariot et espacements entre paragraphes sont fidèlement transposés en paragraphes Word." },
+      { type: "h3", text: "Y a-t-il une limite de volume de texte ?" },
+      { type: "p", text: "L'outil prend en charge confortablement de très longs documents comprenant des dizaines de milliers de mots." },
+    ],
+  },
+};

@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postPdfOcr: BlogPost = {
+  slug: {
+    en: "how-to-ocr-scanned-pdf-to-searchable-text",
+    fr: "comment-reconnaissance-optique-ocr-pdf-recherchable",
+  },
+  title: {
+    en: "How to OCR Scanned PDFs to Searchable and Selectable Documents",
+    fr: "Comment rendre un PDF numérisé sélectionnable et recherchable avec l'OCR",
+  },
+  description: {
+    en: "Turn scanned paper documents, contracts, and receipts into fully searchable PDFs with selectable text layers using accurate optical character recognition.",
+    fr: "Transformez des numérisations de contrats et factures en PDF indexables avec texte sélectionnable grâce à la reconnaissance optique de caractères.",
+  },
+  keywords: {
+    en: ["pdf ocr","searchable pdf","ocr scanned pdf","optical character recognition pdf","make pdf selectable"],
+    fr: ["ocr pdf","pdf recherchable","reconnaissance optique caracteres pdf","rendre pdf selectionnable","ocr en ligne"],
+  },
+  publishedAt: "2026-03-26",
+  category: "pdf",
+  readingMinutes: 5,
+  relatedToolSlug: "pdf-ocr",
+  relatedToolLabel: { en: "PDF OCR", fr: "PDF OCR" },
+  content: {
+    en: [
+      { type: "p", text: "Scanning a physical contract or paper invoice with an office scanner produces a picture of text rather than real digital characters. Running Optical Character Recognition (OCR) injects an invisible searchable text layer behind the scanned images, allowing Ctrl+F searches and text selection." },
+      { type: "h2", text: "Why searchable PDFs are essential for archives" },
+      { type: "p", text: "Without OCR, legal archives and company databases cannot index invoice numbers, employee names, or dates inside scanned documents. Adding an OCR text layer unlocks instant enterprise search." },
+      { type: "ul", items: [
+        "Enables Ctrl+F keyword searching across hundreds of scanned pages in seconds",
+        "Allows selecting and copying contract text without manual retyping",
+        "Assists accessibility tools and screen readers in vocalizing scanned documents",
+      ]},
+      { type: "h2", text: "Step-by-step: how to make a scanned PDF searchable" },
+      { type: "ol", items: [
+        "Open the PDF OCR tool in your web browser with zero registration needed.",
+        "Upload your scanned PDF document: files up to 50 MB are supported without account limits.",
+        "Select your document language (English, French, Spanish, German) for optimal recognition accuracy.",
+        "Click Run OCR to process each page and generate an invisible vector text overlay.",
+        "Download your searchable PDF document immediately.",
+      ]},
+      { type: "callout", text: "OCR processing executes in an isolated ephemeral workspace with zero permanent storage and automatic deletion immediately after conversion." },
+      { type: "h2", text: "Tips for maximum OCR recognition accuracy" },
+      { type: "ul", items: [
+        "Scan physical documents at 300 DPI in good contrast for sharp character boundaries",
+        "Straighten skewed or tilted documents using our Rotate PDF tool prior to running OCR",
+        "Ensure the correct primary language is selected so dictionary models resolve ambiguous glyphs",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Does OCR change the visual appearance of my scanned pages?" },
+      { type: "p", text: "No. The visual scan remains completely identical. The engine places an invisible text layer directly beneath the image at matching coordinate positions." },
+      { type: "h3", text: "Can I copy text from the resulting PDF?" },
+      { type: "p", text: "Yes. Once processed with OCR, you can select, highlight, and copy text directly with your mouse." },
+      { type: "h3", text: "What languages does the OCR engine support?" },
+      { type: "p", text: "Our engine supports major European and international languages with built-in linguistic dictionary models." },
+    ],
+    fr: [
+      { type: "p", text: "Numériser un contrat ou une facture papier produit une simple image de texte sans caractères informatiques réels. L'application de la Reconnaissance Optique de Caractères (ROC / OCR) injecte une couche textuelle invisible sous l'image, rendant le document cherchable et sélectionnable." },
+      { type: "h2", text: "L'intérêt d'un PDF indexable pour vos archives" },
+      { type: "p", text: "Sans OCR, vos outils de recherche et logiciels comptables ne peuvent pas repérer les numéros de facture ou les dates dans vos scans. Ajouter une couche de texte permet d'effectuer des recherches par mot-clé instantanées." },
+      { type: "ul", items: [
+        "Recherche Ctrl+F instantanée sur des dossiers numérisés de plusieurs centaines de pages",
+        "Sélection et copier-coller fluide des clauses et montants sans ressaisie manuelle",
+        "Compatibilité avec les liseuses d'écran pour l'accessibilité numérique des personnes malvoyantes",
+      ]},
+      { type: "h2", text: "Guide pas à pas : rendre un PDF recherchable avec l'OCR" },
+      { type: "ol", items: [
+        "Accédez à l'outil PDF OCR dans votre navigateur sans créer de compte.",
+        "Déposez votre document numérisé (fichiers acceptés jusqu'à 50 Mo).",
+        "Sélectionnez la langue principale du document (français, anglais, espagnol, allemand).",
+        "Cliquez sur Lancer l'OCR pour générer la couche textuelle calée sur l'image.",
+        "Téléchargez immédiatement votre PDF recherchable et sélectionnable.",
+      ]},
+      { type: "callout", text: "La reconnaissance optique s'exécute dans un conteneur éphémère sécurisé avec suppression automatique immédiate de vos documents confidentiels." },
+      { type: "h2", text: "Conseils pour une reconnaissance optique parfaite" },
+      { type: "ul", items: [
+        "Numériser vos originaux à 300 DPI avec un bon contraste pour détacher les lettres du fond",
+        "Redresser les pages inclinées via notre outil Pivoter PDF avant de lancer l'OCR",
+        "Sélectionner la bonne langue afin que le modèle linguistique lève les ambiguïtés typographiques",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "L'OCR modifie-t-il l'apparence visuelle de mes documents ?" },
+      { type: "p", text: "Non. L'image originale reste strictement inchangée. Le texte reconnu est inséré sous forme d'un calque vectoriel invisible exactement aligné sur les mots." },
+      { type: "h3", text: "Puis-je copier du texte après le traitement OCR ?" },
+      { type: "p", text: "Oui. Le document devient entièrement sélectionnable à la souris pour le copier-coller vers Word, Excel ou un email." },
+      { type: "h3", text: "Quelles langues sont prises en charge ?" },
+      { type: "p", text: "Le moteur intègre des dictionnaires pour le français, l'anglais, l'allemand, l'espagnol, l'italien et de nombreuses autres langues." },
+    ],
+  },
+};

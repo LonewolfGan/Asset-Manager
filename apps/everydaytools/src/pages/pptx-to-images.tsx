@@ -7,6 +7,7 @@ import {
   ConversionStaging,
   ConversionConduit,
   ConversionResult,
+  ReciprocalTitle,
   ImageNextActionModal,
 } from '@/components/conversion';
 import { usePptxToImagesWorkflow } from '@/hooks/use-pptx-to-images-workflow';
@@ -50,7 +51,13 @@ export default function PptxToImages() {
   return (
     <ToolPageLayout
       breadcrumb={[t.nav.breadcrumb.home, t.nav.breadcrumb.documents, pageTitle]}
-      title={pageTitle}
+      title={
+        <ReciprocalTitle
+          currentSlug="pptx-to-images"
+          isFr={isFr}
+          fallbackTitle={pageTitle}
+        />
+      }
       description={pageDesc}
       seoSlug="pptx-to-images"
     >

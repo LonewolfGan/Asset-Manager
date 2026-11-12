@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postPdfToPdfa: BlogPost = {
+  slug: {
+    en: "how-to-convert-pdf-to-pdfa-for-archiving",
+    fr: "comment-convertir-pdf-en-pdfa-archivage-long-terme",
+  },
+  title: {
+    en: "How to Convert PDF to PDF/A for Long-Term Archiving",
+    fr: "Comment convertir un PDF en format PDF/A pour l'archivage pérenne",
+  },
+  description: {
+    en: "Conform your PDF documents to ISO PDF/A standards for legal compliance, library archiving, and long-term digital preservation.",
+    fr: "Mettez vos documents PDF en conformité avec la norme ISO PDF/A pour l'archivage légal, les bibliothèques et la conservation à long terme.",
+  },
+  keywords: {
+    en: ["pdf to pdfa","convert pdf to pdf/a","pdf archive standard","iso 19005 compliance","long term pdf preservation"],
+    fr: ["pdf en pdfa","convertir pdf en pdf/a","norme archivage pdfa","conservation pdf long terme","iso 19005"],
+  },
+  publishedAt: "2026-03-24",
+  category: "pdf",
+  readingMinutes: 5,
+  relatedToolSlug: "pdf-to-pdfa",
+  relatedToolLabel: { en: "PDF to PDF/A", fr: "PDF en PDF/A" },
+  content: {
+    en: [
+      { type: "p", text: "Standard PDF documents often rely on external fonts, device-dependent color spaces, or embedded JavaScript that may fail to render properly ten or twenty years from now. Converting to ISO-standard PDF/A guarantees that documents remain visually and structurally reproducible indefinitely." },
+      { type: "h2", text: "What makes PDF/A the gold standard for archiving" },
+      { type: "p", text: "PDF/A (ISO 19005) is an internationally recognized subset of PDF specifically designed for digital archiving. It imposes strict rules to ensure self-containment and hardware independence." },
+      { type: "ul", items: [
+        "Mandatory font embedding: Guarantees exact typography even if system fonts change over decades",
+        "Device-independent color profiles (ICC): Ensures identical color fidelity across future monitors and printers",
+        "Prohibition of active scripts: Disallows JavaScript and encryption to prevent obsolescence and security vulnerabilities",
+      ]},
+      { type: "h2", text: "Step-by-step: how to convert PDF to PDF/A" },
+      { type: "ol", items: [
+        "Open the PDF to PDF/A converter in your browser with zero registration required.",
+        "Upload your standard PDF document: files up to 50 MB are supported.",
+        "The engine embeds all referenced fonts, normalizes color spaces, and strips active scripts.",
+        "Click Convert to PDF/A to build an ISO-compliant archival document.",
+        "Download your certified PDF/A file ready for municipal, tax, or legal archiving.",
+      ]},
+      { type: "callout", text: "Archival conversion runs inside an isolated ephemeral workspace and is purged automatically upon completion. No sensitive records are stored on our servers." },
+      { type: "h2", text: "Compliance requirements in legal and tax archives" },
+      { type: "ul", items: [
+        "Many government registries and courts mandate PDF/A format for digital tender submissions",
+        "Embed standard XMP metadata with author, title, and creation year for digital library catalogs",
+        "Store master PDF/A copies alongside cryptographic checksums for document audit trails",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "What is the difference between standard PDF and PDF/A?" },
+      { type: "p", text: "Standard PDF allows external font references, audio, and scripts that break over time. PDF/A requires 100 percent self-contained data for permanent visual preservation." },
+      { type: "h3", text: "Can standard PDF readers open a PDF/A file?" },
+      { type: "p", text: "Yes. Any modern viewer (Acrobat Reader, browser viewers, mobile apps) opens PDF/A files reliably." },
+      { type: "h3", text: "Does converting to PDF/A increase file size?" },
+      { type: "p", text: "Embedding complete font character sets and color profiles can slightly increase size, but guarantees permanent preservation." },
+    ],
+    fr: [
+      { type: "p", text: "Les documents PDF classiques font souvent appel à des polices système externes ou des scripts qui ne s'afficheront plus correctement dans dix ou vingt ans. Convertir vos fichiers en format normalisé ISO PDF/A garantit qu'ils pourront être ouverts et consultés sans altération dans le futur." },
+      { type: "h2", text: "Pourquoi le PDF/A est le standard de l'archivage pérenne" },
+      { type: "p", text: "La norme internationale PDF/A (ISO 19005) encadre strictement la structure du document pour assurer son autonomie complète face à l'évolution des matériels et logiciels." },
+      { type: "ul", items: [
+        "Incorporation obligatoire de toutes les polices pour figer la typographie exacte",
+        "Profils colorimétriques indépendants (ICC) pour une fidélité d'affichage constante",
+        "Interdiction des scripts exécutables et des chiffrements pour éliminer les risques d'obsolescence",
+      ]},
+      { type: "h2", text: "Guide pas à pas : convertir un PDF en PDF/A" },
+      { type: "ol", items: [
+        "Accédez à l'outil PDF en PDF/A dans votre navigateur sans créer de compte.",
+        "Déposez votre document PDF : les fichiers jusqu'à 50 Mo sont pris en charge.",
+        "Le convertisseur intègre les polices manquantes et neutralise les éléments dynamiques.",
+        "Cliquez sur Convertir pour générer votre document certifié conforme ISO.",
+        "Téléchargez immédiatement votre fichier PDF/A prêt pour l'archivage légal ou fiscal.",
+      ]},
+      { type: "callout", text: "Le traitement est exécuté dans un environnement temporaire sécurisé avec suppression automatique immédiate de vos documents confidentiels." },
+      { type: "h2", text: "Exigences légales pour l'archivage électronique" },
+      { type: "ul", items: [
+        "Les administrations publiques et tribunaux exigent fréquemment le PDF/A pour les actes officiels",
+        "Renseigner les métadonnées XMP (titre, auteur, date) pour faciliter l'indexation documentaire",
+        "Conserver une copie PDF/A couplée à une empreinte numérique (hash) pour prouver l'intégrité",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Quelle est la différence entre un PDF classique et un PDF/A ?" },
+      { type: "p", text: "Un PDF classique peut dépendre de polices non installées sur d'autres ordinateurs. Le PDF/A intègre tout le nécessaire pour être autosuffisant à perpétuité." },
+      { type: "h3", text: "Un lecteur PDF ordinaire peut-il ouvrir un fichier PDF/A ?" },
+      { type: "p", text: "Oui. Tous les lecteurs modernes (Acrobat, navigateurs web, visionneuses mobiles) affichent les fichiers PDF/A sans aucun paramétrage particulier." },
+      { type: "h3", text: "Le passage en PDF/A augmente-t-il le poids du fichier ?" },
+      { type: "p", text: "L'incorporation intégrale des fontes vectorielles peut accroître légèrement la taille, au bénéfice d'une pérennité garantie." },
+    ],
+  },
+};

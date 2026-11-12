@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postChecksum: BlogPost = {
+  slug: {
+    en: "how-to-use-checksum",
+    fr: "comment-utiliser-checksum",
+  },
+  title: {
+    en: "How to Verify File Integrity with Cryptographic Checksums",
+    fr: "Comment Verifier l Integrite d un Fichier avec des Checksums",
+  },
+  description: {
+    en: "Calculate and verify SHA-256, MD5, and SHA-1 checksum hashes to ensure downloaded files are authentic and uncorrupted.",
+    fr: "Calculez et verifiez les empreintes SHA-256, MD5 et SHA-1 pour garantir l integrite et l authenticite de vos fichiers.",
+  },
+  keywords: {
+    en: ["checksum","checksum online","free checksum","developer tool checksum"],
+    fr: ["checksum","checksum en ligne","outil checksum gratuit","utilitaire checksum"],
+  },
+  publishedAt: "2026-03-25",
+  category: "security",
+  readingMinutes: 4,
+  relatedToolSlug: "checksum",
+  relatedToolLabel: { en: "Checksum", fr: "Checksum" },
+  content: {
+    en: [
+      { type: "p", text: "Calculate and verify SHA-256, MD5, and SHA-1 checksum hashes to ensure downloaded files are authentic and uncorrupted." },
+      { type: "h2", text: "Cryptographic Hashes and Tamper Detection" },
+      { type: "p", text: "A cryptographic checksum is a fixed-size mathematical fingerprint computed from every single bit in a file. If even a single character or byte is modified during transmission or download, the checksum changes completely, exposing corruption or tampering." },
+      { type: "ul", items: ["Instant computation of SHA-256, SHA-512, MD5, and SHA-1 hashes.","Side-by-side automated comparison against official author hash strings.","High-speed streaming hashing handling multi-gigabyte ISO and archive files."] },
+      { type: "h2", text: "Step-by-step practical guide" },
+      { type: "ol", items: ["Drag and drop your file into the checksum calculator.","Select your required hash algorithms (SHA-256 is the modern standard).","Paste the official checksum provided by the software distributor.","Let the verification engine compare the hashes in real time.","Review the green match confirmation or mismatch warning."] },
+      { type: "callout", text: "Privacy guarantee: Checksums are computed locally in your browser memory via Web Crypto API with zero file upload." },
+      { type: "h2", text: "Pro tips and best practices" },
+      { type: "ul", items: ["Always verify SHA-256 checksums before running downloaded executable software or OS disk images.","SHA-256 should always be preferred over MD5 or SHA-1 for security-critical verification."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Why is SHA-256 better than MD5?" },
+      { type: "p", text: "MD5 has known cryptographic collision vulnerabilities, whereas SHA-256 is mathematically collision-resistant." },
+      { type: "h3", text: "Is my large file uploaded to your server to compute the hash?" },
+      { type: "p", text: "No. The calculation runs entirely inside your browser using the native browser Web Crypto streaming API." },
+      { type: "h3", text: "What does it mean if the checksum does not match?" },
+      { type: "p", text: "A mismatch means the file was either incompletely downloaded, corrupted, or altered by a third party." },
+    ],
+    fr: [
+      { type: "p", text: "Calculez et verifiez les empreintes SHA-256, MD5 et SHA-1 pour garantir l integrite et l authenticite de vos fichiers." },
+      { type: "h2", text: "Empreintes Cryptographiques et Detection d Alteration" },
+      { type: "p", text: "Une empreinte cryptographique (checksum) est une signature numerique unique calculee a partir de chaque bit d un fichier. Si un seul octet est altere durant le transfert, l empreinte differe totalement, revelant la corruption." },
+      { type: "ul", items: ["Calcul instantane des condensats SHA-256, SHA-512, MD5 et SHA-1.","Comparaison automatique avec la valeur officielle fournie par l editeur.","Traitement par flux haute performance supportant les fichiers ISO et archives de plusieurs Go."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Deposez votre fichier dans le calculateur de checksum.","Selectionnez les algorithmes souhaites (SHA-256 etant le standard moderne).","Collez l empreinte officielle fournie par le distributeur.","Laissez le comparateur confronter les empreintes instantanement.","Obtenez la confirmation de conformite ou l alerte d alteration."] },
+      { type: "callout", text: "Garantie de confidentialite : Les empreintes sont calculees localement via Web Crypto API sans envoi de fichier." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Verifiez systematiquement le SHA-256 avant d executer un installateur ou une image disque telechargee.","Privilegiez toujours SHA-256 a MD5 ou SHA-1 pour tout controle de securite sensible."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Pourquoi SHA-256 est-il superieur a MD5 ?" },
+      { type: "p", text: "MD5 presente des failles de collision connues, alors que SHA-256 offre une resistance mathematique eprouvee." },
+      { type: "h3", text: "Mon fichier volumineux est-il envoye sur vos serveurs ?" },
+      { type: "p", text: "Non. Le calcul s execute entierement dans votre navigateur via l API Web Crypto sans transfert." },
+      { type: "h3", text: "Que signifie une divergence entre les checksums ?" },
+      { type: "p", text: "Une divergence indique que le fichier a ete mal telecharge, corrompu ou modifie par un tiers." },
+    ],
+  },
+};

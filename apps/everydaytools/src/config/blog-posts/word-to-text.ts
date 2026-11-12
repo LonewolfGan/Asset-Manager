@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postWordToText: BlogPost = {
+  slug: {
+    en: "how-to-convert-word-docx-to-plain-text",
+    fr: "comment-convertir-word-docx-en-texte-brut",
+  },
+  title: {
+    en: "How to Convert Word (DOCX) Documents to Plain Text",
+    fr: "Comment convertir un document Word (DOCX) en texte brut",
+  },
+  description: {
+    en: "Strip formatting, styles, and headers from Word documents to export clean, readable plain text in seconds.",
+    fr: "Supprimez la mise en page et les styles de vos fichiers Word pour exporter un texte brut propre en quelques secondes.",
+  },
+  keywords: {
+    en: ["word to text","docx to txt","convert docx to plain text","extract text from word"],
+    fr: ["word en texte","docx en txt","convertir docx en texte brut","extraire texte word"],
+  },
+  publishedAt: "2026-03-29",
+  category: "documents",
+  readingMinutes: 4,
+  relatedToolSlug: "word-to-text",
+  relatedToolLabel: { en: "Word to Text", fr: "Word en Texte" },
+  content: {
+    en: [
+      { type: "p", text: "Microsoft Word files package complex XML structures, font definitions, and margin styles that get in the way when you only need raw textual content. Converting DOCX files to plain text (.txt) strips formatting baggage while preserving paragraph breaks." },
+      { type: "h2", text: "Why convert Word documents to plain text" },
+      { type: "p", text: "Plain text files are universally compatible with command-line tools, code editors, translation memories, and language models without requiring Microsoft Office licenses." },
+      { type: "ul", items: [
+        "Eliminates hidden metadata and formatting anomalies before publishing",
+        "Reduces file footprint from megabytes down to lightweight kilobytes",
+        "Compatible with all text analysis scripts and natural language processing pipelines",
+      ]},
+      { type: "h2", text: "Step-by-step: how to convert DOCX to plain text" },
+      { type: "ol", items: [
+        "Open the Word to Text tool in your browser with no registration needed.",
+        "Upload your .docx document: files up to 50 MB are supported.",
+        "The parser extracts all paragraphs and body text while stripping XML markup.",
+        "Preview the parsed text or copy it directly to your clipboard.",
+        "Click Download TXT to save your clean text file.",
+      ]},
+      { type: "callout", text: "Text conversion runs inside an isolated ephemeral workspace with zero permanent storage and automatic deletion upon completion." },
+      { type: "h2", text: "Tips for clean text export" },
+      { type: "ul", items: [
+        "Numbered lists and bullet points are preserved as clean indented lines",
+        "Headers and footers can be excluded to avoid repeating chapter names on every page",
+        "Verify that special accented characters are properly saved in standard UTF-8 encoding",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Are images and tables retained in the text file?" },
+      { type: "p", text: "No. Plain text format does not support graphics or formatting. Table cells are converted into sequential spaced text." },
+      { type: "h3", text: "Does this tool support legacy .doc files?" },
+      { type: "p", text: "Our engine is optimized for modern DOCX files. For older .doc files, save them as .docx in Word before uploading." },
+      { type: "h3", text: "Can I copy the output directly to my clipboard?" },
+      { type: "p", text: "Yes. The interface includes an instant copy button for quick pasting into code editors or notes." },
+    ],
+    fr: [
+      { type: "p", text: "Les fichiers Microsoft Word intègrent des balises XML complexes et des styles de polices encombrants lorsqu'on a simplement besoin du texte brut. Convertir un fichier DOCX en texte brut (.txt) supprime les lourdeurs de mise en forme tout en conservant les sauts de paragraphe." },
+      { type: "h2", text: "Pourquoi convertir Word en texte brut" },
+      { type: "p", text: "Le texte brut est universellement compatible avec les éditeurs de code, les outils en ligne de commande et les modèles d'intelligence artificielle sans nécessiter de licence bureautique." },
+      { type: "ul", items: [
+        "Élimine les métadonnées cachées et anomalies de mise en page avant publication",
+        "Allège le poids du fichier de plusieurs mégaoctets à quelques kilooctets légers",
+        "Compatible avec tous les scripts de traitement automatique de texte et d'analyse",
+      ]},
+      { type: "h2", text: "Guide pas à pas : convertir un DOCX en texte brut" },
+      { type: "ol", items: [
+        "Accédez à l'outil Word en Texte dans votre navigateur sans créer de compte.",
+        "Déposez votre document .docx : les fichiers jusqu'à 50 Mo sont pris en charge.",
+        "Le convertisseur extrait les paragraphes en purgeant les balises de style.",
+        "Consultez le texte dans l'aperçu ou copiez-le dans le presse-papier.",
+        "Cliquez sur Télécharger TXT pour enregistrer votre fichier.",
+      ]},
+      { type: "callout", text: "Le traitement s'exécute dans un espace temporaire sécurisé avec suppression automatique immédiate de vos données." },
+      { type: "h2", text: "Conseils pour une extraction propre" },
+      { type: "ul", items: [
+        "Les listes à puces sont conservées sous forme de tirets indentés réguliers",
+        "Les en-têtes et pieds de page répétés sont neutralisés pour ne garder que le contenu",
+        "Vérifier que les caractères accentués sont bien encodés au standard UTF-8",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Les images et tableaux sont-ils conservés ?" },
+      { type: "p", text: "Non. Le format texte brut ne gère pas les images. Les cellules de tableaux sont linéarisées de façon lisible." },
+      { type: "h3", text: "L'outil prend-il en charge l'ancien format .doc ?" },
+      { type: "p", text: "Le moteur est optimisé pour le standard DOCX moderne. Pour les anciens fichiers .doc, enregistrez-les en .docx au préalable." },
+      { type: "h3", text: "Puis-je copier le texte en un clic ?" },
+      { type: "p", text: "Oui. Un bouton dédié permet de copier l'intégralité du texte directement dans votre presse-papier." },
+    ],
+  },
+};

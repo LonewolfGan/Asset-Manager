@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postLoremIpsum: BlogPost = {
+  slug: {
+    en: "how-to-use-lorem-ipsum",
+    fr: "comment-utiliser-lorem-ipsum",
+  },
+  title: {
+    en: "How to Generate Custom Lorem Ipsum Dummy Placeholder Text",
+    fr: "Comment Generer du Faux-Texte Lorem Ipsum Personnalise",
+  },
+  description: {
+    en: "Generate clean dummy text by paragraphs, sentences, or words with classic Latin phrasing for UI mockups and layouts.",
+    fr: "Generez du faux-texte pour vos maquettes par paragraphes, phrases ou mots avec la structure latine classique.",
+  },
+  keywords: {
+    en: ["lorem ipsum","lorem-ipsum online","free lorem-ipsum","developer tool lorem-ipsum"],
+    fr: ["lorem ipsum","lorem-ipsum en ligne","outil lorem-ipsum gratuit","utilitaire lorem-ipsum"],
+  },
+  publishedAt: "2026-03-25",
+  category: "security",
+  readingMinutes: 4,
+  relatedToolSlug: "lorem-ipsum",
+  relatedToolLabel: { en: "Lorem Ipsum", fr: "Lorem Ipsum" },
+  content: {
+    en: [
+      { type: "p", text: "Generate clean dummy text by paragraphs, sentences, or words with classic Latin phrasing for UI mockups and layouts." },
+      { type: "h2", text: "Placeholder Typography and Layout Prototyping" },
+      { type: "p", text: "When designing websites and print layouts, using real readable copy distracts stakeholders from evaluating typographic balance and hierarchy. Lorem Ipsum provides balanced letter distribution modeled after Cicero's classical Latin, keeping focus on layout architecture." },
+      { type: "ul", items: ["Generate custom counts of paragraphs, sentences, words, or unordered list items.","Option to begin with the iconic 'Lorem ipsum dolor sit amet' or vary randomly.","Instant one-click copy to clipboard with HTML markup or plain text output."] },
+      { type: "h2", text: "Step-by-step practical guide" },
+      { type: "ol", items: ["Choose generation unit: Paragraphs, Sentences, Words, or Lists.","Enter the required quantity using the numeric stepper.","Toggle whether to start with the standard 'Lorem ipsum' phrase.","Select plain text or HTML p tag formatting.","Click copy to clipboard or export directly to your design tool."] },
+      { type: "callout", text: "Privacy guarantee: Generator runs locally in memory without analytics tracking or network requests." },
+      { type: "h2", text: "Pro tips and best practices" },
+      { type: "ul", items: ["Export with HTML tags enabled when populating CMS test environments or mock blog articles.","Use paragraph counts matching your target UI cards to stress-test responsive layout wrapping."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Where does the original Lorem Ipsum text come from?" },
+      { type: "p", text: "It is derived from sections 1.10.32 and 1.10.33 of Cicero's 45 BC treatise 'De Finibus Bonorum et Malorum'." },
+      { type: "h3", text: "Can I generate HTML-formatted placeholder text?" },
+      { type: "p", text: "Yes. You can toggle HTML output to automatically wrap each paragraph inside p tags." },
+      { type: "h3", text: "Why is Lorem Ipsum better than repeating random words?" },
+      { type: "p", text: "It mimics natural letter frequency and word length variation, creating realistic visual texture in typographic layouts." },
+    ],
+    fr: [
+      { type: "p", text: "Generez du faux-texte pour vos maquettes par paragraphes, phrases ou mots avec la structure latine classique." },
+      { type: "h2", text: "Typographie Temporaire et Prototypage de Mise en Page" },
+      { type: "p", text: "Lors de la conception d interfaces, le vrai texte distrait souvent l evaluation de la hierarchie visuelle. Le faux-texte Lorem Ipsum offre une repartition naturelle des lettres inspiree de Ciceron, focalisant l attention sur le design." },
+      { type: "ul", items: ["Generation personnalisee par nombre de paragraphes, phrases, mots ou listes a puces.","Option pour debuter par l authentique 'Lorem ipsum dolor sit amet' ou varier aleatoirement.","Copie en 1 clic vers le presse-papiers au format texte brut ou balise en HTML."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Choisissez l unite : Paragraphes, Phrases, Mots ou Listes.","Definissez la quantite souhaitee via le selecteur numerique.","Cochez ou non l amorce classique 'Lorem ipsum dolor sit amet'.","Choisissez le format : texte brut ou balisage HTML p.","Copiez dans le presse-papiers pour alimenter vos maquettes."] },
+      { type: "callout", text: "Garantie de confidentialite : Le generateur s execute en memoire locale sans traceur reseau." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Activez l export avec balises HTML pour alimenter rapidement vos articles de test en CMS.","Calibrez le volume de faux-texte pour tester le comportement responsif de vos cartes d interface."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "D ou provient le texte Lorem Ipsum a l origine ?" },
+      { type: "p", text: "Il est tire d un traite philosophique de Ciceron ecrit en 45 av. J.-C., 'De Finibus Bonorum et Malorum'." },
+      { type: "h3", text: "Puis-je generer du faux-texte directement balise en HTML ?" },
+      { type: "p", text: "Oui. L option d export HTML enveloppe automatiquement chaque bloc dans des balises p." },
+      { type: "h3", text: "Pourquoi Lorem Ipsum est-il preferable a des mots aleatoires ?" },
+      { type: "p", text: "Il imite la frequence reelle des lettres et la longueur des mots, creant une texture visuelle realiste." },
+    ],
+  },
+};

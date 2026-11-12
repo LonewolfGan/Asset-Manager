@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postFlipRotateImage: BlogPost = {
+  slug: {
+    en: "how-to-flip-and-rotate-images-online",
+    fr: "comment-retourner-et-pivoter-image-en-ligne",
+  },
+  title: {
+    en: "How to Flip and Rotate Images Online with Zero Loss",
+    fr: "Comment retourner et faire pivoter une image en ligne",
+  },
+  description: {
+    en: "Rotate images 90, 180, or 270 degrees and flip photos horizontally or vertically directly in your browser with zero quality degradation.",
+    fr: "Pivotez vos images à 90, 180 ou 270 degrés et effectuez un miroir horizontal ou vertical sans aucune perte de qualité.",
+  },
+  keywords: {
+    en: ["rotate image","flip photo horizontally","mirror image online","fix sideways photo"],
+    fr: ["pivoter image","retourner photo","effet miroir image","redresser image en ligne"],
+  },
+  publishedAt: "2026-04-27",
+  category: "image",
+  readingMinutes: 4,
+  relatedToolSlug: "flip-rotate-image",
+  relatedToolLabel: { en: "Flip & Rotate Image", fr: "Retourner & Pivoter Image" },
+  content: {
+    en: [
+      { type: "p", text: "Smartphone cameras frequently misread orientation sensors when capturing documents flat on a desk, saving upside-down photos. Similarly, selfie front cameras produce mirrored text on shirts and signs. Rotating and flipping images corrects orientation and mirror inversions in seconds." },
+      { type: "h2", text: "Why rotate and flip images correctly" },
+      { type: "p", text: "Fixing photo orientation permanently rewrites pixel arrays so images display consistently across all browsers, image viewers, and printing devices." },
+      { type: "ul", items: [
+        "Rotates images in 90, 180, and 270-degree increments to fix sideways scans",
+        "Flips photos horizontally (mirror effect) to correct inverted selfie text",
+        "Flips images vertically for creative upside-down reflections and textures",
+      ]},
+      { type: "h2", text: "Step-by-step: how to flip and rotate images" },
+      { type: "ol", items: [
+        "Open the Flip & Rotate Image tool in your browser with zero registration needed.",
+        "Upload your JPG, PNG, or WebP photo up to 50 MB.",
+        "Click the Rotate buttons for 90-degree turns or Flip Horizontal / Vertical.",
+        "Inspect the real-time preview to verify correct orientation.",
+        "Click Save Image to download your corrected photo immediately.",
+      ]},
+      { type: "callout", text: "Image transformations execute inside an isolated ephemeral workspace and are purged automatically upon completion. No files are stored on our servers." },
+      { type: "h2", text: "Tips for mobile photography" },
+      { type: "ul", items: [
+        "Flip selfie photos horizontally to make printed shirt text read from left to right naturally",
+        "Rotate top-down food and desk photos to standard portrait before publishing to social media",
+        "Verify EXIF orientation flags are rewritten cleanly to prevent mobile viewer resets",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Does rotating an image degrade its visual sharpness?" },
+      { type: "p", text: "No. Orthogonal 90-degree rotations simply remap pixel coordinate grids without lossy re-sampling or blurring." },
+      { type: "h3", text: "What is the difference between horizontal and vertical flip?" },
+      { type: "p", text: "Horizontal flip creates a left-to-right mirror image. Vertical flip turns the image upside down from top to bottom." },
+      { type: "h3", text: "Is transparent background preserved in PNG files?" },
+      { type: "p", text: "Yes. Alpha transparency channels remain fully intact throughout all rotation and flip operations." },
+    ],
+    fr: [
+      { type: "p", text: "Les capteurs d'orientation des smartphones enregistrent parfois des photos à l'envers lorsqu'on photographie un document posé à plat. De même, les capteurs avant de selfie inversent souvent le texte des vêtements. Pivoter et retourner vos images rétablit le bon sens d'affichage en quelques clics." },
+      { type: "h2", text: "Pourquoi corriger l'orientation de vos photos" },
+      { type: "p", text: "Réécrire l'orientation des pixels de manière définitive assure un affichage irréprochable sur tous les ordinateurs, réseaux sociaux et logiciels d'impression." },
+      { type: "ul", items: [
+        "Pivote par incréments de 90°, 180° et 270° pour redresser les scans couchés",
+        "Applique un miroir horizontal pour rendre le texte lisible sur les selfies",
+        "Permet un retournement vertical pour créer des effets créatifs de reflets",
+      ]},
+      { type: "h2", text: "Guide pas à pas : retourner et pivoter une image" },
+      { type: "ol", items: [
+        "Accédez à l'outil Retourner & Pivoter dans votre navigateur sans créer de compte.",
+        "Déposez votre photo JPG, PNG ou WebP (jusqu'à 50 Mo).",
+        "Cliquez sur les commandes de rotation ou sur Miroir Horizontal / Vertical.",
+        "Vérifiez le résultat en temps réel dans l'aperçu interactif.",
+        "Téléchargez immédiatement votre image corrigée et redressée.",
+      ]},
+      { type: "callout", text: "Le traitement est réalisé dans un espace temporaire sécurisé avec suppression automatique immédiate de vos données." },
+      { type: "h2", text: "Conseils pour vos photos sur mobile" },
+      { type: "ul", items: [
+        "Retourner horizontalement les selfies pour que les logos de t-shirts se lisent à l'endroit",
+        "Redresser les photos de recettes prises du dessus avant de les partager sur les réseaux",
+        "Vérifier que la nouvelle orientation est bien enregistrée dans les métadonnées",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "La rotation dégrade-t-elle la netteté de la photo ?" },
+      { type: "p", text: "Non. Les rotations orthogonales à 90 degrés réagencent simplement la grille de pixels sans recalcul destructif ni perte de netteté." },
+      { type: "h3", text: "Quelle est la différence entre miroir horizontal et vertical ?" },
+      { type: "p", text: "Le miroir horizontal inverse la gauche et la droite comme dans une glace. Le miroir vertical inverse le haut et le bas." },
+      { type: "h3", text: "La transparence des fichiers PNG est-elle préservée ?" },
+      { type: "p", text: "Oui. La couche de transparence alpha reste totalement intacte lors de toutes les manipulations." },
+    ],
+  },
+};

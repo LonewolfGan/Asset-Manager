@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postTiffToWebp: BlogPost = {
+  slug: {
+    en: "how-to-convert-tiff-to-webp",
+    fr: "comment-convertir-tiff-to-webp",
+  },
+  title: {
+    en: "How to Convert TIFF to WebP for Fast Web Publishing",
+    fr: "Comment Convertir TIFF en WebP pour la Publication Web Rapide",
+  },
+  description: {
+    en: "Transform heavy, multi-page or high-resolution TIFF images into web-ready WebP files without losing photographic fidelity.",
+    fr: "Transformez vos images TIFF haute resolution lourdes en fichiers WebP prets pour le web sans perte de clarte photographique.",
+  },
+  keywords: {
+    en: ["tiff to webp","convert tiff to webp","tiff-to-webp converter online","free tiff-to-webp"],
+    fr: ["tiff to webp","convertir tiff en webp","convertisseur tiff-to-webp gratuit","outil tiff-to-webp"],
+  },
+  publishedAt: "2026-03-24",
+  category: "image",
+  readingMinutes: 4,
+  relatedToolSlug: "tiff-to-webp",
+  relatedToolLabel: { en: "TIFF to WEBP", fr: "TIFF en WEBP" },
+  content: {
+    en: [
+      { type: "p", text: "Transform heavy, multi-page or high-resolution TIFF images into web-ready WebP files without losing photographic fidelity." },
+      { type: "h2", text: "Bridging Desktop Archival TIFF with High-Speed Web Delivery" },
+      { type: "p", text: "Tagged Image File Format (TIFF) is the standard for high-end print, raw photography, and document scanners, but cannot be rendered in web browsers. Transcoding TIFF to WebP makes scanned assets immediately viewable online with minimal payload." },
+      { type: "ul", items: ["High-dynamic range conversion to standard web color profiles (sRGB).","Significant reduction of massive multi-megabyte scanner files down to web-friendly sizes.","Preservation of razor-sharp text and intricate photographic details."] },
+      { type: "h2", text: "Step-by-step conversion guide" },
+      { type: "ol", items: ["Upload your TIFF or TIF files into the upload workbench.","Select target WebP quality or choose Lossless mode for scanned documents.","Process transcoding to convert raw TIFF strips into optimized WebP.","Inspect converted previews and verify document legibility.","Save your converted WebP files locally."] },
+      { type: "callout", text: "Privacy guarantee: High-resolution scans and documents are processed in secure isolated sandboxes and wiped immediately." },
+      { type: "h2", text: "Pro tips for optimal results" },
+      { type: "ul", items: ["For scanned legal documents with text, select WebP Lossless to avoid artifacting.","For gallery photography, quality 85 provides professional visual fidelity at 10% the file weight."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Can I convert multi-page TIFF files to WebP?" },
+      { type: "p", text: "Yes. Multi-page TIFF files can be extracted into individual WebP pages or combined directly." },
+      { type: "h3", text: "Why can't browsers open TIFF files directly?" },
+      { type: "p", text: "Web browsers lack native TIFF decoding engines due to the format's extensive complexity and licensing history." },
+      { type: "h3", text: "Does conversion handle 16-bit channel TIFF files?" },
+      { type: "p", text: "Yes. 16-bit color channels are tonemapped accurately to 8-bit web color spaces without clipping shadows." },
+    ],
+    fr: [
+      { type: "p", text: "Transformez vos images TIFF haute resolution lourdes en fichiers WebP prets pour le web sans perte de clarte photographique." },
+      { type: "h2", text: "Passer du Format d Archive TIFF a la Diffusion Web Rapide" },
+      { type: "p", text: "Le format TIFF est la reference pour l impression professionnelle et la numerisation mais ne peut etre affiche sur le web. Convertir TIFF en WebP rend vos documents numerises consultables en ligne avec un temps de chargement ultra-court." },
+      { type: "ul", items: ["Conversion des profils colorimetriques vers le profil sRGB standard du web.","Reduction drastique de volumineux scans de plusieurs dizaines de megaoctets.","Preservation des textes fins et du pique photographique des documents numérisés."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Deposez vos fichiers TIFF ou TIF dans l espace de travail.","Definissez la qualite WebP cible ou activez le mode Sans Perte.","Lancez le transcodage des bandes TIFF en format WebP optimise.","Inspectez les apercus et assurez-vous de la lisibilite des textes.","Enregistrez vos fichiers WebP convertis."] },
+      { type: "callout", text: "Garantie de confidentialite : Vos scans haute resolution sont traites dans des bacs a sable isoles et effaces sur-le-champ." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Pour des documents administratifs scannes, optez pour WebP Sans Perte pour eviter tout bruit.","Pour de la photographie d art, une qualite a 85 garantit un rendu professionnel pour 10% du poids."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Peut-on convertir des fichiers TIFF multipages en WebP ?" },
+      { type: "p", text: "Oui. Les fichiers TIFF multipages peuvent etre extraits en pages WebP individuelles ou regroupes." },
+      { type: "h3", text: "Pourquoi les navigateurs n affichent-ils pas le TIFF directement ?" },
+      { type: "p", text: "Les navigateurs ne disposent pas de moteur de decodage TIFF en raison de la complexite historique de ce format." },
+      { type: "h3", text: "La conversion gere-t-elle les TIFF avec des canaux 16-bit ?" },
+      { type: "p", text: "Oui. Les canaux 16-bit sont remappes precisement vers l espace sRGB 8-bit sans boucher les ombres." },
+    ],
+  },
+};

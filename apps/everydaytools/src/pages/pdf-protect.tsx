@@ -213,6 +213,7 @@ export default function PdfProtect() {
             {isProcessing && (
               <ProcessingAperture
                 formatIcon={SOURCE_FORMAT.icon}
+                formatColor={SOURCE_FORMAT.color}
                 formatAlt="PDF"
                 stageLabel={isFr ? 'Chiffrement AES-256 en cours' : 'AES-256 Encryption in progress'}
                 title={formatBytes(inputFile?.size ?? 0)}

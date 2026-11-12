@@ -17,6 +17,19 @@ const trustProxy = trustProxyEnv === undefined
       : parseInt(trustProxyEnv, 10) || 1;
 app.set("trust proxy", trustProxy);
 
+// Security Headers: enforce strict defense against clickjacking, sniffing, and MIME confusion
+app.use((_req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("X-XSS-Protection", "0");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+  if (process.env["NODE_ENV"] === "production") {
+    res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
+  }
+  next();
+});
+
 app.use(
   pinoHttp({
     logger,
@@ -122,7 +135,6 @@ app.use((err: unknown, req: express.Request, res: express.Response, _next: expre
 
   if (origin && CORS_ORIGINS.includes(origin)) {
     res.header("Access-Control-Allow-Origin", origin);
-    res.header("Access-Control-Allow-Credentials", "true");
   }
 
   logger.error({ err, url: req.url, method: req.method }, "Unhandled error");

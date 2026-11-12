@@ -1,73 +1,131 @@
-import type React from 'react';
-import { S } from './security-styles';
+import React from 'react';
+import type { LegalSection } from './LegalPageLayout';
+import { SITE_CONFIG } from '@/config/site.config';
+
+export const getSecurityFrenchSections = (): LegalSection[] => [
+  {
+    id: 'responsible-disclosure',
+    title: '1. Signalement responsable de vulnérabilités',
+    content: (
+      <>
+        <p>
+          La protection des utilisateurs et de leurs flux de données est notre priorité absolue. Si vous identifiez une faiblesse,
+          une anomalie ou une vulnérabilité potentielle sur notre plateforme, nous vous invitons à nous en informer selon les règles
+          de la divulgation coordonnée et responsable :
+        </p>
+        <p>
+          <a
+            href={`mailto:${SITE_CONFIG.emails.security}`}
+            className="text-foreground underline underline-offset-4 decoration-border/80 hover:decoration-foreground transition-colors font-medium font-mono"
+          >
+            {SITE_CONFIG.emails.security}
+          </a>
+        </p>
+        <p>Pour faciliter le traitement de votre signalement, veillez à inclure :</p>
+        <ul>
+          <li>Une description concise et précise de la vulnérabilité observée.</li>
+          <li>Les étapes reproductibles (Proof of Concept sans charge destructrice).</li>
+          <li>L&apos;impact potentiel sur la confidentialité ou l&apos;intégrité du service.</li>
+        </ul>
+        <div className="p-3 sm:p-4 rounded-xl border border-border/70 bg-surface/50 text-xs sm:text-sm text-muted-foreground leading-relaxed">
+          Un contact de sécurité lisible par machine est disponible conformément au standard RFC 9116 sur{' '}
+          <a
+            href="/.well-known/security.txt"
+            className="text-foreground underline underline-offset-4 decoration-border/80 hover:decoration-foreground transition-colors font-mono"
+          >
+            /.well-known/security.txt
+          </a>.
+        </div>
+      </>
+    ),
+  },
+  {
+    id: 'defense-in-depth',
+    title: '2. Principes d&apos;architecture de défense en profondeur',
+    content: (
+      <>
+        <p>
+          EverydayTools Hub applique le principe du moindre privilège et de l&apos;isolation stricte à chaque étape du cycle de traitement :
+        </p>
+        <ul>
+          <li>
+            <strong>Exécution locale sans réseau :</strong> Les outils de manipulation courante s&apos;exécutent en mémoire dans la sandbox de votre navigateur. Aucune donnée ne traverse Internet.
+          </li>
+          <li>
+            <strong>Environnements de calcul cloisonnés (Oracle Cloud) :</strong> Les conversions documentaires complexes sont prises en charge par des instances isolées et sans privilèges administratifs sur notre infrastructure Oracle Cloud, interdisant tout accès latéral au système hôte.
+          </li>
+          <li>
+            <strong>Assainissement préventif (Sanitization) :</strong> L&apos;ensemble des rendus dynamiques de code et documents HTML est strictement filtré via DOMPurify pour neutraliser toute injection XSS.
+          </li>
+        </ul>
+      </>
+    ),
+  },
+  {
+    id: 'isolation-eviction',
+    title: '3. Isolation et destruction des données de conversion',
+    content: (
+      <>
+        <p>
+          Nous ne disposons d&apos;aucun système d&apos;archivage permanent de documents.
+        </p>
+        <p>
+          Chaque traitement serveur génère une session volatile dédiée, hermétique aux autres requêtes concurrentes.
+          Dès que la transformation est terminée et que le document converti vous est transmis, l&apos;espace de travail est immédiatement purgé.
+          Un mécanisme d&apos;éviction automatisé détruit irrémédiablement tout résidu temporaire après un délai maximal de 15 minutes.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: 'network-hardening',
+    title: '4. En-têtes et durcissement réseau',
+    content: (
+      <>
+        <p>
+          Toutes les communications bénéficient d&apos;un chiffrement de pointe TLS 1.3 avec redirection forcée HTTPS (HSTS avec preload).
+        </p>
+        <p>
+          Nos en-têtes HTTP intègrent des politiques strictes de sécurité :
+        </p>
+        <ul>
+          <li><strong>Content-Security-Policy (CSP) :</strong> Restriction stricte des sources de scripts pour empêcher les attaques par injection de contenu.</li>
+          <li><strong>X-Content-Type-Options :</strong> Prévention du reniflage de type MIME (nosniff).</li>
+          <li><strong>Referrer-Policy :</strong> Protection stricte des métadonnées de navigation (strict-origin-when-cross-origin).</li>
+          <li><strong>Permissions-Policy :</strong> Désactivation des capteurs matériels inutiles (caméra, microphone, géolocalisation).</li>
+        </ul>
+      </>
+    ),
+  },
+  {
+    id: 'scope',
+    title: '5. Périmètre éligible (Scope)',
+    content: (
+      <>
+        <p>Les éléments suivants sont éligibles aux audits éthiques et aux signalements de sécurité :</p>
+        <ul>
+          <li>Le domaine web de production : <code>{SITE_CONFIG.domain}</code>.</li>
+          <li>Les points de terminaison de l&apos;API de traitement des documents.</li>
+          <li>La configuration des en-têtes HTTP et du protocole TLS.</li>
+        </ul>
+        <p>
+          Sont formellement exclus du périmètre : les attaques par déni de service (DDoS), l&apos;ingénierie sociale (phishing) et les scanners automatisés massifs non coordonnés.
+        </p>
+      </>
+    ),
+  },
+];
 
 export const SecurityFrench: React.FC = () => {
+  const sections = getSecurityFrenchSections();
   return (
-    <>
-      <section style={S.section}>
-        <h2 style={S.h2}>Signaler une vulnérabilité</h2>
-        <p style={S.p}>
-          Nous prenons la sécurité d'EverydayTools Hub très au sérieux. Si vous découvrez une vulnérabilité de sécurité,
-          merci de nous la signaler de manière responsable par e-mail à{' '}
-          <a href="mailto:security@everydaytools.app" style={S.email}>
-            security@everydaytools.app
-          </a>.
-        </p>
-        <p style={S.p}>Veuillez inclure :</p>
-        <ul style={S.ul}>
-          <li style={S.li}>Une description détaillée de la vulnérabilité</li>
-          <li style={S.li}>Les étapes pour reproduire le comportement</li>
-          <li style={S.li}>L'impact potentiel sur la sécurité ou la confidentialité</li>
-          <li style={S.li}>Toute suggestion de remédiation technique (optionnel)</li>
-        </ul>
-        <div style={S.callout}>
-          Contact de sécurité lisible par machine disponible sur{' '}
-          <a href="/.well-known/security.txt" style={S.email}>
-            /.well-known/security.txt
-          </a>{' '}
-          (RFC 9116).
-        </div>
-      </section>
-
-      <hr style={S.divider} />
-
-      <section style={S.section}>
-        <h2 style={S.h2}>Nos pratiques de sécurité</h2>
-        <ul style={S.ul}>
-          <li style={S.li}>
-            <strong>Architecture Hybride Sécurisée (Oracle VM).</strong> Les outils légers s'exécutent en mémoire dans votre navigateur.
-            Pour les conversions complexes nécessitant des calculs haute fidélité, le traitement est confié à notre serveur API sur VM Oracle dédiée (Port 3001)
-            sous utilisateur non privilégié (UID 10001), avec purge automatique et définitive des espaces temporaires sous 15 minutes.
-          </li>
-          <li style={S.li}>
-            <strong>Politique de sécurité de contenu (CSP).</strong> Des en-têtes CSP stricts sont appliqués à chaque
-            réponse HTTP pour bloquer l'injection de scripts et les ressources externes non autorisées.
-          </li>
-          <li style={S.li}>
-            <strong>HSTS.</strong> Strict-Transport-Security avec préchargement (preload) pour imposer HTTPS chiffré sur l'ensemble des flux.
-          </li>
-          <li style={S.li}>
-            <strong>Aucune conservation permanente de fichiers.</strong> Aucun document n'est archivé, indexé ou revendu.
-            Les espaces de conversion (/tmp/everydaytools) sont isolés par UUID et purgés systématiquement.
-          </li>
-          <li style={S.li}>
-            <strong>Assainissement systématique des entrées.</strong> Tout code HTML affiché dans le navigateur à partir de fichiers
-            utilisateurs est préalablement assaini via DOMPurify.
-          </li>
-        </ul>
-      </section>
-
-      <hr style={S.divider} />
-
-      <section style={S.section}>
-        <h2 style={S.h2}>Périmètre (Scope)</h2>
-        <p style={S.p}>Sont éligibles aux signalements éthiques :</p>
-        <ul style={S.ul}>
-          <li style={S.li}>L'application web everydaytools.app</li>
-          <li style={S.li}>L'API backend et les passerelles de traitement éphémère</li>
-          <li style={S.li}>La configuration des en-têtes HTTP de sécurité</li>
-        </ul>
-      </section>
-    </>
+    <div>
+      {sections.map((sec) => (
+        <section key={sec.id} id={sec.id} style={{ marginBottom: 32 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 600, margin: '0 0 12px' }}>{sec.title}</h2>
+          <div>{sec.content}</div>
+        </section>
+      ))}
+    </div>
   );
 };

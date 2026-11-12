@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postWatermarkImage: BlogPost = {
+  slug: {
+    en: "how-to-watermark-images-online",
+    fr: "comment-ajouter-filigrane-image-en-ligne",
+  },
+  title: {
+    en: "How to Watermark Images and Photos Online",
+    fr: "Comment ajouter un filigrane sur une image ou photo en ligne",
+  },
+  description: {
+    en: "Protect your creative photography, artworks, and brand images by applying custom text stamps or logo watermarks with transparency control.",
+    fr: "Protégez vos photographies, créations artistiques et visuels en appliquant un filigrane texte ou logo avec opacité réglable.",
+  },
+  keywords: {
+    en: ["watermark image","add watermark to photo","protect photos online","copyright stamp image"],
+    fr: ["filigrane image","tatouer photo","proteger photo en ligne","ajouter logo sur photo"],
+  },
+  publishedAt: "2026-04-28",
+  category: "image",
+  readingMinutes: 4,
+  relatedToolSlug: "watermark-image",
+  relatedToolLabel: { en: "Watermark Image", fr: "Filigrane Image" },
+  content: {
+    en: [
+      { type: "p", text: "Publishing original photography, real estate listings, or design portfolios online exposes your creative work to unauthorized theft, uncredited reposts, and scraped catalog re-use. Applying a semi-transparent watermark preserves intellectual property and establishes brand ownership." },
+      { type: "h2", text: "Why watermarking photos protects creator rights" },
+      { type: "p", text: "A visible watermark acts as a deterrent against unauthorized commercial use while ensuring that viewers can trace the original author or agency." },
+      { type: "ul", items: [
+        "Stamps copyright notices, author names, or brand logos onto images with custom opacity",
+        "Positions marks in corners, centers, or diagonal repeating tiles for complete protection",
+        "Protects photography shared on social media, portfolio sites, and stock libraries",
+      ]},
+      { type: "h2", text: "Step-by-step: how to watermark your images" },
+      { type: "ol", items: [
+        "Open the Watermark Image tool in your browser with zero registration needed.",
+        "Upload your JPG, PNG, or WebP photo up to 50 MB.",
+        "Type your copyright text or upload your transparent PNG logo overlay.",
+        "Adjust font size, opacity (20 to 30 percent recommended), and anchor position.",
+        "Click Apply Watermark to download your protected photo immediately.",
+      ]},
+      { type: "callout", text: "Watermarking runs inside an isolated ephemeral workspace and is purged automatically upon completion. No images are stored on our servers." },
+      { type: "h2", text: "Best practices for professional photographers" },
+      { type: "ul", items: [
+        "Use semi-transparent white or light gray text for subtle elegance over dark backgrounds",
+        "Avoid obscuring main subject facial features while ensuring the watermark cannot be easily cropped",
+        "Include a copyright year and website URL for clear attribution",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Can I upload my own PNG logo as a watermark?" },
+      { type: "p", text: "Yes. You can upload any transparent PNG logo and scale it to fit over your photography." },
+      { type: "h3", text: "What opacity level looks most professional?" },
+      { type: "p", text: "An opacity between 20 percent and 30 percent protects against theft while allowing viewers to appreciate image details." },
+      { type: "h3", text: "Does watermarking lower photo resolution?" },
+      { type: "p", text: "No. The watermark layer is blended directly onto your photo at full original pixel resolution." },
+    ],
+    fr: [
+      { type: "p", text: "Publier des photographies originales, clichés immobiliers ou créations graphiques sur internet expose vos œuvres au pillage, à la réutilisation sans crédit et à la copie non autorisée. Apposer un filigrane semi-transparent protège votre propriété intellectuelle et signe vos réalisations." },
+      { type: "h2", text: "Pourquoi signer et protéger vos visuels" },
+      { type: "p", text: "Un filigrane visible dissuade l'exploitation commerciale illicite tout en permettant aux internautes d'identifier immédiatement l'auteur ou l'agence d'origine." },
+      { type: "ul", items: [
+        "Applique des mentions de copyright, noms d'artistes ou logos avec opacité modulable",
+        "Permet un positionnement discret en coin ou répété en diagonale sur toute la surface",
+        "Sécurise vos clichés diffusés sur les réseaux sociaux, galeries et portfolios",
+      ]},
+      { type: "h2", text: "Guide pas à pas : apposer un filigrane sur une image" },
+      { type: "ol", items: [
+        "Accédez à l'outil Filigrane Image dans votre navigateur sans créer de compte.",
+        "Déposez votre photo JPG, PNG ou WebP (fichiers acceptés jusqu'à 50 Mo).",
+        "Saisissez votre mention de copyright ou téléversez votre logo PNG transparent.",
+        "Réglez la taille, l'opacité (20 à 30 % recommandé) et la position de l'estampille.",
+        "Cliquez sur Appliquer pour télécharger immédiatement votre image protégée.",
+      ]},
+      { type: "callout", text: "Le traitement s'exécute dans un espace temporaire sécurisé avec suppression automatique immédiate de vos créations." },
+      { type: "h2", text: "Conseils pour les photographes et créateurs" },
+      { type: "ul", items: [
+        "Privilégier un marquage blanc semi-transparent pour une intégration élégante",
+        "Placer le filigrane de manière à empêcher un recadrage facile sans masquer le sujet clé",
+        "Ajouter le symbole copyright et l'adresse de votre site pour faciliter la prise de contact",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Peut-on utiliser son propre logo comme filigrane ?" },
+      { type: "p", text: "Oui. Vous pouvez importer votre logo au format PNG avec fond transparent et l'ajuster sur votre photo." },
+      { type: "h3", text: "Quel niveau d'opacité offre le meilleur rendu ?" },
+      { type: "p", text: "Une opacité située entre 20 et 30 % garantit une dissuasion efficace sans gêner la contemplation du cliché." },
+      { type: "h3", text: "L'ajout d'un filigrane dégrade-t-il la netteté de la photo ?" },
+      { type: "p", text: "Non. Le calque de filigrane est fusionné directement sur votre image en pleine résolution sans perte de qualité." },
+    ],
+  },
+};

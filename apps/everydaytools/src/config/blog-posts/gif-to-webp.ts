@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postGifToWebp: BlogPost = {
+  slug: {
+    en: "how-to-convert-gif-to-webp",
+    fr: "comment-convertir-gif-to-webp",
+  },
+  title: {
+    en: "How to Convert Animated GIF to Animated WebP",
+    fr: "Comment Convertir un GIF Anime en WebP Anime",
+  },
+  description: {
+    en: "Convert heavy animated GIFs into lightweight animated WebP files with 24-bit colors and dramatic file size reductions.",
+    fr: "Convertissez vos GIF animes lourds en fichiers WebP animes legers avec couleurs 24-bit et reduction massive du poids.",
+  },
+  keywords: {
+    en: ["gif to webp","convert gif to webp","gif-to-webp converter online","free gif-to-webp"],
+    fr: ["gif to webp","convertir gif en webp","convertisseur gif-to-webp gratuit","outil gif-to-webp"],
+  },
+  publishedAt: "2026-03-24",
+  category: "image",
+  readingMinutes: 4,
+  relatedToolSlug: "gif-to-webp",
+  relatedToolLabel: { en: "GIF to WEBP", fr: "GIF en WEBP" },
+  content: {
+    en: [
+      { type: "p", text: "Convert heavy animated GIFs into lightweight animated WebP files with 24-bit colors and dramatic file size reductions." },
+      { type: "h2", text: "Breaking the 256-Color Barrier of Legacy GIF" },
+      { type: "p", text: "GIF was designed in 1987 and is restricted to an 8-bit palette of 256 colors per frame, leading to heavy dithering. Animated WebP supports full 24-bit color along with keyframe delta compression, reducing file weights by 60% to 90%." },
+      { type: "ul", items: ["Full 24-bit RGB color depth eliminating harsh color banding and dithering dots.","Inter-frame motion estimation and delta compression for massive size reductions.","Full alpha channel support for smooth transparency on any website background."] },
+      { type: "h2", text: "Step-by-step conversion guide" },
+      { type: "ol", items: ["Upload your animated GIF file.","Set target frame rate, quality parameters, and loop count preferences.","Process frame extraction and transcode into WebP animation tracks.","Preview the fluid animation side-by-side with file size stats.","Download the high-performance animated WebP file."] },
+      { type: "callout", text: "Privacy guarantee: Animations are processed in RAM workspaces without external retention or log storage." },
+      { type: "h2", text: "Pro tips for optimal results" },
+      { type: "ul", items: ["Animated WebP renders smoothly across all modern mobile and desktop browsers.","Combine frame rate decimation with quality 80 to shrink 20MB GIFs down to 2MB."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Do animated WebP files loop automatically like GIFs?" },
+      { type: "p", text: "Yes. The loop flag is preserved or customizable, enabling seamless infinite playback on websites." },
+      { type: "h3", text: "Why is the animated WebP so much smaller than my GIF?" },
+      { type: "p", text: "GIF duplicates entire frames, whereas WebP only encodes changed pixels between frames using modern video-style compression." },
+      { type: "h3", text: "Can animated WebP have smooth transparent edges?" },
+      { type: "p", text: "Yes. Unlike GIF's binary 1-bit transparency which creates jagged edges, WebP offers smooth 8-bit alpha blending." },
+    ],
+    fr: [
+      { type: "p", text: "Convertissez vos GIF animes lourds en fichiers WebP animes legers avec couleurs 24-bit et reduction massive du poids." },
+      { type: "h2", text: "Depasser la Limite des 256 Couleurs du Format GIF Historique" },
+      { type: "p", text: "Concu en 1987, le format GIF est limite a une palette 8-bit de 256 couleurs, generant un tramage disgracieux. Le format WebP anime prend en charge les couleurs 24-bit et la compression delta de trames, reduisant le poids de 60% a 90%." },
+      { type: "ul", items: ["Profondeur couleur 24-bit RGB supprimant le tramage et les bandes de couleur visibles.","Estimation de mouvement et compression inter-trames pour un allegement majeur.","Canal alpha complet permettant une transparence nette sur n importe quel fond de page."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Deposez votre fichier GIF anime.","Ajustez la cadence de trames, la qualite et les parametres de boucle.","Lancez l extraction et le transcodage des pistes d animation WebP.","Verifiez la fluidite et le gain de poids dans le lecteur integre.","Telechargez votre fichier WebP anime optimise."] },
+      { type: "callout", text: "Garantie de confidentialite : Les animations sont traitees en memoire vive sans stockage de logs externes." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Le WebP anime tourne avec une parfaite fluidite sur mobiles et navigateurs de bureau.","Combinez un sous-echantillonnage de trames avec une qualite a 80 pour passer de 20 Mo a 2 Mo."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Les fichiers WebP animes tournent-ils en boucle comme les GIF ?" },
+      { type: "p", text: "Oui. Le drapeau de boucle infinie est preserve et assure une lecture continue sans interruption." },
+      { type: "h3", text: "Pourquoi le WebP anime est-il tellement plus leger que le GIF ?" },
+      { type: "p", text: "Le GIF duplique des images entieres alors que WebP n encode que les pixels modifies entre chaque trame." },
+      { type: "h3", text: "Le WebP anime permet-il des contours transparents lisses ?" },
+      { type: "p", text: "Oui. Contrairement a la transparence binaire du GIF qui produit des bords creneles, WebP dispose d un canal alpha 8-bit fluide." },
+    ],
+  },
+};

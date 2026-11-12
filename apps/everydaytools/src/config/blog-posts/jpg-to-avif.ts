@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postJpgToAvif: BlogPost = {
+  slug: {
+    en: "how-to-convert-jpg-to-avif",
+    fr: "comment-convertir-jpg-to-avif",
+  },
+  title: {
+    en: "How to Convert JPG to AVIF for Cutting-Edge Web Optimization",
+    fr: "Comment Convertir JPG en AVIF pour une Optimisation Web de Pointe",
+  },
+  description: {
+    en: "Shrink heavy JPEG photographs by up to 50% by converting to the modern AVIF format with AV1 compression technology.",
+    fr: "Reduisez le poids de vos photos JPEG jusqu a 50% en les convertissant au format moderne AVIF avec la technologie AV1.",
+  },
+  keywords: {
+    en: ["jpg to avif","convert jpg to avif","jpg-to-avif converter online","free jpg-to-avif"],
+    fr: ["jpg to avif","convertir jpg en avif","convertisseur jpg-to-avif gratuit","outil jpg-to-avif"],
+  },
+  publishedAt: "2026-03-24",
+  category: "image",
+  readingMinutes: 4,
+  relatedToolSlug: "jpg-to-avif",
+  relatedToolLabel: { en: "JPG to AVIF", fr: "JPG en AVIF" },
+  content: {
+    en: [
+      { type: "p", text: "Shrink heavy JPEG photographs by up to 50% by converting to the modern AVIF format with AV1 compression technology." },
+      { type: "h2", text: "Leaping from 1992 JPEG to Modern AV1 Architecture" },
+      { type: "p", text: "JPEG technology is over three decades old. By converting standard JPG photos into AVIF, you replace blocky DCT compression with modern AV1 spatial coding, drastically cutting file weights while completely eliminating color banding in skies and shadows." },
+      { type: "ul", items: ["Massive bandwidth reduction reaching up to 50% smaller sizes than original JPEGs.","Cleaner rendering of smooth color gradients without posterization or banding.","Native browser support across mobile and desktop operating systems."] },
+      { type: "h2", text: "Step-by-step conversion guide" },
+      { type: "ol", items: ["Upload your JPG photographs to the converter.","Select the target AVIF quality level (recommended 75-80).","Run the AV1 encoding engine.","Review side-by-side visual fidelity and compression percentage.","Download your lightweight AVIF files."] },
+      { type: "callout", text: "Privacy guarantee: Photographs are processed in ephemeral sandboxes and immediately purged without trace." },
+      { type: "h2", text: "Pro tips for optimal results" },
+      { type: "ul", items: ["An AVIF quality of 75 usually matches or outperforms a JPEG compressed at quality 90.","Ideal for high-traffic websites looking to reduce CDN bandwidth invoices."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Will converting JPG to AVIF make images look blurred?" },
+      { type: "p", text: "No. AV1 compression maintains high-frequency texture details far better than JPEG at similar low bitrates." },
+      { type: "h3", text: "Can I convert large photo batches to AVIF?" },
+      { type: "p", text: "Yes. Our multi-threaded queue processes multiple photos simultaneously for rapid turnaround." },
+      { type: "h3", text: "Does AVIF support photography EXIF data?" },
+      { type: "p", text: "Yes. EXIF metadata can be preserved inside the AVIF container according to your preferences." },
+    ],
+    fr: [
+      { type: "p", text: "Reduisez le poids de vos photos JPEG jusqu a 50% en les convertissant au format moderne AVIF avec la technologie AV1." },
+      { type: "h2", text: "Passer du Standard JPEG de 1992 a l Architecture Moderne AV1" },
+      { type: "p", text: "La technologie JPEG a plus de trente ans. En convertissant vos photos JPG en AVIF, vous remplacez les blocs DCT par le codage spatial AV1, diminuant de moitie la taille de vos images sans perte de nettete." },
+      { type: "ul", items: ["Gain de bande passante majeur avec des fichiers jusqu a 50% plus legers que le JPEG.","Rendu lisse des degradés de ciel et d ombres sans effet de posterisation.","Affichage natif sur smartphones et ordinateurs via les navigateurs modernes."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Chargez vos photographies JPG sur le convertisseur.","Definissez le niveau de qualite AVIF cible (recommande entre 75 et 80).","Lancez le moteur d encodage AV1.","Analysez le gain de poids et la clarte dans la visionneuse comparative.","Telechargez vos fichiers AVIF alleges."] },
+      { type: "callout", text: "Garantie de confidentialite : Vos photos sont traitees en memoire volatile et purgees sans laisser de trace." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Un fichier AVIF a qualite 75 surpasse generalement le rendu visuel d un JPEG a qualite 90.","Ideal pour les plateformes a fort trafic cherchant a diminuer leurs couts de CDN."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "La conversion JPG vers AVIF rend-elle l image floue ?" },
+      { type: "p", text: "Non. La compression AV1 preserve les textures fines et le grain bien mieux que le JPEG a debit reduit." },
+      { type: "h3", text: "Puis-je convertir de grands volumes de photos en AVIF ?" },
+      { type: "p", text: "Oui. Notre file de traitement parallele traite vos photos simultanement avec une rapidite optimale." },
+      { type: "h3", text: "Le format AVIF supporte-t-il les donnees EXIF ?" },
+      { type: "p", text: "Oui. Les metadonnees EXIF peuvent etre conservees dans le conteneur AVIF selon vos preferences." },
+    ],
+  },
+};

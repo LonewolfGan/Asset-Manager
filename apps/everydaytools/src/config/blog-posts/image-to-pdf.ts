@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postImageToPdf: BlogPost = {
+  slug: {
+    en: "how-to-convert-images-to-pdf",
+    fr: "comment-convertir-images-en-pdf",
+  },
+  title: {
+    en: "How to Convert JPG, PNG, and WebP Images to PDF",
+    fr: "Comment convertir des images JPG, PNG et WebP en PDF",
+  },
+  description: {
+    en: "Combine photos, scans, and graphic designs into a standardized, paginated PDF document with custom margins and orientations.",
+    fr: "Regroupez vos photos, scans et illustrations dans un document PDF paginé avec marges et orientations personnalisées.",
+  },
+  keywords: {
+    en: ["image to pdf","convert jpg to pdf","png to pdf converter","combine photos into pdf"],
+    fr: ["image en pdf","convertir jpg en pdf","photos vers pdf","assembler images en pdf"],
+  },
+  publishedAt: "2026-04-26",
+  category: "image",
+  readingMinutes: 4,
+  relatedToolSlug: "image-to-pdf",
+  relatedToolLabel: { en: "Image to PDF", fr: "Image en PDF" },
+  content: {
+    en: [
+      { type: "p", text: "Emailing loose image attachments for job applications, identity verifications, or expense reimbursements often results in mixed file sequences and download headaches for recipients. Assembling images into a unified PDF document ensures professional presentation." },
+      { type: "h2", text: "Why compile images into a single PDF" },
+      { type: "p", text: "PDF packages multiple receipts, ID cards, and presentation slides into a single organized document with guaranteed chronological page flow." },
+      { type: "ul", items: [
+        "Consolidates dozens of loose images into a single compact download",
+        "Ensures cross-platform readability on every smartphone, desktop, and tablet",
+        "Applies standardized A4 or Letter page sizing with neat margin spacing",
+      ]},
+      { type: "h2", text: "Step-by-step: how to convert images to PDF" },
+      { type: "ol", items: [
+        "Open the Image to PDF converter in your browser with zero registration needed.",
+        "Upload your JPG, PNG, or WebP images: files up to 50 MB are supported.",
+        "Drag thumbnails to arrange pages in your intended chronological sequence.",
+        "Select paper size (A4, Letter) and page orientation (portrait or landscape).",
+        "Click Convert to PDF and download your unified document immediately.",
+      ]},
+      { type: "callout", text: "PDF assembly runs inside an isolated ephemeral workspace and is purged automatically upon completion. No images are stored on our servers." },
+      { type: "h2", text: "Tips for document submissions" },
+      { type: "ul", items: [
+        "Group front and back sides of identification cards onto sequential pages",
+        "Check that receipt amounts and dates are sharp and legible before compiling",
+        "Select portrait mode for vertical smartphone photos to avoid wide white margins",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Can I reorder images before creating the PDF?" },
+      { type: "p", text: "Yes. You can drag and drop image thumbnails in the visual workbench to organize the exact page sequence." },
+      { type: "h3", text: "Does it compress my photos too aggressively?" },
+      { type: "p", text: "No. The compiler embeds photos at high resolution so text on invoices and contracts remains crystal clear." },
+      { type: "h3", text: "Can I combine different image formats like JPG and PNG together?" },
+      { type: "p", text: "Yes. You can mix JPG, PNG, WebP, and BMP files together into a single unified PDF document." },
+    ],
+    fr: [
+      { type: "p", text: "Envoyer des dizaines de photos éparses pour un dossier de location, une note de frais ou une demande administrative complique la vie des destinataires. Regrouper l'ensemble de vos clichés dans un document PDF unique apporte une présentation professionnelle et ordonnée." },
+      { type: "h2", text: "Pourquoi rassembler vos images dans un document PDF" },
+      { type: "p", text: "Le PDF réunit factures, justificatifs de domicile et pièces d'identité dans un fichier paginé consultable d'un simple défilement vertical." },
+      { type: "ul", items: [
+        "Regroupe toutes vos photos éparses dans une seule pièce jointe légère",
+        "Garantit une lisibilité immédiate sur n'importe quel smartphone ou ordinateur",
+        "Harmonise les dimensions aux formats papier standard A4 ou US Letter",
+      ]},
+      { type: "h2", text: "Guide pas à pas : convertir des images en PDF" },
+      { type: "ol", items: [
+        "Accédez à l'outil Image en PDF dans votre navigateur sans créer de compte.",
+        "Déposez vos images JPG, PNG ou WebP (fichiers acceptés jusqu'à 50 Mo).",
+        "Glissez-déposez les vignettes pour définir l'ordre chronologique des pages.",
+        "Choisissez le format de papier (A4, Letter) et l'orientation des pages.",
+        "Cliquez sur Convertir en PDF pour télécharger immédiatement votre livret.",
+      ]},
+      { type: "callout", text: "Le traitement est réalisé au sein d'un espace temporaire sécurisé avec suppression automatique immédiate de vos photos." },
+      { type: "h2", text: "Conseils pour vos dossiers administratifs" },
+      { type: "ul", items: [
+        "Regrouper le recto et le verso des pièces d'identité sur deux pages successives",
+        "Vérifier la lisibilité des montants et dates sur les tickets de caisse",
+        "Choisir l'orientation portrait pour les photos prises à la verticale avec un smartphone",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Peut-on modifier l'ordre des photos avant la génération ?" },
+      { type: "p", text: "Oui. Vous pouvez réorganiser visuellement les vignettes par simple glisser-déposer pour définir la séquence exacte." },
+      { type: "h3", text: "La qualité des textes sur les reçus est-elle préservée ?" },
+      { type: "p", text: "Oui. Le compilateur intègre les images en haute définition pour que les petits caractères restent parfaitement lisibles." },
+      { type: "h3", text: "Peut-on mélanger des formats JPG et PNG dans le même PDF ?" },
+      { type: "p", text: "Oui. Vous pouvez combiner librement des images aux formats JPG, PNG, WebP et BMP au sein du même document final." },
+    ],
+  },
+};

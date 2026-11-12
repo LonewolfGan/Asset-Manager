@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postPngToPdf: BlogPost = {
+  slug: {
+    en: "how-to-convert-png-to-pdf",
+    fr: "comment-convertir-png-to-pdf",
+  },
+  title: {
+    en: "How to Convert PNG Images to a Printable PDF Document",
+    fr: "Comment Convertir des Images PNG en Document PDF Imprimable",
+  },
+  description: {
+    en: "Combine single or multiple PNG graphics, receipts, or screenshots into an organized multi-page PDF with custom margins.",
+    fr: "Assemblez des images, recus ou captures PNG en un document PDF multipage organise avec marges personnalisees.",
+  },
+  keywords: {
+    en: ["png to pdf","convert png to pdf","png-to-pdf converter online","free png-to-pdf"],
+    fr: ["png to pdf","convertir png en pdf","convertisseur png-to-pdf gratuit","outil png-to-pdf"],
+  },
+  publishedAt: "2026-03-24",
+  category: "image",
+  readingMinutes: 4,
+  relatedToolSlug: "png-to-pdf",
+  relatedToolLabel: { en: "PNG to PDF", fr: "PNG en PDF" },
+  content: {
+    en: [
+      { type: "p", text: "Combine single or multiple PNG graphics, receipts, or screenshots into an organized multi-page PDF with custom margins." },
+      { type: "h2", text: "Standardizing PNG Assets into Fixed-Layout PDF" },
+      { type: "p", text: "Sharing loose PNG screenshots often results in disorganized files and mismatched printing scales. Packaging PNG images into a PDF establishes consistent page dimensions, ensures correct print scaling, and bundles everything into one neat file." },
+      { type: "ul", items: ["Standard paper formats including ISO A4, US Letter, or match-image dimensions.","Drag-and-drop page sequence ordering for clean visual flow.","High-resolution vector embedding without raster downsampling or compression artifacts."] },
+      { type: "h2", text: "Step-by-step conversion guide" },
+      { type: "ol", items: ["Upload your PNG images or screenshots.","Reorder pages using the interactive drag handles.","Select your target paper format, margins, and page orientation.","Click convert to compile images into a unified PDF file.","Download your multi-page PDF document."] },
+      { type: "callout", text: "Privacy guarantee: Processing occurs in isolated temporary sandboxes with automatic eviction upon session completion." },
+      { type: "h2", text: "Pro tips for optimal results" },
+      { type: "ul", items: ["Select Fit to Page to ensure oversized high-DPI screenshots fit cleanly within standard margins.","Ideal for bundling receipts and expense reports into a single file for accounting submissions."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Can I merge multiple PNG screenshots into one multi-page PDF?" },
+      { type: "p", text: "Yes. You can upload dozens of screenshots, adjust their order, and compile them into a single PDF." },
+      { type: "h3", text: "Will transparent PNG backgrounds turn black in the PDF?" },
+      { type: "p", text: "No. Transparent areas are automatically backed with a clean white canvas to ensure perfect printing." },
+      { type: "h3", text: "Does converting PNG to PDF reduce image resolution?" },
+      { type: "p", text: "No. Your images are embedded at full original resolution for sharp physical prints and zooming." },
+    ],
+    fr: [
+      { type: "p", text: "Assemblez des images, recus ou captures PNG en un document PDF multipage organise avec marges personnalisees." },
+      { type: "h2", text: "Standardiser des Images PNG en un Document PDF a Mise en Page Fixe" },
+      { type: "p", text: "Envoyer des captures PNG eparpillees provoque des erreurs de classement et des impressions mal cadrees. Assembler vos PNG en PDF standardise les dimensions de page et regroupe l ensemble dans un fichier unique pret a l envoi." },
+      { type: "ul", items: ["Formats de papier normalises incluant ISO A4, US Letter ou dimensions calquees sur l image.","Reorganisation intuitive de l ordre des pages par glisser-deposer.","Integration vectorielle haute definition sans recompression degradante des images."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Chargez vos images ou captures PNG.","Reorganisez l ordre des pages via les poignees interactives.","Selectionnez le format de papier, les marges et l orientation.","Cliquez sur convertir pour assembler le document PDF unifie.","Telechargez votre document PDF multipage."] },
+      { type: "callout", text: "Garantie de confidentialite : Vos documents sont assembles en sandbox ephemere et purges des la fin." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Choisissez Ajuster a la page pour que vos captures d ecran haute resolution s inserent proprement.","Ideal pour compiler des justificatifs de frais en un seul fichier propre destine a la comptabilite."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Puis-je fusionner plusieurs captures PNG dans un seul PDF ?" },
+      { type: "p", text: "Oui. Vous pouvez ajouter des dizaines de captures, reorganiser l ordre et generer un PDF unique." },
+      { type: "h3", text: "Les fonds transparents des PNG deviennent-ils noirs dans le PDF ?" },
+      { type: "p", text: "Non. Les zones transparentes sont automatiquement posees sur un fond blanc pour une impression nette." },
+      { type: "h3", text: "La conversion PNG vers PDF reduit-elle la definition des images ?" },
+      { type: "p", text: "Non. Vos images sont incorporees dans leur definition native pour un zoom et une impression impeccables." },
+    ],
+  },
+};

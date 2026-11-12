@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 export interface ProcessingApertureProps {
   /** Path to the authentic format vector icon (e.g. '/icons/pdf.svg') */
   formatIcon: string;
+  /** Format accent color (e.g. '#EC1C24' for PDF). Defaults to format color or brand accent */
+  formatColor?: string;
   /** Alt label for the icon (default: 'Format') */
   formatAlt?: string;
   /** High-level uppercase telemetry stage label (e.g. 'DÉCOUPE EN COURS') */
@@ -20,10 +22,12 @@ export interface ProcessingApertureProps {
 
 /**
  * Optical Aperture processing view (EverydayTools Design System)
- * Three concentric high-precision SVG rings with continuous kinetic rotation and central icon.
+ * Mechanical concentric SVG calibration rings with continuous kinetic rotation and central icon.
+ * Dynamically styled with the document's authentic format color.
  */
 export const ProcessingAperture: React.FC<ProcessingApertureProps> = ({
   formatIcon,
+  formatColor,
   formatAlt = 'Format',
   stageLabel,
   title,
@@ -31,6 +35,16 @@ export const ProcessingAperture: React.FC<ProcessingApertureProps> = ({
   progress,
   className = '',
 }) => {
+  const effectiveColor =
+    formatColor ||
+    (formatIcon?.toLowerCase().includes('pdf')
+      ? '#EC1C24'
+      : formatIcon?.toLowerCase().includes('png') || formatIcon?.toLowerCase().includes('bmp')
+        ? '#0066FF'
+        : formatIcon?.toLowerCase().includes('jpg') || formatIcon?.toLowerCase().includes('jpeg')
+          ? '#22A654'
+          : 'var(--accent)');
+
   return (
     <motion.div
       key="processing-aperture"
@@ -77,7 +91,7 @@ export const ProcessingAperture: React.FC<ProcessingApertureProps> = ({
           />
         </svg>
 
-        {/* High-Precision Kinetic Arc: Continuous Fluid Rotation in Solid #FF6B35 */}
+        {/* High-Precision Kinetic Arc: Dynamic Format Coloration */}
         <svg
           className="absolute inset-0 w-full h-full animate-[spin_1.8s_cubic-bezier(0.4,0,0.2,1)_infinite]"
           viewBox="0 0 200 200"
@@ -88,19 +102,26 @@ export const ProcessingAperture: React.FC<ProcessingApertureProps> = ({
             cy="100"
             r="80"
             fill="none"
-            stroke="#FF6B35"
+            stroke={effectiveColor}
             strokeWidth="2.5"
             strokeDasharray="90 380"
             strokeLinecap="round"
           />
         </svg>
 
-        {/* Focal Center: Authentic Format Icon */}
-        <div className="relative z-10 w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center">
+        {/* Focal Center: Authentic Format Icon housed in subtle format-tinted enclosure */}
+        <div
+          className="relative z-10 w-20 h-20 sm:w-24 sm:h-24 rounded-2xl flex items-center justify-center p-3 sm:p-4 shadow-sm"
+          style={{
+            backgroundColor: `${effectiveColor}0D`,
+            borderColor: `${effectiveColor}33`,
+            borderWidth: 1.5,
+          }}
+        >
           <img
             src={formatIcon}
             alt={formatAlt}
-            className="w-16 h-16 sm:w-18 sm:h-18 object-contain"
+            className="w-12 h-12 sm:w-14 sm:h-14 object-contain"
           />
         </div>
       </div>

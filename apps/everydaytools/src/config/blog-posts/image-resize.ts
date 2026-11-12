@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postImageResize: BlogPost = {
+  slug: {
+    en: "how-to-resize-images-online",
+    fr: "comment-redimensionner-image-en-ligne",
+  },
+  title: {
+    en: "How to Resize Images to Exact Dimensions Online",
+    fr: "Comment redimensionner une image aux dimensions exactes en ligne",
+  },
+  description: {
+    en: "Resize JPG, PNG, and WebP images to custom pixel widths and heights with aspect ratio locking, Lanczos resampling, and zero blur.",
+    fr: "Redimensionnez vos images JPG, PNG et WebP en largeur et hauteur exactes avec verrouillage des proportions et rééchantillonnage net.",
+  },
+  keywords: {
+    en: ["resize image","image resizer online","change photo dimensions","resize png jpg to pixels"],
+    fr: ["redimensionner image","changer taille photo","redimensionner en pixels","ajuster dimensions image"],
+  },
+  publishedAt: "2026-04-24",
+  category: "image",
+  readingMinutes: 4,
+  relatedToolSlug: "image-resize",
+  relatedToolLabel: { en: "Resize Image", fr: "Redimensionner une image" },
+  content: {
+    en: [
+      { type: "p", text: "Uploading high-resolution camera photos to website banners, social profile avatars, or email signatures often results in awkward distortion or excessive file loading times. Resizing images to exact pixel dimensions ensures crisp presentation without unnecessary data overhead." },
+      { type: "h2", text: "Understanding pixel dimensions and aspect ratio" },
+      { type: "p", text: "Maintaining proportional width and height prevents images from looking squished or stretched when adapting to specific platform requirements." },
+      { type: "ul", items: [
+        "Locks aspect ratio automatically to prevent distorted proportions",
+        "Uses high-quality Lanczos interpolation for sharp downsampling without blur",
+        "Custom presets available for standard social media and banner sizes",
+      ]},
+      { type: "h2", text: "Step-by-step: how to resize images online" },
+      { type: "ol", items: [
+        "Open the Resize Image tool in your browser with zero registration needed.",
+        "Upload your image file: JPG, PNG, and WebP files up to 50 MB are supported.",
+        "Enter target width or height in pixels, or choose a percentage scaling factor.",
+        "Verify that aspect ratio locking is enabled to maintain natural proportions.",
+        "Click Resize & Download to save your dimensionally perfect image immediately.",
+      ]},
+      { type: "callout", text: "Image processing executes inside an isolated ephemeral workspace and is purged automatically upon completion. No images are stored on our servers." },
+      { type: "h2", text: "Tips for social media and web publishing" },
+      { type: "ul", items: [
+        "Standard Instagram square posts require exactly 1080x1080 pixels for optimal sharpness",
+        "YouTube video thumbnails require 1280x720 pixels in 16:9 widescreen format",
+        "Downscale high-res photos before uploading to WordPress to save web server disk space",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Does resizing down reduce visual quality?" },
+      { type: "p", text: "Downscaling with our Lanczos filter actually improves perceived sharpness by concentrating pixel detail into a compact canvas." },
+      { type: "h3", text: "Can I upscale small images without pixelation?" },
+      { type: "p", text: "Moderate upscaling is supported, but for massive enlargements, our dedicated AI Image Upscaler produces sharper results." },
+      { type: "h3", text: "Is transparent background preserved when resizing PNGs?" },
+      { type: "p", text: "Yes. Alpha transparency channels remain fully intact across all resizing operations." },
+    ],
+    fr: [
+      { type: "p", text: "Publier des photos haute résolution sur des bannières de réseaux sociaux, profils ou signatures de mail provoque souvent des étirements disgracieux ou des lenteurs de chargement. Redimensionner une image à ses dimensions en pixels exactes garantit un affichage net et calibré." },
+      { type: "h2", text: "Comprendre les dimensions en pixels et les proportions" },
+      { type: "p", text: "Conserver le ratio d'aspect entre largeur et hauteur empêche vos portraits ou logos d'apparaître écrasés ou déformés lors du redimensionnement." },
+      { type: "ul", items: [
+        "Verrouille automatiquement le ratio pour éviter toute déformation visuelle",
+        "Utilise l'algorithme de rééchantillonnage Lanczos pour un piqué irréprochable",
+        "Intègre les formats prédéfinis pour les réseaux sociaux et bannières web",
+      ]},
+      { type: "h2", text: "Guide pas à pas : redimensionner une image en ligne" },
+      { type: "ol", items: [
+        "Accédez à l'outil Redimensionner Image dans votre navigateur sans créer de compte.",
+        "Déposez votre image (JPG, PNG ou WebP jusqu'à 50 Mo).",
+        "Saisissez la largeur ou hauteur souhaitée en pixels, ou choisissez un pourcentage.",
+        "Assurez-vous que le cadenas de proportion est verrouillé pour un rendu harmonieux.",
+        "Cliquez sur Redimensionner pour télécharger immédiatement votre image calibrée.",
+      ]},
+      { type: "callout", text: "Le traitement est réalisé au sein d'un environnement temporaire sécurisé avec suppression automatique immédiate de vos visuels." },
+      { type: "h2", text: "Conseils pour les réseaux sociaux" },
+      { type: "ul", items: [
+        "Les publications carrées Instagram exigent 1080x1080 pixels pour une netteté idéale",
+        "Les miniatures de vidéos YouTube requièrent 1280x720 pixels en ratio 16:9",
+        "Réduire les photos avant de les mettre en ligne sur un blog soulage la bande passante",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "La réduction de taille dégrade-t-elle l'image ?" },
+      { type: "p", text: "Non. Notre algorithme Lanczos concentre les détails pour offrir une netteté visuelle accrue sans flou de contour." },
+      { type: "h3", text: "Peut-on agrandir une petite image sans la rendre floue ?" },
+      { type: "p", text: "Un agrandissement modéré fonctionne bien, mais pour multiplier la taille par 2 ou 4, notre outil d'Upscale IA est plus performant." },
+      { type: "h3", text: "La transparence des fichiers PNG est-elle préservée ?" },
+      { type: "p", text: "Oui. Le canal de transparence alpha est intégralement conservé lors du redimensionnement." },
+    ],
+  },
+};

@@ -135,13 +135,44 @@ describe('BlogContentRenderer (TDD Phase RED)', () => {
 
       const items = ol!.querySelectorAll('li');
       expect(items.length).toBe(3);
-      expect(items[0].textContent).toBe('Select your PDF');
-      expect(items[1].textContent).toBe('Wait for conversion');
-      expect(items[2].textContent).toBe('Download DOCX');
+      expect(items[0].textContent).toContain('Select your PDF');
+      expect(items[1].textContent).toContain('Wait for conversion');
+      expect(items[2].textContent).toContain('Download DOCX');
+    });
+
+    it('renders stylized machined step counter badges for ordered step lists', async () => {
+      await renderComponent({ blocks: sampleBlocks });
+
+      const ol = container.querySelector('ol');
+      expect(ol).not.toBeNull();
+
+      const badges = ol!.querySelectorAll('span[aria-hidden="true"]');
+      expect(badges.length).toBe(3);
+      expect(badges[0].textContent?.trim()).toBe('01');
+      expect(badges[1].textContent?.trim()).toBe('02');
+      expect(badges[2].textContent?.trim()).toBe('03');
+    });
+
+    it('renders clean editorial typographic indicators for unordered list items without orange accent slop', async () => {
+      await renderComponent({ blocks: sampleBlocks });
+
+      const ul = container.querySelector('ul');
+      expect(ul).not.toBeNull();
+
+      const items = ul!.querySelectorAll('li');
+      expect(items.length).toBe(3);
+
+      // Verify ZERO orange accent slop on bullet points and clean typographic before dash
+      items.forEach((item) => {
+        const className = item.className || '';
+        expect(className).toContain("before:content-['—']");
+        expect(className).not.toContain('var(--accent)');
+        expect(className).not.toContain('bg-[var(--accent)]');
+      });
     });
   });
 
-  describe('4. Callout Elements (Machined Surface & Anti-Slop)', () => {
+  describe('4. Callout Elements (Editorial Pull-Quote & Zero Slop)', () => {
     it('renders callout container with dedicated data attribute and exact text', async () => {
       await renderComponent({ blocks: sampleBlocks });
 
@@ -152,7 +183,7 @@ describe('BlogContentRenderer (TDD Phase RED)', () => {
       expect(callout.textContent).toContain('Your files are processed directly on your device.');
     });
 
-    it('applies refined border or surface styling without pure black or jarring gradients', async () => {
+    it('applies refined editorial pull-quote styling with border-l and zero box-slop or orange accent badges', async () => {
       await renderComponent({ blocks: sampleBlocks });
 
       const callout = container.querySelector(
@@ -161,8 +192,9 @@ describe('BlogContentRenderer (TDD Phase RED)', () => {
       expect(callout).not.toBeNull();
 
       const className = callout.className || '';
-      expect(className).toMatch(/rounded|border/);
+      expect(className).toMatch(/border-l/);
       expect(className).not.toMatch(/bg-gradient/);
+      expect(className).not.toMatch(/border-l-\[var\(--accent\)\]/);
     });
 
     it('contains strictly zero emojis in callout text and icons (Anti-Slop rule)', async () => {

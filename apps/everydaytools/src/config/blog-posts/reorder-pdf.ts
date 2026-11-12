@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postReorderPdf: BlogPost = {
+  slug: {
+    en: "how-to-reorder-pdf-pages-online",
+    fr: "comment-reorganiser-pages-pdf-en-ligne",
+  },
+  title: {
+    en: "How to Reorder and Rearrange PDF Pages Visually",
+    fr: "Comment réorganiser et trier les pages d'un PDF visuellement",
+  },
+  description: {
+    en: "Drag and drop PDF pages into the correct sequence, delete unwanted sheets, and save a clean reorganized document in seconds.",
+    fr: "Déplacez les pages de votre PDF par simple glisser-déposer, supprimez les pages superflues et enregistrez votre document réorganisé en quelques secondes.",
+  },
+  keywords: {
+    en: ["reorder pdf pages","rearrange pdf","sort pdf pages","delete pages from pdf","organize pdf"],
+    fr: ["reorganiser pages pdf","trier pages pdf","changer ordre pages pdf","supprimer page pdf","classer pdf"],
+  },
+  publishedAt: "2026-03-23",
+  category: "pdf",
+  readingMinutes: 4,
+  relatedToolSlug: "reorder-pdf",
+  relatedToolLabel: { en: "Reorder PDF", fr: "Réorganiser PDF" },
+  content: {
+    en: [
+      { type: "p", text: "Multi-page scans, assembled contracts, and portfolios often contain pages out of chronological order or accidental blank sheets. Reordering PDF pages visually lets you fix document sequence and delete obsolete pages in seconds without expensive desktop software." },
+      { type: "h2", text: "Why visual page sorting saves time" },
+      { type: "p", text: "Instead of typing manual page numbers in a command-line tool, an interactive grid lets you drag thumbnails intuitively. You see exactly what each page looks like before saving changes." },
+      { type: "ul", items: [
+        "Move misplaced cover sheets or appendices to their rightful positions effortlessly",
+        "Delete accidental blank pages generated during office printer scanning with one click",
+        "Review thumbnail previews to verify orientation and completeness before distribution",
+      ]},
+      { type: "h2", text: "Step-by-step: how to reorder PDF pages" },
+      { type: "ol", items: [
+        "Open the Reorder PDF tool in your browser with zero registration needed.",
+        "Upload your PDF file: documents up to 50 MB are supported without account limits.",
+        "Drag and drop page thumbnails to rearrange them into your desired order.",
+        "Click the trash icon on any unwanted pages to remove them from the final file.",
+        "Click Save Reordered PDF and download your clean document immediately.",
+      ]},
+      { type: "callout", text: "Page rearrangement runs inside an isolated ephemeral workspace and is purged automatically upon completion. No documents are retained on our servers." },
+      { type: "h2", text: "Best practices for document organization" },
+      { type: "ul", items: [
+        "Check page sequence against table of contents before distributing official tenders",
+        "Remove trailing blank separator pages from scanned duplex documents",
+        "Verify that appendix sections follow chronological or numerical numbering conventions",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Does reordering pages reduce document quality or clarity?" },
+      { type: "p", text: "No. Reordering pages only adjusts the document tree indices without re-compressing vector artwork or text streams." },
+      { type: "h3", text: "Can I delete multiple unwanted pages at once?" },
+      { type: "p", text: "Yes. Simply click the delete button on any thumbnails you want omitted from the compiled output." },
+      { type: "h3", text: "Is there a limit on how many pages I can reorganize?" },
+      { type: "p", text: "The tool easily handles documents with dozens of pages smoothly in your browser with responsive drag-and-drop feedback." },
+    ],
+    fr: [
+      { type: "p", text: "Les numérisations de dossiers, mémoires et dossiers administratifs comportent souvent des pages inversées ou des feuilles blanches involontaires. Réorganiser visuellement l'ordre des pages permet de corriger la séquence en quelques clics sans logiciel payant." },
+      { type: "h2", text: "Les avantages du tri visuel de pages PDF" },
+      { type: "p", text: "Plutôt que de saisir des numéros de pages au clavier, une grille visuelle interactive vous permet de glisser-déposer les vignettes et de vérifier le contenu de chaque page avant l'enregistrement." },
+      { type: "ul", items: [
+        "Déplacer une page de garde ou une annexe égarée au bon endroit en un geste",
+        "Supprimer les pages blanches accidentelles créées par les scanners recto-verso",
+        "Vérifier l'agencement général du document avant transmission à vos clients",
+      ]},
+      { type: "h2", text: "Guide pas à pas : réorganiser les pages de votre PDF" },
+      { type: "ol", items: [
+        "Accédez à l'outil Réorganiser PDF dans votre navigateur, sans inscription obligatoire.",
+        "Déposez votre document PDF : les fichiers jusqu'à 50 Mo sont pris en charge.",
+        "Glissez-déposez les vignettes de pages pour réorganiser leur ordre selon vos besoins.",
+        "Supprimez les pages inutiles d'un simple clic sur l'icône de corbeille.",
+        "Cliquez sur Enregistrer pour télécharger immédiatement votre PDF remis en ordre.",
+      ]},
+      { type: "callout", text: "Le traitement est réalisé dans un espace de travail temporaire isolé avec suppression automatique immédiate de vos fichiers." },
+      { type: "h2", text: "Conseils pour un classement soigné" },
+      { type: "ul", items: [
+        "Contrôler la cohérence de l'ordre des pages avec la table des matières",
+        "Purger systématiquement les pages blanches résiduelles de vos numérisations",
+        "Vérifier que les annexes suivent l'ordre d'apparition mentionné dans le rapport",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "La réorganisation altère-t-elle la qualité du document ?" },
+      { type: "p", text: "Non. L'outil met à jour l'arbre de structure des pages sans compresser ni dégrader les polices et illustrations." },
+      { type: "h3", text: "Puis-je supprimer plusieurs pages indésirables ?" },
+      { type: "p", text: "Oui. Cliquez simplement sur la corbeille des vignettes correspondantes pour les retirer du document final." },
+      { type: "h3", text: "Combien de pages peut-on trier simultanément ?" },
+      { type: "p", text: "L'outil prend en charge confortablement les documents volumineux avec une interface fluide et réactive." },
+    ],
+  },
+};

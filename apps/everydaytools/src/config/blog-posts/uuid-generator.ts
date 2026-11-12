@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postUuidGenerator: BlogPost = {
+  slug: {
+    en: "how-to-use-uuid-generator",
+    fr: "comment-utiliser-uuid-generator",
+  },
+  title: {
+    en: "How to Generate Cryptographically Secure UUIDs (v4 and v7)",
+    fr: "Comment Generer des Identifiants Uniques UUID (v4 et v7)",
+  },
+  description: {
+    en: "Generate cryptographically secure RFC 4122 UUID v4 and time-ordered UUID v7 identifiers with bulk export options.",
+    fr: "Generez des identifiants uniques securises RFC 4122 UUID v4 et UUID v7 ordonnes dans le temps avec export par lot.",
+  },
+  keywords: {
+    en: ["uuid generator","uuid-generator online","free uuid-generator","developer tool uuid-generator"],
+    fr: ["uuid generator","uuid-generator en ligne","outil uuid-generator gratuit","utilitaire uuid-generator"],
+  },
+  publishedAt: "2026-03-25",
+  category: "security",
+  readingMinutes: 4,
+  relatedToolSlug: "uuid-generator",
+  relatedToolLabel: { en: "Uuid Generator", fr: "Uuid Generator" },
+  content: {
+    en: [
+      { type: "p", text: "Generate cryptographically secure RFC 4122 UUID v4 and time-ordered UUID v7 identifiers with bulk export options." },
+      { type: "h2", text: "RFC 4122 Universally Unique Identifiers and Collision Probability" },
+      { type: "p", text: "Universally Unique Identifiers (UUIDs) are 128-bit numbers designed to enable distributed systems to generate unique identifiers without central coordination. While UUID v4 provides pure cryptographic randomness, modern UUID v7 embeds millisecond timestamps for superior database indexing performance." },
+      { type: "ul", items: ["RFC 4122 compliant UUID v4 (pure random) and UUID v7 (time-ordered).","Bulk generation of up to 1,000 unique identifiers in a single click.","Configurable formatting options: uppercase, lowercase, with or without hyphens."] },
+      { type: "h2", text: "Step-by-step practical guide" },
+      { type: "ol", items: ["Select your desired UUID version (UUID v4 for randomness or UUID v7 for database primary keys).","Specify the number of identifiers needed (from 1 to 1,000).","Choose formatting options (hyphens, braces, or uppercase).","Click Generate to invoke cryptographically secure random number generators.","Copy the generated list or export as a text file."] },
+      { type: "callout", text: "Privacy guarantee: UUIDs are generated locally using the Web Crypto API's getRandomValues with zero server requests." },
+      { type: "h2", text: "Pro tips and best practices" },
+      { type: "ul", items: ["Use UUID v7 when inserting records into PostgreSQL or MySQL B-tree indexes to prevent database fragmentation.","UUID v4 has 122 bits of true entropy, making duplicate collisions mathematically negligible."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Can two generated UUID v4 identifiers ever collide?" },
+      { type: "p", text: "The probability is virtually zero; you would need to generate one billion UUIDs every second for 85 years to have a 50% chance of a single collision." },
+      { type: "h3", text: "What makes UUID v7 better for database primary keys?" },
+      { type: "p", text: "UUID v7 begins with a timestamp prefix, ensuring monotonic sequential ordering that keeps database B-trees fast and unfragmented." },
+      { type: "h3", text: "What is the standard format of a UUID?" },
+      { type: "p", text: "A standard UUID consists of 32 hexadecimal characters displayed in five groups separated by hyphens (8-4-4-4-12)." },
+    ],
+    fr: [
+      { type: "p", text: "Generez des identifiants uniques securises RFC 4122 UUID v4 et UUID v7 ordonnes dans le temps avec export par lot." },
+      { type: "h2", text: "Identifiants Universels RFC 4122 et Probabilite de Collision" },
+      { type: "p", text: "Les identifiants UUID sont des nombres de 128 bits concus pour permettre a des systemes distribues de creer des cles uniques sans serveur central. L UUID v4 offre un aleatoire cryptographique, tandis que l UUID v7 integre un horodatage pour optimiser les bases de donnees." },
+      { type: "ul", items: ["Conformite stricte RFC 4122 pour UUID v4 (aleatoire) et UUID v7 (ordonne dans le temps).","Generation par lots jusqu a 1 000 identifiants uniques en un seul clic.","Options de mise en forme : majuscules, minuscules, avec ou sans tirets de separation."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Choisissez la version d UUID (v4 pour l aleatoire pur ou v7 pour les cles primaires de base de donnees).","Definissez le nombre d identifiants requis (de 1 a 1 000).","Configurez les options : avec ou sans tirets, majuscules ou minuscules.","Cliquez sur Generer pour lancer le generateur cryptographique securise.","Copiez la liste ou exportez-la dans un fichier texte."] },
+      { type: "callout", text: "Garantie de confidentialite : Les UUIDs sont generes localement via Web Crypto API sans requete serveur." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Utilisez UUID v7 pour vos cles primaires SQL afin d eviter la fragmentation des index B-tree.","L UUID v4 possede 122 bits d entropie pure, rendant le risque de collision statistiquement nul."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Deux UUIDs v4 peuvent-ils entrer en collision ?" },
+      { type: "p", text: "La probabilite est negligeable : il faudrait generer un milliard d UUIDs par seconde pendant 85 ans pour avoir 50% de chance d un doublon." },
+      { type: "h3", text: "Pourquoi UUID v7 est-il preferable pour les bases de donnees ?" },
+      { type: "p", text: "L UUID v7 debute par un horodatage, garantissant un tri chronologique sequentiel optimal pour les index SQL." },
+      { type: "h3", text: "Quel est le format standard d un UUID ?" },
+      { type: "p", text: "Un UUID standard comporte 32 caracteres hexadecimaux repartis en cinq blocs separes par des tirets (8-4-4-4-12)." },
+    ],
+  },
+};

@@ -102,8 +102,8 @@ export default function BlogPost({ params }: BlogPostPageProps) {
       {/* Reading Progress Indicator */}
       <BlogProgressBar />
 
-      <div className="container-wide py-8 sm:py-12">
-        {/* Breadcrumb Navigation */}
+      <div className="container-wide" style={{ paddingTop: 40, paddingBottom: 88 }}>
+        {/* Breadcrumb Navigation - anchored directly in container-wide */}
         <nav
           aria-label="Breadcrumb"
           className="flex items-center gap-2 mb-8 text-xs text-[var(--text-tertiary)] flex-wrap"
@@ -121,57 +121,48 @@ export default function BlogPost({ params }: BlogPostPageProps) {
           </span>
         </nav>
 
-        {/* Editorial Header */}
-        <header className="mb-12 max-w-3xl">
-          <div className="flex items-center gap-2 text-xs font-mono text-[var(--text-tertiary)] mb-4">
-            <time dateTime={post.publishedAt}>{formatDate(post.publishedAt, lang)}</time>
-            <span>·</span>
-            <span>
-              {post.readingMinutes} {readLabel}
-            </span>
-          </div>
-          <h1 className="font-display text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-[var(--text-primary)] leading-[1.18] mb-4">
-            {post.title[lang]}
-          </h1>
-          <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed">
-            {post.description[lang]}
-          </p>
-        </header>
+        {/* Post & Companion Sidebar: expansive studio with generous breathing room */}
+        <div className="max-w-[1720px] mx-auto">
+          {/* Editorial Header */}
+          <header className="mb-14 max-w-5xl">
+            <div className="flex items-center gap-2 text-xs font-mono text-[var(--text-tertiary)] mb-4">
+              <time dateTime={post.publishedAt}>{formatDate(post.publishedAt, lang)}</time>
+              <span>·</span>
+              <span>
+                {post.readingMinutes} {readLabel}
+              </span>
+            </div>
+            <h1 className="font-display text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-[var(--text-primary)] leading-[1.18] mb-4">
+              {post.title[lang]}
+            </h1>
+            <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed">
+              {post.description[lang]}
+            </p>
+          </header>
 
-        {/* Asymmetrical Studio Layout */}
-        <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_280px] gap-12 items-start">
-          {/* Main Reading Column */}
-          <main className="min-w-0 max-w-2xl">
-            <BlogContentRenderer blocks={post.content[lang]} />
+          {/* Reading Studio Grid (Full Width + Expansive 128px Gap + Generous Sidebar) */}
+          <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_350px] xl:grid-cols-[minmax(0,1fr)_380px] gap-20 lg:gap-24 xl:gap-32 items-start">
+            {/* Main Reading Column */}
+            <main className="min-w-0 max-w-5xl xl:max-w-6xl">
+              <BlogContentRenderer blocks={post.content[lang]} />
+            </main>
 
-            {/* Bottom Conversion Banner Card */}
-            <div className="mt-12">
+            {/* Sticky Desktop Sidebar */}
+            <aside className="hidden lg:block sticky top-28 self-start space-y-8 w-[350px] xl:w-[380px]">
+              <BlogToc blocks={post.content[lang]} lang={lang} />
               <BlogToolCard
                 toolSlug={post.relatedToolSlug}
                 label={ctaLabel}
                 lang={lang}
-                variant="banner"
-                title={post.title[lang]}
-                description={post.description[lang]}
+                variant="sidebar"
+                title={ctaLabel}
               />
-            </div>
-
-            {/* Recommended Articles Grid */}
-            <BlogRelatedPosts currentSlug={slug} lang={lang} />
-          </main>
-
-          {/* Sticky Desktop Sidebar */}
-          <aside className="hidden lg:block sticky top-24 self-start space-y-8">
-            <BlogToc blocks={post.content[lang]} lang={lang} />
-            <BlogToolCard
-              toolSlug={post.relatedToolSlug}
-              label={ctaLabel}
-              lang={lang}
-              variant="sidebar"
-              title={ctaLabel}
-            />
-          </aside>
+            </aside>
+          </div>
         </div>
+
+        {/* Recommended Articles Grid - anchored directly in container-wide */}
+        <BlogRelatedPosts currentSlug={slug} lang={lang} />
       </div>
     </>
   );

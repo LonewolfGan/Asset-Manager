@@ -22,7 +22,7 @@ describe('Reciprocal Tools Registry & Mapping (TDD Phase)', () => {
     expect(pdfToWordMirror?.mirrorSlug).toBe('word-to-pdf');
   });
 
-  it('includes newly connected pairs in RECIPROCAL_TOOLS (Text/Word, PNG/SVG, AVIF)', () => {
+  it('includes newly connected pairs in RECIPROCAL_TOOLS (Text/Word, PNG/SVG, AVIF, Image/PDF)', () => {
     // Text to Word <-> Word to Text
     expect(getReciprocalTool('txt-to-docx')?.mirrorSlug).toBe('word-to-text');
     expect(getReciprocalTool('word-to-text')?.mirrorSlug).toBe('txt-to-docx');
@@ -38,14 +38,34 @@ describe('Reciprocal Tools Registry & Mapping (TDD Phase)', () => {
     // PNG to AVIF <-> AVIF to PNG
     expect(getReciprocalTool('png-to-avif')?.mirrorSlug).toBe('avif-to-png');
     expect(getReciprocalTool('avif-to-png')?.mirrorSlug).toBe('png-to-avif');
+
+    // Canonical Image to PDF <-> PDF to Image
+    expect(getReciprocalTool('image-to-pdf')?.mirrorSlug).toBe('pdf-to-image');
+    expect(getReciprocalTool('pdf-to-image')?.mirrorSlug).toBe('image-to-pdf');
+
+    // Format-specific Image to PDF variants pointing to PDF to Image
+    expect(getReciprocalTool('png-to-pdf')?.mirrorSlug).toBe('pdf-to-image');
+    expect(getReciprocalTool('jpg-to-pdf')?.mirrorSlug).toBe('pdf-to-image');
+    expect(getReciprocalTool('webp-to-pdf')?.mirrorSlug).toBe('pdf-to-image');
+    expect(getReciprocalTool('heic-to-pdf')?.mirrorSlug).toBe('pdf-to-image');
   });
 
-  it('maintains perfect mathematical symmetry across all registered reciprocal tools', () => {
+  it('maintains perfect mathematical symmetry across all registered canonical reciprocal tools', () => {
     for (const [slug, info] of Object.entries(RECIPROCAL_TOOLS)) {
-      const mirror = RECIPROCAL_TOOLS[info.mirrorSlug];
+      if (info.unidirectional) continue;
+      const mirror = RECIPROCAL_TOOLS[info.mirrorSlug!];
       expect(mirror, `Expected mirror for ${info.mirrorSlug} to exist`).toBeDefined();
-      expect(mirror.mirrorSlug, `Expected reciprocal symmetry for ${slug}`).toBe(slug);
+      if (!info.isVariant) {
+        expect(mirror.mirrorSlug, `Expected reciprocal symmetry for ${slug}`).toBe(slug);
+      }
     }
+  });
+
+  it('correctly marks unidirectional conversion tools without deceptive mirror slugs', () => {
+    expect(getReciprocalTool('heic-to-png')?.unidirectional).toBe(true);
+    expect(getReciprocalTool('heic-to-png')?.mirrorSlug).toBeUndefined();
+    expect(getReciprocalTool('pptx-to-images')?.unidirectional).toBe(true);
+    expect(getReciprocalTool('pdf-to-pdfa')?.unidirectional).toBe(true);
   });
 
   it('returns null for one-way tools without reciprocal operations', () => {

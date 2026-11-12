@@ -137,9 +137,15 @@ export const SpeedTest = lazy(() => import("@/pages/speed-test"));
 // Blog & Legal
 export const BlogIndex = lazy(() => import("@/pages/blog-index"));
 export const BlogPost = lazy(() => import("@/pages/blog-post"));
+export const Changelog = lazy(() => import("@/pages/changelog"));
 export const Privacy = lazy(() => import("@/pages/privacy"));
 export const Terms = lazy(() => import("@/pages/terms"));
 export const SecurityPage = lazy(() => import("@/pages/security"));
+export const LegalNotice = lazy(() => import("@/pages/legal-notice"));
+export const Cookies = lazy(() => import("@/pages/cookies"));
+export const Contact = lazy(() => import("@/pages/contact"));
+export const ServerError = lazy(() => import("@/pages/server-error"));
+export const AccessDenied = lazy(() => import("@/pages/access-denied"));
 
 export const TOOL_COMPONENTS: Record<string, React.LazyExoticComponent<React.ComponentType<any>>> = {
   // PDF

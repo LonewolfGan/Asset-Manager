@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postImageFilters: BlogPost = {
+  slug: {
+    en: "how-to-apply-filters-and-adjust-photos-online",
+    fr: "comment-appliquer-filtres-et-retoucher-photo-en-ligne",
+  },
+  title: {
+    en: "How to Apply Filters and Adjust Photos in Your Browser",
+    fr: "Comment appliquer des filtres et retoucher des photos en ligne",
+  },
+  description: {
+    en: "Enhance photos with real-time brightness, contrast, saturation, grayscale, and vintage duotone filters directly in your browser.",
+    fr: "Sublimez vos photos avec réglages de contraste, luminosité, saturation, noir et blanc et filtres vintage en temps réel.",
+  },
+  keywords: {
+    en: ["photo filters online","adjust photo brightness contrast","black and white photo filter","edit photo colors"],
+    fr: ["filtres photo en ligne","regler luminosite contraste photo","passer photo en noir et blanc","retouche photo en ligne"],
+  },
+  publishedAt: "2026-05-01",
+  category: "image",
+  readingMinutes: 4,
+  relatedToolSlug: "image-filters",
+  relatedToolLabel: { en: "Image Filters", fr: "Filtres Image" },
+  content: {
+    en: [
+      { type: "p", text: "Raw smartphone photos often suffer from dull lighting, washed-out shadows, or incorrect color temperatures. Applying targeted photographic adjustments and color filters transforms ordinary snapshots into vibrant, professional visual assets without requiring complex photo editing software." },
+      { type: "h2", text: "Core photo adjustments for visual impact" },
+      { type: "p", text: "Calibrating foundational tonal curves establishes depth and punch before applying stylized color grading filters." },
+      { type: "ul", items: [
+        "Contrast and brightness: Deepens rich blacks and brightens highlights for added dimensional pop",
+        "Vibrance and saturation: Intensifies color richness without oversaturating skin tones",
+        "Grayscale and sepia presets: Converts portraits into timeless black-and-white or vintage duotones",
+      ]},
+      { type: "h2", text: "Step-by-step: how to adjust photo colors" },
+      { type: "ol", items: [
+        "Open the Image Filters tool in your browser with zero registration needed.",
+        "Upload your JPG, PNG, or WebP photo up to 50 MB.",
+        "Use interactive sliders to tune brightness, contrast, exposure, and color saturation.",
+        "Click filter presets (Monochrome, Warm, Cool, Vintage) to preview stylistic color palettes.",
+        "Click Apply & Download to save your enhanced photo immediately.",
+      ]},
+      { type: "callout", text: "Image filtering runs inside an isolated ephemeral workspace and is purged automatically upon completion. No photos are stored on our servers." },
+      { type: "h2", text: "Tips for natural-looking color grading" },
+      { type: "ul", items: [
+        "Make subtle adjustments in 5 to 10 percent increments to prevent color banding and noise",
+        "Check skin tones in natural light after boosting saturation to prevent unnatural orange tints",
+        "Pair high-contrast black-and-white conversion with a slight brightness boost for editorial punch",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Can I reset adjustments back to original?" },
+      { type: "p", text: "Yes. A single click on the Reset button restores all sliders and color curves to original photo values." },
+      { type: "h3", text: "Does applying filters reduce photo resolution?" },
+      { type: "p", text: "No. Color calculations are computed across original full-resolution pixel coordinates without downsampling." },
+      { type: "h3", text: "Can I apply adjustments to transparent PNG graphics?" },
+      { type: "p", text: "Yes. Color adjustment curves apply cleanly while preserving alpha transparency boundaries." },
+    ],
+    fr: [
+      { type: "p", text: "Les photos prises sur le vif manquent souvent de contraste, présentent des ombres délavées ou une balance des blancs trop froide. Appliquer des réglages colorimétriques ciblés et des filtres photo transforme des clichés ordinaires en visuels percutants sans logiciel de retouche lourd." },
+      { type: "h2", text: "Les réglages essentiels pour donner du relief à vos images" },
+      { type: "p", text: "Ajuster les tonalités de base apporte du contraste et de la profondeur avant d'appliquer d'éventuels filtres artistiques." },
+      { type: "ul", items: [
+        "Contraste et luminosité : renforce les noirs profonds et donne de l'éclat aux hautes lumières",
+        "Saturation et éclat : intensifie les teintes sans dénaturer la couleur de la peau",
+        "Modes noir et blanc et sépia : confère une atmosphère intemporelle ou vintage à vos portraits",
+      ]},
+      { type: "h2", text: "Guide pas à pas : retoucher vos photos en ligne" },
+      { type: "ol", items: [
+        "Accédez à l'outil Filtres Image dans votre navigateur sans créer de compte.",
+        "Déposez votre photo JPG, PNG ou WebP (jusqu'à 50 Mo).",
+        "Ajustez les curseurs de luminosité, contraste et saturation en temps réel.",
+        "Testez les filtres prédéfinis (Noir & Blanc, Chaud, Froid, Vintage) pour varier les ambiances.",
+        "Cliquez sur Télécharger pour enregistrer votre photo sublimée.",
+      ]},
+      { type: "callout", text: "La retouche d'image s'exécute dans un espace temporaire sécurisé avec suppression automatique immédiate de vos données." },
+      { type: "h2", text: "Conseils pour une retouche naturelle et élégante" },
+      { type: "ul", items: [
+        "Procéder par touches légères pour éviter le bruit numérique et la pixellisation des aplats",
+        "Surveiller les teintes de peau lors de la montée en saturation pour éviter les visages trop rouges",
+        "Associer un contraste marqué à un noir et blanc pour un effet éditorial argentique",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Peut-on annuler les réglages d'un clic ?" },
+      { type: "p", text: "Oui. Un bouton Réinitialiser remet instantanément tous les curseurs à leur position neutre de départ." },
+      { type: "h3", text: "L'application de filtres diminue-t-elle la résolution ?" },
+      { type: "p", text: "Non. Les transformations chromatiques s'appliquent directement sur les pixels en pleine résolution d'origine." },
+      { type: "h3", text: "Les filtres fonctionnent-ils sur les logos PNG transparents ?" },
+      { type: "p", text: "Oui. Les ajustements de couleur s'appliquent parfaitement tout en respectant le contour transparent du logo." },
+    ],
+  },
+};

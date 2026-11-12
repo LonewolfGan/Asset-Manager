@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postAiTextScrubber: BlogPost = {
+  slug: {
+    en: "how-to-use-ai-text-scrubber",
+    fr: "comment-utiliser-ai-text-scrubber",
+  },
+  title: {
+    en: "How to Detect and Scrub AI Watermarks and Formatting Slop",
+    fr: "Comment Nettoyer les Traces et le Formatage Typique de l IA",
+  },
+  description: {
+    en: "Remove telltale AI formatting patterns, repetitive transitional phrases, and invisible zero-width watermarks from text.",
+    fr: "Supprimez les tics de langage des IA, phrases de transition repetees et caracteres invisibles de vos textes.",
+  },
+  keywords: {
+    en: ["ai text scrubber","ai-text-scrubber online","free ai-text-scrubber","developer tool ai-text-scrubber"],
+    fr: ["ai text scrubber","ai-text-scrubber en ligne","outil ai-text-scrubber gratuit","utilitaire ai-text-scrubber"],
+  },
+  publishedAt: "2026-03-25",
+  category: "security",
+  readingMinutes: 4,
+  relatedToolSlug: "ai-text-scrubber",
+  relatedToolLabel: { en: "Ai Text Scrubber", fr: "Ai Text Scrubber" },
+  content: {
+    en: [
+      { type: "p", text: "Remove telltale AI formatting patterns, repetitive transitional phrases, and invisible zero-width watermarks from text." },
+      { type: "h2", text: "Neutralizing Artificial Writing Clichés and Hidden Markers" },
+      { type: "p", text: "Large language models frequently insert predictable stylistic artifacts, excessive buzzwords, forced analogies, and invisible zero-width unicode characters. Scrubbing these patterns restores natural human rhythm and cleans text for publication." },
+      { type: "ul", items: ["Detects and purges invisible zero-width spaces (ZWSP) and unicode watermarks.","Highlights overused artificial jargon, inflated symbolism, and formulaic intros.","Normalizes punctuation and eliminates robotic negative parallelisms."] },
+      { type: "h2", text: "Step-by-step practical guide" },
+      { type: "ol", items: ["Paste your draft text into the scrubber workbench.","Run instant analysis to flag invisible unicode characters and stylistic clichés.","Toggle automated cleanup filters or review suggested refinements.","Apply replacements to streamline sentences and rhythm.","Copy the cleaned, natural prose to your clipboard."] },
+      { type: "callout", text: "Privacy guarantee: Text is analyzed locally in memory and never stored, logged, or used to train models." },
+      { type: "h2", text: "Pro tips and best practices" },
+      { type: "ul", items: ["Read the scrubbed text aloud to verify that the rhythm feels authentic and conversational.","Always remove zero-width joiners when copy-pasting from chat interfaces to avoid formatting bugs."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "What are invisible zero-width watermarks?" },
+      { type: "p", text: "They are invisible unicode characters (such as U+200B) that some generators inject to track generated output." },
+      { type: "h3", text: "Does this tool use another AI to rewrite my content?" },
+      { type: "p", text: "No. The scrubber uses deterministic linguistic heuristic rules and unicode scanners without generative hallucination." },
+      { type: "h3", text: "Will it preserve my technical code blocks and citations?" },
+      { type: "p", text: "Yes. You can preserve fenced code blocks, URLs, and citations with zero modification." },
+    ],
+    fr: [
+      { type: "p", text: "Supprimez les tics de langage des IA, phrases de transition repetees et caracteres invisibles de vos textes." },
+      { type: "h2", text: "Neutraliser les Clichés Redactionnels d IA et Marqueurs Invisibles" },
+      { type: "p", text: "Les modeles de langage inserent souvent des tournures stylistiques previsibles, des mots-cles redondants et des caracteres unicode invisibles. Nettoyer ces marqueurs retablit un style naturel et fluide pret pour la publication." },
+      { type: "ul", items: ["Detecte et elimine les espaces sans chasse (ZWSP) et filigranes unicode invisibles.","Releve le jargon redondant, les formules grandiloquentes et intros stereotyPointes.","Normalise la ponctuation et supprime les tournures negatives artificielles."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Collez votre texte dans l atelier de nettoyage.","Lancez l analyse pour detecter caracteres invisibles et tics redactionnels.","Activez les filtres automatiques ou examinez les suggestions.","Appliquez les ajustements pour fluidifier le texte.","Copiez le texte purifie et naturel dans votre presse-papiers."] },
+      { type: "callout", text: "Garantie de confidentialite : Vos ecrits sont traites en memoire locale sans archivage ni entrainement d IA." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Lisez le texte nettoye a haute voix pour vous assurer de son naturel et de son authenticite.","Supprimez toujours les separateurs invisibles lors de copier-coller pour eviter les bugs d affichage."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Que sont les filigranes invisibles zero-width ?" },
+      { type: "p", text: "Ce sont des caracteres unicode invisibles (comme U+200B) inseres pour tracer les sorties generees." },
+      { type: "h3", text: "Cet outil utilise-t-il une autre IA pour reecrire mon texte ?" },
+      { type: "p", text: "Non. Le nettoyeur s appuie sur des regles linguistiques deterministes et des scanners unicode sans hallucination." },
+      { type: "h3", text: "Preserve-t-il les blocs de code et citations ?" },
+      { type: "p", text: "Oui. Vous pouvez exclure les blocs de code, URLs et citations de toute modification." },
+    ],
+  },
+};

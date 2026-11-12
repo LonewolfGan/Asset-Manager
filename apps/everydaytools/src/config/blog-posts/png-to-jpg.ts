@@ -1,0 +1,63 @@
+import type { BlogPost } from "../blog-types";
+
+export const postPngToJpg: BlogPost = {
+  slug: {
+    en: "how-to-convert-png-to-jpg",
+    fr: "comment-convertir-png-to-jpg",
+  },
+  title: {
+    en: "How to Convert PNG to JPG to Reduce Asset File Sizes",
+    fr: "Comment Convertir PNG en JPG pour Reduire la Taille de vos Fichiers",
+  },
+  description: {
+    en: "Convert heavy PNG photographs and scans into lightweight JPG files with customizable compression quality and background fill.",
+    fr: "Convertissez vos photos et scans PNG volumineux en fichiers JPG legers avec qualite parametrable et couleur de fond.",
+  },
+  keywords: {
+    en: ["png to jpg","convert png to jpg","png-to-jpg converter online","free png-to-jpg"],
+    fr: ["png to jpg","convertir png en jpg","convertisseur png-to-jpg gratuit","outil png-to-jpg"],
+  },
+  publishedAt: "2026-03-24",
+  category: "image",
+  readingMinutes: 4,
+  relatedToolSlug: "png-to-jpg",
+  relatedToolLabel: { en: "PNG to JPG", fr: "PNG en JPG" },
+  content: {
+    en: [
+      { type: "p", text: "Convert heavy PNG photographs and scans into lightweight JPG files with customizable compression quality and background fill." },
+      { type: "h2", text: "Slashing File Footprints: When to Choose JPG over PNG" },
+      { type: "p", text: "Large PNG files containing continuous-tone photographs can easily exceed 10 megabytes. Converting them to optimized JPEG files reduces file weights by 80% to 90% with zero perceptible difference to human vision." },
+      { type: "ul", items: ["Reduces file size by up to 90% for photographs and complex scenery.","Universal opening support on email attachments, portals, and legacy devices.","Intelligent background replacement for transparent PNG areas (white or custom hex)."] },
+      { type: "h2", text: "Step-by-step conversion guide" },
+      { type: "ol", items: ["Upload your PNG images to the tool.","Choose your target JPEG quality level (80-88% recommended) and background color.","Trigger conversion to compress raster pixels into efficient JPEG bitstreams.","Inspect output file size savings and visual sharpness.","Download your compact JPG images."] },
+      { type: "callout", text: "Privacy guarantee: Processing is performed in volatile RAM sandboxes with complete zero-retention eviction." },
+      { type: "h2", text: "Pro tips for optimal results" },
+      { type: "ul", items: ["Use JPEG for photographic content; keep logos and typography in PNG to avoid compression ringing.","Quality 85 is the industry standard benchmark for e-commerce catalog photographs."] },
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "What happens to the transparent background of my PNG?" },
+      { type: "p", text: "Since JPEG does not support transparency, transparent regions are smoothly filled with a clean solid color (default white)." },
+      { type: "h3", text: "Will converting PNG to JPG degrade photo sharpness?" },
+      { type: "p", text: "At quality 85 or above, compression differences are virtually imperceptible in photographic scenes." },
+      { type: "h3", text: "Can I convert hundreds of PNG screenshots simultaneously?" },
+      { type: "p", text: "Yes. Batch conversion handles multiple uploads in parallel with immediate ZIP archive download." },
+    ],
+    fr: [
+      { type: "p", text: "Convertissez vos photos et scans PNG volumineux en fichiers JPG legers avec qualite parametrable et couleur de fond." },
+      { type: "h2", text: "Allegement des Fichiers : Quand Privilegier JPG sur PNG" },
+      { type: "p", text: "Des images photographiques enregistrees en PNG depassent frequemment 10 megaoctets. Les convertir en JPEG optimise reduit leur poids de 80% a 90% sans difference perceptible a l oeil nu." },
+      { type: "ul", items: ["Reduit la taille de fichier jusqu a 90% sur les photographies et scenes complexes.","Ouverture garantie dans les pieces jointes de mails, portails administratifs et anciens ecrans.","Remplacement automatique des zones transparentes par un fond blanc ou personnalise."] },
+      { type: "h2", text: "Guide pratique etape par etape" },
+      { type: "ol", items: ["Chargez vos images PNG dans l outil.","Definissez la qualite JPEG cible (80-88% recommande) et la couleur de fond.","Lancez la conversion pour compresser la matrice de pixels en flux JPEG.","Controlez l allegement du fichier et la proprete des details.","Telechargez vos fichiers JPG compacts."] },
+      { type: "callout", text: "Garantie de confidentialite : Vos conversions sont realisees en memoire vive et purgees immediatement." },
+      { type: "h2", text: "Conseils d experts et bonnes pratiques" },
+      { type: "ul", items: ["Utilisez JPEG pour les cliches photo ; conservez les logos en PNG pour eviter les artefacts sur les textes.","Un niveau de qualite a 85 constitue la reference pour les catalogues e-commerce."] },
+      { type: "h2", text: "Foire aux questions" },
+      { type: "h3", text: "Qu arrive-t-il au fond transparent de mon image PNG ?" },
+      { type: "p", text: "Le JPEG ne supportant pas l alpha, les parties transparentes sont remplies par une couleur pleine (blanc par defaut)." },
+      { type: "h3", text: "La conversion PNG vers JPG degrade-t-elle la nettete des photos ?" },
+      { type: "p", text: "A partir d une qualite de 85, la difference visuelle est quasi imperceptible sur des scenes photographiques." },
+      { type: "h3", text: "Puis-je convertir des centaines de captures PNG a la fois ?" },
+      { type: "p", text: "Oui. Le traitement par lots prend en charge des dizaines d uploads avec generation d une archive ZIP directe." },
+    ],
+  },
+};

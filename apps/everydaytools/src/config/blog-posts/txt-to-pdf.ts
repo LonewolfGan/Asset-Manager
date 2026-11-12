@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postTxtToPdf: BlogPost = {
+  slug: {
+    en: "how-to-convert-plain-text-to-pdf",
+    fr: "comment-convertir-texte-brut-en-pdf",
+  },
+  title: {
+    en: "How to Convert Plain Text (TXT) to Formatted PDF",
+    fr: "Comment convertir un fichier texte brut (TXT) en document PDF",
+  },
+  description: {
+    en: "Format raw text files, system logs, and code transcripts into clean, paginated PDF documents with comfortable margins and custom fonts.",
+    fr: "Mettez en page vos fichiers texte brut, journaux système et scripts en documents PDF paginés et lisibles avec marges soignées.",
+  },
+  keywords: {
+    en: ["txt to pdf","convert text to pdf","plain text to pdf converter","text file to formatted pdf"],
+    fr: ["txt en pdf","convertir texte en pdf","texte brut en pdf","fichier texte en pdf"],
+  },
+  publishedAt: "2026-04-05",
+  category: "documents",
+  readingMinutes: 4,
+  relatedToolSlug: "txt-to-pdf",
+  relatedToolLabel: { en: "Text to PDF", fr: "Texte en PDF" },
+  content: {
+    en: [
+      { type: "p", text: "Raw text files (.txt) look plain and unformatted, and opening them on different operating systems often results in unpredictable line wraps and illegible tiny fonts. Converting plain text to PDF establishes fixed margins, clean typography, and page numbers for formal distribution." },
+      { type: "h2", text: "Why convert plain text to formatted PDF" },
+      { type: "p", text: "PDF protects your text from accidental edits, ensures consistent line breaks across devices, and adds a professional touch to memos, transcripts, and logs." },
+      { type: "ul", items: [
+        "Wraps long lines cleanly without clipping words mid-sentence",
+        "Applies comfortable typographic margins and clear page numbering",
+        "Locks document contents to prevent unauthorized tampering or accidental edits",
+      ]},
+      { type: "h2", text: "Step-by-step: how to convert TXT to PDF" },
+      { type: "ol", items: [
+        "Open the Text to PDF tool in your web browser with zero registration needed.",
+        "Upload your .txt file or paste your raw text into the input panel.",
+        "Choose your preferred font style (sans-serif for reading, monospace for logs) and font size.",
+        "Click Convert to PDF to generate a paginated document.",
+        "Download your formatted PDF file immediately.",
+      ]},
+      { type: "callout", text: "Document generation runs inside an isolated ephemeral workspace and is purged automatically upon completion. No text is stored on our servers." },
+      { type: "h2", text: "Formatting recommendations" },
+      { type: "ul", items: [
+        "Choose a monospace font (such as Courier or Consolas) when converting software logs or terminal outputs",
+        "Set line spacing to 1.4 for enhanced readability on long essay transcripts",
+        "Ensure file encoding is set to UTF-8 to preserve international accent characters",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Can I convert very large text files with thousands of lines?" },
+      { type: "p", text: "Yes. The engine automatically paginates long text files across hundreds of numbered pages with clean margin headers." },
+      { type: "h3", text: "Does it support international characters and accents?" },
+      { type: "p", text: "Yes. Full UTF-8 support ensures that French, Spanish, German, and Asian characters render flawlessly." },
+      { type: "h3", text: "Can I customize page orientation?" },
+      { type: "p", text: "Yes. You can switch between portrait for standard text and landscape for wide log records." },
+    ],
+    fr: [
+      { type: "p", text: "Les fichiers texte brut (.txt) manquent d'élégance et leur affichage varie considérablement selon le logiciel utilisé pour les ouvrir. Convertir un fichier texte en PDF lui confère une mise en page soignée, des marges aérées et une pagination professionnelle." },
+      { type: "h2", text: "Pourquoi mettre en page vos textes en PDF" },
+      { type: "p", text: "Le format PDF fige les sauts de ligne, protège votre texte contre les modifications involontaires et apporte une présentation soignée à vos comptes rendus et journaux." },
+      { type: "ul", items: [
+        "Gère le retour à la ligne automatique sans couper les mots de manière arbitraire",
+        "Applique des marges de lecture confortables et insère une numérotation de page",
+        "Garantit un rendu visuel identique sur tous les ordinateurs et téléphones",
+      ]},
+      { type: "h2", text: "Guide pas à pas : convertir du texte brut en PDF" },
+      { type: "ol", items: [
+        "Accédez à l'outil Texte en PDF dans votre navigateur sans créer de compte.",
+        "Déposez votre fichier .txt ou collez votre texte brut dans l'éditeur.",
+        "Sélectionnez la typographie souhaitée (sans-serif pour la lecture, monospace pour le code).",
+        "Cliquez sur Convertir en PDF pour générer votre document paginé.",
+        "Téléchargez immédiatement votre fichier PDF finalisé.",
+      ]},
+      { type: "callout", text: "Le traitement est réalisé dans un espace temporaire sécurisé avec suppression automatique immédiate de vos écrits." },
+      { type: "h2", text: "Conseils pour une mise en page élégante" },
+      { type: "ul", items: [
+        "Sélectionner une police à chasse fixe (monospace) pour les journaux de logs et le code",
+        "Régler un interligne aéré de 1.4 pour faciliter la lecture de longs manuscrits",
+        "Vérifier que l'encodage source est en UTF-8 pour préserver les accents français",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "L'outil prend-il en charge les fichiers de plusieurs milliers de lignes ?" },
+      { type: "p", text: "Oui. Le moteur pagine automatiquement les textes volumineux sur des dizaines de pages numérotées." },
+      { type: "h3", text: "Les accents français et caractères spéciaux sont-ils préservés ?" },
+      { type: "p", text: "Oui. L'encodage universel UTF-8 garantit la restitution parfaite de tous les accents et cédilles." },
+      { type: "h3", text: "Peut-on imprimer en mode paysage ?" },
+      { type: "p", text: "Oui. Vous pouvez basculer en orientation paysage pour afficher des tableaux de logs particulièrement larges." },
+    ],
+  },
+};

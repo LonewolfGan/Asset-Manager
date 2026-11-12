@@ -248,6 +248,7 @@ export default function PdfPageNumbers() {
             {isProcessing && (
               <ProcessingAperture
                 formatIcon={sourceFormat.icon}
+                formatColor={sourceFormat.color}
                 formatAlt="PDF"
                 stageLabel={
                   isFr

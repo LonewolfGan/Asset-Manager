@@ -245,7 +245,7 @@ export default function ImageConvertPage({
           </AnimatePresence>
 
           {/* Post-Download Continuum for PDF conversions */}
-          {isPdfOutput && !isReciprocal && (
+          {isPdfOutput && (
             <NextActionModal
               toolId={slug}
               isOpen={isNextActionOpen}
@@ -256,7 +256,7 @@ export default function ImageConvertPage({
           )}
 
           {/* Post-Download Continuum for Image conversions */}
-          {!isPdfOutput && !isReciprocal && (
+          {!isPdfOutput && (
             <ImageNextActionModal
               toolId={slug}
               isOpen={isNextActionOpen}

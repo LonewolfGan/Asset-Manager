@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postImageCrop: BlogPost = {
+  slug: {
+    en: "how-to-crop-images-online",
+    fr: "comment-recadrer-image-en-ligne",
+  },
+  title: {
+    en: "How to Crop Photos Online with Custom Aspect Ratios",
+    fr: "Comment recadrer une photo en ligne avec ratios personnalisés",
+  },
+  description: {
+    en: "Crop and reframe photos to exact dimensions (1:1 square, 16:9 widescreen, 4:5 portrait) with interactive zoom and drag controls.",
+    fr: "Recadrez vos photos aux formats parfaits (carré 1:1, 16:9 panoramique, 4:5 portrait) avec cadrage interactif fluide sans logiciel.",
+  },
+  keywords: {
+    en: ["crop image","crop photo online","image cropper in browser","square photo crop"],
+    fr: ["recadrer image","rogner photo en ligne","recadrage photo 1:1","cadrer image web"],
+  },
+  publishedAt: "2026-04-25",
+  category: "image",
+  readingMinutes: 4,
+  relatedToolSlug: "image-crop",
+  relatedToolLabel: { en: "Crop Image", fr: "Recadrer une image" },
+  content: {
+    en: [
+      { type: "p", text: "Capturing wide landscape shots often leaves unwanted background clutter, photobombers, or distracting borders around the central subject. Cropping photos reframes the composition, emphasizes focal points, and prepares images for standardized social media formats." },
+      { type: "h2", text: "Why precision aspect ratio cropping matters" },
+      { type: "p", text: "Different social platforms enforce strict aspect ratio rules. Cropping before upload ensures that avatars and story slides display without awkward automated platform trimming." },
+      { type: "ul", items: [
+        "1:1 Square: Standard format for Instagram feeds, profile avatars, and product grids",
+        "4:5 Vertical Portrait: Maximizes vertical screen real estate in mobile social feeds",
+        "16:9 Widescreen: Ideal for blog hero covers, YouTube thumbnails, and LinkedIn banners",
+      ]},
+      { type: "h2", text: "Step-by-step: how to crop images online" },
+      { type: "ol", items: [
+        "Open the Crop Image tool in your browser with zero registration needed.",
+        "Upload your JPG, PNG, or WebP photo up to 50 MB.",
+        "Select an aspect ratio preset or adjust the crop bounding box manually.",
+        "Drag the image to center your subject within the visual rule-of-thirds grid.",
+        "Click Crop & Download to save your reframed photo immediately.",
+      ]},
+      { type: "callout", text: "Cropping runs inside an isolated ephemeral workspace and is purged automatically upon completion. No photos are stored on our servers." },
+      { type: "h2", text: "Composition tips for striking photos" },
+      { type: "ul", items: [
+        "Position the main subject along the intersecting grid lines (rule of thirds)",
+        "Leave breathing room in the direction a portrait subject is looking",
+        "Eliminate unnecessary background distractions around product packaging shots",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Does cropping reduce photo resolution?" },
+      { type: "p", text: "Cropping removes outer pixel areas. The remaining cropped area preserves 100 percent of its original sensor resolution without re-compression." },
+      { type: "h3", text: "Can I crop circular profile pictures?" },
+      { type: "p", text: "Use the 1:1 square ratio preset. Platforms automatically apply circular clipping masks cleanly to square images." },
+      { type: "h3", text: "Can I undo or reset my crop boundary?" },
+      { type: "p", text: "Yes. An interactive reset button lets you expand the crop box back to full original image boundaries with one click." },
+    ],
+    fr: [
+      { type: "p", text: "Prendre une photo sur le vif laisse souvent des éléments parasites en arrière-plan ou des bordures superflues autour du sujet principal. Recadrer une image permet de recentrer l'attention, d'épurer la composition et d'adapter le cliché aux formats des réseaux sociaux." },
+      { type: "h2", text: "L'importance des ratios de cadrage prédéfinis" },
+      { type: "p", text: "Chaque réseau social applique des exigences de cadrage strictes. Recadrer soi-même avant la publication évite les rognages automatiques disgracieux." },
+      { type: "ul", items: [
+        "Format carré 1:1 : la référence pour les flux Instagram, photos de profil et fiches e-commerce",
+        "Format vertical 4:5 : maximise la surface d'affichage sur les écrans de smartphone",
+        "Format panoramique 16:9 : parfait pour les miniatures YouTube et couvertures d'articles",
+      ]},
+      { type: "h2", text: "Guide pas à pas : recadrer une image en ligne" },
+      { type: "ol", items: [
+        "Accédez à l'outil Recadrer Image dans votre navigateur sans créer de compte.",
+        "Déposez votre photo JPG, PNG ou WebP (jusqu'à 50 Mo).",
+        "Choisissez un ratio prédéfini ou ajustez manuellement la zone de sélection.",
+        "Déplacez l'image pour caler votre sujet sur les lignes de force.",
+        "Cliquez sur Recadrer pour télécharger immédiatement votre photo recentrée.",
+      ]},
+      { type: "callout", text: "Le traitement est réalisé dans un espace temporaire sécurisé avec suppression automatique immédiate de vos photos." },
+      { type: "h2", text: "Conseils pour une composition photographique réussie" },
+      { type: "ul", items: [
+        "Placer le regard ou l'élément fort sur les intersections de la règle des tiers",
+        "Conserver un espace d'aération dans le sens où se dirige le regard d'un modèle",
+        "Supprimer les éléments parasites périphériques sur les photos de produits",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "Le recadrage fait-il perdre en qualité d'image ?" },
+      { type: "p", text: "Le recadrage isole une partie des pixels. La zone conservée conserve 100 % de sa définition d'origine sans compression destructrice." },
+      { type: "h3", text: "Comment recadrer une photo de profil ronde ?" },
+      { type: "p", text: "Sélectionnez le ratio carré 1:1. Les réseaux sociaux appliqueront ensuite leur masque circulaire parfait sans couper le visage." },
+      { type: "h3", text: "Peut-on réinitialiser le cadrage avant de valider ?" },
+      { type: "p", text: "Oui. Un bouton de réinitialisation permet de rétablir les dimensions initiales de la photo en un instant." },
+    ],
+  },
+};

@@ -1,0 +1,91 @@
+import type { BlogPost } from "../blog-types";
+
+export const postCsvEditor: BlogPost = {
+  slug: {
+    en: "how-to-edit-csv-files-online",
+    fr: "comment-editer-fichier-csv-en-ligne",
+  },
+  title: {
+    en: "How to Edit CSV Files in Your Browser Without Excel",
+    fr: "Comment modifier un fichier CSV en ligne sans logiciel tableur",
+  },
+  description: {
+    en: "Edit CSV rows, add new columns, modify cell values, and export clean CSV files directly in your web browser with zero data corruption.",
+    fr: "Modifiez des lignes CSV, ajoutez des colonnes, corrigez des cellules et exportez un fichier CSV propre sans risque de corruption.",
+  },
+  keywords: {
+    en: ["csv editor","edit csv online","modify csv in browser","spreadsheet csv editor"],
+    fr: ["editeur csv","modifier csv en ligne","editer tableau csv","corriger fichier csv"],
+  },
+  publishedAt: "2026-04-20",
+  category: "documents",
+  readingMinutes: 4,
+  relatedToolSlug: "csv-editor",
+  relatedToolLabel: { en: "CSV Editor", fr: "Éditeur CSV" },
+  content: {
+    en: [
+      { type: "p", text: "Making a quick modification to a single cell or adding an extra record to a CSV file using desktop office suites often damages file integrity by converting date formats or stripping leading zeroes upon re-saving. Using a dedicated web CSV editor lets you modify data cleanly without altering format syntax." },
+      { type: "h2", text: "Why use a specialized CSV editor" },
+      { type: "p", text: "A dedicated CSV editor treats all values as explicit data fields, preventing unwanted auto-formatting while providing full spreadsheet editing capabilities." },
+      { type: "ul", items: [
+        "Add, delete, or duplicate table rows and columns with simple toolbar actions",
+        "Edit individual cell values directly in an interactive spreadsheet grid",
+        "Exports clean, standardized CSV files with exact delimiter preservation",
+      ]},
+      { type: "h2", text: "Step-by-step: how to edit CSV files online" },
+      { type: "ol", items: [
+        "Open the CSV Editor in your browser with zero registration needed.",
+        "Upload your .csv file or paste raw delimited text into the grid.",
+        "Double click any cell to edit its value, or use buttons to insert new rows and columns.",
+        "Search and replace text strings across the entire dataset with one click.",
+        "Click Download CSV to save your sanitized, updated file.",
+      ]},
+      { type: "callout", text: "Editing executes inside an isolated ephemeral workspace and is purged automatically upon completion. No datasets are stored on our servers." },
+      { type: "h2", text: "Tips for maintaining data hygiene" },
+      { type: "ul", items: [
+        "Verify column header naming conventions before saving changes for database imports",
+        "Use search and replace to fix repetitive typos across thousands of records simultaneously",
+        "Check that numerical fields retain uniform decimal conventions throughout the file",
+      ]},
+      { type: "h2", text: "Frequently asked questions" },
+      { type: "h3", text: "Will re-saving change my date formatting?" },
+      { type: "p", text: "No. The editor does not re-interpret date formats or modify text structures unless you explicitly edit them." },
+      { type: "h3", text: "Can I add new rows and columns?" },
+      { type: "p", text: "Yes. Dedicated toolbar buttons let you insert rows above or below, and add columns with custom header names." },
+      { type: "h3", text: "Can I choose my export delimiter?" },
+      { type: "p", text: "Yes. You can export using standard commas, semicolons, tabs, or custom pipe separators." },
+    ],
+    fr: [
+      { type: "p", text: "Effectuer une retouche rapide sur une cellule ou ajouter une ligne dans un fichier CSV avec un tableur de bureau corrompt souvent le fichier en modifiant les formats de dates ou en tronquant les zéros initiaux lors de l'enregistrement. Un éditeur CSV en ligne dédié permet de corriger vos données sans altérer la syntaxe." },
+      { type: "h2", text: "Pourquoi utiliser un éditeur CSV spécialisé" },
+      { type: "p", text: "Un éditeur dédié traite chaque valeur de manière stricte sans appliquer de reformatage automatique intempestif, tout en offrant le confort d'une grille de saisie." },
+      { type: "ul", items: [
+        "Ajouter, dupliquer ou supprimer des lignes et colonnes en un clic",
+        "Modifier le contenu d'une cellule directement par double-clic dans la grille",
+        "Exporter un fichier CSV propre avec préservation exacte du délimiteur d'origine",
+      ]},
+      { type: "h2", text: "Guide pas à pas : modifier un fichier CSV en ligne" },
+      { type: "ol", items: [
+        "Accédez à l'Éditeur CSV dans votre navigateur sans créer de compte.",
+        "Déposez votre fichier .csv : les classeurs jusqu'à 50 Mo sont pris en charge.",
+        "Double-cliquez sur une cellule pour modifier son contenu ou insérez de nouvelles lignes.",
+        "Utilisez la fonction Rechercher/Remplacer pour corriger des termes en masse.",
+        "Cliquez sur Télécharger CSV pour enregistrer votre fichier corrigé.",
+      ]},
+      { type: "callout", text: "Le traitement est réalisé dans un espace temporaire sécurisé avec suppression automatique immédiate de vos données." },
+      { type: "h2", text: "Conseils pour l'intégrité de vos bases de données" },
+      { type: "ul", items: [
+        "Vérifier la cohérence des noms de colonnes avant de réinjecter les données dans un logiciel",
+        "Utiliser le remplacement global pour corriger une faute de frappe sur tout le fichier",
+        "Contrôler le respect des conventions de décimales sur les colonnes de montants",
+      ]},
+      { type: "h2", text: "Questions fréquentes" },
+      { type: "h3", text: "L'enregistrement risque-t-il de modifier le format de mes dates ?" },
+      { type: "p", text: "Non. L'éditeur n'applique aucun reformatage automatique arbitraire : les dates restent rigoureusement identiques à l'original." },
+      { type: "h3", text: "Peut-on ajouter de nouvelles lignes et colonnes ?" },
+      { type: "p", text: "Oui. Des commandes dédiées permettent d'insérer des lignes ou d'ajouter de nouvelles colonnes avec leurs en-têtes." },
+      { type: "h3", text: "Peut-on choisir le séparateur d'exportation ?" },
+      { type: "p", text: "Oui. Vous pouvez exporter votre fichier avec des virgules, des points-virgules ou des tabulations selon vos besoins." },
+    ],
+  },
+};
