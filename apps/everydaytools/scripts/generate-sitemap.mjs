@@ -44,7 +44,7 @@ if (existsSync(blogPostsDir)) {
   const files = readdirSync(blogPostsDir).filter((f) => f.endsWith(".ts"));
   for (const file of files) {
     const content = readFileSync(resolve(blogPostsDir, file), "utf8");
-    const slugMatch = /slug:\s*\{\s*en:\s*"([^"]+)"\s*,\s*fr:\s*"([^"]+)"\s*\}/.exec(content);
+    const slugMatch = /slug:\s*\{\s*en:\s*"([^"]+)"\s*,\s*fr:\s*"([^"]+)"[,\s]*\}/.exec(content);
     const dateMatch = /publishedAt:\s*"([^"]+)"/.exec(content);
     if (slugMatch) {
       blogPosts.push({

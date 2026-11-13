@@ -1506,6 +1506,54 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog"/>
   </url>
   <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-use-ai-text-scrubber</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-ai-text-scrubber"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-ai-text-scrubber"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-utiliser-ai-text-scrubber</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-ai-text-scrubber"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-ai-text-scrubber"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-avif-to-jpg</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-avif-to-jpg"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-avif-to-jpg"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-avif-to-jpg</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-avif-to-jpg"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-avif-to-jpg"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-avif-to-png</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-avif-to-png"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-avif-to-png"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-avif-to-png</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-avif-to-png"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-avif-to-png"/>
+  </url>
+  <url>
     <loc>https://everydaytools.qzz.io/en/blog/how-to-remove-image-background</loc>
     <lastmod>2025-05-25</lastmod>
     <changefreq>monthly</changefreq>
@@ -1520,6 +1568,374 @@
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-remove-image-background"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-supprimer-fond-image"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-use-barcode-generator</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-barcode-generator"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-barcode-generator"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-utiliser-barcode-generator</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-barcode-generator"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-barcode-generator"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-use-base64</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-base64"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-base64"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-utiliser-base64</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-base64"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-base64"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-bmp-to-jpg</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-bmp-to-jpg"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-bmp-to-jpg"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-bmp-to-jpg</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-bmp-to-jpg"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-bmp-to-jpg"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-bmp-to-webp</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-bmp-to-webp"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-bmp-to-webp"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-bmp-to-webp</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-bmp-to-webp"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-bmp-to-webp"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-use-checksum</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-checksum"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-checksum"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-utiliser-checksum</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-checksum"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-checksum"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-use-color-converter</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-color-converter"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-color-converter"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-utiliser-color-converter</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-color-converter"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-color-converter"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-extract-color-palettes-from-images</loc>
+    <lastmod>2026-05-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-extract-color-palettes-from-images"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-extraire-palette-couleurs-image"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-extraire-palette-couleurs-image</loc>
+    <lastmod>2026-05-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-extract-color-palettes-from-images"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-extraire-palette-couleurs-image"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-use-css-formatter</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-css-formatter"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-css-formatter"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-utiliser-css-formatter</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-css-formatter"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-css-formatter"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-edit-csv-files-online</loc>
+    <lastmod>2026-04-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-edit-csv-files-online"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-editer-fichier-csv-en-ligne"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-editer-fichier-csv-en-ligne</loc>
+    <lastmod>2026-04-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-edit-csv-files-online"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-editer-fichier-csv-en-ligne"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-csv-to-excel-xlsx</loc>
+    <lastmod>2026-04-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-csv-to-excel-xlsx"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-csv-en-excel-xlsx"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-csv-en-excel-xlsx</loc>
+    <lastmod>2026-04-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-csv-to-excel-xlsx"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-csv-en-excel-xlsx"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-csv-to-json</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-csv-to-json"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-csv-en-json"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-csv-en-json</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-csv-to-json"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-csv-en-json"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-view-and-inspect-csv-files-online</loc>
+    <lastmod>2026-04-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-view-and-inspect-csv-files-online"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-visualiser-et-inspecter-fichier-csv-en-ligne"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-visualiser-et-inspecter-fichier-csv-en-ligne</loc>
+    <lastmod>2026-04-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-view-and-inspect-csv-files-online"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-visualiser-et-inspecter-fichier-csv-en-ligne"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-use-currency-converter</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-currency-converter"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-currency-converter"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-utiliser-currency-converter</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-currency-converter"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-currency-converter"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-use-diff-checker</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-diff-checker"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-diff-checker"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-utiliser-diff-checker</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-diff-checker"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-diff-checker"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-epub-to-pdf</loc>
+    <lastmod>2026-04-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-epub-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-epub-en-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-epub-en-pdf</loc>
+    <lastmod>2026-04-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-epub-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-epub-en-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-epub-to-word-docx</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-epub-to-word-docx"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-epub-en-word-docx"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-epub-en-word-docx</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-epub-to-word-docx"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-epub-en-word-docx"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-excel-to-csv</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-excel-to-csv"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-excel-en-csv"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-excel-en-csv</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-excel-to-csv"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-excel-en-csv"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-excel-to-pdf</loc>
+    <lastmod>2026-04-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-excel-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-excel-en-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-excel-en-pdf</loc>
+    <lastmod>2026-04-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-excel-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-excel-en-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-generate-favicons-for-websites</loc>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-generate-favicons-for-websites"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-creer-favicon-pour-site-web"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-creer-favicon-pour-site-web</loc>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-generate-favicons-for-websites"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-creer-favicon-pour-site-web"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-flip-and-rotate-images-online</loc>
+    <lastmod>2026-04-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-flip-and-rotate-images-online"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-retourner-et-pivoter-image-en-ligne"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-retourner-et-pivoter-image-en-ligne</loc>
+    <lastmod>2026-04-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-flip-and-rotate-images-online"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-retourner-et-pivoter-image-en-ligne"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-gif-to-png</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-gif-to-png"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-gif-to-png"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-gif-to-png</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-gif-to-png"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-gif-to-png"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-gif-to-webp</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-gif-to-webp"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-gif-to-webp"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-gif-to-webp</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-gif-to-webp"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-gif-to-webp"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-use-hash-generator</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-hash-generator"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-hash-generator"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-utiliser-hash-generator</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-hash-generator"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-hash-generator"/>
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-heic-to-jpg</loc>
@@ -1538,6 +1954,214 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-heic-en-jpg"/>
   </url>
   <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-iphone-heic-photos-to-pdf</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-iphone-heic-photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-photos-heic-iphone-en-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-photos-heic-iphone-en-pdf</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-iphone-heic-photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-photos-heic-iphone-en-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-heic-to-png</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-heic-to-png"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-heic-to-png"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-heic-to-png</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-heic-to-png"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-heic-to-png"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-heic-to-webp</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-heic-to-webp"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-heic-to-webp"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-heic-to-webp</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-heic-to-webp"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-heic-to-webp"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-use-html-formatter</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-html-formatter"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-html-formatter"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-utiliser-html-formatter</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-html-formatter"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-html-formatter"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-html-to-markdown</loc>
+    <lastmod>2026-04-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-html-to-markdown"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-html-en-markdown"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-html-en-markdown</loc>
+    <lastmod>2026-04-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-html-to-markdown"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-html-en-markdown"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-html-to-pdf</loc>
+    <lastmod>2026-04-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-html-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-html-en-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-html-en-pdf</loc>
+    <lastmod>2026-04-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-html-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-html-en-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-html-to-word-docx</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-html-to-word-docx"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-html-en-word-docx"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-html-en-word-docx</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-html-to-word-docx"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-html-en-word-docx"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-compress-images-without-losing-quality</loc>
+    <lastmod>2026-04-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-compress-images-without-losing-quality"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-compresser-images-sans-perte-de-qualite"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-compresser-images-sans-perte-de-qualite</loc>
+    <lastmod>2026-04-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-compress-images-without-losing-quality"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-compresser-images-sans-perte-de-qualite"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-crop-images-online</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-crop-images-online"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-recadrer-image-en-ligne"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-recadrer-image-en-ligne</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-crop-images-online"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-recadrer-image-en-ligne"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-apply-filters-and-adjust-photos-online</loc>
+    <lastmod>2026-05-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-apply-filters-and-adjust-photos-online"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-appliquer-filtres-et-retoucher-photo-en-ligne"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-appliquer-filtres-et-retoucher-photo-en-ligne</loc>
+    <lastmod>2026-05-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-apply-filters-and-adjust-photos-online"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-appliquer-filtres-et-retoucher-photo-en-ligne"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-resize-images-online</loc>
+    <lastmod>2026-04-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-resize-images-online"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-redimensionner-image-en-ligne"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-redimensionner-image-en-ligne</loc>
+    <lastmod>2026-04-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-resize-images-online"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-redimensionner-image-en-ligne"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-images-to-pdf</loc>
+    <lastmod>2026-04-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-images-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-images-en-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-images-en-pdf</loc>
+    <lastmod>2026-04-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-images-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-images-en-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-upscale-images-with-ai</loc>
+    <lastmod>2026-04-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-upscale-images-with-ai"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-agrandir-une-image-avec-ia"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-agrandir-une-image-avec-ia</loc>
+    <lastmod>2026-04-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-upscale-images-with-ai"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-agrandir-une-image-avec-ia"/>
+  </url>
+  <url>
     <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-images-online</loc>
     <lastmod>2025-06-12</lastmod>
     <changefreq>monthly</changefreq>
@@ -1552,6 +2176,22 @@
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-images-online"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-des-images-en-ligne"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-jpg-to-avif</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-jpg-to-avif"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-jpg-to-avif"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-jpg-to-avif</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-jpg-to-avif"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-jpg-to-avif"/>
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-jpg-to-pdf</loc>
@@ -1570,6 +2210,198 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-jpg-en-pdf"/>
   </url>
   <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-jpg-to-png</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-jpg-to-png"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-jpg-to-png"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-jpg-to-png</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-jpg-to-png"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-jpg-to-png"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-jpg-to-webp</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-jpg-to-webp"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-jpg-to-webp"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-jpg-to-webp</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-jpg-to-webp"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-jpg-to-webp"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-use-js-formatter</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-js-formatter"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-js-formatter"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-utiliser-js-formatter</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-js-formatter"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-js-formatter"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-use-json-diff</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-json-diff"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-json-diff"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-utiliser-json-diff</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-json-diff"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-json-diff"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-use-json-formatter</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-json-formatter"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-json-formatter"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-utiliser-json-formatter</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-json-formatter"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-json-formatter"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-json-to-csv</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-json-to-csv"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-json-en-csv"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-json-en-csv</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-json-to-csv"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-json-en-csv"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-use-jwt-decoder</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-jwt-decoder"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-jwt-decoder"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-utiliser-jwt-decoder</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-jwt-decoder"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-jwt-decoder"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-use-lorem-ipsum</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-lorem-ipsum"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-lorem-ipsum"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-utiliser-lorem-ipsum</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-lorem-ipsum"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-lorem-ipsum"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-use-markdown-preview</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-markdown-preview"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-markdown-preview"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-utiliser-markdown-preview</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-markdown-preview"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-markdown-preview"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-markdown-to-word-docx</loc>
+    <lastmod>2026-04-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-markdown-to-word-docx"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-markdown-en-word-docx"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-markdown-en-word-docx</loc>
+    <lastmod>2026-04-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-markdown-to-word-docx"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-markdown-en-word-docx"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-markdown-documentation-to-pdf</loc>
+    <lastmod>2026-03-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-markdown-documentation-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-markdown-en-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-markdown-en-pdf</loc>
+    <lastmod>2026-03-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-markdown-documentation-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-markdown-en-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-use-metadata-cleaner</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-metadata-cleaner"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-metadata-cleaner"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-utiliser-metadata-cleaner</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-metadata-cleaner"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-metadata-cleaner"/>
+  </url>
+  <url>
     <loc>https://everydaytools.qzz.io/en/blog/how-to-extract-text-from-an-image</loc>
     <lastmod>2025-06-10</lastmod>
     <changefreq>monthly</changefreq>
@@ -1584,6 +2416,22 @@
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-extract-text-from-an-image"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-extraire-texte-dune-image"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-odt-to-pdf</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-odt-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-odt-en-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-odt-en-pdf</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-odt-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-odt-en-pdf"/>
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/blog/how-to-generate-strong-password</loc>
@@ -1634,6 +2482,54 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-fusionner-des-fichiers-pdf"/>
   </url>
   <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-inspect-and-edit-pdf-metadata</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-inspect-and-edit-pdf-metadata"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-modifier-metadonnees-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-modifier-metadonnees-pdf</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-inspect-and-edit-pdf-metadata"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-modifier-metadonnees-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-ocr-scanned-pdf-to-searchable-text</loc>
+    <lastmod>2026-03-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-ocr-scanned-pdf-to-searchable-text"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-reconnaissance-optique-ocr-pdf-recherchable"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-reconnaissance-optique-ocr-pdf-recherchable</loc>
+    <lastmod>2026-03-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-ocr-scanned-pdf-to-searchable-text"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-reconnaissance-optique-ocr-pdf-recherchable"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-add-page-numbers-to-pdf-documents</loc>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-add-page-numbers-to-pdf-documents"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-numeroter-pages-document-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-numeroter-pages-document-pdf</loc>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-add-page-numbers-to-pdf-documents"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-numeroter-pages-document-pdf"/>
+  </url>
+  <url>
     <loc>https://everydaytools.qzz.io/en/blog/how-to-password-protect-a-pdf</loc>
     <lastmod>2025-06-10</lastmod>
     <changefreq>monthly</changefreq>
@@ -1648,6 +2544,38 @@
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-password-protect-a-pdf"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-proteger-un-pdf-par-mot-de-passe"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-repair-corrupt-pdf-files</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-repair-corrupt-pdf-files"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-reparer-fichier-pdf-endommage"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-reparer-fichier-pdf-endommage</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-repair-corrupt-pdf-files"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-reparer-fichier-pdf-endommage"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-rotate-pdf-pages-permanently</loc>
+    <lastmod>2026-03-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-rotate-pdf-pages-permanently"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-faire-pivoter-pages-pdf-definitivement"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-faire-pivoter-pages-pdf-definitivement</loc>
+    <lastmod>2026-03-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-rotate-pdf-pages-permanently"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-faire-pivoter-pages-pdf-definitivement"/>
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/blog/how-to-split-a-pdf</loc>
@@ -1666,6 +2594,166 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-diviser-un-fichier-pdf"/>
   </url>
   <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-epub-for-ereaders</loc>
+    <lastmod>2026-03-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-epub-for-ereaders"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-epub-pour-liseuse"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-epub-pour-liseuse</loc>
+    <lastmod>2026-03-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-epub-for-ereaders"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-epub-pour-liseuse"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-excel</loc>
+    <lastmod>2026-03-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-excel"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-excel"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-excel</loc>
+    <lastmod>2026-03-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-excel"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-excel"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-html</loc>
+    <lastmod>2026-03-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-html"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-html</loc>
+    <lastmod>2026-03-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-html"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-extract-high-resolution-images-from-pdf</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-extract-high-resolution-images-from-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-extraire-images-haute-resolution-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-extraire-images-haute-resolution-pdf</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-extract-high-resolution-images-from-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-extraire-images-haute-resolution-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-markdown</loc>
+    <lastmod>2026-03-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-markdown"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-markdown"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-markdown</loc>
+    <lastmod>2026-03-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-markdown"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-markdown"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-odt</loc>
+    <lastmod>2026-04-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-odt"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-odt"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-odt</loc>
+    <lastmod>2026-04-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-odt"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-odt"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-pdfa-for-archiving</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-pdfa-for-archiving"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-pdfa-archivage-long-terme"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-pdfa-archivage-long-terme</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-pdfa-for-archiving"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-pdfa-archivage-long-terme"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-powerpoint-presentation</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-powerpoint-presentation"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-presentation-powerpoint"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-presentation-powerpoint</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-powerpoint-presentation"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-presentation-powerpoint"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-rtf</loc>
+    <lastmod>2026-04-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-rtf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-rtf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-rtf</loc>
+    <lastmod>2026-04-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-rtf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-rtf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-extract-text-from-pdf</loc>
+    <lastmod>2026-03-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-extract-text-from-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-extraire-texte-fichier-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-extraire-texte-fichier-pdf</loc>
+    <lastmod>2026-03-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-extract-text-from-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-extraire-texte-fichier-pdf"/>
+  </url>
+  <url>
     <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-word</loc>
     <lastmod>2025-05-15</lastmod>
     <changefreq>monthly</changefreq>
@@ -1680,6 +2768,486 @@
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-word"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-word"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-remove-password-protection-from-pdf</loc>
+    <lastmod>2026-03-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-remove-password-protection-from-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-deverrouiller-pdf-protege"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-deverrouiller-pdf-protege</loc>
+    <lastmod>2026-03-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-remove-password-protection-from-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-deverrouiller-pdf-protege"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-add-watermark-to-pdf-documents</loc>
+    <lastmod>2026-03-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-add-watermark-to-pdf-documents"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-ajouter-filigrane-document-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-ajouter-filigrane-document-pdf</loc>
+    <lastmod>2026-03-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-add-watermark-to-pdf-documents"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-ajouter-filigrane-document-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-png-to-avif</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-png-to-avif"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-png-to-avif"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-png-to-avif</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-png-to-avif"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-png-to-avif"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-png-to-gif</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-png-to-gif"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-png-to-gif"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-png-to-gif</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-png-to-gif"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-png-to-gif"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-png-to-jpg</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-png-to-jpg"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-png-to-jpg"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-png-to-jpg</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-png-to-jpg"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-png-to-jpg"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-png-to-pdf</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-png-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-png-to-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-png-to-pdf</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-png-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-png-to-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-png-to-svg</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-png-to-svg"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-png-to-svg"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-png-to-svg</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-png-to-svg"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-png-to-svg"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-png-to-webp</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-png-to-webp"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-png-to-webp"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-png-to-webp</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-png-to-webp"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-png-to-webp"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-powerpoint-pptx-to-images</loc>
+    <lastmod>2026-04-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-powerpoint-pptx-to-images"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-powerpoint-pptx-en-images"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-powerpoint-pptx-en-images</loc>
+    <lastmod>2026-04-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-powerpoint-pptx-to-images"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-powerpoint-pptx-en-images"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-powerpoint-pptx-to-pdf</loc>
+    <lastmod>2026-04-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-powerpoint-pptx-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-powerpoint-pptx-en-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-powerpoint-pptx-en-pdf</loc>
+    <lastmod>2026-04-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-powerpoint-pptx-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-powerpoint-pptx-en-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-use-qr-code-generator</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-qr-code-generator"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-qr-code-generator"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-utiliser-qr-code-generator</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-qr-code-generator"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-qr-code-generator"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-use-regex-tester</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-regex-tester"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-regex-tester"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-utiliser-regex-tester</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-regex-tester"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-regex-tester"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-reorder-pdf-pages-online</loc>
+    <lastmod>2026-03-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-reorder-pdf-pages-online"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-reorganiser-pages-pdf-en-ligne"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-reorganiser-pages-pdf-en-ligne</loc>
+    <lastmod>2026-03-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-reorder-pdf-pages-online"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-reorganiser-pages-pdf-en-ligne"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-rtf-to-pdf</loc>
+    <lastmod>2026-04-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-rtf-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-rtf-en-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-rtf-en-pdf</loc>
+    <lastmod>2026-04-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-rtf-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-rtf-en-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-use-speed-test</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-speed-test"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-speed-test"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-utiliser-speed-test</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-speed-test"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-speed-test"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-vector-svg-to-high-res-png</loc>
+    <lastmod>2026-03-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-vector-svg-to-high-res-png"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-svg-vectoriel-en-png-haute-definition"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-svg-vectoriel-en-png-haute-definition</loc>
+    <lastmod>2026-03-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-vector-svg-to-high-res-png"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-svg-vectoriel-en-png-haute-definition"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-tiff-to-jpg</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-tiff-to-jpg"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-tiff-to-jpg"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-tiff-to-jpg</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-tiff-to-jpg"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-tiff-to-jpg"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-tiff-to-png</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-tiff-to-png"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-tiff-to-png"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-tiff-to-png</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-tiff-to-png"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-tiff-to-png"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-tiff-to-webp</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-tiff-to-webp"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-tiff-to-webp"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-tiff-to-webp</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-tiff-to-webp"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-tiff-to-webp"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-plain-text-to-word-docx</loc>
+    <lastmod>2026-04-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-plain-text-to-word-docx"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-texte-brut-en-word-docx"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-texte-brut-en-word-docx</loc>
+    <lastmod>2026-04-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-plain-text-to-word-docx"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-texte-brut-en-word-docx"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-plain-text-to-pdf</loc>
+    <lastmod>2026-04-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-plain-text-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-texte-brut-en-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-texte-brut-en-pdf</loc>
+    <lastmod>2026-04-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-plain-text-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-texte-brut-en-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-use-unit-converter</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-unit-converter"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-unit-converter"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-utiliser-unit-converter</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-unit-converter"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-unit-converter"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-use-url-encoder</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-url-encoder"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-url-encoder"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-utiliser-url-encoder</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-url-encoder"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-url-encoder"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-use-uuid-generator</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-uuid-generator"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-uuid-generator"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-utiliser-uuid-generator</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-uuid-generator"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-uuid-generator"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-watermark-images-online</loc>
+    <lastmod>2026-04-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-watermark-images-online"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-ajouter-filigrane-image-en-ligne"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-ajouter-filigrane-image-en-ligne</loc>
+    <lastmod>2026-04-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-watermark-images-online"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-ajouter-filigrane-image-en-ligne"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-webp-to-avif</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-webp-to-avif"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-webp-to-avif"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-webp-to-avif</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-webp-to-avif"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-webp-to-avif"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-webp-to-gif</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-webp-to-gif"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-webp-to-gif"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-webp-to-gif</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-webp-to-gif"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-webp-to-gif"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-webp-to-jpg</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-webp-to-jpg"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-webp-to-jpg"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-webp-to-jpg</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-webp-to-jpg"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-webp-to-jpg"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-webp-to-pdf</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-webp-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-webp-to-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-webp-to-pdf</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-webp-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-webp-to-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-webp-to-png</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-webp-to-png"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-webp-to-png"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-webp-to-png</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-webp-to-png"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-webp-to-png"/>
   </url>
   <url>
     <loc>https://everydaytools.qzz.io/en/blog/webp-vs-jpeg-vs-png</loc>
@@ -1698,6 +3266,70 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/webp-vs-jpeg-vs-png"/>
   </url>
   <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-use-word-counter</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-word-counter"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-word-counter"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-utiliser-word-counter</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-use-word-counter"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-utiliser-word-counter"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-word-docx-to-epub-ebook</loc>
+    <lastmod>2026-03-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-word-docx-to-epub-ebook"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-word-docx-en-ebook-epub"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-word-docx-en-ebook-epub</loc>
+    <lastmod>2026-03-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-word-docx-to-epub-ebook"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-word-docx-en-ebook-epub"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-word-to-html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-word-to-html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-word-en-html"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-word-en-html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-word-to-html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-word-en-html"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-word-docx-to-markdown</loc>
+    <lastmod>2026-04-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-word-docx-to-markdown"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-word-docx-en-markdown"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-word-docx-en-markdown</loc>
+    <lastmod>2026-04-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-word-docx-to-markdown"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-word-docx-en-markdown"/>
+  </url>
+  <url>
     <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-word-to-pdf</loc>
     <lastmod>2025-06-05</lastmod>
     <changefreq>monthly</changefreq>
@@ -1712,5 +3344,21 @@
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-word-to-pdf"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-word-en-pdf"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/en/blog/how-to-convert-word-docx-to-plain-text</loc>
+    <lastmod>2026-03-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-word-docx-to-plain-text"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-word-docx-en-texte-brut"/>
+  </url>
+  <url>
+    <loc>https://everydaytools.qzz.io/fr/blog/comment-convertir-word-docx-en-texte-brut</loc>
+    <lastmod>2026-03-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://everydaytools.qzz.io/en/blog/how-to-convert-word-docx-to-plain-text"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/blog/comment-convertir-word-docx-en-texte-brut"/>
   </url>
 </urlset>

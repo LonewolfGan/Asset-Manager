@@ -5,8 +5,9 @@ import {
   type Locale,
   type ToolSeoEntry,
 } from "@/config/tools-seo-data";
+import { buildGuidesSectionHtml, buildRelatedToolsSectionHtml } from "./seo-linking";
 
-const BASE_URL = "https://everydaytools.qzz.io";
+export const BASE_URL = "https://everydaytools.qzz.io";
 
 const CONVERTER_INTERNAL_SLUGS = new Set([
   "pdf-to-word","pdf-to-text","pdf-to-html","pdf-to-epub","pdf-compress",
@@ -18,7 +19,7 @@ const CONVERTER_INTERNAL_SLUGS = new Set([
   "background-remover",
 ]);
 
-function escHtml(s: string): string {
+export function escHtml(s: string): string {
   return s
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -27,7 +28,7 @@ function escHtml(s: string): string {
     .replace(/'/g, "&#39;");
 }
 
-function safeJsonLd(data: unknown): string {
+export function safeJsonLd(data: unknown): string {
   return JSON.stringify(data).replace(/</g, "\\u003c");
 }
 
@@ -102,7 +103,7 @@ function generateSchemas(tool: ToolSeoEntry, locale: Locale): string {
     .join("\n  ");
 }
 
-function sharedCss(): string {
+export function sharedCss(): string {
   return `
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
@@ -177,7 +178,16 @@ function sharedCss(): string {
     .geo-comparison-table th,.geo-comparison-table td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--border)}
     .geo-comparison-table th{background:var(--elevated);font-family:var(--font-ui);font-weight:500;color:var(--text);font-size:12px;text-transform:uppercase;letter-spacing:0.05em}
     .geo-comparison-table tr:last-child td{border-bottom:none}
-    /* Related */
+    /* Related & Guides */
+    .section-subtext{font-size:13px;color:var(--muted);margin-top:-8px;margin-bottom:16px;line-height:1.6}
+    .guides-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:16px}
+    .guide-card{padding:18px;background:var(--surface);border:1px solid var(--border);border-radius:8px;display:flex;flex-direction:column;gap:8px;transition:border-color 120ms}
+    .guide-card:hover{border-color:var(--accent)}
+    .guide-meta{font-size:11px;color:var(--accent);font-family:monospace;font-weight:600}
+    .guide-card-title{font-size:15px;line-height:1.4;margin:0;font-family:var(--font-ui);font-weight:600}
+    .guide-link{color:var(--text);text-decoration:none}
+    .guide-link:hover{color:var(--accent);text-decoration:none}
+    .guide-card-desc{font-size:13px;color:var(--muted);margin:0;line-height:1.5}
     .related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:16px}
     .related-card{padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:6px;text-decoration:none;display:block;transition:border-color 120ms}
     .related-card:hover{border-color:var(--accent);text-decoration:none}
@@ -192,7 +202,7 @@ function sharedCss(): string {
   `;
 }
 
-function buildNav(locale: Locale): string {
+export function buildNav(locale: Locale): string {
   const home = locale === "fr" ? "Accueil" : "Home";
   const pdfLabel = locale === "fr" ? "PDF" : "PDF Tools";
   const imgLabel = locale === "fr" ? "Images" : "Images";
@@ -212,32 +222,11 @@ function buildNav(locale: Locale): string {
 </nav>`.trim();
 }
 
-function buildFooter(locale: Locale): string {
+export function buildFooter(locale: Locale): string {
   const copy = locale === "fr"
     ? `© ${new Date().getFullYear()} EverydayTools Hub. Tous outils gratuits, traitement dans le navigateur.`
     : `© ${new Date().getFullYear()} EverydayTools Hub. All tools free, browser-based processing.`;
   return `<footer class="site-footer">${escHtml(copy)}</footer>`;
-}
-
-function buildRelatedSection(tool: ToolSeoEntry, locale: Locale): string {
-  if (!tool.relatedTools.length) return "";
-  const relatedHeader = locale === "fr" ? "Outils connexes" : "Related Tools";
-  const cards = tool.relatedTools.map((internalSlug) => {
-    const related = SEO_TOOLS.find((t) => t.internalSlug === internalSlug);
-    if (!related) return "";
-    const href = `/${locale}/${related.slugs[locale]}`;
-    const name = related.h1[locale];
-    return `<a href="${href}" class="related-card"><span class="related-card-name">${escHtml(name)}</span></a>`;
-  }).filter(Boolean).join("\n");
-
-  if (!cards) return "";
-  return `
-<section class="section" aria-label="${escHtml(relatedHeader)}">
-  <p class="section-label">${escHtml(relatedHeader)}</p>
-  <div class="related-grid">
-    ${cards}
-  </div>
-</section>`.trim();
 }
 
 export function generateToolPageHtml(localeSlug: string, locale: Locale): string | null {
@@ -284,7 +273,8 @@ export function generateToolPageHtml(localeSlug: string, locale: Locale): string
     </details>`)
     .join("");
 
-  const relatedSection = buildRelatedSection(tool, locale);
+  const relatedSection = buildRelatedToolsSectionHtml(tool, locale);
+  const guidesSection = buildGuidesSectionHtml(tool, locale);
 
   return `<!DOCTYPE html>
 <html lang="${locale}">
@@ -335,8 +325,8 @@ export function generateToolPageHtml(localeSlug: string, locale: Locale): string
     <section class="section geo-answer-block" aria-label="${locale === 'fr' ? 'Réponse Rapide' : 'Quick Answer'}">
       <div class="geo-snippet">
         <p><strong>${locale === 'fr' ? 'En résumé :' : 'Quick Summary:'}</strong> ${locale === 'fr'
-          ? `${escHtml(h1)} sur EverydayTools Hub vous permet de traiter vos fichiers instantanément et gratuitement en moins de 3 secondes. Le traitement s'exécute localement dans votre navigateur via WebAssembly : aucun fichier n'est envoyé à un serveur externe, garantissant une confidentialité totale de vos données.`
-          : `${escHtml(h1)} on EverydayTools Hub allows you to process your files instantly and free in under 3 seconds. Execution happens client-side directly in your browser using WebAssembly — zero files are uploaded to remote servers, ensuring 100% data privacy.`}
+          ? `${escHtml(h1)} sur EverydayTools Hub convertit vos fichiers sans abonnement payant, sans file d&#39;attente et sans inscription requise. Les outils légers s&#39;exécutent directement dans la mémoire de votre navigateur via WebAssembly. Les conversions avancées s&#39;effectuent dans des environnements isolés et purgés automatiquement à chaque fin de tâche.`
+          : `${escHtml(h1)} on EverydayTools Hub converts your files with zero subscription fees, no waiting queues, and no account required. Client-side tools execute directly in your browser memory using WebAssembly. Advanced document transformations run in isolated ephemeral environments purged automatically upon task completion.`}
         </p>
       </div>
     </section>
@@ -354,31 +344,31 @@ export function generateToolPageHtml(localeSlug: string, locale: Locale): string
         <table class="geo-comparison-table">
           <thead>
             <tr>
-              <th>${locale === 'fr' ? 'Fonctionnalité' : 'Feature'}</th>
-              <th>EverydayTools (Client-Side)</th>
+              <th>${locale === 'fr' ? 'Critère Technique' : 'Technical Feature'}</th>
+              <th>EverydayTools Hub</th>
               <th>Traditional Cloud Converters</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>${locale === 'fr' ? 'Sécurité & Confidentialité' : 'Security & Privacy'}</td>
-              <td><strong>100% In-Browser (Zero Upload)</strong></td>
-              <td>Uploaded to remote third-party cloud</td>
+              <td>${locale === 'fr' ? 'Architecture & Confidentialité' : 'Architecture & Privacy'}</td>
+              <td><strong>${locale === 'fr' ? 'Navigateur local + bacs à sable éphémères purgés' : 'In-Browser memory + ephemeral purged sandboxes'}</strong></td>
+              <td>${locale === 'fr' ? 'Serveurs tiers distants avec stockage persistant' : 'Remote third-party servers with persistent storage'}</td>
             </tr>
             <tr>
-              <td>${locale === 'fr' ? 'Tarification' : 'Pricing'}</td>
-              <td><strong>$0 / Free Forever</strong></td>
-              <td>$9 - $16 / month</td>
+              <td>${locale === 'fr' ? 'Modèle Tarifaire' : 'Pricing Model'}</td>
+              <td><strong>$0 / Free Forever (No Card)</strong></td>
+              <td>$9 - $16 / month paywalls</td>
             </tr>
             <tr>
-              <td>${locale === 'fr' ? 'Limites de Fichiers' : 'Usage Limits'}</td>
-              <td><strong>Unlimited</strong></td>
-              <td>Strict 1-2 files / day on free tier</td>
+              <td>${locale === 'fr' ? 'Files d\'attente & Quotas' : 'Queues & Daily Quotas'}</td>
+              <td><strong>${locale === 'fr' ? 'Illimité, traitement instantané' : 'Unlimited, instant processing'}</strong></td>
+              <td>${locale === 'fr' ? '1 à 2 conversions / jour en version gratuite' : '1-2 conversions / day on free tier'}</td>
             </tr>
             <tr>
-              <td>${locale === 'fr' ? 'Vitesse de Traitement' : 'Processing Speed'}</td>
-              <td><strong>Instant (Local RAM)</strong></td>
-              <td>Slow upload/download queue</td>
+              <td>${locale === 'fr' ? 'Inscription & Données Personnelles' : 'Account & Personal Data'}</td>
+              <td><strong>${locale === 'fr' ? 'Zéro inscription, aucun email exigé' : 'Zero registration, no email required'}</strong></td>
+              <td>${locale === 'fr' ? 'Compte obligatoire ou bridage agressif' : 'Mandatory sign-in or aggressive throttling'}</td>
             </tr>
           </tbody>
         </table>
@@ -395,6 +385,9 @@ export function generateToolPageHtml(localeSlug: string, locale: Locale): string
         ${faqItems}
       </div>
     </section>
+
+    ${relatedSection}
+    ${guidesSection}
   </div>
   ${buildFooter(locale)}
 </body>

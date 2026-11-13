@@ -13,7 +13,7 @@ describe('SSG Pre-renderer for High-Speed Bot Crawlability (TDD)', () => {
     mkdirSync(tmpOutDir, { recursive: true });
 
     const count = prerenderSeoPages(tmpOutDir);
-    expect(count).toBeGreaterThan(150);
+    expect(count).toBeGreaterThan(400);
 
     // Verify EN homepage
     const enHomePath = resolve(tmpOutDir, 'en/index.html');
@@ -45,6 +45,14 @@ describe('SSG Pre-renderer for High-Speed Bot Crawlability (TDD)', () => {
     const frToolHtml = readFileSync(frToolPath, 'utf-8');
     expect(frToolHtml).toContain('Convertir PDF en Word');
     expect(frToolHtml).toContain('<link rel="canonical" href="https://everydaytools.qzz.io/fr/convertir-pdf-en-word"');
+
+    // Verify Blog Post: how-to-convert-pdf-to-word (EN)
+    const enBlogPath = resolve(tmpOutDir, 'en/blog/how-to-convert-pdf-to-word/index.html');
+    expect(existsSync(enBlogPath), 'en/blog/how-to-convert-pdf-to-word/index.html must exist').toBe(true);
+    const enBlogHtml = readFileSync(enBlogPath, 'utf-8');
+    expect(enBlogHtml).toContain('How to Convert a PDF to Word');
+    expect(enBlogHtml).toContain('@type":"Article"');
+    expect(enBlogHtml).toContain('href="/convert-pdf-to-word"');
 
     // Clean up temporary test files
     rmSync(tmpOutDir, { recursive: true, force: true });

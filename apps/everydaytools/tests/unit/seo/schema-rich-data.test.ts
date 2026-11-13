@@ -50,7 +50,7 @@ describe('Enriched Schema.org JSON-LD & Princeton GEO Blocks (TDD)', () => {
 
     expect(html).toContain('geo-answer-block');
     expect(html).toContain('geo-comparison-table');
-    expect(html).toContain('EverydayTools (Client-Side)');
+    expect(html).toContain('EverydayTools Hub');
     expect(html).toContain('Traditional Cloud Converters');
   });
 });

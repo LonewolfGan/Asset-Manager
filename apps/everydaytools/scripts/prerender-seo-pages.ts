@@ -2,7 +2,9 @@ import { writeFileSync, mkdirSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { SEO_TOOLS, type Locale } from '../src/config/tools-seo-data';
+import { BLOG_POSTS } from '../src/config/blog-data';
 import { generateToolPageHtml, generateHomepageHtml } from '../src/lib/seo-ssr';
+import { generateBlogPostHtml } from '../src/lib/seo-blog-ssr';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -31,6 +33,18 @@ export function prerenderSeoPages(targetDir: string): number {
         const toolDir = resolve(homeDir, slug);
         mkdirSync(toolDir, { recursive: true });
         writeFileSync(resolve(toolDir, 'index.html'), toolHtml, 'utf-8');
+        count++;
+      }
+    }
+
+    // 3. Prerender each localized blog post with rich article schema & tool cross-link
+    for (const post of BLOG_POSTS) {
+      const slug = post.slug[locale];
+      const postHtml = generateBlogPostHtml(slug, locale);
+      if (postHtml) {
+        const postDir = resolve(homeDir, 'blog', slug);
+        mkdirSync(postDir, { recursive: true });
+        writeFileSync(resolve(postDir, 'index.html'), postHtml, 'utf-8');
         count++;
       }
     }
