@@ -45,10 +45,11 @@ ENV DEBIAN_FRONTEND=noninteractive
 # - qpdf: Fast PDF linearization, repair, page manipulation, AES-256 protection & unlock
 # - tesseract-ocr (+ eng/fra): Optical Character Recognition for image & PDF OCR
 # - poppler-utils: High-performance PDF rasterization utilities (pdftoppm, pdfinfo)
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
         curl \
+        ca-certificates \
         python3 python3-pip \
-        libreoffice \
+        libreoffice-nogui \
         ghostscript \
         potrace \
         qpdf \
@@ -56,6 +57,7 @@ RUN apt-get update && apt-get install -y \
         tesseract-ocr-eng \
         tesseract-ocr-fra \
         poppler-utils \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Node.js 20 (LTS)
