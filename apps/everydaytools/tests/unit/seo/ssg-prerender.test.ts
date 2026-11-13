@@ -37,6 +37,7 @@ describe('SSG Pre-renderer for High-Speed Bot Crawlability (TDD)', () => {
     expect(enToolHtml).toContain('PDF to Word Converter');
     expect(enToolHtml).toContain('<link rel="canonical" href="https://everydaytools.qzz.io/en/convert-pdf-to-word"');
     expect(enToolHtml).toContain('<link rel="alternate" hreflang="fr" href="https://everydaytools.qzz.io/fr/convertir-pdf-en-word"');
+    expect(enToolHtml).toContain('https://everydaytools.qzz.io/og/tools/en/convert-pdf-to-word.png');
     expect(enToolHtml).toContain('<script type="application/ld+json">');
 
     // Verify Tool Page: convertir-pdf-en-word (FR)

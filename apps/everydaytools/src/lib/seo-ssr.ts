@@ -293,13 +293,14 @@ export function generateToolPageHtml(localeSlug: string, locale: Locale): string
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="EverydayTools Hub" />
   <meta property="og:locale" content="${ogLocale}" />
-  <meta property="og:image" content="${BASE_URL}/opengraph.jpg" />
-  <meta property="og:image:width" content="1280" />
-  <meta property="og:image:height" content="720" />
+  <meta property="og:image" content="${BASE_URL}/og/tools/${locale}/${tool.slugs[locale]}.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="${escHtml(h1)}" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${escHtml(title)}" />
   <meta name="twitter:description" content="${escHtml(description)}" />
-  <meta name="twitter:image" content="${BASE_URL}/opengraph.jpg" />
+  <meta name="twitter:image" content="${BASE_URL}/og/tools/${locale}/${tool.slugs[locale]}.png" />
   <meta name="robots" content="index, follow" />
   <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -462,13 +463,14 @@ export function generateHomepageHtml(locale: Locale): string {
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="EverydayTools Hub" />
   <meta property="og:locale" content="${ogLocale}" />
-  <meta property="og:image" content="${BASE_URL}/opengraph.jpg" />
-  <meta property="og:image:width" content="1280" />
-  <meta property="og:image:height" content="720" />
+  <meta property="og:image" content="${BASE_URL}/og/home-${locale}.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="${escHtml(title)}" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${escHtml(title)}" />
   <meta name="twitter:description" content="${escHtml(description)}" />
-  <meta name="twitter:image" content="${BASE_URL}/opengraph.jpg" />
+  <meta name="twitter:image" content="${BASE_URL}/og/home-${locale}.png" />
   <meta name="robots" content="index, follow" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <style>${sharedCss()}

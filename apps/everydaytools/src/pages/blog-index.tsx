@@ -92,11 +92,14 @@ export default function BlogIndex() {
         <meta property="og:description" content={description} />
         <meta property="og:url" content={canonical} />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://everydaytools.qzz.io/opengraph.jpg" />
+        <meta property="og:image" content={`https://everydaytools.qzz.io/og/home-${lang}.png`} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={title} />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content="https://everydaytools.qzz.io/opengraph.jpg" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={`https://everydaytools.qzz.io/og/home-${lang}.png`} />
         <script type="application/ld+json">{JSON.stringify(BLOG_LIST_SCHEMA)}</script>
       </Helmet>
 

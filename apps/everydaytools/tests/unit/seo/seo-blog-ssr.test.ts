@@ -13,6 +13,7 @@ describe("SEO Blog Static Site Generator (TDD)", () => {
     expect(html).toContain("application/ld+json");
     expect(html).toContain("\"@type\":\"Article\"");
     expect(html).toContain("href=\"/convert-pdf-to-word\"");
+    expect(html).toContain("https://everydaytools.qzz.io/og/blog/en/how-to-convert-pdf-to-word.png");
   });
 
   it("generates complete semantic HTML for a French blog post with reciprocal hreflang", () => {
@@ -22,6 +23,7 @@ describe("SEO Blog Static Site Generator (TDD)", () => {
     expect(html).toContain("Comment convertir un PDF en Word");
     expect(html).toContain("https://everydaytools.qzz.io/fr/blog/comment-convertir-pdf-en-word");
     expect(html).toContain("https://everydaytools.qzz.io/en/blog/how-to-convert-pdf-to-word");
+    expect(html).toContain("https://everydaytools.qzz.io/og/blog/fr/comment-convertir-pdf-en-word.png");
   });
 
   it("returns null for unknown post slug", () => {

@@ -72,3 +72,6 @@ secrets/
 # Scratch & agent artifacts
 scratch/
 artifacts
+
+# Generated OpenGraph preview images (built during build step)
+apps/everydaytools/public/og/

@@ -88,14 +88,15 @@ export default function BlogPost({ params }: BlogPostPageProps) {
         <meta property="og:url" content={canonical} />
         <meta property="og:type" content="article" />
         <meta property="og:site_name" content="EverydayTools Hub" />
-        <meta property="og:image" content={`${BASE_URL}/opengraph.jpg`} />
+        <meta property="og:image" content={`${BASE_URL}/og/blog/${lang}/${post.slug[lang]}.png`} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={post.title[lang]} />
         <meta property="article:published_time" content={post.publishedAt} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={post.title[lang]} />
         <meta name="twitter:description" content={post.description[lang]} />
-        <meta name="twitter:image" content={`${BASE_URL}/opengraph.jpg`} />
+        <meta name="twitter:image" content={`${BASE_URL}/og/blog/${lang}/${post.slug[lang]}.png`} />
         <script type="application/ld+json">{JSON.stringify(ARTICLE_SCHEMA)}</script>
       </Helmet>
 
