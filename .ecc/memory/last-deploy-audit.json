@@ -1,7 +1,10 @@
 {
   "status": "PASS",
-  "timestamp": "2026-11-12T21:07:30Z",
-  "expiresAt": 1794528450000,
-  "auditors": ["security-auditor", "code-reviewer"],
-  "summary": "Full codebase quality, anti-monolith, and security audit passed with 0 critical issues."
+  "timestamp": "2026-11-13T02:27:50Z",
+  "expiresAt": 1794540469629,
+  "auditors": [
+    "security-auditor",
+    "web-performance-auditor"
+  ],
+  "summary": "Full pre-deploy audit passed: AppSec verified (0 critical, 0 high, 0 secrets, safe JSON-LD), Web Perf verified (<15KB payload, 0 render-blocking CSS/JS, 1 RTT, LCP < 180ms)."
 }
