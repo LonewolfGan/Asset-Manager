@@ -1,10 +1,11 @@
 {
   "framework": null,
+  "cleanUrls": true,
   "installCommand": "pnpm install --frozen-lockfile",
   "buildCommand": "PORT=3000 BASE_PATH=/ pnpm --filter @workspace/everydaytools run build",
   "outputDirectory": "apps/everydaytools/dist/public",
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/((?!llms\\.txt|llms-full\\.txt|pricing\\.md).*)", "destination": "/index.html" }
   ],
   "headers": [
     {
@@ -40,6 +41,14 @@
       "source": "/robots.txt",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=86400" }
+      ]
+    },
+    {
+      "source": "/(llms\\.txt|llms-full\\.txt|pricing\\.md)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=3600" },
+        { "key": "Content-Type",  "value": "text/markdown; charset=utf-8" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
       ]
     },
     {
