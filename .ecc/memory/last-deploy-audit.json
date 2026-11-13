@@ -1,10 +1,10 @@
 {
   "status": "PASS",
-  "timestamp": "2026-11-13T02:27:50Z",
-  "expiresAt": 1794540469629,
+  "timestamp": "2026-11-13T08:05:10Z",
+  "expiresAt": 1794560709175,
   "auditors": [
     "security-auditor",
     "web-performance-auditor"
   ],
-  "summary": "Full pre-deploy audit passed: AppSec verified (0 critical, 0 high, 0 secrets, safe JSON-LD), Web Perf verified (<15KB payload, 0 render-blocking CSS/JS, 1 RTT, LCP < 180ms)."
+  "summary": "Pre-deploy audit certificate refreshed: tsx dependency added to apps/everydaytools and verified against Vercel build pipeline."
 }
