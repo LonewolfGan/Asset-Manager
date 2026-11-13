@@ -7,7 +7,7 @@
 - Pricing: 100% Free / $0 forever (see https://everydaytools.qzz.io/pricing.md)
 - Host Environment: Modern web browsers (Chromium, Firefox, Safari, WebKit)
 - Architecture: Client-side execution via WebAssembly, Web Workers, Canvas API, and WebGL
-- Fallback Pipeline: Dedicated headless sandbox on secure Oracle Cloud VM running Gotenberg 8, QPDF, Ghostscript, Poppler, and Tesseract OCR with SSRF protection and ephemeral workspace eviction.
+- Fallback Pipeline: Dedicated headless sandbox running high-performance open-source conversion engines with strict SSRF protection and ephemeral workspace eviction.
 
 ---
 
@@ -16,7 +16,7 @@
 - **Zero-Retention Security Policy:** Strict zero-retention guarantee for all operations.
 - **Client-Side Processing:** Files selected by the user are loaded directly into browser memory (ArrayBuffer/Blob). They are transformed locally by WebAssembly compiled binaries (e.g. `pdf-lib`, `@jsquash/avif`, `docx`, `mammoth`, `onnxruntime-web`).
 - **No Data Retention:** Files processed in the browser never leave the user's computer. When the browser tab is closed, all buffers in RAM are purged.
-- **Headless Fallback (When applicable):** For advanced server-side operations (e.g., complex PDF/A-2b conversions or heavy OCR), files are sent via TLS 1.3 with Cloudflare edge encryption directly to an ephemeral workspace `/tmp/everydaytools/<uuid>`. Workspaces are immediately purged upon task completion, with a hard 15-minute cron eviction for orphaned slots.
+- **Headless Fallback (When applicable):** For advanced server-side operations (e.g., complex PDF/A-2b conversions or heavy OCR), files are sent via TLS 1.3 encrypted connection directly to an isolated ephemeral workspace. Workspaces are immediately purged upon task completion, with automatic eviction for orphaned temporary slots.
 - **No Analytics on Content:** File contents, file names, and converted outputs are never tracked, stored, or sent to telemetry services.
 
 ---
@@ -65,6 +65,6 @@
 
 - **API Base:** `https://api.everydaytools.qzz.io/api`
 - **Health Check Endpoint:** `GET https://api.everydaytools.qzz.io/api/healthz` (returns `{"status":"ok"}`)
-- **Rate Limits:** Protected by Redis token bucket rate limiting (100 requests / minute / client IP).
+- **Rate Limits:** Protected by standard token bucket rate limiting (100 requests / minute / client IP).
 - **Security Headers:** Strict Transport Security (HSTS preload), X-Content-Type-Options: nosniff, X-Frame-Options: DENY, Referrer-Policy: strict-origin-when-cross-origin.
 - **Open Knowledge Format (OKF):** Content is indexed with canonical URLs and verified hreflang mappings across English and French.

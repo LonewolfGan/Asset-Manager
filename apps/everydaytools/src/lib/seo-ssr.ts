@@ -27,8 +27,8 @@ function escHtml(s: string): string {
     .replace(/'/g, "&#39;");
 }
 
-function escJson(s: string): string {
-  return JSON.stringify(s);
+function safeJsonLd(data: unknown): string {
+  return JSON.stringify(data).replace(/</g, "\\u003c");
 }
 
 function generateSchemas(tool: ToolSeoEntry, locale: Locale): string {
@@ -98,7 +98,7 @@ function generateSchemas(tool: ToolSeoEntry, locale: Locale): string {
   }
 
   return schemas
-    .map((s) => `<script type="application/ld+json">${JSON.stringify(s, null, 0)}</script>`)
+    .map((s) => `<script type="application/ld+json">${safeJsonLd(s)}</script>`)
     .join("\n  ");
 }
 
@@ -219,11 +219,6 @@ function buildFooter(locale: Locale): string {
   return `<footer class="site-footer">${escHtml(copy)}</footer>`;
 }
 
-function formatAboutText(text: string): string {
-  const paragraphs = text.split("\n\n").filter(Boolean);
-  return paragraphs.map((p) => `<p>${escHtml(p.trim())}</p>`).join("\n");
-}
-
 function buildRelatedSection(tool: ToolSeoEntry, locale: Locale): string {
   if (!tool.relatedTools.length) return "";
   const relatedHeader = locale === "fr" ? "Outils connexes" : "Related Tools";
@@ -318,8 +313,8 @@ export function generateToolPageHtml(localeSlug: string, locale: Locale): string
   <meta name="robots" content="index, follow" />
   <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  ${schemas}
   <style>${sharedCss()}</style>
+  ${schemas}
 </head>
 <body>
   ${buildNav(locale)}
@@ -483,12 +478,12 @@ export function generateHomepageHtml(locale: Locale): string {
   <meta name="twitter:image" content="${BASE_URL}/opengraph.jpg" />
   <meta name="robots" content="index, follow" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <script type="application/ld+json">${JSON.stringify(websiteSchema)}</script>
   <style>${sharedCss()}
   .hero{padding:64px 0 48px;max-width:600px}
   .hero h1{font-size:clamp(32px,6vw,52px);margin-bottom:16px;line-height:1.15}
   .hero p{font-size:16px;color:var(--muted);line-height:1.6}
   </style>
+  <script type="application/ld+json">${safeJsonLd(websiteSchema)}</script>
 </head>
 <body>
   ${buildNav(locale)}
