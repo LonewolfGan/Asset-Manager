@@ -479,23 +479,47 @@ export function generateSitemapXml(): string {
   const now = new Date().toISOString().split("T")[0];
   const urls: string[] = [];
 
-  urls.push(`  <url><loc>${BASE_URL}/en</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>1.0</priority></url>`);
-  urls.push(`  <url><loc>${BASE_URL}/fr</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>1.0</priority></url>`);
+  const urlBlock = (loc: string, altEn: string, altFr: string, priority: string, changefreq: string, lastmod = now) =>
+    `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n    <xhtml:link rel="alternate" hreflang="en" href="${altEn}"/>\n    <xhtml:link rel="alternate" hreflang="fr" href="${altFr}"/>\n  </url>`;
+
+  urls.push(urlBlock(`${BASE_URL}/en`, `${BASE_URL}/en`, `${BASE_URL}/fr`, "1.0", "weekly"));
+  urls.push(urlBlock(`${BASE_URL}/fr`, `${BASE_URL}/en`, `${BASE_URL}/fr`, "1.0", "weekly"));
+
+  const TRUST_PAGES = [
+    { en: "contact", fr: "contact", priority: "0.6", changefreq: "monthly" },
+    { en: "privacy", fr: "privacy", priority: "0.5", changefreq: "yearly" },
+    { en: "terms", fr: "terms", priority: "0.5", changefreq: "yearly" },
+    { en: "security", fr: "security", priority: "0.6", changefreq: "monthly" },
+    { en: "legal-notice", fr: "mentions-legales", priority: "0.5", changefreq: "yearly" },
+    { en: "cookies", fr: "cookies", priority: "0.4", changefreq: "yearly" },
+    { en: "changelog", fr: "changelog", priority: "0.7", changefreq: "weekly" },
+  ];
+
+  for (const p of TRUST_PAGES) {
+    const enUrl = `${BASE_URL}/en/${p.en}`;
+    const frUrl = `${BASE_URL}/fr/${p.fr}`;
+    urls.push(urlBlock(enUrl, enUrl, frUrl, p.priority, p.changefreq));
+    urls.push(urlBlock(frUrl, enUrl, frUrl, p.priority, p.changefreq));
+  }
 
   for (const tool of SEO_TOOLS) {
-    urls.push(`  <url><loc>${BASE_URL}/en/${tool.slugs.en}</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`);
-    urls.push(`  <url><loc>${BASE_URL}/fr/${tool.slugs.fr}</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`);
+    const enUrl = `${BASE_URL}/en/${tool.slugs.en}`;
+    const frUrl = `${BASE_URL}/fr/${tool.slugs.fr}`;
+    urls.push(urlBlock(enUrl, enUrl, frUrl, "0.8", "monthly"));
+    urls.push(urlBlock(frUrl, enUrl, frUrl, "0.8", "monthly"));
   }
 
-  urls.push(`  <url><loc>${BASE_URL}/en/blog</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>`);
-  urls.push(`  <url><loc>${BASE_URL}/fr/blog</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>`);
+  urls.push(urlBlock(`${BASE_URL}/en/blog`, `${BASE_URL}/en/blog`, `${BASE_URL}/fr/blog`, "0.9", "weekly"));
+  urls.push(urlBlock(`${BASE_URL}/fr/blog`, `${BASE_URL}/en/blog`, `${BASE_URL}/fr/blog`, "0.9", "weekly"));
 
   for (const post of BLOG_POSTS_STATIC) {
-    urls.push(`  <url><loc>${BASE_URL}/en/blog/${post.en}</loc><lastmod>${post.date}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>`);
-    urls.push(`  <url><loc>${BASE_URL}/fr/blog/${post.fr}</loc><lastmod>${post.date}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>`);
+    const enUrl = `${BASE_URL}/en/blog/${post.en}`;
+    const frUrl = `${BASE_URL}/fr/blog/${post.fr}`;
+    urls.push(urlBlock(enUrl, enUrl, frUrl, "0.7", "monthly", post.date));
+    urls.push(urlBlock(frUrl, enUrl, frUrl, "0.7", "monthly", post.date));
   }
 
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>`;
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.join("\n")}\n</urlset>`;
 }
 
 export function generateRobotsTxt(): string {

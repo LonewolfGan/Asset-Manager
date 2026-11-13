@@ -10,7 +10,7 @@
  * To add a new article: add it to BLOG_POSTS in blog-data.ts, then re-run.
  */
 
-import { readFileSync, writeFileSync } from "fs";
+import { readFileSync, writeFileSync, readdirSync, existsSync } from "fs";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 
@@ -35,34 +35,26 @@ while ((m = toolSlugRe.exec(toolsSrc)) !== null) {
 }
 
 // ---------------------------------------------------------------------------
-// 2. Parse blog slugs + publishedAt from blog-data.ts
-//    Matches:  slug: { en: "slug-en", fr: "slug-fr" }
-//    Pairs each with the nearest publishedAt: "YYYY-MM-DD" that follows it.
+// 2. Parse blog slugs + publishedAt from src/config/blog-posts/*.ts
 // ---------------------------------------------------------------------------
-const blogSrc = readFileSync(
-  resolve(ROOT, "src/config/blog-data.ts"),
-  "utf8"
-);
-const blogSlugRe = /slug:\s*\{\s*en:\s*"([^"]+)"\s*,\s*fr:\s*"([^"]+)"\s*\}/g;
-const blogDateRe = /publishedAt:\s*"([^"]+)"/g;
+const blogPostsDir = resolve(ROOT, "src/config/blog-posts");
+const blogPosts = [];
 
-const rawSlugs = [];
-while ((m = blogSlugRe.exec(blogSrc)) !== null) {
-  rawSlugs.push({ en: m[1], fr: m[2], index: m.index });
+if (existsSync(blogPostsDir)) {
+  const files = readdirSync(blogPostsDir).filter((f) => f.endsWith(".ts"));
+  for (const file of files) {
+    const content = readFileSync(resolve(blogPostsDir, file), "utf8");
+    const slugMatch = /slug:\s*\{\s*en:\s*"([^"]+)"\s*,\s*fr:\s*"([^"]+)"\s*\}/.exec(content);
+    const dateMatch = /publishedAt:\s*"([^"]+)"/.exec(content);
+    if (slugMatch) {
+      blogPosts.push({
+        en: slugMatch[1],
+        fr: slugMatch[2],
+        date: dateMatch ? dateMatch[1] : today,
+      });
+    }
+  }
 }
-
-const rawDates = [];
-while ((m = blogDateRe.exec(blogSrc)) !== null) {
-  rawDates.push({ date: m[1], index: m.index });
-}
-
-const blogPosts = rawSlugs.map((slug, i) => {
-  const nextSlugIndex = rawSlugs[i + 1]?.index ?? Infinity;
-  const found = rawDates.find(
-    (d) => d.index > slug.index && d.index < nextSlugIndex
-  );
-  return { en: slug.en, fr: slug.fr, date: found?.date ?? today };
-});
 
 // ---------------------------------------------------------------------------
 // 3. Build XML helpers
@@ -91,6 +83,24 @@ urls.push(urlBlock({
   loc: `${BASE_URL}/fr`, lastmod: today, changefreq: "weekly", priority: "1.0",
   altEn: `${BASE_URL}/en`, altFr: `${BASE_URL}/fr`,
 }));
+
+// E-E-A-T Trust & Governance Pages
+const TRUST_PAGES = [
+  { en: "contact", fr: "contact", priority: "0.6", changefreq: "monthly" },
+  { en: "privacy", fr: "privacy", priority: "0.5", changefreq: "yearly" },
+  { en: "terms", fr: "terms", priority: "0.5", changefreq: "yearly" },
+  { en: "security", fr: "security", priority: "0.6", changefreq: "monthly" },
+  { en: "legal-notice", fr: "mentions-legales", priority: "0.5", changefreq: "yearly" },
+  { en: "cookies", fr: "cookies", priority: "0.4", changefreq: "yearly" },
+  { en: "changelog", fr: "changelog", priority: "0.7", changefreq: "weekly" },
+];
+
+for (const p of TRUST_PAGES) {
+  const enUrl = `${BASE_URL}/en/${p.en}`;
+  const frUrl = `${BASE_URL}/fr/${p.fr}`;
+  urls.push(urlBlock({ loc: enUrl, lastmod: today, changefreq: p.changefreq, priority: p.priority, altEn: enUrl, altFr: frUrl }));
+  urls.push(urlBlock({ loc: frUrl, lastmod: today, changefreq: p.changefreq, priority: p.priority, altEn: enUrl, altFr: frUrl }));
+}
 
 // Tool pages
 for (const slug of toolSlugs) {
