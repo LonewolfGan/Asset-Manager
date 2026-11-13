@@ -74,7 +74,7 @@ RUN npm install -g pnpm@10
 # - openpyxl: Excel spreadsheet processing
 # - python-docx: Word document manipulation
 # - pytesseract: Python OCR integration wrapper
-RUN pip3 install --break-system-packages \
+RUN pip3 install --no-cache-dir --break-system-packages \
         "rembg[cpu]>=2.0.77" \
         pdfplumber \
         pypdf \
@@ -105,7 +105,7 @@ COPY apps/api-server/src/python/ ./python/
 # Install only the native / dynamically-imported npm packages the bundle needs
 # at runtime. All pure-JS deps are already inlined by esbuild.
 COPY apps/api-server/package.runtime.json ./package.json
-RUN pnpm install --no-lockfile
+RUN pnpm install --no-lockfile && pnpm store prune
 
 # Ensure ownership belongs to unprivileged user
 RUN chown -R appuser:appgroup /app
