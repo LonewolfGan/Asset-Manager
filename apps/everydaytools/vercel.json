@@ -1,7 +1,7 @@
 {
   "cleanUrls": true,
   "buildCommand": "pnpm --filter @workspace/everydaytools run build",
-  "outputDirectory": "artifacts/everydaytools/dist/public",
+  "outputDirectory": "dist/public",
   "framework": null,
   "headers": [
     {
