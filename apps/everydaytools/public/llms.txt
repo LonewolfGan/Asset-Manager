@@ -1,0 +1,50 @@
+# EverydayTools Hub
+
+> EverydayTools Hub is a privacy-first suite of free, browser-based online tools for converting, compressing, editing, and inspecting documents, images, and files. All processing runs entirely client-side using WebAssembly and Web Workers — zero files are uploaded to remote servers, zero data is logged or retained, and no account is required.
+
+- Canonical URL: https://everydaytools.qzz.io
+- Licensing: Free for commercial and personal use
+- Pricing: $0 / Free Forever (see [Pricing Details](https://everydaytools.qzz.io/pricing.md))
+- Full Technical Specification: [llms-full.txt](https://everydaytools.qzz.io/llms-full.txt)
+- Architecture: Client-side WebAssembly (WASM), Web Workers, and isolated headless fallback
+- Supported Locales: English (`/en`), French (`/fr`)
+
+## Core Capabilities & Tool Categories
+
+### PDF Tools
+- [Convert PDF to Word](https://everydaytools.qzz.io/en/convert-pdf-to-word): Convert PDF documents into editable Microsoft Word (.docx) files.
+- [Convert PDF to Images](https://everydaytools.qzz.io/en/convert-pdf-to-image): Extract or convert PDF pages to high-resolution PNG, JPG, or WebP.
+- [Compress PDF](https://everydaytools.qzz.io/en/compress-pdf): Reduce PDF file sizes with customizable quality tiers.
+- [Merge PDF](https://everydaytools.qzz.io/en/merge-pdf): Combine multiple PDF documents into a single ordered PDF.
+- [Split PDF](https://everydaytools.qzz.io/en/split-pdf): Separate PDF pages into individual documents or extract page ranges.
+- [Rotate PDF](https://everydaytools.qzz.io/en/rotate-pdf): Rotate pages permanently clockwise, counter-clockwise, or 180 degrees.
+- [Protect PDF](https://everydaytools.qzz.io/en/protect-pdf): Encrypt PDF documents with military-grade AES-256 passwords.
+- [Unlock PDF](https://everydaytools.qzz.io/en/unlock-pdf): Remove password protection and printing/editing restrictions from PDFs.
+- [Watermark PDF](https://everydaytools.qzz.io/en/watermark-pdf): Add text or image stamps, copyright marks, and page numbers.
+- [Convert PDF to PDF/A](https://everydaytools.qzz.io/en/convert-pdf-to-pdfa): Standardize PDFs for long-term archiving (PDF/A-1b, PDF/A-2b).
+- [Convert PDF to EPUB](https://everydaytools.qzz.io/en/convert-pdf-to-epub): Transform PDF documents into reflowable e-books.
+- [Convert PDF to Text](https://everydaytools.qzz.io/en/convert-pdf-to-text): Extract raw and formatted plain text from PDF pages.
+
+### Image Tools
+- [Image Converter](https://everydaytools.qzz.io/en/convert-images-online): Convert between PNG, JPEG, WebP, AVIF, GIF, SVG, and ICO.
+- [Convert HEIC to JPG](https://everydaytools.qzz.io/en/convert-heic-to-jpg): Convert Apple iPhone HEIC/HEIF photos to universal JPEG/PNG.
+- [Compress Image](https://everydaytools.qzz.io/en/compress-image): Compress PNG, JPEG, and WebP images with Pareto compression.
+- [Resize Image](https://everydaytools.qzz.io/en/resize-image): Scale dimensions proportionally or to custom pixel dimensions.
+- [Crop Image](https://everydaytools.qzz.io/en/crop-image): Interactive aspect ratio cropping (1:1, 16:9, 4:3, custom).
+- [Background Remover](https://everydaytools.qzz.io/en/remove-background): AI-powered foreground separation using ONNX models entirely in-browser.
+
+### Privacy & Metadata Tools
+- [Metadata Cleaner](https://everydaytools.qzz.io/en/metadata-cleaner): Inspect and strip EXIF, GPS location, camera serials, and author tags.
+- [AI Text Scrubber](https://everydaytools.qzz.io/en/ai-text-scrubber): Remove zero-width characters, AI clichés, and formatting artifacts.
+
+### Calculators & Utilities
+- [Password Generator](https://everydaytools.qzz.io/en/password-generator): Cryptographically secure entropy-based password creation.
+- [Speed Test](https://everydaytools.qzz.io/en/speed-test): Measure download, upload, ping, and jitter directly in the browser.
+- [Unit Converter](https://everydaytools.qzz.io/en/unit-converter): Precision unit conversions across length, mass, temperature, and data.
+- [Currency Converter](https://everydaytools.qzz.io/en/currency-converter): Live and cached currency exchange rate calculations.
+
+## Privacy & Security Guarantees
+- Zero upload architecture: Files are processed directly in browser RAM via WebAssembly.
+- No telemetry on user files: Files never leave your local device.
+- Works offline: PWA-ready architecture allows tools to function without an active internet connection after load.
+- No registration required: No email, no passwords, no personal information collected.

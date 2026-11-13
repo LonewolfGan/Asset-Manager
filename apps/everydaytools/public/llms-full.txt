@@ -1,0 +1,70 @@
+# EverydayTools Hub — Full Specification
+
+> Comprehensive technical specification, MIME types, processing pipelines, and agent ingestion guidelines for EverydayTools Hub.
+
+- Website: https://everydaytools.qzz.io
+- Status: Production Ready
+- Pricing: 100% Free / $0 forever (see https://everydaytools.qzz.io/pricing.md)
+- Host Environment: Modern web browsers (Chromium, Firefox, Safari, WebKit)
+- Architecture: Client-side execution via WebAssembly, Web Workers, Canvas API, and WebGL
+- Fallback Pipeline: Dedicated headless sandbox on secure Oracle Cloud VM running Gotenberg 8, QPDF, Ghostscript, Poppler, and Tesseract OCR with SSRF protection and ephemeral workspace eviction.
+
+---
+
+## 1. File Handling & Zero-Retention Security Policy
+
+- **Zero-Retention Security Policy:** Strict zero-retention guarantee for all operations.
+- **Client-Side Processing:** Files selected by the user are loaded directly into browser memory (ArrayBuffer/Blob). They are transformed locally by WebAssembly compiled binaries (e.g. `pdf-lib`, `@jsquash/avif`, `docx`, `mammoth`, `onnxruntime-web`).
+- **No Data Retention:** Files processed in the browser never leave the user's computer. When the browser tab is closed, all buffers in RAM are purged.
+- **Headless Fallback (When applicable):** For advanced server-side operations (e.g., complex PDF/A-2b conversions or heavy OCR), files are sent via TLS 1.3 with Cloudflare edge encryption directly to an ephemeral workspace `/tmp/everydaytools/<uuid>`. Workspaces are immediately purged upon task completion, with a hard 15-minute cron eviction for orphaned slots.
+- **No Analytics on Content:** File contents, file names, and converted outputs are never tracked, stored, or sent to telemetry services.
+
+---
+
+## 2. Exhaustive Tool Catalog & Technical Matrix
+
+### Document & PDF Matrix
+| Tool Name | English Route | French Route | Input Formats | Output Formats | Primary Engine |
+|---|---|---|---|---|---|
+| Convert PDF to Word | `/en/convert-pdf-to-word` | `/fr/convertir-pdf-en-word` | `application/pdf` | `application/vnd.openxmlformats-officedocument.wordprocessingml.document` (.docx) | PDF.js + docx AST generator |
+| Convert PDF to Text | `/en/convert-pdf-to-text` | `/fr/convertir-pdf-en-texte` | `application/pdf` | `text/plain` (.txt) | PDF.js layout parser |
+| Convert PDF to HTML | `/en/convert-pdf-to-html` | `/fr/convertir-pdf-en-html` | `application/pdf` | `text/html` (.html) | Semantic HTML builder |
+| Convert PDF to EPUB | `/en/convert-pdf-to-epub` | `/fr/convertir-pdf-en-epub` | `application/pdf` | `application/epub+zip` (.epub) | epub-gen-memory reflow engine |
+| Compress PDF | `/en/compress-pdf` | `/fr/compresser-pdf` | `application/pdf` | `application/pdf` | WebAssembly QPDF / Ghostscript DPI optimizer |
+| Merge PDF | `/en/merge-pdf` | `/fr/fusionner-pdf` | `application/pdf` (multiple) | `application/pdf` | pdf-lib in-memory page stitcher |
+| Split PDF | `/en/split-pdf` | `/fr/diviser-pdf` | `application/pdf` | `application/zip` or `application/pdf` | pdf-lib page range extractor |
+| Rotate PDF | `/en/rotate-pdf` | `/fr/faire-pivoter-pdf` | `application/pdf` | `application/pdf` | pdf-lib 90°/180°/270° transformer |
+| Protect PDF | `/en/protect-pdf` | `/fr/proteger-pdf` | `application/pdf` | `application/pdf` | AES-256 password encryptor |
+| Unlock PDF | `/en/unlock-pdf` | `/fr/deverrouiller-pdf` | `application/pdf` | `application/pdf` | Decryption handler |
+| Watermark PDF | `/en/watermark-pdf` | `/fr/filigrane-pdf` | `application/pdf` | `application/pdf` | Canvas / pdf-lib matrix stamper |
+| Convert PDF to PDF/A | `/en/convert-pdf-to-pdfa` | `/fr/convertir-pdf-en-pdfa` | `application/pdf` | `application/pdf` (PDF/A-1b, PDF/A-2b) | ISO 19005 compliant archiver |
+| Word to Text | `/en/convert-word-to-text` | `/fr/convertir-word-en-texte` | `.docx`, `.doc` | `text/plain` | mammoth parser |
+| Word to HTML | `/en/convert-word-to-html` | `/fr/convertir-word-en-html` | `.docx` | `text/html` | mammoth HTML generator |
+| Markdown to PDF | `/en/convert-markdown-to-pdf` | `/fr/convertir-markdown-en-pdf` | `text/markdown`, `.md` | `application/pdf` | marked + jsPDF printer |
+| Markdown to DOCX | `/en/convert-markdown-to-docx` | `/fr/convertir-markdown-en-docx` | `text/markdown`, `.md` | `.docx` | AST docx compiler |
+
+### Image Processing Matrix
+| Tool Name | English Route | French Route | Input MIME Types | Output MIME Types | Primary Engine |
+|---|---|---|---|---|---|
+| Image Converter | `/en/convert-images-online` | `/fr/convertir-des-images-en-ligne` | `image/png`, `image/jpeg`, `image/webp`, `image/avif`, `image/gif`, `image/bmp`, `image/svg+xml` | Same matrix | HTML5 Canvas / JSQuash / Sharp |
+| HEIC to JPG | `/en/convert-heic-to-jpg` | `/fr/convertir-heic-en-jpg` | `image/heic`, `image/heif` | `image/jpeg`, `image/png` | heic2any WebAssembly decoder |
+| Compress Image | `/en/compress-image` | `/fr/compresser-image` | `image/png`, `image/jpeg`, `image/webp` | Same with reduced bytes | Client-side Canvas quality slider |
+| Resize Image | `/en/resize-image` | `/fr/redimensionner-image` | Any bitmap image | Configured dimensions | Lanczos / bilinear resampling |
+| Crop Image | `/en/crop-image` | `/fr/recadrer-image` | Any bitmap image | Cropped selection | Interactive aspect ratio viewport |
+| Background Remover | `/en/remove-background` | `/fr/supprimer-fond-image` | `image/png`, `image/jpeg`, `image/webp` | `image/png` with alpha transparency | ONNX Runtime Web (`isnet-general-use`) |
+
+### Privacy & Audit Tools
+| Tool Name | English Route | French Route | Features |
+|---|---|---|---|
+| Metadata Cleaner | `/en/metadata-cleaner` | `/fr/nettoyer-metadonnees` | Parses EXIF, IPTC, XMP, GPS coordinates, serial numbers, and removes all metadata with 1-click strip. |
+| AI Text Scrubber | `/en/ai-text-scrubber` | `/fr/nettoyer-texte-ia` | Strips zero-width spaces, hidden Unicode tokens, and normalizes AI-generated cliché typography. |
+
+---
+
+## 3. Machine-Readable API and Ingestion Notes for LLMs
+
+- **API Base:** `https://api.everydaytools.qzz.io/api`
+- **Health Check Endpoint:** `GET https://api.everydaytools.qzz.io/api/healthz` (returns `{"status":"ok"}`)
+- **Rate Limits:** Protected by Redis token bucket rate limiting (100 requests / minute / client IP).
+- **Security Headers:** Strict Transport Security (HSTS preload), X-Content-Type-Options: nosniff, X-Frame-Options: DENY, Referrer-Policy: strict-origin-when-cross-origin.
+- **Open Knowledge Format (OKF):** Content is indexed with canonical URLs and verified hreflang mappings across English and French.

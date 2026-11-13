@@ -8,16 +8,33 @@ Allow: /
 User-agent: OAI-SearchBot
 Allow: /
 
+User-agent: ChatGPT-User
+Allow: /
+
 User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
 Allow: /
 
 User-agent: PerplexityBot
 Allow: /
 
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+
 User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Google-Extended
 Allow: /
 
 User-agent: Bytespider
 Disallow: /
 
 Sitemap: https://everydaytools.qzz.io/sitemap.xml
+# AI Discovery File (llmstxt.org specification)
+# https://everydaytools.qzz.io/llms.txt
+# https://everydaytools.qzz.io/llms-full.txt
+# https://everydaytools.qzz.io/pricing.md

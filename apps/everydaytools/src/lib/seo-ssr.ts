@@ -502,55 +502,43 @@ export function generateRobotsTxt(): string {
   return `User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /.well-known/
-Crawl-delay: 2
-
-User-agent: Googlebot
-Allow: /
-Disallow: /api/
-Crawl-delay: 0
-
-User-agent: Bingbot
-Allow: /
-Disallow: /api/
-Crawl-delay: 1
-
-User-agent: Googlebot-Image
-Allow: /
 
 User-agent: GPTBot
-Allow: /en/blog/
-Allow: /fr/blog/
-Allow: /en/
-Allow: /fr/
-Disallow: /api/
+Allow: /
 
 User-agent: OAI-SearchBot
 Allow: /
 
+User-agent: ChatGPT-User
+Allow: /
+
 User-agent: ClaudeBot
-Allow: /en/blog/
-Allow: /fr/blog/
-Allow: /en/
-Allow: /fr/
-Disallow: /api/
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
 
 User-agent: PerplexityBot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Google-Extended
 Allow: /
 
 User-agent: Bytespider
 Disallow: /
 
-User-agent: AhrefsBot
-Crawl-delay: 10
-
-User-agent: SemrushBot
-Crawl-delay: 10
-
-User-agent: DotBot
-Disallow: /
-
 Sitemap: ${BASE_URL}/sitemap.xml
+# AI Discovery File (llmstxt.org specification)
+# ${BASE_URL}/llms.txt
+# ${BASE_URL}/llms-full.txt
+# ${BASE_URL}/pricing.md
 `;
 }
 
